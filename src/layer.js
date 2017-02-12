@@ -1,11 +1,7 @@
-/**
- * Created by FDD on 2017/2/12.
- */
-class Layer extends HMap {
+import HMap from './index'
+
+export default class Layers {
   constructor () {
-    super()
-  }
-  creatLayer (params) {
-    this.option = params || {};
+    this.decs = 'layer'
   }
 }
