@@ -1,7 +1,7 @@
 /*global describe, it, before */
 
 import chai from 'chai';
-import Library from '../lib/library.js';
+import Library from '../dist/map.js';
 
 chai.expect();
 

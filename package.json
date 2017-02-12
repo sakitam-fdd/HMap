@@ -1,6 +1,7 @@
 {
   "name": "HMap",
   "version": "1.0.0",
+  "private": true,
   "description": "HDSXTECH WEBGIS API",
   "keywords": [
     "webgis",
@@ -8,25 +9,19 @@
     "openlayer3",
     "es6"
   ],
-  "author": [
-    {
-      "name": "FDD",
-      "email": "smileFDD@gmail.com"
-    }
-  ],
+  "author": "FDD <smileFDD@gmail.com>",
   "repository": {
     "type": "git",
     "url": "https://github.com/smilefdd/"
   },
-  "main": "dist/HMap.js",
+  "main": "dist/map.js",
   "scripts": {
-    "build": "node build/webpack --env build",
-    "dev": "node build/webpack --progress --colors --watch --env dev",
+    "build": "webpack --env build",
+    "dev": "webpack --progress --colors --watch --env dev",
     "test": "mocha --compilers js:babel-core/register --colors ./test/*.spec.js",
     "test:watch": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js"
   },
   "dependencies": {
-    "openlayer": "^3.0.0",
     "zrender": "^3.2.2"
   },
   "devDependencies": {
@@ -46,13 +41,12 @@
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^2.0.1",
     "yargs": "^6.0.0",
-    "chai": "^3.0.0", // Chai 是一个针对 Node.js 和浏览器的行为驱动测试和测试驱动测试的诊断库,可与任何 JavaScript 测试框架集成。
-    "chalk": "^1.1.3", // Chalk is a clean and focused alternative.
-    "mocha": "^2.0.0", // JavaScript test
+    "chai": "^3.0.0",
+    "chalk": "^1.1.3",
+    "mocha": "^2.0.0",
     "webpack": "^2.2.0",
     "webpack-dev-middleware": "^1.8.3",
     "webpack-hot-middleware": "^2.12.2",
     "webpack-merge": "^0.14.1"
-  },
-  "license": "MIT"
+  }
 }
