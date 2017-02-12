@@ -1,8 +1,8 @@
-export default class Library {
+class HMap {
   constructor() {
-    this._name = 'Library';
+    this._version = '1.0.0';
   }
-  get name() {
-    return this._name;
+  getVersion() {
+    return this._version;
   }
 }
