@@ -178,40 +178,10 @@ module.exports = exports['default'];
 /***/ }),
 /* 1 */,
 /* 2 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
 "use strict";
-
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _index = __webpack_require__(0);
-
-var _index2 = _interopRequireDefault(_index);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Layers = function () {
-  function Layers(params) {
-    _classCallCheck(this, Layers);
-
-    this.option = params || {};
-    this._map = this.option.map;
-  }
-
-  _createClass(Layers, [{
-    key: 'getMap',
-    value: function getMap() {
-      return this._map;
-    }
-  }]);
-
-  return Layers;
-}();
-
-module.exports = Layers;
+throw new Error("Module build failed: SyntaxError: H:/Project/HMap/src/layer.js: Missing class properties transform.\n\n\u001b[0m \u001b[90m  9 | \u001b[39m  }\n \u001b[90m 10 | \u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 11 | \u001b[39m  getL\n \u001b[90m    | \u001b[39m  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 12 | \u001b[39m}\n \u001b[90m 13 | \u001b[39mmodule\u001b[33m.\u001b[39mexports \u001b[33m=\u001b[39m \u001b[33mLayers\u001b[39m\u001b[33m;\u001b[39m\u001b[0m\n");
 
 /***/ }),
 /* 3 */

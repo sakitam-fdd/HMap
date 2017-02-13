@@ -7,5 +7,7 @@ class Layers {
   getMap () {
     return this._map
   }
+
+  getL
 }
 module.exports = Layers;
