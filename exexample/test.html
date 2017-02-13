@@ -7,9 +7,9 @@
 <body>
 <script src="../dist/HMap.js"></script>
 <script type="text/javascript">
-  var Maps = new HMap()
-
-  console.log(Maps.layer.decs)
+ var Maps = new HMap()
+ var layers = new Maps.layer('mapDiv');
+  console.log(layers, layers.getMap());
 </script>
 </body>
 </html>

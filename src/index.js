@@ -1,4 +1,7 @@
-import prototypes from './prototype'
+// import * as prototypes from './prototype'
+// const ol = require('opelayers');
+import ol from '../node_modules/openlayers'
+import Layers from './layer'
 export default class HMap {
   constructor () {
     /**
@@ -8,7 +11,7 @@ export default class HMap {
      */
     this._version = '1.0.0';
 
-    this.layer = prototypes.Layers
+    this.layer = Layers
 
     /**
      * 地图工具
