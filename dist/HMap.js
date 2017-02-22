@@ -83,13 +83,9 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+var _map = __webpack_require__(1);
 
-var _openlayers = __webpack_require__(3);
-
-var _openlayers2 = _interopRequireDefault(_openlayers);
+var _map2 = _interopRequireDefault(_map);
 
 var _layer = __webpack_require__(2);
 
@@ -97,91 +93,70 @@ var _layer2 = _interopRequireDefault(_layer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } // import * as prototypes from './prototype'
-// const ol = require('opelayers');
-
-
-var HMap = function HMap() {
-  _classCallCheck(this, HMap);
-
-  /**
-   * version
-   * @type {string}
-   * @private
-   */
-  this._version = '1.0.0';
-
-  this.layer = _layer2.default;
-
-  /**
-   * 地图工具
-   * @type {{addPoint: boolean, ljQuery: boolean, iQuery: boolean, drawPlot: boolean, toolsType: {addPoint: string, ljQuery: string, iQuery: string, drawPlot: string}}}
-   */
-  this.mapTools = {
-    addPoint: false, ljQuery: false,
-    iQuery: false, drawPlot: false,
-    addTextArea: false,
-    toolsType: {
-      addPoint: 'addPoint',
-      ljQuery: 'ljQuery',
-      iQuery: 'iQuery',
-      drawPlot: 'drawPlot',
-      addTextArea: 'addTextArea'
-    }
-  };
-  this.addPointHandlerClick = null;
-  this.plotDraw = null; //标绘工具
-  this.plotEdit = null;
-  this._lastDrawInteractionGeometry = null;
-  this.wgs84Sphere = new _openlayers2.default.Sphere(6378137);
-  window.ObservableObj = new _openlayers2.default.Object();
-  /**
-   * 当前地图线要素
-   * @type {Array}
-   */
-  this.currentMapLines = [];
-  /**
-   * 当前地图点要素
-   * @type {Array}
-   */
-  this.currentMapPoints = [];
-  /**
-   * 当前地图线图层
-   * @type {Array}
-   */
-  this.lineLayers = new Set();
-  /**
-   * 当前地图点图层
-   * @type {Array}
-   */
-  this.pointLayers = new Set();
-  /**
-   * 当前地图面图层
-   * @type {Array}
-   */
-  this.polygonLayers = new Set();
-  /**
-   * 周边搜索要素
-   * @type {null}
-   */
-  this.circleSerachFeat = null;
-  /**
-   * 当前地图气泡
-   * @type {null}
-   */
-  this.popupOverlay = null;
+/**
+ * Created by FDD on 2017/2/21.
+ * @desc 类库首文件
+ */
+var HMap = {
+  Map: _map2.default,
+  Layer: _layer2.default
 };
 
-exports.default = HMap;
-module.exports = exports['default'];
+module.exports = HMap;
 
 /***/ }),
-/* 1 */,
-/* 2 */
-/***/ (function(module, exports) {
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-throw new Error("Module build failed: SyntaxError: H:/Project/HMap/src/layer.js: Missing class properties transform.\n\n\u001b[0m \u001b[90m  9 | \u001b[39m  }\n \u001b[90m 10 | \u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 11 | \u001b[39m  getL\n \u001b[90m    | \u001b[39m  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 12 | \u001b[39m}\n \u001b[90m 13 | \u001b[39mmodule\u001b[33m.\u001b[39mexports \u001b[33m=\u001b[39m \u001b[33mLayers\u001b[39m\u001b[33m;\u001b[39m\u001b[0m\n");
+
+
+var _openlayers = __webpack_require__(3);
+
+var _openlayers2 = _interopRequireDefault(_openlayers);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Map = function Map(mapDiv, params) {
+  _classCallCheck(this, Map);
+
+  this._version = '1.0.0';
+  var options = params || {};
+  var urlTemplate = tileUrl + '/tile/{z}/{y}/{x}';
+  var tileArcGISXYZ = new _openlayers2.default.source.XYZ({
+    wrapX: false,
+    projection: this.projection,
+    tileUrlFunction: function tileUrlFunction(tileCoord) {
+      var url = urlTemplate.replace('{z}', tileCoord[0].toString()).replace('{x}', tileCoord[1].toString()).replace('{y}', (-tileCoord[2] - 1).toString());
+      return url;
+    }
+  });
+  var baseLayer = new _openlayers2.default.layer.Tile({
+    isBaseLayer: true,
+    isCurrentBaseLayer: true,
+    layerName: options.layerName,
+    source: tileArcGISXYZ
+  });
+  this.map = new _openlayers2.default.Map({
+    target: mapDiv,
+    layers: [baseLayer],
+    view: new _openlayers2.default.View({
+      center: _openlayers2.default.proj.fromLonLat(options.center, this.projection),
+      zoom: options.zoom
+    })
+  });
+};
+
+module.exports = Map;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 /***/ }),
 /* 3 */
