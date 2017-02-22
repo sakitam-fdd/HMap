@@ -83,26 +83,202 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 
 
-var _map = __webpack_require__(1);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var _map2 = _interopRequireDefault(_map);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Created by FDD on 2017/2/21.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @desc 类库首文件
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
-var _layer = __webpack_require__(2);
 
-var _layer2 = _interopRequireDefault(_layer);
+var _constants = __webpack_require__(5);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var constants = _interopRequireWildcard(_constants);
 
-/**
- * Created by FDD on 2017/2/21.
- * @desc 类库首文件
- */
-var HMap = {
-  Map: _map2.default,
-  Layer: _layer2.default
-};
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-module.exports = HMap;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ol = __webpack_require__(3);
+
+var HMap = function () {
+  function HMap() {
+    _classCallCheck(this, HMap);
+
+    /**
+     * 地图工具
+     * @type {{addPoint: boolean, ljQuery: boolean, iQuery: boolean, drawPlot: boolean, toolsType: {addPoint: string, ljQuery: string, iQuery: string, drawPlot: string}}}
+     */
+    this.mapTools = {
+      addPoint: false, ljQuery: false,
+      iQuery: false, drawPlot: false,
+      addTextArea: false,
+      toolsType: {
+        addPoint: 'addPoint',
+        ljQuery: 'ljQuery',
+        iQuery: 'iQuery',
+        drawPlot: 'drawPlot',
+        addTextArea: 'addTextArea'
+      }
+    };
+    this.addPointHandlerClick = null;
+    this.plotDraw = null; //标绘工具
+    this.plotEdit = null;
+    this._lastDrawInteractionGeometry = null;
+    this.wgs84Sphere = new ol.Sphere(6378137);
+    window.ObservableObj = new ol.Object();
+    /**
+     * 当前地图线要素
+     * @type {Array}
+     */
+    this.currentMapLines = [];
+    /**
+     * 当前地图点要素
+     * @type {Array}
+     */
+    this.currentMapPoints = [];
+    /**
+     * 当前地图面要素
+     * @type {Array}
+     */
+    this.currentMapPolygon = [];
+    /**
+     * 当前地图线图层
+     * @type {Array}
+     */
+    this.lineLayers = new Set();
+    /**
+     * 当前地图点图层
+     * @type {Array}
+     */
+    this.pointLayers = new Set();
+    /**
+     * 当前地图面图层
+     * @type {Array}
+     */
+    this.polygonLayers = new Set();
+    /**
+     * 周边搜索要素
+     * @type {null}
+     */
+    this.circleSerachFeat = null;
+    /**
+     * 当前地图气泡
+     * @type {null}
+     */
+    this.popupOverlay = null;
+  }
+
+  /**
+   * 初始化当前地图
+   * @param mapDiv
+   * @param params
+   */
+
+
+  _createClass(HMap, [{
+    key: 'initMap',
+    value: function initMap(mapDiv, params) {
+      var options = params || {};
+      /**
+       * 投影
+       * @type {ol.proj.Projection}
+       */
+      this.projection = ol.proj.get('EPSG:' + options.projection);
+      /**
+       * 显示范围
+       */
+      this.fullExtent = options.fullExtent;
+      /**
+       * 投影范围
+       */
+      this.projection.setExtent(this.fullExtent);
+      /**
+       * 瓦片原点
+       */
+      this.origin = options.origin;
+      /**
+       * 瓦片大小
+       */
+      this.tileSize = options.tileSize;
+      /**
+       * 定义渲染参数
+       */
+      var size = ol.extent.getWidth(this.projection.getExtent()) / 256;
+      /**
+       * 渲染分辨率
+       * @type {Array}
+       * @private
+       */
+      this._resolutions = new Array(19);
+      /**
+       * 层级
+       * @type {Array}
+       */
+      this.matrixIds = new Array(19);
+      for (var z = 0; z < 19; ++z) {
+        this._resolutions[z] = size / Math.pow(2, z);
+        this.matrixIds[z] = z;
+      }
+      this.map = new ol.Map({
+        target: mapDiv,
+        loadTilesWhileAnimating: true,
+        loadTilesWhileInteracting: true,
+        interactions: ol.interaction.defaults({
+          doubleClickZoom: true,
+          keyboard: false
+        }),
+        layers: this.getBaseLayerGroup(),
+        view: new ol.View({
+          center: ol.proj.fromLonLat(options.center, this.projection),
+          zoom: options.zoom ? options.zoom : 0
+        })
+      });
+
+      if (this.projection) {
+        this.map.getView().set('projection', this.projection);
+      }
+      if (options['maxResolution']) {
+        this.map.getView().set('maxResolution', options['maxResolution']);
+      }
+      if (options['minResolution']) {
+        this.map.getView().set('minResolution', options['minResolution']);
+      }
+    }
+  }, {
+    key: 'getBaseLayerGroup',
+    value: function getBaseLayerGroup() {
+      var baseLayers = new ol.layer.Group({
+        layers: [new ol.layer.Tile({
+          source: new ol.source.OSM()
+        }), new ol.layer.Tile({
+          source: new ol.source.TileJSON({
+            url: 'https://api.tiles.mapbox.com/v3/mapbox.20110804-hoa-foodinsecurity-3month.json?secure',
+            crossOrigin: 'anonymous'
+          })
+        }), new ol.layer.Tile({
+          source: new ol.source.TileJSON({
+            url: 'https://api.tiles.mapbox.com/v3/mapbox.world-borders-light.json?secure',
+            crossOrigin: 'anonymous'
+          })
+        })]
+      });
+      return baseLayers;
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }]);
+
+  return HMap;
+}();
+
+exports.default = HMap;
+module.exports = exports['default'];
 
 /***/ }),
 /* 1 */
@@ -110,6 +286,12 @@ module.exports = HMap;
 
 "use strict";
 
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _openlayers = __webpack_require__(3);
 
@@ -119,46 +301,182 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Map = function Map(mapDiv, params) {
-  _classCallCheck(this, Map);
+var Layer = function () {
+  function Layer(map) {
+    _classCallCheck(this, Layer);
 
-  this._version = '1.0.0';
-  var options = params || {};
-  var urlTemplate = tileUrl + '/tile/{z}/{y}/{x}';
-  var tileArcGISXYZ = new _openlayers2.default.source.XYZ({
-    wrapX: false,
-    projection: this.projection,
-    tileUrlFunction: function tileUrlFunction(tileCoord) {
-      var url = urlTemplate.replace('{z}', tileCoord[0].toString()).replace('{x}', tileCoord[1].toString()).replace('{y}', (-tileCoord[2] - 1).toString());
-      return url;
+    console.log(this);
+    this.map = map || null;
+    if (!this.map) {
+      throw new Error('缺少地图对象！');
     }
-  });
-  var baseLayer = new _openlayers2.default.layer.Tile({
-    isBaseLayer: true,
-    isCurrentBaseLayer: true,
-    layerName: options.layerName,
-    source: tileArcGISXYZ
-  });
-  this.map = new _openlayers2.default.Map({
-    target: mapDiv,
-    layers: [baseLayer],
-    view: new _openlayers2.default.View({
-      center: _openlayers2.default.proj.fromLonLat(options.center, this.projection),
-      zoom: options.zoom
-    })
-  });
-};
+  }
 
-module.exports = Map;
+  /**
+   * 通过layerName获取图层
+   * @param layerName
+   * @returns {*}
+   */
+
+
+  _createClass(Layer, [{
+    key: 'getLayerByLayerName',
+    value: function getLayerByLayerName(layerName) {
+      try {
+        var targetLayer = null;
+        if (this.map) {
+          var layers = this.map.getLayers();
+          targetLayer = layers.filter(function (layer) {
+            return layer.get('layerName') === layerName;
+          });
+        }
+        return targetLayer;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    /**
+     * 通过要素获取图层
+     * @param feature
+     * @returns {*}
+     */
+
+  }, {
+    key: 'getLayerByFeatuer',
+    value: function getLayerByFeatuer(feature) {
+      var tragetLayer = null;
+      if (this.map) {
+        if (feature instanceof _openlayers2.default.Feature) {
+          var layers = this.map.getLayers();
+          layers.forEach(function (layer) {
+            var source = layer.getSource();
+            if (source.getFeatures) {
+              var features = source.getFeatures();
+              features.forEach(function (feat) {
+                if (feat == feature) {
+                  tragetLayer = layer;
+                }
+              });
+            }
+          });
+        } else {
+          throw new Error('传入的不是要素!');
+        }
+      }
+      return tragetLayer;
+    }
+
+    /**
+     * 创建临时图层
+     * @param layerName
+     * @param params
+     * @returns {*}
+     */
+
+  }, {
+    key: 'creatVectorLayer',
+    value: function creatVectorLayer(layerName, params) {
+      try {
+        if (this.map) {
+          var vectorLayer = this.getLayerByLayerName(layerName);
+          if (!(vectorLayer instanceof _openlayers2.default.layer.Vector)) {
+            vectorLayer = null;
+          }
+          if (!vectorLayer) {
+            if (params && params.create) {
+              vectorLayer = new _openlayers2.default.layer.Vector({
+                layerName: layerName,
+                params: params,
+                layerType: 'vector',
+                source: new _openlayers2.default.source.Vector({
+                  wrapX: false
+                }),
+                style: new _openlayers2.default.style.Style({
+                  fill: new _openlayers2.default.style.Fill({
+                    color: 'rgba(67, 110, 238, 0.4)'
+                  }),
+                  stroke: new _openlayers2.default.style.Stroke({
+                    color: '#4781d9',
+                    width: 2
+                  }),
+                  image: new _openlayers2.default.style.Circle({
+                    radius: 7,
+                    fill: new _openlayers2.default.style.Fill({
+                      color: '#ffcc33'
+                    })
+                  })
+                })
+              });
+            }
+          }
+          if (this.map && vectorLayer) {
+            if (params && params.hasOwnProperty('selectable')) {
+              vectorLayer.set("selectable", params.selectable);
+            }
+            this.map.addLayer(vectorLayer);
+          }
+          return vectorLayer;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    /**
+     * 创建专题图层
+     * @param layerName
+     * @param params
+     * @returns {*}
+     */
+
+  }, {
+    key: 'creatTitleLayer',
+    value: function creatTitleLayer(layerName, params) {
+      var titleLayer = null;
+      if (this.map) {
+        var serviceUrl = params['serviceUrl'];
+        if (!serviceUrl) return null;
+        titleLayer = new _openlayers2.default.layer.Tile({
+          layerName: layerName,
+          layerType: 'title',
+          source: new _openlayers2.default.source.TileArcGISRest({
+            url: serviceUrl,
+            params: params,
+            wrapX: false
+          }),
+          wrapX: false
+        });
+        this.map.addLayer(titleLayer);
+      }
+      return titleLayer;
+    }
+
+    /**
+     * 移除图层
+     * @param layerName
+     */
+
+  }, {
+    key: 'removeLayerByLayerName',
+    value: function removeLayerByLayerName(layerName) {
+      if (this.map) {
+        var layer = this.getLayerByLayerName(layerName);
+        if (layer && layer instanceof _openlayers2.default.layer.Vector && layer.getSource() && layer.getSource().clear) {
+          layer.getSource().clear();
+        }
+      }
+    }
+  }]);
+
+  return Layer;
+}();
+
+exports.default = Layer;
+module.exports = exports['default'];
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/***/ }),
+/* 2 */,
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1198,6 +1516,151 @@ try {
 
 module.exports = g;
 
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.MapConfig = exports.Feature = exports.Layer = undefined;
+
+var _layer = __webpack_require__(1);
+
+var _layer2 = _interopRequireDefault(_layer);
+
+var _feature = __webpack_require__(6);
+
+var _feature2 = _interopRequireDefault(_feature);
+
+var _mapConfig = __webpack_require__(7);
+
+var _mapConfig2 = _interopRequireDefault(_mapConfig);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Layer = exports.Layer = _layer2.default; /**
+                                              * Created by FDD on 2017/2/22.
+                                              * @desc 静态常量
+                                              */
+
+var Feature = exports.Feature = _feature2.default;
+var MapConfig = exports.MapConfig = _mapConfig2.default;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Created by FDD on 2017/2/22.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @desc 要素相关处理
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+
+
+var _openlayers = __webpack_require__(3);
+
+var _openlayers2 = _interopRequireDefault(_openlayers);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Feature = function () {
+  function Feature(map) {
+    _classCallCheck(this, Feature);
+
+    this.map = map;
+    if (!this.map) {
+      throw new Error('缺少地图对象！');
+    }
+  }
+
+  /**
+   * 通过id获取Feature
+   * @param id
+   * @returns {*}
+   */
+
+
+  _createClass(Feature, [{
+    key: 'getFeatureById',
+    value: function getFeatureById(id) {
+      return this.map.getFeatureById(id);
+    }
+  }]);
+
+  return Feature;
+}();
+
+exports.default = Feature;
+module.exports = exports['default'];
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var mapConfig = {
+  center: [109.15169990462329, 31.74108365827285],
+  resolution: 0.05406145033589252,
+  zoom: 5,
+  projection: 'EPSG:102100',
+  overViewMapVisible: false,
+  scaleLineVisible: true,
+  baseLayers: [{
+    layerName: 'vector',
+    isDefault: true,
+    layerType: 'TileXYZ',
+    layerUrl: 'http://10.254.123.75:8080/OneMapServer/rest/services/World2ChinaMapBG/MapServer',
+    label: { //地图图层是否对应的有标注层
+      layerName: 'vectorLabel',
+      isDefault: true,
+      layerType: 'TileXYZ',
+      layerUrl: 'http://10.254.123.75:8080/OneMapServer/rest/services/World2ChinaMapLabel/MapServer'
+    }
+  }, {
+    layerName: 'earth',
+    layerType: 'TitleWMTS',
+    layer: 'img',
+    layerUrl: 'http://t{0-6}.tianditu.cn/img_c/wmts',
+    label: {
+      layerName: 'TDTLabel',
+      layerType: 'TitleWMTS',
+      layer: 'cia',
+      layerUrl: 'http://t{0-6}.tianditu.cn/cia_c/wmts'
+    }
+  }, {
+    layerName: 'panorama',
+    layerType: 'TitleWMTS',
+    layer: 'ter',
+    layerUrl: 'http://t{0-6}.tianditu.com/ter_c/wmts',
+    label: {
+      layerName: 'TDTLabel',
+      layerType: 'TitleWMTS',
+      layer: 'cia',
+      layerUrl: 'http://t{0-6}.tianditu.cn/cia_c/wmts'
+    }
+  }]
+};
+
+exports.default = mapConfig;
+module.exports = exports['default'];
 
 /***/ })
 /******/ ]);

@@ -5,11 +5,26 @@
   <title>Title</title>
 </head>
 <body>
+<div id="map"></div>
 <script src="../dist/HMap.js"></script>
-<script type="text/javascript">
-  var Maps = new HMap.Map()
-
-  console.log(Maps.layer.decs)
+<script type="text/ecmascript">
+//  import {} from '../dist/HMap'
+  let Maps = new HMap();
+  Maps.initMap('map', {
+    center: [109.15169990462329, 31.74108365827285],
+    resolution: 0.05406145033589252,
+    fullExtent: [-180, -90, 180, 90],
+    origin: '',
+    tileSize: '',
+    tileUrl: '',
+    zoom: 5,
+    projection: '102100',
+    maxResolution: '',
+    minResolution: '',
+    overViewMapVisible: false,
+    scaleLineVisible: true,
+  });
+  console.log(Maps)
 </script>
 </body>
 </html>
