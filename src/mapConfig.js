@@ -10,6 +10,7 @@ const mapConfig = {
       layerName: 'vector',
       isDefault: true,
       layerType: 'TileXYZ',
+      opaque: true, //图层是否不透明
       layerUrl: 'http://10.254.123.75:8080/OneMapServer/rest/services/World2ChinaMapBG/MapServer',
       label: { //地图图层是否对应的有标注层
         layerName: 'vectorLabel',
@@ -22,11 +23,13 @@ const mapConfig = {
       layerName: 'earth',
       layerType: 'TitleWMTS',
       layer: 'img',
+      isDefault: false,
       layerUrl: 'http://t{0-6}.tianditu.cn/img_c/wmts',
       label: {
         layerName: 'TDTLabel',
         layerType: 'TitleWMTS',
         layer: 'cia',
+        isDefault: false,
         layerUrl: 'http://t{0-6}.tianditu.cn/cia_c/wmts'
       }
     },
@@ -34,11 +37,13 @@ const mapConfig = {
       layerName: 'panorama',
       layerType: 'TitleWMTS',
       layer: 'ter',
+      isDefault: false,
       layerUrl: 'http://t{0-6}.tianditu.com/ter_c/wmts',
       label: {
         layerName: 'TDTLabel',
         layerType: 'TitleWMTS',
         layer: 'cia',
+        isDefault: false,
         layerUrl: 'http://t{0-6}.tianditu.cn/cia_c/wmts'
       }
     }
