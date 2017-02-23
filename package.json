@@ -22,7 +22,9 @@
     "test:watch": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js"
   },
   "dependencies": {
-    "zrender": "^3.2.2"
+    "zrender": "^3.2.2",
+    "openlayers": "^4.0.0",
+    "proj4": "^2.3.17"
   },
   "devDependencies": {
     "babel": "^6.0.0",

@@ -3,6 +3,7 @@
  * @desc 类库首文件
  */
 import * as constants from  './constants'
+import proj4 from '../node_modules/proj4'
 let ol = require('../node_modules/openlayers')
 class HMap {
   constructor () {
@@ -28,6 +29,8 @@ class HMap {
     this._lastDrawInteractionGeometry = null;
     this.wgs84Sphere = new ol.Sphere(6378137);
     window.ObservableObj = new ol.Object();
+    ol.proj.setProj4(proj4);
+
     /**
      * 当前地图线要素
      * @type {Array}
@@ -103,6 +106,14 @@ class HMap {
      */
     this.tileSize = options.tileSize;
 
+    this.resolutions = options.resolutions;
+
+    let _layers = this._getBaseLayerGroup(options['baseLayers']);
+
+    let _interactions = this._addInteractions(options['interactions']);
+
+    let _view = this._addView(options);
+
     /**
      * 当前地图对象
      * @type {ol.Map}
@@ -111,11 +122,14 @@ class HMap {
       target: mapDiv,
       loadTilesWhileAnimating: true,
       loadTilesWhileInteracting: true,
-      controls: this._addControls(options['controls']),
-      interactions: this._addInteractions(options['interactions']),
-      layers: this._getBaseLayerGroup(options['baseLayers']),
-      view: this._addView(options)
-    })
+      interactions: _interactions,
+      layers: [new ol.layer.Group({
+        layers: _layers
+      })],
+      view: _view
+    });
+
+    this._addControls(options['controls']);
   }
 
   /**
@@ -123,33 +137,117 @@ class HMap {
    * @returns {ol.layer.Group}
    */
   _getBaseLayerGroup (layerConfig) {
-    try {
-      let layers = [];
-      if (layerConfig && Array.isArray(layerConfig) && layerConfig.length > 0) {
-        layers.push(new ol.layer.Tile({
-          source: new ol.source.OSM()
-        }))
-      }
-      let baseLayers = new ol.layer.Group({
-        layers: layers
-      });
-      return baseLayers;
-    } catch (e) {
-      console.log(e)
-    } finally { // 如果错误了，返回osm图层，避免地图容器空白
-      return new ol.layer.Group({
-        layers: new ol.layer.Tile({
-          source: new ol.source.OSM()
-        })
+    let [layers, labelLayers, _layers, labelLayersConfig] = [[], [], [], []];
+    if (layerConfig && Array.isArray(layerConfig) && layerConfig.length > 0) {
+      layerConfig.forEach(config => {
+        if (config['layerName'] && config['layerUrl'] && config['layerType']) {
+          let layer = null;
+          switch (config['layerType']) {
+            case 'TileXYZ':
+              layer = this._getXYZLayer(config);
+              break;
+            case 'TitleWMTS':
+              layer = this._getWMTSLayer(config);
+              break;
+          }
+          if (layer) layers.push(layer);
+          if (config['label']) {
+            labelLayersConfig.push(config['label'])
+          }
+        }
       })
     }
+    labelLayers = this._getBaseLayerLabel(labelLayersConfig);
+    _layers = layers.concat(labelLayers);
+    return _layers;
+    // try {
+    //   let [ layers, labelLayers,  _layers ] = [ [], [], [] ];
+    //   if (layerConfig && Array.isArray(layerConfig) && layerConfig.length > 0) {
+    //     layerConfig.forEach(config => {
+    //       if (config['layerName'] && config['layerUrl'] && config['layerType']) {
+    //         let layer = null;
+    //         switch (config['layerType']) {
+    //           case 'TileXYZ':
+    //             layer = this._getXYZLayer(config);
+    //             break;
+    //           case 'TitleWMTS':
+    //             layer = this._getWMTSLayer(config);
+    //             break;
+    //         }
+    //         if (layer) layers.push(layer);
+    //         if (config['label'] && config['label']['layerName'] && config['label']['layerUrl'] && config['label']['layerType']) {
+    //           let labelLayer = null;
+    //           switch (config['label']['layerType']) {
+    //             case 'TileXYZ':
+    //               labelLayer = this._getXYZLayer(config['label']);
+    //               break;
+    //             case 'TitleWMTS':
+    //               labelLayer = this._getWMTSLayer(config['label']);
+    //               break;
+    //           }
+    //           if (labelLayer) labelLayers.push(labelLayer);
+    //         }
+    //       }
+    //     })
+    //   }
+    //   _layers = layers.concat(labelLayers);
+    //   return _layers;
+    // } catch (e) {
+    //   console.log(e)
+    // } finally { // 如果错误了，返回osm图层，避免地图容器空白
+    //   return [new ol.layer.Tile({
+    //     source: new ol.source.OSM()
+    //   })]
+    // }
   }
 
+  /**
+   * 主要处理标注层
+   * @param labelLayersConfig
+   * @returns {null}
+   * @private
+   */
+  _getBaseLayerLabel (labelLayersConfig) {
+    let [labelLayers, _labelLayersLayerNames] = [[], (new Set())];
+    if (labelLayersConfig && Array.isArray(labelLayersConfig) && labelLayersConfig.length > 0) {
+      labelLayersConfig.forEach(config => {
+        if (config['layerName'] && config['layerUrl'] && config['layerType']) {
+          _labelLayersLayerNames.add(config['layerName']);
+        }
+      });
+      [...(_labelLayersLayerNames)].forEach(layerName => {
+        labelLayersConfig.every(configM => {
+          if (configM && configM['layerName'] === layerName) {
+            let labelLayer = null;
+            switch (configM['layerType']) {
+              case 'TileXYZ':
+                labelLayer = this._getXYZLayer(configM);
+                break;
+              case 'TitleWMTS':
+                labelLayer = this._getWMTSLayer(configM);
+                break;
+            }
+            if (labelLayer) labelLayers.push(labelLayer);
+            return false;
+          }
+          return true;
+        });
+      });
+    }
+    return labelLayers;
+  }
+
+  /**
+   * 获取标准XYZ图层
+   * @param config
+   * @returns {ol.layer.Tile}
+   * @private
+   */
   _getXYZLayer (config) {
-    let tileUrl = config['tileUrl'];
+    let tileUrl = config['layerUrl'];
     let tileGrid = new ol.tilegrid.TileGrid({
       tileSize: this.tileSize,
-      origin: ol.extent.getTopLeft(this.projection.getExtent()),
+      origin: this.origin,
       extent: this.fullExtent,
       resolutions: this.resolutions
     });
@@ -179,6 +277,12 @@ class HMap {
     return baseLayer
   }
 
+  /**
+   * 获取标准WMTS图层
+   * @param config
+   * @returns {ol.layer.Tile}
+   * @private
+   */
   _getWMTSLayer (config) {
     let projection = ol.proj.get('EPSG:4326');
     let size = ol.extent.getWidth(projection.getExtent()) / 256;
@@ -240,16 +344,17 @@ class HMap {
    * @private
    */
   _addProjection (options) {
+    let projection = '';
     if (options['projection']) {
       if (options['projection'].indexOf('EPSG') > 0) {
-        options['projection'] = options['projection'];
+        projection = options['projection'];
       } else {
-        options['projection'] = 'EPSG: ' + options['projection'];
+        projection = 'EPSG:' + options['projection'];
       }
     } else {
-      options['projection'] = 'EPSG: 3857';
+      projection = 'EPSG:3857';
     }
-    return options['projection'];
+    return projection;
   }
 
   /**
@@ -259,10 +364,13 @@ class HMap {
    * @private
    */
   _addInteractions (interactions) {
-    return ol.interaction.defaults({
-      doubleClickZoom: (interactions['doubleClickZoom'] === true || interactions['doubleClickZoom'] === false) ? interactions['doubleClickZoom'] : true,
-      keyboard: (interactions['keyboard'] === true || interactions['keyboard'] === false) ? interactions['keyboard'] : false
-    })
+    let doubleClickZoom = (interactions['doubleClickZoom'] === true || interactions['doubleClickZoom'] === false) ? interactions['doubleClickZoom'] : true;
+    let keyboard = (interactions['keyboard'] === true || interactions['keyboard'] === false) ? interactions['keyboard'] : false
+    let _interaction = ol.interaction.defaults({
+      doubleClickZoom: doubleClickZoom,
+      keyboard: keyboard
+    });
+    return _interaction
   }
 
   /**
@@ -281,7 +389,9 @@ class HMap {
     if (controls['addLoading']) {
       _controls.push(new ol.control.Loading())
     }
-    return _controls
+    if (this.map && _controls && _controls.length > 0) {
+      this.map.addControl(_controls)
+    }
   }
 
   /**
