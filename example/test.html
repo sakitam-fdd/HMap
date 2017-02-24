@@ -7,6 +7,8 @@
 </head>
 <body>
 <div id="map"></div>
+<button id="change">图层切换</button>
+<button id="change_">图层切换</button>
 <script src="../dist/HMap.js"></script>
 <script type="text/ecmascript">
   //  import {} from '../dist/HMap'
@@ -143,6 +145,7 @@
         label: { //地图图层是否对应的有标注层
           layerName: 'vectorLabel',
           isDefault: true,
+          alias: 'vector',
           layerType: 'TileXYZ',
           layerUrl: 'http://10.254.123.75:8080/OneMapServer/rest/services/World2ChinaMapLabel/MapServer'
         }
@@ -157,6 +160,7 @@
           layerName: 'TDTLabel',
           layerType: 'TitleWMTS',
           layer: 'cia',
+          alias: 'earth',
           isDefault: false,
           layerUrl: 'http://t{0-6}.tianditu.cn/cia_c/wmts'
         }
@@ -171,13 +175,21 @@
           layerName: 'TDTLabel',
           layerType: 'TitleWMTS',
           layer: 'cia',
+          alias: 'panorama',
           isDefault: false,
           layerUrl: 'http://t{0-6}.tianditu.cn/cia_c/wmts'
         }
       }
     ]
   });
-  console.log(Maps)
+  let button = document.getElementById('change');
+  let button_ = document.getElementById('change_');
+  button.onclick = function () {
+    Maps.layerSwitcher.switchLayer('earth')
+  }
+  button_.onclick = function () {
+    Maps.layerSwitcher.switchLayer('vector')
+  }
 </script>
 </body>
 </html>

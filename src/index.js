@@ -5,6 +5,9 @@
 import * as constants from  './constants'
 import proj4 from '../node_modules/proj4'
 let ol = require('../node_modules/openlayers')
+// modules
+import Layer from './layer'
+import LayerSwitcher from './LayerSwitcher'
 class HMap {
   constructor () {
     /**
@@ -124,12 +127,29 @@ class HMap {
       loadTilesWhileInteracting: true,
       interactions: _interactions,
       layers: [new ol.layer.Group({
-        layers: _layers
+        layers: _layers,
+        isBaseLayer: true
       })],
       view: _view
     });
 
     this._addControls(options['controls']);
+
+    let timer = setInterval(() => {
+      if (this.map) {
+        this._addModule();
+        clearInterval(timer);
+      }
+    }, 100);
+  }
+
+  /**
+   * 拆分模块的添加
+   * @private
+   */
+  _addModule () {
+    this.layer = new Layer(this.map);
+    this.layerSwitcher = new LayerSwitcher(this.map);
   }
 
   /**
@@ -160,45 +180,6 @@ class HMap {
     labelLayers = this._getBaseLayerLabel(labelLayersConfig);
     _layers = layers.concat(labelLayers);
     return _layers;
-    // try {
-    //   let [ layers, labelLayers,  _layers ] = [ [], [], [] ];
-    //   if (layerConfig && Array.isArray(layerConfig) && layerConfig.length > 0) {
-    //     layerConfig.forEach(config => {
-    //       if (config['layerName'] && config['layerUrl'] && config['layerType']) {
-    //         let layer = null;
-    //         switch (config['layerType']) {
-    //           case 'TileXYZ':
-    //             layer = this._getXYZLayer(config);
-    //             break;
-    //           case 'TitleWMTS':
-    //             layer = this._getWMTSLayer(config);
-    //             break;
-    //         }
-    //         if (layer) layers.push(layer);
-    //         if (config['label'] && config['label']['layerName'] && config['label']['layerUrl'] && config['label']['layerType']) {
-    //           let labelLayer = null;
-    //           switch (config['label']['layerType']) {
-    //             case 'TileXYZ':
-    //               labelLayer = this._getXYZLayer(config['label']);
-    //               break;
-    //             case 'TitleWMTS':
-    //               labelLayer = this._getWMTSLayer(config['label']);
-    //               break;
-    //           }
-    //           if (labelLayer) labelLayers.push(labelLayer);
-    //         }
-    //       }
-    //     })
-    //   }
-    //   _layers = layers.concat(labelLayers);
-    //   return _layers;
-    // } catch (e) {
-    //   console.log(e)
-    // } finally { // 如果错误了，返回osm图层，避免地图容器空白
-    //   return [new ol.layer.Tile({
-    //     source: new ol.source.OSM()
-    //   })]
-    // }
   }
 
   /**
@@ -269,6 +250,7 @@ class HMap {
     });
     let baseLayer = new ol.layer.Tile({
       isBaseLayer: true,
+      alias: config['alias'] ? config['alias'] : '',
       isDefault: (config['isDefault'] === true) ? true : false,
       visible: (config['isDefault'] === true) ? true : false,
       layerName: config['layerName'] ? config.layerName : '',
@@ -294,6 +276,7 @@ class HMap {
     }
     let layer = new ol.layer.Tile({
       isBaseLayer: true,
+      alias: config['alias'] ? config['alias'] : '',
       isDefault: (config['isDefault'] === true) ? true : false,
       layerName: config['layerName'] ? config.layerName : '',
       visible: (config['isDefault'] === true) ? true : false,

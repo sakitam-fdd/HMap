@@ -2998,19 +2998,14 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _openlayers = __webpack_require__(12);
-
-var _openlayers2 = _interopRequireDefault(_openlayers);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ol = __webpack_require__(12);
 
 var Layer = function () {
   function Layer(map) {
     _classCallCheck(this, Layer);
 
-    console.log(this);
     this.map = map || null;
     if (!this.map) {
       throw new Error('缺少地图对象！');
@@ -3052,7 +3047,7 @@ var Layer = function () {
     value: function getLayerByFeatuer(feature) {
       var tragetLayer = null;
       if (this.map) {
-        if (feature instanceof _openlayers2.default.Feature) {
+        if (feature instanceof ol.Feature) {
           var layers = this.map.getLayers();
           layers.forEach(function (layer) {
             var source = layer.getSource();
@@ -3085,29 +3080,29 @@ var Layer = function () {
       try {
         if (this.map) {
           var vectorLayer = this.getLayerByLayerName(layerName);
-          if (!(vectorLayer instanceof _openlayers2.default.layer.Vector)) {
+          if (!(vectorLayer instanceof ol.layer.Vector)) {
             vectorLayer = null;
           }
           if (!vectorLayer) {
             if (params && params.create) {
-              vectorLayer = new _openlayers2.default.layer.Vector({
+              vectorLayer = new ol.layer.Vector({
                 layerName: layerName,
                 params: params,
                 layerType: 'vector',
-                source: new _openlayers2.default.source.Vector({
+                source: new ol.source.Vector({
                   wrapX: false
                 }),
-                style: new _openlayers2.default.style.Style({
-                  fill: new _openlayers2.default.style.Fill({
+                style: new ol.style.Style({
+                  fill: new ol.style.Fill({
                     color: 'rgba(67, 110, 238, 0.4)'
                   }),
-                  stroke: new _openlayers2.default.style.Stroke({
+                  stroke: new ol.style.Stroke({
                     color: '#4781d9',
                     width: 2
                   }),
-                  image: new _openlayers2.default.style.Circle({
+                  image: new ol.style.Circle({
                     radius: 7,
-                    fill: new _openlayers2.default.style.Fill({
+                    fill: new ol.style.Fill({
                       color: '#ffcc33'
                     })
                   })
@@ -3142,10 +3137,10 @@ var Layer = function () {
       if (this.map) {
         var serviceUrl = params['serviceUrl'];
         if (!serviceUrl) return null;
-        titleLayer = new _openlayers2.default.layer.Tile({
+        titleLayer = new ol.layer.Tile({
           layerName: layerName,
           layerType: 'title',
-          source: new _openlayers2.default.source.TileArcGISRest({
+          source: new ol.source.TileArcGISRest({
             url: serviceUrl,
             params: params,
             wrapX: false
@@ -3167,7 +3162,7 @@ var Layer = function () {
     value: function removeLayerByLayerName(layerName) {
       if (this.map) {
         var layer = this.getLayerByLayerName(layerName);
-        if (layer && layer instanceof _openlayers2.default.layer.Vector && layer.getSource() && layer.getSource().clear) {
+        if (layer && layer instanceof ol.layer.Vector && layer.getSource() && layer.getSource().clear) {
           layer.getSource().clear();
         }
       }
@@ -7137,6 +7132,14 @@ var _proj = __webpack_require__(29);
 
 var _proj2 = _interopRequireDefault(_proj);
 
+var _layer = __webpack_require__(31);
+
+var _layer2 = _interopRequireDefault(_layer);
+
+var _LayerSwitcher = __webpack_require__(78);
+
+var _LayerSwitcher2 = _interopRequireDefault(_LayerSwitcher);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -7146,6 +7149,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var ol = __webpack_require__(12);
+// modules
 
 var HMap = function () {
   function HMap() {
@@ -7227,6 +7231,8 @@ var HMap = function () {
   _createClass(HMap, [{
     key: 'initMap',
     value: function initMap(mapDiv, params) {
+      var _this = this;
+
       var options = params || {};
       /**
        * 投影
@@ -7272,12 +7278,32 @@ var HMap = function () {
         loadTilesWhileInteracting: true,
         interactions: _interactions,
         layers: [new ol.layer.Group({
-          layers: _layers
+          layers: _layers,
+          isBaseLayer: true
         })],
         view: _view
       });
 
       this._addControls(options['controls']);
+
+      var timer = setInterval(function () {
+        if (_this.map) {
+          _this._addModule();
+          clearInterval(timer);
+        }
+      }, 100);
+    }
+
+    /**
+     * 拆分模块的添加
+     * @private
+     */
+
+  }, {
+    key: '_addModule',
+    value: function _addModule() {
+      this.layer = new _layer2.default(this.map);
+      this.layerSwitcher = new _LayerSwitcher2.default(this.map);
     }
 
     /**
@@ -7288,7 +7314,7 @@ var HMap = function () {
   }, {
     key: '_getBaseLayerGroup',
     value: function _getBaseLayerGroup(layerConfig) {
-      var _this = this;
+      var _this2 = this;
 
       var layers = [],
           labelLayers = [],
@@ -7301,10 +7327,10 @@ var HMap = function () {
             var layer = null;
             switch (config['layerType']) {
               case 'TileXYZ':
-                layer = _this._getXYZLayer(config);
+                layer = _this2._getXYZLayer(config);
                 break;
               case 'TitleWMTS':
-                layer = _this._getWMTSLayer(config);
+                layer = _this2._getWMTSLayer(config);
                 break;
             }
             if (layer) layers.push(layer);
@@ -7317,45 +7343,6 @@ var HMap = function () {
       labelLayers = this._getBaseLayerLabel(labelLayersConfig);
       _layers = layers.concat(labelLayers);
       return _layers;
-      // try {
-      //   let [ layers, labelLayers,  _layers ] = [ [], [], [] ];
-      //   if (layerConfig && Array.isArray(layerConfig) && layerConfig.length > 0) {
-      //     layerConfig.forEach(config => {
-      //       if (config['layerName'] && config['layerUrl'] && config['layerType']) {
-      //         let layer = null;
-      //         switch (config['layerType']) {
-      //           case 'TileXYZ':
-      //             layer = this._getXYZLayer(config);
-      //             break;
-      //           case 'TitleWMTS':
-      //             layer = this._getWMTSLayer(config);
-      //             break;
-      //         }
-      //         if (layer) layers.push(layer);
-      //         if (config['label'] && config['label']['layerName'] && config['label']['layerUrl'] && config['label']['layerType']) {
-      //           let labelLayer = null;
-      //           switch (config['label']['layerType']) {
-      //             case 'TileXYZ':
-      //               labelLayer = this._getXYZLayer(config['label']);
-      //               break;
-      //             case 'TitleWMTS':
-      //               labelLayer = this._getWMTSLayer(config['label']);
-      //               break;
-      //           }
-      //           if (labelLayer) labelLayers.push(labelLayer);
-      //         }
-      //       }
-      //     })
-      //   }
-      //   _layers = layers.concat(labelLayers);
-      //   return _layers;
-      // } catch (e) {
-      //   console.log(e)
-      // } finally { // 如果错误了，返回osm图层，避免地图容器空白
-      //   return [new ol.layer.Tile({
-      //     source: new ol.source.OSM()
-      //   })]
-      // }
     }
 
     /**
@@ -7368,7 +7355,7 @@ var HMap = function () {
   }, {
     key: '_getBaseLayerLabel',
     value: function _getBaseLayerLabel(labelLayersConfig) {
-      var _this2 = this;
+      var _this3 = this;
 
       var labelLayers = [],
           _labelLayersLayerNames = new Set();
@@ -7385,10 +7372,10 @@ var HMap = function () {
               var labelLayer = null;
               switch (configM['layerType']) {
                 case 'TileXYZ':
-                  labelLayer = _this2._getXYZLayer(configM);
+                  labelLayer = _this3._getXYZLayer(configM);
                   break;
                 case 'TitleWMTS':
-                  labelLayer = _this2._getWMTSLayer(configM);
+                  labelLayer = _this3._getWMTSLayer(configM);
                   break;
               }
               if (labelLayer) labelLayers.push(labelLayer);
@@ -7433,6 +7420,7 @@ var HMap = function () {
       });
       var baseLayer = new ol.layer.Tile({
         isBaseLayer: true,
+        alias: config['alias'] ? config['alias'] : '',
         isDefault: config['isDefault'] === true ? true : false,
         visible: config['isDefault'] === true ? true : false,
         layerName: config['layerName'] ? config.layerName : '',
@@ -7461,6 +7449,7 @@ var HMap = function () {
       }
       var layer = new ol.layer.Tile({
         isBaseLayer: true,
+        alias: config['alias'] ? config['alias'] : '',
         isDefault: config['isDefault'] === true ? true : false,
         layerName: config['layerName'] ? config.layerName : '',
         visible: config['isDefault'] === true ? true : false,
@@ -7600,6 +7589,107 @@ var HMap = function () {
 }();
 
 exports.default = HMap;
+module.exports = exports['default'];
+
+/***/ }),
+/* 78 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ol = __webpack_require__(12);
+
+var LayerSwitcher = function () {
+  function LayerSwitcher(map) {
+    _classCallCheck(this, LayerSwitcher);
+
+    this.map = map || null;
+    if (!this.map) {
+      throw new Error('缺少地图对象！');
+    }
+  }
+
+  /**
+   * 获取当前底图（包含标注层）
+   * @private
+   */
+
+
+  _createClass(LayerSwitcher, [{
+    key: '_getBaseLayers',
+    value: function _getBaseLayers() {
+      var _this = this;
+
+      if (this.map) {
+        this.baseLayers = [];
+        this.map.getLayers().getArray().forEach(function (layer) {
+          if (layer && layer instanceof ol.layer.Group && layer.get('isBaseLayer')) {
+            layer.getLayers().getArray().forEach(function (_layer) {
+              if (_layer && _layer instanceof ol.layer.Tile && _layer.get('isBaseLayer')) {
+                _this.baseLayers.push(_layer);
+              }
+            });
+          }
+        });
+      }
+    }
+
+    /**
+     * 获取地图除标注层的layerNames
+     * @returns {Array|*}
+     */
+
+  }, {
+    key: 'getBaseLayerNames',
+    value: function getBaseLayerNames() {
+      this._getBaseLayers();
+      this.baseLayerNames = [];
+      if (this.baseLayers && Array.isArray(this.baseLayers) && this.baseLayers.length > 0) {
+        this.baseLayerNames = this.baseLayers.map(function (layer) {
+          var layerName = '';
+          if (layer.get('layerNames') && !layer.get('alias')) {
+            layerName = layer.get('layerNames');
+          }
+          return layerName;
+        });
+      }
+      return this.baseLayerNames;
+    }
+
+    /**
+     * 图层切换
+     * @param layerName
+     */
+
+  }, {
+    key: 'switchLayer',
+    value: function switchLayer(layerName) {
+      this._getBaseLayers();
+      this.baseLayers.forEach(function (layer) {
+        if (layer.get('layerName') === layerName || layer.get('alias') === layerName) {
+          layer.set('isDefault', true);
+          layer.setVisible(true);
+        } else {
+          layer.set('isDefault', false);
+          layer.setVisible(false);
+        }
+      });
+    }
+  }]);
+
+  return LayerSwitcher;
+}();
+
+exports.default = LayerSwitcher;
 module.exports = exports['default'];
 
 /***/ })

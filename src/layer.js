@@ -1,7 +1,6 @@
-import ol from '../node_modules/openlayers'
+let ol = require('../node_modules/openlayers')
 class Layer {
   constructor (map) {
-    console.log(this);
     this.map = map || null;
     if (!this.map) {
       throw new Error('缺少地图对象！')
