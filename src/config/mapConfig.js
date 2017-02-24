@@ -49,5 +49,4 @@ const mapConfig = {
     }
   ]
 };
-
 export default mapConfig

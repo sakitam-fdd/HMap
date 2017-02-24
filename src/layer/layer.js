@@ -1,4 +1,4 @@
-let ol = require('../node_modules/openlayers')
+import { ol } from '../constants'
 class Layer {
   constructor (map) {
     this.map = map || null;

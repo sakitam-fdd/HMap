@@ -2,8 +2,8 @@
  * Created by FDD on 2017/2/22.
  * @desc 要素相关处理
  */
-import ol from '../node_modules/openlayers'
 
+import { ol } from '../constants'
 class Feature {
   constructor (map) {
     this.map = map;

@@ -2,12 +2,7 @@
  * Created by FDD on 2017/2/21.
  * @desc 类库首文件
  */
-import * as constants from  './constants'
-import proj4 from '../node_modules/proj4'
-let ol = require('../node_modules/openlayers')
-// modules
-import Layer from './layer'
-import LayerSwitcher from './LayerSwitcher'
+import { Layer, LayerSwitcher, ol, proj4 } from  './constants'
 class HMap {
   constructor () {
     /**

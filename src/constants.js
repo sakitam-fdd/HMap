@@ -3,10 +3,17 @@
  * @desc 静态常量
  */
 
-import _Layer from './layer'
-import _Feature from './feature'
-import _MapConfig from './mapConfig'
+import _proj4 from '../node_modules/proj4'
 
+import _Layer from './layer/layer'
+import _Feature from './feature/feature'
+import _LayerSwitcher from './layer/LayerSwitcher'
+
+// lib
+export const ol = require('../node_modules/openlayers');
+export const proj4 = _proj4;
+
+// modules
 export const Layer = _Layer;
 export const Feature = _Feature;
-export const MapConfig = _MapConfig
+export const LayerSwitcher = _LayerSwitcher;
