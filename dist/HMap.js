@@ -1955,6 +1955,32 @@ var Feature = function () {
     value: function getFeatureById(id) {
       return this.map.getFeatureById(id);
     }
+
+    /**
+     * 从属性信息中获取空间信息
+     * @param point
+     * @returns {*}
+     * @private
+     */
+
+  }, {
+    key: '_getGeometryFromPoint',
+    value: function _getGeometryFromPoint(point) {
+      var geometry = null;
+      if (point instanceof _constants.ol.geom.Geometry) {
+        geometry = point;
+      } else if (Array.isArray(point.geometry)) {
+        geometry = new _constants.ol.geom.Point(point.geometry);
+      } else {
+        geometry = new _constants.ol.format.WKT().readGeometry(point.geometry);
+      }
+      return geometry;
+    }
+  }, {
+    key: 'addPoint',
+    value: function addPoint(point, params) {
+      if (!this.map) return;
+    }
   }]);
 
   return Feature;

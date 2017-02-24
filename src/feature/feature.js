@@ -20,6 +20,28 @@ class Feature {
   getFeatureById (id) {
     return this.map.getFeatureById(id)
   }
+
+  /**
+   * 从属性信息中获取空间信息
+   * @param point
+   * @returns {*}
+   * @private
+   */
+  _getGeometryFromPoint (point) {
+    let geometry = null;
+    if (point instanceof ol.geom.Geometry) {
+      geometry = point;
+    } else if (Array.isArray(point.geometry)) {
+      geometry = new ol.geom.Point(point.geometry);
+    } else {
+      geometry = new ol.format.WKT().readGeometry(point.geometry);
+    }
+    return geometry;
+  }
+
+  addPoint (point, params) {
+    if (!this.map) return;
+  }
 }
 
 export default Feature
