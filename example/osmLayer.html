@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="../node_modules/openlayers/dist/ol.css" type="text/css">
+</head>
+<body>
+<div id="map"></div>
+<script src="../dist/HMap.js"></script>
+<script type="text/ecmascript">
+  let Maps = new HMap();
+  Maps.initMap('map', {
+//    center: [109.15169990462329, 31.74108365827285],
+    center: [0, 0],
+    zoom: 5,
+    projection: '3857',
+    controls: {
+      addScaleLine: false,
+      addLoading: false
+    },
+    interactions: {
+      doubleClickZoom: true,
+      keyboard: false
+    },
+    baseLayers: [
+      {
+        layerName: 'openstreetmap',
+        isDefault: true,
+        layerType: 'OSM',
+        opaque: true, //图层是否不透明
+        layerUrl: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+      }
+    ]
+  });
+</script>
+</body>
+</html>

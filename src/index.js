@@ -169,6 +169,9 @@ class HMap {
             case 'TitleWMTS':
               layer = this._getWMTSLayer(config);
               break;
+            case 'OSM':
+              layer = this._getOSMLayer(config)
+              break;
           }
           if (layer) layers.push(layer);
           if (config['label']) {
@@ -260,6 +263,29 @@ class HMap {
   }
 
   /**
+   * 加载开源OSM图层
+   * @param config
+   * @returns {ol.layer.Tile}
+   * @private
+   */
+  _getOSMLayer (config) {
+    let baseLayer = new ol.layer.Tile({
+      isBaseLayer: true,
+      alias: config['alias'] ? config['alias'] : '',
+      isDefault: (config['isDefault'] === true) ? true : false,
+      visible: (config['isDefault'] === true) ? true : false,
+      layerName: config['layerName'] ? config.layerName : '',
+      source: new ol.source.OSM({
+        wrapX: false,
+        opaque: (config['opaque'] === true) ? true : false, // 图层是否不透明（主题相关）
+        url: config['layerUrl'] ? config['layerUrl'] : 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        crossOrigin: 'Anonymous'
+      })
+    });
+    return baseLayer;
+  }
+
+  /**
    * 获取标准WMTS图层
    * @param config
    * @returns {ol.layer.Tile}
@@ -288,7 +314,7 @@ class HMap {
         crossOrigin: 'Anonymous',
         projection: projection,
         tileGrid: new ol.tilegrid.WMTS({
-          origin: ol.extent.getTopLeft(this.projection.getExtent()),
+          origin: ol.extent.getTopLeft(projection.getExtent()),
           resolutions: resolutions,
           matrixIds: matrixIds
         }),
@@ -296,6 +322,8 @@ class HMap {
         wrapX: false
       })
     });
+    // console.log(ol.extent.getTopLeft(projection.getExtent()))
+    // console.log(projection.getExtent())
     return layer;
   }
 
