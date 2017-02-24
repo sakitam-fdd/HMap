@@ -27,6 +27,7 @@ class HMap {
     this._lastDrawInteractionGeometry = null;
     this.wgs84Sphere = new ol.Sphere(6378137);
     window.ObservableObj = new ol.Object();
+    proj4.defs('EPSG:4490', '+proj=longlat +ellps=GRS80 +no_defs');
     ol.proj.setProj4(proj4);
 
     /**
@@ -129,6 +130,10 @@ class HMap {
     });
 
     this._addControls(options['controls']);
+
+    this.map.on('click', event => {
+      console.log(event.coordinate)
+    })
 
     let timer = setInterval(() => {
       if (this.map) {
@@ -301,11 +306,9 @@ class HMap {
   _addView (options) {
     let view = new ol.View({
       center: ol.proj.fromLonLat(options['center'], this.projection),
-      zoom: options['zoom'] ? options.zoom : 0
+      zoom: options['zoom'] ? options.zoom : 0,
+      projection: this.projection
     });
-    if (this.projection) {
-      view.set('projection', this.projection);
-    }
     if (options['maxResolution']) {
       view.set('maxResolution', options['maxResolution'])
     }

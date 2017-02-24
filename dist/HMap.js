@@ -7206,6 +7206,7 @@ var HMap = function () {
     this._lastDrawInteractionGeometry = null;
     this.wgs84Sphere = new _constants.ol.Sphere(6378137);
     window.ObservableObj = new _constants.ol.Object();
+    _constants.proj4.defs('EPSG:4490', '+proj=longlat +ellps=GRS80 +no_defs');
     _constants.ol.proj.setProj4(_constants.proj4);
 
     /**
@@ -7314,6 +7315,10 @@ var HMap = function () {
       });
 
       this._addControls(options['controls']);
+
+      this.map.on('click', function (event) {
+        console.log(event.coordinate);
+      });
 
       var timer = setInterval(function () {
         if (_this.map) {
@@ -7511,11 +7516,9 @@ var HMap = function () {
     value: function _addView(options) {
       var view = new _constants.ol.View({
         center: _constants.ol.proj.fromLonLat(options['center'], this.projection),
-        zoom: options['zoom'] ? options.zoom : 0
+        zoom: options['zoom'] ? options.zoom : 0,
+        projection: this.projection
       });
-      if (this.projection) {
-        view.set('projection', this.projection);
-      }
       if (options['maxResolution']) {
         view.set('maxResolution', options['maxResolution']);
       }
