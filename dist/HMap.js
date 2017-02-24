@@ -141,7 +141,7 @@ module.exports = function(x) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.LayerSwitcher = exports.Feature = exports.Layer = exports.proj4 = exports.ol = undefined;
+exports.LayerSwitcher = exports.Feature = exports.Layer = exports.proj4 = exports.ol = exports.ee = exports.a = exports.PI = exports.x_PI = undefined;
 
 var _proj = __webpack_require__(48);
 
@@ -161,12 +161,17 @@ var _LayerSwitcher3 = _interopRequireDefault(_LayerSwitcher2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// lib
 /**
  * Created by FDD on 2017/2/22.
  * @desc 静态常量
  */
 
+var x_PI = exports.x_PI = 3.14159265358979324 * 3000.0 / 180.0;
+var PI = exports.PI = 3.1415926535897932384626; // PI
+var a = exports.a = 6378245.0; // 北京54坐标系长半轴a=6378245m
+var ee = exports.ee = 0.00669342162296594323;
+
+// lib
 var ol = exports.ol = __webpack_require__(31);
 var proj4 = exports.proj4 = _proj2.default;
 
