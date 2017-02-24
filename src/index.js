@@ -322,8 +322,6 @@ class HMap {
         wrapX: false
       })
     });
-    // console.log(ol.extent.getTopLeft(projection.getExtent()))
-    // console.log(projection.getExtent())
     return layer;
   }
 
