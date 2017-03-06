@@ -2,7 +2,7 @@
  * Created by FDD on 2017/2/21.
  * @desc 类库首文件
  */
-import { Layer, LayerSwitcher, ol, proj4 } from  './constants'
+import { Layer, LayerSwitcher, Feature, ol, proj4 } from  './constants'
 class HMap {
   constructor () {
     /**
@@ -150,6 +150,7 @@ class HMap {
   _addModule () {
     this.layer = new Layer(this.map);
     this.layerSwitcher = new LayerSwitcher(this.map);
+    this.feature = new Feature(this.map, this.layer);
   }
 
   /**

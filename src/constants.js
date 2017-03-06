@@ -14,6 +14,7 @@ import _ol from '../node_modules/openlayers'
 import _Layer from './layer/layer'
 import _Feature from './feature/feature'
 import _LayerSwitcher from './layer/LayerSwitcher'
+import * as _Style from './style/style'
 
 // lib
 // export const ol = require('../node_modules/openlayers');
@@ -24,3 +25,4 @@ export const proj4 = _proj4;
 export const Layer = _Layer;
 export const Feature = _Feature;
 export const LayerSwitcher = _LayerSwitcher;
+export const Style = _Style;
