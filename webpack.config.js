@@ -5,7 +5,7 @@ const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 const path = require('path');
 const env  = require('yargs').argv.env; // use --env with webpack 2
 
-let libraryName = 'HMap';
+let libraryName = 'MyClass';
 
 let plugins = [], outputFile;
 
@@ -17,7 +17,7 @@ if (env === 'build') {
 }
 
 const config = {
-  entry: __dirname + '/src/index.js',
+  entry: __dirname + '/lib/index.js',
   devtool: 'source-map',
   output: {
     path: __dirname + '/dist',
