@@ -16,7 +16,7 @@ class Layer {
     try {
       let targetLayer = null;
       if (this.map) {
-        let layers = this.map.getLayers();
+        let layers = this.map.getLayers().getArray();
         targetLayer = layers.filter(layer => {
           return layer.get('layerName') === layerName
         });
@@ -36,7 +36,7 @@ class Layer {
     let tragetLayer = null;
     if (this.map) {
       if (feature instanceof ol.Feature) {
-        let layers = this.map.getLayers();
+        let layers = this.map.getLayers().getArray();
         layers.forEach(layer => {
           let source = layer.getSource();
           if (source.getFeatures) {

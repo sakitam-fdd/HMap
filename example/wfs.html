@@ -1,0 +1,45 @@
+<html>
+
+<head>
+  <title>wfs demo</title>
+  <link rel="stylesheet" href="../node_modules/openlayers/dist/ol.css" type="text/css">
+  <script src="../node_modules/openlayers/dist/ol-debug.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+
+<div id="map" style="width:100%;height:100%;"></div>
+
+<script>
+  var vector = new ol.layer.Vector({
+    source: new ol.source.Vector({
+      format: new ol.format.GeoJSON(),
+      url: 'http://192.168.73.130:8080/geoserver/wfs?service=wfs&version=1.1.0&request=GetFeature&typeNames=jxRoad:jxRoad&outputFormat=application/json&srsname=EPSG:4326'
+    }),
+    style: function(feature, resolution) {
+      return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: 'blue',
+          width: 1
+        })
+      });
+    }
+  });
+
+  var map = new ol.Map({
+    layers: [new ol.layer.Tile({
+      source: new ol.source.OSM()
+    }), vector],
+    target: 'map',
+    view: new ol.View({
+      center: [109.15169990462329, 31.74108365827285],
+      maxZoom: 19,
+      zoom: 14,
+      projection: 'EPSG:4326'
+    })
+  });
+</script>
+
+</body>
+
+</html>

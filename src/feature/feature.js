@@ -153,6 +153,28 @@ class Feature {
   };
 
   /**
+   * 判断点是否在视图内，如果不在地图将自动平移
+   */
+  movePointToView (coordinate) {
+    if (this.map) {
+      let extent = this.getMapCurrentExtent();
+      if (!(ol.extent.containsXY(extent, coordinate[0], coordinate[1]))) {
+        this.map.getView().setCenter([coordinate[0], coordinate[1]]);
+      }
+    }
+  }
+
+  /**
+   * 获取当前地图的范围
+   * @returns {ol.Extent}
+   */
+  getMapCurrentExtent () {
+    if (this.map) {
+      return this.map.getView().calculateExtent(this.map.getSize());
+    }
+  };
+
+  /**
    * 添加单点
    * @param point
    * @param params
@@ -174,8 +196,15 @@ class Feature {
       throw new Error('传入的数据缺少id！')
     }
     if (params['zoomToExtent']) {
-      let extent = geometry.getExtent();
-      this.zoomToExtent(extent);
+      let coordinate = geometry.getCoordinates();
+      // extent = this.adjustExtent(extent);
+      this.movePointToView(coordinate);
+    }
+    if (params['layerName']) {
+      let layer = this.layer.creatVectorLayer(params['layerName'], {
+        create: true
+      });
+      layer.getSource().addFeature(feature);
     }
     return feature;
   }
@@ -236,6 +265,12 @@ class Feature {
     }
     if (params['zoomToExtent']) {
       this.zoomToExtent(extent, true);
+    }
+    if (params['layerName']) {
+      let layer = this.layer.creatVectorLayer(params['layerName'], {
+        create: true
+      });
+      layer.getSource().addFeature(linefeature);
     }
     return linefeature;
   }

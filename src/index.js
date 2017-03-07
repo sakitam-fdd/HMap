@@ -153,6 +153,11 @@ class HMap {
     this.feature = new Feature(this.map, this.layer);
   }
 
+  addPoint (point, params) {
+    let feature = new Feature(this.map, this.layer);
+    feature.addPoint(point, params)
+  }
+
   /**
    * 获取图层组
    * @returns {ol.layer.Group}

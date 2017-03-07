@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 77);
+/******/ 	return __webpack_require__(__webpack_require__.s = 78);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -86,7 +86,7 @@ var TWO_PI = Math.PI * 2;
 // have drifted from their original location along the 180th meridian (due to
 // floating point error) from changing their sign.
 var SPI = 3.14159265359;
-var sign = __webpack_require__(4);
+var sign = __webpack_require__(5);
 
 module.exports = function(x) {
   return (Math.abs(x) <= SPI) ? x : (x - (sign(x) * TWO_PI));
@@ -105,36 +105,6 @@ module.exports = function(eccent, sinphi, cosphi) {
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var HALF_PI = Math.PI/2;
-var sign = __webpack_require__(4);
-
-module.exports = function(x) {
-  return (Math.abs(x) < HALF_PI) ? x : (x - (sign(x) * Math.PI));
-};
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-module.exports = function(x) {
-  if (Math.abs(x) > 1) {
-    x = (x > 1) ? 1 : -1;
-  }
-  return Math.asin(x);
-};
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-module.exports = function(x) {
-  return x<0 ? -1 : 1;
-};
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
 
 
@@ -143,11 +113,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Style = exports.LayerSwitcher = exports.Feature = exports.Layer = exports.proj4 = exports.ol = exports.ee = exports.a = exports.PI = exports.x_PI = undefined;
 
-var _proj = __webpack_require__(48);
+var _proj = __webpack_require__(49);
 
 var _proj2 = _interopRequireDefault(_proj);
 
-var _openlayers = __webpack_require__(31);
+var _openlayers = __webpack_require__(32);
 
 var _openlayers2 = _interopRequireDefault(_openlayers);
 
@@ -163,7 +133,7 @@ var _LayerSwitcher2 = __webpack_require__(29);
 
 var _LayerSwitcher3 = _interopRequireDefault(_LayerSwitcher2);
 
-var _style = __webpack_require__(78);
+var _style = __webpack_require__(31);
 
 var _Style = _interopRequireWildcard(_style);
 
@@ -191,6 +161,36 @@ var Layer = exports.Layer = _layer2.default;
 var Feature = exports.Feature = _feature2.default;
 var LayerSwitcher = exports.LayerSwitcher = _LayerSwitcher3.default;
 var Style = exports.Style = _Style;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var HALF_PI = Math.PI/2;
+var sign = __webpack_require__(5);
+
+module.exports = function(x) {
+  return (Math.abs(x) < HALF_PI) ? x : (x - (sign(x) * Math.PI));
+};
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+module.exports = function(x) {
+  if (Math.abs(x) > 1) {
+    x = (x > 1) ? 1 : -1;
+  }
+  return Math.asin(x);
+};
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+module.exports = function(x) {
+  return x<0 ? -1 : 1;
+};
 
 /***/ }),
 /* 6 */
@@ -270,12 +270,12 @@ module.exports = function(eccent, phi, sinphi) {
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var parseCode = __webpack_require__(49);
+var parseCode = __webpack_require__(50);
 var extend = __webpack_require__(23);
-var projections = __webpack_require__(50);
-var deriveConstants = __webpack_require__(45);
-var Datum = __webpack_require__(37);
-var datum = __webpack_require__(42);
+var projections = __webpack_require__(51);
+var deriveConstants = __webpack_require__(46);
+var Datum = __webpack_require__(38);
+var datum = __webpack_require__(43);
 
 
 function Projection(srsCode,callback) {
@@ -1220,7 +1220,7 @@ module.exports = function (array){
 /* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var globals = __webpack_require__(46);
+var globals = __webpack_require__(47);
 var parseProj = __webpack_require__(24);
 var wkt = __webpack_require__(27);
 
@@ -1302,8 +1302,8 @@ module.exports = function(destination, source) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var D2R = 0.01745329251994329577;
-var PrimeMeridian = __webpack_require__(39);
-var units = __webpack_require__(40);
+var PrimeMeridian = __webpack_require__(40);
+var units = __webpack_require__(41);
 
 module.exports = function(defData) {
   var self = {};
@@ -1448,7 +1448,7 @@ var pj_inv_mlfn = __webpack_require__(20);
 var adjust_lon = __webpack_require__(0);
 var HALF_PI = Math.PI / 2;
 var EPSLN = 1.0e-10;
-var sign = __webpack_require__(4);
+var sign = __webpack_require__(5);
 
 exports.init = function() {
   this.x0 = this.x0 !== undefined ? this.x0 : 0;
@@ -1616,8 +1616,8 @@ var D2R = 0.01745329251994329577;
 var R2D = 57.29577951308232088;
 var PJD_3PARAM = 1;
 var PJD_7PARAM = 2;
-var datum_transform = __webpack_require__(44);
-var adjust_axis = __webpack_require__(33);
+var datum_transform = __webpack_require__(45);
+var adjust_axis = __webpack_require__(34);
 var proj = __webpack_require__(13);
 var toPoint = __webpack_require__(21);
 function checkNotWGS(source, dest) {
@@ -1941,7 +1941,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * @desc 要素相关处理
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
-var _constants = __webpack_require__(5);
+var _constants = __webpack_require__(2);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2115,6 +2115,34 @@ var Feature = function () {
       }
     }
   }, {
+    key: 'movePointToView',
+
+
+    /**
+     * 判断点是否在视图内，如果不在地图将自动平移
+     */
+    value: function movePointToView(coordinate) {
+      if (this.map) {
+        var extent = this.getMapCurrentExtent();
+        if (!_constants.ol.extent.containsXY(extent, coordinate[0], coordinate[1])) {
+          this.map.getView().setCenter([coordinate[0], coordinate[1]]);
+        }
+      }
+    }
+
+    /**
+     * 获取当前地图的范围
+     * @returns {ol.Extent}
+     */
+
+  }, {
+    key: 'getMapCurrentExtent',
+    value: function getMapCurrentExtent() {
+      if (this.map) {
+        return this.map.getView().calculateExtent(this.map.getSize());
+      }
+    }
+  }, {
     key: 'addPoint',
 
 
@@ -2140,8 +2168,15 @@ var Feature = function () {
         throw new Error('传入的数据缺少id！');
       }
       if (params['zoomToExtent']) {
-        var extent = geometry.getExtent();
-        this.zoomToExtent(extent);
+        var coordinate = geometry.getCoordinates();
+        // extent = this.adjustExtent(extent);
+        this.movePointToView(coordinate);
+      }
+      if (params['layerName']) {
+        var layer = this.layer.creatVectorLayer(params['layerName'], {
+          create: true
+        });
+        layer.getSource().addFeature(feature);
       }
       return feature;
     }
@@ -2210,6 +2245,12 @@ var Feature = function () {
       if (params['zoomToExtent']) {
         this.zoomToExtent(extent, true);
       }
+      if (params['layerName']) {
+        var layer = this.layer.creatVectorLayer(params['layerName'], {
+          create: true
+        });
+        layer.getSource().addFeature(linefeature);
+      }
       return linefeature;
     }
 
@@ -2259,7 +2300,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _constants = __webpack_require__(5);
+var _constants = __webpack_require__(2);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2360,7 +2401,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _constants = __webpack_require__(5);
+var _constants = __webpack_require__(2);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2387,7 +2428,7 @@ var Layer = function () {
       try {
         var targetLayer = null;
         if (this.map) {
-          var layers = this.map.getLayers();
+          var layers = this.map.getLayers().getArray();
           targetLayer = layers.filter(function (layer) {
             return layer.get('layerName') === layerName;
           });
@@ -2410,7 +2451,7 @@ var Layer = function () {
       var tragetLayer = null;
       if (this.map) {
         if (feature instanceof _constants.ol.Feature) {
-          var layers = this.map.getLayers();
+          var layers = this.map.getLayers().getArray();
           layers.forEach(function (layer) {
             var source = layer.getSource();
             if (source.getFeatures) {
@@ -2539,6 +2580,33 @@ module.exports = exports['default'];
 
 /***/ }),
 /* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getStyleByPoint = undefined;
+
+var _constants = __webpack_require__(2);
+
+var getStyleByPoint = exports.getStyleByPoint = function getStyleByPoint(attr) {
+  var style = new _constants.ol.style.Style({
+    image: new _constants.ol.style.Icon({
+      anchor: [0.5, 1],
+      anchorXUnits: 'fraction',
+      anchorYUnits: 'fraction',
+      opacity: 0.75,
+      src: 'data:image/png;base64,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0p8zAAA6GWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS41LWMwMTQgNzkuMTUxNDgxLCAyMDEzLzAzLzEzLTEyOjA5OjE1ICAgICAgICAiPgogICA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogICAgICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgICAgICAgICB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iCiAgICAgICAgICAgIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIgogICAgICAgICAgICB4bWxuczpzdEV2dD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlRXZlbnQjIgogICAgICAgICAgICB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iCiAgICAgICAgICAgIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIKICAgICAgICAgICAgeG1sbnM6dGlmZj0iaHR0cDovL25zLmFkb2JlLmNvbS90aWZmLzEuMC8iCiAgICAgICAgICAgIHhtbG5zOmV4aWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20vZXhpZi8xLjAvIj4KICAgICAgICAgPHhtcDpDcmVhdG9yVG9vbD5BZG9iZSBQaG90b3Nob3AgQ0MgKE1hY2ludG9zaCk8L3htcDpDcmVhdG9yVG9vbD4KICAgICAgICAgPHhtcDpDcmVhdGVEYXRlPjIwMTUtMTEtMDNUMTE6MjU6MzcrMDg6MDA8L3htcDpDcmVhdGVEYXRlPgogICAgICAgICA8eG1wOk1ldGFkYXRhRGF0ZT4yMDE1LTExLTAzVDExOjI1OjM3KzA4OjAwPC94bXA6TWV0YWRhdGFEYXRlPgogICAgICAgICA8eG1wOk1vZGlmeURhdGU+MjAxNS0xMS0wM1QxMToyNTozNyswODowMDwveG1wOk1vZGlmeURhdGU+CiAgICAgICAgIDx4bXBNTTpJbnN0YW5jZUlEPnhtcC5paWQ6NGIzODJiN2QtODBkNi00YmYzLTkwOTktOWYyMTZhOTAyNzUyPC94bXBNTTpJbnN0YW5jZUlEPgogICAgICAgICA8eG1wTU06RG9jdW1lbnRJRD54bXAuZGlkOmZiZDY2Yzk5LWM5ZjYtNDBkOS05NzY0LWJkYTA1YmI5NWFmZjwveG1wTU06RG9jdW1lbnRJRD4KICAgICAgICAgPHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD54bXAuZGlkOmZiZDY2Yzk5LWM5ZjYtNDBkOS05NzY0LWJkYTA1YmI5NWFmZjwveG1wTU06T3JpZ2luYWxEb2N1bWVudElEPgogICAgICAgICA8eG1wTU06SGlzdG9yeT4KICAgICAgICAgICAgPHJkZjpTZXE+CiAgICAgICAgICAgICAgIDxyZGY6bGkgcmRmOnBhcnNlVHlwZT0iUmVzb3VyY2UiPgogICAgICAgICAgICAgICAgICA8c3RFdnQ6YWN0aW9uPmNyZWF0ZWQ8L3N0RXZ0OmFjdGlvbj4KICAgICAgICAgICAgICAgICAgPHN0RXZ0Omluc3RhbmNlSUQ+eG1wLmlpZDpmYmQ2NmM5OS1jOWY2LTQwZDktOTc2NC1iZGEwNWJiOTVhZmY8L3N0RXZ0Omluc3RhbmNlSUQ+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDp3aGVuPjIwMTUtMTEtMDNUMTE6MjU6MzcrMDg6MDA8L3N0RXZ0OndoZW4+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDpzb2Z0d2FyZUFnZW50PkFkb2JlIFBob3Rvc2hvcCBDQyAoTWFjaW50b3NoKTwvc3RFdnQ6c29mdHdhcmVBZ2VudD4KICAgICAgICAgICAgICAgPC9yZGY6bGk+CiAgICAgICAgICAgICAgIDxyZGY6bGkgcmRmOnBhcnNlVHlwZT0iUmVzb3VyY2UiPgogICAgICAgICAgICAgICAgICA8c3RFdnQ6YWN0aW9uPnNhdmVkPC9zdEV2dDphY3Rpb24+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDppbnN0YW5jZUlEPnhtcC5paWQ6NGIzODJiN2QtODBkNi00YmYzLTkwOTktOWYyMTZhOTAyNzUyPC9zdEV2dDppbnN0YW5jZUlEPgogICAgICAgICAgICAgICAgICA8c3RFdnQ6d2hlbj4yMDE1LTExLTAzVDExOjI1OjM3KzA4OjAwPC9zdEV2dDp3aGVuPgogICAgICAgICAgICAgICAgICA8c3RFdnQ6c29mdHdhcmVBZ2VudD5BZG9iZSBQaG90b3Nob3AgQ0MgKE1hY2ludG9zaCk8L3N0RXZ0OnNvZnR3YXJlQWdlbnQ+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDpjaGFuZ2VkPi88L3N0RXZ0OmNoYW5nZWQ+CiAgICAgICAgICAgICAgIDwvcmRmOmxpPgogICAgICAgICAgICA8L3JkZjpTZXE+CiAgICAgICAgIDwveG1wTU06SGlzdG9yeT4KICAgICAgICAgPGRjOmZvcm1hdD5pbWFnZS9wbmc8L2RjOmZvcm1hdD4KICAgICAgICAgPHBob3Rvc2hvcDpDb2xvck1vZGU+MzwvcGhvdG9zaG9wOkNvbG9yTW9kZT4KICAgICAgICAgPHBob3Rvc2hvcDpJQ0NQcm9maWxlPnNSR0IgSUVDNjE5NjYtMi4xPC9waG90b3Nob3A6SUNDUHJvZmlsZT4KICAgICAgICAgPHRpZmY6T3JpZW50YXRpb24+MTwvdGlmZjpPcmllbnRhdGlvbj4KICAgICAgICAgPHRpZmY6WFJlc29sdXRpb24+NzIwMDAwLzEwMDAwPC90aWZmOlhSZXNvbHV0aW9uPgogICAgICAgICA8dGlmZjpZUmVzb2x1dGlvbj43MjAwMDAvMTAwMDA8L3RpZmY6WVJlc29sdXRpb24+CiAgICAgICAgIDx0aWZmOlJlc29sdXRpb25Vbml0PjI8L3RpZmY6UmVzb2x1dGlvblVuaXQ+CiAgICAgICAgIDxleGlmOkNvbG9yU3BhY2U+MTwvZXhpZjpDb2xvclNwYWNlPgogICAgICAgICA8ZXhpZjpQaXhlbFhEaW1lbnNpb24+MjA8L2V4aWY6UGl4ZWxYRGltZW5zaW9uPgogICAgICAgICA8ZXhpZjpQaXhlbFlEaW1lbnNpb24+MzA8L2V4aWY6UGl4ZWxZRGltZW5zaW9uPgogICAgICA8L3JkZjpEZXNjcmlwdGlvbj4KICAgPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAKPD94cGFja2V0IGVuZD0idyI/PjRRCfkAAAAgY0hSTQAAeiUAAICDAAD5/wAAgOkAAHUwAADqYAAAOpgAABdvkl/FRgAAAXBJREFUeNqs1TFrFEEUB/DfDWIlBISx9QMErO9bbBpJoQloISZVIjZWWomFYB3sRItTPJjKTxCYKoWkUZvYBY8IQkgRiGczyHG3FzZ386+W9/b9eFPsbE9LRk3/Bu6jwR3cKq1f+IqE9zHl0+nZ3hTUwyO8xE2X5zee4W1MeTwDjpr+dbzDuqtlgM2Y8vl/sGw2wF2L5RPWY8rjUApbS2DK7Bb0Rk1/BT+xYrn8we2AjQqYYmwErKmXtYDViuBqQKwIxoCLiuBFwHFF8DjgoCJ4EPCxIjgI+IyjCtgRhqF81NsVwO2Y8nmAmPIXvFgCe16MmftwF68ROkJ/8TSm/Kb1gi3ovXIvhg7YZkz5w2RxZqi8sNNhu51prHXDiU33yu+gLXsx5cdtjcuOtYsfLfXveDJvaC4YUz7Dg5bWw9Jz1Q3FlPcxnCgNS81CYMmrOc+LZ9T0D0dN/7DLu9c6mgnjmuB+19N0Bb/VBk+6gv8GAHn5ZfPg+9pTAAAAAElFTkSuQmCC'
+    })
+  });
+  return style;
+};
+
+/***/ }),
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var require;var require;var require;var require;var require;var require;var require;var require;// OpenLayers. See https://openlayers.org/
@@ -3549,10 +3617,10 @@ Nk.prototype.changed=Nk.prototype.s;Nk.prototype.dispatchEvent=Nk.prototype.b;Nk
 }));
 
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(76)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(77)))
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var mgrs = __webpack_require__(18);
@@ -3592,7 +3660,7 @@ module.exports = Point;
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports) {
 
 module.exports = function(crs, denorm, point) {
@@ -3650,7 +3718,7 @@ module.exports = function(crs, denorm, point) {
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(0);
@@ -3674,7 +3742,7 @@ module.exports = function(zone, lon) {
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports) {
 
 var HALF_PI = Math.PI/2;
@@ -3711,7 +3779,7 @@ module.exports = function(eccent, q) {
 };
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports) {
 
 module.exports = function(esinp, exp) {
@@ -3719,7 +3787,7 @@ module.exports = function(esinp, exp) {
 };
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports) {
 
 exports.wgs84 = {
@@ -3804,7 +3872,7 @@ exports.rnb72 = {
 };
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports) {
 
 exports.MERIT = {
@@ -4024,7 +4092,7 @@ exports.sphere = {
 };
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports) {
 
 exports.greenwich = 0.0; //"0dE",
@@ -4042,7 +4110,7 @@ exports.athens = 23.7163375; //"23d42'58.815\"E",
 exports.oslo = 10.722916666667; //"10d43'22.5\"E"
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports) {
 
 exports.ft = {to_meter: 0.3048};
@@ -4050,7 +4118,7 @@ exports['us-ft'] = {to_meter: 1200 / 3937};
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var proj = __webpack_require__(13);
@@ -4119,7 +4187,7 @@ function proj4(fromProj, toProj, coord) {
 module.exports = proj4;
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports) {
 
 var PJD_3PARAM = 1;
@@ -4163,7 +4231,7 @@ module.exports = datum;
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4417,13 +4485,13 @@ exports.geocentricFromWgs84 = function(p, datum_type, datum_params) {
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var PJD_3PARAM = 1;
 var PJD_7PARAM = 2;
 var PJD_NODATUM = 5; // WGS84 or equivalent
-var datum = __webpack_require__(43);
+var datum = __webpack_require__(44);
 function checkParams(type) {
   return (type === PJD_3PARAM || type === PJD_7PARAM);
 }
@@ -4462,7 +4530,7 @@ module.exports = function(source, dest, point) {
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // ellipoid pj_set_ell.c
@@ -4472,7 +4540,7 @@ var RA4 = 0.04722222222222222222;
 /* 17/360 */
 var RA6 = 0.02215608465608465608;
 var EPSLN = 1.0e-10;
-var Ellipsoid = __webpack_require__(38);
+var Ellipsoid = __webpack_require__(39);
 
 exports.eccentricity = function(a, b, rf, R_A) {
   var a2 = a * a; // used in geocentric
@@ -4521,7 +4589,7 @@ exports.sphere = function (a, b, rf, ellps, sphere) {
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports) {
 
 module.exports = function(defs) {
@@ -4538,32 +4606,32 @@ module.exports = function(defs) {
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var projs = [
   __webpack_require__(25),
+  __webpack_require__(74),
   __webpack_require__(73),
   __webpack_require__(72),
   __webpack_require__(71),
-  __webpack_require__(70),
-  __webpack_require__(67),
-  __webpack_require__(61),
-  __webpack_require__(59),
-  __webpack_require__(53),
-  __webpack_require__(60),
-  __webpack_require__(51),
-  __webpack_require__(58),
-  __webpack_require__(54),
-  __webpack_require__(55),
   __webpack_require__(68),
-  __webpack_require__(66),
-  __webpack_require__(64),
-  __webpack_require__(69),
-  __webpack_require__(65),
+  __webpack_require__(62),
+  __webpack_require__(60),
+  __webpack_require__(54),
+  __webpack_require__(61),
+  __webpack_require__(52),
+  __webpack_require__(59),
+  __webpack_require__(55),
   __webpack_require__(56),
-  __webpack_require__(74),
-  __webpack_require__(52)
+  __webpack_require__(69),
+  __webpack_require__(67),
+  __webpack_require__(65),
+  __webpack_require__(70),
+  __webpack_require__(66),
+  __webpack_require__(57),
+  __webpack_require__(75),
+  __webpack_require__(53)
 ];
 module.exports = function(proj4){
   projs.forEach(function(proj){
@@ -4572,25 +4640,25 @@ module.exports = function(proj4){
 };
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var proj4 = __webpack_require__(41);
+var proj4 = __webpack_require__(42);
 proj4.defaultDatum = 'WGS84'; //default datum
 proj4.Proj = __webpack_require__(13);
 proj4.WGS84 = new proj4.Proj('WGS84');
-proj4.Point = __webpack_require__(32);
+proj4.Point = __webpack_require__(33);
 proj4.toPoint = __webpack_require__(21);
 proj4.defs = __webpack_require__(22);
 proj4.transform = __webpack_require__(26);
 proj4.mgrs = __webpack_require__(18);
-proj4.version = __webpack_require__(75);
-__webpack_require__(47)(proj4);
+proj4.version = __webpack_require__(76);
+__webpack_require__(48)(proj4);
 module.exports = proj4;
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var defs = __webpack_require__(22);
@@ -4633,12 +4701,12 @@ module.exports = parse;
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var projs = [
-  __webpack_require__(63),
-  __webpack_require__(62)
+  __webpack_require__(64),
+  __webpack_require__(63)
 ];
 var names = {};
 var projStore = [];
@@ -4673,14 +4741,14 @@ exports.start = function() {
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var EPSLN = 1.0e-10;
 var msfnz = __webpack_require__(1);
 var qsfnz = __webpack_require__(17);
 var adjust_lon = __webpack_require__(0);
-var asinz = __webpack_require__(3);
+var asinz = __webpack_require__(4);
 exports.init = function() {
 
   if (Math.abs(this.lat1 + this.lat2) < EPSLN) {
@@ -4800,7 +4868,7 @@ exports.names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(0);
@@ -4812,7 +4880,7 @@ var e1fn = __webpack_require__(7);
 var e2fn = __webpack_require__(8);
 var e3fn = __webpack_require__(9);
 var gN = __webpack_require__(14);
-var asinz = __webpack_require__(3);
+var asinz = __webpack_require__(4);
 var imlfn = __webpack_require__(15);
 exports.init = function() {
   this.sin_p12 = Math.sin(this.lat0);
@@ -5003,7 +5071,7 @@ exports.names = ["Azimuthal_Equidistant", "aeqd"];
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var mlfn = __webpack_require__(10);
@@ -5013,7 +5081,7 @@ var e2fn = __webpack_require__(8);
 var e3fn = __webpack_require__(9);
 var gN = __webpack_require__(14);
 var adjust_lon = __webpack_require__(0);
-var adjust_lat = __webpack_require__(2);
+var adjust_lat = __webpack_require__(3);
 var imlfn = __webpack_require__(15);
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
@@ -5111,13 +5179,13 @@ exports.inverse = function(p) {
 exports.names = ["Cassini", "Cassini_Soldner", "cass"];
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(0);
 var qsfnz = __webpack_require__(17);
 var msfnz = __webpack_require__(1);
-var iqsfnz = __webpack_require__(35);
+var iqsfnz = __webpack_require__(36);
 /*
   reference:  
     "Cartographic Projection Procedures for the UNIX Environment-
@@ -5180,11 +5248,11 @@ exports.names = ["cea"];
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(0);
-var adjust_lat = __webpack_require__(2);
+var adjust_lat = __webpack_require__(3);
 exports.init = function() {
 
   this.x0 = this.x0 || 0;
@@ -5227,7 +5295,7 @@ exports.names = ["Equirectangular", "Equidistant_Cylindrical", "eqc"];
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var e0fn = __webpack_require__(6);
@@ -5237,7 +5305,7 @@ var e3fn = __webpack_require__(9);
 var msfnz = __webpack_require__(1);
 var mlfn = __webpack_require__(10);
 var adjust_lon = __webpack_require__(0);
-var adjust_lat = __webpack_require__(2);
+var adjust_lat = __webpack_require__(3);
 var imlfn = __webpack_require__(15);
 var EPSLN = 1.0e-10;
 exports.init = function() {
@@ -5343,11 +5411,11 @@ exports.names = ["Equidistant_Conic", "eqdc"];
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var FORTPI = Math.PI/4;
-var srat = __webpack_require__(36);
+var srat = __webpack_require__(37);
 var HALF_PI = Math.PI/2;
 var MAX_ITER = 20;
 exports.init = function() {
@@ -5394,12 +5462,12 @@ exports.names = ["gauss"];
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(0);
 var EPSLN = 1.0e-10;
-var asinz = __webpack_require__(3);
+var asinz = __webpack_require__(4);
 
 /*
   reference:
@@ -5499,7 +5567,7 @@ exports.names = ["gnom"];
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(0);
@@ -5603,7 +5671,7 @@ exports.names = ["Krovak", "krovak"];
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var HALF_PI = Math.PI/2;
@@ -5897,14 +5965,14 @@ exports.names = ["Lambert Azimuthal Equal Area", "Lambert_Azimuthal_Equal_Area",
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var EPSLN = 1.0e-10;
 var msfnz = __webpack_require__(1);
 var tsfnz = __webpack_require__(12);
 var HALF_PI = Math.PI/2;
-var sign = __webpack_require__(4);
+var sign = __webpack_require__(5);
 var adjust_lon = __webpack_require__(0);
 var phi2z = __webpack_require__(11);
 exports.init = function() {
@@ -6038,7 +6106,7 @@ exports.names = ["Lambert Tangential Conformal Conic Projection", "Lambert_Confo
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports) {
 
 exports.init = function() {
@@ -6054,7 +6122,7 @@ exports.names = ["longlat", "identity"];
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var msfnz = __webpack_require__(1);
@@ -6157,7 +6225,7 @@ exports.names = ["Mercator", "Popular Visualisation Pseudo Mercator", "Mercator_
 
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(0);
@@ -6208,7 +6276,7 @@ exports.names = ["Miller_Cylindrical", "mill"];
 
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(0);
@@ -6291,7 +6359,7 @@ exports.names = ["Mollweide", "moll"];
 
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports) {
 
 var SEC_TO_RAD = 4.84813681109535993589914102357e-6;
@@ -6515,7 +6583,7 @@ exports.inverse = function(p) {
 exports.names = ["New_Zealand_Map_Grid", "nzmg"];
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var tsfnz = __webpack_require__(12);
@@ -6688,7 +6756,7 @@ exports.inverse = function(p) {
 exports.names = ["Hotine_Oblique_Mercator", "Hotine Oblique Mercator", "Hotine_Oblique_Mercator_Azimuth_Natural_Origin", "Hotine_Oblique_Mercator_Azimuth_Center", "omerc"];
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var e0fn = __webpack_require__(6);
@@ -6696,7 +6764,7 @@ var e1fn = __webpack_require__(7);
 var e2fn = __webpack_require__(8);
 var e3fn = __webpack_require__(9);
 var adjust_lon = __webpack_require__(0);
-var adjust_lat = __webpack_require__(2);
+var adjust_lat = __webpack_require__(3);
 var mlfn = __webpack_require__(10);
 var EPSLN = 1.0e-10;
 var gN = __webpack_require__(14);
@@ -6821,18 +6889,18 @@ exports.inverse = function(p) {
 exports.names = ["Polyconic", "poly"];
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(0);
-var adjust_lat = __webpack_require__(2);
+var adjust_lat = __webpack_require__(3);
 var pj_enfn = __webpack_require__(19);
 var MAX_ITER = 20;
 var pj_mlfn = __webpack_require__(16);
 var pj_inv_mlfn = __webpack_require__(20);
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
-var asinz = __webpack_require__(3);
+var asinz = __webpack_require__(4);
 exports.init = function() {
   /* Place parameters in static storage for common use
     -------------------------------------------------*/
@@ -6932,7 +7000,7 @@ exports.inverse = function(p) {
 exports.names = ["Sinusoidal", "sinu"];
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports) {
 
 /*
@@ -7018,12 +7086,12 @@ exports.names = ["somerc"];
 
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
-var sign = __webpack_require__(4);
+var sign = __webpack_require__(5);
 var msfnz = __webpack_require__(1);
 var tsfnz = __webpack_require__(12);
 var phi2z = __webpack_require__(11);
@@ -7190,10 +7258,10 @@ exports.names = ["stere", "Stereographic_South_Pole", "Polar Stereographic (vari
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var gauss = __webpack_require__(57);
+var gauss = __webpack_require__(58);
 var adjust_lon = __webpack_require__(0);
 exports.init = function() {
   gauss.init.apply(this);
@@ -7253,10 +7321,10 @@ exports.names = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_Ste
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var adjust_zone = __webpack_require__(34);
+var adjust_zone = __webpack_require__(35);
 var tmerc = __webpack_require__(25);
 
 exports.dependsOn = 'tmerc';
@@ -7282,13 +7350,13 @@ exports.names = ["Universal Transverse Mercator System", "utm"];
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var adjust_lon = __webpack_require__(0);
 var HALF_PI = Math.PI/2;
 var EPSLN = 1.0e-10;
-var asinz = __webpack_require__(3);
+var asinz = __webpack_require__(4);
 /* Initialize the Van Der Grinten projection
   ----------------------------------------*/
 exports.init = function() {
@@ -7407,14 +7475,14 @@ exports.inverse = function(p) {
 exports.names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports) {
 
 module.exports = '2.3.17';
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports) {
 
 var g;
@@ -7441,7 +7509,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7457,7 +7525,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
 
-var _constants = __webpack_require__(5);
+var _constants = __webpack_require__(2);
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -7622,6 +7690,12 @@ var HMap = function () {
       this.layer = new _constants.Layer(this.map);
       this.layerSwitcher = new _constants.LayerSwitcher(this.map);
       this.feature = new _constants.Feature(this.map, this.layer);
+    }
+  }, {
+    key: 'addPoint',
+    value: function addPoint(point, params) {
+      var feature = new _constants.Feature(this.map, this.layer);
+      feature.addPoint(point, params);
     }
 
     /**
@@ -7935,33 +8009,6 @@ var HMap = function () {
 
 exports.default = HMap;
 module.exports = exports['default'];
-
-/***/ }),
-/* 78 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.getStyleByPoint = undefined;
-
-var _constants = __webpack_require__(5);
-
-var getStyleByPoint = exports.getStyleByPoint = function getStyleByPoint(attr) {
-  var style = new _constants.ol.style.Style({
-    image: new _constants.ol.style.Icon({
-      anchor: [0.5, -1],
-      anchorXUnits: 'fraction',
-      anchorYUnits: 'fraction',
-      opacity: 0.75,
-      src: ''
-    })
-  });
-  return style;
-};
 
 /***/ })
 /******/ ]);
