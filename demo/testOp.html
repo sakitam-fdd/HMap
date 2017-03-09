@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
+  <link rel="stylesheet" href="../node_modules/openlayers/dist/ol.css" type="text/css">
 </head>
 <body>
+<div id="map"></div>
 <script src="../dist/HMap.js"></script>
 <script type="text/javascript">
   var Maps = new HMap.Map();
-  Maps.initMap('div');
+  Maps.initMap('map', {});
   console.log(Maps);
   var point = Maps.addPoint('point');
   console.log(point);
