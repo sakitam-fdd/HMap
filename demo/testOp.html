@@ -7,9 +7,15 @@
 <body>
 <script src="../dist/HMap.js"></script>
 <script type="text/javascript">
-  var Maps = new HMap.Map()
-  console.log(Maps)
-  console.log(HMap);
+  var Maps = new HMap.Map();
+  Maps.initMap('div');
+  console.log(Maps);
+  var point = Maps.addPoint('point');
+  console.log(point);
+
+  var feature = new HMap.Feature(Maps.map);
+  var map = feature.getMap();
+  console.log(map)
 </script>
 </body>
 </html>
