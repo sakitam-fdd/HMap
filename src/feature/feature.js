@@ -2,6 +2,7 @@
  * Created by FDD on 2017/2/22.
  * @desc 要素相关处理
  */
+import { ol } from '../constants'
 import mix from '../utils/mixin'
 import Style from '../style/Style'
 import Layer from '../layer/Layer'
@@ -296,10 +297,6 @@ class Feature extends mix(Style, Layer) {
         this._getExtent(MultiLine);
       }
     }
-  }
-
-  getMap () {
-    return this.map
   }
 }
 

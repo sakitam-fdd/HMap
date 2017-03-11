@@ -1,7 +1,7 @@
 {
   "name": "HMap",
   "version": "1.0.0",
-  "private": true,
+  "private": false,
   "description": "HDSXTECH WEBGIS API",
   "keywords": [
     "webgis",
@@ -51,5 +51,6 @@
     "webpack-dev-middleware": "^1.8.3",
     "webpack-hot-middleware": "^2.12.2",
     "webpack-merge": "^0.14.1"
-  }
+  },
+  "license": "MIT"
 }
