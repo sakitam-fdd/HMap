@@ -1,4 +1,4 @@
-import { ol, proj4 } from '../constants'
+import { ol, proj4, config } from '../constants'
 class Controls {
   _addControls () {
     return this.getDefaultControls()

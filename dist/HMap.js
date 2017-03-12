@@ -102,7 +102,7 @@ module.exports = function(x) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.proj4 = exports.ol = exports.ee = exports.a = exports.PI = exports.x_PI = undefined;
+exports.config = exports.proj4 = exports.ol = exports.ee = exports.a = exports.PI = exports.x_PI = undefined;
 
 var _proj = __webpack_require__(58);
 
@@ -111,6 +111,10 @@ var _proj2 = _interopRequireDefault(_proj);
 var _openlayers = __webpack_require__(41);
 
 var _openlayers2 = _interopRequireDefault(_openlayers);
+
+var _config2 = __webpack_require__(89);
+
+var _config3 = _interopRequireDefault(_config2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -123,12 +127,12 @@ var x_PI = exports.x_PI = 3.14159265358979324 * 3000.0 / 180.0;
 var PI = exports.PI = 3.1415926535897932384626; // PI
 var a = exports.a = 6378245.0; // 北京54坐标系长半轴a=6378245m
 var ee = exports.ee = 0.00669342162296594323;
-
 // import _olx from '../node_modules/openlayers/externs/olx'
 
 var ol = exports.ol = _openlayers2.default;
 var proj4 = exports.proj4 = _proj2.default;
 // export const olx = _olx;
+var config = exports.config = _config3.default;
 
 /***/ }),
 /* 2 */
@@ -2654,66 +2658,7 @@ module.exports = function(wkt, self) {
 
 
 /***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var mapConfig = {
-  center: [109.15169990462329, 31.74108365827285],
-  resolution: 0.05406145033589252,
-  zoom: 5,
-  projection: 'EPSG:102100',
-  overViewMapVisible: false,
-  scaleLineVisible: true,
-  baseLayers: [{
-    layerName: 'vector',
-    isDefault: true,
-    layerType: 'TileXYZ',
-    opaque: true, //图层是否不透明
-    layerUrl: 'http://10.254.123.75:8080/OneMapServer/rest/services/World2ChinaMapBG/MapServer',
-    label: { //地图图层是否对应的有标注层
-      layerName: 'vectorLabel',
-      isDefault: true,
-      layerType: 'TileXYZ',
-      layerUrl: 'http://10.254.123.75:8080/OneMapServer/rest/services/World2ChinaMapLabel/MapServer'
-    }
-  }, {
-    layerName: 'earth',
-    layerType: 'TitleWMTS',
-    layer: 'img',
-    isDefault: false,
-    layerUrl: 'http://t{0-6}.tianditu.cn/img_c/wmts',
-    label: {
-      layerName: 'TDTLabel',
-      layerType: 'TitleWMTS',
-      layer: 'cia',
-      isDefault: false,
-      layerUrl: 'http://t{0-6}.tianditu.cn/cia_c/wmts'
-    }
-  }, {
-    layerName: 'panorama',
-    layerType: 'TitleWMTS',
-    layer: 'ter',
-    isDefault: false,
-    layerUrl: 'http://t{0-6}.tianditu.com/ter_c/wmts',
-    label: {
-      layerName: 'TDTLabel',
-      layerType: 'TitleWMTS',
-      layer: 'cia',
-      isDefault: false,
-      layerUrl: 'http://t{0-6}.tianditu.cn/cia_c/wmts'
-    }
-  }]
-};
-exports.default = mapConfig;
-module.exports = exports['default'];
-
-/***/ }),
+/* 32 */,
 /* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3362,7 +3307,8 @@ var View = function () {
 
   _createClass(View, [{
     key: '_addView',
-    value: function _addView() {
+    value: function _addView(params) {
+      var option = params || {};
       return new _constants.ol.View({
         center: [0, 0],
         zoom: 2
@@ -8310,6 +8256,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _constants = __webpack_require__(1);
+
 var _Map = __webpack_require__(33);
 
 var _Map2 = _interopRequireDefault(_Map);
@@ -8326,20 +8274,18 @@ var _CoordsTransform = __webpack_require__(34);
 
 var _CoordsTransform2 = _interopRequireDefault(_CoordsTransform);
 
-var _mapConfig = __webpack_require__(32);
-
-var _mapConfig2 = _interopRequireDefault(_mapConfig);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var HMap = {};
 HMap.version = __webpack_require__(35).version;
 
+
+HMap.ol = _constants.ol;
+HMap.proj4 = _constants.proj4;
 HMap.Map = _Map2.default;
 HMap.Layer = _Layer2.default;
 HMap.Feature = _feature2.default;
 HMap.CoordsTransform = _CoordsTransform2.default;
-HMap.config = _mapConfig2.default;
 
 /**
  * Inherit the prototype methods from one constructor into another.
@@ -8376,6 +8322,57 @@ HMap.inherits = function (childCtor, parentCtor) {
 HMap.nullFunction = function () {};
 
 exports.default = HMap;
+module.exports = exports['default'];
+
+/***/ }),
+/* 88 */,
+/* 89 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var config = {
+  interactions: {
+    altShiftDragRotate: true,
+    doubleClickZoom: true,
+    keyboard: true,
+    mouseWheelZoom: true,
+    shiftDragZoom: true,
+    dragPan: true,
+    pinchRotate: true,
+    pinchZoom: true,
+    zoomDelta: 5, // 缩放增量（默认一级）
+    zoomDuration: 5 // 缩放持续时间
+  },
+  controls: {
+    attribution: true,
+    rotate: true,
+    zoom: true,
+    overViewMapVisible: false,
+    scaleLineVisible: true
+  },
+  view: {
+    center: [0, 0],
+    constrainRotation: false, // 旋转角度约束
+    enableRotation: true, // 是否允许旋转
+    extent: [],
+    // maxResolution: 0, // 非必须参数
+    // minResolution: 0,
+    // maxZoom: 19,
+    // minZoom: 0,
+    projection: 'EPSG:3857',
+    resolutions: [],
+    rotation: 0,
+    zoom: 0, // resolution
+    zoomFactor: 2 // 用于约束分变率的缩放因子（高分辨率设备需要注意）
+  }
+};
+
+exports.default = config;
 module.exports = exports['default'];
 
 /***/ })

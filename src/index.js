@@ -1,15 +1,17 @@
 const HMap = {};
 HMap.version = require('../package.json').version;
+import { ol, proj4 } from './constants'
 import Map from './map/Map'
 import Layer from './layer/Layer'
 import Feature from './feature/feature'
 import CoordsTransform from './utils/CoordsTransform'
-import config from './config/mapConfig'
+
+HMap.ol = ol;
+HMap.proj4 = proj4;
 HMap.Map = Map;
 HMap.Layer = Layer;
 HMap.Feature = Feature;
 HMap.CoordsTransform = CoordsTransform;
-HMap.config = config;
 
 /**
  * Inherit the prototype methods from one constructor into another.

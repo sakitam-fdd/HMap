@@ -14,7 +14,24 @@ const config = {
   controls: {
     attribution: true,
     rotate: true,
-    zoom: true
+    zoom: true,
+    overViewMapVisible: false,
+    scaleLineVisible: true
+  },
+  view: {
+    center: [0, 0],
+    constrainRotation: false, // 旋转角度约束
+    enableRotation: true, // 是否允许旋转
+    extent: [],
+    // maxResolution: 0, // 非必须参数
+    // minResolution: 0,
+    // maxZoom: 19,
+    // minZoom: 0,
+    projection: 'EPSG:3857',
+    resolutions: [],
+    rotation: 0,
+    zoom: 0, // resolution
+    zoomFactor: 2 // 用于约束分变率的缩放因子（高分辨率设备需要注意）
   }
 };
 

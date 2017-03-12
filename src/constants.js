@@ -12,6 +12,9 @@ import _proj4 from '../node_modules/proj4'
 import _ol from '../node_modules/openlayers'
 // import _olx from '../node_modules/openlayers/externs/olx'
 
+import _config from './config/config'
+
 export const ol = _ol;
 export const proj4 = _proj4;
 // export const olx = _olx;
+export const config = _config
