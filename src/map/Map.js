@@ -9,6 +9,10 @@ import View from './View'
 import Layer from '../layer/Layer'
 import Feature from '../feature/feature'
 
+const shapeType = {
+  views: Symbol.for('views')
+};
+
 class Map extends mix(BaseLayer, Controls, Interactions, View, Layer, Feature) {
   constructor () {
     super();
@@ -108,15 +112,22 @@ class Map extends mix(BaseLayer, Controls, Interactions, View, Layer, Feature) {
       target: mapDiv,
       loadTilesWhileAnimating: true,
       loadTilesWhileInteracting: true,
+      logo: this._addCopyRight(),
       layers: [new ol.layer.Tile({
         source: new ol.source.OSM()
       })],
-      view: this.getView()
+      view: this._addView(),
+      interactions: this._addInteractions(),
+      controls: this._addControls()
     });
 
     this.map.on('click', event => {
       console.log(event.coordinate)
     })
+  }
+
+  _addCopyRight () {
+    return true
   }
 
   getMap () {

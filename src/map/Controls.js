@@ -1,7 +1,15 @@
 import { ol, proj4 } from '../constants'
 class Controls {
-  getControls () {
-    return ''
+  _addControls () {
+    return this.getDefaultControls()
+  }
+
+  getDefaultControls () {
+    return new ol.control.defaults({
+      attribution: true,
+      rotate: true,
+      zoom: true
+    })
   }
 }
 

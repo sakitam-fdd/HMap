@@ -124,8 +124,11 @@ var PI = exports.PI = 3.1415926535897932384626; // PI
 var a = exports.a = 6378245.0; // 北京54坐标系长半轴a=6378245m
 var ee = exports.ee = 0.00669342162296594323;
 
+// import _olx from '../node_modules/openlayers/externs/olx'
+
 var ol = exports.ol = _openlayers2.default;
 var proj4 = exports.proj4 = _proj2.default;
+// export const olx = _olx;
 
 /***/ }),
 /* 2 */
@@ -2761,6 +2764,10 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var shapeType = {
+  views: Symbol.for('views')
+};
+
 var Map = function (_mix) {
   _inherits(Map, _mix);
 
@@ -2870,15 +2877,23 @@ var Map = function (_mix) {
         target: mapDiv,
         loadTilesWhileAnimating: true,
         loadTilesWhileInteracting: true,
+        logo: this._addCopyRight(),
         layers: [new _constants.ol.layer.Tile({
           source: new _constants.ol.source.OSM()
         })],
-        view: this.getView()
+        view: this._addView(),
+        interactions: this._addInteractions(),
+        controls: this._addControls()
       });
 
       this.map.on('click', function (event) {
         console.log(event.coordinate);
       });
+    }
+  }, {
+    key: '_addCopyRight',
+    value: function _addCopyRight() {
+      return true;
     }
   }, {
     key: 'getMap',
@@ -3250,9 +3265,18 @@ var Controls = function () {
   }
 
   _createClass(Controls, [{
-    key: 'getControls',
-    value: function getControls() {
-      return '';
+    key: '_addControls',
+    value: function _addControls() {
+      return this.getDefaultControls();
+    }
+  }, {
+    key: 'getDefaultControls',
+    value: function getDefaultControls() {
+      return new _constants.ol.control.defaults({
+        attribution: true,
+        rotate: true,
+        zoom: true
+      });
     }
   }]);
 
@@ -3273,11 +3297,43 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _constants = __webpack_require__(1);
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Interactions = function Interactions() {
-  _classCallCheck(this, Interactions);
-};
+var Interactions = function () {
+  function Interactions() {
+    _classCallCheck(this, Interactions);
+  }
+
+  _createClass(Interactions, [{
+    key: '_addInteractions',
+    value: function _addInteractions(params) {
+      var options = params || {};
+      return this.getDefaultiInteractions();
+    }
+  }, {
+    key: 'getDefaultiInteractions',
+    value: function getDefaultiInteractions() {
+      return new _constants.ol.interaction.defaults({
+        altShiftDragRotate: true,
+        doubleClickZoom: true,
+        keyboard: true,
+        mouseWheelZoom: true,
+        shiftDragZoom: true,
+        dragPan: true,
+        pinchRotate: true,
+        pinchZoom: true,
+        zoomDelta: 5, // 缩放增量（默认一级）
+        zoomDuration: 5 // 缩放持续时间
+      });
+    }
+  }]);
+
+  return Interactions;
+}();
 
 exports.default = Interactions;
 module.exports = exports['default'];
@@ -3305,8 +3361,8 @@ var View = function () {
   }
 
   _createClass(View, [{
-    key: 'getView',
-    value: function getView() {
+    key: '_addView',
+    value: function _addView() {
       return new _constants.ol.View({
         center: [0, 0],
         zoom: 2
