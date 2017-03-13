@@ -6,4 +6,8 @@ class Ex {
   getModel () {
     return this.test;
   }
+
+  getName () {
+
+  }
 }
