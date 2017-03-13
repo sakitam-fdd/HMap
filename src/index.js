@@ -5,6 +5,7 @@ import Map from './map/Map'
 import Layer from './layer/Layer'
 import Feature from './feature/feature'
 import CoordsTransform from './utils/CoordsTransform'
+import Ex from './plugins/Ex'
 
 HMap.ol = ol;
 HMap.proj4 = proj4;
@@ -12,6 +13,7 @@ HMap.Map = Map;
 HMap.Layer = Layer;
 HMap.Feature = Feature;
 HMap.CoordsTransform = CoordsTransform;
+HMap.Ex = Ex;
 
 /**
  * Inherit the prototype methods from one constructor into another.
