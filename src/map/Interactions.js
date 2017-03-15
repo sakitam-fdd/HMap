@@ -12,7 +12,7 @@ class Interactions {
       pinchRotate: ((options['pinchRotate'] === false) ? false : true),
       pinchZoom: ((options['pinchZoom'] === false) ? false : true),
       zoomDelta: ((options['zoomDelta'] && (typeof (options['zoomDelta'])) === 'number') ? options['zoomDelta'] : 1), // 缩放增量（默认一级）
-      zoomDuration: (options['zoomDuration'] && (typeof (options['zoomDelta'])) === 'number') ? options['zoomDuration'] : 250 // 缩放持续时间
+      zoomDuration: (options['zoomDuration'] && (typeof (options['zoomDelta'])) === 'number') ? options['zoomDuration'] : 300 // 缩放持续时间
     });
   }
 }

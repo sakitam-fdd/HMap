@@ -9,12 +9,12 @@
 <div id="map"></div>
 <script src="../dist/HMap.js"></script>
 <script type="text/ecmascript">
-  let Maps = new HMap();
+  let Maps = new HMap.Map();
   Maps.initMap('map', {
 //    center: [109.15169990462329, 31.74108365827285],
     center: [0, 0],
     zoom: 5,
-    projection: '3857',
+    projection: 'EPSG:3857',
     controls: {
       addScaleLine: false,
       addLoading: false

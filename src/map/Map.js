@@ -1,7 +1,7 @@
 import mix from '../utils/mixin'
 import { ol, proj4 } from '../constants'
 
-import BaseLayer from './baseLayer'
+import BaseLayers from './baseLayer'
 import Controls from './Controls'
 import Interactions from './Interactions'
 import View from './View'
@@ -13,7 +13,7 @@ const shapeType = {
   views: Symbol.for('views')
 };
 
-class Map extends mix(BaseLayer, Controls, Interactions, View, Layer, Feature) {
+class Map extends mix(BaseLayers, Controls, Interactions, View, Layer, Feature) {
   constructor () {
     super();
     this.addPointHandlerClick = null;
@@ -74,37 +74,6 @@ class Map extends mix(BaseLayer, Controls, Interactions, View, Layer, Feature) {
   initMap (mapDiv, params) {
     let options = params || {};
     /**
-     * 投影
-     * @type {ol.proj.Projection}
-     */
-    this.projection = ol.proj.get('EPSG:4326');
-    /**
-     * 显示范围
-     */
-    this.fullExtent = options['fullExtent'] ? options.fullExtent : [-180, -90, 180, 90];
-    /**
-     * 投影范围
-     */
-    this.projection.setExtent(this.fullExtent);
-    /**
-     * 瓦片原点
-     * @desc 设置瓦片原点的目的是因为部分地图切图原点不是[0,0]
-     * 为保证正确加载，所以必须设置瓦片原点。
-     */
-    this.origin = options.origin;
-    /**
-     * 瓦片大小
-     * @desc 切片大小，典型值有256， 512.
-     * 默认256
-     */
-    this.tileSize = options.tileSize;
-    /**
-     * 分辨率
-     * @type Array
-     */
-    this.resolutions = options.resolutions;
-
-    /**
      * 当前地图对象
      * @type {ol.Map}
      */
@@ -113,9 +82,7 @@ class Map extends mix(BaseLayer, Controls, Interactions, View, Layer, Feature) {
       loadTilesWhileAnimating: true,
       loadTilesWhileInteracting: true,
       logo: this._addCopyRight(options['logo']),
-      layers: [new ol.layer.Tile({
-        source: new ol.source.OSM()
-      })],
+      layers: this.addBaseLayers(options['baseLayers'], options['view']),
       view: this._addView(options['view']),
       interactions: this._addInteractions(options['interactions']),
       controls: this._addControls(options['controls'])

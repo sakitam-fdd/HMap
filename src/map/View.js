@@ -1,4 +1,4 @@
-import { ol, proj4, config } from '../constants'
+import { ol } from '../constants'
 class View {
   _addView (params) {
     let option = params || {};

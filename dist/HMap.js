@@ -2863,37 +2863,6 @@ var Map = function (_mix) {
     value: function initMap(mapDiv, params) {
       var options = params || {};
       /**
-       * 投影
-       * @type {ol.proj.Projection}
-       */
-      this.projection = _constants.ol.proj.get('EPSG:4326');
-      /**
-       * 显示范围
-       */
-      this.fullExtent = options['fullExtent'] ? options.fullExtent : [-180, -90, 180, 90];
-      /**
-       * 投影范围
-       */
-      this.projection.setExtent(this.fullExtent);
-      /**
-       * 瓦片原点
-       * @desc 设置瓦片原点的目的是因为部分地图切图原点不是[0,0]
-       * 为保证正确加载，所以必须设置瓦片原点。
-       */
-      this.origin = options.origin;
-      /**
-       * 瓦片大小
-       * @desc 切片大小，典型值有256， 512.
-       * 默认256
-       */
-      this.tileSize = options.tileSize;
-      /**
-       * 分辨率
-       * @type Array
-       */
-      this.resolutions = options.resolutions;
-
-      /**
        * 当前地图对象
        * @type {ol.Map}
        */
@@ -2902,9 +2871,7 @@ var Map = function (_mix) {
         loadTilesWhileAnimating: true,
         loadTilesWhileInteracting: true,
         logo: this._addCopyRight(options['logo']),
-        layers: [new _constants.ol.layer.Tile({
-          source: new _constants.ol.source.OSM()
-        })],
+        layers: this.addBaseLayers(options['baseLayers'], options['view']),
         view: this._addView(options['view']),
         interactions: this._addInteractions(options['interactions']),
         controls: this._addControls(options['controls'])
@@ -3437,7 +3404,7 @@ var Interactions = function () {
         pinchRotate: options['pinchRotate'] === false ? false : true,
         pinchZoom: options['pinchZoom'] === false ? false : true,
         zoomDelta: options['zoomDelta'] && typeof options['zoomDelta'] === 'number' ? options['zoomDelta'] : 1, // 缩放增量（默认一级）
-        zoomDuration: options['zoomDuration'] && typeof options['zoomDelta'] === 'number' ? options['zoomDuration'] : 250 // 缩放持续时间
+        zoomDuration: options['zoomDuration'] && typeof options['zoomDelta'] === 'number' ? options['zoomDuration'] : 300 // 缩放持续时间
       });
     }
   }]);
@@ -3504,13 +3471,266 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _constants = __webpack_require__(2);
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var BaseLayer = function BaseLayer() {
-  _classCallCheck(this, BaseLayer);
-};
+var BaseLayers = function () {
+  function BaseLayers() {
+    _classCallCheck(this, BaseLayers);
+  }
 
-exports.default = BaseLayer;
+  _createClass(BaseLayers, [{
+    key: 'addBaseLayers',
+    value: function addBaseLayers(params, view) {
+      var options = params || [];
+      var _view = view || {};
+      if (_view) {
+        /**
+         * 投影
+         * @type {ol.proj.Projection}
+         */
+        this.projection = _constants.ol.proj.get(_view['projection'] ? _view.projection : 'EPSG:3857');
+        /**
+         * 显示范围
+         */
+        this.fullExtent = _view['fullExtent'] ? _view.fullExtent : [-180, -90, 180, 90];
+        /**
+         * 投影范围
+         */
+        this.projection.setExtent(this.fullExtent);
+        /**
+         * 瓦片原点
+         * @desc 设置瓦片原点的目的是因为部分地图切图原点不是[0,0]
+         * 为保证正确加载，所以必须设置瓦片原点。
+         */
+        this.origin = _view.origin;
+        /**
+         * 瓦片大小
+         * @desc 切片大小，典型值有256， 512.
+         * 默认256
+         */
+        this.tileSize = _view.tileSize;
+        /**
+         * 分辨率
+         * @type Array
+         */
+        this.resolutions = _view['resolutions'];
+      }
+
+      if (!options || !Array.isArray(options) || options.length <= 0) {
+        return [new _constants.ol.layer.Tile({
+          source: new _constants.ol.source.OSM()
+        })];
+      } else {
+        return this._getBaseLayerGroup(params);
+      }
+    }
+
+    /**
+     * 获取图层组
+     * @returns {ol.layer.Group}
+     */
+
+  }, {
+    key: '_getBaseLayerGroup',
+    value: function _getBaseLayerGroup(layerConfig) {
+      var _this = this;
+
+      var layers = [],
+          labelLayers = [],
+          _layers = [],
+          labelLayersConfig = [];
+
+      if (layerConfig && Array.isArray(layerConfig) && layerConfig.length > 0) {
+        layerConfig.forEach(function (config) {
+          if (config['layerName'] && config['layerUrl'] && config['layerType']) {
+            var layer = null;
+            switch (config['layerType']) {
+              case 'TileXYZ':
+                layer = _this._getXYZLayer(config);
+                break;
+              case 'TitleWMTS':
+                layer = _this._getWMTSLayer(config);
+                break;
+              case 'OSM':
+                layer = _this._getOSMLayer(config);
+                break;
+            }
+            if (layer) layers.push(layer);
+            if (config['label']) {
+              labelLayersConfig.push(config['label']);
+            }
+          }
+        });
+      }
+      labelLayers = this._getBaseLayerLabel(labelLayersConfig);
+      _layers = layers.concat(labelLayers);
+      return _layers;
+    }
+
+    /**
+     * 主要处理标注层
+     * @param labelLayersConfig
+     * @returns {null}
+     * @private
+     */
+
+  }, {
+    key: '_getBaseLayerLabel',
+    value: function _getBaseLayerLabel(labelLayersConfig) {
+      var _this2 = this;
+
+      var labelLayers = [],
+          _labelLayersLayerNames = new Set();
+
+      if (labelLayersConfig && Array.isArray(labelLayersConfig) && labelLayersConfig.length > 0) {
+        labelLayersConfig.forEach(function (config) {
+          if (config['layerName'] && config['layerUrl'] && config['layerType']) {
+            _labelLayersLayerNames.add(config['layerName']);
+          }
+        });
+        [].concat(_toConsumableArray(_labelLayersLayerNames)).forEach(function (layerName) {
+          labelLayersConfig.every(function (configM) {
+            if (configM && configM['layerName'] === layerName) {
+              var labelLayer = null;
+              switch (configM['layerType']) {
+                case 'TileXYZ':
+                  labelLayer = _this2._getXYZLayer(configM);
+                  break;
+                case 'TitleWMTS':
+                  labelLayer = _this2._getWMTSLayer(configM);
+                  break;
+              }
+              if (labelLayer) labelLayers.push(labelLayer);
+              return false;
+            }
+            return true;
+          });
+        });
+      }
+      return labelLayers;
+    }
+
+    /**
+     * 获取标准XYZ图层
+     * @param config
+     * @returns {ol.layer.Tile}
+     * @private
+     */
+
+  }, {
+    key: '_getXYZLayer',
+    value: function _getXYZLayer(config) {
+      var tileUrl = config['layerUrl'];
+      var tileGrid = new _constants.ol.tilegrid.TileGrid({
+        tileSize: this.tileSize,
+        origin: this.origin,
+        extent: this.fullExtent,
+        resolutions: this.resolutions
+      });
+      var tileArcGISXYZ = new _constants.ol.source.XYZ({
+        wrapX: false,
+        tileGrid: tileGrid,
+        tileSize: this.tileSize,
+        opaque: config['opaque'] === true ? true : false, // 图层是否不透明（主题相关）
+        tilePixelRatio: 1, //todo 对于高分辨率设备，例如苹果等可能2、3（移动端开发需要注意）
+        projection: this.projection,
+        crossOrigin: 'Anonymous',
+        tileUrlFunction: function tileUrlFunction(tileCoord) {
+          var url = (tileUrl + '/tile/{z}/{y}/{x}').replace('{z}', tileCoord[0].toString()).replace('{x}', tileCoord[1].toString()).replace('{y}', (-tileCoord[2] - 1).toString());
+          return url;
+        }
+      });
+      var baseLayer = new _constants.ol.layer.Tile({
+        isBaseLayer: true,
+        alias: config['alias'] ? config['alias'] : '',
+        isDefault: config['isDefault'] === true ? true : false,
+        visible: config['isDefault'] === true ? true : false,
+        layerName: config['layerName'] ? config.layerName : '',
+        source: tileArcGISXYZ
+      });
+      return baseLayer;
+    }
+
+    /**
+     * 加载开源OSM图层
+     * @param config
+     * @returns {ol.layer.Tile}
+     * @private
+     */
+
+  }, {
+    key: '_getOSMLayer',
+    value: function _getOSMLayer(config) {
+      var baseLayer = new _constants.ol.layer.Tile({
+        isBaseLayer: true,
+        alias: config['alias'] ? config['alias'] : '',
+        isDefault: config['isDefault'] === true ? true : false,
+        visible: config['isDefault'] === true ? true : false,
+        layerName: config['layerName'] ? config.layerName : '',
+        source: new _constants.ol.source.OSM({
+          wrapX: false,
+          opaque: config['opaque'] === true ? true : false, // 图层是否不透明（主题相关）
+          url: config['layerUrl'] ? config['layerUrl'] : 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          crossOrigin: 'Anonymous'
+        })
+      });
+      return baseLayer;
+    }
+
+    /**
+     * 获取标准WMTS图层
+     * @param config
+     * @returns {ol.layer.Tile}
+     * @private
+     */
+
+  }, {
+    key: '_getWMTSLayer',
+    value: function _getWMTSLayer(config) {
+      var projection = _constants.ol.proj.get('EPSG:4326');
+      var size = _constants.ol.extent.getWidth(projection.getExtent()) / 256;
+      var resolutions = new Array(19);
+      var matrixIds = new Array(19);
+      for (var z = 0; z < 19; ++z) {
+        resolutions[z] = size / Math.pow(2, z);
+        matrixIds[z] = z;
+      }
+      var layer = new _constants.ol.layer.Tile({
+        isBaseLayer: true,
+        alias: config['alias'] ? config['alias'] : '',
+        isDefault: config['isDefault'] === true ? true : false,
+        layerName: config['layerName'] ? config.layerName : '',
+        visible: config['isDefault'] === true ? true : false,
+        source: new _constants.ol.source.WMTS({
+          url: config['layerUrl'],
+          layer: config['layer'],
+          matrixSet: 'c',
+          format: 'tiles',
+          crossOrigin: 'Anonymous',
+          projection: projection,
+          tileGrid: new _constants.ol.tilegrid.WMTS({
+            origin: _constants.ol.extent.getTopLeft(projection.getExtent()),
+            resolutions: resolutions,
+            matrixIds: matrixIds
+          }),
+          style: 'default',
+          wrapX: false
+        })
+      });
+      return layer;
+    }
+  }]);
+
+  return BaseLayers;
+}();
+
+exports.default = BaseLayers;
 module.exports = exports['default'];
 
 /***/ }),
