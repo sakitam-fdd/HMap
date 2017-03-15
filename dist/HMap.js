@@ -171,6 +171,7 @@ var x_PI = exports.x_PI = 3.14159265358979324 * 3000.0 / 180.0;
 var PI = exports.PI = 3.1415926535897932384626; // PI
 var a = exports.a = 6378245.0; // 北京54坐标系长半轴a=6378245m
 var ee = exports.ee = 0.00669342162296594323;
+// import _olx from '../node_modules/openlayers/externs'
 // import _olx from '../node_modules/openlayers/externs/olx'
 
 var ol = exports.ol = _openlayers2.default;
@@ -599,6 +600,42 @@ var Style = function () {
         stroke: new _constants.ol.style.Stroke({
           width: 4,
           color: '#0000EE'
+        })
+      });
+      return style;
+    }
+
+    /**
+     * 获取面样式
+     * @param attr
+     * @returns {ol.style.Style}
+     */
+
+  }, {
+    key: 'getStyleByPolygon',
+    value: function getStyleByPolygon(attr) {
+      var style = new _constants.ol.style.Style({
+        text: new _constants.ol.style.Text({
+          font: "30px serif",
+          fill: new _constants.ol.style.Fill({
+            color: "#E50000"
+          }),
+          text: attr['name'],
+          offsetX: 0.5,
+          offsetY: -15
+        }),
+        fill: new _constants.ol.style.Fill({
+          color: 'rgba(67, 110, 238, 0.4)'
+        }),
+        stroke: new _constants.ol.style.Stroke({
+          color: '#4781d9',
+          width: 2
+        }),
+        image: new _constants.ol.style.Circle({
+          radius: 7,
+          fill: new _constants.ol.style.Fill({
+            color: '#ffcc33'
+          })
         })
       });
       return style;
@@ -1059,20 +1096,12 @@ var Feature = function (_mix) {
           view.setCenter(center);
         } else {
           if (!duration) {
-            duration = 100;
-            var pan = _constants.ol.animation.pan({
-              duration: duration,
-              source: /** @type {ol.Coordinate} */view.getCenter()
+            duration = 1000;
+            view.animate({
+              center: center,
+              duration: duration
             });
-            var bounce = _constants.ol.animation.bounce({
-              duration: duration,
-              resolution: view.getResolution()
-            });
-            this.map.beforeRender(pan, bounce);
-            view.setCenter(center);
-            view.fit(extent, size, {
-              padding: [200, 350, 200, 350]
-            });
+            view.fit(extent, size);
           }
         }
       }
@@ -1239,6 +1268,71 @@ var Feature = function (_mix) {
         }
         if (change) {
           this._getExtent(MultiLine);
+        }
+      }
+    }
+
+    /**
+     * 添加面要素
+     * @param polygon
+     * @param params
+     * @returns {ol.render.Feature|ol.format.Feature|Feature|*|ol.Feature}
+     */
+
+  }, {
+    key: 'addPolygon',
+    value: function addPolygon(polygon, params) {
+      if (polygon && polygon['geometry']) {
+        var polygonFeature = new _constants.ol.Feature({
+          geometry: new _constants.ol.format.WKT().readGeometry(polygon.geometry)
+        });
+        var style = this.getStyleByPolygon(polygon['attributes']);
+        var extent = polygonFeature.getGeometry().getExtent();
+        if (style && polygonFeature) {
+          polygonFeature.setStyle(style);
+        }
+        if (polygon['attributes'] && (polygon.attributes['ID'] || polygon.attributes['id'])) {
+          var id = polygon.attributes['id'] || polygon.attributes['ID'] || params['id'];
+          polygonFeature.setId(id);
+          polygonFeature.setProperties(polygon.attributes);
+        }
+        if (params['zoomToExtent']) {
+          this.zoomToExtent(extent, true);
+        }
+        if (params['layerName']) {
+          var layer = this.creatVectorLayer(params['layerName'], {
+            create: true
+          });
+          layer.getSource().addFeature(polygonFeature);
+        }
+        return polygonFeature;
+      } else {
+        console.info('传入的数据不标准！');
+      }
+    }
+
+    /**
+     * 添加多个面
+     * @param polygons
+     * @param params
+     */
+
+  }, {
+    key: 'addPolygons',
+    value: function addPolygons(polygons, params) {
+      if (polygons && Array.isArray(polygons)) {
+        var MultiPolygon = new _constants.ol.geom.MultiPolygon([]),
+            change = false;
+        if (params['zoomToExtent']) {
+          params['zoomToExtent'] = !params['zoomToExtent'];
+          change = true;
+        };
+        for (var i = 0; i < polygons.length; i++) {
+          var polygon = this.addPolyline(polygons[i], params);
+          MultiPolygon.appendPolygon(polygon.getGeometry());
+        }
+        if (change) {
+          this._getExtent(MultiPolygon);
         }
       }
     }

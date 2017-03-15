@@ -10,6 +10,7 @@ export const ee = 0.00669342162296594323;
 
 import _proj4 from '../node_modules/proj4'
 import _ol from '../node_modules/openlayers'
+// import _olx from '../node_modules/openlayers/externs'
 // import _olx from '../node_modules/openlayers/externs/olx'
 
 import _config from './config/config'

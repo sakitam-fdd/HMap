@@ -32,6 +32,39 @@ class Style {
     });
     return style
   }
+
+  /**
+   * 获取面样式
+   * @param attr
+   * @returns {ol.style.Style}
+   */
+  getStyleByPolygon (attr) {
+    let style = new ol.style.Style({
+      text: new ol.style.Text({
+        font: "30px serif",
+        fill: new ol.style.Fill({
+          color: "#E50000"
+        }),
+        text: attr['name'],
+        offsetX: 0.5,
+        offsetY: -15,
+      }),
+      fill: new ol.style.Fill({
+        color: 'rgba(67, 110, 238, 0.4)'
+      }),
+      stroke: new ol.style.Stroke({
+        color: '#4781d9',
+        width: 2
+      }),
+      image: new ol.style.Circle({
+        radius: 7,
+        fill: new ol.style.Fill({
+          color: '#ffcc33'
+        })
+      })
+    });
+    return style;
+  }
 }
 
 export default Style

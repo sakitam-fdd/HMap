@@ -135,20 +135,12 @@ class Feature extends mix(Style, Layer) {
         view.setCenter(center);
       } else {
         if (!duration) {
-          duration = 100;
-          let pan = ol.animation.pan({
-            duration: duration,
-            source: /** @type {ol.Coordinate} */ (view.getCenter())
+          duration = 1000;
+          view.animate({
+            center: center,
+            duration: duration
           });
-          let bounce = ol.animation.bounce({
-            duration: duration,
-            resolution: view.getResolution()
-          });
-          this.map.beforeRender(pan, bounce);
-          view.setCenter(center);
-          view.fit(extent, size, {
-            padding: [200, 350, 200, 350]
-          });
+          view.fit(extent, size);
         }
       }
     }
@@ -295,6 +287,64 @@ class Feature extends mix(Style, Layer) {
       }
       if (change) {
         this._getExtent(MultiLine);
+      }
+    }
+  }
+
+  /**
+   * 添加面要素
+   * @param polygon
+   * @param params
+   * @returns {ol.render.Feature|ol.format.Feature|Feature|*|ol.Feature}
+   */
+  addPolygon (polygon, params) {
+    if (polygon && polygon['geometry']) {
+      let polygonFeature = new ol.Feature({
+        geometry: new ol.format.WKT().readGeometry(polygon.geometry)
+      });
+      let style = this.getStyleByPolygon(polygon['attributes']);
+      let extent = polygonFeature.getGeometry().getExtent();
+      if (style && polygonFeature) {
+        polygonFeature.setStyle(style);
+      }
+      if (polygon['attributes'] && (polygon.attributes['ID'] || polygon.attributes['id'])) {
+        let id = (polygon.attributes['id'] || polygon.attributes['ID'] || params['id']);
+        polygonFeature.setId(id);
+        polygonFeature.setProperties(polygon.attributes);
+      }
+      if (params['zoomToExtent']) {
+        this.zoomToExtent(extent, true);
+      }
+      if (params['layerName']) {
+        let layer = this.creatVectorLayer(params['layerName'], {
+          create: true
+        });
+        layer.getSource().addFeature(polygonFeature);
+      }
+      return polygonFeature;
+    } else {
+      console.info('传入的数据不标准！')
+    }
+  }
+
+  /**
+   * 添加多个面
+   * @param polygons
+   * @param params
+   */
+  addPolygons (polygons, params) {
+    if (polygons && Array.isArray(polygons)) {
+      let MultiPolygon = new ol.geom.MultiPolygon([]), change = false;
+      if (params['zoomToExtent']) {
+        params['zoomToExtent'] = !params['zoomToExtent'];
+        change = true;
+      };
+      for (let i = 0; i < polygons.length; i++) {
+        let polygon = this.addPolyline(polygons[i], params);
+        MultiPolygon.appendPolygon(polygon.getGeometry());
+      }
+      if (change) {
+        this._getExtent(MultiPolygon);
       }
     }
   }
