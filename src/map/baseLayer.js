@@ -135,7 +135,7 @@ class BaseLayers {
       opaque: (config['opaque'] === true) ? true : false, // 图层是否不透明（主题相关）
       tilePixelRatio: 1, //todo 对于高分辨率设备，例如苹果等可能2、3（移动端开发需要注意）
       projection: this.projection,
-      crossOrigin: 'Anonymous',
+      // crossOrigin: 'Anonymous',
       tileUrlFunction: function (tileCoord) {
         let url = (tileUrl + '/tile/{z}/{y}/{x}').replace('{z}',
           (tileCoord[0]).toString()).replace('{x}',

@@ -3108,7 +3108,7 @@ module.exports = exports['default'];
 
 module.exports = {
 	"name": "HMap",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"private": false,
 	"description": "HDSXTECH WEBGIS API",
 	"keywords": [
@@ -3640,7 +3640,7 @@ var BaseLayers = function () {
         opaque: config['opaque'] === true ? true : false, // 图层是否不透明（主题相关）
         tilePixelRatio: 1, //todo 对于高分辨率设备，例如苹果等可能2、3（移动端开发需要注意）
         projection: this.projection,
-        crossOrigin: 'Anonymous',
+        // crossOrigin: 'Anonymous',
         tileUrlFunction: function tileUrlFunction(tileCoord) {
           var url = (tileUrl + '/tile/{z}/{y}/{x}').replace('{z}', tileCoord[0].toString()).replace('{x}', tileCoord[1].toString()).replace('{y}', (-tileCoord[2] - 1).toString());
           return url;
