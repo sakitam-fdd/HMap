@@ -1,23 +1,19 @@
-import { ol, proj4, config } from '../constants'
+import { ol } from '../constants'
 class Interactions {
   _addInteractions (params) {
     let options = params || {};
-    return this.getDefaultiInteractions();
-  }
-
-  getDefaultiInteractions () {
     return new ol.interaction.defaults({
-      altShiftDragRotate: true,
-      doubleClickZoom: true,
-      keyboard: true,
-      mouseWheelZoom: true,
-      shiftDragZoom: true,
-      dragPan: true,
-      pinchRotate: true,
-      pinchZoom: true,
-      zoomDelta: 5, // 缩放增量（默认一级）
-      zoomDuration: 5 // 缩放持续时间
-    })
+      altShiftDragRotate: ((options['altShiftDragRotate'] === false) ? false : true),
+      doubleClickZoom: ((options['doubleClickZoom'] === false) ? false : true),
+      keyboard: ((options['keyboard'] === false) ? false : true),
+      mouseWheelZoom: ((options['mouseWheelZoom'] === false) ? false : true),
+      shiftDragZoom: ((options['shiftDragZoom'] === false) ? false : true),
+      dragPan: ((options['dragPan'] === false) ? false : true),
+      pinchRotate: ((options['pinchRotate'] === false) ? false : true),
+      pinchZoom: ((options['pinchZoom'] === false) ? false : true),
+      zoomDelta: ((options['zoomDelta'] && (typeof (options['zoomDelta'])) === 'number') ? options['zoomDelta'] : 1), // 缩放增量（默认一级）
+      zoomDuration: (options['zoomDuration'] && (typeof (options['zoomDelta'])) === 'number') ? options['zoomDuration'] : 250 // 缩放持续时间
+    });
   }
 }
 

@@ -112,13 +112,13 @@ class Map extends mix(BaseLayer, Controls, Interactions, View, Layer, Feature) {
       target: mapDiv,
       loadTilesWhileAnimating: true,
       loadTilesWhileInteracting: true,
-      logo: this._addCopyRight(),
+      logo: this._addCopyRight(options['logo']),
       layers: [new ol.layer.Tile({
         source: new ol.source.OSM()
       })],
-      view: this._addView(),
-      interactions: this._addInteractions(),
-      controls: this._addControls()
+      view: this._addView(options['view']),
+      interactions: this._addInteractions(options['interactions']),
+      controls: this._addControls(options['controls'])
     });
 
     this.map.on('click', event => {

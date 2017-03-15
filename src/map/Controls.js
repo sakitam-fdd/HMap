@@ -1,14 +1,11 @@
-import { ol, proj4, config } from '../constants'
+import { ol } from '../constants'
 class Controls {
-  _addControls () {
-    return this.getDefaultControls()
-  }
-
-  getDefaultControls () {
+  _addControls (params) {
+    let options = params || {};
     return new ol.control.defaults({
-      attribution: true,
-      rotate: true,
-      zoom: true
+      attribution: (options['attribution'] === false ? false : true),
+      rotate: (options['rotate'] === false ? false : true),
+      zoom: (options['zoom'] === false ? false : true)
     })
   }
 }
