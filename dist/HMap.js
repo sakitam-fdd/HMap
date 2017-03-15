@@ -1096,7 +1096,7 @@ var Feature = function (_mix) {
           view.setCenter(center);
         } else {
           if (!duration) {
-            duration = 1000;
+            duration = 2000;
             view.animate({
               center: center,
               duration: duration
