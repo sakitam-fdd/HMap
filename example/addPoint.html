@@ -2,198 +2,197 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>添加单个点</title>
+  <title>测试添加点</title>
   <link rel="stylesheet" href="../node_modules/openlayers/dist/ol.css" type="text/css">
 </head>
 <body>
+<button onclick="addPoint()">添加点</button>
+<button onclick="addPoints()">添加多点</button>
+<button onclick="removePointById()">通过ID移除标绘点</button>
+<button onclick="removePointByLayerName()">通过LayerName移除标绘点</button>
 <div id="map"></div>
 <script src="../dist/HMap.js"></script>
-<script type="text/ecmascript">
-  let Maps = new HMap();
-  let cor = [
+<script type="text/javascript">
+  var cor = [
     {
       "level": 0,
-      "resolution": 156543.03392800014,
-      "scale": 5.91657527591555E8
+      "resolution": 0.010986328383069278,
+      "scale": 4617150
     },
     {
       "level": 1,
-      "resolution": 78271.51696399994,
-      "scale": 2.95828763795777E8
+      "resolution": 0.005493164191534639,
+      "scale": 2308575
     },
     {
       "level": 2,
-      "resolution": 39135.75848200009,
-      "scale": 1.47914381897889E8
+      "resolution": 0.0027465809060368165,
+      "scale": 1154287
     },
     {
       "level": 3,
-      "resolution": 19567.87924099992,
-      "scale": 7.3957190948944E7
+      "resolution": 0.0013732916427489112,
+      "scale": 577144
     },
     {
       "level": 4,
-      "resolution": 9783.93962049996,
-      "scale": 3.6978595474472E7
+      "resolution": 6.866458213744556E-4,
+      "scale": 288572
     },
     {
       "level": 5,
-      "resolution": 4891.96981024998,
-      "scale": 1.8489297737236E7
+      "resolution": 3.433229106872278E-4,
+      "scale": 144286
     },
     {
       "level": 6,
-      "resolution": 2445.98490512499,
-      "scale": 9244648.868618
+      "resolution": 1.716614553436139E-4,
+      "scale": 72143
     },
     {
       "level": 7,
-      "resolution": 1222.992452562495,
-      "scale": 4622324.434309
+      "resolution": 8.582953794130404E-5,
+      "scale": 36071
     },
     {
       "level": 8,
-      "resolution": 611.4962262813797,
-      "scale": 2311162.217155
+      "resolution": 4.291595870115493E-5,
+      "scale": 18036
     },
     {
       "level": 9,
-      "resolution": 305.74811314055756,
-      "scale": 1155581.108577
+      "resolution": 2.1457979350577466E-5,
+      "scale": 9018
     },
     {
       "level": 10,
-      "resolution": 152.87405657041106,
-      "scale": 577790.554289
+      "resolution": 1.0728989675288733E-5,
+      "scale": 4509
     },
     {
       "level": 11,
-      "resolution": 76.43702828507324,
-      "scale": 288895.277144
+      "resolution": 5.363305107141452E-6,
+      "scale": 2254
     },
     {
       "level": 12,
-      "resolution": 38.21851414253662,
-      "scale": 144447.638572
-    },
-    {
-      "level": 13,
-      "resolution": 19.10925707126831,
-      "scale": 72223.819286
-    },
-    {
-      "level": 14,
-      "resolution": 9.554628535634155,
-      "scale": 36111.909643
-    },
-    {
-      "level": 15,
-      "resolution": 4.77731426794937,
-      "scale": 18055.954822
-    },
-    {
-      "level": 16,
-      "resolution": 2.388657133974685,
-      "scale": 9027.977411
-    },
-    {
-      "level": 17,
-      "resolution": 1.1943285668550503,
-      "scale": 4513.988705
-    },
-    {
-      "level": 18,
-      "resolution": 0.5971642835598172,
-      "scale": 2256.994353
-    },
-    {
-      "level": 19,
-      "resolution": 0.29858214164761665,
-      "scale": 1128.497176
+      "resolution": 2.681652553570726E-6,
+      "scale": 1127
     }
   ];
-  let resolutions = [];
-  for (let i = 0; i < cor.length; i++) {
+  var resolutions = [];
+  for (var i = 0; i < cor.length; i++) {
     resolutions.push(cor[i].resolution);
   }
+  var Maps = new HMap.Map();
   Maps.initMap('map', {
-    center: [109.15169990462329, 31.74108365827285],
-    resolutions: resolutions,
-    fullExtent: [-20037507.067161843, -30240971.95838617, 20037507.067161843, 30240971.958386205],
-    tileSize: 256,
-    origin: [-20037508.342787, 20037508.342787],
-    zoom: 5,
-    projection: '102100',
-    controls: {
-      addScaleLine: false,
-      addLoading: false
-    },
     interactions: {
+      altShiftDragRotate: true,
       doubleClickZoom: true,
-      keyboard: false
+      keyboard: true,
+      mouseWheelZoom: true,
+      shiftDragZoom: true,
+      dragPan: true,
+      pinchRotate: true,
+      pinchZoom: true,
+      zoomDelta: 1, // 缩放增量（默认一级）
+      zoomDuration: 500 // 缩放持续时间
     },
-    baseLayers: [
+    controls: {
+      attribution: true,
+      attributionOptions: {
+        className: 'ol-attribution', // Default
+        target: 'attributionTarget',
+      },
+      rotate: true,
+      rotateOptions: {
+        className: 'ol-rotate', // Default
+        target: 'rotateTarget',
+      },
+      zoom: true,
+      zoomOptions: {
+        className: 'ol-zoom', // Default
+        target: 'zoomTarget',
+      },
+      overViewMapVisible: false,
+      scaleLineVisible: true
+    },
+    view: {
+      center: [115.92466595234826, 27.428038204473552],
+      resolutions: resolutions,
+      fullExtent: [109.72859368643232, 24.010266905347684, 121.13105988819079, 30.76693489432357],
+      tileSize: 256,
+      origin: [-400, 399],
+      enableRotation: true, // 是否允许旋转
+      projection: 'EPSG:4326',
+      rotation: 0,
+      zoom: 1, // resolution
+      zoomFactor: 2 // 用于约束分变率的缩放因子（高分辨率设备需要注意）
+    },
+    logo: {},
+    baseLayers: [  // 不传时默认加载OSM地图。
       {
         layerName: 'vector',
         isDefault: true,
         layerType: 'TileXYZ',
         opaque: false, //图层是否不透明
-        layerUrl: 'http://10.254.123.75:8080/OneMapServer/rest/services/World2ChinaMapBG/MapServer',
-        label: { //地图图层是否对应的有标注层
-          layerName: 'vectorLabel',
-          isDefault: true,
-          alias: 'vector',
-          layerType: 'TileXYZ',
-          layerUrl: 'http://10.254.123.75:8080/OneMapServer/rest/services/World2ChinaMapLabel/MapServer'
-        }
-      },
-      {
-        layerName: 'earth',
-        layerType: 'TitleWMTS',
-        layer: 'img',
-        isDefault: false,
-        layerUrl: 'http://t{0-6}.tianditu.cn/img_c/wmts',
-        label: {
-          layerName: 'TDTLabel',
-          layerType: 'TitleWMTS',
-          layer: 'cia',
-          alias: 'earth',
-          isDefault: false,
-          layerUrl: 'http://t{0-6}.tianditu.cn/cia_c/wmts'
-        }
-      },
-      {
-        layerName: 'panorama',
-        layerType: 'TitleWMTS',
-        layer: 'ter',
-        isDefault: false,
-        layerUrl: 'http://t{0-6}.tianditu.com/ter_c/wmts',
-        label: {
-          layerName: 'TDTLabel',
-          layerType: 'TitleWMTS',
-          layer: 'cia',
-          alias: 'panorama',
-          isDefault: false,
-          layerUrl: 'http://t{0-6}.tianditu.cn/cia_c/wmts'
-        }
+        layerUrl: 'http://171.34.40.68:6080/arcgis/rest/services/JXMAP_2016_2/MapServer',
       }
     ]
   });
-
-  let point = {
-    attributes: {
-      id: '01'
+  console.log(Maps);
+  var points = [
+    {
+      attributes: {
+        ID: '01',
+        QLDM: 'Y236360922L0050',
+        QLMC: '柏木桥',
+        LXBM: 'Y236360922',
+        LXMC: '赤兴至排江',
+        QLZXZH: '7.4650000000',
+        PYZH: '0.0000000000',
+        QLQC: '23.0000000000',
+        QMQK: '3.5000000000',
+        ASYNXFLDM: '1.0000000000',
+        XZQHBM: '360922'
+      },
+      geometry: 'POINT (115.92466595234826 27.428038204473552)',
+      geometryType: 'Point'
     },
-    geometry: [12530938.717021074, 4128056.3024635445],
-    geometryType: 'POINT'
+    {
+      attributes: {
+        ID: '02',
+        QLDM: 'Y236360922L0050',
+        QLMC: '柏木桥02',
+        LXBM: 'Y236360922',
+        LXMC: '赤兴至排江',
+        QLZXZH: '7.4650000000',
+        PYZH: '0.0000000000',
+        QLQC: '23.0000000000',
+        QMQK: '3.5000000000',
+        ASYNXFLDM: '1.0000000000',
+        XZQHBM: '360922'
+      },
+      geometry: 'POINT (115.90466595234826 27.408038204473552)',
+      geometryType: 'Point'
+    }
+  ]
+  function addPoint () {
+    Maps.addPoint(points[0], {
+      layerName: 'test'
+    });
   }
-  Maps.addPoint(point, {
-    layerName: 'point',
-    zoomToExtent: true
-  })
-//  Maps.map.on('click', event => {
-//    console.log(event.coordinate)
-//  })
+  function addPoints () {
+    Maps.addPoints(points, {
+      layerName: 'test'
+    });
+  }
+  function removePointById () {
+    Maps.removeFeatureById('01')
+  }
+  function removePointByLayerName () {
+    Maps.removeFeatureByLayerName('test')
+  }
 </script>
 </body>
 </html>

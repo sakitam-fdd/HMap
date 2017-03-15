@@ -1,5 +1,10 @@
 import { ol } from '../constants'
 class Style {
+  /**
+   * 获取点样式
+   * @param attr
+   * @returns {ol.style.Style}
+   */
   getStyleByPoint (attr) {
     let style = new ol.style.Style({
       image: new ol.style.Icon({
@@ -11,6 +16,21 @@ class Style {
       })
     });
     return style;
+  }
+
+  /**
+   * 获取线样式
+   * @param attr
+   * @returns {ol.style.Style}
+   */
+  getStyleByLine (attr) {
+    let style = new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        width: 4,
+        color: '#0000EE'
+      })
+    });
+    return style
   }
 }
 

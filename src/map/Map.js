@@ -8,12 +8,13 @@ import View from './View'
 
 import Layer from '../layer/Layer'
 import Feature from '../feature/feature'
+import Style from '../style/Style'
 
 const shapeType = {
   views: Symbol.for('views')
 };
 
-class Map extends mix(BaseLayers, Controls, Interactions, View, Layer, Feature) {
+class Map extends mix(BaseLayers, Controls, Interactions, View, Style, Layer, Feature) {
   constructor () {
     super();
     this.addPointHandlerClick = null;

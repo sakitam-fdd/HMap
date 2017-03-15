@@ -42,7 +42,7 @@ class Feature extends mix(Style, Layer) {
   getFeatureById2LayerName (id, layerName) {
     let feature = null;
     if (!!layerName) {
-      let layer = this.layer.getLayerByName(layerName);
+      let layer = this.getLayerByName(layerName);
       if (layer && layer instanceof ol.layer.Vector) {
         feature = layer.getSource().getFeatureById(id)
       }
@@ -184,18 +184,17 @@ class Feature extends mix(Style, Layer) {
    */
   addPoint (point, params) {
     let geometry = this._getGeometryFromPoint(point);
-    let style = Style.getStyleByPoint(point['attributes']);
+    let style = this.getStyleByPoint(point['attributes']);
     let feature = new ol.Feature({
       geometry: geometry,
       params: params
     });
     feature.setStyle(style);
-    if (point['attributes'] && point['attributes']['id']) {
-      let id = point['attributes']['id'] ? point['attributes']['id'] : (point['attributes']['ID'] ? point['attributes']['ID'] : params['id']);
+    if (point['attributes'] && (point['attributes']['id'] || point['attributes']['ID'])) {
+      // let id = (point['attributes']['id'] ? point['attributes']['id'] : (point['attributes']['ID'] ? point['attributes']['ID'] : params['id']));
+      let id = (point.attributes['id'] || point.attributes['ID'] || params['id']);
       feature.setId(id);
       feature.setProperties(point['attributes']);
-    } else {
-      throw new Error('传入的数据缺少id！')
     }
     if (params['zoomToExtent']) {
       let coordinate = geometry.getCoordinates();
@@ -203,7 +202,7 @@ class Feature extends mix(Style, Layer) {
       this.movePointToView(coordinate);
     }
     if (params['layerName']) {
-      let layer = this.layer.creatVectorLayer(params['layerName'], {
+      let layer = this.creatVectorLayer(params['layerName'], {
         create: true
       });
       layer.getSource().addFeature(feature);
@@ -255,13 +254,14 @@ class Feature extends mix(Style, Layer) {
         geometry: new ol.format.WKT().readGeometry(line.geometry)
       });
     }
-    let style = Style.getStyleByPoint(line['attributes']);
+    let style = this.getStyleByLine(line['attributes']);
     let extent = linefeature.getGeometry().getExtent();
     if (style && linefeature) {
       linefeature.setStyle(style);
     }
-    if (line.attributes['ID'] || line.attributes['id']) {
-      let id = line['attributes']['id'] ? line['attributes']['id'] : (line['attributes']['ID'] ? line['attributes']['ID'] : params['id']);
+    if (line['attributes'] && (line.attributes['ID'] || line.attributes['id'])) {
+      // let id = (line['attributes']['id'] ? line['attributes']['id'] : (line['attributes']['ID'] ? line['attributes']['ID'] : params['id']));
+      let id = (line.attributes['id'] || line.attributes['ID'] || params['id']);
       linefeature.setId(id);
       linefeature.setProperties(line.attributes);
     }
@@ -269,7 +269,7 @@ class Feature extends mix(Style, Layer) {
       this.zoomToExtent(extent, true);
     }
     if (params['layerName']) {
-      let layer = this.layer.creatVectorLayer(params['layerName'], {
+      let layer = this.creatVectorLayer(params['layerName'], {
         create: true
       });
       layer.getSource().addFeature(linefeature);
@@ -296,6 +296,97 @@ class Feature extends mix(Style, Layer) {
       if (change) {
         this._getExtent(MultiLine);
       }
+    }
+  }
+
+  /**
+   * 通过图层名移除要素
+   * @param layerName
+   */
+  removeFeatureByLayerName (layerName) {
+    try {
+      let layer = this.getLayerByLayerName(layerName);
+      if (layer && layer instanceof ol.layer.Vector && layer.getSource()) {
+        layer.getSource().clear();
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  /**
+   * 移除多个图层的要素
+   * @param layerNames <Array>
+   */
+  removeFeatureByLayerNames (layerNames) {
+    if (layerNames && Array.isArray(layerNames) && layerNames.length > 0) {
+      layerNames.forEach(item => {
+        this.removeFeatureByLayerName(item);
+      })
+    } else {
+      console.info('id为空或者不是数组！')
+    }
+  }
+
+  /**
+   * 移除当前要素
+   * @param feature
+   */
+  removeFeature (feature) {
+    if (feature && feature instanceof ol.Feature) {
+      let tragetLayer = this.getLayerByFeatuer(feature);
+      if (tragetLayer) {
+        let source = tragetLayer.getSource();
+        if (source && source.removeFeature) {
+          source.removeFeature(feature);
+        }
+      }
+    } else {
+      throw new Error('传入的不是要素!')
+    }
+  }
+
+  /**
+   * 通过id移除要素
+   * @param id
+   * @param layerName
+   */
+  removeFeatureById (id, layerName) {
+    if (this.map && id) {
+      if (layerName) {
+        let layer = this.getLayerByLayerName(layerName);
+        if (layer) {
+          let feature = layer.getSource().getFeatureById(id);
+          if (feature && feature instanceof ol.Feature) {
+            layer.getSource().removeFeature(feature);
+          }
+        }
+      } else {
+        let layers = this.map.getLayers().getArray();
+        layers.forEach(layer => {
+          if (layer && layer instanceof ol.layer.Vector && layer.getSource()) {
+            let feature = layer.getSource().getFeatureById(id);
+            if (feature && feature instanceof ol.Feature) {
+              layer.getSource().removeFeature(feature);
+            }
+          }
+        });
+      }
+    }
+  }
+
+  /**
+   * 移除多个要素
+   * @param ids
+   * @param layerName
+   */
+  removeFeatureByIds (ids, layerName) {
+    if (ids && Array.isArray(ids) && ids.length > 0) {
+      ids.forEach(item => {
+        this.removeFeatureById(item, layerName);
+      })
+    } else {
+      console.info('id为空或者不是数组！')
     }
   }
 }

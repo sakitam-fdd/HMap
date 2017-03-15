@@ -21,8 +21,10 @@ class Layer extends mix(Style) {
       let targetLayer = null;
       if (this.map) {
         let layers = this.map.getLayers().getArray();
-        targetLayer = layers.filter(layer => {
-          return layer.get('layerName') === layerName
+        layers.forEach(layer => {
+          if (layer.get('layerName') === layerName) {
+            targetLayer = layer;
+          }
         });
       }
       return targetLayer;
