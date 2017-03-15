@@ -37,11 +37,17 @@ class BaseLayers {
     }
 
     if (!options || !Array.isArray(options) || options.length <= 0) {
-      return [new ol.layer.Tile({
-        source: new ol.source.OSM()
+      return [new ol.layer.Group({
+        layers: [new ol.layer.Tile({
+          source: new ol.source.OSM()
+        })],
+        isBaseLayer: true
       })]
     } else {
-      return this._getBaseLayerGroup(params)
+      return [new ol.layer.Group({
+        layers: this._getBaseLayerGroup(params),
+        isBaseLayer: true
+      })]
     }
   }
 

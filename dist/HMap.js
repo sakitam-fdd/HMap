@@ -329,10 +329,6 @@ var _mixin = __webpack_require__(15);
 
 var _mixin2 = _interopRequireDefault(_mixin);
 
-var _LayerSwitcher = __webpack_require__(40);
-
-var _LayerSwitcher2 = _interopRequireDefault(_LayerSwitcher);
-
 var _Style = __webpack_require__(23);
 
 var _Style2 = _interopRequireDefault(_Style);
@@ -540,7 +536,7 @@ var Layer = function (_mix) {
   }]);
 
   return Layer;
-}((0, _mixin2.default)(_Style2.default, _LayerSwitcher2.default));
+}((0, _mixin2.default)(_Style2.default));
 
 exports.default = Layer;
 module.exports = exports['default'];
@@ -3228,107 +3224,7 @@ exports.default = config;
 module.exports = exports['default'];
 
 /***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _constants = __webpack_require__(2);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var LayerSwitcher = function () {
-  function LayerSwitcher(map) {
-    _classCallCheck(this, LayerSwitcher);
-
-    this.map = map || null;
-    if (!this.map) {
-      throw new Error('缺少地图对象！');
-    }
-  }
-
-  /**
-   * 获取当前底图（包含标注层）
-   * @private
-   */
-
-
-  _createClass(LayerSwitcher, [{
-    key: '_getBaseLayers',
-    value: function _getBaseLayers() {
-      var _this = this;
-
-      if (this.map) {
-        this.baseLayers = [];
-        this.map.getLayers().getArray().forEach(function (layer) {
-          if (layer && layer instanceof _constants.ol.layer.Group && layer.get('isBaseLayer')) {
-            layer.getLayers().getArray().forEach(function (_layer) {
-              if (_layer && _layer instanceof _constants.ol.layer.Tile && _layer.get('isBaseLayer')) {
-                _this.baseLayers.push(_layer);
-              }
-            });
-          }
-        });
-      }
-    }
-
-    /**
-     * 获取地图除标注层的layerNames
-     * @returns {Array|*}
-     */
-
-  }, {
-    key: 'getBaseLayerNames',
-    value: function getBaseLayerNames() {
-      this._getBaseLayers();
-      this.baseLayerNames = [];
-      if (this.baseLayers && Array.isArray(this.baseLayers) && this.baseLayers.length > 0) {
-        this.baseLayerNames = this.baseLayers.map(function (layer) {
-          var layerName = '';
-          if (layer.get('layerNames') && !layer.get('alias')) {
-            layerName = layer.get('layerNames');
-          }
-          return layerName;
-        });
-      }
-      return this.baseLayerNames;
-    }
-
-    /**
-     * 图层切换
-     * @param layerName
-     */
-
-  }, {
-    key: 'switchLayer',
-    value: function switchLayer(layerName) {
-      this._getBaseLayers();
-      this.baseLayers.forEach(function (layer) {
-        if (layer.get('layerName') === layerName || layer.get('alias') === layerName) {
-          layer.set('isDefault', true);
-          layer.setVisible(true);
-        } else {
-          layer.set('isDefault', false);
-          layer.setVisible(false);
-        }
-      });
-    }
-  }]);
-
-  return LayerSwitcher;
-}();
-
-exports.default = LayerSwitcher;
-module.exports = exports['default'];
-
-/***/ }),
+/* 40 */,
 /* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3523,11 +3419,17 @@ var BaseLayers = function () {
       }
 
       if (!options || !Array.isArray(options) || options.length <= 0) {
-        return [new _constants.ol.layer.Tile({
-          source: new _constants.ol.source.OSM()
+        return [new _constants.ol.layer.Group({
+          layers: [new _constants.ol.layer.Tile({
+            source: new _constants.ol.source.OSM()
+          })],
+          isBaseLayer: true
         })];
       } else {
-        return this._getBaseLayerGroup(params);
+        return [new _constants.ol.layer.Group({
+          layers: this._getBaseLayerGroup(params),
+          isBaseLayer: true
+        })];
       }
     }
 
@@ -10115,6 +10017,10 @@ var _Ex = __webpack_require__(36);
 
 var _Ex2 = _interopRequireDefault(_Ex);
 
+var _LayerSwitcher = __webpack_require__(104);
+
+var _LayerSwitcher2 = _interopRequireDefault(_LayerSwitcher);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var HMap = {};
@@ -10128,6 +10034,7 @@ HMap.Layer = _Layer2.default;
 HMap.Feature = _feature2.default;
 HMap.CoordsTransform = _CoordsTransform2.default;
 HMap.Ex = _Ex2.default;
+HMap.LayerSwitcher = _LayerSwitcher2.default;
 
 /**
  * Inherit the prototype methods from one constructor into another.
@@ -10164,6 +10071,107 @@ HMap.inherits = function (childCtor, parentCtor) {
 HMap.nullFunction = function () {};
 
 exports.default = HMap;
+module.exports = exports['default'];
+
+/***/ }),
+/* 104 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _constants = __webpack_require__(2);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var LayerSwitcher = function () {
+  function LayerSwitcher(map) {
+    _classCallCheck(this, LayerSwitcher);
+
+    this.map = map || null;
+    if (!this.map) {
+      throw new Error('缺少地图对象！');
+    }
+  }
+
+  /**
+   * 获取当前底图（包含标注层）
+   * @private
+   */
+
+
+  _createClass(LayerSwitcher, [{
+    key: '_getBaseLayers',
+    value: function _getBaseLayers() {
+      var _this = this;
+
+      if (this.map) {
+        this.baseLayers = [];
+        this.map.getLayers().getArray().forEach(function (layer) {
+          if (layer && layer instanceof _constants.ol.layer.Group && layer.get('isBaseLayer')) {
+            layer.getLayers().getArray().forEach(function (_layer) {
+              if (_layer && _layer instanceof _constants.ol.layer.Tile && _layer.get('isBaseLayer')) {
+                _this.baseLayers.push(_layer);
+              }
+            });
+          }
+        });
+      }
+    }
+
+    /**
+     * 获取地图除标注层的layerNames
+     * @returns {Array|*}
+     */
+
+  }, {
+    key: 'getBaseLayerNames',
+    value: function getBaseLayerNames() {
+      this._getBaseLayers();
+      this.baseLayerNames = [];
+      if (this.baseLayers && Array.isArray(this.baseLayers) && this.baseLayers.length > 0) {
+        this.baseLayerNames = this.baseLayers.map(function (layer) {
+          var layerName = '';
+          if (layer.get('layerNames') && !layer.get('alias')) {
+            layerName = layer.get('layerNames');
+          }
+          return layerName;
+        });
+      }
+      return this.baseLayerNames;
+    }
+
+    /**
+     * 图层切换
+     * @param layerName
+     */
+
+  }, {
+    key: 'switchLayer',
+    value: function switchLayer(layerName) {
+      this._getBaseLayers();
+      this.baseLayers.forEach(function (layer) {
+        if (layer.get('layerName') === layerName || layer.get('alias') === layerName) {
+          layer.set('isDefault', true);
+          layer.setVisible(true);
+        } else {
+          layer.set('isDefault', false);
+          layer.setVisible(false);
+        }
+      });
+    }
+  }]);
+
+  return LayerSwitcher;
+}();
+
+exports.default = LayerSwitcher;
 module.exports = exports['default'];
 
 /***/ })

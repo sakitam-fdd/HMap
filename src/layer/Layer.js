@@ -1,9 +1,8 @@
 import { ol } from '../constants'
 import mix from '../utils/mixin'
-import LayerSwitcher from './LayerSwitcher';
 import Style from '../style/Style'
 
-class Layer extends mix(Style, LayerSwitcher) {
+class Layer extends mix(Style) {
   constructor (map) {
     super();
     this.map = map || null;
