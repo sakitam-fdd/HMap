@@ -3030,12 +3030,12 @@ var CustomCircle = function () {
 
     this.map = map; //当前map对象
     this.sphere = new _constants.ol.Sphere(6378137);
-    this.center = options.center; //中心点
-    this.projection = this.map.getView().getProjection(); //投影
+    this.center = options.center;
+    this.projection = this.map.getView().getProjection();
     this.minRadius = 500; //最小半径
     this.maxRadius = 5000000; //最大半径
     this.distance = options.distance ? this.transformRadius(this.center, options.distance) : this.transformRadius(this.center, this.minRadius);
-    this.unit = options.distance ? options.distance : this.minRadius; //显示距离
+    this.unit = options.distance ? options.distance : this.minRadius;
     this.mouseIng = false; //移动状态 false (未移动)true (移动中)
     this.feature = this.addRangeCircle(); //圆的feature
     this.editor = this.addEditor(); //编辑器 overlay
@@ -3043,7 +3043,7 @@ var CustomCircle = function () {
 
   _createClass(CustomCircle, [{
     key: "addCustomCircle",
-    value: function addCustomCircle() {
+    value: function addCustomCircle(src) {
       //创建周边搜索插件
       // 创建一个临时图层 目前先写着 之后调用另一个里的 创建图层的方法
       var layer = new _constants.ol.layer.Vector({
@@ -3053,16 +3053,23 @@ var CustomCircle = function () {
       // 在map里添加该图层
       this.map.addLayer(layer);
 
-      //创建中心点
+      //添加范围圆
       layer.getSource().addFeature(this.feature);
+
+      //添加编辑器
       this.map.addOverlay(this.editor);
 
-      this.dragEditor(); // 开启拖拽事件
+      // 开启拖拽事件
+      this.dragEditor();
     }
+
+    /**
+     * 创建范围圆
+     */
+
   }, {
     key: "addRangeCircle",
     value: function addRangeCircle() {
-      //创建范围圆
       var feature = new _constants.ol.Feature({
         geometry: new _constants.ol.geom.Circle(this.center, this.distance)
       });
@@ -3070,13 +3077,14 @@ var CustomCircle = function () {
     }
 
     /**
-     * 添加中心点
+     * 创建中心点
+     * @param src
      * @returns {ol.Overlay}
      */
 
   }, {
     key: "addCenterPoint",
-    value: function addCenterPoint() {
+    value: function addCenterPoint(src) {
       var element = document.createElement("image");
       element.src = src;
       var centerPoint = new _constants.ol.Overlay({
@@ -3107,6 +3115,22 @@ var CustomCircle = function () {
       icon.setAttribute("id", "icon");
       icon.src = src;
       editor.appendChild(icon);
+      editor.appendChild(this.addText());
+      var overlay = new _constants.ol.Overlay({
+        element: editor
+      });
+      overlay.setPosition(this.feature.getGeometry().getLastCoordinate());
+      return overlay;
+    }
+
+    /**
+     * 创建text文本器
+     * @returns {Element}
+     */
+
+  }, {
+    key: "addText",
+    value: function addText() {
       var text = document.createElement("div");
       text.setAttribute("id", "range");
       text.innerHTML = this.unit + "m";
@@ -3123,12 +3147,7 @@ var CustomCircle = function () {
       text.style.left = "30px";
       text.style.top = "-24px";
       text.style.fontSize = "12px";
-      editor.appendChild(text);
-      var overlay = new _constants.ol.Overlay({
-        element: editor
-      });
-      overlay.setPosition(this.feature.getGeometry().getLastCoordinate());
-      return overlay;
+      return text;
     }
 
     /**
@@ -3144,24 +3163,23 @@ var CustomCircle = function () {
       var unit = radius;
       radius = this.transformRadius(this.center, radius);
       if (unit > this.maxRadius) {
-        unit = this.maxRadius;
         radius = this.transformRadius(this.center, this.maxRadius);
-      } else if (radius < this.minRadius) {
-        unit = this.minRadius;
+        unit = this.maxRadius;
+      } else if (unit < this.minRadius) {
         radius = this.transformRadius(this.center, this.minRadius);
+        unit = this.minRadius;
       }
       return { unit: unit, radius: radius };
     }
 
     /**
-     * 对编辑器进行拖拽操作
+     * 创建编辑器
      */
 
   }, {
     key: "dragEditor",
     value: function dragEditor() {
       var self = this;
-      //拖拽编辑器
       document.onmouseup = function (evt) {
         self.mouseIng = false;
       };
@@ -3172,40 +3190,40 @@ var CustomCircle = function () {
         if (self.mouseIng) {
           var radius = self.getRadius(event.coordinate);
           //重新设置圆的半径
-          self.featureM.getGeometry().setRadius(radius["radius"]);
+          self.feature.getGeometry().setRadius(radius["radius"]);
           //重新设置 text值
           var text = document.getElementById("range");
           text.innerHTML = parseInt(radius["unit"]) + "m";
           //重新设置overlay位置
-          self.editor.setPosition(self.featureM.getGeometry().getLastCoordinate());
+          self.editor.setPosition(self.feature.getGeometry().getLastCoordinate());
         }
       });
     }
 
     /**
-     * 坐标和半径的转换
-     * @param center 中心点
-     * @param meterRadius 半径
+     * 半径和坐标间的转换
+     * @param center
+     * @param meterRadius
      * @returns {number}
      */
 
   }, {
     key: "transformRadius",
     value: function transformRadius(center, meterRadius) {
-      var transformRadius = 0;
+      var transformRadiu = 0;
       switch (this.projection.getCode()) {
         case 'EPSG:4326':
-          var coordinate = this.sphere.offset(center, meterRadius, 270 / 360 * 2 * Math.PI); //计算偏移量
-          var dx = center[0] - coordinate[0];
-          var dy = center[1] - coordinate[1];
-          transformRadius = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+          var lastcoord = new _constants.ol.Sphere(6378137).offset(center, meterRadius, 270 / 360 * 2 * Math.PI); //计算偏移量
+          var dx = center[0] - lastcoord[0];
+          var dy = center[1] - lastcoord[1];
+          transformRadiu = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
           break;
         case 'EPSG:3857':
         case 'EPSG:102100':
-          transformRadius = meterRadius;
+          transformRadiu = meterRadius;
           break;
       }
-      return transformRadius;
+      return transformRadiu;
     }
   }]);
 

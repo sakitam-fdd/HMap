@@ -8,7 +8,6 @@
 </head>
 <body>
 <div id="map"></div>
-<link rel="stylesheet" href="../node_modules/openlayers/dist/ol.js"/>
 <script type="text/javascript">
   var map = new HMap.Map();
   map.initMap('map', {
@@ -25,7 +24,7 @@
 
   function addCi(coordinate) {
     var center = coordinate;
-    var distance = 20;
+    var distance = 2000000;
     var options = {
       center: center,
       distance: distance
