@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>测试地图切换</title>
-  <link rel="stylesheet" href="../node_modules/openlayers/dist/ol.css" type="text/css">
+  <link rel="stylesheet" href="../dist/HMap.css" type="text/css">
 </head>
 <body>
 <button onclick="changeLayer('vector')">基本地图</button>
@@ -131,10 +131,9 @@
     logo: {},
     baseLayers: [  // 不传时默认加载OSM地图。
       {
-        layerName: 'vector',
-        isDefault: true,
-        layerType: 'TileXYZ',
-        opaque: false, //图层是否不透明
+        layerName: 'vector', // 图层名，必传
+        isDefault: true, // 是否是默认图层
+        layerType: 'TileXYZ', // 图层类型（arcgis加载的为TileXYZ）
         layerUrl: 'http://171.34.40.68:6080/arcgis/rest/services/JXMAP_2016_2/MapServer',
       },
       {
@@ -143,11 +142,11 @@
         layer: 'img',
         isDefault: false,
         layerUrl: 'http://t{0-6}.tianditu.cn/img_c/wmts',
-        label: {
+        label: { // 对应的标注层
           layerName: 'TDTLabel',
           layerType: 'TitleWMTS',
           layer: 'cia',
-          alias: 'earth',
+          alias: 'earth', // 标注层所关联的图层
           isDefault: false,
           layerUrl: 'http://t{0-6}.tianditu.cn/cia_c/wmts'
         }
@@ -170,8 +169,10 @@
     ]
   });
   console.log(Maps);
+  // 创建图层切换插件时map对象必传（new HMap.Map().map）
   var layerSwitcher = new HMap.LayerSwitcher(Maps.map);
   function changeLayer (type) {
+    // type 对应的baseLayers图层组的layerName
     layerSwitcher.switchLayer(type)
   }
 </script>

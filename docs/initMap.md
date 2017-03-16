@@ -1,3 +1,5 @@
+## 加载一个简单的地图
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,16 +14,10 @@
   var Maps = new HMap.Map();
   Maps.initMap('map', {
     view: {
-      center: [0, 0],
-      // constrainRotation: false, // 旋转角度约束
+      center: [0, 0], // 视图中心点（必须）
       enableRotation: true, // 是否允许旋转
-//      extent: [],
-//      maxResolution: 0, // 非必须参数
-//      minResolution: 0, // 非必须参数
-//      maxZoom: 19, // 非必须参数
-//      minZoom: 0, // 非必须参数
-      projection: 'EPSG:3857',
-      rotation: 0,
+      projection: 'EPSG:3857', // 视图投影坐标系（不传时默认3857）
+      rotation: 0, // 视图旋转角（不传默认为0）
       zoom: 0, // resolution
       zoomFactor: 2 // 用于约束分变率的缩放因子（高分辨率设备需要注意）
     },
@@ -32,3 +28,4 @@
 </script>
 </body>
 </html>
+```

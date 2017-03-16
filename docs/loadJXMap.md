@@ -1,15 +1,13 @@
+## 加载江西地图
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>测试添加点</title>
+  <title>加载江西地图（arcgis服务）</title>
   <link rel="stylesheet" href="../dist/HMap.css" type="text/css">
 </head>
 <body>
-<button onclick="addPoint()">添加点</button>
-<button onclick="addPoints()">添加多点</button>
-<button onclick="removePointById()">通过ID移除标绘点</button>
-<button onclick="removePointByLayerName()">通过LayerName移除标绘点</button>
 <div id="map"></div>
 <script src="../dist/HMap.js"></script>
 <script type="text/javascript">
@@ -87,35 +85,10 @@
   var Maps = new HMap.Map();
   Maps.initMap('map', {
     interactions: {
-      altShiftDragRotate: true,
-      doubleClickZoom: true,
-      keyboard: true,
-      mouseWheelZoom: true,
-      shiftDragZoom: true,
-      dragPan: true,
-      pinchRotate: true,
-      pinchZoom: true,
-      zoomDelta: 1, // 缩放增量（默认一级）
-      zoomDuration: 500 // 缩放持续时间
-    },
-    controls: {
-      attribution: true,
-      attributionOptions: {
-        className: 'ol-attribution', // Default
-        target: 'attributionTarget',
-      },
-      rotate: true,
-      rotateOptions: {
-        className: 'ol-rotate', // Default
-        target: 'rotateTarget',
-      },
-      zoom: true,
-      zoomOptions: {
-        className: 'ol-zoom', // Default
-        target: 'zoomTarget',
-      },
-      overViewMapVisible: false,
-      scaleLineVisible: true
+      altShiftDragRotate: true, // 是否允许`alt + shift`拖拽旋转（默认允许）
+      doubleClickZoom: true, // 是否允许双击放大（默认允许）
+      mouseWheelZoom: true, // 是否允许滚轮缩放（默认允许）
+      shiftDragZoom: true,  // 是否允许`shift`加拖拽缩放（默认允许）
     },
     view: {
       center: [115.92466595234826, 27.428038204473552],
@@ -123,7 +96,13 @@
       fullExtent: [109.72859368643232, 24.010266905347684, 121.13105988819079, 30.76693489432357],
       tileSize: 256,
       origin: [-400, 399.9999999999998],
+      // constrainRotation: false, // 旋转角度约束
       enableRotation: true, // 是否允许旋转
+//      extent: [],
+//      maxResolution: 0, // 非必须参数
+//      minResolution: 0,
+//      maxZoom: 19,
+//      minZoom: 0,
       projection: 'EPSG:4326',
       rotation: 0,
       zoom: 1, // resolution
@@ -137,62 +116,41 @@
         layerType: 'TileXYZ',
         opaque: false, //图层是否不透明
         layerUrl: 'http://171.34.40.68:6080/arcgis/rest/services/JXMAP_2016_2/MapServer',
+      },
+      {
+        layerName: 'earth',
+        layerType: 'TitleWMTS',
+        layer: 'img',
+        isDefault: false,
+        layerUrl: 'http://t{0-6}.tianditu.cn/img_c/wmts',
+        label: {
+          layerName: 'TDTLabel',
+          layerType: 'TitleWMTS',
+          layer: 'cia',
+          alias: 'earth',
+          isDefault: false,
+          layerUrl: 'http://t{0-6}.tianditu.cn/cia_c/wmts'
+        }
+      },
+      {
+        layerName: 'panorama',
+        layerType: 'TitleWMTS',
+        layer: 'ter',
+        isDefault: false,
+        layerUrl: 'http://t{0-6}.tianditu.com/ter_c/wmts',
+        label: {
+          layerName: 'TDTLabel',
+          layerType: 'TitleWMTS',
+          layer: 'cia',
+          alias: 'panorama',
+          isDefault: false,
+          layerUrl: 'http://t{0-6}.tianditu.cn/cia_c/wmts'
+        }
       }
     ]
   });
   console.log(Maps);
-  var points = [
-    {
-      attributes: {
-        ID: '01',
-        QLDM: 'Y236360922L0050',
-        QLMC: '柏木桥',
-        LXBM: 'Y236360922',
-        LXMC: '赤兴至排江',
-        QLZXZH: '7.4650000000',
-        PYZH: '0.0000000000',
-        QLQC: '23.0000000000',
-        QMQK: '3.5000000000',
-        ASYNXFLDM: '1.0000000000',
-        XZQHBM: '360922'
-      },
-      geometry: 'POINT (115.92466595234826 27.428038204473552)',
-      geometryType: 'Point'
-    },
-    {
-      attributes: {
-        ID: '02',
-        QLDM: 'Y236360922L0050',
-        QLMC: '柏木桥02',
-        LXBM: 'Y236360922',
-        LXMC: '赤兴至排江',
-        QLZXZH: '7.4650000000',
-        PYZH: '0.0000000000',
-        QLQC: '23.0000000000',
-        QMQK: '3.5000000000',
-        ASYNXFLDM: '1.0000000000',
-        XZQHBM: '360922'
-      },
-      geometry: 'POINT (115.90466595234826 27.408038204473552)',
-      geometryType: 'Point'
-    }
-  ]
-  function addPoint () {
-    Maps.addPoint(points[0], {
-      layerName: 'test'
-    });
-  }
-  function addPoints () {
-    Maps.addPoints(points, {
-      layerName: 'test'
-    });
-  }
-  function removePointById () {
-    Maps.removeFeatureById('01')
-  }
-  function removePointByLayerName () {
-    Maps.removeFeatureByLayerName('test')
-  }
 </script>
 </body>
 </html>
+```
