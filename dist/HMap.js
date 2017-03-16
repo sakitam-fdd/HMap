@@ -3029,21 +3029,40 @@ var CustomCircle = function () {
     _classCallCheck(this, CustomCircle);
 
     this.map = map; //当前map对象
+    this.options = options; //当前传输参数
     this.sphere = new _constants.ol.Sphere(6378137);
     this.center = options.center;
     this.projection = this.map.getView().getProjection();
     this.minRadius = 500; //最小半径
     this.maxRadius = 5000000; //最大半径
+    this.defaultSrc = "../example/images/marker.png"; //默认中心点src样式
+    this.centerPoint = this.addCenterPoint(options.centerPoint ? options.centerPoint.src ? options.centerPoint.src : this.defaultSrc : this.defaultSrc); //中心点
     this.distance = options.distance ? this.transformRadius(this.center, options.distance) : this.transformRadius(this.center, this.minRadius);
     this.unit = options.distance ? options.distance : this.minRadius;
     this.mouseIng = false; //移动状态 false (未移动)true (移动中)
+    this.defaultStyle = new _constants.ol.style.Style({
+      fill: new _constants.ol.style.Fill({
+        color: 'rgba(71, 129, 217, 0.2)'
+      }),
+      stroke: new _constants.ol.style.Stroke({
+        color: 'rgba(71, 129, 217, 1)',
+        width: 1
+      }),
+      image: new _constants.ol.style.Circle({
+        radius: 5,
+        fill: new _constants.ol.style.Fill({
+          color: 'rgba(71, 129, 217, 0.2)'
+        })
+      })
+    }); //默认样式
+    this.style = options.style ? options.style : this.defaultStyle; //圆的样式
     this.feature = this.addRangeCircle(); //圆的feature
     this.editor = this.addEditor(); //编辑器 overlay
   }
 
   _createClass(CustomCircle, [{
-    key: "addCustomCircle",
-    value: function addCustomCircle(src) {
+    key: 'addCustomCircle',
+    value: function addCustomCircle() {
       //创建周边搜索插件
       // 创建一个临时图层 目前先写着 之后调用另一个里的 创建图层的方法
       var layer = new _constants.ol.layer.Vector({
@@ -3055,10 +3074,9 @@ var CustomCircle = function () {
 
       //添加范围圆
       layer.getSource().addFeature(this.feature);
-
+      this.map.addOverlay(this.centerPoint);
       //添加编辑器
       this.map.addOverlay(this.editor);
-
       // 开启拖拽事件
       this.dragEditor();
     }
@@ -3068,11 +3086,12 @@ var CustomCircle = function () {
      */
 
   }, {
-    key: "addRangeCircle",
+    key: 'addRangeCircle',
     value: function addRangeCircle() {
       var feature = new _constants.ol.Feature({
         geometry: new _constants.ol.geom.Circle(this.center, this.distance)
       });
+      feature.setStyle(this.style);
       return feature;
     }
 
@@ -3083,9 +3102,9 @@ var CustomCircle = function () {
      */
 
   }, {
-    key: "addCenterPoint",
+    key: 'addCenterPoint',
     value: function addCenterPoint(src) {
-      var element = document.createElement("image");
+      var element = document.createElement("img");
       element.src = src;
       var centerPoint = new _constants.ol.Overlay({
         element: element
@@ -3100,7 +3119,7 @@ var CustomCircle = function () {
      */
 
   }, {
-    key: "addEditor",
+    key: 'addEditor',
     value: function addEditor() {
       var src = "http://webmap0.map.bdstatic.com/wolfman/static/common/images/nbsearch_366e590.png";
       var editor = document.createElement("div");
@@ -3129,7 +3148,7 @@ var CustomCircle = function () {
      */
 
   }, {
-    key: "addText",
+    key: 'addText',
     value: function addText() {
       var text = document.createElement("div");
       text.setAttribute("id", "range");
@@ -3157,7 +3176,7 @@ var CustomCircle = function () {
      */
 
   }, {
-    key: "getRadius",
+    key: 'getRadius',
     value: function getRadius(coordinate) {
       var radius = this.sphere.haversineDistance(this.center, coordinate);
       var unit = radius;
@@ -3173,15 +3192,16 @@ var CustomCircle = function () {
     }
 
     /**
-     * 创建编辑器
+     * 拖拽编辑器
      */
 
   }, {
-    key: "dragEditor",
+    key: 'dragEditor',
     value: function dragEditor() {
       var self = this;
       document.onmouseup = function (evt) {
         self.mouseIng = false;
+        self.options.successCallback(self._getGeometry(), self._getCenter(), self._);
       };
       this.editor.getElement().onmousedown = function (evt) {
         self.mouseIng = true;
@@ -3208,7 +3228,7 @@ var CustomCircle = function () {
      */
 
   }, {
-    key: "transformRadius",
+    key: 'transformRadius',
     value: function transformRadius(center, meterRadius) {
       var transformRadiu = 0;
       switch (this.projection.getCode()) {
@@ -3224,6 +3244,113 @@ var CustomCircle = function () {
           break;
       }
       return transformRadiu;
+    }
+
+    /**
+     * 获取圆的geometry
+     * @private
+     */
+
+  }, {
+    key: '_getGeometry',
+    value: function _getGeometry() {
+      return this.feature.getGeometry();
+    }
+
+    /**
+     * 获取圆的中心点
+     * @returns {ol.Coordinate|ol.Coordinate|undefined|*}
+     * @private
+     */
+
+  }, {
+    key: '_getCenter',
+    value: function _getCenter() {
+      return this._getGeometry().getCenter();
+    }
+
+    /**
+     * 获取圆的半径
+     * @returns {number|*}
+     * @private
+     */
+
+  }, {
+    key: '_getRadius',
+    value: function _getRadius() {
+      return this._getGeometry().getRadius();
+    }
+
+    /**
+     * 获取圆的线上的坐标
+     * @private
+     */
+
+  }, {
+    key: '_getCoordinates',
+    value: function _getCoordinates() {
+      return this._getGeometry().getCoordinates();
+    }
+
+    /**
+     * 获取圆的第一个坐标
+     * @returns {*}
+     * @private
+     */
+
+  }, {
+    key: '_getFirstCoordinate',
+    value: function _getFirstCoordinate() {
+      return this._getCoordinates()[0];
+    }
+
+    /**
+     * 获取圆的最后一个坐标
+     * @returns {*}
+     * @private
+     */
+
+  }, {
+    key: '_getLastCoordinate',
+    value: function _getLastCoordinate() {
+      return this._getCoordinates()[this._getCoordinates().length - 1];
+    }
+
+    /**
+     * 设置圆的半径
+     * @param radius 半径长度
+     * @private
+     */
+
+  }, {
+    key: '_setRadius',
+    value: function _setRadius(radius) {
+      this._getGeometry().setRadius(radius);
+    }
+
+    /**
+     * 设置圆的圆心
+     * @param center 圆心坐标[x,y]
+     * @private
+     */
+
+  }, {
+    key: '_setCenter',
+    value: function _setCenter(center) {
+      this._getGeometry().setCenter(center);
+    }
+
+    /**
+     * 设置中心点 样式
+     * @param src 图片的路径
+     * @private
+     */
+
+  }, {
+    key: '_setCenterPoint',
+    value: function _setCenterPoint(src) {
+      var element = this.centerPoint.getElement();
+      element.src = src;
     }
   }]);
 

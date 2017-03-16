@@ -5,19 +5,39 @@ import {ol} from '../constants'
 class CustomCircle {
   constructor(map, options) {
     this.map = map; //当前map对象
+    this.options = options; //当前传输参数
     this.sphere = new ol.Sphere(6378137);
     this.center = options.center;
     this.projection = this.map.getView().getProjection();
     this.minRadius = 500; //最小半径
     this.maxRadius = 5000000; //最大半径
+    this.defaultSrc = "../example/images/marker.png"; //默认中心点src样式
+    this.centerPoint = this.addCenterPoint(options.centerPoint ? (options.centerPoint.src ? options.centerPoint.src : this.defaultSrc) : this.defaultSrc); //中心点
     this.distance = options.distance ? this.transformRadius(this.center, options.distance) : this.transformRadius(this.center, this.minRadius);
     this.unit = options.distance ? options.distance : this.minRadius;
     this.mouseIng = false;  //移动状态 false (未移动)true (移动中)
+    this.defaultStyle = new ol.style.Style({
+      fill: new ol.style.Fill({
+        color: 'rgba(71, 129, 217, 0.2)'
+      }),
+      stroke: new ol.style.Stroke({
+        color: 'rgba(71, 129, 217, 1)',
+        width: 1
+      }),
+      image: new ol.style.Circle({
+        radius: 5,
+        fill: new ol.style.Fill({
+          color: 'rgba(71, 129, 217, 0.2)'
+        })
+      })
+    }); //默认样式
+    this.style = options.style ? options.style : this.defaultStyle; //圆的样式
     this.feature = this.addRangeCircle();   //圆的feature
     this.editor = this.addEditor(); //编辑器 overlay
+
   }
 
-  addCustomCircle(src) {
+  addCustomCircle() {
     //创建周边搜索插件
     // 创建一个临时图层 目前先写着 之后调用另一个里的 创建图层的方法
     let layer = new ol.layer.Vector({
@@ -29,10 +49,9 @@ class CustomCircle {
 
     //添加范围圆
     layer.getSource().addFeature(this.feature);
-
+    this.map.addOverlay(this.centerPoint);
     //添加编辑器
     this.map.addOverlay(this.editor);
-
     // 开启拖拽事件
     this.dragEditor();
 
@@ -45,6 +64,7 @@ class CustomCircle {
     let feature = new ol.Feature({
       geometry: new ol.geom.Circle(this.center, this.distance)
     });
+    feature.setStyle(this.style);
     return feature;
   }
 
@@ -54,7 +74,7 @@ class CustomCircle {
    * @returns {ol.Overlay}
    */
   addCenterPoint(src) {
-    let element = document.createElement("image");
+    let element = document.createElement("img");
     element.src = src;
     let centerPoint = new ol.Overlay({
       element: element
@@ -134,12 +154,13 @@ class CustomCircle {
   }
 
   /**
-   * 创建编辑器
+   * 拖拽编辑器
    */
   dragEditor() {
     var self = this;
     document.onmouseup = function (evt) {
       self.mouseIng = false;
+      self.options.successCallback(self._getGeometry(), self._getCenter(), self._getRadius())
     };
     this.editor.getElement().onmousedown = function (evt) {
       self.mouseIng = true;
@@ -181,6 +202,85 @@ class CustomCircle {
     return transformRadiu
   }
 
+  /**
+   * 获取圆的geometry
+   * @private
+   */
+  _getGeometry() {
+    return this.feature.getGeometry()
+  }
+
+  /**
+   * 获取圆的中心点
+   * @returns {ol.Coordinate|ol.Coordinate|undefined|*}
+   * @private
+   */
+  _getCenter() {
+    return this._getGeometry().getCenter()
+  }
+
+  /**
+   * 获取圆的半径
+   * @returns {number|*}
+   * @private
+   */
+  _getRadius() {
+    return this._getGeometry().getRadius()
+  }
+
+  /**
+   * 获取圆的线上的坐标
+   * @private
+   */
+  _getCoordinates() {
+    return this._getGeometry().getCoordinates()
+  }
+
+  /**
+   * 获取圆的第一个坐标
+   * @returns {*}
+   * @private
+   */
+  _getFirstCoordinate() {
+    return this._getCoordinates()[0]
+  }
+
+  /**
+   * 获取圆的最后一个坐标
+   * @returns {*}
+   * @private
+   */
+  _getLastCoordinate() {
+    return this._getCoordinates()[this._getCoordinates().length - 1]
+  }
+
+  /**
+   * 设置圆的半径
+   * @param radius 半径长度
+   * @private
+   */
+  _setRadius(radius) {
+    this._getGeometry().setRadius(radius)
+  }
+
+  /**
+   * 设置圆的圆心
+   * @param center 圆心坐标[x,y]
+   * @private
+   */
+  _setCenter(center) {
+    this._getGeometry().setCenter(center)
+  }
+
+  /**
+   * 设置中心点 样式
+   * @param src 图片的路径
+   * @private
+   */
+  _setCenterPoint(src) {
+    let element = this.centerPoint.getElement();
+    element.src = src;
+  }
 }
 
 export default CustomCircle
