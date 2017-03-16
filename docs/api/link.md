@@ -7,6 +7,7 @@
 ```bash
 git clone https://github.com/smileFDD/HMap.git
 npm install
+npm run dev
 npm run build
 ```
 
