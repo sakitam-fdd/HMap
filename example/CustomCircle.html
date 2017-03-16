@@ -8,44 +8,37 @@
 </head>
 <body>
 <div id="map"></div>
-<link rel="stylesheet" href="../node_modules/openlayers/dist/ol.js"/>
+
 <script type="text/javascript">
   var map = new HMap.Map();
   map.initMap('map', {
     view: {
-      center: [0,0],
+      center: [0, 0],
       zoom: 3, // resolution
       projection: "EPSG:4326"    //j20(3857)  4490
     }
   });
   map._addScaleLine();
-  map.map.once("click",function (evt) {
-   addCi(evt.coordinate);
-   // addCircle(evt.coordinate);
+  map.map.once("click", function (evt) {
+    addCi(evt.coordinate);
   })
-
-  function addCircle(coor) {
-    var layer = new ol.layer.Vector({
-      source: new ol.source.Vector(),
-      layerName: "CustomCircle"
-    });
-    var circleFeat = new ol.Feature({
-      geometry: new ol.geom.Circle(coor, 2000000)
-    })
-
-    map.map.addLayer(layer)
-  }
+  var custom = null;
   function addCi(coordinate) {
     var center = coordinate;
     var distance = 2000000;
+    var callback = function (geometry, center, radius) {
+      //console.info(center)
+    }
     var options = {
       center: center,
-      distance: distance
+      distance: distance,
+      successCallback: callback
     };
     var customCircle = new HMap.CustomCircle(map.map, options);
-    customCircle.addCustomCircle("F:\workspace\copy\HMap\example\images\marker.png");
-  }
+    custom = customCircle;
+    customCircle.addCustomCircle();
 
+  }
 
 </script>
 </body>
