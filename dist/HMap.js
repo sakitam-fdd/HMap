@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 101);
+/******/ 	return __webpack_require__(__webpack_require__.s = 103);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -2323,9 +2323,10 @@ var MAX_ITER = 20;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__global__ = __webpack_require__(67);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projString__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__wkt_parser__ = __webpack_require__(34);
 
 
-//import wkt from 'wkt-parser';
+
 
 function defs(name) {
   /*global console*/
@@ -2337,7 +2338,7 @@ function defs(name) {
         defs[name] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__projString__["a" /* default */])(arguments[1]);
       }
       else {
-        defs[name] = wkt(arguments[1]);
+        defs[name] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__wkt_parser__["a" /* default */])(arguments[1]);
       }
     } else {
       defs[name] = def;
@@ -2804,6 +2805,166 @@ function transform(source, dest, point) {
 
 /***/ }),
 /* 34 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parser__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__process__ = __webpack_require__(102);
+var D2R = 0.01745329251994329577;
+
+
+
+
+
+function rename(obj, params) {
+  var outName = params[0];
+  var inName = params[1];
+  if (!(outName in obj) && (inName in obj)) {
+    obj[outName] = obj[inName];
+    if (params.length === 3) {
+      obj[outName] = params[2](obj[outName]);
+    }
+  }
+}
+
+function d2r(input) {
+  return input * D2R;
+}
+
+function cleanWKT(wkt) {
+  if (wkt.type === 'GEOGCS') {
+    wkt.projName = 'longlat';
+  } else if (wkt.type === 'LOCAL_CS') {
+    wkt.projName = 'identity';
+    wkt.local = true;
+  } else {
+    if (typeof wkt.PROJECTION === 'object') {
+      wkt.projName = Object.keys(wkt.PROJECTION)[0];
+    } else {
+      wkt.projName = wkt.PROJECTION;
+    }
+  }
+  if (wkt.UNIT) {
+    wkt.units = wkt.UNIT.name.toLowerCase();
+    if (wkt.units === 'metre') {
+      wkt.units = 'meter';
+    }
+    if (wkt.UNIT.convert) {
+      if (wkt.type === 'GEOGCS') {
+        if (wkt.DATUM && wkt.DATUM.SPHEROID) {
+          wkt.to_meter = wkt.UNIT.convert*wkt.DATUM.SPHEROID.a;
+        }
+      } else {
+        wkt.to_meter = wkt.UNIT.convert, 10;
+      }
+    }
+  }
+  var geogcs = wkt.GEOGCS;
+  if (wkt.type === 'GEOGCS') {
+    geogcs = wkt;
+  }
+  if (geogcs) {
+    //if(wkt.GEOGCS.PRIMEM&&wkt.GEOGCS.PRIMEM.convert){
+    //  wkt.from_greenwich=wkt.GEOGCS.PRIMEM.convert*D2R;
+    //}
+    if (geogcs.DATUM) {
+      wkt.datumCode = geogcs.DATUM.name.toLowerCase();
+    } else {
+      wkt.datumCode = geogcs.name.toLowerCase();
+    }
+    if (wkt.datumCode.slice(0, 2) === 'd_') {
+      wkt.datumCode = wkt.datumCode.slice(2);
+    }
+    if (wkt.datumCode === 'new_zealand_geodetic_datum_1949' || wkt.datumCode === 'new_zealand_1949') {
+      wkt.datumCode = 'nzgd49';
+    }
+    if (wkt.datumCode === 'wgs_1984') {
+      if (wkt.PROJECTION === 'Mercator_Auxiliary_Sphere') {
+        wkt.sphere = true;
+      }
+      wkt.datumCode = 'wgs84';
+    }
+    if (wkt.datumCode.slice(-6) === '_ferro') {
+      wkt.datumCode = wkt.datumCode.slice(0, - 6);
+    }
+    if (wkt.datumCode.slice(-8) === '_jakarta') {
+      wkt.datumCode = wkt.datumCode.slice(0, - 8);
+    }
+    if (~wkt.datumCode.indexOf('belge')) {
+      wkt.datumCode = 'rnb72';
+    }
+    if (geogcs.DATUM && geogcs.DATUM.SPHEROID) {
+      wkt.ellps = geogcs.DATUM.SPHEROID.name.replace('_19', '').replace(/[Cc]larke\_18/, 'clrk');
+      if (wkt.ellps.toLowerCase().slice(0, 13) === 'international') {
+        wkt.ellps = 'intl';
+      }
+
+      wkt.a = geogcs.DATUM.SPHEROID.a;
+      wkt.rf = parseFloat(geogcs.DATUM.SPHEROID.rf, 10);
+    }
+    if (~wkt.datumCode.indexOf('osgb_1936')) {
+      wkt.datumCode = 'osgb36';
+    }
+  }
+  if (wkt.b && !isFinite(wkt.b)) {
+    wkt.b = wkt.a;
+  }
+
+  function toMeter(input) {
+    var ratio = wkt.to_meter || 1;
+    return input * ratio;
+  }
+  var renamer = function(a) {
+    return rename(wkt, a);
+  };
+  var list = [
+    ['standard_parallel_1', 'Standard_Parallel_1'],
+    ['standard_parallel_2', 'Standard_Parallel_2'],
+    ['false_easting', 'False_Easting'],
+    ['false_northing', 'False_Northing'],
+    ['central_meridian', 'Central_Meridian'],
+    ['latitude_of_origin', 'Latitude_Of_Origin'],
+    ['latitude_of_origin', 'Central_Parallel'],
+    ['scale_factor', 'Scale_Factor'],
+    ['k0', 'scale_factor'],
+    ['latitude_of_center', 'Latitude_of_center'],
+    ['lat0', 'latitude_of_center', d2r],
+    ['longitude_of_center', 'Longitude_Of_Center'],
+    ['longc', 'longitude_of_center', d2r],
+    ['x0', 'false_easting', toMeter],
+    ['y0', 'false_northing', toMeter],
+    ['long0', 'central_meridian', d2r],
+    ['lat0', 'latitude_of_origin', d2r],
+    ['lat0', 'standard_parallel_1', d2r],
+    ['lat1', 'standard_parallel_1', d2r],
+    ['lat2', 'standard_parallel_2', d2r],
+    ['alpha', 'azimuth', d2r],
+    ['srsCode', 'name']
+  ];
+  list.forEach(renamer);
+  if (!wkt.long0 && wkt.longc && (wkt.projName === 'Albers_Conic_Equal_Area' || wkt.projName === 'Lambert_Azimuthal_Equal_Area')) {
+    wkt.long0 = wkt.longc;
+  }
+  if (!wkt.lat_ts && wkt.lat1 && (wkt.projName === 'Stereographic_South_Pole' || wkt.projName === 'Polar Stereographic (variant B)')) {
+    wkt.lat0 = d2r(wkt.lat1 > 0 ? 90 : -90);
+    wkt.lat_ts = wkt.lat1;
+  }
+}
+/* harmony default export */ __webpack_exports__["a"] = function(wkt) {
+  var lisp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__parser__["a" /* default */])(wkt);
+  var type = lisp.shift();
+  var name = lisp.shift();
+  lisp.unshift(['name', name]);
+  lisp.unshift(['type', type]);
+  var obj = {};
+  __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__process__["a" /* sExpr */])(lisp, obj);
+  cleanWKT(obj);
+  return obj;
+};
+
+
+/***/ }),
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2966,185 +3127,6 @@ var Map = function (_mix) {
 }((0, _mixin2.default)(_baseLayer2.default, _Controls2.default, _Interactions2.default, _View2.default, _Style2.default, _Layer2.default, _feature2.default));
 
 exports.default = Map;
-module.exports = exports['default'];
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * 周边搜索 插件
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
-
-
-var _constants = __webpack_require__(2);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var CustomCircle = function () {
-  function CustomCircle(map, options) {
-    _classCallCheck(this, CustomCircle);
-
-    this.map = map; //当前map对象
-    this.center = options.center;
-    this.minRadius = 500; //最小半径
-    this.maxRadius = 50000; //最大半径
-    this.distance = options.distance ? options.distance : this.minRadius;
-    this.mouseIng = false; //移动状态 false (未移动)true (移动中)
-    this.feature = this.addRangeCircle(); //圆的feature
-    this.editor = this.addEditor(); //编辑器 overlay
-    this.text = this.distance + "m"; //text文本默认显示
-  }
-
-  _createClass(CustomCircle, [{
-    key: "addCustomCircle",
-    value: function addCustomCircle(src) {
-      //创建周边搜索插件
-      // 创建一个临时图层 目前先写着 之后调用另一个里的 创建图层的方法
-      var layer = new _constants.ol.layer.Vector({
-        source: new _constants.ol.source.Vector(),
-        layerName: "CustomCircle"
-      });
-      // 在map里添加该图层
-      this.map.addLayer(layer);
-      //distance = distance ? distance : this.minRadius;
-
-      //创建中心点
-      //let centerPoint = this.addCenterPoint(src, this.center);
-      //this.map.addOverlay(centerPoint);
-      layer.getSource().addFeature(this.feature);
-
-      //创建编辑器
-      //this.editor = this.addEditor(this.feature.getGeometry().getLastCoordinate(), distance);
-
-      //this.map.addOverlay(this.editor);
-
-      //this.dragEditor(); // 开启拖拽事件
-    }
-  }, {
-    key: "addRangeCircle",
-    value: function addRangeCircle() {
-      //创建范围圆
-      var feature = new _constants.ol.Feature({
-        geometry: new _constants.ol.geom.Circle(this.center, this.distance)
-      });
-      return feature;
-    }
-  }, {
-    key: "addCenterPoint",
-    value: function addCenterPoint(src) {
-      //添加中心点
-      var element = document.createElement("image");
-      element.src = src;
-      var centerPoint = new _constants.ol.Overlay({
-        element: element
-      });
-      centerPoint.setPosition(this.center);
-      return centerPoint;
-    }
-  }, {
-    key: "addEditor",
-    value: function addEditor() {
-      //创建编辑器
-      var src = "http://webmap0.map.bdstatic.com/wolfman/static/common/images/nbsearch_366e590.png";
-      var editor = document.createElement("div");
-      editor.setAttribute("id", "editor");
-      editor.style.width = "100px";
-      editor.style.height = "20px";
-      editor.style.position = "relative";
-      editor.style.left = "-18px";
-      editor.style.top = "-7px";
-      editor.style.overflow = "hidden";
-      var icon = document.createElement("img");
-      icon.setAttribute("id", "icon");
-      icon.src = src;
-      editor.appendChild(icon);
-      var text = document.createElement("div");
-      text.setAttribute("id", "range");
-      text.innerHTML = this.distance + "m";
-      text.style.width = "63px";
-      text.style.height = "18px";
-      text.style.lineHeight = "18px";
-      text.style.border = "1px solid black";
-      text.style.color = "black";
-      text.style.background = "white";
-      text.style.float = "left";
-      text.style.marginLeft = "5px";
-      text.style.textAlign = "center";
-      text.style.position = "relative";
-      text.style.left = "30px";
-      text.style.top = "-24px";
-      text.style.fontSize = "12px";
-      this.text = text;
-      editor.appendChild(text);
-
-      console.info(this.feature.getGeometry().getLastCoordinate());
-      var overlay = new _constants.ol.Overlay({
-        element: editor
-      });
-      overlay.setPosition(this.feature.getGeometry().getLastCoordinate());
-      return overlay;
-    }
-
-    /**
-     * 设置半径值
-     * @param center 圆的中心点
-     * @param coordinate 当前移动到的位置的坐标
-     * @returns {number} 返回圆的半径
-     */
-
-  }, {
-    key: "getRadius",
-    value: function getRadius(coordinate) {
-      var radius = Math.sqrt(Math.pow(coordinate[0] - this.center[0], 2) + Math.pow(coordinate[1] - this.center[1], 2));
-      if (radius > this.maxRadius) {
-        radius = this.maxRadius;
-      } else if (radius < this.minRadius) {
-        radius = this.minRadius;
-      }
-      return radius;
-    }
-  }, {
-    key: "dragEditor",
-    value: function dragEditor() {
-      var self = this;
-      //let mouseIng = this.mouseIng;
-      //let feature = this.feature;
-      //let text = this.text;
-      //let editor = this.editor;
-      //拖拽编辑器
-      document.onmouseup = function (evt) {
-        self.mouseIng = false;
-      };
-      this.editor.getElement().onmousedown = function (evt) {
-        self.mouseIng = true;
-      };
-      this.map.on("pointermove", function (event) {
-        if (self.mouseIng) {
-
-          var radius = self.getRadius(event.coordinate);
-          //重新设置圆的半径
-          self.feature.getGeometry().setRadius(radius); //全局方法和全局对象如何调用
-          //重新设置 text值
-          self.text.innerHTML = parseInt(radius) + "m";
-          //重新设置overlay位置
-          self.editor.setPosition(self.feature.getGeometry().getLastCoordinate());
-        }
-      });
-    }
-  }]);
-
-  return CustomCircle;
-}();
-
-exports.default = CustomCircle;
 module.exports = exports['default'];
 
 /***/ }),
@@ -6269,9 +6251,10 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8__projs__["a" /* default */])(_
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defs__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projString__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__wkt_parser__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__projString__ = __webpack_require__(31);
 
-//import wkt from 'wkt-parser';
+
 
 function testObj(code){
   return typeof code === 'string';
@@ -6295,10 +6278,10 @@ function parse(code){
       return __WEBPACK_IMPORTED_MODULE_0__defs__["a" /* default */][code];
     }
     if (testWKT(code)) {
-      return wkt(code);
+      return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__wkt_parser__["a" /* default */])(code);
     }
     if (testProj(code)) {
-      return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__projString__["a" /* default */])(code);
+      return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__projString__["a" /* default */])(code);
     }
   }else{
     return code;
@@ -9799,19 +9782,19 @@ module.exports = {
 	"_args": [
 		[
 			{
-				"raw": "proj4@^2.4.3",
+				"raw": "proj4@2.4.3",
 				"scope": null,
 				"escapedName": "proj4",
 				"name": "proj4",
-				"rawSpec": "^2.4.3",
-				"spec": ">=2.4.3 <3.0.0",
-				"type": "range"
+				"rawSpec": "2.4.3",
+				"spec": "2.4.3",
+				"type": "version"
 			},
-			"F:\\workspace\\copy\\HMap"
+			"H:\\Project\\HMap"
 		]
 	],
 	"_cnpm_publish_time": 1488570791097,
-	"_from": "proj4@>=2.4.3 <3.0.0",
+	"_from": "proj4@2.4.3",
 	"_id": "proj4@2.4.3",
 	"_inCache": true,
 	"_location": "/proj4",
@@ -9827,22 +9810,23 @@ module.exports = {
 	"_npmVersion": "4.0.5",
 	"_phantomChildren": {},
 	"_requested": {
-		"raw": "proj4@^2.4.3",
+		"raw": "proj4@2.4.3",
 		"scope": null,
 		"escapedName": "proj4",
 		"name": "proj4",
-		"rawSpec": "^2.4.3",
-		"spec": ">=2.4.3 <3.0.0",
-		"type": "range"
+		"rawSpec": "2.4.3",
+		"spec": "2.4.3",
+		"type": "version"
 	},
 	"_requiredBy": [
+		"#USER",
 		"/"
 	],
-	"_resolved": "http://r.cnpmjs.org/proj4/download/proj4-2.4.3.tgz",
+	"_resolved": "https://registry.npm.taobao.org/proj4/download/proj4-2.4.3.tgz",
 	"_shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
 	"_shrinkwrap": null,
-	"_spec": "proj4@^2.4.3",
-	"_where": "F:\\workspace\\copy\\HMap",
+	"_spec": "proj4@2.4.3",
+	"_where": "H:\\Project\\HMap",
 	"author": "",
 	"bugs": {
 		"url": "https://github.com/proj4js/proj4js/issues"
@@ -9904,7 +9888,7 @@ module.exports = {
 		"shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
 		"size": 116887,
 		"noattachment": false,
-		"tarball": "http://r.cnpmjs.org/proj4/download/proj4-2.4.3.tgz"
+		"tarball": "http://registry.npm.taobao.org/proj4/download/proj4-2.4.3.tgz"
 	},
 	"gitHead": "e975a5462ad7abb23e33ea75281eb749e77e1510",
 	"homepage": "https://github.com/proj4js/proj4js#readme",
@@ -10046,6 +10030,296 @@ module.exports = g;
 
 /***/ }),
 /* 101 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = parseString;
+
+var NEUTRAL = 1;
+var KEYWORD = 2;
+var NUMBER = 3;
+var QUOTED = 4;
+var AFTERQUOTE = 5;
+var ENDED = -1;
+var whitespace = /\s/;
+var latin = /[A-Za-z]/;
+var keyword = /[A-Za-z84]/;
+var endThings = /[,\]]/;
+var digets = /[\d\.E\-\+]/;
+// const ignoredChar = /[\s_\-\/\(\)]/g;
+function Parser(text) {
+  if (typeof text !== 'string') {
+    throw new Error('not a string');
+  }
+  this.text = text.trim();
+  this.level = 0;
+  this.place = 0;
+  this.root = null;
+  this.stack = [];
+  this.currentObject = null;
+  this.state = NEUTRAL;
+}
+Parser.prototype.readCharicter = function() {
+  var char = this.text[this.place++];
+  if (this.state !== QUOTED) {
+    while (whitespace.test(char)) {
+      if (this.place >= this.text.length) {
+        return;
+      }
+      char = this.text[this.place++];
+    }
+  }
+  switch (this.state) {
+    case NEUTRAL:
+      return this.neutral(char);
+    case KEYWORD:
+      return this.keyword(char)
+    case QUOTED:
+      return this.quoted(char);
+    case AFTERQUOTE:
+      return this.afterquote(char);
+    case NUMBER:
+      return this.number(char);
+    case ENDED:
+      return;
+  }
+};
+Parser.prototype.afterquote = function(char) {
+  if (char === '"') {
+    this.word += '"';
+    this.state = QUOTED;
+    return;
+  }
+  if (endThings.test(char)) {
+    this.word = this.word.trim();
+    this.afterItem(char);
+    return;
+  }
+  throw new Error('havn\'t handled "' +char + '" in afterquote yet, index ' + this.place);
+};
+Parser.prototype.afterItem = function(char) {
+  if (char === ',') {
+    if (this.word !== null) {
+      this.currentObject.push(this.word);
+    }
+    this.word = null;
+    this.state = NEUTRAL;
+    return;
+  }
+  if (char === ']') {
+    this.level--;
+    if (this.word !== null) {
+      this.currentObject.push(this.word);
+      this.word = null;
+    }
+    this.state = NEUTRAL;
+    this.currentObject = this.stack.pop();
+    if (!this.currentObject) {
+      this.state = ENDED;
+    }
+
+    return;
+  }
+};
+Parser.prototype.number = function(char) {
+  if (digets.test(char)) {
+    this.word += char;
+    return;
+  }
+  if (endThings.test(char)) {
+    this.word = parseFloat(this.word);
+    this.afterItem(char);
+    return;
+  }
+  throw new Error('havn\'t handled "' +char + '" in number yet, index ' + this.place);
+};
+Parser.prototype.quoted = function(char) {
+  if (char === '"') {
+    this.state = AFTERQUOTE;
+    return;
+  }
+  this.word += char;
+  return;
+};
+Parser.prototype.keyword = function(char) {
+  if (keyword.test(char)) {
+    this.word += char;
+    return;
+  }
+  if (char === '[') {
+    var newObjects = [];
+    newObjects.push(this.word);
+    this.level++;
+    if (this.root === null) {
+      this.root = newObjects;
+    } else {
+      this.currentObject.push(newObjects);
+    }
+    this.stack.push(this.currentObject);
+    this.currentObject = newObjects;
+    this.state = NEUTRAL;
+    return;
+  }
+  if (endThings.test(char)) {
+    this.afterItem(char);
+    return;
+  }
+  throw new Error('havn\'t handled "' +char + '" in keyword yet, index ' + this.place);
+};
+Parser.prototype.neutral = function(char) {
+  if (latin.test(char)) {
+    this.word = char;
+    this.state = KEYWORD;
+    return;
+  }
+  if (char === '"') {
+    this.word = '';
+    this.state = QUOTED;
+    return;
+  }
+  if (digets.test(char)) {
+    this.word = char;
+    this.state = NUMBER;
+    return;
+  }
+  if (endThings.test(char)) {
+    this.afterItem(char);
+    return;
+  }
+  throw new Error('havn\'t handled "' +char + '" in neutral yet, index ' + this.place);
+};
+Parser.prototype.output = function() {
+  while (this.place < this.text.length) {
+    this.readCharicter();
+  }
+  if (this.state === ENDED) {
+    return this.root;
+  }
+  throw new Error('unable to parse string "' +this.text + '". State is ' + this.state);
+};
+
+function parseString(txt) {
+  var parser = new Parser(txt);
+  return parser.output();
+}
+
+
+/***/ }),
+/* 102 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = sExpr;
+
+
+function mapit(obj, key, value) {
+  if (Array.isArray(key)) {
+    value.unshift(key);
+    key = null;
+  }
+  var thing = key ? {} : obj;
+
+  var out = value.reduce(function(newObj, item) {
+    sExpr(item, newObj);
+    return newObj
+  }, thing);
+  if (key) {
+    obj[key] = out;
+  }
+}
+
+function sExpr(v, obj) {
+  if (!Array.isArray(v)) {
+    obj[v] = true;
+    return;
+  }
+  var key = v.shift();
+  if (key === 'PARAMETER') {
+    key = v.shift();
+  }
+  if (v.length === 1) {
+    if (Array.isArray(v[0])) {
+      obj[key] = {};
+      sExpr(v[0], obj[key]);
+      return;
+    }
+    obj[key] = v[0];
+    return;
+  }
+  if (!v.length) {
+    obj[key] = true;
+    return;
+  }
+  if (key === 'TOWGS84') {
+    obj[key] = v;
+    return;
+  }
+  if (!Array.isArray(key)) {
+    obj[key] = {};
+  }
+
+  var i;
+  switch (key) {
+    case 'UNIT':
+    case 'PRIMEM':
+    case 'VERT_DATUM':
+      obj[key] = {
+        name: v[0].toLowerCase(),
+        convert: v[1]
+      };
+      if (v.length === 3) {
+        sExpr(v[2], obj[key]);
+      }
+      return;
+    case 'SPHEROID':
+    case 'ELLIPSOID':
+      obj[key] = {
+        name: v[0],
+        a: v[1],
+        rf: v[2]
+      };
+      if (v.length === 4) {
+        sExpr(v[3], obj[key]);
+      }
+      return;
+    case 'PROJECTEDCRS':
+    case 'PROJCRS':
+    case 'GEOGCS':
+    case 'GEOCCS':
+    case 'PROJCS':
+    case 'LOCAL_CS':
+    case 'GEODCRS':
+    case 'GEODETICCRS':
+    case 'GEODETICDATUM':
+    case 'EDATUM':
+    case 'ENGINEERINGDATUM':
+    case 'VERT_CS':
+    case 'VERTCRS':
+    case 'VERTICALCRS':
+    case 'COMPD_CS':
+    case 'COMPOUNDCRS':
+    case 'ENGINEERINGCRS':
+    case 'ENGCRS':
+    case 'FITTED_CS':
+    case 'LOCAL_DATUM':
+    case 'DATUM':
+      v[0] = ['name', v[0]];
+      mapit(obj, key, v);
+      return;
+    default:
+      i = -1;
+      while (++i < v.length) {
+        if (!Array.isArray(v[i])) {
+          return sExpr(v, obj[key]);
+        }
+      }
+      return mapit(obj, key, v);
+  }
+}
+
+
+/***/ }),
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10057,7 +10331,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _constants = __webpack_require__(2);
 
-var _Map = __webpack_require__(34);
+var _Map = __webpack_require__(35);
 
 var _Map2 = _interopRequireDefault(_Map);
 
@@ -10081,7 +10355,7 @@ var _LayerSwitcher = __webpack_require__(37);
 
 var _LayerSwitcher2 = _interopRequireDefault(_LayerSwitcher);
 
-var _CustomCircle = __webpack_require__(35);
+var _CustomCircle = __webpack_require__(104);
 
 var _CustomCircle2 = _interopRequireDefault(_CustomCircle);
 
@@ -10136,6 +10410,185 @@ HMap.inherits = function (childCtor, parentCtor) {
 HMap.nullFunction = function () {};
 
 exports.default = HMap;
+module.exports = exports['default'];
+
+/***/ }),
+/* 104 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * 周边搜索 插件
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+
+
+var _constants = __webpack_require__(2);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var CustomCircle = function () {
+  function CustomCircle(map, options) {
+    _classCallCheck(this, CustomCircle);
+
+    this.map = map; //当前map对象
+    this.center = options.center;
+    this.minRadius = 500; //最小半径
+    this.maxRadius = 50000; //最大半径
+    this.distance = options.distance ? options.distance : this.minRadius;
+    this.mouseIng = false; //移动状态 false (未移动)true (移动中)
+    this.feature = this.addRangeCircle(); //圆的feature
+    this.editor = this.addEditor(); //编辑器 overlay
+    this.text = this.distance + "m"; //text文本默认显示
+  }
+
+  _createClass(CustomCircle, [{
+    key: "addCustomCircle",
+    value: function addCustomCircle(src) {
+      //创建周边搜索插件
+      // 创建一个临时图层 目前先写着 之后调用另一个里的 创建图层的方法
+      var layer = new _constants.ol.layer.Vector({
+        source: new _constants.ol.source.Vector(),
+        layerName: "CustomCircle"
+      });
+      // 在map里添加该图层
+      this.map.addLayer(layer);
+      //distance = distance ? distance : this.minRadius;
+
+      //创建中心点
+      //let centerPoint = this.addCenterPoint(src, this.center);
+      //this.map.addOverlay(centerPoint);
+      layer.getSource().addFeature(this.feature);
+
+      //创建编辑器
+      //this.editor = this.addEditor(this.feature.getGeometry().getLastCoordinate(), distance);
+
+      //this.map.addOverlay(this.editor);
+
+      //this.dragEditor(); // 开启拖拽事件
+    }
+  }, {
+    key: "addRangeCircle",
+    value: function addRangeCircle() {
+      //创建范围圆
+      var feature = new _constants.ol.Feature({
+        geometry: new _constants.ol.geom.Circle(this.center, this.distance)
+      });
+      return feature;
+    }
+  }, {
+    key: "addCenterPoint",
+    value: function addCenterPoint(src) {
+      //添加中心点
+      var element = document.createElement("image");
+      element.src = src;
+      var centerPoint = new _constants.ol.Overlay({
+        element: element
+      });
+      centerPoint.setPosition(this.center);
+      return centerPoint;
+    }
+  }, {
+    key: "addEditor",
+    value: function addEditor() {
+      //创建编辑器
+      var src = "http://webmap0.map.bdstatic.com/wolfman/static/common/images/nbsearch_366e590.png";
+      var editor = document.createElement("div");
+      editor.setAttribute("id", "editor");
+      editor.style.width = "100px";
+      editor.style.height = "20px";
+      editor.style.position = "relative";
+      editor.style.left = "-18px";
+      editor.style.top = "-7px";
+      editor.style.overflow = "hidden";
+      var icon = document.createElement("img");
+      icon.setAttribute("id", "icon");
+      icon.src = src;
+      editor.appendChild(icon);
+      var text = document.createElement("div");
+      text.setAttribute("id", "range");
+      text.innerHTML = this.distance + "m";
+      text.style.width = "63px";
+      text.style.height = "18px";
+      text.style.lineHeight = "18px";
+      text.style.border = "1px solid black";
+      text.style.color = "black";
+      text.style.background = "white";
+      text.style.float = "left";
+      text.style.marginLeft = "5px";
+      text.style.textAlign = "center";
+      text.style.position = "relative";
+      text.style.left = "30px";
+      text.style.top = "-24px";
+      text.style.fontSize = "12px";
+      this.text = text;
+      editor.appendChild(text);
+
+      console.info(this.feature.getGeometry().getLastCoordinate());
+      var overlay = new _constants.ol.Overlay({
+        element: editor
+      });
+      overlay.setPosition(this.feature.getGeometry().getLastCoordinate());
+      return overlay;
+    }
+
+    /**
+     * 设置半径值
+     * @param center 圆的中心点
+     * @param coordinate 当前移动到的位置的坐标
+     * @returns {number} 返回圆的半径
+     */
+
+  }, {
+    key: "getRadius",
+    value: function getRadius(coordinate) {
+      var radius = Math.sqrt(Math.pow(coordinate[0] - this.center[0], 2) + Math.pow(coordinate[1] - this.center[1], 2));
+      if (radius > this.maxRadius) {
+        radius = this.maxRadius;
+      } else if (radius < this.minRadius) {
+        radius = this.minRadius;
+      }
+      return radius;
+    }
+  }, {
+    key: "dragEditor",
+    value: function dragEditor() {
+      var self = this;
+      //let mouseIng = this.mouseIng;
+      //let feature = this.feature;
+      //let text = this.text;
+      //let editor = this.editor;
+      //拖拽编辑器
+      document.onmouseup = function (evt) {
+        self.mouseIng = false;
+      };
+      this.editor.getElement().onmousedown = function (evt) {
+        self.mouseIng = true;
+      };
+      this.map.on("pointermove", function (event) {
+        if (self.mouseIng) {
+
+          var radius = self.getRadius(event.coordinate);
+          //重新设置圆的半径
+          self.feature.getGeometry().setRadius(radius); //全局方法和全局对象如何调用
+          //重新设置 text值
+          self.text.innerHTML = parseInt(radius) + "m";
+          //重新设置overlay位置
+          self.editor.setPosition(self.feature.getGeometry().getLastCoordinate());
+        }
+      });
+    }
+  }]);
+
+  return CustomCircle;
+}();
+
+exports.default = CustomCircle;
 module.exports = exports['default'];
 
 /***/ })
