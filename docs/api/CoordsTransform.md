@@ -36,7 +36,7 @@
 
 ### 示例用法（Example&Usage）
 
-```ecmascript 6
+```javascript
 import CoordsTransform from './CoordsTransform'
 
 let coordsT = new CoordsTransform();

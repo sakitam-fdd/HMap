@@ -33,7 +33,7 @@ npm run build
 
 > vue和angular2搭配es6使用时可以采用
 
-```ecmascript 6
+```javascript
 import HMap from '../dist/HMap'
 let Maps = new HMap.Map()
 Maps.initMap('map', {
