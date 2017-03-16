@@ -1,101 +1,85 @@
-# webgis jsapi构建
+# 恒达时讯WEBGIS地图类库
 
-### 类库
-> 在 JavaScript 语境中，我对类库的定义是 “提供了特定功能的一段代段”。
-一个类库只做一件事，并且把这件事做好。在理想情况下，
-它不依赖其它类库或框架。jQuery 就是一个很好的例子。
-React 或者 Vue.js 也可以认为是一个类库。
 
-> **一个类库应该：**
-> > * 可以在浏览器环境下使用。也就是说，可以通过`<script> `标签来引入这个类库。
-> > * 可以通过 npm 来安装。
-> > * 兼容 ES6(ES2015) 的模块系统、CommonJS 和 AMD 模块规范。
+## build
 
-### 目录结构
+> 重要: Github 仓库的 /dist 文件夹只有在新版本发布时才会更新。如果想要使用 Github 上 HMap 最新的源码，你需要自己构建。
 
-```
-ES6 source files
-       |
-       |
-    webpack
-       |
-       +--- babel, eslint
-       |
-  ready to use
-     library
-  in umd format
+```bash
+git clone https://github.com/smileFDD/HMap.git
+npm install
+npm run dev
+npm run build
 ```
 
-# Webpack library starter
+## 引用方式
 
-Webpack based boilerplate for producing libraries (Input: ES6, Output: universal library)
+### AMD-模块加载器
 
-## Features
+> 独立下载版本已用 UMD 包装，因此它们可以直接用作 AMD 模块。
 
-* Webpack 2 based.
-* ES6 as a source.
-* Exports in a [umd](https://github.com/umdjs/umd) format so your library works everywhere.
-* ES6 test setup with [Mocha](http://mochajs.org/) and [Chai](http://chaijs.com/).
-* Linting with [ESLint](http://eslint.org/).
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>加载一个简单地图</title>
+  <link rel="stylesheet" href="../dist/HMap.css" type="text/css">
+</head>
+<body>
+<div id="map"></div>
+<script src="../dist/HMap.js"></script>
+</body>
+</html>
+```
 
-## Process
+### ES6方式引入
 
+> vue和angular2搭配es6使用时可以采用
 
-
-*Have in mind that you have to build your library before publishing. The files under the `lib` folder are the ones that should be distributed.*
-
-## Getting started
-
-1. Setting up the name of your library
-  * Open `webpack.config.js` file and change the value of `libraryName` variable.
-  * Open `package.json` file and change the value of `main` property so it matches the name of your library.
-2. Build your library
-  * Run `npm install` to get the project's dependencies
-  * Run `npm run build` to produce minified version of your library.
-3. Development mode
-  * Having all the dependencies installed run `npm run dev`. This command will generate an non-minified version of your library and will run a watcher so you get the compilation on file change.
-4. Running the tests
-  * Run `npm run test`
-
-## Scripts
-
-* `npm run build` - produces production version of your library under the `lib` folder
-* `npm run dev` - produces development version of your library and runs a watcher
-* `npm run test` - well ... it runs the tests :)
-* `npm run test:watch` - same as above but in a watch mode
-
-## Readings
-
-* [Start your own JavaScript library using webpack and ES6](http://krasimirtsonev.com/blog/article/javascript-library-starter-using-webpack-es6)
-
-## Misc
-
-### An example of using dependencies that shouldn’t be resolved by webpack, but should become dependencies of the resulting bundle
-
-In the following example we are excluding React and Lodash:
-
-```js
-{
-  devtool: 'source-map',
-  output: {
-    path: '...',
-    libraryTarget: 'umd',
-    library: '...'
-  },
-  entry: '...',
-  ...
-  externals: {
-    react: 'react'
-    // Use more complicated mapping for lodash.
-    // We need to access it differently depending
-    // on the environment.
-    lodash: {
-      commonjs: 'lodash',
-      commonjs2: 'lodash',
-      amd: '_',
-      root: '_'
-    }
+```javascript
+import HMap from '../dist/HMap'
+let Maps = new HMap.Map()
+Maps.initMap('map', {
+  view: {
+    center: [0, 0],
+    // constrainRotation: false, // 旋转角度约束
+    enableRotation: true, // 是否允许旋转
+//      extent: [],
+//      maxResolution: 0, // 非必须参数
+//      minResolution: 0, // 非必须参数
+//      maxZoom: 19, // 非必须参数
+//      minZoom: 0, // 非必须参数
+    projection: 'EPSG:3857',
+    rotation: 0,
+    zoom: 0, // resolution
+    zoomFactor: 2 // 用于约束分变率的缩放因子（高分辨率设备需要注意）
   }
-}
+})
+console.log(Maps)
 ```
 
+## 文档生成和查看
+
+> 首先安装gitbook
+
+```bash
+npm install // 或者
+npm install -g gitbook
+```
+> 安装相关插件
+
+```bash
+gitbook install
+```
+
+> 启动本地服务
+
+```bash
+gitbook server
+```
+
+> 浏览器打开
+```bash
+http://localhost:4000
+```

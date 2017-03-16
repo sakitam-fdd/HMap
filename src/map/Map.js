@@ -94,12 +94,38 @@ class Map extends mix(BaseLayers, Controls, Interactions, View, Style, Layer, Fe
     })
   }
 
+  /**
+   * 添加版权信息
+   * @returns {boolean}
+   * @private
+   */
   _addCopyRight () {
     return true
   }
 
+  /**
+   * 获取当前地图
+   * @returns {ol.Map}
+   */
   getMap () {
     return this.map
+  }
+
+  /**
+   * 设置地图实例
+   * @param map
+   */
+  setMap (map) {
+    if (map && map instanceof ol.Map) {
+      this.map = map;
+    }
+  }
+
+  /**
+   * 更新地图
+   */
+  updateSize () {
+    this.map.updateSize()
   }
 }
 

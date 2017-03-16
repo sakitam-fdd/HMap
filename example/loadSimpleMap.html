@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>加载一个简单地图</title>
-  <link rel="stylesheet" href="../node_modules/openlayers/dist/ol.css" type="text/css">
+  <link rel="stylesheet" href="../dist/HMap.css" type="text/css">
 </head>
 <body>
 <div id="map"></div>
@@ -11,37 +11,6 @@
 <script type="text/javascript">
   var Maps = new HMap.Map();
   Maps.initMap('map', {
-    interactions: {
-      altShiftDragRotate: true,
-      doubleClickZoom: true,
-      keyboard: true,
-      mouseWheelZoom: true,
-      shiftDragZoom: true,
-      dragPan: true,
-      pinchRotate: true,
-      pinchZoom: true,
-      zoomDelta: 1, // 缩放增量（默认一级）
-      zoomDuration: 500 // 缩放持续时间
-    },
-    controls: {
-      attribution: true,
-      attributionOptions: {
-        className: 'ol-attribution', // Default
-        target: 'attributionTarget',
-      },
-      rotate: true,
-      rotateOptions: {
-        className: 'ol-rotate', // Default
-        target: 'rotateTarget',
-      },
-      zoom: true,
-      zoomOptions: {
-        className: 'ol-zoom', // Default
-        target: 'zoomTarget',
-      },
-      overViewMapVisible: false,
-      scaleLineVisible: true
-    },
     view: {
       center: [0, 0],
       // constrainRotation: false, // 旋转角度约束

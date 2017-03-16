@@ -1,0 +1,29 @@
+{
+  "name": "MapApi",
+  "version": "1.0.0",
+  "description": "恒达时讯前端GIS接口网站",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/smileFDD/HMap.git"
+  },
+  "keywords": [
+    "map"
+  ],
+  "author": "FDD",
+  "license": "Apache",
+  "bugs": {
+    "url": "https://github.com/smileFDD/HMap/issues"
+  },
+  "homepage": "https://github.com/smileFDD/HMap#readme",
+  "dependencies": {
+    "gitbook": "^3.2.0"
+  },
+  "engines": {
+    "node": ">= 4.0.0",
+    "npm": ">= 3.0.0"
+  }
+}
