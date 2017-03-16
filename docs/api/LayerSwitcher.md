@@ -1,10 +1,10 @@
 # 底图切换使用(plugins)
 ---
 
-> -地图必须初始化（var Maps = new HMap.map('div', {}')）
-> -所有传入的图层必须有layerName（图层名）
-> -初始化图层切换控件（var layerSwitcher = new HMap.LayerSwitcher(Maps.map)）；
-> -传入图层名去控制图层（layerSwitcher.switchLayer(layerName)）
+> * 地图必须初始化（var Maps = new HMap.map('div', {}')）
+> * 所有传入的图层必须有layerName（图层名）
+> * 初始化图层切换控件（var layerSwitcher = new HMap.LayerSwitcher(Maps.map)）；
+> * 传入图层名去控制图层（layerSwitcher.switchLayer(layerName)）
 
 ## API
 
@@ -44,4 +44,4 @@ HMap/example/LayerSwitcher.html
 
 |Name|Type|Description|
 |:---|:---|:----------|
-|`map`|`ol.Map`| The map instance. |
+|`map`|`ol.Map`| 地图实例 |

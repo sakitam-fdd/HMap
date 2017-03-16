@@ -1,0 +1,27 @@
+{
+  "gitbook": ">3.0.0",
+  "root": "./api",
+  "plugins": [
+    "edit-link",
+    "prism",
+    "theme-vuejs@git+https://github.com/pearofducks/gitbook-plugin-theme-vuejs.git",
+    "-fontsettings",
+    "-highlight",
+    "github"
+  ],
+  "pluginsConfig": {
+    "edit-link": {
+      "base": "https://github.com/smileFDD/HMap/tree/master/docs/api",
+      "label": "编辑此页"
+    },
+    "github": {
+      "url": "https://github.com/smileFDD/HMap.git"
+    }
+  },
+  "links": {
+    "sharing": {
+      "facebook": false,
+      "twitter": false
+    }
+  }
+}
