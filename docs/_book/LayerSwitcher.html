@@ -57,6 +57,8 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="addPoints.html" />
+    
     
     <link rel="prev" href="loadJXMap.html" />
     
@@ -179,6 +181,45 @@
             
         </li>
     
+        <li class="chapter " data-level="1.4.4" data-path="addPoints.html">
+            
+                <a href="addPoints.html">
+            
+                    
+                    添加点
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.5" data-path="addLine.html">
+            
+                <a href="addLine.html">
+            
+                    
+                    添加线
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.6" data-path="addPolygon.html">
+            
+                <a href="addPolygon.html">
+            
+                    
+                    添加面
+            
+                </a>
+            
+
+            
+        </li>
+    
 
             </ul>
             
@@ -294,21 +335,382 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="&#x5E95;&#x56FE;&#x5207;&#x6362;&#x4F7F;&#x7528;plugins">&#x5E95;&#x56FE;&#x5207;&#x6362;&#x4F7F;&#x7528;(plugins)</h1>
-<hr>
 <blockquote>
 <ul>
-<li>&#x5730;&#x56FE;&#x5FC5;&#x987B;&#x521D;&#x59CB;&#x5316;&#xFF08;var Maps = new HMap.map(&apos;div&apos;, {}&apos;)&#xFF09;</li>
-<li>&#x6240;&#x6709;&#x4F20;&#x5165;&#x7684;&#x56FE;&#x5C42;&#x5FC5;&#x987B;&#x6709;layerName&#xFF08;&#x56FE;&#x5C42;&#x540D;&#xFF09;</li>
-<li>&#x521D;&#x59CB;&#x5316;&#x56FE;&#x5C42;&#x5207;&#x6362;&#x63A7;&#x4EF6;&#xFF08;var layerSwitcher = new HMap.LayerSwitcher(Maps.map)&#xFF09;&#xFF1B;</li>
-<li>&#x4F20;&#x5165;&#x56FE;&#x5C42;&#x540D;&#x53BB;&#x63A7;&#x5236;&#x56FE;&#x5C42;&#xFF08;layerSwitcher.switchLayer(layerName)&#xFF09;</li>
+<li>&#x5730;&#x56FE;&#x5FC5;&#x987B;&#x521D;&#x59CB;&#x5316; <code>var Maps = new HMap.map(&apos;div&apos;, {}&apos;)</code></li>
+<li>&#x6240;&#x6709;&#x4F20;&#x5165;&#x7684;&#x56FE;&#x5C42;&#x5FC5;&#x987B;&#x6709; <code>layerName</code>&#xFF08;&#x56FE;&#x5C42;&#x540D;&#xFF09;</li>
+<li>&#x521D;&#x59CB;&#x5316;&#x56FE;&#x5C42;&#x5207;&#x6362;&#x63A7;&#x4EF6; <code>var layerSwitcher = new HMap.LayerSwitcher(Maps.map)</code>&#xFF1B;</li>
+<li>&#x4F20;&#x5165;&#x56FE;&#x5C42;&#x540D;&#x53BB;&#x63A7;&#x5236;&#x56FE;&#x5C42; <code>layerSwitcher.switchLayer(layerName)</code></li>
 </ul>
 </blockquote>
 <h2 id="api">API</h2>
 <h3 id="new-hmaplayerswitchermapsmap"><code>new HMap.LayerSwitcher(Maps.map)</code></h3>
 <h2 id="examples">Examples</h2>
-<pre class="language-"><code class="lang-bash">HMap/example/LayerSwitcher.html
+<p><a href="../../example/LayerSwitcher.html">&#x5E95;&#x56FE;&#x5207;&#x6362;&#x5B9E;&#x4F8B;</a></p>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>&#x6D4B;&#x8BD5;&#x5730;&#x56FE;&#x5207;&#x6362;</title>
+  <link rel="stylesheet" href="./lib/map/HMap.css" type="text/css">
+  <script src="./lib/map/HMap.js"></script>
+</head>
+<body>
+<button onclick="changeLayer(&apos;vector&apos;)">&#x57FA;&#x672C;&#x5730;&#x56FE;</button>
+<button onclick="changeLayer(&apos;earth&apos;)">&#x5F71;&#x50CF;&#x5730;&#x56FE;</button>
+<button onclick="changeLayer(&apos;panorama&apos;)">&#x5730;&#x5F62;&#x56FE;</button>
+<div id="map"></div>
+<script src="../dist/HMap.js"></script>
+<script type="text/javascript">
+  var cor = [
+    {
+      "level": 0,
+      "resolution": 0.010986328383069278,
+      "scale": 4617150
+    },
+    {
+      "level": 1,
+      "resolution": 0.005493164191534639,
+      "scale": 2308575
+    },
+    {
+      "level": 2,
+      "resolution": 0.0027465809060368165,
+      "scale": 1154287
+    },
+    {
+      "level": 3,
+      "resolution": 0.0013732916427489112,
+      "scale": 577144
+    },
+    {
+      "level": 4,
+      "resolution": 6.866458213744556E-4,
+      "scale": 288572
+    },
+    {
+      "level": 5,
+      "resolution": 3.433229106872278E-4,
+      "scale": 144286
+    },
+    {
+      "level": 6,
+      "resolution": 1.716614553436139E-4,
+      "scale": 72143
+    },
+    {
+      "level": 7,
+      "resolution": 8.582953794130404E-5,
+      "scale": 36071
+    },
+    {
+      "level": 8,
+      "resolution": 4.291595870115493E-5,
+      "scale": 18036
+    },
+    {
+      "level": 9,
+      "resolution": 2.1457979350577466E-5,
+      "scale": 9018
+    },
+    {
+      "level": 10,
+      "resolution": 1.0728989675288733E-5,
+      "scale": 4509
+    },
+    {
+      "level": 11,
+      "resolution": 5.363305107141452E-6,
+      "scale": 2254
+    },
+    {
+      "level": 12,
+      "resolution": 2.681652553570726E-6,
+      "scale": 1127
+    }
+  ];
+  var resolutions = [];
+  for (var i = 0; i < cor.length; i++) {
+    resolutions.push(cor[i].resolution);
+  }
+  var Maps = new HMap.Map();
+  Maps.initMap('map', {
+    interactions: {
+      altShiftDragRotate: true,
+      doubleClickZoom: true,
+      keyboard: true,
+      mouseWheelZoom: true,
+      shiftDragZoom: true,
+      dragPan: true,
+      pinchRotate: true,
+      pinchZoom: true,
+      zoomDelta: 1, // 缩放增量（默认一级）
+      zoomDuration: 500 // 缩放持续时间
+    },
+    controls: {
+      attribution: true,
+      attributionOptions: {
+        className: 'ol-attribution', // Default
+        target: 'attributionTarget',
+      },
+      rotate: true,
+      rotateOptions: {
+        className: 'ol-rotate', // Default
+        target: 'rotateTarget',
+      },
+      zoom: true,
+      zoomOptions: {
+        className: 'ol-zoom', // Default
+        target: 'zoomTarget',
+      },
+      overViewMapVisible: false,
+      scaleLineVisible: true
+    },
+    view: {
+      center: [115.92466595234826, 27.428038204473552],
+      resolutions: resolutions,
+      fullExtent: [109.72859368643232, 24.010266905347684, 121.13105988819079, 30.76693489432357],
+      tileSize: 256,
+      origin: [-400, 399.9999999999998],
+      enableRotation: true, // 是否允许旋转
+      projection: 'EPSG:4326',
+      rotation: 0,
+      zoom: 1, // resolution
+      zoomFactor: 2 // 用于约束分变率的缩放因子（高分辨率设备需要注意）
+    },
+    logo: {},
+    baseLayers: [  // 不传时默认加载OSM地图。
+      {
+        layerName: 'vector', // 图层名，必传
+        isDefault: true, // 是否是默认图层
+        layerType: 'TileXYZ', // 图层类型（arcgis加载的为TileXYZ）
+        layerUrl: 'http://171.34.40.68:6080/arcgis/rest/services/JXMAP_2016_2/MapServer',
+      },
+      {
+        layerName: 'earth',
+        layerType: 'TitleWMTS',
+        layer: 'img',
+        isDefault: false,
+        layerUrl: 'http://t{0-6}.tianditu.cn/img_c/wmts',
+        label: { // 对应的标注层
+          layerName: 'TDTLabel',
+          layerType: 'TitleWMTS',
+          layer: 'cia',
+          alias: 'earth', // 标注层所关联的图层
+          isDefault: false,
+          layerUrl: 'http://t{0-6}.tianditu.cn/cia_c/wmts'
+        }
+      },
+      {
+        layerName: 'panorama',
+        layerType: 'TitleWMTS',
+        layer: 'ter',
+        isDefault: false,
+        layerUrl: 'http://t{0-6}.tianditu.com/ter_c/wmts',
+        label: {
+          layerName: 'TDTLabel',
+          layerType: 'TitleWMTS',
+          layer: 'cia',
+          alias: 'panorama',
+          isDefault: false,
+          layerUrl: 'http://t{0-6}.tianditu.cn/cia_c/wmts'
+        }
+      }
+    ]
+  });
+  console.log(Maps);
+  // 创建图层切换插件时map对象必传（new HMap.Map().map）
+  var layerSwitcher = new HMap.LayerSwitcher(Maps.map);
+  function changeLayer (type) {
+    // type 对应的baseLayers图层组的layerName
+    layerSwitcher.switchLayer(type)
+  }
+</script>
+</body>
+</html>
+
+<hr>
+<pre class="language-"><code class="lang-html"><span class="token doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">&quot;</span>en<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">&quot;</span>UTF-8<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">&gt;</span></span>&#x6D4B;&#x8BD5;&#x5730;&#x56FE;&#x5207;&#x6362;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">&quot;</span>stylesheet<span class="token punctuation">&quot;</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">&quot;</span>../dist/HMap.css<span class="token punctuation">&quot;</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">&quot;</span>text/css<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">onclick</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">&quot;</span>changeLayer(<span class="token punctuation">&apos;</span>vector<span class="token punctuation">&apos;</span>)<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span>&#x57FA;&#x672C;&#x5730;&#x56FE;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">onclick</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">&quot;</span>changeLayer(<span class="token punctuation">&apos;</span>earth<span class="token punctuation">&apos;</span>)<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span>&#x5F71;&#x50CF;&#x5730;&#x56FE;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">onclick</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">&quot;</span>changeLayer(<span class="token punctuation">&apos;</span>panorama<span class="token punctuation">&apos;</span>)<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span>&#x5730;&#x5F62;&#x56FE;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">&quot;</span>map<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">&quot;</span>../dist/HMap.js<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">&quot;</span>text/javascript<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span>
+  var cor = [
+    {
+      &quot;level&quot;: 0,
+      &quot;resolution&quot;: 0.010986328383069278,
+      &quot;scale&quot;: 4617150
+    },
+    {
+      &quot;level&quot;: 1,
+      &quot;resolution&quot;: 0.005493164191534639,
+      &quot;scale&quot;: 2308575
+    },
+    {
+      &quot;level&quot;: 2,
+      &quot;resolution&quot;: 0.0027465809060368165,
+      &quot;scale&quot;: 1154287
+    },
+    {
+      &quot;level&quot;: 3,
+      &quot;resolution&quot;: 0.0013732916427489112,
+      &quot;scale&quot;: 577144
+    },
+    {
+      &quot;level&quot;: 4,
+      &quot;resolution&quot;: 6.866458213744556E-4,
+      &quot;scale&quot;: 288572
+    },
+    {
+      &quot;level&quot;: 5,
+      &quot;resolution&quot;: 3.433229106872278E-4,
+      &quot;scale&quot;: 144286
+    },
+    {
+      &quot;level&quot;: 6,
+      &quot;resolution&quot;: 1.716614553436139E-4,
+      &quot;scale&quot;: 72143
+    },
+    {
+      &quot;level&quot;: 7,
+      &quot;resolution&quot;: 8.582953794130404E-5,
+      &quot;scale&quot;: 36071
+    },
+    {
+      &quot;level&quot;: 8,
+      &quot;resolution&quot;: 4.291595870115493E-5,
+      &quot;scale&quot;: 18036
+    },
+    {
+      &quot;level&quot;: 9,
+      &quot;resolution&quot;: 2.1457979350577466E-5,
+      &quot;scale&quot;: 9018
+    },
+    {
+      &quot;level&quot;: 10,
+      &quot;resolution&quot;: 1.0728989675288733E-5,
+      &quot;scale&quot;: 4509
+    },
+    {
+      &quot;level&quot;: 11,
+      &quot;resolution&quot;: 5.363305107141452E-6,
+      &quot;scale&quot;: 2254
+    },
+    {
+      &quot;level&quot;: 12,
+      &quot;resolution&quot;: 2.681652553570726E-6,
+      &quot;scale&quot;: 1127
+    }
+  ];
+  var resolutions = [];
+  for (var i = 0; i &lt; cor.length; i++) {
+    resolutions.push(cor[i].resolution);
+  }
+  var Maps = new HMap.Map();
+  Maps.initMap(&apos;map&apos;, {
+    interactions: {
+      altShiftDragRotate: true,
+      doubleClickZoom: true,
+      keyboard: true,
+      mouseWheelZoom: true,
+      shiftDragZoom: true,
+      dragPan: true,
+      pinchRotate: true,
+      pinchZoom: true,
+      zoomDelta: 1, // &#x7F29;&#x653E;&#x589E;&#x91CF;&#xFF08;&#x9ED8;&#x8BA4;&#x4E00;&#x7EA7;&#xFF09;
+      zoomDuration: 500 // &#x7F29;&#x653E;&#x6301;&#x7EED;&#x65F6;&#x95F4;
+    },
+    controls: {
+      attribution: true,
+      attributionOptions: {
+        className: &apos;ol-attribution&apos;, // Default
+        target: &apos;attributionTarget&apos;,
+      },
+      rotate: true,
+      rotateOptions: {
+        className: &apos;ol-rotate&apos;, // Default
+        target: &apos;rotateTarget&apos;,
+      },
+      zoom: true,
+      zoomOptions: {
+        className: &apos;ol-zoom&apos;, // Default
+        target: &apos;zoomTarget&apos;,
+      },
+      overViewMapVisible: false,
+      scaleLineVisible: true
+    },
+    view: {
+      center: [115.92466595234826, 27.428038204473552],
+      resolutions: resolutions,
+      fullExtent: [109.72859368643232, 24.010266905347684, 121.13105988819079, 30.76693489432357],
+      tileSize: 256,
+      origin: [-400, 399.9999999999998],
+      enableRotation: true, // &#x662F;&#x5426;&#x5141;&#x8BB8;&#x65CB;&#x8F6C;
+      projection: &apos;EPSG:4326&apos;,
+      rotation: 0,
+      zoom: 1, // resolution
+      zoomFactor: 2 // &#x7528;&#x4E8E;&#x7EA6;&#x675F;&#x5206;&#x53D8;&#x7387;&#x7684;&#x7F29;&#x653E;&#x56E0;&#x5B50;&#xFF08;&#x9AD8;&#x5206;&#x8FA8;&#x7387;&#x8BBE;&#x5907;&#x9700;&#x8981;&#x6CE8;&#x610F;&#xFF09;
+    },
+    logo: {},
+    baseLayers: [  // &#x4E0D;&#x4F20;&#x65F6;&#x9ED8;&#x8BA4;&#x52A0;&#x8F7D;OSM&#x5730;&#x56FE;&#x3002;
+      {
+        layerName: &apos;vector&apos;, // &#x56FE;&#x5C42;&#x540D;&#xFF0C;&#x5FC5;&#x4F20;
+        isDefault: true, // &#x662F;&#x5426;&#x662F;&#x9ED8;&#x8BA4;&#x56FE;&#x5C42;
+        layerType: &apos;TileXYZ&apos;, // &#x56FE;&#x5C42;&#x7C7B;&#x578B;&#xFF08;arcgis&#x52A0;&#x8F7D;&#x7684;&#x4E3A;TileXYZ&#xFF09;
+        layerUrl: &apos;http://171.34.40.68:6080/arcgis/rest/services/JXMAP_2016_2/MapServer&apos;,
+      },
+      {
+        layerName: &apos;earth&apos;,
+        layerType: &apos;TitleWMTS&apos;,
+        layer: &apos;img&apos;,
+        isDefault: false,
+        layerUrl: &apos;http://t{0-6}.tianditu.cn/img_c/wmts&apos;,
+        label: { // &#x5BF9;&#x5E94;&#x7684;&#x6807;&#x6CE8;&#x5C42;
+          layerName: &apos;TDTLabel&apos;,
+          layerType: &apos;TitleWMTS&apos;,
+          layer: &apos;cia&apos;,
+          alias: &apos;earth&apos;, // &#x6807;&#x6CE8;&#x5C42;&#x6240;&#x5173;&#x8054;&#x7684;&#x56FE;&#x5C42;
+          isDefault: false,
+          layerUrl: &apos;http://t{0-6}.tianditu.cn/cia_c/wmts&apos;
+        }
+      },
+      {
+        layerName: &apos;panorama&apos;,
+        layerType: &apos;TitleWMTS&apos;,
+        layer: &apos;ter&apos;,
+        isDefault: false,
+        layerUrl: &apos;http://t{0-6}.tianditu.com/ter_c/wmts&apos;,
+        label: {
+          layerName: &apos;TDTLabel&apos;,
+          layerType: &apos;TitleWMTS&apos;,
+          layer: &apos;cia&apos;,
+          alias: &apos;panorama&apos;,
+          isDefault: false,
+          layerUrl: &apos;http://t{0-6}.tianditu.cn/cia_c/wmts&apos;
+        }
+      }
+    ]
+  });
+  console.log(Maps);
+  // &#x521B;&#x5EFA;&#x56FE;&#x5C42;&#x5207;&#x6362;&#x63D2;&#x4EF6;&#x65F6;map&#x5BF9;&#x8C61;&#x5FC5;&#x4F20;&#xFF08;new HMap.Map().map&#xFF09;
+  var layerSwitcher = new HMap.LayerSwitcher(Maps.map);
+  function changeLayer (type) {
+    // type &#x5BF9;&#x5E94;&#x7684;baseLayers&#x56FE;&#x5C42;&#x7EC4;&#x7684;layerName
+    layerSwitcher.switchLayer(type)
+  }
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">&gt;</span></span>
 </code></pre>
-<h4 id="parameters">Parameters:</h4>
+<h3 id="parameters">Parameters:</h3>
 <table>
 <thead>
 <tr>
@@ -325,15 +727,23 @@
 </tr>
 </tbody>
 </table>
-<h4 id="methods">Methods</h4>
+<h3 id="methods">Methods</h3>
 <h5 id="switchlayerlayername"><code>switchLayer(layerName)</code></h5>
+<blockquote>
 <p>&#x5207;&#x6362;&#x56FE;&#x5C42;</p>
+</blockquote>
 <h5 id="getbaselayernames"><code>getBaseLayerNames()</code></h5>
+<blockquote>
 <p>&#x8FD4;&#x56DE;&#x6240;&#x6709;&#x5E95;&#x56FE;&#x7684;&#x56FE;&#x5C42;&#x540D;&#xFF08;<code>Array</code>&#xFF09;</p>
+</blockquote>
 <h5 id="setmapmap"><code>setMap(map)</code></h5>
+<blockquote>
 <p>&#x8BBE;&#x7F6E;&#x5730;&#x56FE;&#x5BF9;&#x8C61;</p>
+</blockquote>
 <h5 id="getmap"><code>getMap()</code></h5>
+<blockquote>
 <p>&#x8FD4;&#x56DE;&#x5730;&#x56FE;&#x5BF9;&#x8C61;</p>
+</blockquote>
 <h6 id="parameters">Parameters:</h6>
 <table>
 <thead>
@@ -378,10 +788,14 @@
 
             
                 
-                <a href="loadJXMap.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 加载江西地图">
+                <a href="loadJXMap.html" class="navigation navigation-prev " aria-label="Previous page: 加载江西地图">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
+                
+                <a href="addPoints.html" class="navigation navigation-next " aria-label="Next page: 添加点">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -390,7 +804,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"底图切换","level":"1.4.3","depth":2,"next":{"title":"进阶","level":"1.5","depth":1,"ref":"","articles":[{"title":"坐标转换","level":"1.5.1","depth":2,"path":"CoordsTransform.md","ref":"CoordsTransform.md","articles":[]}]},"previous":{"title":"加载江西地图","level":"1.4.2","depth":2,"path":"loadJXMap.md","ref":"loadJXMap.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","theme-vuejs@git+https://github.com/pearofducks/gitbook-plugin-theme-vuejs.git","-fontsettings","-highlight","github","livereload"],"root":"./api","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/smileFDD/HMap.git"},"livereload":{},"search":{},"theme-vuejs":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"编辑此页","base":"https://github.com/smileFDD/HMap/tree/master/docs/api"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"links":{"sharing":{"facebook":false,"twitter":false}},"gitbook":">3.0.0"},"file":{"path":"LayerSwitcher.md","mtime":"2017-03-16T04:59:10.669Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-03-16T06:55:14.886Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"底图切换","level":"1.4.3","depth":2,"next":{"title":"添加点","level":"1.4.4","depth":2,"path":"addPoints.md","ref":"addPoints.md","articles":[]},"previous":{"title":"加载江西地图","level":"1.4.2","depth":2,"path":"loadJXMap.md","ref":"loadJXMap.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","theme-vuejs@git+https://github.com/pearofducks/gitbook-plugin-theme-vuejs.git","-fontsettings","-highlight","github","livereload"],"root":"./api","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/smileFDD/HMap.git"},"livereload":{},"search":{},"theme-vuejs":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"编辑此页","base":"https://github.com/smileFDD/HMap/tree/master/docs/api"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"links":{"sharing":{"facebook":false,"twitter":false}},"gitbook":">3.0.0"},"file":{"path":"LayerSwitcher.md","mtime":"2017-03-16T10:21:14.766Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-03-16T10:21:19.494Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

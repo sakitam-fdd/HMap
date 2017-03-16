@@ -7,6 +7,9 @@
   * [初始化地图](initMap.md)
   * [加载江西地图](loadJXMap.md)
   * [底图切换](LayerSwitcher.md)
+  * [添加点](addPoints.md)
+  * [添加线](addLine.md)
+  * [添加面](addPolygon.md)
 * 进阶
   * [坐标转换](CoordsTransform.md)
 * 类说明
