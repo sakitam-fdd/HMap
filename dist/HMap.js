@@ -3253,6 +3253,31 @@ var LayerSwitcher = function () {
         }
       });
     }
+
+    /**
+     * 设置地图对象
+     * @param map
+     * @returns {ol.Map}
+     */
+
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      if (map && map instanceof _constants.ol.Map) {
+        return this.map = map;
+      }
+    }
+
+    /**
+     * 获取地图对象
+     * @returns {*|null|ol.Map}
+     */
+
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
   }]);
 
   return LayerSwitcher;

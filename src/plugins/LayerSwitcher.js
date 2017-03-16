@@ -61,6 +61,25 @@ class LayerSwitcher {
       }
     })
   }
+
+  /**
+   * 设置地图对象
+   * @param map
+   * @returns {ol.Map}
+   */
+  setMap (map) {
+    if (map && map instanceof ol.Map) {
+      return this.map = map;
+    }
+  }
+
+  /**
+   * 获取地图对象
+   * @returns {*|null|ol.Map}
+   */
+  getMap () {
+    return this.map
+  }
 }
 
 export default LayerSwitcher
