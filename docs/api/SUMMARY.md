@@ -10,6 +10,7 @@
   * [添加点](addPoints.md)
   * [添加线](addLine.md)
   * [添加面](addPolygon.md)
+  * [周边搜索圆](CustomCIrcle.md)
 * 进阶
   * [坐标转换](CoordsTransform.md)
 * 类说明

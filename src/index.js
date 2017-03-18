@@ -5,9 +5,10 @@ import Map from './map/Map'
 import Layer from './layer/Layer'
 import Feature from './feature/feature'
 import CoordsTransform from './utils/CoordsTransform'
-import Ex from './plugins/Ex'
+import Ol3Echarts from './plugins/Ol3Echarts'
 import LayerSwitcher from './plugins/LayerSwitcher'
 import CustomCircle from  './plugins/CustomCircle'
+import Measure from './plugins/Measure'
 
 HMap.ol = ol;
 HMap.proj4 = proj4;
@@ -15,9 +16,10 @@ HMap.Map = Map;
 HMap.Layer = Layer;
 HMap.Feature = Feature;
 HMap.CoordsTransform = CoordsTransform;
-HMap.Ex = Ex;
+HMap.Ol3Echarts = Ol3Echarts;
 HMap.LayerSwitcher = LayerSwitcher;
 HMap.CustomCircle = CustomCircle;
+HMap.Measure = Measure
 
 /**
  * Inherit the prototype methods from one constructor into another.
