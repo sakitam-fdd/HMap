@@ -9,6 +9,7 @@ import Ol3Echarts from './plugins/Ol3Echarts'
 import LayerSwitcher from './plugins/LayerSwitcher'
 import CustomCircle from  './plugins/CustomCircle'
 import Measure from './plugins/Measure'
+import MeasureTool from './plugins/MeasureTool'
 
 HMap.ol = ol;
 HMap.proj4 = proj4;
@@ -19,7 +20,8 @@ HMap.CoordsTransform = CoordsTransform;
 HMap.Ol3Echarts = Ol3Echarts;
 HMap.LayerSwitcher = LayerSwitcher;
 HMap.CustomCircle = CustomCircle;
-HMap.Measure = Measure
+HMap.Measure = Measure;
+HMap.MeasureTool = MeasureTool;
 
 /**
  * Inherit the prototype methods from one constructor into another.
