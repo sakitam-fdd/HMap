@@ -6,7 +6,7 @@ class Style {
    * @returns {ol.style.Style}
    */
   getStyleByPoint (attr) {
-    let options = attr['style'] || {};
+    let options = attr['style'] || undefined;
     let style = null;
     if (!options) {
       style = new ol.style.Style({
@@ -42,7 +42,7 @@ class Style {
    * @returns {ol.style.Style}
    */
   getStyleByLine (attr) {
-    let options = attr['style'] || {};
+    let options = attr['style'] || undefined;
     let style = null;
     if (!options) {
       style = new ol.style.Style({
@@ -72,7 +72,7 @@ class Style {
    * @returns {ol.style.Style}
    */
   getStyleByPolygon (attr) {
-    let options = attr['style'] || {};
+    let options = attr['style'] || undefined;
     let style = null;
     if (!options) {
       style = new ol.style.Style({

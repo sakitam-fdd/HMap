@@ -1,4 +1,5 @@
 import { ol } from '../constants'
+
 class olMapCoordSys {
   constructor (olMap, api) {
     this._olMap = olMap;
@@ -8,6 +9,10 @@ class olMapCoordSys {
     this.dimensions = ['lng', 'lat']
   }
 
+  /**
+   * 设置地图偏移
+   * @param mapOffset
+   */
   setMapOffset (mapOffset) {
     this._mapOffset = mapOffset
   }
@@ -16,27 +21,45 @@ class olMapCoordSys {
     return this._olMap
   }
 
+  /**
+   * 坐标转像素
+   * @param coords
+   * @returns {ol.Pixel|*}
+   */
   dataToPoint (coords) {
     return this._olMap.getPixelFromCoordinate(ol.proj.fromLonLat(coords));
   }
 
+  /**
+   * 像素转坐标
+   * @param pixel
+   * @returns {ol.Coordinate|*}
+   */
   pointToData (pixel) {
     return this._olMap.getCoordinateFromPixel(pixel);
   }
 
+  /**
+   * 获取视图范围
+   * @returns {BoundingRect}
+   */
   getViewRect () {
     let api = this._api
     return new echarts.graphic.BoundingRect(0, 0, api.getWidth(), api.getHeight())
   }
 
+  /**
+   * 转换roam
+   */
   getRoamTransform () {
     return echarts.matrix.create()
   }
-  create (ecModel, api) {
-    var coordSys;
+
+  static create (ecModel, api) {
+    let coordSys;
     ecModel.eachComponent('olMap', function (olMapModel) {
-      var viewportRoot = api.getZr().painter.getViewportRoot()
-      var olMap = echarts.olMap;
+      let viewportRoot = api.getZr().painter.getViewportRoot()
+      let olMap = echarts.olMap;
       coordSys = new olMapCoordSys(olMap, api)
       coordSys.setMapOffset(olMapModel.__mapOffset || [0, 0])
       olMapModel.coordinateSystem = coordSys
@@ -71,12 +94,119 @@ class Ol3Echarts {
     this.chart = echarts.init(this._echartsContainer);
     echarts.olMap = map;
     this.addResizeListener()
+    this.registerComponentView()
+    this.registerModule()
+    this.registerCoordinateSystem()
+    this._registerAction()
   }
 
+  /**
+   * 注册坐标系统
+   */
   registerCoordinateSystem () {
     this._echarts.registerCoordinateSystem(
-      'olMap', require('./olMapCoordSys')
+      'olMap', olMapCoordSys
     )
+  }
+
+  /**
+   * 注册自定义模块
+   * @returns {*}
+   */
+  registerModule () {
+    return this._echarts.extendComponentModel({
+      type: 'olMap',
+      getBMap: function () {
+        // __bmap is injected when creating BMapCoordSys
+        return this.__olMap;
+      },
+      defaultOption: {
+        roam: false
+      }
+    });
+  }
+
+  /**
+   * 注册事件
+   * @returns {*}
+   * @private
+   */
+  _registerAction () {
+    return this._echarts.registerAction({
+      type: 'olMapRoam',
+      event: 'olMapRoam',
+      update: 'updateLayout'
+    }, function (payload, ecModel) {})
+  }
+
+  /**
+   * 注册组件视图
+   * @returns {*}
+   */
+  registerComponentView () {
+    let that = this;
+    return this._echarts.extendComponentView({
+      type: 'olMap',
+      render: function (olMapModel, ecModel, api) {
+        let rendering = true;
+        let olMap = that._echarts.olMap;
+        let viewportRoot = api.getZr().painter.getViewportRoot();
+        let coordSys = olMapModel.coordinateSystem;
+        let moveHandler = (type, target) => {
+          if (rendering) {
+            return
+          }
+          let offsetEl = viewportRoot.parentNode.parentNode.parentNode;
+          let mapOffset = [
+            -parseInt(offsetEl.style.left, 10) || 0,
+            -parseInt(offsetEl.style.top, 10) || 0
+          ];
+          viewportRoot.style.left = mapOffset[0] + 'px';
+          viewportRoot.style.top = mapOffset[1] + 'px';
+          coordSys.setMapOffset(mapOffset)
+          olMapModel.__mapOffset = mapOffset
+          api.dispatchAction({
+            type: 'olMapRoam'
+          })
+        };
+        function zoomEndHandler () {
+          if (rendering) {
+            return
+          }
+          api.dispatchAction({
+            type: 'olMapRoam'
+          })
+        }
+
+        // olMap.off('move', this._oldMoveHandler)
+        // // FIXME
+        // // Moveend may be triggered by centerAndZoom method when creating coordSys next time
+        // // olMap.removeEventListener('moveend', this._oldMoveHandler)
+        // olMap.off('zoomend', this._oldZoomEndHandler)
+        // olMap.on('move', moveHandler)
+        // // olMap.addEventListener('moveend', moveHandler)
+        // olMap.on('zoomend', zoomEndHandler)
+        olMap.getView().on('change:resolution', moveHandler);
+        olMap.getView().on('change:center', moveHandler);
+        olMap.on('moveend', moveHandler);
+
+        this._oldMoveHandler = moveHandler
+        this._oldZoomEndHandler = zoomEndHandler
+
+        var roam = olMapModel.get('roam');
+        if (roam && roam !== 'scale') {
+          // todo 允许拖拽
+        }else {
+          // todo 不允许拖拽
+        }
+        if (roam && roam !== 'move') {
+          // todo 允许移动
+        }else {
+          // todo 不允许允许移动
+        }
+        rendering = false
+      }
+    })
   }
 
   /**

@@ -73,71 +73,27 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 106);
+/******/ 	return __webpack_require__(__webpack_require__.s = 91);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return PJD_3PARAM; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return PJD_7PARAM; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return PJD_WGS84; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return PJD_NODATUM; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return SEC_TO_RAD; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return HALF_PI; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return SIXTH; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return RA4; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return RA6; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EPSLN; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return D2R; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return R2D; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return FORTPI; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return TWO_PI; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return SPI; });
-var PJD_3PARAM = 1;
-var PJD_7PARAM = 2;
-var PJD_WGS84 = 4; // WGS84 or equivalent
-var PJD_NODATUM = 5; // WGS84 or equivalent
-var SEC_TO_RAD = 4.84813681109535993589914102357e-6;
-var HALF_PI = Math.PI/2;
-// ellipoid pj_set_ell.c
-var SIXTH = 0.1666666666666666667;
-/* 1/6 */
-var RA4 = 0.04722222222222222222;
-/* 17/360 */
-var RA6 = 0.02215608465608465608;
-var EPSLN = (typeof Number.EPSILON === 'undefined') ? 1.0e-10 : Number.EPSILON;
-var D2R = 0.01745329251994329577;
-var R2D = 57.29577951308232088;
-var FORTPI = Math.PI/4;
 var TWO_PI = Math.PI * 2;
 // SPI is slightly greater than Math.PI, so values that exceed the -180..180
 // degree range by a tiny amount don't get wrapped. This prevents points that
 // have drifted from their original location along the 180th meridian (due to
 // floating point error) from changing their sign.
 var SPI = 3.14159265359;
+var sign = __webpack_require__(5);
 
+module.exports = function(x) {
+  return (Math.abs(x) <= SPI) ? x : (x - (sign(x) * TWO_PI));
+};
 
 /***/ }),
 /* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sign__ = __webpack_require__(6);
-
-
-
-
-/* harmony default export */ __webpack_exports__["a"] = function(x) {
-  return (Math.abs(x) <= __WEBPACK_IMPORTED_MODULE_0__constants_values__["c" /* SPI */]) ? x : (x - (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__sign__["a" /* default */])(x) * __WEBPACK_IMPORTED_MODULE_0__constants_values__["d" /* TWO_PI */]));
-};
-
-
-/***/ }),
-/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -148,15 +104,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.config = exports.proj4 = exports.ol = exports.ee = exports.a = exports.PI = exports.x_PI = undefined;
 
-var _proj = __webpack_require__(71);
+var _proj = __webpack_require__(62);
 
 var _proj2 = _interopRequireDefault(_proj);
 
-var _openlayers = __webpack_require__(48);
+var _openlayers = __webpack_require__(45);
 
 var _openlayers2 = _interopRequireDefault(_openlayers);
 
-var _config2 = __webpack_require__(43);
+var _config2 = __webpack_require__(40);
 
 var _config3 = _interopRequireDefault(_config2);
 
@@ -180,11 +136,30 @@ var proj4 = exports.proj4 = _proj2.default;
 var config = exports.config = _config3.default;
 
 /***/ }),
-/* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 2 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = function(x) {
+module.exports = function(eccent, sinphi, cosphi) {
+  var con = eccent * sinphi;
+  return cosphi / (Math.sqrt(1 - con * con));
+};
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var HALF_PI = Math.PI/2;
+var sign = __webpack_require__(5);
+
+module.exports = function(x) {
+  return (Math.abs(x) < HALF_PI) ? x : (x - (sign(x) * Math.PI));
+};
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+module.exports = function(x) {
   if (Math.abs(x) > 1) {
     x = (x > 1) ? 1 : -1;
   }
@@ -192,41 +167,15 @@ var config = exports.config = _config3.default;
 };
 
 /***/ }),
-/* 4 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = function(eccent, sinphi, cosphi) {
-  var con = eccent * sinphi;
-  return cosphi / (Math.sqrt(1 - con * con));
-};
-
-/***/ }),
 /* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sign__ = __webpack_require__(6);
-
-
-
-/* harmony default export */ __webpack_exports__["a"] = function(x) {
-  return (Math.abs(x) < __WEBPACK_IMPORTED_MODULE_0__constants_values__["b" /* HALF_PI */]) ? x : (x - (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__sign__["a" /* default */])(x) * Math.PI));
-};
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = function(x) {
+module.exports = function(x) {
   return x<0 ? -1 : 1;
 };
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -238,13 +187,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(1);
 
-var _mixin = __webpack_require__(8);
+var _mixin = __webpack_require__(7);
 
 var _mixin2 = _interopRequireDefault(_mixin);
 
-var _Style = __webpack_require__(16);
+var _Style = __webpack_require__(15);
 
 var _Style2 = _interopRequireDefault(_Style);
 
@@ -459,7 +408,7 @@ exports.default = Layer;
 module.exports = exports['default'];
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -547,65 +496,57 @@ exports.default = mix;
 module.exports = exports['default'];
 
 /***/ }),
-/* 9 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 8 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = function(x) {
+module.exports = function(x) {
   return (1 - 0.25 * x * (1 + x / 16 * (3 + 1.25 * x)));
 };
 
 /***/ }),
-/* 10 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 9 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = function(x) {
+module.exports = function(x) {
   return (0.375 * x * (1 + 0.25 * x * (1 + 0.46875 * x)));
 };
 
 /***/ }),
-/* 11 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 10 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = function(x) {
+module.exports = function(x) {
   return (0.05859375 * x * x * (1 + 0.75 * x));
 };
 
 /***/ }),
-/* 12 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 11 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = function(x) {
+module.exports = function(x) {
   return (x * x * x * (35 / 3072));
 };
 
 /***/ }),
-/* 13 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 12 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = function(e0, e1, e2, e3, phi) {
+module.exports = function(e0, e1, e2, e3, phi) {
   return (e0 * phi - e1 * Math.sin(2 * phi) + e2 * Math.sin(4 * phi) - e3 * Math.sin(6 * phi));
 };
 
 /***/ }),
-/* 14 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 13 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(0);
-
-
-/* harmony default export */ __webpack_exports__["a"] = function(eccent, ts) {
+var HALF_PI = Math.PI/2;
+module.exports = function(eccent, ts) {
   var eccnth = 0.5 * eccent;
   var con, dphi;
-  var phi = __WEBPACK_IMPORTED_MODULE_0__constants_values__["b" /* HALF_PI */] - 2 * Math.atan(ts);
+  var phi = HALF_PI - 2 * Math.atan(ts);
   for (var i = 0; i <= 15; i++) {
     con = eccent * Math.sin(phi);
-    dphi = __WEBPACK_IMPORTED_MODULE_0__constants_values__["b" /* HALF_PI */] - 2 * Math.atan(ts * (Math.pow(((1 - con) / (1 + con)), eccnth))) - phi;
+    dphi = HALF_PI - 2 * Math.atan(ts * (Math.pow(((1 - con) / (1 + con)), eccnth))) - phi;
     phi += dphi;
     if (Math.abs(dphi) <= 0.0000000001) {
       return phi;
@@ -615,25 +556,21 @@ module.exports = exports['default'];
   return -9999;
 };
 
-
 /***/ }),
-/* 15 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 14 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(0);
+var HALF_PI = Math.PI/2;
 
-
-/* harmony default export */ __webpack_exports__["a"] = function(eccent, phi, sinphi) {
+module.exports = function(eccent, phi, sinphi) {
   var con = eccent * sinphi;
   var com = 0.5 * eccent;
   con = Math.pow(((1 - con) / (1 + con)), com);
-  return (Math.tan(0.5 * (__WEBPACK_IMPORTED_MODULE_0__constants_values__["b" /* HALF_PI */] - phi)) / con);
+  return (Math.tan(0.5 * (HALF_PI - phi)) / con);
 };
 
-
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -645,7 +582,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(1);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -663,7 +600,7 @@ var Style = function () {
      * @returns {ol.style.Style}
      */
     value: function getStyleByPoint(attr) {
-      var options = attr['style'] || {};
+      var options = attr['style'] || undefined;
       var style = null;
       if (!options) {
         style = new _constants.ol.style.Style({
@@ -702,7 +639,7 @@ var Style = function () {
   }, {
     key: 'getStyleByLine',
     value: function getStyleByLine(attr) {
-      var options = attr['style'] || {};
+      var options = attr['style'] || undefined;
       var style = null;
       if (!options) {
         style = new _constants.ol.style.Style({
@@ -735,7 +672,7 @@ var Style = function () {
   }, {
     key: 'getStyleByPolygon',
     value: function getStyleByPolygon(attr) {
-      var options = attr['style'] || {};
+      var options = attr['style'] || undefined;
       var style = null;
       if (!options) {
         style = new _constants.ol.style.Style({
@@ -895,23 +832,15 @@ exports.default = Style;
 module.exports = exports['default'];
 
 /***/ }),
-/* 17 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parseCode__ = __webpack_require__(72);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__extend__ = __webpack_require__(69);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__projections__ = __webpack_require__(73);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__deriveConstants__ = __webpack_require__(68);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_Datum__ = __webpack_require__(60);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__datum__ = __webpack_require__(65);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__match__ = __webpack_require__(22);
-
-
-
-
-
-
+var parseCode = __webpack_require__(63);
+var extend = __webpack_require__(27);
+var projections = __webpack_require__(64);
+var deriveConstants = __webpack_require__(59);
+var Datum = __webpack_require__(51);
+var datum = __webpack_require__(56);
 
 
 function Projection(srsCode,callback) {
@@ -923,7 +852,7 @@ function Projection(srsCode,callback) {
       throw error;
     }
   };
-  var json = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__parseCode__["a" /* default */])(srsCode);
+  var json = parseCode(srsCode);
   if(typeof json !== 'object'){
     callback(srsCode);
     return;
@@ -934,7 +863,7 @@ function Projection(srsCode,callback) {
     return;
   }
   if (json.datumCode && json.datumCode !== 'none') {
-    var datumDef = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__match__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_4__constants_Datum__["a" /* default */], json.datumCode);
+    var datumDef = Datum[json.datumCode];
     if (datumDef) {
       json.datum_params = datumDef.towgs84 ? datumDef.towgs84.split(',') : null;
       json.ellps = datumDef.ellipse;
@@ -943,19 +872,19 @@ function Projection(srsCode,callback) {
   }
   json.k0 = json.k0 || 1.0;
   json.axis = json.axis || 'enu';
-  json.ellps = json.ellps || 'wgs84';
-  var sphere_ = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__deriveConstants__["a" /* sphere */])(json.a, json.b, json.rf, json.ellps, json.sphere);
-  var ecc = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__deriveConstants__["b" /* eccentricity */])(sphere_.a, sphere_.b, sphere_.rf, json.R_A);
-  var datumObj = json.datum || __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__datum__["a" /* default */])(json.datumCode, json.datum_params, sphere_.a, sphere_.b, ecc.es, ecc.ep2);
 
-  __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__extend__["a" /* default */])(this, json); // transfer everything over from the projection because we don't know what we'll need
-  __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__extend__["a" /* default */])(this, ourProj); // transfer all the methods from the projection
+  var sphere = deriveConstants.sphere(json.a, json.b, json.rf, json.ellps, json.sphere);
+  var ecc = deriveConstants.eccentricity(sphere.a, sphere.b, sphere.rf, json.R_A);
+  var datumObj = json.datum || datum(json.datumCode, json.datum_params, sphere.a, sphere.b, ecc.es, ecc.ep2);
+
+  extend(this, json); // transfer everything over from the projection because we don't know what we'll need
+  extend(this, ourProj); // transfer all the methods from the projection
 
   // copy the 4 things over we calulated in deriveConstants.sphere
-  this.a = sphere_.a;
-  this.b = sphere_.b;
-  this.rf = sphere_.rf;
-  this.sphere = sphere_.sphere;
+  this.a = sphere.a;
+  this.b = sphere.b;
+  this.rf = sphere.rf;
+  this.sphere = sphere.sphere;
 
   // copy the 3 things we calculated in deriveConstants.eccentricity
   this.es = ecc.es;
@@ -972,27 +901,25 @@ function Projection(srsCode,callback) {
   callback(null, this);
 
 }
-Projection.projections = __WEBPACK_IMPORTED_MODULE_2__projections__["a" /* default */];
+Projection.projections = projections;
 Projection.projections.start();
-/* harmony default export */ __webpack_exports__["a"] = Projection;
+module.exports = Projection;
 
 
 /***/ }),
-/* 18 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 17 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = function(a, e, sinphi) {
+module.exports = function(a, e, sinphi) {
   var temp = e * sinphi;
   return a / Math.sqrt(1 - temp * temp);
 };
 
 /***/ }),
-/* 19 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 18 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = function(ml, e0, e1, e2, e3) {
+module.exports = function(ml, e0, e1, e2, e3) {
   var phi;
   var dphi;
 
@@ -1010,22 +937,20 @@ Projection.projections.start();
 };
 
 /***/ }),
-/* 20 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 19 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = function(phi, sphi, cphi, en) {
+module.exports = function(phi, sphi, cphi, en) {
   cphi *= sphi;
   sphi *= sphi;
   return (en[0] * phi - cphi * (en[1] + sphi * (en[2] + sphi * (en[3] + sphi * en[4]))));
 };
 
 /***/ }),
-/* 21 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 20 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = function(eccent, sinphi) {
+module.exports = function(eccent, sinphi) {
   var con;
   if (eccent > 1.0e-7) {
     con = eccent * sinphi;
@@ -1037,32 +962,7 @@ Projection.projections.start();
 };
 
 /***/ }),
-/* 22 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = match;
-var ignoredChar = /[\s_\-\/\(\)]/g;
-function match(obj, key) {
-  if (obj[key]) {
-    return obj[key];
-  }
-  var keys = Object.keys(obj);
-  var lkey = key.toLowerCase().replace(ignoredChar, '');
-  var i = -1;
-  var testkey, processedKey;
-  while (++i < keys.length) {
-    testkey = keys[i];
-    processedKey = testkey.toLowerCase().replace(ignoredChar, '');
-    if (processedKey === lkey) {
-      return obj[testkey];
-    }
-  }
-}
-
-
-/***/ }),
-/* 23 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1074,17 +974,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(1);
 
-var _mixin = __webpack_require__(8);
+var _mixin = __webpack_require__(7);
 
 var _mixin2 = _interopRequireDefault(_mixin);
 
-var _Style = __webpack_require__(16);
+var _Style = __webpack_require__(15);
 
 var _Style2 = _interopRequireDefault(_Style);
 
-var _Layer = __webpack_require__(7);
+var _Layer = __webpack_require__(6);
 
 var _Layer2 = _interopRequireDefault(_Layer);
 
@@ -1613,13 +1513,9 @@ exports.default = Feature;
 module.exports = exports['default'];
 
 /***/ }),
-/* 24 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 22 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["c"] = forward;
-/* unused harmony export inverse */
-/* harmony export (immutable) */ __webpack_exports__["b"] = toPoint;
 
 
 
@@ -1652,11 +1548,7 @@ var I = 73; // I
 var O = 79; // O
 var V = 86; // V
 var Z = 90; // Z
-/* harmony default export */ __webpack_exports__["a"] = {
-  forward: forward,
-  inverse: inverse,
-  toPoint: toPoint
-};
+
 /**
  * Conversion of lat/lon to MGRS.
  *
@@ -1666,7 +1558,7 @@ var Z = 90; // Z
  *      100 m, 2 for 1000 m or 1 for 10000 m). Optional, default is 5.
  * @return {string} the MGRS string for the given location and accuracy.
  */
-function forward(ll, accuracy) {
+exports.forward = function(ll, accuracy) {
   accuracy = accuracy || 5; // default accuracy 1m
   return encode(LLtoUTM({
     lat: ll[1],
@@ -1682,7 +1574,7 @@ function forward(ll, accuracy) {
  *     (longitude) and top (latitude) values in WGS84, representing the
  *     bounding box for the provided MGRS reference.
  */
-function inverse(mgrs) {
+exports.inverse = function(mgrs) {
   var bbox = UTMtoLL(decode(mgrs.toUpperCase()));
   if (bbox.lat && bbox.lon) {
     return [bbox.lon, bbox.lat, bbox.lon, bbox.lat];
@@ -1690,7 +1582,7 @@ function inverse(mgrs) {
   return [bbox.left, bbox.bottom, bbox.right, bbox.top];
 };
 
-function toPoint(mgrs) {
+exports.toPoint = function(mgrs) {
   var bbox = UTMtoLL(decode(mgrs.toUpperCase()));
   if (bbox.lat && bbox.lon) {
     return [bbox.lon, bbox.lat];
@@ -2369,25 +2261,9 @@ function getMinNorthing(zoneLetter) {
 
 
 /***/ }),
-/* 25 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 23 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = function(x, y) {
-  x = Math.abs(x);
-  y = Math.abs(y);
-  var a = Math.max(x, y);
-  var b = Math.min(x, y) / (a ? a : 1);
-
-  return a * Math.sqrt(1 + Math.pow(b, 2));
-};
-
-
-/***/ }),
-/* 26 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 var C00 = 1;
 var C02 = 0.25;
 var C04 = 0.046875;
@@ -2401,7 +2277,7 @@ var C66 = 0.36458333333333333333;
 var C68 = 0.00569661458333333333;
 var C88 = 0.3076171875;
 
-/* harmony default export */ __webpack_exports__["a"] = function(es) {
+module.exports = function(es) {
   var en = [];
   en[0] = C00 - es * (C02 + es * (C04 + es * (C06 + es * C08)));
   en[1] = es * (C22 - es * (C04 + es * (C06 + es * C08)));
@@ -2414,18 +2290,13 @@ var C88 = 0.3076171875;
 };
 
 /***/ }),
-/* 27 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pj_mlfn__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(0);
-
-
-
+var pj_mlfn = __webpack_require__(19);
+var EPSLN = 1.0e-10;
 var MAX_ITER = 20;
-
-/* harmony default export */ __webpack_exports__["a"] = function(arg, es, en) {
+module.exports = function(arg, es, en) {
   var k = 1 / (1 - es);
   var phi = arg;
   for (var i = MAX_ITER; i; --i) { /* rarely goes over 2 iterations */
@@ -2433,9 +2304,9 @@ var MAX_ITER = 20;
     var t = 1 - es * s * s;
     //t = this.pj_mlfn(phi, s, Math.cos(phi), en) - arg;
     //phi -= t * (t * Math.sqrt(t)) * k;
-    t = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__pj_mlfn__["a" /* default */])(phi, s, Math.cos(phi), en) - arg) * (t * Math.sqrt(t)) * k;
+    t = (pj_mlfn(phi, s, Math.cos(phi), en) - arg) * (t * Math.sqrt(t)) * k;
     phi -= t;
-    if (Math.abs(t) < __WEBPACK_IMPORTED_MODULE_1__constants_values__["a" /* EPSLN */]) {
+    if (Math.abs(t) < EPSLN) {
       return phi;
     }
   }
@@ -2443,24 +2314,11 @@ var MAX_ITER = 20;
   return phi;
 };
 
-
 /***/ }),
-/* 28 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 25 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = function(x) {
-  var r = Math.exp(x);
-  r = (r - 1 / r) / 2;
-  return r;
-};
-
-/***/ }),
-/* 29 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = function (array){
+module.exports = function (array){
   var out = {
     x: array[0],
     y: array[1]
@@ -2475,16 +2333,12 @@ var MAX_ITER = 20;
 };
 
 /***/ }),
-/* 30 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__global__ = __webpack_require__(70);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projString__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__wkt_parser__ = __webpack_require__(34);
-
-
-
+var globals = __webpack_require__(60);
+var parseProj = __webpack_require__(28);
+var wkt = __webpack_require__(31);
 
 function defs(name) {
   /*global console*/
@@ -2493,10 +2347,10 @@ function defs(name) {
     var def = arguments[1];
     if (typeof def === 'string') {
       if (def.charAt(0) === '+') {
-        defs[name] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__projString__["a" /* default */])(arguments[1]);
+        defs[name] = parseProj(arguments[1]);
       }
       else {
-        defs[name] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__wkt_parser__["a" /* default */])(arguments[1]);
+        defs[name] = wkt(arguments[1]);
       }
     } else {
       defs[name] = def;
@@ -2535,25 +2389,39 @@ function defs(name) {
 
 
 }
-__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__global__["a" /* default */])(defs);
-/* harmony default export */ __webpack_exports__["a"] = defs;
+globals(defs);
+module.exports = defs;
 
 
 /***/ }),
-/* 31 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 27 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_PrimeMeridian__ = __webpack_require__(62);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_units__ = __webpack_require__(63);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__match__ = __webpack_require__(22);
+module.exports = function(destination, source) {
+  destination = destination || {};
+  var value, property;
+  if (!source) {
+    return destination;
+  }
+  for (property in source) {
+    value = source[property];
+    if (value !== undefined) {
+      destination[property] = value;
+    }
+  }
+  return destination;
+};
 
 
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
 
+var D2R = 0.01745329251994329577;
+var PrimeMeridian = __webpack_require__(53);
+var units = __webpack_require__(54);
 
-
-/* harmony default export */ __webpack_exports__["a"] = function(defData) {
+module.exports = function(defData) {
   var self = {};
   var paramObj = defData.split('+').map(function(v) {
     return v.trim();
@@ -2573,31 +2441,31 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__global__["a" /* default */])(
       self.rf = parseFloat(v);
     },
     lat_0: function(v) {
-      self.lat0 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+      self.lat0 = v * D2R;
     },
     lat_1: function(v) {
-      self.lat1 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+      self.lat1 = v * D2R;
     },
     lat_2: function(v) {
-      self.lat2 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+      self.lat2 = v * D2R;
     },
     lat_ts: function(v) {
-      self.lat_ts = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+      self.lat_ts = v * D2R;
     },
     lon_0: function(v) {
-      self.long0 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+      self.long0 = v * D2R;
     },
     lon_1: function(v) {
-      self.long1 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+      self.long1 = v * D2R;
     },
     lon_2: function(v) {
-      self.long2 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+      self.long2 = v * D2R;
     },
     alpha: function(v) {
-      self.alpha = parseFloat(v) * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+      self.alpha = parseFloat(v) * D2R;
     },
     lonc: function(v) {
-      self.longc = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+      self.longc = v * D2R;
     },
     x_0: function(v) {
       self.x0 = parseFloat(v);
@@ -2636,17 +2504,15 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__global__["a" /* default */])(
     },
     units: function(v) {
       self.units = v;
-      var unit = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__match__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_2__constants_units__["a" /* default */], v);
-      if (unit) {
-        self.to_meter = unit.to_meter;
+      if (units[v]) {
+        self.to_meter = units[v].to_meter;
       }
     },
     from_greenwich: function(v) {
-      self.from_greenwich = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+      self.from_greenwich = v * D2R;
     },
     pm: function(v) {
-      var pm = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__match__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_1__constants_PrimeMeridian__["a" /* default */], v);
-      self.from_greenwich = (pm ? pm : parseFloat(v)) * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+      self.from_greenwich = (PrimeMeridian[v] ? PrimeMeridian[v] : parseFloat(v)) * D2R;
     },
     nadgrids: function(v) {
       if (v === '@null') {
@@ -2686,229 +2552,214 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__global__["a" /* default */])(
 
 
 /***/ }),
-/* 32 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_sinh__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_hypot__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_asinhy__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_gatg__ = __webpack_require__(56);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_clens__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_clens_cmplx__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__ = __webpack_require__(1);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-// Heavily based on this etmerc projection implementation
-// https://github.com/mbloch/mapshaper-proj/blob/master/src/projections/etmerc.js
+// Heavily based on this tmerc projection implementation
+// https://github.com/mbloch/mapshaper-proj/blob/master/src/projections/tmerc.js
 
+var pj_enfn = __webpack_require__(23);
+var pj_mlfn = __webpack_require__(19);
+var pj_inv_mlfn = __webpack_require__(24);
+var adjust_lon = __webpack_require__(0);
+var HALF_PI = Math.PI / 2;
+var EPSLN = 1.0e-10;
+var sign = __webpack_require__(5);
 
-
-
-
-
-
-
-
-function init() {
-  if (this.es === undefined || this.es <= 0) {
-    throw new Error('incorrect elliptical usage');
-  }
-
+exports.init = function() {
   this.x0 = this.x0 !== undefined ? this.x0 : 0;
   this.y0 = this.y0 !== undefined ? this.y0 : 0;
   this.long0 = this.long0 !== undefined ? this.long0 : 0;
   this.lat0 = this.lat0 !== undefined ? this.lat0 : 0;
 
-  this.cgb = [];
-  this.cbg = [];
-  this.utg = [];
-  this.gtu = [];
+  if (this.es) {
+    this.en = pj_enfn(this.es);
+    this.ml0 = pj_mlfn(this.lat0, Math.sin(this.lat0), Math.cos(this.lat0), this.en);
+  }
+};
 
-  var f = this.es / (1 + Math.sqrt(1 - this.es));
-  var n = f / (2 - f);
-  var np = n;
+/**
+    Transverse Mercator Forward  - long/lat to x/y
+    long/lat in radians
+  */
+exports.forward = function(p) {
+  var lon = p.x;
+  var lat = p.y;
 
-  this.cgb[0] = n * (2 + n * (-2 / 3 + n * (-2 + n * (116 / 45 + n * (26 / 45 + n * (-2854 / 675 ))))));
-  this.cbg[0] = n * (-2 + n * ( 2 / 3 + n * ( 4 / 3 + n * (-82 / 45 + n * (32 / 45 + n * (4642 / 4725))))));
+  var delta_lon = adjust_lon(lon - this.long0);
+  var con;
+  var x, y;
+  var sin_phi = Math.sin(lat);
+  var cos_phi = Math.cos(lat);
 
-  np = np * n;
-  this.cgb[1] = np * (7 / 3 + n * (-8 / 5 + n * (-227 / 45 + n * (2704 / 315 + n * (2323 / 945)))));
-  this.cbg[1] = np * (5 / 3 + n * (-16 / 15 + n * ( -13 / 9 + n * (904 / 315 + n * (-1522 / 945)))));
+  if (!this.es) {
+    var b = cos_phi * Math.sin(delta_lon);
 
-  np = np * n;
-  this.cgb[2] = np * (56 / 15 + n * (-136 / 35 + n * (-1262 / 105 + n * (73814 / 2835))));
-  this.cbg[2] = np * (-26 / 15 + n * (34 / 21 + n * (8 / 5 + n * (-12686 / 2835))));
+    if ((Math.abs(Math.abs(b) - 1)) < EPSLN) {
+      return (93);
+    }
+    else {
+      x = 0.5 * this.a * this.k0 * Math.log((1 + b) / (1 - b)) + this.x0;
+      y = cos_phi * Math.cos(delta_lon) / Math.sqrt(1 - Math.pow(b, 2));
+      b = Math.abs(y);
 
-  np = np * n;
-  this.cgb[3] = np * (4279 / 630 + n * (-332 / 35 + n * (-399572 / 14175)));
-  this.cbg[3] = np * (1237 / 630 + n * (-12 / 5 + n * ( -24832 / 14175)));
+      if (b >= 1) {
+        if ((b - 1) > EPSLN) {
+          return (93);
+        }
+        else {
+          y = 0;
+        }
+      }
+      else {
+        y = Math.acos(y);
+      }
 
-  np = np * n;
-  this.cgb[4] = np * (4174 / 315 + n * (-144838 / 6237));
-  this.cbg[4] = np * (-734 / 315 + n * (109598 / 31185));
+      if (lat < 0) {
+        y = -y;
+      }
 
-  np = np * n;
-  this.cgb[5] = np * (601676 / 22275);
-  this.cbg[5] = np * (444337 / 155925);
-
-  np = Math.pow(n, 2);
-  this.Qn = this.k0 / (1 + n) * (1 + np * (1 / 4 + np * (1 / 64 + np / 256)));
-
-  this.utg[0] = n * (-0.5 + n * ( 2 / 3 + n * (-37 / 96 + n * ( 1 / 360 + n * (81 / 512 + n * (-96199 / 604800))))));
-  this.gtu[0] = n * (0.5 + n * (-2 / 3 + n * (5 / 16 + n * (41 / 180 + n * (-127 / 288 + n * (7891 / 37800))))));
-
-  this.utg[1] = np * (-1 / 48 + n * (-1 / 15 + n * (437 / 1440 + n * (-46 / 105 + n * (1118711 / 3870720)))));
-  this.gtu[1] = np * (13 / 48 + n * (-3 / 5 + n * (557 / 1440 + n * (281 / 630 + n * (-1983433 / 1935360)))));
-
-  np = np * n;
-  this.utg[2] = np * (-17 / 480 + n * (37 / 840 + n * (209 / 4480 + n * (-5569 / 90720 ))));
-  this.gtu[2] = np * (61 / 240 + n * (-103 / 140 + n * (15061 / 26880 + n * (167603 / 181440))));
-
-  np = np * n;
-  this.utg[3] = np * (-4397 / 161280 + n * (11 / 504 + n * (830251 / 7257600)));
-  this.gtu[3] = np * (49561 / 161280 + n * (-179 / 168 + n * (6601661 / 7257600)));
-
-  np = np * n;
-  this.utg[4] = np * (-4583 / 161280 + n * (108847 / 3991680));
-  this.gtu[4] = np * (34729 / 80640 + n * (-3418889 / 1995840));
-
-  np = np * n;
-  this.utg[5] = np * (-20648693 / 638668800);
-  this.gtu[5] = np * (212378941 / 319334400);
-
-  var Z = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_gatg__["a" /* default */])(this.cbg, this.lat0);
-  this.Zb = -this.Qn * (Z + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_clens__["a" /* default */])(this.gtu, 2 * Z));
-}
-
-function forward(p) {
-  var Ce = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__["a" /* default */])(p.x - this.long0);
-  var Cn = p.y;
-
-  Cn = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_gatg__["a" /* default */])(this.cbg, Cn);
-  var sin_Cn = Math.sin(Cn);
-  var cos_Cn = Math.cos(Cn);
-  var sin_Ce = Math.sin(Ce);
-  var cos_Ce = Math.cos(Ce);
-
-  Cn = Math.atan2(sin_Cn, cos_Ce * cos_Cn);
-  Ce = Math.atan2(sin_Ce * cos_Cn, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_hypot__["a" /* default */])(sin_Cn, cos_Cn * cos_Ce));
-  Ce = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_asinhy__["a" /* default */])(Math.tan(Ce));
-
-  var tmp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_clens_cmplx__["a" /* default */])(this.gtu, 2 * Cn, 2 * Ce);
-
-  Cn = Cn + tmp[0];
-  Ce = Ce + tmp[1];
-
-  var x;
-  var y;
-
-  if (Math.abs(Ce) <= 2.623395162778) {
-    x = this.a * (this.Qn * Ce) + this.x0;
-    y = this.a * (this.Qn * Cn + this.Zb) + this.y0;
+      y = this.a * this.k0 * (y - this.lat0) + this.y0;
+    }
   }
   else {
-    x = Infinity;
-    y = Infinity;
+    var al = cos_phi * delta_lon;
+    var als = Math.pow(al, 2);
+    var c = this.ep2 * Math.pow(cos_phi, 2);
+    var cs = Math.pow(c, 2);
+    var tq = Math.abs(cos_phi) > EPSLN ? Math.tan(lat) : 0;
+    var t = Math.pow(tq, 2);
+    var ts = Math.pow(t, 2);
+    con = 1 - this.es * Math.pow(sin_phi, 2);
+    al = al / Math.sqrt(con);
+    var ml = pj_mlfn(lat, sin_phi, cos_phi, this.en);
+
+    x = this.a * (this.k0 * al * (1 +
+      als / 6 * (1 - t + c +
+      als / 20 * (5 - 18 * t + ts + 14 * c - 58 * t * c +
+      als / 42 * (61 + 179 * ts - ts * t - 479 * t))))) +
+      this.x0;
+
+    y = this.a * (this.k0 * (ml - this.ml0 +
+      sin_phi * delta_lon * al / 2 * (1 +
+      als / 12 * (5 - t + 9 * c + 4 * cs +
+      als / 30 * (61 + ts - 58 * t + 270 * c - 330 * t * c +
+      als / 56 * (1385 + 543 * ts - ts * t - 3111 * t)))))) +
+      this.y0;
   }
 
   p.x = x;
   p.y = y;
 
   return p;
-}
+};
 
-function inverse(p) {
-  var Ce = (p.x - this.x0) * (1 / this.a);
-  var Cn = (p.y - this.y0) * (1 / this.a);
+/**
+    Transverse Mercator Inverse  -  x/y to long/lat
+  */
+exports.inverse = function(p) {
+  var con, phi;
+  var lat, lon;
+  var x = (p.x - this.x0) * (1 / this.a);
+  var y = (p.y - this.y0) * (1 / this.a);
 
-  Cn = (Cn - this.Zb) / this.Qn;
-  Ce = Ce / this.Qn;
+  if (!this.es) {
+    var f = Math.exp(x / this.k0);
+    var g = 0.5 * (f - 1 / f);
+    var temp = this.lat0 + y / this.k0;
+    var h = Math.cos(temp);
+    con = Math.sqrt((1 - Math.pow(h, 2)) / (1 + Math.pow(g, 2)));
+    lat = Math.asin(con);
 
-  var lon;
-  var lat;
+    if (y < 0) {
+      lat = -lat;
+    }
 
-  if (Math.abs(Ce) <= 2.623395162778) {
-    var tmp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_clens_cmplx__["a" /* default */])(this.utg, 2 * Cn, 2 * Ce);
-
-    Cn = Cn + tmp[0];
-    Ce = Ce + tmp[1];
-    Ce = Math.atan(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_sinh__["a" /* default */])(Ce));
-
-    var sin_Cn = Math.sin(Cn);
-    var cos_Cn = Math.cos(Cn);
-    var sin_Ce = Math.sin(Ce);
-    var cos_Ce = Math.cos(Ce);
-
-    Cn = Math.atan2(sin_Cn * cos_Ce, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_hypot__["a" /* default */])(sin_Ce, cos_Ce * cos_Cn));
-    Ce = Math.atan2(sin_Ce, cos_Ce * cos_Cn);
-
-    lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__["a" /* default */])(Ce + this.long0);
-    lat = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_gatg__["a" /* default */])(this.cgb, Cn);
+    if ((g === 0) && (h === 0)) {
+      lon = 0;
+    }
+    else {
+      lon = adjust_lon(Math.atan2(g, h) + this.long0);
+    }
   }
-  else {
-    lon = Infinity;
-    lat = Infinity;
+  else { // ellipsoidal form
+    con = this.ml0 + y / this.k0;
+    phi = pj_inv_mlfn(con, this.es, this.en);
+
+    if (Math.abs(phi) < HALF_PI) {
+      var sin_phi = Math.sin(phi);
+      var cos_phi = Math.cos(phi);
+      var tan_phi = Math.abs(cos_phi) > EPSLN ? Math.tan(phi) : 0;
+      var c = this.ep2 * Math.pow(cos_phi, 2);
+      var cs = Math.pow(c, 2);
+      var t = Math.pow(tan_phi, 2);
+      var ts = Math.pow(t, 2);
+      con = 1 - this.es * Math.pow(sin_phi, 2);
+      var d = x * Math.sqrt(con) / this.k0;
+      var ds = Math.pow(d, 2);
+      con = con * tan_phi;
+
+      lat = phi - (con * ds / (1 - this.es)) * 0.5 * (1 -
+        ds / 12 * (5 + 3 * t - 9 * c * t + c - 4 * cs -
+        ds / 30 * (61 + 90 * t - 252 * c * t + 45 * ts + 46 * c -
+        ds / 56 * (1385 + 3633 * t + 4095 * ts + 1574 * ts * t))));
+
+      lon = adjust_lon(this.long0 + (d * (1 -
+        ds / 6 * (1 + 2 * t + c -
+        ds / 20 * (5 + 28 * t + 24 * ts + 8 * c * t + 6 * c -
+        ds / 42 * (61 + 662 * t + 1320 * ts + 720 * ts * t)))) / cos_phi));
+    }
+    else {
+      lat = HALF_PI * sign(y);
+      lon = 0;
+    }
   }
 
   p.x = lon;
   p.y = lat;
 
   return p;
-}
-
-var names = ["Extended_Transverse_Mercator", "Extended Transverse Mercator", "etmerc"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names
 };
+
+exports.names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
 
 
 /***/ }),
-/* 33 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__datum_transform__ = __webpack_require__(67);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__adjust_axis__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Proj__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_toPoint__ = __webpack_require__(29);
-/* harmony export (immutable) */ __webpack_exports__["a"] = transform;
-
-
-
-
-
+var D2R = 0.01745329251994329577;
+var R2D = 57.29577951308232088;
+var PJD_3PARAM = 1;
+var PJD_7PARAM = 2;
+var datum_transform = __webpack_require__(58);
+var adjust_axis = __webpack_require__(47);
+var proj = __webpack_require__(16);
+var toPoint = __webpack_require__(25);
 function checkNotWGS(source, dest) {
-  return ((source.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["h" /* PJD_3PARAM */] || source.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["i" /* PJD_7PARAM */]) && dest.datumCode !== 'WGS84') || ((dest.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["h" /* PJD_3PARAM */] || dest.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["i" /* PJD_7PARAM */]) && source.datumCode !== 'WGS84');
+  return ((source.datum.datum_type === PJD_3PARAM || source.datum.datum_type === PJD_7PARAM) && dest.datumCode !== 'WGS84') || ((dest.datum.datum_type === PJD_3PARAM || dest.datum.datum_type === PJD_7PARAM) && source.datumCode !== 'WGS84');
 }
-
-function transform(source, dest, point) {
+module.exports = function transform(source, dest, point) {
   var wgs84;
   if (Array.isArray(point)) {
-    point = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_toPoint__["a" /* default */])(point);
+    point = toPoint(point);
   }
 
   // Workaround for datum shifts towgs84, if either source or destination projection is not wgs84
   if (source.datum && dest.datum && checkNotWGS(source, dest)) {
-    wgs84 = new __WEBPACK_IMPORTED_MODULE_3__Proj__["a" /* default */]('WGS84');
+    wgs84 = new proj('WGS84');
     point = transform(source, wgs84, point);
     source = wgs84;
   }
   // DGR, 2010/11/12
   if (source.axis !== 'enu') {
-    point = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__adjust_axis__["a" /* default */])(source, false, point);
+    point = adjust_axis(source, false, point);
   }
   // Transform source points to long/lat, if they aren't already.
   if (source.projName === 'longlat') {
     point = {
-      x: point.x * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */],
-      y: point.y * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */]
+      x: point.x * D2R,
+      y: point.y * D2R
     };
   }
   else {
@@ -2926,12 +2777,12 @@ function transform(source, dest, point) {
   }
 
   // Convert datums if needed, and if possible.
-  point = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__datum_transform__["a" /* default */])(source.datum, dest.datum, point);
+  point = datum_transform(source.datum, dest.datum, point);
 
   // Adjust for the prime meridian if necessary
   if (dest.from_greenwich) {
     point = {
-      x: point.x - dest.from_greenwich,
+      x: point.x - dest.grom_greenwich,
       y: point.y
     };
   }
@@ -2939,8 +2790,8 @@ function transform(source, dest, point) {
   if (dest.projName === 'longlat') {
     // convert radians to decimal degrees
     point = {
-      x: point.x * __WEBPACK_IMPORTED_MODULE_0__constants_values__["j" /* R2D */],
-      y: point.y * __WEBPACK_IMPORTED_MODULE_0__constants_values__["j" /* R2D */]
+      x: point.x * R2D,
+      y: point.y * R2D
     };
   } else { // else project
     point = dest.forward(point);
@@ -2954,25 +2805,92 @@ function transform(source, dest, point) {
 
   // DGR, 2010/11/12
   if (dest.axis !== 'enu') {
-    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__adjust_axis__["a" /* default */])(dest, true, point);
+    return adjust_axis(dest, true, point);
   }
 
   return point;
-}
+};
 
 
 /***/ }),
-/* 34 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parser__ = __webpack_require__(104);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__process__ = __webpack_require__(105);
 var D2R = 0.01745329251994329577;
+var extend = __webpack_require__(27);
 
+function mapit(obj, key, v) {
+  obj[key] = v.map(function(aa) {
+    var o = {};
+    sExpr(aa, o);
+    return o;
+  }).reduce(function(a, b) {
+    return extend(a, b);
+  }, {});
+}
 
-
-
+function sExpr(v, obj) {
+  var key;
+  if (!Array.isArray(v)) {
+    obj[v] = true;
+    return;
+  }
+  else {
+    key = v.shift();
+    if (key === 'PARAMETER') {
+      key = v.shift();
+    }
+    if (v.length === 1) {
+      if (Array.isArray(v[0])) {
+        obj[key] = {};
+        sExpr(v[0], obj[key]);
+      }
+      else {
+        obj[key] = v[0];
+      }
+    }
+    else if (!v.length) {
+      obj[key] = true;
+    }
+    else if (key === 'TOWGS84') {
+      obj[key] = v;
+    }
+    else {
+      obj[key] = {};
+      if (['UNIT', 'PRIMEM', 'VERT_DATUM'].indexOf(key) > -1) {
+        obj[key] = {
+          name: v[0].toLowerCase(),
+          convert: v[1]
+        };
+        if (v.length === 3) {
+          obj[key].auth = v[2];
+        }
+      }
+      else if (key === 'SPHEROID') {
+        obj[key] = {
+          name: v[0],
+          a: v[1],
+          rf: v[2]
+        };
+        if (v.length === 4) {
+          obj[key].auth = v[3];
+        }
+      }
+      else if (['GEOGCS', 'GEOCCS', 'DATUM', 'VERT_CS', 'COMPD_CS', 'LOCAL_CS', 'FITTED_CS', 'LOCAL_DATUM'].indexOf(key) > -1) {
+        v[0] = ['name', v[0]];
+        mapit(obj, key, v);
+      }
+      else if (v.every(function(aa) {
+        return Array.isArray(aa);
+      })) {
+        mapit(obj, key, v);
+      }
+      else {
+        sExpr(v, obj[key]);
+      }
+    }
+  }
+}
 
 function rename(obj, params) {
   var outName = params[0];
@@ -2992,13 +2910,16 @@ function d2r(input) {
 function cleanWKT(wkt) {
   if (wkt.type === 'GEOGCS') {
     wkt.projName = 'longlat';
-  } else if (wkt.type === 'LOCAL_CS') {
+  }
+  else if (wkt.type === 'LOCAL_CS') {
     wkt.projName = 'identity';
     wkt.local = true;
-  } else {
-    if (typeof wkt.PROJECTION === 'object') {
+  }
+  else {
+    if (typeof wkt.PROJECTION === "object") {
       wkt.projName = Object.keys(wkt.PROJECTION)[0];
-    } else {
+    }
+    else {
       wkt.projName = wkt.PROJECTION;
     }
   }
@@ -3010,25 +2931,23 @@ function cleanWKT(wkt) {
     if (wkt.UNIT.convert) {
       if (wkt.type === 'GEOGCS') {
         if (wkt.DATUM && wkt.DATUM.SPHEROID) {
-          wkt.to_meter = wkt.UNIT.convert*wkt.DATUM.SPHEROID.a;
+          wkt.to_meter = parseFloat(wkt.UNIT.convert, 10)*wkt.DATUM.SPHEROID.a;
         }
       } else {
-        wkt.to_meter = wkt.UNIT.convert, 10;
+        wkt.to_meter = parseFloat(wkt.UNIT.convert, 10);
       }
     }
   }
-  var geogcs = wkt.GEOGCS;
-  if (wkt.type === 'GEOGCS') {
-    geogcs = wkt;
-  }
-  if (geogcs) {
+
+  if (wkt.GEOGCS) {
     //if(wkt.GEOGCS.PRIMEM&&wkt.GEOGCS.PRIMEM.convert){
     //  wkt.from_greenwich=wkt.GEOGCS.PRIMEM.convert*D2R;
     //}
-    if (geogcs.DATUM) {
-      wkt.datumCode = geogcs.DATUM.name.toLowerCase();
-    } else {
-      wkt.datumCode = geogcs.name.toLowerCase();
+    if (wkt.GEOGCS.DATUM) {
+      wkt.datumCode = wkt.GEOGCS.DATUM.name.toLowerCase();
+    }
+    else {
+      wkt.datumCode = wkt.GEOGCS.name.toLowerCase();
     }
     if (wkt.datumCode.slice(0, 2) === 'd_') {
       wkt.datumCode = wkt.datumCode.slice(2);
@@ -3036,7 +2955,7 @@ function cleanWKT(wkt) {
     if (wkt.datumCode === 'new_zealand_geodetic_datum_1949' || wkt.datumCode === 'new_zealand_1949') {
       wkt.datumCode = 'nzgd49';
     }
-    if (wkt.datumCode === 'wgs_1984') {
+    if (wkt.datumCode === "wgs_1984") {
       if (wkt.PROJECTION === 'Mercator_Auxiliary_Sphere') {
         wkt.sphere = true;
       }
@@ -3049,19 +2968,19 @@ function cleanWKT(wkt) {
       wkt.datumCode = wkt.datumCode.slice(0, - 8);
     }
     if (~wkt.datumCode.indexOf('belge')) {
-      wkt.datumCode = 'rnb72';
+      wkt.datumCode = "rnb72";
     }
-    if (geogcs.DATUM && geogcs.DATUM.SPHEROID) {
-      wkt.ellps = geogcs.DATUM.SPHEROID.name.replace('_19', '').replace(/[Cc]larke\_18/, 'clrk');
-      if (wkt.ellps.toLowerCase().slice(0, 13) === 'international') {
+    if (wkt.GEOGCS.DATUM && wkt.GEOGCS.DATUM.SPHEROID) {
+      wkt.ellps = wkt.GEOGCS.DATUM.SPHEROID.name.replace('_19', '').replace(/[Cc]larke\_18/, 'clrk');
+      if (wkt.ellps.toLowerCase().slice(0, 13) === "international") {
         wkt.ellps = 'intl';
       }
 
-      wkt.a = geogcs.DATUM.SPHEROID.a;
-      wkt.rf = parseFloat(geogcs.DATUM.SPHEROID.rf, 10);
+      wkt.a = wkt.GEOGCS.DATUM.SPHEROID.a;
+      wkt.rf = parseFloat(wkt.GEOGCS.DATUM.SPHEROID.rf, 10);
     }
     if (~wkt.datumCode.indexOf('osgb_1936')) {
-      wkt.datumCode = 'osgb36';
+      wkt.datumCode = "osgb36";
     }
   }
   if (wkt.b && !isFinite(wkt.b)) {
@@ -3070,7 +2989,7 @@ function cleanWKT(wkt) {
 
   function toMeter(input) {
     var ratio = wkt.to_meter || 1;
-    return input * ratio;
+    return parseFloat(input, 10) * ratio;
   }
   var renamer = function(a) {
     return rename(wkt, a);
@@ -3100,7 +3019,7 @@ function cleanWKT(wkt) {
     ['srsCode', 'name']
   ];
   list.forEach(renamer);
-  if (!wkt.long0 && wkt.longc && (wkt.projName === 'Albers_Conic_Equal_Area' || wkt.projName === 'Lambert_Azimuthal_Equal_Area')) {
+  if (!wkt.long0 && wkt.longc && (wkt.projName === 'Albers_Conic_Equal_Area' || wkt.projName === "Lambert_Azimuthal_Equal_Area")) {
     wkt.long0 = wkt.longc;
   }
   if (!wkt.lat_ts && wkt.lat1 && (wkt.projName === 'Stereographic_South_Pole' || wkt.projName === 'Polar Stereographic (variant B)')) {
@@ -3108,21 +3027,22 @@ function cleanWKT(wkt) {
     wkt.lat_ts = wkt.lat1;
   }
 }
-/* harmony default export */ __webpack_exports__["a"] = function(wkt) {
-  var lisp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__parser__["a" /* default */])(wkt);
+module.exports = function(wkt, self) {
+  var lisp = JSON.parse(("," + wkt).replace(/\s*\,\s*([A-Z_0-9]+?)(\[)/g, ',["$1",').slice(1).replace(/\s*\,\s*([A-Z_0-9]+?)\]/g, ',"$1"]').replace(/,\["VERTCS".+/,''));
   var type = lisp.shift();
   var name = lisp.shift();
   lisp.unshift(['name', name]);
   lisp.unshift(['type', type]);
+  lisp.unshift('output');
   var obj = {};
-  __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__process__["a" /* sExpr */])(lisp, obj);
-  cleanWKT(obj);
-  return obj;
+  sExpr(lisp, obj);
+  cleanWKT(obj.output);
+  return extend(self, obj.output);
 };
 
 
 /***/ }),
-/* 35 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3134,37 +3054,37 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _mixin = __webpack_require__(8);
+var _mixin = __webpack_require__(7);
 
 var _mixin2 = _interopRequireDefault(_mixin);
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(1);
 
-var _baseLayer = __webpack_require__(47);
+var _baseLayer = __webpack_require__(44);
 
 var _baseLayer2 = _interopRequireDefault(_baseLayer);
 
-var _Controls = __webpack_require__(44);
+var _Controls = __webpack_require__(41);
 
 var _Controls2 = _interopRequireDefault(_Controls);
 
-var _Interactions = __webpack_require__(45);
+var _Interactions = __webpack_require__(42);
 
 var _Interactions2 = _interopRequireDefault(_Interactions);
 
-var _View = __webpack_require__(46);
+var _View = __webpack_require__(43);
 
 var _View2 = _interopRequireDefault(_View);
 
-var _Layer = __webpack_require__(7);
+var _Layer = __webpack_require__(6);
 
 var _Layer2 = _interopRequireDefault(_Layer);
 
-var _feature = __webpack_require__(23);
+var _feature = __webpack_require__(21);
 
 var _feature2 = _interopRequireDefault(_feature);
 
-var _Style = __webpack_require__(16);
+var _Style = __webpack_require__(15);
 
 var _Style2 = _interopRequireDefault(_Style);
 
@@ -3324,7 +3244,7 @@ exports.default = Map;
 module.exports = exports['default'];
 
 /***/ }),
-/* 36 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3339,7 +3259,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(1);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3709,7 +3629,7 @@ exports.default = CustomCircle;
 module.exports = exports['default'];
 
 /***/ }),
-/* 37 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3721,7 +3641,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(1);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3835,7 +3755,7 @@ exports.default = LayerSwitcher;
 module.exports = exports['default'];
 
 /***/ }),
-/* 38 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3850,7 +3770,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(1);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3913,7 +3833,7 @@ exports.default = Measure;
 module.exports = exports['default'];
 
 /***/ }),
-/* 39 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3925,15 +3845,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _mixin = __webpack_require__(8);
+var _mixin = __webpack_require__(7);
 
 var _mixin2 = _interopRequireDefault(_mixin);
 
-var _Layer = __webpack_require__(7);
+var _Layer = __webpack_require__(6);
 
 var _Layer2 = _interopRequireDefault(_Layer);
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4423,6 +4343,8 @@ var MeasureTool = function (_mix) {
   }, {
     key: 'RemoveMeasure',
     value: function RemoveMeasure(groupId, pos) {
+      var _this5 = this;
+
       var overlays = this.getMap().getOverlays().getArray();
       if (overlays && Array.isArray(overlays)) {
         var length = overlays.length;
@@ -4435,14 +4357,16 @@ var MeasureTool = function (_mix) {
         }
       }
       if (this.layer && this.layer.getSource()) {
-        var source = this.layer.getSource();
-        var features = source.getFeatures();
-        features.forEach(function (feat) {
-          var lastCoord = feat.getGeometry().getLastCoordinate();
-          if (lastCoord[0] === pos[0] && lastCoord[1] === pos[1] || feat.get('uuid') === groupId) {
-            source.removeFeature(feat);
-          }
-        }, this);
+        (function () {
+          var source = _this5.layer.getSource();
+          var features = source.getFeatures();
+          features.forEach(function (feat) {
+            var lastCoord = feat.getGeometry().getLastCoordinate();
+            if (lastCoord[0] === pos[0] && lastCoord[1] === pos[1] || feat.get('uuid') === groupId) {
+              source.removeFeature(feat);
+            }
+          }, _this5);
+        })();
       }
     }
 
@@ -4454,13 +4378,13 @@ var MeasureTool = function (_mix) {
   }, {
     key: 'getDragPanInteraction',
     value: function getDragPanInteraction() {
-      var _this5 = this;
+      var _this6 = this;
 
       if (!this.dragPanInteraction) {
         var items = this.getMap().getInteractions().getArray();
         items.forEach(function (item) {
           if (item && item instanceof _constants.ol.interaction.DragPan) {
-            _this5.dragPanInteraction = item;
+            _this6.dragPanInteraction = item;
           }
         });
       }
@@ -4486,22 +4410,319 @@ exports.default = MeasureTool;
 module.exports = exports['default'];
 
 /***/ }),
-/* 40 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _constants = __webpack_require__(1);
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Ol3Echarts = function Ol3Echarts() {
-  _classCallCheck(this, Ol3Echarts);
+var olMapCoordSys = function () {
+  function olMapCoordSys(olMap, api) {
+    _classCallCheck(this, olMapCoordSys);
 
-  this.test = 'EX';
-};
+    this._olMap = olMap;
+    this.dimensions = ['lng', 'lat'];
+    this._mapOffset = [0, 0];
+    this._api = api;
+    this.dimensions = ['lng', 'lat'];
+  }
+
+  /**
+   * 设置地图偏移
+   * @param mapOffset
+   */
+
+
+  _createClass(olMapCoordSys, [{
+    key: 'setMapOffset',
+    value: function setMapOffset(mapOffset) {
+      this._mapOffset = mapOffset;
+    }
+  }, {
+    key: 'getBMap',
+    value: function getBMap() {
+      return this._olMap;
+    }
+
+    /**
+     * 坐标转像素
+     * @param coords
+     * @returns {ol.Pixel|*}
+     */
+
+  }, {
+    key: 'dataToPoint',
+    value: function dataToPoint(coords) {
+      return this._olMap.getPixelFromCoordinate(_constants.ol.proj.fromLonLat(coords));
+    }
+
+    /**
+     * 像素转坐标
+     * @param pixel
+     * @returns {ol.Coordinate|*}
+     */
+
+  }, {
+    key: 'pointToData',
+    value: function pointToData(pixel) {
+      return this._olMap.getCoordinateFromPixel(pixel);
+    }
+
+    /**
+     * 获取视图范围
+     * @returns {BoundingRect}
+     */
+
+  }, {
+    key: 'getViewRect',
+    value: function getViewRect() {
+      var api = this._api;
+      return new echarts.graphic.BoundingRect(0, 0, api.getWidth(), api.getHeight());
+    }
+
+    /**
+     * 转换roam
+     */
+
+  }, {
+    key: 'getRoamTransform',
+    value: function getRoamTransform() {
+      return echarts.matrix.create();
+    }
+  }], [{
+    key: 'create',
+    value: function create(ecModel, api) {
+      var coordSys = void 0;
+      ecModel.eachComponent('olMap', function (olMapModel) {
+        var viewportRoot = api.getZr().painter.getViewportRoot();
+        var olMap = echarts.olMap;
+        coordSys = new olMapCoordSys(olMap, api);
+        coordSys.setMapOffset(olMapModel.__mapOffset || [0, 0]);
+        olMapModel.coordinateSystem = coordSys;
+      });
+
+      ecModel.eachSeries(function (seriesModel) {
+        if (seriesModel.get('coordinateSystem') === 'olMap') {
+          seriesModel.coordinateSystem = coordSys;
+        }
+      });
+    }
+  }]);
+
+  return olMapCoordSys;
+}();
+
+var Ol3Echarts = function () {
+  function Ol3Echarts(map, echarts) {
+    _classCallCheck(this, Ol3Echarts);
+
+    if (!echarts) {
+      throw new Error('请先引入echarts3！');
+    }
+    if (!map || !(map instanceof _constants.ol.Map)) {
+      throw new Error('必须传入地图对象！');
+    }
+    this._map = map;
+    this._echarts = echarts;
+    var size = this._map.getSize();
+    var div = this._echartsContainer = document.createElement('div');
+    div.style.position = 'absolute';
+    div.style.height = size[1] + 'px';
+    div.style.width = size[0] + 'px';
+    div.style.top = 0;
+    div.style.left = 0;
+    this._map.getViewport().appendChild(div);
+    this.chart = echarts.init(this._echartsContainer);
+    echarts.olMap = map;
+    this.addResizeListener();
+    this.registerComponentView();
+    this.registerModule();
+    this.registerCoordinateSystem();
+    this._registerAction();
+  }
+
+  /**
+   * 注册坐标系统
+   */
+
+
+  _createClass(Ol3Echarts, [{
+    key: 'registerCoordinateSystem',
+    value: function registerCoordinateSystem() {
+      this._echarts.registerCoordinateSystem('olMap', olMapCoordSys);
+    }
+
+    /**
+     * 注册自定义模块
+     * @returns {*}
+     */
+
+  }, {
+    key: 'registerModule',
+    value: function registerModule() {
+      return this._echarts.extendComponentModel({
+        type: 'olMap',
+        getBMap: function getBMap() {
+          // __bmap is injected when creating BMapCoordSys
+          return this.__olMap;
+        },
+        defaultOption: {
+          roam: false
+        }
+      });
+    }
+
+    /**
+     * 注册事件
+     * @returns {*}
+     * @private
+     */
+
+  }, {
+    key: '_registerAction',
+    value: function _registerAction() {
+      return this._echarts.registerAction({
+        type: 'olMapRoam',
+        event: 'olMapRoam',
+        update: 'updateLayout'
+      }, function (payload, ecModel) {});
+    }
+
+    /**
+     * 注册组件视图
+     * @returns {*}
+     */
+
+  }, {
+    key: 'registerComponentView',
+    value: function registerComponentView() {
+      var that = this;
+      return this._echarts.extendComponentView({
+        type: 'olMap',
+        render: function render(olMapModel, ecModel, api) {
+          var rendering = true;
+          var olMap = that._echarts.olMap;
+          var viewportRoot = api.getZr().painter.getViewportRoot();
+          var coordSys = olMapModel.coordinateSystem;
+          var moveHandler = function moveHandler(type, target) {
+            if (rendering) {
+              return;
+            }
+            var offsetEl = viewportRoot.parentNode.parentNode.parentNode;
+            var mapOffset = [-parseInt(offsetEl.style.left, 10) || 0, -parseInt(offsetEl.style.top, 10) || 0];
+            viewportRoot.style.left = mapOffset[0] + 'px';
+            viewportRoot.style.top = mapOffset[1] + 'px';
+            coordSys.setMapOffset(mapOffset);
+            olMapModel.__mapOffset = mapOffset;
+            api.dispatchAction({
+              type: 'olMapRoam'
+            });
+          };
+          function zoomEndHandler() {
+            if (rendering) {
+              return;
+            }
+            api.dispatchAction({
+              type: 'olMapRoam'
+            });
+          }
+
+          // olMap.off('move', this._oldMoveHandler)
+          // // FIXME
+          // // Moveend may be triggered by centerAndZoom method when creating coordSys next time
+          // // olMap.removeEventListener('moveend', this._oldMoveHandler)
+          // olMap.off('zoomend', this._oldZoomEndHandler)
+          // olMap.on('move', moveHandler)
+          // // olMap.addEventListener('moveend', moveHandler)
+          // olMap.on('zoomend', zoomEndHandler)
+          olMap.getView().on('change:resolution', moveHandler);
+          olMap.getView().on('change:center', moveHandler);
+          olMap.on('moveend', moveHandler);
+
+          this._oldMoveHandler = moveHandler;
+          this._oldZoomEndHandler = zoomEndHandler;
+
+          var roam = olMapModel.get('roam');
+          if (roam && roam !== 'scale') {
+            // todo 允许拖拽
+          } else {
+              // todo 不允许拖拽
+            }
+          if (roam && roam !== 'move') {
+            // todo 允许移动
+          } else {
+              // todo 不允许允许移动
+            }
+          rendering = false;
+        }
+      });
+    }
+
+    /**
+     * 移除图表DOM
+     */
+
+  }, {
+    key: 'remove',
+    value: function remove() {
+      this._echartsContainer.parentNode.removeChild(this._echartsContainer);
+      this._map = undefined;
+    }
+
+    /**
+     * 更新视图尺寸
+     */
+
+  }, {
+    key: 'resize',
+    value: function resize() {
+      var that = this;
+      setTimeout(function () {
+        that._echartsContainer.style.width = that._map.getSize() + 'px';
+        that._echartsContainer.style.height = that._map.getSize() + 'px';
+        that.chart.resize();
+      }, 100);
+    }
+
+    /**
+     * 添加监听事件
+     */
+
+  }, {
+    key: 'addResizeListener',
+    value: function addResizeListener() {
+      var _this = this;
+
+      window.addEventListener('orientationchange' in window ? 'orientationchange' : 'resize', function (event) {
+        _this.resize();
+      }, false);
+
+      window.addEventListener('pageshow', function (ev) {
+        if (ev.persisted) {
+          _this.resize();
+        }
+      }, false);
+    }
+  }]);
+
+  return Ol3Echarts;
+}();
+
+exports.default = Ol3Echarts;
+module.exports = exports['default'];
 
 /***/ }),
-/* 41 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4518,7 +4739,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(1);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4673,7 +4894,7 @@ exports.default = CoordsTransform;
 module.exports = exports['default'];
 
 /***/ }),
-/* 42 */
+/* 39 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -4734,7 +4955,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 43 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4798,7 +5019,7 @@ exports.default = config;
 module.exports = exports['default'];
 
 /***/ }),
-/* 44 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4810,7 +5031,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(1);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4845,7 +5066,7 @@ exports.default = Controls;
 module.exports = exports['default'];
 
 /***/ }),
-/* 45 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4857,7 +5078,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(1);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4892,7 +5113,7 @@ exports.default = Interactions;
 module.exports = exports['default'];
 
 /***/ }),
-/* 46 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4904,7 +5125,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(1);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4937,7 +5158,7 @@ exports.default = View;
 module.exports = exports['default'];
 
 /***/ }),
-/* 47 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4949,7 +5170,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(1);
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -5216,7 +5437,7 @@ exports.default = BaseLayers;
 module.exports = exports['default'];
 
 /***/ }),
-/* 48 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var require;var require;var require;var require;var require;var require;var require;var require;// OpenLayers. See https://openlayers.org/
@@ -6227,15 +6448,13 @@ Ok.prototype.changed=Ok.prototype.s;Ok.prototype.dispatchEvent=Ok.prototype.b;Ok
 }));
 
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(103)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(90)))
 
 /***/ }),
-/* 49 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mgrs__ = __webpack_require__(24);
-
+var mgrs = __webpack_require__(22);
 
 function Point(x, y, z) {
   if (!(this instanceof Point)) {
@@ -6263,20 +6482,19 @@ function Point(x, y, z) {
 }
 
 Point.fromMGRS = function(mgrsStr) {
-  return new Point(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__mgrs__["b" /* toPoint */])(mgrsStr));
+  return new Point(mgrs.toPoint(mgrsStr));
 };
 Point.prototype.toMGRS = function(accuracy) {
-  return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__mgrs__["c" /* forward */])([this.x, this.y], accuracy);
+  return mgrs.forward([this.x, this.y], accuracy);
 };
-/* harmony default export */ __webpack_exports__["a"] = Point;
+module.exports = Point;
 
 
 /***/ }),
-/* 50 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 47 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = function(crs, denorm, point) {
+module.exports = function(crs, denorm, point) {
   var xin = point.x,
     yin = point.y,
     zin = point.z || 0.0;
@@ -6331,157 +6549,43 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 51 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__adjust_lon__ = __webpack_require__(1);
+var adjust_lon = __webpack_require__(0);
 
-
-/* harmony default export */ __webpack_exports__["a"] = function(zone, lon) {
+module.exports = function(zone, lon) {
   if (zone === undefined) {
-    zone = Math.floor((__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__adjust_lon__["a" /* default */])(lon) + Math.PI) * 30 / Math.PI) + 1;
+    zone = Math.floor((adjust_lon(lon) + Math.PI) * 30 / Math.PI);
 
     if (zone < 0) {
       return 0;
-    } else if (zone > 60) {
-      return 60;
+    } else if (zone >= 60) {
+      return 59;
+    }
+    return zone;
+  } else {
+    if (zone > 0 && zone <= 60) {
+      return zone - 1;
     }
   }
-  return zone;
 };
 
 
 /***/ }),
-/* 52 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 49 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hypot__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__log1py__ = __webpack_require__(58);
+var HALF_PI = Math.PI/2;
 
-
-
-/* harmony default export */ __webpack_exports__["a"] = function(x) {
-  var y = Math.abs(x);
-  y = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__log1py__["a" /* default */])(y * (1 + y / (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__hypot__["a" /* default */])(1, y) + 1)));
-
-  return x < 0 ? -y : y;
-};
-
-
-/***/ }),
-/* 53 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = function(pp, arg_r) {
-  var r = 2 * Math.cos(arg_r);
-  var i = pp.length - 1;
-  var hr1 = pp[i];
-  var hr2 = 0;
-  var hr;
-
-  while (--i >= 0) {
-    hr = -hr2 + r * hr1 + pp[i];
-    hr2 = hr1;
-    hr1 = hr;
-  }
-
-  return Math.sin(arg_r) * hr;
-};
-
-
-/***/ }),
-/* 54 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sinh__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__cosh__ = __webpack_require__(55);
-
-
-
-/* harmony default export */ __webpack_exports__["a"] = function(pp, arg_r, arg_i) {
-  var sin_arg_r = Math.sin(arg_r);
-  var cos_arg_r = Math.cos(arg_r);
-  var sinh_arg_i = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__sinh__["a" /* default */])(arg_i);
-  var cosh_arg_i = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__cosh__["a" /* default */])(arg_i);
-  var r = 2 * cos_arg_r * cosh_arg_i;
-  var i = -2 * sin_arg_r * sinh_arg_i;
-  var j = pp.length - 1;
-  var hr = pp[j];
-  var hi1 = 0;
-  var hr1 = 0;
-  var hi = 0;
-  var hr2;
-  var hi2;
-
-  while (--j >= 0) {
-    hr2 = hr1;
-    hi2 = hi1;
-    hr1 = hr;
-    hi1 = hi;
-    hr = -hr2 + r * hr1 - i * hi1 + pp[j];
-    hi = -hi2 + i * hr1 + r * hi1;
-  }
-
-  r = sin_arg_r * cosh_arg_i;
-  i = cos_arg_r * sinh_arg_i;
-
-  return [r * hr - i * hi, r * hi + i * hr];
-};
-
-
-/***/ }),
-/* 55 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = function(x) {
-  var r = Math.exp(x);
-  r = (r + 1 / r) / 2;
-  return r;
-};
-
-/***/ }),
-/* 56 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = function(pp, B) {
-  var cos_2B = 2 * Math.cos(2 * B);
-  var i = pp.length - 1;
-  var h1 = pp[i];
-  var h2 = 0;
-  var h;
-
-  while (--i >= 0) {
-    h = -h2 + cos_2B * h1 + pp[i];
-    h2 = h1;
-    h1 = h;
-  }
-
-  return (B + h * Math.sin(2 * B));
-};
-
-
-/***/ }),
-/* 57 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(0);
-
-
-/* harmony default export */ __webpack_exports__["a"] = function(eccent, q) {
+module.exports = function(eccent, q) {
   var temp = 1 - (1 - eccent * eccent) / (2 * eccent) * Math.log((1 - eccent) / (1 + eccent));
   if (Math.abs(Math.abs(q) - temp) < 1.0E-6) {
     if (q < 0) {
-      return (-1 * __WEBPACK_IMPORTED_MODULE_0__constants_values__["b" /* HALF_PI */]);
+      return (-1 * HALF_PI);
     }
     else {
-      return __WEBPACK_IMPORTED_MODULE_0__constants_values__["b" /* HALF_PI */];
+      return HALF_PI;
     }
   }
   //var phi = 0.5* q/(1-eccent*eccent);
@@ -6505,410 +6609,322 @@ Point.prototype.toMGRS = function(accuracy) {
   return NaN;
 };
 
-
 /***/ }),
-/* 58 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 50 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = function(x) {
-  var y = 1 + x;
-  var z = y - 1;
-
-  return z === 0 ? x : x * Math.log(y) / z;
-};
-
-
-/***/ }),
-/* 59 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = function(esinp, exp) {
+module.exports = function(esinp, exp) {
   return (Math.pow((1 - esinp) / (1 + esinp), exp));
 };
 
 /***/ }),
-/* 60 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return exports; });
-var exports = {};
+/* 51 */
+/***/ (function(module, exports) {
 
 exports.wgs84 = {
   towgs84: "0,0,0",
   ellipse: "WGS84",
   datumName: "WGS84"
 };
-
 exports.ch1903 = {
   towgs84: "674.374,15.056,405.346",
   ellipse: "bessel",
   datumName: "swiss"
 };
-
 exports.ggrs87 = {
   towgs84: "-199.87,74.79,246.62",
   ellipse: "GRS80",
   datumName: "Greek_Geodetic_Reference_System_1987"
 };
-
 exports.nad83 = {
   towgs84: "0,0,0",
   ellipse: "GRS80",
   datumName: "North_American_Datum_1983"
 };
-
 exports.nad27 = {
   nadgrids: "@conus,@alaska,@ntv2_0.gsb,@ntv1_can.dat",
   ellipse: "clrk66",
   datumName: "North_American_Datum_1927"
 };
-
 exports.potsdam = {
   towgs84: "606.0,23.0,413.0",
   ellipse: "bessel",
   datumName: "Potsdam Rauenberg 1950 DHDN"
 };
-
 exports.carthage = {
   towgs84: "-263.0,6.0,431.0",
   ellipse: "clark80",
   datumName: "Carthage 1934 Tunisia"
 };
-
 exports.hermannskogel = {
   towgs84: "653.0,-212.0,449.0",
   ellipse: "bessel",
   datumName: "Hermannskogel"
 };
-
 exports.ire65 = {
   towgs84: "482.530,-130.596,564.557,-1.042,-0.214,-0.631,8.15",
   ellipse: "mod_airy",
   datumName: "Ireland 1965"
 };
-
 exports.rassadiran = {
   towgs84: "-133.63,-157.5,-158.62",
   ellipse: "intl",
   datumName: "Rassadiran"
 };
-
 exports.nzgd49 = {
   towgs84: "59.47,-5.04,187.44,0.47,-0.1,1.024,-4.5993",
   ellipse: "intl",
   datumName: "New Zealand Geodetic Datum 1949"
 };
-
 exports.osgb36 = {
   towgs84: "446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894",
   ellipse: "airy",
   datumName: "Airy 1830"
 };
-
 exports.s_jtsk = {
   towgs84: "589,76,480",
   ellipse: 'bessel',
   datumName: 'S-JTSK (Ferro)'
 };
-
 exports.beduaram = {
   towgs84: '-106,-87,188',
   ellipse: 'clrk80',
   datumName: 'Beduaram'
 };
-
 exports.gunung_segara = {
   towgs84: '-403,684,41',
   ellipse: 'bessel',
   datumName: 'Gunung Segara Jakarta'
 };
-
 exports.rnb72 = {
   towgs84: "106.869,-52.2978,103.724,-0.33657,0.456955,-1.84218,1",
   ellipse: "intl",
   datumName: "Reseau National Belge 1972"
 };
 
-
 /***/ }),
-/* 61 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return exports; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return WGS84; });
-var exports = {};
+/* 52 */
+/***/ (function(module, exports) {
 
 exports.MERIT = {
   a: 6378137.0,
   rf: 298.257,
   ellipseName: "MERIT 1983"
 };
-
 exports.SGS85 = {
   a: 6378136.0,
   rf: 298.257,
   ellipseName: "Soviet Geodetic System 85"
 };
-
 exports.GRS80 = {
   a: 6378137.0,
   rf: 298.257222101,
   ellipseName: "GRS 1980(IUGG, 1980)"
 };
-
 exports.IAU76 = {
   a: 6378140.0,
   rf: 298.257,
   ellipseName: "IAU 1976"
 };
-
 exports.airy = {
   a: 6377563.396,
   b: 6356256.910,
   ellipseName: "Airy 1830"
 };
-
 exports.APL4 = {
   a: 6378137,
   rf: 298.25,
   ellipseName: "Appl. Physics. 1965"
 };
-
 exports.NWL9D = {
   a: 6378145.0,
   rf: 298.25,
   ellipseName: "Naval Weapons Lab., 1965"
 };
-
 exports.mod_airy = {
   a: 6377340.189,
   b: 6356034.446,
   ellipseName: "Modified Airy"
 };
-
 exports.andrae = {
   a: 6377104.43,
   rf: 300.0,
   ellipseName: "Andrae 1876 (Den., Iclnd.)"
 };
-
 exports.aust_SA = {
   a: 6378160.0,
   rf: 298.25,
   ellipseName: "Australian Natl & S. Amer. 1969"
 };
-
 exports.GRS67 = {
   a: 6378160.0,
   rf: 298.2471674270,
   ellipseName: "GRS 67(IUGG 1967)"
 };
-
 exports.bessel = {
   a: 6377397.155,
   rf: 299.1528128,
   ellipseName: "Bessel 1841"
 };
-
 exports.bess_nam = {
   a: 6377483.865,
   rf: 299.1528128,
   ellipseName: "Bessel 1841 (Namibia)"
 };
-
 exports.clrk66 = {
   a: 6378206.4,
   b: 6356583.8,
   ellipseName: "Clarke 1866"
 };
-
 exports.clrk80 = {
   a: 6378249.145,
   rf: 293.4663,
   ellipseName: "Clarke 1880 mod."
 };
-
 exports.clrk58 = {
   a: 6378293.645208759,
   rf: 294.2606763692654,
   ellipseName: "Clarke 1858"
 };
-
 exports.CPM = {
   a: 6375738.7,
   rf: 334.29,
   ellipseName: "Comm. des Poids et Mesures 1799"
 };
-
 exports.delmbr = {
   a: 6376428.0,
   rf: 311.5,
   ellipseName: "Delambre 1810 (Belgium)"
 };
-
 exports.engelis = {
   a: 6378136.05,
   rf: 298.2566,
   ellipseName: "Engelis 1985"
 };
-
 exports.evrst30 = {
   a: 6377276.345,
   rf: 300.8017,
   ellipseName: "Everest 1830"
 };
-
 exports.evrst48 = {
   a: 6377304.063,
   rf: 300.8017,
   ellipseName: "Everest 1948"
 };
-
 exports.evrst56 = {
   a: 6377301.243,
   rf: 300.8017,
   ellipseName: "Everest 1956"
 };
-
 exports.evrst69 = {
   a: 6377295.664,
   rf: 300.8017,
   ellipseName: "Everest 1969"
 };
-
 exports.evrstSS = {
   a: 6377298.556,
   rf: 300.8017,
   ellipseName: "Everest (Sabah & Sarawak)"
 };
-
 exports.fschr60 = {
   a: 6378166.0,
   rf: 298.3,
   ellipseName: "Fischer (Mercury Datum) 1960"
 };
-
 exports.fschr60m = {
   a: 6378155.0,
   rf: 298.3,
   ellipseName: "Fischer 1960"
 };
-
 exports.fschr68 = {
   a: 6378150.0,
   rf: 298.3,
   ellipseName: "Fischer 1968"
 };
-
 exports.helmert = {
   a: 6378200.0,
   rf: 298.3,
   ellipseName: "Helmert 1906"
 };
-
 exports.hough = {
   a: 6378270.0,
   rf: 297.0,
   ellipseName: "Hough"
 };
-
 exports.intl = {
   a: 6378388.0,
   rf: 297.0,
   ellipseName: "International 1909 (Hayford)"
 };
-
 exports.kaula = {
   a: 6378163.0,
   rf: 298.24,
   ellipseName: "Kaula 1961"
 };
-
 exports.lerch = {
   a: 6378139.0,
   rf: 298.257,
   ellipseName: "Lerch 1979"
 };
-
 exports.mprts = {
   a: 6397300.0,
   rf: 191.0,
   ellipseName: "Maupertius 1738"
 };
-
 exports.new_intl = {
   a: 6378157.5,
   b: 6356772.2,
   ellipseName: "New International 1967"
 };
-
 exports.plessis = {
   a: 6376523.0,
   rf: 6355863.0,
   ellipseName: "Plessis 1817 (France)"
 };
-
 exports.krass = {
   a: 6378245.0,
   rf: 298.3,
   ellipseName: "Krassovsky, 1942"
 };
-
 exports.SEasia = {
   a: 6378155.0,
   b: 6356773.3205,
   ellipseName: "Southeast Asia"
 };
-
 exports.walbeck = {
   a: 6376896.0,
   b: 6355834.8467,
   ellipseName: "Walbeck"
 };
-
 exports.WGS60 = {
   a: 6378165.0,
   rf: 298.3,
   ellipseName: "WGS 60"
 };
-
 exports.WGS66 = {
   a: 6378145.0,
   rf: 298.25,
   ellipseName: "WGS 66"
 };
-
 exports.WGS7 = {
   a: 6378135.0,
   rf: 298.26,
   ellipseName: "WGS 72"
 };
-
-var WGS84 = exports.WGS84 = {
+exports.WGS84 = {
   a: 6378137.0,
   rf: 298.257223563,
   ellipseName: "WGS 84"
 };
-
 exports.sphere = {
   a: 6370997.0,
   b: 6370997.0,
   ellipseName: "Normal Sphere (r=6370997)"
 };
 
-
 /***/ }),
-/* 62 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return exports; });
-var exports = {};
-
+/* 53 */
+/***/ (function(module, exports) {
 
 exports.greenwich = 0.0; //"0dE",
 exports.lisbon = -9.131906111111; //"9d07'54.862\"W",
@@ -6924,33 +6940,26 @@ exports.stockholm = 18.058277777778; //"18d3'29.8\"E",
 exports.athens = 23.7163375; //"23d42'58.815\"E",
 exports.oslo = 10.722916666667; //"10d43'22.5\"E"
 
-
 /***/ }),
-/* 63 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 54 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = {
-  ft: {to_meter: 0.3048},
-  'us-ft': {to_meter: 1200 / 3937}
-};
+exports.ft = {to_meter: 0.3048};
+exports['us-ft'] = {to_meter: 1200 / 3937};
 
 
 /***/ }),
-/* 64 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Proj__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__transform__ = __webpack_require__(33);
-
-
-var wgs84 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__Proj__["a" /* default */])('WGS84');
+var proj = __webpack_require__(16);
+var transform = __webpack_require__(30);
+var wgs84 = proj('WGS84');
 
 function transformer(from, to, coords) {
   var transformedArray;
   if (Array.isArray(coords)) {
-    transformedArray = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__transform__["a" /* default */])(from, to, coords);
+    transformedArray = transform(from, to, coords);
     if (coords.length === 3) {
       return [transformedArray.x, transformedArray.y, transformedArray.z];
     }
@@ -6959,18 +6968,18 @@ function transformer(from, to, coords) {
     }
   }
   else {
-    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__transform__["a" /* default */])(from, to, coords);
+    return transform(from, to, coords);
   }
 }
 
 function checkProj(item) {
-  if (item instanceof __WEBPACK_IMPORTED_MODULE_0__Proj__["a" /* default */]) {
+  if (item instanceof proj) {
     return item;
   }
   if (item.oProj) {
     return item.oProj;
   }
-  return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__Proj__["a" /* default */])(item);
+  return proj(item);
 }
 function proj4(fromProj, toProj, coord) {
   fromProj = checkProj(fromProj);
@@ -7006,40 +7015,41 @@ function proj4(fromProj, toProj, coord) {
     return obj;
   }
 }
-/* harmony default export */ __webpack_exports__["a"] = proj4;
+module.exports = proj4;
 
 /***/ }),
-/* 65 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 56 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(0);
-
+var PJD_3PARAM = 1;
+var PJD_7PARAM = 2;
+var PJD_WGS84 = 4; // WGS84 or equivalent
+var PJD_NODATUM = 5; // WGS84 or equivalent
+var SEC_TO_RAD = 4.84813681109535993589914102357e-6;
 
 function datum(datumCode, datum_params, a, b, es, ep2) {
   var out = {};
-
-  if (datumCode === undefined || datumCode === 'none') {
-    out.datum_type = __WEBPACK_IMPORTED_MODULE_0__constants_values__["k" /* PJD_NODATUM */];
-  } else {
-    out.datum_type = __WEBPACK_IMPORTED_MODULE_0__constants_values__["l" /* PJD_WGS84 */];
+  out.datum_type = PJD_WGS84; //default setting
+  if (datumCode && datumCode === 'none') {
+    out.datum_type = PJD_NODATUM;
   }
 
   if (datum_params) {
     out.datum_params = datum_params.map(parseFloat);
     if (out.datum_params[0] !== 0 || out.datum_params[1] !== 0 || out.datum_params[2] !== 0) {
-      out.datum_type = __WEBPACK_IMPORTED_MODULE_0__constants_values__["h" /* PJD_3PARAM */];
+      out.datum_type = PJD_3PARAM;
     }
     if (out.datum_params.length > 3) {
       if (out.datum_params[3] !== 0 || out.datum_params[4] !== 0 || out.datum_params[5] !== 0 || out.datum_params[6] !== 0) {
-        out.datum_type = __WEBPACK_IMPORTED_MODULE_0__constants_values__["i" /* PJD_7PARAM */];
-        out.datum_params[3] *= __WEBPACK_IMPORTED_MODULE_0__constants_values__["e" /* SEC_TO_RAD */];
-        out.datum_params[4] *= __WEBPACK_IMPORTED_MODULE_0__constants_values__["e" /* SEC_TO_RAD */];
-        out.datum_params[5] *= __WEBPACK_IMPORTED_MODULE_0__constants_values__["e" /* SEC_TO_RAD */];
+        out.datum_type = PJD_7PARAM;
+        out.datum_params[3] *= SEC_TO_RAD;
+        out.datum_params[4] *= SEC_TO_RAD;
+        out.datum_params[5] *= SEC_TO_RAD;
         out.datum_params[6] = (out.datum_params[6] / 1000000.0) + 1.0;
       }
     }
   }
+
 
   out.a = a; //datum object also uses these values
   out.b = b;
@@ -7048,37 +7058,34 @@ function datum(datumCode, datum_params, a, b, es, ep2) {
   return out;
 }
 
-/* harmony default export */ __webpack_exports__["a"] = datum;
+module.exports = datum;
 
 
 /***/ }),
-/* 66 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(0);
-/* harmony export (immutable) */ __webpack_exports__["a"] = compareDatums;
-/* harmony export (immutable) */ __webpack_exports__["b"] = geodeticToGeocentric;
-/* harmony export (immutable) */ __webpack_exports__["e"] = geocentricToGeodetic;
-/* harmony export (immutable) */ __webpack_exports__["c"] = geocentricToWgs84;
-/* harmony export (immutable) */ __webpack_exports__["d"] = geocentricFromWgs84;
 
+var PJD_3PARAM = 1;
+var PJD_7PARAM = 2;
+var HALF_PI = Math.PI/2;
 
-function compareDatums(source, dest) {
+exports.compareDatums = function(source, dest) {
   if (source.datum_type !== dest.datum_type) {
     return false; // false, datums are not equal
-  } else if (source.a !== dest.a || Math.abs(source.es - dest.es) > 0.000000000050) {
-    // the tolerance for es is to ensure that GRS80 and WGS84
+  } else if (source.a !== dest.a || Math.abs(this.es - dest.es) > 0.000000000050) {
+    // the tolerence for es is to ensure that GRS80 and WGS84
     // are considered identical
     return false;
-  } else if (source.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["h" /* PJD_3PARAM */]) {
-    return (source.datum_params[0] === dest.datum_params[0] && source.datum_params[1] === dest.datum_params[1] && source.datum_params[2] === dest.datum_params[2]);
-  } else if (source.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["i" /* PJD_7PARAM */]) {
+  } else if (source.datum_type === PJD_3PARAM) {
+    return (this.datum_params[0] === dest.datum_params[0] && source.datum_params[1] === dest.datum_params[1] && source.datum_params[2] === dest.datum_params[2]);
+  } else if (source.datum_type === PJD_7PARAM) {
     return (source.datum_params[0] === dest.datum_params[0] && source.datum_params[1] === dest.datum_params[1] && source.datum_params[2] === dest.datum_params[2] && source.datum_params[3] === dest.datum_params[3] && source.datum_params[4] === dest.datum_params[4] && source.datum_params[5] === dest.datum_params[5] && source.datum_params[6] === dest.datum_params[6]);
   } else {
     return true; // datums are equal
   }
-} // cs_compare_datums()
+}; // cs_compare_datums()
 
 /*
  * The function Convert_Geodetic_To_Geocentric converts geodetic coordinates
@@ -7093,7 +7100,7 @@ function compareDatums(source, dest) {
  *    Z         : Calculated Geocentric Z coordinate, in meters    (output)
  *
  */
-function geodeticToGeocentric(p, es, a) {
+exports.geodeticToGeocentric = function(p, es, a) {
   var Longitude = p.x;
   var Latitude = p.y;
   var Height = p.z ? p.z : 0; //Z value not always supplied
@@ -7108,11 +7115,11 @@ function geodeticToGeocentric(p, es, a) {
    ** range as it may just be a rounding issue.  Also removed longitude
    ** test, it should be wrapped by Math.cos() and Math.sin().  NFW for PROJ.4, Sep/2001.
    */
-  if (Latitude < -__WEBPACK_IMPORTED_MODULE_0__constants_values__["b" /* HALF_PI */] && Latitude > -1.001 * __WEBPACK_IMPORTED_MODULE_0__constants_values__["b" /* HALF_PI */]) {
-    Latitude = -__WEBPACK_IMPORTED_MODULE_0__constants_values__["b" /* HALF_PI */];
-  } else if (Latitude > __WEBPACK_IMPORTED_MODULE_0__constants_values__["b" /* HALF_PI */] && Latitude < 1.001 * __WEBPACK_IMPORTED_MODULE_0__constants_values__["b" /* HALF_PI */]) {
-    Latitude = __WEBPACK_IMPORTED_MODULE_0__constants_values__["b" /* HALF_PI */];
-  } else if ((Latitude < -__WEBPACK_IMPORTED_MODULE_0__constants_values__["b" /* HALF_PI */]) || (Latitude > __WEBPACK_IMPORTED_MODULE_0__constants_values__["b" /* HALF_PI */])) {
+  if (Latitude < -HALF_PI && Latitude > -1.001 * HALF_PI) {
+    Latitude = -HALF_PI;
+  } else if (Latitude > HALF_PI && Latitude < 1.001 * HALF_PI) {
+    Latitude = HALF_PI;
+  } else if ((Latitude < -HALF_PI) || (Latitude > HALF_PI)) {
     /* Latitude out of range */
     //..reportError('geocent:lat out of range:' + Latitude);
     return null;
@@ -7130,9 +7137,10 @@ function geodeticToGeocentric(p, es, a) {
     y: (Rn + Height) * Cos_Lat * Math.sin(Longitude),
     z: ((Rn * (1 - es)) + Height) * Sin_Lat
   };
-} // cs_geodetic_to_geocentric()
+}; // cs_geodetic_to_geocentric()
 
-function geocentricToGeodetic(p, es, a, b) {
+
+exports.geocentricToGeodetic = function(p, es, a, b) {
   /* local defintions and variables */
   /* end-criterium of loop, accuracy of sin(Latitude) */
   var genau = 1e-12;
@@ -7172,7 +7180,7 @@ function geocentricToGeodetic(p, es, a, b) {
     /*  if (X,Y,Z)=(0.,0.,0.) then Height becomes semi-minor axis
      *  of ellipsoid (=center of mass), Latitude becomes PI/2 */
     if (RR / a < genau) {
-      Latitude = __WEBPACK_IMPORTED_MODULE_0__constants_values__["b" /* HALF_PI */];
+      Latitude = HALF_PI;
       Height = -b;
       return {
         x: p.x,
@@ -7228,7 +7236,8 @@ function geocentricToGeodetic(p, es, a, b) {
     y: Latitude,
     z: Height
   };
-} // cs_geocentric_to_geodetic()
+}; // cs_geocentric_to_geodetic()
+
 
 /****************************************************************/
 // pj_geocentic_to_wgs84( p )
@@ -7240,9 +7249,9 @@ function geocentricToGeodetic(p, es, a, b) {
     Other point classes may be used as long as they have
     x and y properties, which will get modified in the transform method.
 */
-function geocentricToWgs84(p, datum_type, datum_params) {
+exports.geocentricToWgs84 = function(p, datum_type, datum_params) {
 
-  if (datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["h" /* PJD_3PARAM */]) {
+  if (datum_type === PJD_3PARAM) {
     // if( x[io] === HUGE_VAL )
     //    continue;
     return {
@@ -7250,7 +7259,7 @@ function geocentricToWgs84(p, datum_type, datum_params) {
       y: p.y + datum_params[1],
       z: p.z + datum_params[2],
     };
-  } else if (datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["i" /* PJD_7PARAM */]) {
+  } else if (datum_type === PJD_7PARAM) {
     var Dx_BF = datum_params[0];
     var Dy_BF = datum_params[1];
     var Dz_BF = datum_params[2];
@@ -7266,15 +7275,15 @@ function geocentricToWgs84(p, datum_type, datum_params) {
       z: M_BF * (-Ry_BF * p.x + Rx_BF * p.y + p.z) + Dz_BF
     };
   }
-} // cs_geocentric_to_wgs84
+}; // cs_geocentric_to_wgs84
 
 /****************************************************************/
 // pj_geocentic_from_wgs84()
 //  coordinate system definition,
 //  point to transform in geocentric coordinates (x,y,z)
-function geocentricFromWgs84(p, datum_type, datum_params) {
+exports.geocentricFromWgs84 = function(p, datum_type, datum_params) {
 
-  if (datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["h" /* PJD_3PARAM */]) {
+  if (datum_type === PJD_3PARAM) {
     //if( x[io] === HUGE_VAL )
     //    continue;
     return {
@@ -7283,7 +7292,7 @@ function geocentricFromWgs84(p, datum_type, datum_params) {
       z: p.z - datum_params[2],
     };
 
-  } else if (datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["i" /* PJD_7PARAM */]) {
+  } else if (datum_type === PJD_7PARAM) {
     var Dx_BF = datum_params[0];
     var Dy_BF = datum_params[1];
     var Dz_BF = datum_params[2];
@@ -7303,33 +7312,30 @@ function geocentricFromWgs84(p, datum_type, datum_params) {
       z: Ry_BF * x_tmp - Rx_BF * y_tmp + z_tmp
     };
   } //cs_geocentric_from_wgs84()
-}
+};
 
 
 /***/ }),
-/* 67 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__datumUtils__ = __webpack_require__(66);
-
-
-
+var PJD_3PARAM = 1;
+var PJD_7PARAM = 2;
+var PJD_NODATUM = 5; // WGS84 or equivalent
+var datum = __webpack_require__(57);
 function checkParams(type) {
-  return (type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["h" /* PJD_3PARAM */] || type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["i" /* PJD_7PARAM */]);
+  return (type === PJD_3PARAM || type === PJD_7PARAM);
 }
-
-/* harmony default export */ __webpack_exports__["a"] = function(source, dest, point) {
+module.exports = function(source, dest, point) {
   // Short cut if the datums are identical.
-  if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__datumUtils__["a" /* compareDatums */])(source, dest)) {
+  if (datum.compareDatums(source, dest)) {
     return point; // in this case, zero is sucess,
     // whereas cs_compare_datums returns 1 to indicate TRUE
     // confusing, should fix this
   }
 
   // Explicitly skip datum transform by setting 'datum=none' as parameter for either source or dest
-  if (source.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["k" /* PJD_NODATUM */] || dest.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["k" /* PJD_NODATUM */]) {
+  if (source.datum_type === PJD_NODATUM || dest.datum_type === PJD_NODATUM) {
     return point;
   }
 
@@ -7341,40 +7347,39 @@ function checkParams(type) {
   }
 
   // Convert to geocentric coordinates.
-  point = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__datumUtils__["b" /* geodeticToGeocentric */])(point, source.es, source.a);
+  point = datum.geodeticToGeocentric(point, source.es, source.a);
   // Convert between datums
   if (checkParams(source.datum_type)) {
-    point = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__datumUtils__["c" /* geocentricToWgs84 */])(point, source.datum_type, source.datum_params);
+    point = datum.geocentricToWgs84(point, source.datum_type, source.datum_params);
   }
   if (checkParams(dest.datum_type)) {
-    point = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__datumUtils__["d" /* geocentricFromWgs84 */])(point, dest.datum_type, dest.datum_params);
+    point = datum.geocentricFromWgs84(point, dest.datum_type, dest.datum_params);
   }
-  return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__datumUtils__["e" /* geocentricToGeodetic */])(point, dest.es, dest.a, dest.b);
+  return datum.geocentricToGeodetic(point, dest.es, dest.a, dest.b);
 
 };
 
 
 /***/ }),
-/* 68 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 59 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_Ellipsoid__ = __webpack_require__(61);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__match__ = __webpack_require__(22);
-/* harmony export (immutable) */ __webpack_exports__["b"] = eccentricity;
-/* harmony export (immutable) */ __webpack_exports__["a"] = sphere;
+// ellipoid pj_set_ell.c
+var SIXTH = 0.1666666666666666667;
+/* 1/6 */
+var RA4 = 0.04722222222222222222;
+/* 17/360 */
+var RA6 = 0.02215608465608465608;
+var EPSLN = 1.0e-10;
+var Ellipsoid = __webpack_require__(52);
 
-
-
-
-function eccentricity(a, b, rf, R_A) {
+exports.eccentricity = function(a, b, rf, R_A) {
   var a2 = a * a; // used in geocentric
   var b2 = b * b; // used in geocentric
   var es = (a2 - b2) / a2; // e ^ 2
   var e = 0;
   if (R_A) {
-    a *= 1 - es * (__WEBPACK_IMPORTED_MODULE_0__constants_values__["m" /* SIXTH */] + es * (__WEBPACK_IMPORTED_MODULE_0__constants_values__["n" /* RA4 */] + es * __WEBPACK_IMPORTED_MODULE_0__constants_values__["o" /* RA6 */]));
+    a *= 1 - es * (SIXTH + es * (RA4 + es * RA6));
     a2 = a * a;
     es = 0;
   } else {
@@ -7386,12 +7391,12 @@ function eccentricity(a, b, rf, R_A) {
     e: e,
     ep2: ep2
   };
-}
-function sphere(a, b, rf, ellps, sphere) {
+};
+exports.sphere = function (a, b, rf, ellps, sphere) {
   if (!a) { // do we have an ellipsoid?
-    var ellipse = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__match__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_1__constants_Ellipsoid__["a" /* default */], ellps);
+    var ellipse = Ellipsoid[ellps];
     if (!ellipse) {
-      ellipse = __WEBPACK_IMPORTED_MODULE_1__constants_Ellipsoid__["b" /* WGS84 */];
+      ellipse = Ellipsoid.WGS84;
     }
     a = ellipse.a;
     b = ellipse.b;
@@ -7401,7 +7406,7 @@ function sphere(a, b, rf, ellps, sphere) {
   if (rf && !b) {
     b = (1.0 - 1.0 / rf) * a;
   }
-  if (rf === 0 || Math.abs(a - b) < __WEBPACK_IMPORTED_MODULE_0__constants_values__["a" /* EPSLN */]) {
+  if (rf === 0 || Math.abs(a - b) < EPSLN) {
     sphere = true;
     b = a;
   }
@@ -7411,36 +7416,14 @@ function sphere(a, b, rf, ellps, sphere) {
     rf: rf,
     sphere: sphere
   };
-}
-
-
-/***/ }),
-/* 69 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = function(destination, source) {
-  destination = destination || {};
-  var value, property;
-  if (!source) {
-    return destination;
-  }
-  for (property in source) {
-    value = source[property];
-    if (value !== undefined) {
-      destination[property] = value;
-    }
-  }
-  return destination;
 };
 
 
 /***/ }),
-/* 70 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 60 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = function(defs) {
+module.exports = function(defs) {
   defs('EPSG:4326', "+title=WGS 84 (long/lat) +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees");
   defs('EPSG:4269', "+title=NAD83 (long/lat) +proj=longlat +a=6378137.0 +b=6356752.31414036 +ellps=GRS80 +datum=NAD83 +units=degrees");
   defs('EPSG:3857', "+title=WGS 84 / Pseudo-Mercator +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs");
@@ -7454,61 +7437,72 @@ function sphere(a, b, rf, ellps, sphere) {
 
 
 /***/ }),
-/* 71 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core__ = __webpack_require__(64);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Proj__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Point__ = __webpack_require__(49);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_toPoint__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__defs__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__transform__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__mgrs__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__version__ = __webpack_require__(100);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__projs__ = __webpack_require__(102);
+var projs = [
+  __webpack_require__(29),
+  __webpack_require__(87),
+  __webpack_require__(86),
+  __webpack_require__(85),
+  __webpack_require__(84),
+  __webpack_require__(81),
+  __webpack_require__(75),
+  __webpack_require__(73),
+  __webpack_require__(67),
+  __webpack_require__(74),
+  __webpack_require__(65),
+  __webpack_require__(72),
+  __webpack_require__(68),
+  __webpack_require__(69),
+  __webpack_require__(82),
+  __webpack_require__(80),
+  __webpack_require__(78),
+  __webpack_require__(83),
+  __webpack_require__(79),
+  __webpack_require__(70),
+  __webpack_require__(88),
+  __webpack_require__(66)
+];
+module.exports = function(proj4){
+  projs.forEach(function(proj){
+    proj4.Proj.projections.add(proj);
+  });
+};
 
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
 
-
-
-
-
-
-
-
-
-__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].defaultDatum = 'WGS84'; //default datum
-__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].Proj = __WEBPACK_IMPORTED_MODULE_1__Proj__["a" /* default */];
-__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].WGS84 = new __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].Proj('WGS84');
-__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].Point = __WEBPACK_IMPORTED_MODULE_2__Point__["a" /* default */];
-__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].toPoint = __WEBPACK_IMPORTED_MODULE_3__common_toPoint__["a" /* default */];
-__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].defs = __WEBPACK_IMPORTED_MODULE_4__defs__["a" /* default */];
-__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].transform = __WEBPACK_IMPORTED_MODULE_5__transform__["a" /* default */];
-__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].mgrs = __WEBPACK_IMPORTED_MODULE_6__mgrs__["a" /* default */];
-__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].version = __WEBPACK_IMPORTED_MODULE_7__version__["a" /* default */];
-__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8__projs__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */]);
-/* harmony default export */ __webpack_exports__["default"] = __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */];
+var proj4 = __webpack_require__(55);
+proj4.defaultDatum = 'WGS84'; //default datum
+proj4.Proj = __webpack_require__(16);
+proj4.WGS84 = new proj4.Proj('WGS84');
+proj4.Point = __webpack_require__(46);
+proj4.toPoint = __webpack_require__(25);
+proj4.defs = __webpack_require__(26);
+proj4.transform = __webpack_require__(30);
+proj4.mgrs = __webpack_require__(22);
+proj4.version = __webpack_require__(89);
+__webpack_require__(61)(proj4);
+module.exports = proj4;
 
 
 /***/ }),
-/* 72 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 63 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defs__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__wkt_parser__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__projString__ = __webpack_require__(31);
-
-
-
+var defs = __webpack_require__(26);
+var wkt = __webpack_require__(31);
+var projStr = __webpack_require__(28);
 function testObj(code){
   return typeof code === 'string';
 }
 function testDef(code){
-  return code in __WEBPACK_IMPORTED_MODULE_0__defs__["a" /* default */];
+  return code in defs;
 }
- var codeWords = ['PROJECTEDCRS', 'PROJCRS', 'GEOGCS','GEOCCS','PROJCS','LOCAL_CS', 'GEODCRS', 'GEODETICCRS', 'GEODETICDATUM', 'ENGCRS', 'ENGINEERINGCRS']; 
+var codeWords = ['GEOGCS','GEOCCS','PROJCS','LOCAL_CS'];
+
 function testWKT(code){
   return codeWords.some(function (word) {
     return code.indexOf(word) > -1;
@@ -7521,35 +7515,30 @@ function parse(code){
   if (testObj(code)) {
     //check to see if this is a WKT string
     if (testDef(code)) {
-      return __WEBPACK_IMPORTED_MODULE_0__defs__["a" /* default */][code];
+      return defs[code];
     }
     if (testWKT(code)) {
-      return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__wkt_parser__["a" /* default */])(code);
+      return wkt(code);
     }
     if (testProj(code)) {
-      return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__projString__["a" /* default */])(code);
+      return projStr(code);
     }
   }else{
     return code;
   }
 }
 
-/* harmony default export */ __webpack_exports__["a"] = parse;
+module.exports = parse;
 
 
 /***/ }),
-/* 73 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__projections_merc__ = __webpack_require__(86);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projections_longlat__ = __webpack_require__(85);
-/* unused harmony export add */
-/* unused harmony export get */
-/* unused harmony export start */
-
-
-var projs = [__WEBPACK_IMPORTED_MODULE_0__projections_merc__["a" /* default */], __WEBPACK_IMPORTED_MODULE_1__projections_longlat__["a" /* default */]];
+var projs = [
+  __webpack_require__(77),
+  __webpack_require__(76)
+];
 var names = {};
 var projStore = [];
 
@@ -7566,9 +7555,9 @@ function add(proj, i) {
   return this;
 }
 
+exports.add = add;
 
-
-function get(name) {
+exports.get = function(name) {
   if (!name) {
     return false;
   }
@@ -7576,42 +7565,24 @@ function get(name) {
   if (typeof names[n] !== 'undefined' && projStore[names[n]]) {
     return projStore[names[n]];
   }
-}
-
-function start() {
+};
+exports.start = function() {
   projs.forEach(add);
-}
-/* harmony default export */ __webpack_exports__["a"] = {
-  start: start,
-  add: add,
-  get: get
 };
 
 
 /***/ }),
-/* 74 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 65 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_msfnz__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_qsfnz__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_adjust_lon__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_asinz__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_values__ = __webpack_require__(0);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export phi1z */
-/* unused harmony export names */
+var EPSLN = 1.0e-10;
+var msfnz = __webpack_require__(2);
+var qsfnz = __webpack_require__(20);
+var adjust_lon = __webpack_require__(0);
+var asinz = __webpack_require__(4);
+exports.init = function() {
 
-
-
-
-
-
-function init() {
-
-  if (Math.abs(this.lat1 + this.lat2) < __WEBPACK_IMPORTED_MODULE_4__constants_values__["a" /* EPSLN */]) {
+  if (Math.abs(this.lat1 + this.lat2) < EPSLN) {
     return;
   }
   this.temp = this.b / this.a;
@@ -7622,21 +7593,21 @@ function init() {
   this.cos_po = Math.cos(this.lat1);
   this.t1 = this.sin_po;
   this.con = this.sin_po;
-  this.ms1 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_msfnz__["a" /* default */])(this.e3, this.sin_po, this.cos_po);
-  this.qs1 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_qsfnz__["a" /* default */])(this.e3, this.sin_po, this.cos_po);
+  this.ms1 = msfnz(this.e3, this.sin_po, this.cos_po);
+  this.qs1 = qsfnz(this.e3, this.sin_po, this.cos_po);
 
   this.sin_po = Math.sin(this.lat2);
   this.cos_po = Math.cos(this.lat2);
   this.t2 = this.sin_po;
-  this.ms2 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_msfnz__["a" /* default */])(this.e3, this.sin_po, this.cos_po);
-  this.qs2 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_qsfnz__["a" /* default */])(this.e3, this.sin_po, this.cos_po);
+  this.ms2 = msfnz(this.e3, this.sin_po, this.cos_po);
+  this.qs2 = qsfnz(this.e3, this.sin_po, this.cos_po);
 
   this.sin_po = Math.sin(this.lat0);
   this.cos_po = Math.cos(this.lat0);
   this.t3 = this.sin_po;
-  this.qs0 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_qsfnz__["a" /* default */])(this.e3, this.sin_po, this.cos_po);
+  this.qs0 = qsfnz(this.e3, this.sin_po, this.cos_po);
 
-  if (Math.abs(this.lat1 - this.lat2) > __WEBPACK_IMPORTED_MODULE_4__constants_values__["a" /* EPSLN */]) {
+  if (Math.abs(this.lat1 - this.lat2) > EPSLN) {
     this.ns0 = (this.ms1 * this.ms1 - this.ms2 * this.ms2) / (this.qs2 - this.qs1);
   }
   else {
@@ -7644,11 +7615,11 @@ function init() {
   }
   this.c = this.ms1 * this.ms1 + this.ns0 * this.qs1;
   this.rh = this.a * Math.sqrt(this.c - this.ns0 * this.qs0) / this.ns0;
-}
+};
 
 /* Albers Conical Equal Area forward equations--mapping lat,long to x,y
   -------------------------------------------------------------------*/
-function forward(p) {
+exports.forward = function(p) {
 
   var lon = p.x;
   var lat = p.y;
@@ -7656,18 +7627,19 @@ function forward(p) {
   this.sin_phi = Math.sin(lat);
   this.cos_phi = Math.cos(lat);
 
-  var qs = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_qsfnz__["a" /* default */])(this.e3, this.sin_phi, this.cos_phi);
+  var qs = qsfnz(this.e3, this.sin_phi, this.cos_phi);
   var rh1 = this.a * Math.sqrt(this.c - this.ns0 * qs) / this.ns0;
-  var theta = this.ns0 * __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_adjust_lon__["a" /* default */])(lon - this.long0);
+  var theta = this.ns0 * adjust_lon(lon - this.long0);
   var x = rh1 * Math.sin(theta) + this.x0;
   var y = this.rh - rh1 * Math.cos(theta) + this.y0;
 
   p.x = x;
   p.y = y;
   return p;
-}
+};
 
-function inverse(p) {
+
+exports.inverse = function(p) {
   var rh1, qs, con, theta, lon, lat;
 
   p.x -= this.x0;
@@ -7693,19 +7665,19 @@ function inverse(p) {
     lat = this.phi1z(this.e3, qs);
   }
 
-  lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_adjust_lon__["a" /* default */])(theta / this.ns0 + this.long0);
+  lon = adjust_lon(theta / this.ns0 + this.long0);
   p.x = lon;
   p.y = lat;
   return p;
-}
+};
 
 /* Function to compute phi1, the latitude for the inverse of the
    Albers Conical Equal-Area projection.
 -------------------------------------------*/
-function phi1z(eccent, qs) {
+exports.phi1z = function(eccent, qs) {
   var sinphi, cosphi, con, com, dphi;
-  var phi = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_asinz__["a" /* default */])(0.5 * qs);
-  if (eccent < __WEBPACK_IMPORTED_MODULE_4__constants_values__["a" /* EPSLN */]) {
+  var phi = asinz(0.5 * qs);
+  if (eccent < EPSLN) {
     return phi;
   }
 
@@ -7722,74 +7694,48 @@ function phi1z(eccent, qs) {
     }
   }
   return null;
-}
-
-var names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names,
-  phi1z: phi1z
 };
+exports.names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
 
 
 /***/ }),
-/* 75 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_mlfn__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_e0fn__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_e1fn__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_e2fn__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_e3fn__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__common_gN__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__common_asinz__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__common_imlfn__ = __webpack_require__(19);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function init() {
+var adjust_lon = __webpack_require__(0);
+var HALF_PI = Math.PI/2;
+var EPSLN = 1.0e-10;
+var mlfn = __webpack_require__(12);
+var e0fn = __webpack_require__(8);
+var e1fn = __webpack_require__(9);
+var e2fn = __webpack_require__(10);
+var e3fn = __webpack_require__(11);
+var gN = __webpack_require__(17);
+var asinz = __webpack_require__(4);
+var imlfn = __webpack_require__(18);
+exports.init = function() {
   this.sin_p12 = Math.sin(this.lat0);
   this.cos_p12 = Math.cos(this.lat0);
-}
+};
 
-function forward(p) {
+exports.forward = function(p) {
   var lon = p.x;
   var lat = p.y;
   var sinphi = Math.sin(p.y);
   var cosphi = Math.cos(p.y);
-  var dlon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(lon - this.long0);
+  var dlon = adjust_lon(lon - this.long0);
   var e0, e1, e2, e3, Mlp, Ml, tanphi, Nl1, Nl, psi, Az, G, H, GH, Hs, c, kp, cos_c, s, s2, s3, s4, s5;
   if (this.sphere) {
-    if (Math.abs(this.sin_p12 - 1) <= __WEBPACK_IMPORTED_MODULE_1__constants_values__["a" /* EPSLN */]) {
+    if (Math.abs(this.sin_p12 - 1) <= EPSLN) {
       //North Pole case
-      p.x = this.x0 + this.a * (__WEBPACK_IMPORTED_MODULE_1__constants_values__["b" /* HALF_PI */] - lat) * Math.sin(dlon);
-      p.y = this.y0 - this.a * (__WEBPACK_IMPORTED_MODULE_1__constants_values__["b" /* HALF_PI */] - lat) * Math.cos(dlon);
+      p.x = this.x0 + this.a * (HALF_PI - lat) * Math.sin(dlon);
+      p.y = this.y0 - this.a * (HALF_PI - lat) * Math.cos(dlon);
       return p;
     }
-    else if (Math.abs(this.sin_p12 + 1) <= __WEBPACK_IMPORTED_MODULE_1__constants_values__["a" /* EPSLN */]) {
+    else if (Math.abs(this.sin_p12 + 1) <= EPSLN) {
       //South Pole case
-      p.x = this.x0 + this.a * (__WEBPACK_IMPORTED_MODULE_1__constants_values__["b" /* HALF_PI */] + lat) * Math.sin(dlon);
-      p.y = this.y0 + this.a * (__WEBPACK_IMPORTED_MODULE_1__constants_values__["b" /* HALF_PI */] + lat) * Math.cos(dlon);
+      p.x = this.x0 + this.a * (HALF_PI + lat) * Math.sin(dlon);
+      p.y = this.y0 + this.a * (HALF_PI + lat) * Math.cos(dlon);
       return p;
     }
     else {
@@ -7803,22 +7749,22 @@ function forward(p) {
     }
   }
   else {
-    e0 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_e0fn__["a" /* default */])(this.es);
-    e1 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_e1fn__["a" /* default */])(this.es);
-    e2 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_e2fn__["a" /* default */])(this.es);
-    e3 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common_e3fn__["a" /* default */])(this.es);
-    if (Math.abs(this.sin_p12 - 1) <= __WEBPACK_IMPORTED_MODULE_1__constants_values__["a" /* EPSLN */]) {
+    e0 = e0fn(this.es);
+    e1 = e1fn(this.es);
+    e2 = e2fn(this.es);
+    e3 = e3fn(this.es);
+    if (Math.abs(this.sin_p12 - 1) <= EPSLN) {
       //North Pole case
-      Mlp = this.a * __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_mlfn__["a" /* default */])(e0, e1, e2, e3, __WEBPACK_IMPORTED_MODULE_1__constants_values__["b" /* HALF_PI */]);
-      Ml = this.a * __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_mlfn__["a" /* default */])(e0, e1, e2, e3, lat);
+      Mlp = this.a * mlfn(e0, e1, e2, e3, HALF_PI);
+      Ml = this.a * mlfn(e0, e1, e2, e3, lat);
       p.x = this.x0 + (Mlp - Ml) * Math.sin(dlon);
       p.y = this.y0 - (Mlp - Ml) * Math.cos(dlon);
       return p;
     }
-    else if (Math.abs(this.sin_p12 + 1) <= __WEBPACK_IMPORTED_MODULE_1__constants_values__["a" /* EPSLN */]) {
+    else if (Math.abs(this.sin_p12 + 1) <= EPSLN) {
       //South Pole case
-      Mlp = this.a * __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_mlfn__["a" /* default */])(e0, e1, e2, e3, __WEBPACK_IMPORTED_MODULE_1__constants_values__["b" /* HALF_PI */]);
-      Ml = this.a * __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_mlfn__["a" /* default */])(e0, e1, e2, e3, lat);
+      Mlp = this.a * mlfn(e0, e1, e2, e3, HALF_PI);
+      Ml = this.a * mlfn(e0, e1, e2, e3, lat);
       p.x = this.x0 + (Mlp + Ml) * Math.sin(dlon);
       p.y = this.y0 + (Mlp + Ml) * Math.cos(dlon);
       return p;
@@ -7826,14 +7772,14 @@ function forward(p) {
     else {
       //Default case
       tanphi = sinphi / cosphi;
-      Nl1 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__common_gN__["a" /* default */])(this.a, this.e, this.sin_p12);
-      Nl = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__common_gN__["a" /* default */])(this.a, this.e, sinphi);
+      Nl1 = gN(this.a, this.e, this.sin_p12);
+      Nl = gN(this.a, this.e, sinphi);
       psi = Math.atan((1 - this.es) * tanphi + this.es * Nl1 * this.sin_p12 / (Nl * cosphi));
       Az = Math.atan2(Math.sin(dlon), this.cos_p12 * Math.tan(psi) - this.sin_p12 * Math.cos(dlon));
       if (Az === 0) {
         s = Math.asin(this.cos_p12 * Math.sin(psi) - this.sin_p12 * Math.cos(psi));
       }
-      else if (Math.abs(Math.abs(Az) - Math.PI) <= __WEBPACK_IMPORTED_MODULE_1__constants_values__["a" /* EPSLN */]) {
+      else if (Math.abs(Math.abs(Az) - Math.PI) <= EPSLN) {
         s = -Math.asin(this.cos_p12 * Math.sin(psi) - this.sin_p12 * Math.cos(psi));
       }
       else {
@@ -7855,15 +7801,15 @@ function forward(p) {
   }
 
 
-}
+};
 
-function inverse(p) {
+exports.inverse = function(p) {
   p.x -= this.x0;
   p.y -= this.y0;
   var rh, z, sinz, cosz, lon, lat, con, e0, e1, e2, e3, Mlp, M, N1, psi, Az, cosAz, tmp, A, B, D, Ee, F;
   if (this.sphere) {
     rh = Math.sqrt(p.x * p.x + p.y * p.y);
-    if (rh > (2 * __WEBPACK_IMPORTED_MODULE_1__constants_values__["b" /* HALF_PI */] * this.a)) {
+    if (rh > (2 * HALF_PI * this.a)) {
       return;
     }
     z = rh / this.a;
@@ -7872,18 +7818,18 @@ function inverse(p) {
     cosz = Math.cos(z);
 
     lon = this.long0;
-    if (Math.abs(rh) <= __WEBPACK_IMPORTED_MODULE_1__constants_values__["a" /* EPSLN */]) {
+    if (Math.abs(rh) <= EPSLN) {
       lat = this.lat0;
     }
     else {
-      lat = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8__common_asinz__["a" /* default */])(cosz * this.sin_p12 + (p.y * sinz * this.cos_p12) / rh);
-      con = Math.abs(this.lat0) - __WEBPACK_IMPORTED_MODULE_1__constants_values__["b" /* HALF_PI */];
-      if (Math.abs(con) <= __WEBPACK_IMPORTED_MODULE_1__constants_values__["a" /* EPSLN */]) {
+      lat = asinz(cosz * this.sin_p12 + (p.y * sinz * this.cos_p12) / rh);
+      con = Math.abs(this.lat0) - HALF_PI;
+      if (Math.abs(con) <= EPSLN) {
         if (this.lat0 >= 0) {
-          lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(this.long0 + Math.atan2(p.x, - p.y));
+          lon = adjust_lon(this.long0 + Math.atan2(p.x, - p.y));
         }
         else {
-          lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(this.long0 - Math.atan2(-p.x, p.y));
+          lon = adjust_lon(this.long0 - Math.atan2(-p.x, p.y));
         }
       }
       else {
@@ -7894,7 +7840,7 @@ function inverse(p) {
           var temp = Math.atan2((p.x * sinz * this.cos_p12), (con * rh));
           lon = adjust_lon(this.long0 + Math.atan2((p.x * sinz * this.cos_p12), (con * rh)));
         }*/
-        lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(this.long0 + Math.atan2(p.x * sinz, rh * this.cos_p12 * cosz - p.y * this.sin_p12 * sinz));
+        lon = adjust_lon(this.long0 + Math.atan2(p.x * sinz, rh * this.cos_p12 * cosz - p.y * this.sin_p12 * sinz));
       }
     }
 
@@ -7903,29 +7849,29 @@ function inverse(p) {
     return p;
   }
   else {
-    e0 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_e0fn__["a" /* default */])(this.es);
-    e1 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_e1fn__["a" /* default */])(this.es);
-    e2 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_e2fn__["a" /* default */])(this.es);
-    e3 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common_e3fn__["a" /* default */])(this.es);
-    if (Math.abs(this.sin_p12 - 1) <= __WEBPACK_IMPORTED_MODULE_1__constants_values__["a" /* EPSLN */]) {
+    e0 = e0fn(this.es);
+    e1 = e1fn(this.es);
+    e2 = e2fn(this.es);
+    e3 = e3fn(this.es);
+    if (Math.abs(this.sin_p12 - 1) <= EPSLN) {
       //North pole case
-      Mlp = this.a * __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_mlfn__["a" /* default */])(e0, e1, e2, e3, __WEBPACK_IMPORTED_MODULE_1__constants_values__["b" /* HALF_PI */]);
+      Mlp = this.a * mlfn(e0, e1, e2, e3, HALF_PI);
       rh = Math.sqrt(p.x * p.x + p.y * p.y);
       M = Mlp - rh;
-      lat = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_9__common_imlfn__["a" /* default */])(M / this.a, e0, e1, e2, e3);
-      lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(this.long0 + Math.atan2(p.x, - 1 * p.y));
+      lat = imlfn(M / this.a, e0, e1, e2, e3);
+      lon = adjust_lon(this.long0 + Math.atan2(p.x, - 1 * p.y));
       p.x = lon;
       p.y = lat;
       return p;
     }
-    else if (Math.abs(this.sin_p12 + 1) <= __WEBPACK_IMPORTED_MODULE_1__constants_values__["a" /* EPSLN */]) {
+    else if (Math.abs(this.sin_p12 + 1) <= EPSLN) {
       //South pole case
-      Mlp = this.a * __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_mlfn__["a" /* default */])(e0, e1, e2, e3, __WEBPACK_IMPORTED_MODULE_1__constants_values__["b" /* HALF_PI */]);
+      Mlp = this.a * mlfn(e0, e1, e2, e3, HALF_PI);
       rh = Math.sqrt(p.x * p.x + p.y * p.y);
       M = rh - Mlp;
 
-      lat = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_9__common_imlfn__["a" /* default */])(M / this.a, e0, e1, e2, e3);
-      lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(this.long0 + Math.atan2(p.x, p.y));
+      lat = imlfn(M / this.a, e0, e1, e2, e3);
+      lon = adjust_lon(this.long0 + Math.atan2(p.x, p.y));
       p.x = lon;
       p.y = lat;
       return p;
@@ -7934,7 +7880,7 @@ function inverse(p) {
       //default case
       rh = Math.sqrt(p.x * p.x + p.y * p.y);
       Az = Math.atan2(p.x, p.y);
-      N1 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__common_gN__["a" /* default */])(this.a, this.e, this.sin_p12);
+      N1 = gN(this.a, this.e, this.sin_p12);
       cosAz = Math.cos(Az);
       tmp = this.e * this.cos_p12 * cosAz;
       A = -tmp * tmp / (1 - this.es);
@@ -7943,7 +7889,7 @@ function inverse(p) {
       Ee = D - A * (1 + A) * Math.pow(D, 3) / 6 - B * (1 + 3 * A) * Math.pow(D, 4) / 24;
       F = 1 - A * Ee * Ee / 2 - D * Ee * Ee * Ee / 6;
       psi = Math.asin(this.sin_p12 * Math.cos(Ee) + this.cos_p12 * Math.sin(Ee) * cosAz);
-      lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(this.long0 + Math.asin(Math.sin(Az) * Math.sin(Ee) / Math.cos(psi)));
+      lon = adjust_lon(this.long0 + Math.asin(Math.sin(Az) * Math.sin(Ee) / Math.cos(psi)));
       lat = Math.atan((1 - this.es * F * this.sin_p12 / Math.sin(psi)) * Math.tan(psi) / (1 - this.es));
       p.x = lon;
       p.y = lat;
@@ -7951,67 +7897,47 @@ function inverse(p) {
     }
   }
 
-}
-
-var names = ["Azimuthal_Equidistant", "aeqd"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names
 };
+exports.names = ["Azimuthal_Equidistant", "aeqd"];
 
 
 /***/ }),
-/* 76 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 67 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_mlfn__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_e0fn__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_e1fn__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_e2fn__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_e3fn__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_gN__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__common_adjust_lat__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__common_imlfn__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__constants_values__ = __webpack_require__(0);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-
-
-
-
-
-
-
-
-
-
-
-function init() {
+var mlfn = __webpack_require__(12);
+var e0fn = __webpack_require__(8);
+var e1fn = __webpack_require__(9);
+var e2fn = __webpack_require__(10);
+var e3fn = __webpack_require__(11);
+var gN = __webpack_require__(17);
+var adjust_lon = __webpack_require__(0);
+var adjust_lat = __webpack_require__(3);
+var imlfn = __webpack_require__(18);
+var HALF_PI = Math.PI/2;
+var EPSLN = 1.0e-10;
+exports.init = function() {
   if (!this.sphere) {
-    this.e0 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_e0fn__["a" /* default */])(this.es);
-    this.e1 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_e1fn__["a" /* default */])(this.es);
-    this.e2 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_e2fn__["a" /* default */])(this.es);
-    this.e3 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_e3fn__["a" /* default */])(this.es);
-    this.ml0 = this.a * __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_mlfn__["a" /* default */])(this.e0, this.e1, this.e2, this.e3, this.lat0);
+    this.e0 = e0fn(this.es);
+    this.e1 = e1fn(this.es);
+    this.e2 = e2fn(this.es);
+    this.e3 = e3fn(this.es);
+    this.ml0 = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, this.lat0);
   }
-}
+};
+
+
 
 /* Cassini forward equations--mapping lat,long to x,y
   -----------------------------------------------------------------------*/
-function forward(p) {
+exports.forward = function(p) {
 
   /* Forward equations
       -----------------*/
   var x, y;
   var lam = p.x;
   var phi = p.y;
-  lam = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__["a" /* default */])(lam - this.long0);
+  lam = adjust_lon(lam - this.long0);
 
   if (this.sphere) {
     x = this.a * Math.asin(Math.cos(phi) * Math.sin(lam));
@@ -8021,12 +7947,12 @@ function forward(p) {
     //ellipsoid
     var sinphi = Math.sin(phi);
     var cosphi = Math.cos(phi);
-    var nl = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_gN__["a" /* default */])(this.a, this.e, sinphi);
+    var nl = gN(this.a, this.e, sinphi);
     var tl = Math.tan(phi) * Math.tan(phi);
     var al = lam * Math.cos(phi);
     var asq = al * al;
     var cl = this.es * cosphi * cosphi / (1 - this.es);
-    var ml = this.a * __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_mlfn__["a" /* default */])(this.e0, this.e1, this.e2, this.e3, phi);
+    var ml = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, phi);
 
     x = nl * al * (1 - asq * tl * (1 / 6 - (8 - tl + 8 * cl) * asq / 120));
     y = ml - this.ml0 + nl * sinphi / cosphi * asq * (0.5 + (5 - tl + 6 * cl) * asq / 24);
@@ -8037,11 +7963,11 @@ function forward(p) {
   p.x = x + this.x0;
   p.y = y + this.y0;
   return p;
-}
+};
 
 /* Inverse equations
   -----------------*/
-function inverse(p) {
+exports.inverse = function(p) {
   p.x -= this.x0;
   p.y -= this.y0;
   var x = p.x / this.a;
@@ -8056,16 +7982,16 @@ function inverse(p) {
   else {
     /* ellipsoid */
     var ml1 = this.ml0 / this.a + y;
-    var phi1 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8__common_imlfn__["a" /* default */])(ml1, this.e0, this.e1, this.e2, this.e3);
-    if (Math.abs(Math.abs(phi1) - __WEBPACK_IMPORTED_MODULE_9__constants_values__["b" /* HALF_PI */]) <= __WEBPACK_IMPORTED_MODULE_9__constants_values__["a" /* EPSLN */]) {
+    var phi1 = imlfn(ml1, this.e0, this.e1, this.e2, this.e3);
+    if (Math.abs(Math.abs(phi1) - HALF_PI) <= EPSLN) {
       p.x = this.long0;
-      p.y = __WEBPACK_IMPORTED_MODULE_9__constants_values__["b" /* HALF_PI */];
+      p.y = HALF_PI;
       if (y < 0) {
         p.y *= -1;
       }
       return p;
     }
-    var nl1 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_gN__["a" /* default */])(this.a, this.e, Math.sin(phi1));
+    var nl1 = gN(this.a, this.e, Math.sin(phi1));
 
     var rl1 = nl1 * nl1 * nl1 / this.a / this.a * (1 - this.es);
     var tl1 = Math.pow(Math.tan(phi1), 2);
@@ -8076,67 +8002,50 @@ function inverse(p) {
 
   }
 
-  p.x = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__["a" /* default */])(lam + this.long0);
-  p.y = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__common_adjust_lat__["a" /* default */])(phi);
+  p.x = adjust_lon(lam + this.long0);
+  p.y = adjust_lat(phi);
   return p;
 
-}
-
-var names = ["Cassini", "Cassini_Soldner", "cass"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names
 };
-
+exports.names = ["Cassini", "Cassini_Soldner", "cass"];
 
 /***/ }),
-/* 77 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 68 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_qsfnz__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_msfnz__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_iqsfnz__ = __webpack_require__(57);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-
-
-
-
-
+var adjust_lon = __webpack_require__(0);
+var qsfnz = __webpack_require__(20);
+var msfnz = __webpack_require__(2);
+var iqsfnz = __webpack_require__(49);
 /*
-  reference:
+  reference:  
     "Cartographic Projection Procedures for the UNIX Environment-
     A User's Manual" by Gerald I. Evenden,
     USGS Open File Report 90-284and Release 4 Interim Reports (2003)
 */
-function init() {
+exports.init = function() {
   //no-op
   if (!this.sphere) {
-    this.k0 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_msfnz__["a" /* default */])(this.e, Math.sin(this.lat_ts), Math.cos(this.lat_ts));
+    this.k0 = msfnz(this.e, Math.sin(this.lat_ts), Math.cos(this.lat_ts));
   }
-}
+};
+
 
 /* Cylindrical Equal Area forward equations--mapping lat,long to x,y
     ------------------------------------------------------------*/
-function forward(p) {
+exports.forward = function(p) {
   var lon = p.x;
   var lat = p.y;
   var x, y;
   /* Forward equations
       -----------------*/
-  var dlon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(lon - this.long0);
+  var dlon = adjust_lon(lon - this.long0);
   if (this.sphere) {
     x = this.x0 + this.a * dlon * Math.cos(this.lat_ts);
     y = this.y0 + this.a * Math.sin(lat) / Math.cos(this.lat_ts);
   }
   else {
-    var qs = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_qsfnz__["a" /* default */])(this.e, Math.sin(lat));
+    var qs = qsfnz(this.e, Math.sin(lat));
     x = this.x0 + this.a * this.k0 * dlon;
     y = this.y0 + this.a * qs * 0.5 / this.k0;
   }
@@ -8144,53 +8053,38 @@ function forward(p) {
   p.x = x;
   p.y = y;
   return p;
-}
+};
 
 /* Cylindrical Equal Area inverse equations--mapping x,y to lat/long
     ------------------------------------------------------------*/
-function inverse(p) {
+exports.inverse = function(p) {
   p.x -= this.x0;
   p.y -= this.y0;
   var lon, lat;
 
   if (this.sphere) {
-    lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(this.long0 + (p.x / this.a) / Math.cos(this.lat_ts));
+    lon = adjust_lon(this.long0 + (p.x / this.a) / Math.cos(this.lat_ts));
     lat = Math.asin((p.y / this.a) * Math.cos(this.lat_ts));
   }
   else {
-    lat = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_iqsfnz__["a" /* default */])(this.e, 2 * p.y * this.k0 / this.a);
-    lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(this.long0 + p.x / (this.a * this.k0));
+    lat = iqsfnz(this.e, 2 * p.y * this.k0 / this.a);
+    lon = adjust_lon(this.long0 + p.x / (this.a * this.k0));
   }
 
   p.x = lon;
   p.y = lat;
   return p;
-}
-
-var names = ["cea"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names
 };
+exports.names = ["cea"];
 
 
 /***/ }),
-/* 78 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 69 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_adjust_lat__ = __webpack_require__(5);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-
-
-
-function init() {
+var adjust_lon = __webpack_require__(0);
+var adjust_lat = __webpack_require__(3);
+exports.init = function() {
 
   this.x0 = this.x0 || 0;
   this.y0 = this.y0 || 0;
@@ -8200,114 +8094,93 @@ function init() {
   this.title = this.title || "Equidistant Cylindrical (Plate Carre)";
 
   this.rc = Math.cos(this.lat_ts);
-}
+};
+
 
 // forward equations--mapping lat,long to x,y
 // -----------------------------------------------------------------
-function forward(p) {
+exports.forward = function(p) {
 
   var lon = p.x;
   var lat = p.y;
 
-  var dlon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(lon - this.long0);
-  var dlat = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_adjust_lat__["a" /* default */])(lat - this.lat0);
+  var dlon = adjust_lon(lon - this.long0);
+  var dlat = adjust_lat(lat - this.lat0);
   p.x = this.x0 + (this.a * dlon * this.rc);
   p.y = this.y0 + (this.a * dlat);
   return p;
-}
+};
 
 // inverse equations--mapping x,y to lat/long
 // -----------------------------------------------------------------
-function inverse(p) {
+exports.inverse = function(p) {
 
   var x = p.x;
   var y = p.y;
 
-  p.x = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(this.long0 + ((x - this.x0) / (this.a * this.rc)));
-  p.y = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_adjust_lat__["a" /* default */])(this.lat0 + ((y - this.y0) / (this.a)));
+  p.x = adjust_lon(this.long0 + ((x - this.x0) / (this.a * this.rc)));
+  p.y = adjust_lat(this.lat0 + ((y - this.y0) / (this.a)));
   return p;
-}
-
-var names = ["Equirectangular", "Equidistant_Cylindrical", "eqc"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names
 };
+exports.names = ["Equirectangular", "Equidistant_Cylindrical", "eqc"];
 
 
 /***/ }),
-/* 79 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 70 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_e0fn__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_e1fn__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_e2fn__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_e3fn__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_msfnz__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_mlfn__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__common_adjust_lat__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__common_imlfn__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__constants_values__ = __webpack_require__(0);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-
-
-
-
-
-
-
-
-
-
-
-function init() {
+var e0fn = __webpack_require__(8);
+var e1fn = __webpack_require__(9);
+var e2fn = __webpack_require__(10);
+var e3fn = __webpack_require__(11);
+var msfnz = __webpack_require__(2);
+var mlfn = __webpack_require__(12);
+var adjust_lon = __webpack_require__(0);
+var adjust_lat = __webpack_require__(3);
+var imlfn = __webpack_require__(18);
+var EPSLN = 1.0e-10;
+exports.init = function() {
 
   /* Place parameters in static storage for common use
       -------------------------------------------------*/
   // Standard Parallels cannot be equal and on opposite sides of the equator
-  if (Math.abs(this.lat1 + this.lat2) < __WEBPACK_IMPORTED_MODULE_9__constants_values__["a" /* EPSLN */]) {
+  if (Math.abs(this.lat1 + this.lat2) < EPSLN) {
     return;
   }
   this.lat2 = this.lat2 || this.lat1;
   this.temp = this.b / this.a;
   this.es = 1 - Math.pow(this.temp, 2);
   this.e = Math.sqrt(this.es);
-  this.e0 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_e0fn__["a" /* default */])(this.es);
-  this.e1 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_e1fn__["a" /* default */])(this.es);
-  this.e2 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_e2fn__["a" /* default */])(this.es);
-  this.e3 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_e3fn__["a" /* default */])(this.es);
+  this.e0 = e0fn(this.es);
+  this.e1 = e1fn(this.es);
+  this.e2 = e2fn(this.es);
+  this.e3 = e3fn(this.es);
 
   this.sinphi = Math.sin(this.lat1);
   this.cosphi = Math.cos(this.lat1);
 
-  this.ms1 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_msfnz__["a" /* default */])(this.e, this.sinphi, this.cosphi);
-  this.ml1 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_mlfn__["a" /* default */])(this.e0, this.e1, this.e2, this.e3, this.lat1);
+  this.ms1 = msfnz(this.e, this.sinphi, this.cosphi);
+  this.ml1 = mlfn(this.e0, this.e1, this.e2, this.e3, this.lat1);
 
-  if (Math.abs(this.lat1 - this.lat2) < __WEBPACK_IMPORTED_MODULE_9__constants_values__["a" /* EPSLN */]) {
+  if (Math.abs(this.lat1 - this.lat2) < EPSLN) {
     this.ns = this.sinphi;
   }
   else {
     this.sinphi = Math.sin(this.lat2);
     this.cosphi = Math.cos(this.lat2);
-    this.ms2 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_msfnz__["a" /* default */])(this.e, this.sinphi, this.cosphi);
-    this.ml2 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_mlfn__["a" /* default */])(this.e0, this.e1, this.e2, this.e3, this.lat2);
+    this.ms2 = msfnz(this.e, this.sinphi, this.cosphi);
+    this.ml2 = mlfn(this.e0, this.e1, this.e2, this.e3, this.lat2);
     this.ns = (this.ms1 - this.ms2) / (this.ml2 - this.ml1);
   }
   this.g = this.ml1 + this.ms1 / this.ns;
-  this.ml0 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_mlfn__["a" /* default */])(this.e0, this.e1, this.e2, this.e3, this.lat0);
+  this.ml0 = mlfn(this.e0, this.e1, this.e2, this.e3, this.lat0);
   this.rh = this.a * (this.g - this.ml0);
-}
+};
+
 
 /* Equidistant Conic forward equations--mapping lat,long to x,y
   -----------------------------------------------------------*/
-function forward(p) {
+exports.forward = function(p) {
   var lon = p.x;
   var lat = p.y;
   var rh1;
@@ -8318,20 +8191,20 @@ function forward(p) {
     rh1 = this.a * (this.g - lat);
   }
   else {
-    var ml = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_mlfn__["a" /* default */])(this.e0, this.e1, this.e2, this.e3, lat);
+    var ml = mlfn(this.e0, this.e1, this.e2, this.e3, lat);
     rh1 = this.a * (this.g - ml);
   }
-  var theta = this.ns * __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__["a" /* default */])(lon - this.long0);
+  var theta = this.ns * adjust_lon(lon - this.long0);
   var x = this.x0 + rh1 * Math.sin(theta);
   var y = this.y0 + this.rh - rh1 * Math.cos(theta);
   p.x = x;
   p.y = y;
   return p;
-}
+};
 
 /* Inverse equations
   -----------------*/
-function inverse(p) {
+exports.inverse = function(p) {
   p.x -= this.x0;
   p.y = this.rh - p.y + this.y0;
   var con, rh1, lat, lon;
@@ -8349,48 +8222,34 @@ function inverse(p) {
   }
 
   if (this.sphere) {
-    lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__["a" /* default */])(this.long0 + theta / this.ns);
-    lat = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7__common_adjust_lat__["a" /* default */])(this.g - rh1 / this.a);
+    lon = adjust_lon(this.long0 + theta / this.ns);
+    lat = adjust_lat(this.g - rh1 / this.a);
     p.x = lon;
     p.y = lat;
     return p;
   }
   else {
     var ml = this.g - rh1 / this.a;
-    lat = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8__common_imlfn__["a" /* default */])(ml, this.e0, this.e1, this.e2, this.e3);
-    lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__["a" /* default */])(this.long0 + theta / this.ns);
+    lat = imlfn(ml, this.e0, this.e1, this.e2, this.e3);
+    lon = adjust_lon(this.long0 + theta / this.ns);
     p.x = lon;
     p.y = lat;
     return p;
   }
 
-}
-
-var names = ["Equidistant_Conic", "eqdc"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names
 };
+exports.names = ["Equidistant_Conic", "eqdc"];
 
 
 /***/ }),
-/* 80 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_srat__ = __webpack_require__(59);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(0);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-
+var FORTPI = Math.PI/4;
+var srat = __webpack_require__(50);
+var HALF_PI = Math.PI/2;
 var MAX_ITER = 20;
-
-
-function init() {
+exports.init = function() {
   var sphi = Math.sin(this.lat0);
   var cphi = Math.cos(this.lat0);
   cphi *= cphi;
@@ -8398,25 +8257,25 @@ function init() {
   this.C = Math.sqrt(1 + this.es * cphi * cphi / (1 - this.es));
   this.phic0 = Math.asin(sphi / this.C);
   this.ratexp = 0.5 * this.C * this.e;
-  this.K = Math.tan(0.5 * this.phic0 + __WEBPACK_IMPORTED_MODULE_1__constants_values__["f" /* FORTPI */]) / (Math.pow(Math.tan(0.5 * this.lat0 + __WEBPACK_IMPORTED_MODULE_1__constants_values__["f" /* FORTPI */]), this.C) * __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_srat__["a" /* default */])(this.e * sphi, this.ratexp));
-}
+  this.K = Math.tan(0.5 * this.phic0 + FORTPI) / (Math.pow(Math.tan(0.5 * this.lat0 + FORTPI), this.C) * srat(this.e * sphi, this.ratexp));
+};
 
-function forward(p) {
+exports.forward = function(p) {
   var lon = p.x;
   var lat = p.y;
 
-  p.y = 2 * Math.atan(this.K * Math.pow(Math.tan(0.5 * lat + __WEBPACK_IMPORTED_MODULE_1__constants_values__["f" /* FORTPI */]), this.C) * __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_srat__["a" /* default */])(this.e * Math.sin(lat), this.ratexp)) - __WEBPACK_IMPORTED_MODULE_1__constants_values__["b" /* HALF_PI */];
+  p.y = 2 * Math.atan(this.K * Math.pow(Math.tan(0.5 * lat + FORTPI), this.C) * srat(this.e * Math.sin(lat), this.ratexp)) - HALF_PI;
   p.x = this.C * lon;
   return p;
-}
+};
 
-function inverse(p) {
+exports.inverse = function(p) {
   var DEL_TOL = 1e-14;
   var lon = p.x / this.C;
   var lat = p.y;
-  var num = Math.pow(Math.tan(0.5 * lat + __WEBPACK_IMPORTED_MODULE_1__constants_values__["f" /* FORTPI */]) / this.K, 1 / this.C);
+  var num = Math.pow(Math.tan(0.5 * lat + FORTPI) / this.K, 1 / this.C);
   for (var i = MAX_ITER; i > 0; --i) {
-    lat = 2 * Math.atan(num * __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_srat__["a" /* default */])(this.e * Math.sin(p.y), - 0.5 * this.e)) - __WEBPACK_IMPORTED_MODULE_1__constants_values__["b" /* HALF_PI */];
+    lat = 2 * Math.atan(num * srat(this.e * Math.sin(p.y), - 0.5 * this.e)) - HALF_PI;
     if (Math.abs(lat - p.y) < DEL_TOL) {
       break;
     }
@@ -8429,32 +8288,17 @@ function inverse(p) {
   p.x = lon;
   p.y = lat;
   return p;
-}
-
-var names = ["gauss"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names
 };
+exports.names = ["gauss"];
 
 
 /***/ }),
-/* 81 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 72 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_asinz__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_values__ = __webpack_require__(0);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-
-
-
+var adjust_lon = __webpack_require__(0);
+var EPSLN = 1.0e-10;
+var asinz = __webpack_require__(4);
 
 /*
   reference:
@@ -8462,7 +8306,7 @@ var names = ["gauss"];
     http://mathworld.wolfram.com/GnomonicProjection.html
     Accessed: 12th November 2009
   */
-function init() {
+exports.init = function() {
 
   /* Place parameters in static storage for common use
       -------------------------------------------------*/
@@ -8471,11 +8315,12 @@ function init() {
   // Approximation for projecting points to the horizon (infinity)
   this.infinity_dist = 1000 * this.a;
   this.rc = 1;
-}
+};
+
 
 /* Gnomonic forward equations--mapping lat,long to x,y
     ---------------------------------------------------*/
-function forward(p) {
+exports.forward = function(p) {
   var sinphi, cosphi; /* sin and cos value        */
   var dlon; /* delta longitude value      */
   var coslon; /* cos of longitude        */
@@ -8486,7 +8331,7 @@ function forward(p) {
   var lat = p.y;
   /* Forward equations
       -----------------*/
-  dlon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(lon - this.long0);
+  dlon = adjust_lon(lon - this.long0);
 
   sinphi = Math.sin(lat);
   cosphi = Math.cos(lat);
@@ -8494,17 +8339,17 @@ function forward(p) {
   coslon = Math.cos(dlon);
   g = this.sin_p14 * sinphi + this.cos_p14 * cosphi * coslon;
   ksp = 1;
-  if ((g > 0) || (Math.abs(g) <= __WEBPACK_IMPORTED_MODULE_2__constants_values__["a" /* EPSLN */])) {
+  if ((g > 0) || (Math.abs(g) <= EPSLN)) {
     x = this.x0 + this.a * ksp * cosphi * Math.sin(dlon) / g;
     y = this.y0 + this.a * ksp * (this.cos_p14 * sinphi - this.sin_p14 * cosphi * coslon) / g;
   }
   else {
 
     // Point is in the opposing hemisphere and is unprojectable
-    // We still need to return a reasonable point, so we project
-    // to infinity, on a bearing
+    // We still need to return a reasonable point, so we project 
+    // to infinity, on a bearing 
     // equivalent to the northern hemisphere equivalent
-    // This is a reasonable approximation for short shapes and lines that
+    // This is a reasonable approximation for short shapes and lines that 
     // straddle the horizon.
 
     x = this.x0 + this.infinity_dist * cosphi * Math.sin(dlon);
@@ -8514,9 +8359,10 @@ function forward(p) {
   p.x = x;
   p.y = y;
   return p;
-}
+};
 
-function inverse(p) {
+
+exports.inverse = function(p) {
   var rh; /* Rho */
   var sinc, cosc;
   var c;
@@ -8535,9 +8381,9 @@ function inverse(p) {
     sinc = Math.sin(c);
     cosc = Math.cos(c);
 
-    lat = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_asinz__["a" /* default */])(cosc * this.sin_p14 + (p.y * sinc * this.cos_p14) / rh);
+    lat = asinz(cosc * this.sin_p14 + (p.y * sinc * this.cos_p14) / rh);
     lon = Math.atan2(p.x * sinc, rh * this.cos_p14 * cosc - p.y * this.sin_p14 * sinc);
-    lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(this.long0 + lon);
+    lon = adjust_lon(this.long0 + lon);
   }
   else {
     lat = this.phic0;
@@ -8547,30 +8393,16 @@ function inverse(p) {
   p.x = lon;
   p.y = lat;
   return p;
-}
-
-var names = ["gnom"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names
 };
+exports.names = ["gnom"];
 
 
 /***/ }),
-/* 82 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 73 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(1);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-
-
-function init() {
+var adjust_lon = __webpack_require__(0);
+exports.init = function() {
   this.a = 6377397.155;
   this.es = 0.006674372230614;
   this.e = Math.sqrt(this.es);
@@ -8600,16 +8432,16 @@ function init() {
   this.n = Math.sin(this.s0);
   this.ro0 = this.k1 * this.n0 / Math.tan(this.s0);
   this.ad = this.s90 - this.uq;
-}
+};
 
 /* ellipsoid */
 /* calculate xy from lat/lon */
 /* Constants, identical to inverse transform function */
-function forward(p) {
+exports.forward = function(p) {
   var gfi, u, deltav, s, d, eps, ro;
   var lon = p.x;
   var lat = p.y;
-  var delta_lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(lon - this.long0);
+  var delta_lon = adjust_lon(lon - this.long0);
   /* Transformation */
   gfi = Math.pow(((1 + this.e * Math.sin(lat)) / (1 - this.e * Math.sin(lat))), (this.alfa * this.e / 2));
   u = 2 * (Math.atan(this.k * Math.pow(Math.tan(lat / 2 + this.s45), this.alfa) / gfi) - this.s45);
@@ -8626,10 +8458,10 @@ function forward(p) {
     p.x *= -1;
   }
   return (p);
-}
+};
 
 /* calculate lat/lon from xy */
-function inverse(p) {
+exports.inverse = function(p) {
   var u, deltav, s, d, eps, ro, fi1;
   var ok;
 
@@ -8665,59 +8497,39 @@ function inverse(p) {
   }
 
   return (p);
-}
-
-var names = ["Krovak", "krovak"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names
 };
+exports.names = ["Krovak", "krovak"];
 
 
 /***/ }),
-/* 83 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 74 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_qsfnz__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_adjust_lon__ = __webpack_require__(1);
-/* unused harmony export S_POLE */
-/* unused harmony export N_POLE */
-/* unused harmony export EQUIT */
-/* unused harmony export OBLIQ */
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-
-
-
-
-
-
+var HALF_PI = Math.PI/2;
+var FORTPI = Math.PI/4;
+var EPSLN = 1.0e-10;
+var qsfnz = __webpack_require__(20);
+var adjust_lon = __webpack_require__(0);
 /*
   reference
     "New Equal-Area Map Projections for Noncircular Regions", John P. Snyder,
     The American Cartographer, Vol 15, No. 4, October 1988, pp. 341-355.
   */
 
-var S_POLE = 1;
+exports.S_POLE = 1;
+exports.N_POLE = 2;
+exports.EQUIT = 3;
+exports.OBLIQ = 4;
 
-var N_POLE = 2;
-var EQUIT = 3;
-var OBLIQ = 4;
 
 /* Initialize the Lambert Azimuthal Equal Area projection
   ------------------------------------------------------*/
-function init() {
+exports.init = function() {
   var t = Math.abs(this.lat0);
-  if (Math.abs(t - __WEBPACK_IMPORTED_MODULE_0__constants_values__["b" /* HALF_PI */]) < __WEBPACK_IMPORTED_MODULE_0__constants_values__["a" /* EPSLN */]) {
+  if (Math.abs(t - HALF_PI) < EPSLN) {
     this.mode = this.lat0 < 0 ? this.S_POLE : this.N_POLE;
   }
-  else if (Math.abs(t) < __WEBPACK_IMPORTED_MODULE_0__constants_values__["a" /* EPSLN */]) {
+  else if (Math.abs(t) < EPSLN) {
     this.mode = this.EQUIT;
   }
   else {
@@ -8726,9 +8538,9 @@ function init() {
   if (this.es > 0) {
     var sinphi;
 
-    this.qp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_qsfnz__["a" /* default */])(this.e, 1);
+    this.qp = qsfnz(this.e, 1);
     this.mmf = 0.5 / (1 - this.es);
-    this.apa = authset(this.es);
+    this.apa = this.authset(this.es);
     switch (this.mode) {
     case this.N_POLE:
       this.dd = 1;
@@ -8745,7 +8557,7 @@ function init() {
     case this.OBLIQ:
       this.rq = Math.sqrt(0.5 * this.qp);
       sinphi = Math.sin(this.lat0);
-      this.sinb1 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_qsfnz__["a" /* default */])(this.e, sinphi) / this.qp;
+      this.sinb1 = qsfnz(this.e, sinphi) / this.qp;
       this.cosb1 = Math.sqrt(1 - this.sinb1 * this.sinb1);
       this.dd = Math.cos(this.lat0) / (Math.sqrt(1 - this.es * sinphi * sinphi) * this.rq * this.cosb1);
       this.ymf = (this.xmf = this.rq) / this.dd;
@@ -8759,11 +8571,11 @@ function init() {
       this.cosph0 = Math.cos(this.lat0);
     }
   }
-}
+};
 
 /* Lambert Azimuthal Equal Area forward equations--mapping lat,long to x,y
   -----------------------------------------------------------------------*/
-function forward(p) {
+exports.forward = function(p) {
 
   /* Forward equations
       -----------------*/
@@ -8771,14 +8583,15 @@ function forward(p) {
   var lam = p.x;
   var phi = p.y;
 
-  lam = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_adjust_lon__["a" /* default */])(lam - this.long0);
+  lam = adjust_lon(lam - this.long0);
+
   if (this.sphere) {
     sinphi = Math.sin(phi);
     cosphi = Math.cos(phi);
     coslam = Math.cos(lam);
     if (this.mode === this.OBLIQ || this.mode === this.EQUIT) {
       y = (this.mode === this.EQUIT) ? 1 + cosphi * coslam : 1 + this.sinph0 * sinphi + this.cosph0 * cosphi * coslam;
-      if (y <= __WEBPACK_IMPORTED_MODULE_0__constants_values__["a" /* EPSLN */]) {
+      if (y <= EPSLN) {
         return null;
       }
       y = Math.sqrt(2 / y);
@@ -8789,10 +8602,10 @@ function forward(p) {
       if (this.mode === this.N_POLE) {
         coslam = -coslam;
       }
-      if (Math.abs(phi + this.phi0) < __WEBPACK_IMPORTED_MODULE_0__constants_values__["a" /* EPSLN */]) {
+      if (Math.abs(phi + this.phi0) < EPSLN) {
         return null;
       }
-      y = __WEBPACK_IMPORTED_MODULE_0__constants_values__["f" /* FORTPI */] - phi * 0.5;
+      y = FORTPI - phi * 0.5;
       y = 2 * ((this.mode === this.S_POLE) ? Math.cos(y) : Math.sin(y));
       x = y * Math.sin(lam);
       y *= coslam;
@@ -8805,7 +8618,7 @@ function forward(p) {
     coslam = Math.cos(lam);
     sinlam = Math.sin(lam);
     sinphi = Math.sin(phi);
-    q = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_qsfnz__["a" /* default */])(this.e, sinphi);
+    q = qsfnz(this.e, sinphi);
     if (this.mode === this.OBLIQ || this.mode === this.EQUIT) {
       sinb = q / this.qp;
       cosb = Math.sqrt(1 - sinb * sinb);
@@ -8818,15 +8631,15 @@ function forward(p) {
       b = 1 + cosb * coslam;
       break;
     case this.N_POLE:
-      b = __WEBPACK_IMPORTED_MODULE_0__constants_values__["b" /* HALF_PI */] + phi;
+      b = HALF_PI + phi;
       q = this.qp - q;
       break;
     case this.S_POLE:
-      b = phi - __WEBPACK_IMPORTED_MODULE_0__constants_values__["b" /* HALF_PI */];
+      b = phi - HALF_PI;
       q = this.qp + q;
       break;
     }
-    if (Math.abs(b) < __WEBPACK_IMPORTED_MODULE_0__constants_values__["a" /* EPSLN */]) {
+    if (Math.abs(b) < EPSLN) {
       return null;
     }
     switch (this.mode) {
@@ -8857,16 +8670,17 @@ function forward(p) {
   p.x = this.a * x + this.x0;
   p.y = this.a * y + this.y0;
   return p;
-}
+};
 
 /* Inverse equations
   -----------------*/
-function inverse(p) {
+exports.inverse = function(p) {
   p.x -= this.x0;
   p.y -= this.y0;
   var x = p.x / this.a;
   var y = p.y / this.a;
   var lam, phi, cCe, sCe, q, rho, ab;
+
   if (this.sphere) {
     var cosz = 0,
       rh, sinz = 0;
@@ -8883,21 +8697,21 @@ function inverse(p) {
     }
     switch (this.mode) {
     case this.EQUIT:
-      phi = (Math.abs(rh) <= __WEBPACK_IMPORTED_MODULE_0__constants_values__["a" /* EPSLN */]) ? 0 : Math.asin(y * sinz / rh);
+      phi = (Math.abs(rh) <= EPSLN) ? 0 : Math.asin(y * sinz / rh);
       x *= sinz;
       y = cosz * rh;
       break;
     case this.OBLIQ:
-      phi = (Math.abs(rh) <= __WEBPACK_IMPORTED_MODULE_0__constants_values__["a" /* EPSLN */]) ? this.phi0 : Math.asin(cosz * this.sinph0 + y * sinz * this.cosph0 / rh);
+      phi = (Math.abs(rh) <= EPSLN) ? this.phi0 : Math.asin(cosz * this.sinph0 + y * sinz * this.cosph0 / rh);
       x *= sinz * this.cosph0;
       y = (cosz - Math.sin(phi) * this.sinph0) * rh;
       break;
     case this.N_POLE:
       y = -y;
-      phi = __WEBPACK_IMPORTED_MODULE_0__constants_values__["b" /* HALF_PI */] - phi;
+      phi = HALF_PI - phi;
       break;
     case this.S_POLE:
-      phi -= __WEBPACK_IMPORTED_MODULE_0__constants_values__["b" /* HALF_PI */];
+      phi -= HALF_PI;
       break;
     }
     lam = (y === 0 && (this.mode === this.EQUIT || this.mode === this.OBLIQ)) ? 0 : Math.atan2(x, y);
@@ -8908,7 +8722,7 @@ function inverse(p) {
       x /= this.dd;
       y *= this.dd;
       rho = Math.sqrt(x * x + y * y);
-      if (rho < __WEBPACK_IMPORTED_MODULE_0__constants_values__["a" /* EPSLN */]) {
+      if (rho < EPSLN) {
         p.x = 0;
         p.y = this.phi0;
         return p;
@@ -8943,77 +8757,56 @@ function inverse(p) {
       }
     }
     lam = Math.atan2(x, y);
-    phi = authlat(Math.asin(ab), this.apa);
+    phi = this.authlat(Math.asin(ab), this.apa);
   }
 
-  p.x = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_adjust_lon__["a" /* default */])(this.long0 + lam);
+
+  p.x = adjust_lon(this.long0 + lam);
   p.y = phi;
   return p;
-}
+};
 
 /* determine latitude from authalic latitude */
-var P00 = 0.33333333333333333333;
+exports.P00 = 0.33333333333333333333;
+exports.P01 = 0.17222222222222222222;
+exports.P02 = 0.10257936507936507936;
+exports.P10 = 0.06388888888888888888;
+exports.P11 = 0.06640211640211640211;
+exports.P20 = 0.01641501294219154443;
 
-var P01 = 0.17222222222222222222;
-var P02 = 0.10257936507936507936;
-var P10 = 0.06388888888888888888;
-var P11 = 0.06640211640211640211;
-var P20 = 0.01641501294219154443;
-
-function authset(es) {
+exports.authset = function(es) {
   var t;
   var APA = [];
-  APA[0] = es * P00;
+  APA[0] = es * this.P00;
   t = es * es;
-  APA[0] += t * P01;
-  APA[1] = t * P10;
+  APA[0] += t * this.P01;
+  APA[1] = t * this.P10;
   t *= es;
-  APA[0] += t * P02;
-  APA[1] += t * P11;
-  APA[2] = t * P20;
+  APA[0] += t * this.P02;
+  APA[1] += t * this.P11;
+  APA[2] = t * this.P20;
   return APA;
-}
+};
 
-function authlat(beta, APA) {
+exports.authlat = function(beta, APA) {
   var t = beta + beta;
   return (beta + APA[0] * Math.sin(t) + APA[1] * Math.sin(t + t) + APA[2] * Math.sin(t + t + t));
-}
-
-var names = ["Lambert Azimuthal Equal Area", "Lambert_Azimuthal_Equal_Area", "laea"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names,
-  S_POLE: S_POLE,
-  N_POLE: N_POLE,
-  EQUIT: EQUIT,
-  OBLIQ: OBLIQ
 };
+exports.names = ["Lambert Azimuthal Equal Area", "Lambert_Azimuthal_Equal_Area", "laea"];
 
 
 /***/ }),
-/* 84 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 75 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_msfnz__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_tsfnz__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_sign__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_adjust_lon__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_phi2z__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__constants_values__ = __webpack_require__(0);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-
-
-
-
-
-
-function init() {
+var EPSLN = 1.0e-10;
+var msfnz = __webpack_require__(2);
+var tsfnz = __webpack_require__(14);
+var HALF_PI = Math.PI/2;
+var sign = __webpack_require__(5);
+var adjust_lon = __webpack_require__(0);
+var phi2z = __webpack_require__(13);
+exports.init = function() {
 
   // array of:  r_maj,r_min,lat1,lat2,c_lon,c_lat,false_east,false_north
   //double c_lat;                   /* center latitude                      */
@@ -9034,7 +8827,7 @@ function init() {
   this.x0 = this.x0 || 0;
   this.y0 = this.y0 || 0;
   // Standard Parallels cannot be equal and on opposite sides of the equator
-  if (Math.abs(this.lat1 + this.lat2) < __WEBPACK_IMPORTED_MODULE_5__constants_values__["a" /* EPSLN */]) {
+  if (Math.abs(this.lat1 + this.lat2) < EPSLN) {
     return;
   }
 
@@ -9043,17 +8836,17 @@ function init() {
 
   var sin1 = Math.sin(this.lat1);
   var cos1 = Math.cos(this.lat1);
-  var ms1 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_msfnz__["a" /* default */])(this.e, sin1, cos1);
-  var ts1 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_tsfnz__["a" /* default */])(this.e, this.lat1, sin1);
+  var ms1 = msfnz(this.e, sin1, cos1);
+  var ts1 = tsfnz(this.e, this.lat1, sin1);
 
   var sin2 = Math.sin(this.lat2);
   var cos2 = Math.cos(this.lat2);
-  var ms2 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_msfnz__["a" /* default */])(this.e, sin2, cos2);
-  var ts2 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_tsfnz__["a" /* default */])(this.e, this.lat2, sin2);
+  var ms2 = msfnz(this.e, sin2, cos2);
+  var ts2 = tsfnz(this.e, this.lat2, sin2);
 
-  var ts0 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_tsfnz__["a" /* default */])(this.e, this.lat0, Math.sin(this.lat0));
+  var ts0 = tsfnz(this.e, this.lat0, Math.sin(this.lat0));
 
-  if (Math.abs(this.lat1 - this.lat2) > __WEBPACK_IMPORTED_MODULE_5__constants_values__["a" /* EPSLN */]) {
+  if (Math.abs(this.lat1 - this.lat2) > EPSLN) {
     this.ns = Math.log(ms1 / ms2) / Math.log(ts1 / ts2);
   }
   else {
@@ -9067,24 +8860,25 @@ function init() {
   if (!this.title) {
     this.title = "Lambert Conformal Conic";
   }
-}
+};
+
 
 // Lambert Conformal conic forward equations--mapping lat,long to x,y
 // -----------------------------------------------------------------
-function forward(p) {
+exports.forward = function(p) {
 
   var lon = p.x;
   var lat = p.y;
 
   // singular cases :
-  if (Math.abs(2 * Math.abs(lat) - Math.PI) <= __WEBPACK_IMPORTED_MODULE_5__constants_values__["a" /* EPSLN */]) {
-    lat = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_sign__["a" /* default */])(lat) * (__WEBPACK_IMPORTED_MODULE_5__constants_values__["b" /* HALF_PI */] - 2 * __WEBPACK_IMPORTED_MODULE_5__constants_values__["a" /* EPSLN */]);
+  if (Math.abs(2 * Math.abs(lat) - Math.PI) <= EPSLN) {
+    lat = sign(lat) * (HALF_PI - 2 * EPSLN);
   }
 
-  var con = Math.abs(Math.abs(lat) - __WEBPACK_IMPORTED_MODULE_5__constants_values__["b" /* HALF_PI */]);
+  var con = Math.abs(Math.abs(lat) - HALF_PI);
   var ts, rh1;
-  if (con > __WEBPACK_IMPORTED_MODULE_5__constants_values__["a" /* EPSLN */]) {
-    ts = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_tsfnz__["a" /* default */])(this.e, lat, Math.sin(lat));
+  if (con > EPSLN) {
+    ts = tsfnz(this.e, lat, Math.sin(lat));
     rh1 = this.a * this.f0 * Math.pow(ts, this.ns);
   }
   else {
@@ -9094,16 +8888,16 @@ function forward(p) {
     }
     rh1 = 0;
   }
-  var theta = this.ns * __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_adjust_lon__["a" /* default */])(lon - this.long0);
+  var theta = this.ns * adjust_lon(lon - this.long0);
   p.x = this.k0 * (rh1 * Math.sin(theta)) + this.x0;
   p.y = this.k0 * (this.rh - rh1 * Math.cos(theta)) + this.y0;
 
   return p;
-}
+};
 
 // Lambert Conformal Conic inverse equations--mapping x,y to lat/long
 // -----------------------------------------------------------------
-function inverse(p) {
+exports.inverse = function(p) {
 
   var rh1, con, ts;
   var lat, lon;
@@ -9124,78 +8918,53 @@ function inverse(p) {
   if ((rh1 !== 0) || (this.ns > 0)) {
     con = 1 / this.ns;
     ts = Math.pow((rh1 / (this.a * this.f0)), con);
-    lat = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_phi2z__["a" /* default */])(this.e, ts);
+    lat = phi2z(this.e, ts);
     if (lat === -9999) {
       return null;
     }
   }
   else {
-    lat = -__WEBPACK_IMPORTED_MODULE_5__constants_values__["b" /* HALF_PI */];
+    lat = -HALF_PI;
   }
-  lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_adjust_lon__["a" /* default */])(theta / this.ns + this.long0);
+  lon = adjust_lon(theta / this.ns + this.long0);
 
   p.x = lon;
   p.y = lat;
   return p;
-}
-
-var names = ["Lambert Tangential Conformal Conic Projection", "Lambert_Conformal_Conic", "Lambert_Conformal_Conic_2SP", "lcc"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names
 };
+
+exports.names = ["Lambert Tangential Conformal Conic Projection", "Lambert_Conformal_Conic", "Lambert_Conformal_Conic_2SP", "lcc"];
 
 
 /***/ }),
-/* 85 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 76 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-function init() {
+exports.init = function() {
   //no-op for longlat
-}
+};
 
 function identity(pt) {
   return pt;
 }
-
-
-var names = ["longlat", "identity"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  forward: identity,
-  inverse: identity,
-  names: names
-};
+exports.forward = identity;
+exports.inverse = identity;
+exports.names = ["longlat", "identity"];
 
 
 /***/ }),
-/* 86 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 77 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_msfnz__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_adjust_lon__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_tsfnz__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_phi2z__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_values__ = __webpack_require__(0);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-
-
-
-
-
-
-function init() {
+var msfnz = __webpack_require__(2);
+var HALF_PI = Math.PI/2;
+var EPSLN = 1.0e-10;
+var R2D = 57.29577951308232088;
+var adjust_lon = __webpack_require__(0);
+var FORTPI = Math.PI/4;
+var tsfnz = __webpack_require__(14);
+var phi2z = __webpack_require__(13);
+exports.init = function() {
   var con = this.b / this.a;
   this.es = 1 - con * con;
   if(!('x0' in this)){
@@ -9210,7 +8979,7 @@ function init() {
       this.k0 = Math.cos(this.lat_ts);
     }
     else {
-      this.k0 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_msfnz__["a" /* default */])(this.e, Math.sin(this.lat_ts), Math.cos(this.lat_ts));
+      this.k0 = msfnz(this.e, Math.sin(this.lat_ts), Math.cos(this.lat_ts));
     }
   }
   else {
@@ -9223,86 +8992,74 @@ function init() {
       }
     }
   }
-}
+};
 
 /* Mercator forward equations--mapping lat,long to x,y
   --------------------------------------------------*/
 
-function forward(p) {
+exports.forward = function(p) {
   var lon = p.x;
   var lat = p.y;
   // convert to radians
-  if (lat * __WEBPACK_IMPORTED_MODULE_4__constants_values__["j" /* R2D */] > 90 && lat * __WEBPACK_IMPORTED_MODULE_4__constants_values__["j" /* R2D */] < -90 && lon * __WEBPACK_IMPORTED_MODULE_4__constants_values__["j" /* R2D */] > 180 && lon * __WEBPACK_IMPORTED_MODULE_4__constants_values__["j" /* R2D */] < -180) {
+  if (lat * R2D > 90 && lat * R2D < -90 && lon * R2D > 180 && lon * R2D < -180) {
     return null;
   }
 
   var x, y;
-  if (Math.abs(Math.abs(lat) - __WEBPACK_IMPORTED_MODULE_4__constants_values__["b" /* HALF_PI */]) <= __WEBPACK_IMPORTED_MODULE_4__constants_values__["a" /* EPSLN */]) {
+  if (Math.abs(Math.abs(lat) - HALF_PI) <= EPSLN) {
     return null;
   }
   else {
     if (this.sphere) {
-      x = this.x0 + this.a * this.k0 * __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_adjust_lon__["a" /* default */])(lon - this.long0);
-      y = this.y0 + this.a * this.k0 * Math.log(Math.tan(__WEBPACK_IMPORTED_MODULE_4__constants_values__["f" /* FORTPI */] + 0.5 * lat));
+      x = this.x0 + this.a * this.k0 * adjust_lon(lon - this.long0);
+      y = this.y0 + this.a * this.k0 * Math.log(Math.tan(FORTPI + 0.5 * lat));
     }
     else {
       var sinphi = Math.sin(lat);
-      var ts = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_tsfnz__["a" /* default */])(this.e, lat, sinphi);
-      x = this.x0 + this.a * this.k0 * __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_adjust_lon__["a" /* default */])(lon - this.long0);
+      var ts = tsfnz(this.e, lat, sinphi);
+      x = this.x0 + this.a * this.k0 * adjust_lon(lon - this.long0);
       y = this.y0 - this.a * this.k0 * Math.log(ts);
     }
     p.x = x;
     p.y = y;
     return p;
   }
-}
+};
+
 
 /* Mercator inverse equations--mapping x,y to lat/long
   --------------------------------------------------*/
-function inverse(p) {
+exports.inverse = function(p) {
 
   var x = p.x - this.x0;
   var y = p.y - this.y0;
   var lon, lat;
 
   if (this.sphere) {
-    lat = __WEBPACK_IMPORTED_MODULE_4__constants_values__["b" /* HALF_PI */] - 2 * Math.atan(Math.exp(-y / (this.a * this.k0)));
+    lat = HALF_PI - 2 * Math.atan(Math.exp(-y / (this.a * this.k0)));
   }
   else {
     var ts = Math.exp(-y / (this.a * this.k0));
-    lat = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_phi2z__["a" /* default */])(this.e, ts);
+    lat = phi2z(this.e, ts);
     if (lat === -9999) {
       return null;
     }
   }
-  lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_adjust_lon__["a" /* default */])(this.long0 + x / (this.a * this.k0));
+  lon = adjust_lon(this.long0 + x / (this.a * this.k0));
 
   p.x = lon;
   p.y = lat;
   return p;
-}
-
-var names = ["Mercator", "Popular Visualisation Pseudo Mercator", "Mercator_1SP", "Mercator_Auxiliary_Sphere", "merc"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names
 };
+
+exports.names = ["Mercator", "Popular Visualisation Pseudo Mercator", "Mercator_1SP", "Mercator_Auxiliary_Sphere", "merc"];
 
 
 /***/ }),
-/* 87 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 78 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(1);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-
-
+var adjust_lon = __webpack_require__(0);
 /*
   reference
     "New Equal-Area Map Projections for Noncircular Regions", John P. Snyder,
@@ -9312,73 +9069,61 @@ var names = ["Mercator", "Popular Visualisation Pseudo Mercator", "Mercator_1SP"
 
 /* Initialize the Miller Cylindrical projection
   -------------------------------------------*/
-function init() {
+exports.init = function() {
   //no-op
-}
+};
+
 
 /* Miller Cylindrical forward equations--mapping lat,long to x,y
     ------------------------------------------------------------*/
-function forward(p) {
+exports.forward = function(p) {
   var lon = p.x;
   var lat = p.y;
   /* Forward equations
       -----------------*/
-  var dlon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(lon - this.long0);
+  var dlon = adjust_lon(lon - this.long0);
   var x = this.x0 + this.a * dlon;
   var y = this.y0 + this.a * Math.log(Math.tan((Math.PI / 4) + (lat / 2.5))) * 1.25;
 
   p.x = x;
   p.y = y;
   return p;
-}
+};
 
 /* Miller Cylindrical inverse equations--mapping x,y to lat/long
     ------------------------------------------------------------*/
-function inverse(p) {
+exports.inverse = function(p) {
   p.x -= this.x0;
   p.y -= this.y0;
 
-  var lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(this.long0 + p.x / this.a);
+  var lon = adjust_lon(this.long0 + p.x / this.a);
   var lat = 2.5 * (Math.atan(Math.exp(0.8 * p.y / this.a)) - Math.PI / 4);
 
   p.x = lon;
   p.y = lat;
   return p;
-}
-
-var names = ["Miller_Cylindrical", "mill"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names
 };
+exports.names = ["Miller_Cylindrical", "mill"];
 
 
 /***/ }),
-/* 88 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 79 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(0);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-
-function init() {}
+var adjust_lon = __webpack_require__(0);
+var EPSLN = 1.0e-10;
+exports.init = function() {};
 
 /* Mollweide forward equations--mapping lat,long to x,y
     ----------------------------------------------------*/
-function forward(p) {
+exports.forward = function(p) {
 
   /* Forward equations
       -----------------*/
   var lon = p.x;
   var lat = p.y;
 
-  var delta_lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(lon - this.long0);
+  var delta_lon = adjust_lon(lon - this.long0);
   var theta = lat;
   var con = Math.PI * Math.sin(lat);
 
@@ -9387,7 +9132,7 @@ function forward(p) {
   for (var i = 0; true; i++) {
     var delta_theta = -(theta + Math.sin(theta) - con) / (1 + Math.cos(theta));
     theta += delta_theta;
-    if (Math.abs(delta_theta) < __WEBPACK_IMPORTED_MODULE_1__constants_values__["a" /* EPSLN */]) {
+    if (Math.abs(delta_theta) < EPSLN) {
       break;
     }
   }
@@ -9396,7 +9141,7 @@ function forward(p) {
   /* If the latitude is 90 deg, force the x coordinate to be "0 + false easting"
        this is done here because of precision problems with "cos(theta)"
        --------------------------------------------------------------------------*/
-  if (Math.PI / 2 - Math.abs(lat) < __WEBPACK_IMPORTED_MODULE_1__constants_values__["a" /* EPSLN */]) {
+  if (Math.PI / 2 - Math.abs(lat) < EPSLN) {
     delta_lon = 0;
   }
   var x = 0.900316316158 * this.a * delta_lon * Math.cos(theta) + this.x0;
@@ -9405,9 +9150,9 @@ function forward(p) {
   p.x = x;
   p.y = y;
   return p;
-}
+};
 
-function inverse(p) {
+exports.inverse = function(p) {
   var theta;
   var arg;
 
@@ -9424,7 +9169,7 @@ function inverse(p) {
     arg = 0.999999999999;
   }
   theta = Math.asin(arg);
-  var lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(this.long0 + (p.x / (0.900316316158 * this.a * Math.cos(theta))));
+  var lon = adjust_lon(this.long0 + (p.x / (0.900316316158 * this.a * Math.cos(theta))));
   if (lon < (-Math.PI)) {
     lon = -Math.PI;
   }
@@ -9440,30 +9185,15 @@ function inverse(p) {
   p.x = lon;
   p.y = lat;
   return p;
-}
-
-var names = ["Mollweide", "moll"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names
 };
+exports.names = ["Mollweide", "moll"];
 
 
 /***/ }),
-/* 89 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 80 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(0);
-/* unused harmony export iterations */
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-
-
+var SEC_TO_RAD = 4.84813681109535993589914102357e-6;
 /*
   reference
     Department of Land and Survey Technical Circular 1973/32
@@ -9478,9 +9208,9 @@ var names = ["Mollweide", "moll"];
  *     1 -> m accuracy -- suitable for most mapping applications
  *     2 -> mm accuracy
  */
-var iterations = 1;
+exports.iterations = 1;
 
-function init() {
+exports.init = function() {
   this.A = [];
   this.A[1] = 0.6399175073;
   this.A[2] = -0.1358797613;
@@ -9533,13 +9263,13 @@ function init() {
   this.D[7] = 0.01220;
   this.D[8] = 0.00394;
   this.D[9] = -0.0013;
-}
+};
 
 /**
     New Zealand Map Grid Forward  - long/lat to x/y
     long/lat in radians
   */
-function forward(p) {
+exports.forward = function(p) {
   var n;
   var lon = p.x;
   var lat = p.y;
@@ -9549,7 +9279,7 @@ function forward(p) {
 
   // 1. Calculate d_phi and d_psi    ...                          // and d_lambda
   // For this algorithm, delta_latitude is in seconds of arc x 10-5, so we need to scale to those units. Longitude is radians.
-  var d_phi = delta_lat / __WEBPACK_IMPORTED_MODULE_0__constants_values__["e" /* SEC_TO_RAD */] * 1E-5;
+  var d_phi = delta_lat / SEC_TO_RAD * 1E-5;
   var d_lambda = delta_lon;
   var d_phi_n = 1; // d_phi^0
 
@@ -9585,12 +9315,13 @@ function forward(p) {
   p.y = (z_re * this.a) + this.y0;
 
   return p;
-}
+};
+
 
 /**
     New Zealand Map Grid Inverse  -  x/y to long/lat
   */
-function inverse(p) {
+exports.inverse = function(p) {
   var n;
   var x = p.x;
   var y = p.y;
@@ -9672,45 +9403,30 @@ function inverse(p) {
 
   // 4. Calculate latitude and longitude
   // d_phi is calcuated in second of arc * 10^-5, so we need to scale back to radians. d_lambda is in radians.
-  var lat = this.lat0 + (d_phi * __WEBPACK_IMPORTED_MODULE_0__constants_values__["e" /* SEC_TO_RAD */] * 1E5);
+  var lat = this.lat0 + (d_phi * SEC_TO_RAD * 1E5);
   var lon = this.long0 + d_lambda;
 
   p.x = lon;
   p.y = lat;
 
   return p;
-}
-
-var names = ["New_Zealand_Map_Grid", "nzmg"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names
 };
-
+exports.names = ["New_Zealand_Map_Grid", "nzmg"];
 
 /***/ }),
-/* 90 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 81 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_tsfnz__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_adjust_lon__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_phi2z__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constants_values__ = __webpack_require__(0);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-
-
-
-
+var tsfnz = __webpack_require__(14);
+var adjust_lon = __webpack_require__(0);
+var phi2z = __webpack_require__(13);
+var HALF_PI = Math.PI/2;
+var FORTPI = Math.PI/4;
+var EPSLN = 1.0e-10;
 
 /* Initialize the Oblique Mercator  projection
     ------------------------------------------*/
-function init() {
+exports.init = function() {
   this.no_off = this.no_off || false;
   this.no_rot = this.no_rot || false;
 
@@ -9723,7 +9439,7 @@ function init() {
 
   this.bl = Math.sqrt(1 + this.es / (1 - this.es) * Math.pow(coslat, 4));
   this.al = this.a * this.bl * this.k0 * Math.sqrt(1 - this.es) / (1 - con * con);
-  var t0 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_tsfnz__["a" /* default */])(this.e, this.lat0, sinlat);
+  var t0 = tsfnz(this.e, this.lat0, sinlat);
   var dl = this.bl / coslat * Math.sqrt((1 - this.es) / (1 - con * con));
   if (dl * dl < 1) {
     dl = 1;
@@ -9747,8 +9463,8 @@ function init() {
   }
   else {
     //2 points method
-    var t1 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_tsfnz__["a" /* default */])(this.e, this.lat1, Math.sin(this.lat1));
-    var t2 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_tsfnz__["a" /* default */])(this.e, this.lat2, Math.sin(this.lat2));
+    var t1 = tsfnz(this.e, this.lat1, Math.sin(this.lat1));
+    var t2 = tsfnz(this.e, this.lat2, Math.sin(this.lat2));
     if (this.lat0 >= 0) {
       this.el = (dl + Math.sqrt(dl * dl - 1)) * Math.pow(t0, this.bl);
     }
@@ -9761,10 +9477,10 @@ function init() {
     gl = 0.5 * (fl - 1 / fl);
     var jl = (this.el * this.el - ll * hl) / (this.el * this.el + ll * hl);
     var pl = (ll - hl) / (ll + hl);
-    var dlon12 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_adjust_lon__["a" /* default */])(this.long1 - this.long2);
+    var dlon12 = adjust_lon(this.long1 - this.long2);
     this.long0 = 0.5 * (this.long1 + this.long2) - Math.atan(jl * Math.tan(0.5 * this.bl * (dlon12)) / pl) / this.bl;
-    this.long0 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_adjust_lon__["a" /* default */])(this.long0);
-    var dlon10 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_adjust_lon__["a" /* default */])(this.long1 - this.long0);
+    this.long0 = adjust_lon(this.long0);
+    var dlon10 = adjust_lon(this.long1 - this.long0);
     this.gamma0 = Math.atan(Math.sin(this.bl * (dlon10)) / gl);
     this.alpha = Math.asin(dl * Math.sin(this.gamma0));
   }
@@ -9781,40 +9497,41 @@ function init() {
     }
   }
 
-}
+};
+
 
 /* Oblique Mercator forward equations--mapping lat,long to x,y
     ----------------------------------------------------------*/
-function forward(p) {
+exports.forward = function(p) {
   var lon = p.x;
   var lat = p.y;
-  var dlon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_adjust_lon__["a" /* default */])(lon - this.long0);
+  var dlon = adjust_lon(lon - this.long0);
   var us, vs;
   var con;
-  if (Math.abs(Math.abs(lat) - __WEBPACK_IMPORTED_MODULE_3__constants_values__["b" /* HALF_PI */]) <= __WEBPACK_IMPORTED_MODULE_3__constants_values__["a" /* EPSLN */]) {
+  if (Math.abs(Math.abs(lat) - HALF_PI) <= EPSLN) {
     if (lat > 0) {
       con = -1;
     }
     else {
       con = 1;
     }
-    vs = this.al / this.bl * Math.log(Math.tan(__WEBPACK_IMPORTED_MODULE_3__constants_values__["f" /* FORTPI */] + con * this.gamma0 * 0.5));
-    us = -1 * con * __WEBPACK_IMPORTED_MODULE_3__constants_values__["b" /* HALF_PI */] * this.al / this.bl;
+    vs = this.al / this.bl * Math.log(Math.tan(FORTPI + con * this.gamma0 * 0.5));
+    us = -1 * con * HALF_PI * this.al / this.bl;
   }
   else {
-    var t = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_tsfnz__["a" /* default */])(this.e, lat, Math.sin(lat));
+    var t = tsfnz(this.e, lat, Math.sin(lat));
     var ql = this.el / Math.pow(t, this.bl);
     var sl = 0.5 * (ql - 1 / ql);
     var tl = 0.5 * (ql + 1 / ql);
     var vl = Math.sin(this.bl * (dlon));
     var ul = (sl * Math.sin(this.gamma0) - vl * Math.cos(this.gamma0)) / tl;
-    if (Math.abs(Math.abs(ul) - 1) <= __WEBPACK_IMPORTED_MODULE_3__constants_values__["a" /* EPSLN */]) {
+    if (Math.abs(Math.abs(ul) - 1) <= EPSLN) {
       vs = Number.POSITIVE_INFINITY;
     }
     else {
       vs = 0.5 * this.al * Math.log((1 - ul) / (1 + ul)) / this.bl;
     }
-    if (Math.abs(Math.cos(this.bl * (dlon))) <= __WEBPACK_IMPORTED_MODULE_3__constants_values__["a" /* EPSLN */]) {
+    if (Math.abs(Math.cos(this.bl * (dlon))) <= EPSLN) {
       us = this.al * this.bl * (dlon);
     }
     else {
@@ -9833,9 +9550,9 @@ function forward(p) {
     p.y = this.y0 + us * Math.cos(this.alpha) - vs * Math.sin(this.alpha);
   }
   return p;
-}
+};
 
-function inverse(p) {
+exports.inverse = function(p) {
   var us, vs;
   if (this.no_rot) {
     vs = p.y - this.y0;
@@ -9852,216 +9569,90 @@ function inverse(p) {
   var vp = Math.sin(this.bl * us / this.al);
   var up = (vp * Math.cos(this.gamma0) + sp * Math.sin(this.gamma0)) / tp;
   var ts = Math.pow(this.el / Math.sqrt((1 + up) / (1 - up)), 1 / this.bl);
-  if (Math.abs(up - 1) < __WEBPACK_IMPORTED_MODULE_3__constants_values__["a" /* EPSLN */]) {
+  if (Math.abs(up - 1) < EPSLN) {
     p.x = this.long0;
-    p.y = __WEBPACK_IMPORTED_MODULE_3__constants_values__["b" /* HALF_PI */];
+    p.y = HALF_PI;
   }
-  else if (Math.abs(up + 1) < __WEBPACK_IMPORTED_MODULE_3__constants_values__["a" /* EPSLN */]) {
+  else if (Math.abs(up + 1) < EPSLN) {
     p.x = this.long0;
-    p.y = -1 * __WEBPACK_IMPORTED_MODULE_3__constants_values__["b" /* HALF_PI */];
+    p.y = -1 * HALF_PI;
   }
   else {
-    p.y = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_phi2z__["a" /* default */])(this.e, ts);
-    p.x = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_adjust_lon__["a" /* default */])(this.long0 - Math.atan2(sp * Math.cos(this.gamma0) - vp * Math.sin(this.gamma0), Math.cos(this.bl * us / this.al)) / this.bl);
+    p.y = phi2z(this.e, ts);
+    p.x = adjust_lon(this.long0 - Math.atan2(sp * Math.cos(this.gamma0) - vp * Math.sin(this.gamma0), Math.cos(this.bl * us / this.al)) / this.bl);
   }
   return p;
-}
-
-var names = ["Hotine_Oblique_Mercator", "Hotine Oblique Mercator", "Hotine_Oblique_Mercator_Azimuth_Natural_Origin", "Hotine_Oblique_Mercator_Azimuth_Center", "omerc"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names
 };
 
+exports.names = ["Hotine_Oblique_Mercator", "Hotine Oblique Mercator", "Hotine_Oblique_Mercator_Azimuth_Natural_Origin", "Hotine_Oblique_Mercator_Azimuth_Center", "omerc"];
 
 /***/ }),
-/* 91 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 82 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_asinz__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_values__ = __webpack_require__(0);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-
-
-
-
-function init() {
-  //double temp;      /* temporary variable    */
-
-  /* Place parameters in static storage for common use
-      -------------------------------------------------*/
-  this.sin_p14 = Math.sin(this.lat0);
-  this.cos_p14 = Math.cos(this.lat0);
-}
-
-/* Orthographic forward equations--mapping lat,long to x,y
-    ---------------------------------------------------*/
-function forward(p) {
-  var sinphi, cosphi; /* sin and cos value        */
-  var dlon; /* delta longitude value      */
-  var coslon; /* cos of longitude        */
-  var ksp; /* scale factor          */
-  var g, x, y;
-  var lon = p.x;
-  var lat = p.y;
-  /* Forward equations
-      -----------------*/
-  dlon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(lon - this.long0);
-
-  sinphi = Math.sin(lat);
-  cosphi = Math.cos(lat);
-
-  coslon = Math.cos(dlon);
-  g = this.sin_p14 * sinphi + this.cos_p14 * cosphi * coslon;
-  ksp = 1;
-  if ((g > 0) || (Math.abs(g) <= __WEBPACK_IMPORTED_MODULE_2__constants_values__["a" /* EPSLN */])) {
-    x = this.a * ksp * cosphi * Math.sin(dlon);
-    y = this.y0 + this.a * ksp * (this.cos_p14 * sinphi - this.sin_p14 * cosphi * coslon);
-  }
-  p.x = x;
-  p.y = y;
-  return p;
-}
-
-function inverse(p) {
-  var rh; /* height above ellipsoid      */
-  var z; /* angle          */
-  var sinz, cosz; /* sin of z and cos of z      */
-  var con;
-  var lon, lat;
-  /* Inverse equations
-      -----------------*/
-  p.x -= this.x0;
-  p.y -= this.y0;
-  rh = Math.sqrt(p.x * p.x + p.y * p.y);
-  z = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_asinz__["a" /* default */])(rh / this.a);
-
-  sinz = Math.sin(z);
-  cosz = Math.cos(z);
-
-  lon = this.long0;
-  if (Math.abs(rh) <= __WEBPACK_IMPORTED_MODULE_2__constants_values__["a" /* EPSLN */]) {
-    lat = this.lat0;
-    p.x = lon;
-    p.y = lat;
-    return p;
-  }
-  lat = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_asinz__["a" /* default */])(cosz * this.sin_p14 + (p.y * sinz * this.cos_p14) / rh);
-  con = Math.abs(this.lat0) - __WEBPACK_IMPORTED_MODULE_2__constants_values__["b" /* HALF_PI */];
-  if (Math.abs(con) <= __WEBPACK_IMPORTED_MODULE_2__constants_values__["a" /* EPSLN */]) {
-    if (this.lat0 >= 0) {
-      lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(this.long0 + Math.atan2(p.x, - p.y));
-    }
-    else {
-      lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(this.long0 - Math.atan2(-p.x, p.y));
-    }
-    p.x = lon;
-    p.y = lat;
-    return p;
-  }
-  lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(this.long0 + Math.atan2((p.x * sinz), rh * this.cos_p14 * cosz - p.y * this.sin_p14 * sinz));
-  p.x = lon;
-  p.y = lat;
-  return p;
-}
-
-var names = ["ortho"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names
-};
-
-
-/***/ }),
-/* 92 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_e0fn__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_e1fn__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_e2fn__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_e3fn__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_adjust_lon__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_adjust_lat__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_mlfn__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__constants_values__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__common_gN__ = __webpack_require__(18);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-
-
-
-
-
-
-
-
-
-
+var e0fn = __webpack_require__(8);
+var e1fn = __webpack_require__(9);
+var e2fn = __webpack_require__(10);
+var e3fn = __webpack_require__(11);
+var adjust_lon = __webpack_require__(0);
+var adjust_lat = __webpack_require__(3);
+var mlfn = __webpack_require__(12);
+var EPSLN = 1.0e-10;
+var gN = __webpack_require__(17);
 var MAX_ITER = 20;
-
-function init() {
+exports.init = function() {
   /* Place parameters in static storage for common use
       -------------------------------------------------*/
   this.temp = this.b / this.a;
   this.es = 1 - Math.pow(this.temp, 2); // devait etre dans tmerc.js mais n y est pas donc je commente sinon retour de valeurs nulles
   this.e = Math.sqrt(this.es);
-  this.e0 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_e0fn__["a" /* default */])(this.es);
-  this.e1 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_e1fn__["a" /* default */])(this.es);
-  this.e2 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_e2fn__["a" /* default */])(this.es);
-  this.e3 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_e3fn__["a" /* default */])(this.es);
-  this.ml0 = this.a * __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common_mlfn__["a" /* default */])(this.e0, this.e1, this.e2, this.e3, this.lat0); //si que des zeros le calcul ne se fait pas
-}
+  this.e0 = e0fn(this.es);
+  this.e1 = e1fn(this.es);
+  this.e2 = e2fn(this.es);
+  this.e3 = e3fn(this.es);
+  this.ml0 = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, this.lat0); //si que des zeros le calcul ne se fait pas
+};
+
 
 /* Polyconic forward equations--mapping lat,long to x,y
     ---------------------------------------------------*/
-function forward(p) {
+exports.forward = function(p) {
   var lon = p.x;
   var lat = p.y;
   var x, y, el;
-  var dlon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_adjust_lon__["a" /* default */])(lon - this.long0);
+  var dlon = adjust_lon(lon - this.long0);
   el = dlon * Math.sin(lat);
   if (this.sphere) {
-    if (Math.abs(lat) <= __WEBPACK_IMPORTED_MODULE_7__constants_values__["a" /* EPSLN */]) {
+    if (Math.abs(lat) <= EPSLN) {
       x = this.a * dlon;
       y = -1 * this.a * this.lat0;
     }
     else {
       x = this.a * Math.sin(el) / Math.tan(lat);
-      y = this.a * (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_adjust_lat__["a" /* default */])(lat - this.lat0) + (1 - Math.cos(el)) / Math.tan(lat));
+      y = this.a * (adjust_lat(lat - this.lat0) + (1 - Math.cos(el)) / Math.tan(lat));
     }
   }
   else {
-    if (Math.abs(lat) <= __WEBPACK_IMPORTED_MODULE_7__constants_values__["a" /* EPSLN */]) {
+    if (Math.abs(lat) <= EPSLN) {
       x = this.a * dlon;
       y = -1 * this.ml0;
     }
     else {
-      var nl = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8__common_gN__["a" /* default */])(this.a, this.e, Math.sin(lat)) / Math.tan(lat);
+      var nl = gN(this.a, this.e, Math.sin(lat)) / Math.tan(lat);
       x = nl * Math.sin(el);
-      y = this.a * __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common_mlfn__["a" /* default */])(this.e0, this.e1, this.e2, this.e3, lat) - this.ml0 + nl * (1 - Math.cos(el));
+      y = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, lat) - this.ml0 + nl * (1 - Math.cos(el));
     }
 
   }
   p.x = x + this.x0;
   p.y = y + this.y0;
   return p;
-}
+};
+
 
 /* Inverse equations
   -----------------*/
-function inverse(p) {
+exports.inverse = function(p) {
   var lon, lat, x, y, i;
   var al, bl;
   var phi, dphi;
@@ -10069,8 +9660,8 @@ function inverse(p) {
   y = p.y - this.y0;
 
   if (this.sphere) {
-    if (Math.abs(y + this.a * this.lat0) <= __WEBPACK_IMPORTED_MODULE_7__constants_values__["a" /* EPSLN */]) {
-      lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_adjust_lon__["a" /* default */])(x / this.a + this.long0);
+    if (Math.abs(y + this.a * this.lat0) <= EPSLN) {
+      lon = adjust_lon(x / this.a + this.long0);
       lat = 0;
     }
     else {
@@ -10082,18 +9673,18 @@ function inverse(p) {
         tanphi = Math.tan(phi);
         dphi = -1 * (al * (phi * tanphi + 1) - phi - 0.5 * (phi * phi + bl) * tanphi) / ((phi - al) / tanphi - 1);
         phi += dphi;
-        if (Math.abs(dphi) <= __WEBPACK_IMPORTED_MODULE_7__constants_values__["a" /* EPSLN */]) {
+        if (Math.abs(dphi) <= EPSLN) {
           lat = phi;
           break;
         }
       }
-      lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_adjust_lon__["a" /* default */])(this.long0 + (Math.asin(x * Math.tan(phi) / this.a)) / Math.sin(lat));
+      lon = adjust_lon(this.long0 + (Math.asin(x * Math.tan(phi) / this.a)) / Math.sin(lat));
     }
   }
   else {
-    if (Math.abs(y + this.ml0) <= __WEBPACK_IMPORTED_MODULE_7__constants_values__["a" /* EPSLN */]) {
+    if (Math.abs(y + this.ml0) <= EPSLN) {
       lat = 0;
-      lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_adjust_lon__["a" /* default */])(this.long0 + x / this.a);
+      lon = adjust_lon(this.long0 + x / this.a);
     }
     else {
 
@@ -10105,12 +9696,12 @@ function inverse(p) {
       for (i = MAX_ITER; i; --i) {
         con = this.e * Math.sin(phi);
         cl = Math.sqrt(1 - con * con) * Math.tan(phi);
-        mln = this.a * __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common_mlfn__["a" /* default */])(this.e0, this.e1, this.e2, this.e3, phi);
+        mln = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, phi);
         mlnp = this.e0 - 2 * this.e1 * Math.cos(2 * phi) + 4 * this.e2 * Math.cos(4 * phi) - 6 * this.e3 * Math.cos(6 * phi);
         ma = mln / this.a;
         dphi = (al * (cl * ma + 1) - ma - 0.5 * cl * (ma * ma + bl)) / (this.es * Math.sin(2 * phi) * (ma * ma + bl - 2 * al * ma) / (4 * cl) + (al - ma) * (cl * mlnp - 2 / Math.sin(2 * phi)) - mlnp);
         phi -= dphi;
-        if (Math.abs(dphi) <= __WEBPACK_IMPORTED_MODULE_7__constants_values__["a" /* EPSLN */]) {
+        if (Math.abs(dphi) <= EPSLN) {
           lat = phi;
           break;
         }
@@ -10118,58 +9709,36 @@ function inverse(p) {
 
       //lat=phi4z(this.e,this.e0,this.e1,this.e2,this.e3,al,bl,0,0);
       cl = Math.sqrt(1 - this.es * Math.pow(Math.sin(lat), 2)) * Math.tan(lat);
-      lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_adjust_lon__["a" /* default */])(this.long0 + Math.asin(x * cl / this.a) / Math.sin(lat));
+      lon = adjust_lon(this.long0 + Math.asin(x * cl / this.a) / Math.sin(lat));
     }
   }
 
   p.x = lon;
   p.y = lat;
   return p;
-}
-
-var names = ["Polyconic", "poly"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names
 };
-
+exports.names = ["Polyconic", "poly"];
 
 /***/ }),
-/* 93 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 83 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_adjust_lat__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_pj_enfn__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_pj_mlfn__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_pj_inv_mlfn__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__constants_values__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_asinz__ = __webpack_require__(3);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-
-
-
+var adjust_lon = __webpack_require__(0);
+var adjust_lat = __webpack_require__(3);
+var pj_enfn = __webpack_require__(23);
 var MAX_ITER = 20;
-
-
-
-
-
-
-
-function init() {
+var pj_mlfn = __webpack_require__(19);
+var pj_inv_mlfn = __webpack_require__(24);
+var HALF_PI = Math.PI/2;
+var EPSLN = 1.0e-10;
+var asinz = __webpack_require__(4);
+exports.init = function() {
   /* Place parameters in static storage for common use
     -------------------------------------------------*/
 
 
   if (!this.sphere) {
-    this.en = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_pj_enfn__["a" /* default */])(this.es);
+    this.en = pj_enfn(this.es);
   }
   else {
     this.n = 1;
@@ -10179,17 +9748,17 @@ function init() {
     this.C_x = this.C_y / (this.m + 1);
   }
 
-}
+};
 
 /* Sinusoidal forward equations--mapping lat,long to x,y
   -----------------------------------------------------*/
-function forward(p) {
+exports.forward = function(p) {
   var x, y;
   var lon = p.x;
   var lat = p.y;
   /* Forward equations
     -----------------*/
-  lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(lon - this.long0);
+  lon = adjust_lon(lon - this.long0);
 
   if (this.sphere) {
     if (!this.m) {
@@ -10200,7 +9769,7 @@ function forward(p) {
       for (var i = MAX_ITER; i; --i) {
         var V = (this.m * lat + Math.sin(lat) - k) / (this.m + Math.cos(lat));
         lat -= V;
-        if (Math.abs(V) < __WEBPACK_IMPORTED_MODULE_5__constants_values__["a" /* EPSLN */]) {
+        if (Math.abs(V) < EPSLN) {
           break;
         }
       }
@@ -10213,16 +9782,16 @@ function forward(p) {
 
     var s = Math.sin(lat);
     var c = Math.cos(lat);
-    y = this.a * __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_pj_mlfn__["a" /* default */])(lat, s, c, this.en);
+    y = this.a * pj_mlfn(lat, s, c, this.en);
     x = this.a * lon * c / Math.sqrt(1 - this.es * s * s);
   }
 
   p.x = x;
   p.y = y;
   return p;
-}
+};
 
-function inverse(p) {
+exports.inverse = function(p) {
   var lat, temp, lon, s;
 
   p.x -= this.x0;
@@ -10234,50 +9803,37 @@ function inverse(p) {
     lat /= this.C_y;
     lon = lon / (this.C_x * (this.m + Math.cos(lat)));
     if (this.m) {
-      lat = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common_asinz__["a" /* default */])((this.m * lat + Math.sin(lat)) / this.n);
+      lat = asinz((this.m * lat + Math.sin(lat)) / this.n);
     }
     else if (this.n !== 1) {
-      lat = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common_asinz__["a" /* default */])(Math.sin(lat) / this.n);
+      lat = asinz(Math.sin(lat) / this.n);
     }
-    lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(lon + this.long0);
-    lat = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_adjust_lat__["a" /* default */])(lat);
+    lon = adjust_lon(lon + this.long0);
+    lat = adjust_lat(lat);
   }
   else {
-    lat = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_pj_inv_mlfn__["a" /* default */])(p.y / this.a, this.es, this.en);
+    lat = pj_inv_mlfn(p.y / this.a, this.es, this.en);
     s = Math.abs(lat);
-    if (s < __WEBPACK_IMPORTED_MODULE_5__constants_values__["b" /* HALF_PI */]) {
+    if (s < HALF_PI) {
       s = Math.sin(lat);
       temp = this.long0 + p.x * Math.sqrt(1 - this.es * s * s) / (this.a * Math.cos(lat));
       //temp = this.long0 + p.x / (this.a * Math.cos(lat));
-      lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(temp);
+      lon = adjust_lon(temp);
     }
-    else if ((s - __WEBPACK_IMPORTED_MODULE_5__constants_values__["a" /* EPSLN */]) < __WEBPACK_IMPORTED_MODULE_5__constants_values__["b" /* HALF_PI */]) {
+    else if ((s - EPSLN) < HALF_PI) {
       lon = this.long0;
     }
   }
   p.x = lon;
   p.y = lat;
   return p;
-}
-
-var names = ["Sinusoidal", "sinu"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names
 };
-
+exports.names = ["Sinusoidal", "sinu"];
 
 /***/ }),
-/* 94 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 84 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
 /*
   references:
     Formules et constantes pour le Calcul pour la
@@ -10285,8 +9841,7 @@ var names = ["Sinusoidal", "sinu"];
     des systèmes de référence.
     http://www.swisstopo.admin.ch/internet/swisstopo/fr/home/topics/survey/sys/refsys/switzerland.parsysrelated1.31216.downloadList.77004.DownloadFile.tmp/swissprojectionfr.pdf
   */
-
-function init() {
+exports.init = function() {
   var phy0 = this.lat0;
   this.lambda0 = this.long0;
   var sinPhy0 = Math.sin(phy0);
@@ -10302,9 +9857,10 @@ function init() {
   var k2 = Math.log(Math.tan(Math.PI / 4 + phy0 / 2));
   var k3 = Math.log((1 + e * sinPhy0) / (1 - e * sinPhy0));
   this.K = k1 - this.alpha * k2 + this.alpha * e / 2 * k3;
-}
+};
 
-function forward(p) {
+
+exports.forward = function(p) {
   var Sa1 = Math.log(Math.tan(Math.PI / 4 - p.y / 2));
   var Sa2 = this.e / 2 * Math.log((1 + this.e * Math.sin(p.y)) / (1 - this.e * Math.sin(p.y)));
   var S = -this.alpha * (Sa1 + Sa2) + this.K;
@@ -10323,9 +9879,9 @@ function forward(p) {
   p.y = this.R / 2 * Math.log((1 + Math.sin(rotB)) / (1 - Math.sin(rotB))) + this.y0;
   p.x = this.R * rotI + this.x0;
   return p;
-}
+};
 
-function inverse(p) {
+exports.inverse = function(p) {
   var Y = p.x - this.x0;
   var X = p.y - this.y0;
 
@@ -10355,56 +9911,37 @@ function inverse(p) {
   p.x = lambda;
   p.y = phy;
   return p;
-}
-
-var names = ["somerc"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names
 };
+
+exports.names = ["somerc"];
 
 
 /***/ }),
-/* 95 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 85 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_sign__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_msfnz__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_tsfnz__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_phi2z__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_adjust_lon__ = __webpack_require__(1);
-/* unused harmony export ssfn_ */
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-
-
-
-
-
-
-
-
-function ssfn_(phit, sinphi, eccen) {
+var HALF_PI = Math.PI/2;
+var EPSLN = 1.0e-10;
+var sign = __webpack_require__(5);
+var msfnz = __webpack_require__(2);
+var tsfnz = __webpack_require__(14);
+var phi2z = __webpack_require__(13);
+var adjust_lon = __webpack_require__(0);
+exports.ssfn_ = function(phit, sinphi, eccen) {
   sinphi *= eccen;
-  return (Math.tan(0.5 * (__WEBPACK_IMPORTED_MODULE_0__constants_values__["b" /* HALF_PI */] + phit)) * Math.pow((1 - sinphi) / (1 + sinphi), 0.5 * eccen));
-}
+  return (Math.tan(0.5 * (HALF_PI + phit)) * Math.pow((1 - sinphi) / (1 + sinphi), 0.5 * eccen));
+};
 
-function init() {
+exports.init = function() {
   this.coslat0 = Math.cos(this.lat0);
   this.sinlat0 = Math.sin(this.lat0);
   if (this.sphere) {
-    if (this.k0 === 1 && !isNaN(this.lat_ts) && Math.abs(this.coslat0) <= __WEBPACK_IMPORTED_MODULE_0__constants_values__["a" /* EPSLN */]) {
-      this.k0 = 0.5 * (1 + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_sign__["a" /* default */])(this.lat0) * Math.sin(this.lat_ts));
+    if (this.k0 === 1 && !isNaN(this.lat_ts) && Math.abs(this.coslat0) <= EPSLN) {
+      this.k0 = 0.5 * (1 + sign(this.lat0) * Math.sin(this.lat_ts));
     }
   }
   else {
-    if (Math.abs(this.coslat0) <= __WEBPACK_IMPORTED_MODULE_0__constants_values__["a" /* EPSLN */]) {
+    if (Math.abs(this.coslat0) <= EPSLN) {
       if (this.lat0 > 0) {
         //North pole
         //trace('stere:north pole');
@@ -10417,26 +9954,26 @@ function init() {
       }
     }
     this.cons = Math.sqrt(Math.pow(1 + this.e, 1 + this.e) * Math.pow(1 - this.e, 1 - this.e));
-    if (this.k0 === 1 && !isNaN(this.lat_ts) && Math.abs(this.coslat0) <= __WEBPACK_IMPORTED_MODULE_0__constants_values__["a" /* EPSLN */]) {
-      this.k0 = 0.5 * this.cons * __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_msfnz__["a" /* default */])(this.e, Math.sin(this.lat_ts), Math.cos(this.lat_ts)) / __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_tsfnz__["a" /* default */])(this.e, this.con * this.lat_ts, this.con * Math.sin(this.lat_ts));
+    if (this.k0 === 1 && !isNaN(this.lat_ts) && Math.abs(this.coslat0) <= EPSLN) {
+      this.k0 = 0.5 * this.cons * msfnz(this.e, Math.sin(this.lat_ts), Math.cos(this.lat_ts)) / tsfnz(this.e, this.con * this.lat_ts, this.con * Math.sin(this.lat_ts));
     }
-    this.ms1 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_msfnz__["a" /* default */])(this.e, this.sinlat0, this.coslat0);
-    this.X0 = 2 * Math.atan(this.ssfn_(this.lat0, this.sinlat0, this.e)) - __WEBPACK_IMPORTED_MODULE_0__constants_values__["b" /* HALF_PI */];
+    this.ms1 = msfnz(this.e, this.sinlat0, this.coslat0);
+    this.X0 = 2 * Math.atan(this.ssfn_(this.lat0, this.sinlat0, this.e)) - HALF_PI;
     this.cosX0 = Math.cos(this.X0);
     this.sinX0 = Math.sin(this.X0);
   }
-}
+};
 
 // Stereographic forward equations--mapping lat,long to x,y
-function forward(p) {
+exports.forward = function(p) {
   var lon = p.x;
   var lat = p.y;
   var sinlat = Math.sin(lat);
   var coslat = Math.cos(lat);
   var A, X, sinX, cosX, ts, rh;
-  var dlon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_adjust_lon__["a" /* default */])(lon - this.long0);
+  var dlon = adjust_lon(lon - this.long0);
 
-  if (Math.abs(Math.abs(lon - this.long0) - Math.PI) <= __WEBPACK_IMPORTED_MODULE_0__constants_values__["a" /* EPSLN */] && Math.abs(lat + this.lat0) <= __WEBPACK_IMPORTED_MODULE_0__constants_values__["a" /* EPSLN */]) {
+  if (Math.abs(Math.abs(lon - this.long0) - Math.PI) <= EPSLN && Math.abs(lat + this.lat0) <= EPSLN) {
     //case of the origine point
     //trace('stere:this is the origin point');
     p.x = NaN;
@@ -10451,18 +9988,18 @@ function forward(p) {
     return p;
   }
   else {
-    X = 2 * Math.atan(this.ssfn_(lat, sinlat, this.e)) - __WEBPACK_IMPORTED_MODULE_0__constants_values__["b" /* HALF_PI */];
+    X = 2 * Math.atan(this.ssfn_(lat, sinlat, this.e)) - HALF_PI;
     cosX = Math.cos(X);
     sinX = Math.sin(X);
-    if (Math.abs(this.coslat0) <= __WEBPACK_IMPORTED_MODULE_0__constants_values__["a" /* EPSLN */]) {
-      ts = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_tsfnz__["a" /* default */])(this.e, lat * this.con, this.con * sinlat);
+    if (Math.abs(this.coslat0) <= EPSLN) {
+      ts = tsfnz(this.e, lat * this.con, this.con * sinlat);
       rh = 2 * this.a * this.k0 * ts / this.cons;
       p.x = this.x0 + rh * Math.sin(lon - this.long0);
       p.y = this.y0 - this.con * rh * Math.cos(lon - this.long0);
       //trace(p.toString());
       return p;
     }
-    else if (Math.abs(this.sinlat0) < __WEBPACK_IMPORTED_MODULE_0__constants_values__["a" /* EPSLN */]) {
+    else if (Math.abs(this.sinlat0) < EPSLN) {
       //Eq
       //trace('stere:equateur');
       A = 2 * this.a * this.k0 / (1 + cosX * Math.cos(dlon));
@@ -10478,10 +10015,11 @@ function forward(p) {
   }
   //trace(p.toString());
   return p;
-}
+};
+
 
 //* Stereographic inverse equations--mapping x,y to lat/long
-function inverse(p) {
+exports.inverse = function(p) {
   p.x -= this.x0;
   p.y -= this.y0;
   var lon, lat, ts, ce, Chi;
@@ -10490,30 +10028,30 @@ function inverse(p) {
     var c = 2 * Math.atan(rh / (0.5 * this.a * this.k0));
     lon = this.long0;
     lat = this.lat0;
-    if (rh <= __WEBPACK_IMPORTED_MODULE_0__constants_values__["a" /* EPSLN */]) {
+    if (rh <= EPSLN) {
       p.x = lon;
       p.y = lat;
       return p;
     }
     lat = Math.asin(Math.cos(c) * this.sinlat0 + p.y * Math.sin(c) * this.coslat0 / rh);
-    if (Math.abs(this.coslat0) < __WEBPACK_IMPORTED_MODULE_0__constants_values__["a" /* EPSLN */]) {
+    if (Math.abs(this.coslat0) < EPSLN) {
       if (this.lat0 > 0) {
-        lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_adjust_lon__["a" /* default */])(this.long0 + Math.atan2(p.x, - 1 * p.y));
+        lon = adjust_lon(this.long0 + Math.atan2(p.x, - 1 * p.y));
       }
       else {
-        lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_adjust_lon__["a" /* default */])(this.long0 + Math.atan2(p.x, p.y));
+        lon = adjust_lon(this.long0 + Math.atan2(p.x, p.y));
       }
     }
     else {
-      lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_adjust_lon__["a" /* default */])(this.long0 + Math.atan2(p.x * Math.sin(c), rh * this.coslat0 * Math.cos(c) - p.y * this.sinlat0 * Math.sin(c)));
+      lon = adjust_lon(this.long0 + Math.atan2(p.x * Math.sin(c), rh * this.coslat0 * Math.cos(c) - p.y * this.sinlat0 * Math.sin(c)));
     }
     p.x = lon;
     p.y = lat;
     return p;
   }
   else {
-    if (Math.abs(this.coslat0) <= __WEBPACK_IMPORTED_MODULE_0__constants_values__["a" /* EPSLN */]) {
-      if (rh <= __WEBPACK_IMPORTED_MODULE_0__constants_values__["a" /* EPSLN */]) {
+    if (Math.abs(this.coslat0) <= EPSLN) {
+      if (rh <= EPSLN) {
         lat = this.lat0;
         lon = this.long0;
         p.x = lon;
@@ -10524,20 +10062,20 @@ function inverse(p) {
       p.x *= this.con;
       p.y *= this.con;
       ts = rh * this.cons / (2 * this.a * this.k0);
-      lat = this.con * __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_phi2z__["a" /* default */])(this.e, ts);
-      lon = this.con * __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_adjust_lon__["a" /* default */])(this.con * this.long0 + Math.atan2(p.x, - 1 * p.y));
+      lat = this.con * phi2z(this.e, ts);
+      lon = this.con * adjust_lon(this.con * this.long0 + Math.atan2(p.x, - 1 * p.y));
     }
     else {
       ce = 2 * Math.atan(rh * this.cosX0 / (2 * this.a * this.k0 * this.ms1));
       lon = this.long0;
-      if (rh <= __WEBPACK_IMPORTED_MODULE_0__constants_values__["a" /* EPSLN */]) {
+      if (rh <= EPSLN) {
         Chi = this.X0;
       }
       else {
         Chi = Math.asin(Math.cos(ce) * this.sinX0 + p.y * Math.sin(ce) * this.cosX0 / rh);
-        lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_adjust_lon__["a" /* default */])(this.long0 + Math.atan2(p.x * Math.sin(ce), rh * this.cosX0 * Math.cos(ce) - p.y * this.sinX0 * Math.sin(ce)));
+        lon = adjust_lon(this.long0 + Math.atan2(p.x * Math.sin(ce), rh * this.cosX0 * Math.cos(ce) - p.y * this.sinX0 * Math.sin(ce)));
       }
-      lat = -1 * __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_phi2z__["a" /* default */])(this.e, Math.tan(0.5 * (__WEBPACK_IMPORTED_MODULE_0__constants_values__["b" /* HALF_PI */] + Chi)));
+      lat = -1 * phi2z(this.e, Math.tan(0.5 * (HALF_PI + Chi)));
     }
   }
   p.x = lon;
@@ -10546,34 +10084,18 @@ function inverse(p) {
   //trace(p.toString());
   return p;
 
-}
-
-var names = ["stere", "Stereographic_South_Pole", "Polar Stereographic (variant B)"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names,
-  ssfn_: ssfn_
 };
+exports.names = ["stere", "Stereographic_South_Pole", "Polar Stereographic (variant B)"];
 
 
 /***/ }),
-/* 96 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 86 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gauss__ = __webpack_require__(80);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_adjust_lon__ = __webpack_require__(1);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-
-
-
-function init() {
-  __WEBPACK_IMPORTED_MODULE_0__gauss__["a" /* default */].init.apply(this);
+var gauss = __webpack_require__(71);
+var adjust_lon = __webpack_require__(0);
+exports.init = function() {
+  gauss.init.apply(this);
   if (!this.rc) {
     return;
   }
@@ -10583,12 +10105,12 @@ function init() {
   if (!this.title) {
     this.title = "Oblique Stereographic Alternative";
   }
-}
+};
 
-function forward(p) {
+exports.forward = function(p) {
   var sinc, cosc, cosl, k;
-  p.x = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_adjust_lon__["a" /* default */])(p.x - this.long0);
-  __WEBPACK_IMPORTED_MODULE_0__gauss__["a" /* default */].forward.apply(this, [p]);
+  p.x = adjust_lon(p.x - this.long0);
+  gauss.forward.apply(this, [p]);
   sinc = Math.sin(p.y);
   cosc = Math.cos(p.y);
   cosl = Math.cos(p.x);
@@ -10598,9 +10120,9 @@ function forward(p) {
   p.x = this.a * p.x + this.x0;
   p.y = this.a * p.y + this.y0;
   return p;
-}
+};
 
-function inverse(p) {
+exports.inverse = function(p) {
   var sinc, cosc, lon, lat, rho;
   p.x = (p.x - this.x0) / this.a;
   p.y = (p.y - this.y0) / this.a;
@@ -10621,292 +10143,74 @@ function inverse(p) {
 
   p.x = lon;
   p.y = lat;
-  __WEBPACK_IMPORTED_MODULE_0__gauss__["a" /* default */].inverse.apply(this, [p]);
-  p.x = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_adjust_lon__["a" /* default */])(p.x + this.long0);
+  gauss.inverse.apply(this, [p]);
+  p.x = adjust_lon(p.x + this.long0);
   return p;
-}
-
-var names = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_Stereographic", "sterea","Oblique Stereographic Alternative"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names
 };
+
+exports.names = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_Stereographic", "sterea","Oblique Stereographic Alternative"];
 
 
 /***/ }),
-/* 97 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 87 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_pj_enfn__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_pj_mlfn__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_pj_inv_mlfn__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_adjust_lon__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_values__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_sign__ = __webpack_require__(6);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-// Heavily based on this tmerc projection implementation
-// https://github.com/mbloch/mapshaper-proj/blob/master/src/projections/tmerc.js
+var adjust_zone = __webpack_require__(48);
+var tmerc = __webpack_require__(29);
 
+exports.dependsOn = 'tmerc';
 
-
-
-
-
-
-
-
-function init() {
-  this.x0 = this.x0 !== undefined ? this.x0 : 0;
-  this.y0 = this.y0 !== undefined ? this.y0 : 0;
-  this.long0 = this.long0 !== undefined ? this.long0 : 0;
-  this.lat0 = this.lat0 !== undefined ? this.lat0 : 0;
-
-  if (this.es) {
-    this.en = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_pj_enfn__["a" /* default */])(this.es);
-    this.ml0 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_pj_mlfn__["a" /* default */])(this.lat0, Math.sin(this.lat0), Math.cos(this.lat0), this.en);
-  }
-}
-
-/**
-    Transverse Mercator Forward  - long/lat to x/y
-    long/lat in radians
-  */
-function forward(p) {
-  var lon = p.x;
-  var lat = p.y;
-
-  var delta_lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_adjust_lon__["a" /* default */])(lon - this.long0);
-  var con;
-  var x, y;
-  var sin_phi = Math.sin(lat);
-  var cos_phi = Math.cos(lat);
-
-  if (!this.es) {
-    var b = cos_phi * Math.sin(delta_lon);
-
-    if ((Math.abs(Math.abs(b) - 1)) < __WEBPACK_IMPORTED_MODULE_4__constants_values__["a" /* EPSLN */]) {
-      return (93);
-    }
-    else {
-      x = 0.5 * this.a * this.k0 * Math.log((1 + b) / (1 - b)) + this.x0;
-      y = cos_phi * Math.cos(delta_lon) / Math.sqrt(1 - Math.pow(b, 2));
-      b = Math.abs(y);
-
-      if (b >= 1) {
-        if ((b - 1) > __WEBPACK_IMPORTED_MODULE_4__constants_values__["a" /* EPSLN */]) {
-          return (93);
-        }
-        else {
-          y = 0;
-        }
-      }
-      else {
-        y = Math.acos(y);
-      }
-
-      if (lat < 0) {
-        y = -y;
-      }
-
-      y = this.a * this.k0 * (y - this.lat0) + this.y0;
-    }
-  }
-  else {
-    var al = cos_phi * delta_lon;
-    var als = Math.pow(al, 2);
-    var c = this.ep2 * Math.pow(cos_phi, 2);
-    var cs = Math.pow(c, 2);
-    var tq = Math.abs(cos_phi) > __WEBPACK_IMPORTED_MODULE_4__constants_values__["a" /* EPSLN */] ? Math.tan(lat) : 0;
-    var t = Math.pow(tq, 2);
-    var ts = Math.pow(t, 2);
-    con = 1 - this.es * Math.pow(sin_phi, 2);
-    al = al / Math.sqrt(con);
-    var ml = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_pj_mlfn__["a" /* default */])(lat, sin_phi, cos_phi, this.en);
-
-    x = this.a * (this.k0 * al * (1 +
-      als / 6 * (1 - t + c +
-      als / 20 * (5 - 18 * t + ts + 14 * c - 58 * t * c +
-      als / 42 * (61 + 179 * ts - ts * t - 479 * t))))) +
-      this.x0;
-
-    y = this.a * (this.k0 * (ml - this.ml0 +
-      sin_phi * delta_lon * al / 2 * (1 +
-      als / 12 * (5 - t + 9 * c + 4 * cs +
-      als / 30 * (61 + ts - 58 * t + 270 * c - 330 * t * c +
-      als / 56 * (1385 + 543 * ts - ts * t - 3111 * t)))))) +
-      this.y0;
-  }
-
-  p.x = x;
-  p.y = y;
-
-  return p;
-}
-
-/**
-    Transverse Mercator Inverse  -  x/y to long/lat
-  */
-function inverse(p) {
-  var con, phi;
-  var lat, lon;
-  var x = (p.x - this.x0) * (1 / this.a);
-  var y = (p.y - this.y0) * (1 / this.a);
-
-  if (!this.es) {
-    var f = Math.exp(x / this.k0);
-    var g = 0.5 * (f - 1 / f);
-    var temp = this.lat0 + y / this.k0;
-    var h = Math.cos(temp);
-    con = Math.sqrt((1 - Math.pow(h, 2)) / (1 + Math.pow(g, 2)));
-    lat = Math.asin(con);
-
-    if (y < 0) {
-      lat = -lat;
-    }
-
-    if ((g === 0) && (h === 0)) {
-      lon = 0;
-    }
-    else {
-      lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_adjust_lon__["a" /* default */])(Math.atan2(g, h) + this.long0);
-    }
-  }
-  else { // ellipsoidal form
-    con = this.ml0 + y / this.k0;
-    phi = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_pj_inv_mlfn__["a" /* default */])(con, this.es, this.en);
-
-    if (Math.abs(phi) < __WEBPACK_IMPORTED_MODULE_4__constants_values__["b" /* HALF_PI */]) {
-      var sin_phi = Math.sin(phi);
-      var cos_phi = Math.cos(phi);
-      var tan_phi = Math.abs(cos_phi) > __WEBPACK_IMPORTED_MODULE_4__constants_values__["a" /* EPSLN */] ? Math.tan(phi) : 0;
-      var c = this.ep2 * Math.pow(cos_phi, 2);
-      var cs = Math.pow(c, 2);
-      var t = Math.pow(tan_phi, 2);
-      var ts = Math.pow(t, 2);
-      con = 1 - this.es * Math.pow(sin_phi, 2);
-      var d = x * Math.sqrt(con) / this.k0;
-      var ds = Math.pow(d, 2);
-      con = con * tan_phi;
-
-      lat = phi - (con * ds / (1 - this.es)) * 0.5 * (1 -
-        ds / 12 * (5 + 3 * t - 9 * c * t + c - 4 * cs -
-        ds / 30 * (61 + 90 * t - 252 * c * t + 45 * ts + 46 * c -
-        ds / 56 * (1385 + 3633 * t + 4095 * ts + 1574 * ts * t))));
-
-      lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_adjust_lon__["a" /* default */])(this.long0 + (d * (1 -
-        ds / 6 * (1 + 2 * t + c -
-        ds / 20 * (5 + 28 * t + 24 * ts + 8 * c * t + 6 * c -
-        ds / 42 * (61 + 662 * t + 1320 * ts + 720 * ts * t)))) / cos_phi));
-    }
-    else {
-      lat = __WEBPACK_IMPORTED_MODULE_4__constants_values__["b" /* HALF_PI */] * __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_sign__["a" /* default */])(y);
-      lon = 0;
-    }
-  }
-
-  p.x = lon;
-  p.y = lat;
-
-  return p;
-}
-
-var names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names
-};
-
-
-/***/ }),
-/* 98 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_zone__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__etmerc__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_values__ = __webpack_require__(0);
-/* unused harmony export dependsOn */
-/* unused harmony export init */
-/* unused harmony export names */
-
-
-var dependsOn = 'etmerc';
-
-
-
-function init() {
-  var zone = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_zone__["a" /* default */])(this.zone, this.long0);
+exports.init = function() {
+  var zone = adjust_zone(this.zone, this.long0);
   if (zone === undefined) {
     throw new Error('unknown utm zone');
   }
+
   this.lat0 = 0;
-  this.long0 =  ((6 * Math.abs(zone)) - 183) * __WEBPACK_IMPORTED_MODULE_2__constants_values__["g" /* D2R */];
+  this.long0 = (zone + 0.5) * Math.PI / 30 - Math.PI;
   this.x0 = 500000;
   this.y0 = this.utmSouth ? 10000000 : 0;
   this.k0 = 0.9996;
 
-  __WEBPACK_IMPORTED_MODULE_1__etmerc__["a" /* default */].init.apply(this);
-  this.forward = __WEBPACK_IMPORTED_MODULE_1__etmerc__["a" /* default */].forward;
-  this.inverse = __WEBPACK_IMPORTED_MODULE_1__etmerc__["a" /* default */].inverse;
-}
-
-var names = ["Universal Transverse Mercator System", "utm"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  names: names,
-  dependsOn: dependsOn
+  tmerc.init.apply(this);
+  this.forward = tmerc.forward;
+  this.inverse = tmerc.inverse;
 };
+
+exports.names = ["Universal Transverse Mercator System", "utm"];
 
 
 /***/ }),
-/* 99 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 88 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_asinz__ = __webpack_require__(3);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-
-
-
-
-
-
+var adjust_lon = __webpack_require__(0);
+var HALF_PI = Math.PI/2;
+var EPSLN = 1.0e-10;
+var asinz = __webpack_require__(4);
 /* Initialize the Van Der Grinten projection
   ----------------------------------------*/
-function init() {
+exports.init = function() {
   //this.R = 6370997; //Radius of earth
   this.R = this.a;
-}
+};
 
-function forward(p) {
+exports.forward = function(p) {
 
   var lon = p.x;
   var lat = p.y;
 
   /* Forward equations
     -----------------*/
-  var dlon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(lon - this.long0);
+  var dlon = adjust_lon(lon - this.long0);
   var x, y;
 
-  if (Math.abs(lat) <= __WEBPACK_IMPORTED_MODULE_1__constants_values__["a" /* EPSLN */]) {
+  if (Math.abs(lat) <= EPSLN) {
     x = this.x0 + this.R * dlon;
     y = this.y0;
   }
-  var theta = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_asinz__["a" /* default */])(2 * Math.abs(lat / Math.PI));
-  if ((Math.abs(dlon) <= __WEBPACK_IMPORTED_MODULE_1__constants_values__["a" /* EPSLN */]) || (Math.abs(Math.abs(lat) - __WEBPACK_IMPORTED_MODULE_1__constants_values__["b" /* HALF_PI */]) <= __WEBPACK_IMPORTED_MODULE_1__constants_values__["a" /* EPSLN */])) {
+  var theta = asinz(2 * Math.abs(lat / Math.PI));
+  if ((Math.abs(dlon) <= EPSLN) || (Math.abs(Math.abs(lat) - HALF_PI) <= EPSLN)) {
     x = this.x0;
     if (lat >= 0) {
       y = this.y0 + Math.PI * this.R * Math.tan(0.5 * theta);
@@ -10944,11 +10248,11 @@ function forward(p) {
   p.x = x;
   p.y = y;
   return p;
-}
+};
 
 /* Van Der Grinten inverse equations--mapping x,y to lat/long
   ---------------------------------------------------------*/
-function inverse(p) {
+exports.inverse = function(p) {
   var lon, lat;
   var xx, yy, xys, c1, c2, c3;
   var a1;
@@ -10988,266 +10292,28 @@ function inverse(p) {
     lat = -(-m1 * Math.cos(th1 + Math.PI / 3) - c2 / 3 / c3) * Math.PI;
   }
 
-  if (Math.abs(xx) < __WEBPACK_IMPORTED_MODULE_1__constants_values__["a" /* EPSLN */]) {
+  if (Math.abs(xx) < EPSLN) {
     lon = this.long0;
   }
   else {
-    lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__["a" /* default */])(this.long0 + Math.PI * (xys - 1 + Math.sqrt(1 + 2 * (xx * xx - yy * yy) + xys * xys)) / 2 / xx);
+    lon = adjust_lon(this.long0 + Math.PI * (xys - 1 + Math.sqrt(1 + 2 * (xx * xx - yy * yy) + xys * xys)) / 2 / xx);
   }
 
   p.x = lon;
   p.y = lat;
   return p;
-}
-
-var names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
-/* harmony default export */ __webpack_exports__["a"] = {
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names
 };
-
-
-/***/ }),
-/* 100 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__package_json__ = __webpack_require__(101);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__package_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__package_json__);
-/* harmony reexport (binding) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_0__package_json__, "version")) __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__package_json__["version"]; });
-
-
+exports.names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
 
 /***/ }),
-/* 101 */
+/* 89 */
 /***/ (function(module, exports) {
 
-module.exports = {
-	"_args": [
-		[
-			{
-				"raw": "proj4@^2.4.3",
-				"scope": null,
-				"escapedName": "proj4",
-				"name": "proj4",
-				"rawSpec": "^2.4.3",
-				"spec": ">=2.4.3 <3.0.0",
-				"type": "range"
-			},
-			"D:\\Document\\project\\HMap"
-		]
-	],
-	"_cnpm_publish_time": 1488570791097,
-	"_from": "proj4@>=2.4.3 <3.0.0",
-	"_id": "proj4@2.4.3",
-	"_inCache": true,
-	"_location": "/proj4",
-	"_nodeVersion": "6.9.2",
-	"_npmOperationalInternal": {
-		"host": "packages-18-east.internal.npmjs.com",
-		"tmp": "tmp/proj4-2.4.3.tgz_1488570790416_0.3068596587982029"
-	},
-	"_npmUser": {
-		"name": "cwmma",
-		"email": "calvin.metcalf@gmail.com"
-	},
-	"_npmVersion": "4.0.5",
-	"_phantomChildren": {},
-	"_requested": {
-		"raw": "proj4@^2.4.3",
-		"scope": null,
-		"escapedName": "proj4",
-		"name": "proj4",
-		"rawSpec": "^2.4.3",
-		"spec": ">=2.4.3 <3.0.0",
-		"type": "range"
-	},
-	"_requiredBy": [
-		"/"
-	],
-	"_resolved": "http://registry.npm.taobao.org/proj4/download/proj4-2.4.3.tgz",
-	"_shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
-	"_shrinkwrap": null,
-	"_spec": "proj4@^2.4.3",
-	"_where": "D:\\Document\\project\\HMap",
-	"author": "",
-	"bugs": {
-		"url": "https://github.com/proj4js/proj4js/issues"
-	},
-	"contributors": [
-		{
-			"name": "Mike Adair",
-			"email": "madair@dmsolutions.ca"
-		},
-		{
-			"name": "Richard Greenwood",
-			"email": "rich@greenwoodmap.com"
-		},
-		{
-			"name": "Calvin Metcalf",
-			"email": "calvin.metcalf@gmail.com"
-		},
-		{
-			"name": "Richard Marsden",
-			"url": "http://www.winwaed.com"
-		},
-		{
-			"name": "T. Mittan"
-		},
-		{
-			"name": "D. Steinwand"
-		},
-		{
-			"name": "S. Nelson"
-		}
-	],
-	"dependencies": {
-		"mgrs": "1.0.0",
-		"wkt-parser": "^1.1.3"
-	},
-	"description": "Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.",
-	"devDependencies": {
-		"chai": "~1.8.1",
-		"curl": "git://github.com/cujojs/curl.git",
-		"grunt": "~0.4.2",
-		"grunt-cli": "~0.1.13",
-		"grunt-contrib-connect": "~0.6.0",
-		"grunt-contrib-jshint": "~1.1.0",
-		"grunt-contrib-uglify": "~0.11.1",
-		"grunt-mocha-phantomjs": "~0.4.0",
-		"grunt-rollup": "^1.0.1",
-		"istanbul": "~0.2.4",
-		"mocha": "~1.17.1",
-		"rollup": "^0.41.4",
-		"rollup-plugin-json": "^2.0.1",
-		"rollup-plugin-node-resolve": "^2.0.0",
-		"tin": "~0.4.0"
-	},
-	"directories": {
-		"test": "test",
-		"doc": "docs"
-	},
-	"dist": {
-		"shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
-		"size": 116887,
-		"noattachment": false,
-		"tarball": "http://registry.npm.taobao.org/proj4/download/proj4-2.4.3.tgz"
-	},
-	"gitHead": "e975a5462ad7abb23e33ea75281eb749e77e1510",
-	"homepage": "https://github.com/proj4js/proj4js#readme",
-	"license": "MIT",
-	"main": "dist/proj4-src.js",
-	"maintainers": [
-		{
-			"name": "ahocevar",
-			"email": "andreas.hocevar@gmail.com"
-		},
-		{
-			"name": "cwmma",
-			"email": "calvin.metcalf@gmail.com"
-		}
-	],
-	"module": "lib/index.js",
-	"name": "proj4",
-	"optionalDependencies": {},
-	"publish_time": 1488570791097,
-	"readme": "ERROR: No README data found!",
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/proj4js/proj4js.git"
-	},
-	"scripts": {
-		"build": "grunt",
-		"build:tmerc": "grunt build:tmerc",
-		"test": "npm run build && istanbul test _mocha test/test.js"
-	},
-	"version": "2.4.3"
-};
+module.exports = '2.3.17';
+
 
 /***/ }),
-/* 102 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_projections_tmerc__ = __webpack_require__(97);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_projections_etmerc__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_projections_utm__ = __webpack_require__(98);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_projections_sterea__ = __webpack_require__(96);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_projections_stere__ = __webpack_require__(95);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_projections_somerc__ = __webpack_require__(94);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_projections_omerc__ = __webpack_require__(90);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__lib_projections_lcc__ = __webpack_require__(84);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_projections_krovak__ = __webpack_require__(82);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__lib_projections_cass__ = __webpack_require__(76);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__lib_projections_laea__ = __webpack_require__(83);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__lib_projections_aea__ = __webpack_require__(74);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__lib_projections_gnom__ = __webpack_require__(81);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__lib_projections_cea__ = __webpack_require__(77);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__lib_projections_eqc__ = __webpack_require__(78);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__lib_projections_poly__ = __webpack_require__(92);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__lib_projections_nzmg__ = __webpack_require__(89);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__lib_projections_mill__ = __webpack_require__(87);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__lib_projections_sinu__ = __webpack_require__(93);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__lib_projections_moll__ = __webpack_require__(88);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__lib_projections_eqdc__ = __webpack_require__(79);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__lib_projections_vandg__ = __webpack_require__(99);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__lib_projections_aeqd__ = __webpack_require__(75);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__lib_projections_ortho__ = __webpack_require__(91);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["a"] = function(proj4){
-  proj4.Proj.projections.add(__WEBPACK_IMPORTED_MODULE_0__lib_projections_tmerc__["a" /* default */]);
-  proj4.Proj.projections.add(__WEBPACK_IMPORTED_MODULE_1__lib_projections_etmerc__["a" /* default */]);
-  proj4.Proj.projections.add(__WEBPACK_IMPORTED_MODULE_2__lib_projections_utm__["a" /* default */]);
-  proj4.Proj.projections.add(__WEBPACK_IMPORTED_MODULE_3__lib_projections_sterea__["a" /* default */]);
-  proj4.Proj.projections.add(__WEBPACK_IMPORTED_MODULE_4__lib_projections_stere__["a" /* default */]);
-  proj4.Proj.projections.add(__WEBPACK_IMPORTED_MODULE_5__lib_projections_somerc__["a" /* default */]);
-  proj4.Proj.projections.add(__WEBPACK_IMPORTED_MODULE_6__lib_projections_omerc__["a" /* default */]);
-  proj4.Proj.projections.add(__WEBPACK_IMPORTED_MODULE_7__lib_projections_lcc__["a" /* default */]);
-  proj4.Proj.projections.add(__WEBPACK_IMPORTED_MODULE_8__lib_projections_krovak__["a" /* default */]);
-  proj4.Proj.projections.add(__WEBPACK_IMPORTED_MODULE_9__lib_projections_cass__["a" /* default */]);
-  proj4.Proj.projections.add(__WEBPACK_IMPORTED_MODULE_10__lib_projections_laea__["a" /* default */]);
-  proj4.Proj.projections.add(__WEBPACK_IMPORTED_MODULE_11__lib_projections_aea__["a" /* default */]);
-  proj4.Proj.projections.add(__WEBPACK_IMPORTED_MODULE_12__lib_projections_gnom__["a" /* default */]);
-  proj4.Proj.projections.add(__WEBPACK_IMPORTED_MODULE_13__lib_projections_cea__["a" /* default */]);
-  proj4.Proj.projections.add(__WEBPACK_IMPORTED_MODULE_14__lib_projections_eqc__["a" /* default */]);
-  proj4.Proj.projections.add(__WEBPACK_IMPORTED_MODULE_15__lib_projections_poly__["a" /* default */]);
-  proj4.Proj.projections.add(__WEBPACK_IMPORTED_MODULE_16__lib_projections_nzmg__["a" /* default */]);
-  proj4.Proj.projections.add(__WEBPACK_IMPORTED_MODULE_17__lib_projections_mill__["a" /* default */]);
-  proj4.Proj.projections.add(__WEBPACK_IMPORTED_MODULE_18__lib_projections_sinu__["a" /* default */]);
-  proj4.Proj.projections.add(__WEBPACK_IMPORTED_MODULE_19__lib_projections_moll__["a" /* default */]);
-  proj4.Proj.projections.add(__WEBPACK_IMPORTED_MODULE_20__lib_projections_eqdc__["a" /* default */]);
-  proj4.Proj.projections.add(__WEBPACK_IMPORTED_MODULE_21__lib_projections_vandg__["a" /* default */]);
-  proj4.Proj.projections.add(__WEBPACK_IMPORTED_MODULE_22__lib_projections_aeqd__["a" /* default */]);
-  proj4.Proj.projections.add(__WEBPACK_IMPORTED_MODULE_23__lib_projections_ortho__["a" /* default */]);
-};
-
-/***/ }),
-/* 103 */
+/* 90 */
 /***/ (function(module, exports) {
 
 var g;
@@ -11274,297 +10340,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 104 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = parseString;
-
-var NEUTRAL = 1;
-var KEYWORD = 2;
-var NUMBER = 3;
-var QUOTED = 4;
-var AFTERQUOTE = 5;
-var ENDED = -1;
-var whitespace = /\s/;
-var latin = /[A-Za-z]/;
-var keyword = /[A-Za-z84]/;
-var endThings = /[,\]]/;
-var digets = /[\d\.E\-\+]/;
-// const ignoredChar = /[\s_\-\/\(\)]/g;
-function Parser(text) {
-  if (typeof text !== 'string') {
-    throw new Error('not a string');
-  }
-  this.text = text.trim();
-  this.level = 0;
-  this.place = 0;
-  this.root = null;
-  this.stack = [];
-  this.currentObject = null;
-  this.state = NEUTRAL;
-}
-Parser.prototype.readCharicter = function() {
-  var char = this.text[this.place++];
-  if (this.state !== QUOTED) {
-    while (whitespace.test(char)) {
-      if (this.place >= this.text.length) {
-        return;
-      }
-      char = this.text[this.place++];
-    }
-  }
-  switch (this.state) {
-    case NEUTRAL:
-      return this.neutral(char);
-    case KEYWORD:
-      return this.keyword(char)
-    case QUOTED:
-      return this.quoted(char);
-    case AFTERQUOTE:
-      return this.afterquote(char);
-    case NUMBER:
-      return this.number(char);
-    case ENDED:
-      return;
-  }
-};
-Parser.prototype.afterquote = function(char) {
-  if (char === '"') {
-    this.word += '"';
-    this.state = QUOTED;
-    return;
-  }
-  if (endThings.test(char)) {
-    this.word = this.word.trim();
-    this.afterItem(char);
-    return;
-  }
-  throw new Error('havn\'t handled "' +char + '" in afterquote yet, index ' + this.place);
-};
-Parser.prototype.afterItem = function(char) {
-  if (char === ',') {
-    if (this.word !== null) {
-      this.currentObject.push(this.word);
-    }
-    this.word = null;
-    this.state = NEUTRAL;
-    return;
-  }
-  if (char === ']') {
-    this.level--;
-    if (this.word !== null) {
-      this.currentObject.push(this.word);
-      this.word = null;
-    }
-    this.state = NEUTRAL;
-    this.currentObject = this.stack.pop();
-    if (!this.currentObject) {
-      this.state = ENDED;
-    }
-
-    return;
-  }
-};
-Parser.prototype.number = function(char) {
-  if (digets.test(char)) {
-    this.word += char;
-    return;
-  }
-  if (endThings.test(char)) {
-    this.word = parseFloat(this.word);
-    this.afterItem(char);
-    return;
-  }
-  throw new Error('havn\'t handled "' +char + '" in number yet, index ' + this.place);
-};
-Parser.prototype.quoted = function(char) {
-  if (char === '"') {
-    this.state = AFTERQUOTE;
-    return;
-  }
-  this.word += char;
-  return;
-};
-Parser.prototype.keyword = function(char) {
-  if (keyword.test(char)) {
-    this.word += char;
-    return;
-  }
-  if (char === '[') {
-    var newObjects = [];
-    newObjects.push(this.word);
-    this.level++;
-    if (this.root === null) {
-      this.root = newObjects;
-    } else {
-      this.currentObject.push(newObjects);
-    }
-    this.stack.push(this.currentObject);
-    this.currentObject = newObjects;
-    this.state = NEUTRAL;
-    return;
-  }
-  if (endThings.test(char)) {
-    this.afterItem(char);
-    return;
-  }
-  throw new Error('havn\'t handled "' +char + '" in keyword yet, index ' + this.place);
-};
-Parser.prototype.neutral = function(char) {
-  if (latin.test(char)) {
-    this.word = char;
-    this.state = KEYWORD;
-    return;
-  }
-  if (char === '"') {
-    this.word = '';
-    this.state = QUOTED;
-    return;
-  }
-  if (digets.test(char)) {
-    this.word = char;
-    this.state = NUMBER;
-    return;
-  }
-  if (endThings.test(char)) {
-    this.afterItem(char);
-    return;
-  }
-  throw new Error('havn\'t handled "' +char + '" in neutral yet, index ' + this.place);
-};
-Parser.prototype.output = function() {
-  while (this.place < this.text.length) {
-    this.readCharicter();
-  }
-  if (this.state === ENDED) {
-    return this.root;
-  }
-  throw new Error('unable to parse string "' +this.text + '". State is ' + this.state);
-};
-
-function parseString(txt) {
-  var parser = new Parser(txt);
-  return parser.output();
-}
-
-
-/***/ }),
-/* 105 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = sExpr;
-
-
-function mapit(obj, key, value) {
-  if (Array.isArray(key)) {
-    value.unshift(key);
-    key = null;
-  }
-  var thing = key ? {} : obj;
-
-  var out = value.reduce(function(newObj, item) {
-    sExpr(item, newObj);
-    return newObj
-  }, thing);
-  if (key) {
-    obj[key] = out;
-  }
-}
-
-function sExpr(v, obj) {
-  if (!Array.isArray(v)) {
-    obj[v] = true;
-    return;
-  }
-  var key = v.shift();
-  if (key === 'PARAMETER') {
-    key = v.shift();
-  }
-  if (v.length === 1) {
-    if (Array.isArray(v[0])) {
-      obj[key] = {};
-      sExpr(v[0], obj[key]);
-      return;
-    }
-    obj[key] = v[0];
-    return;
-  }
-  if (!v.length) {
-    obj[key] = true;
-    return;
-  }
-  if (key === 'TOWGS84') {
-    obj[key] = v;
-    return;
-  }
-  if (!Array.isArray(key)) {
-    obj[key] = {};
-  }
-
-  var i;
-  switch (key) {
-    case 'UNIT':
-    case 'PRIMEM':
-    case 'VERT_DATUM':
-      obj[key] = {
-        name: v[0].toLowerCase(),
-        convert: v[1]
-      };
-      if (v.length === 3) {
-        sExpr(v[2], obj[key]);
-      }
-      return;
-    case 'SPHEROID':
-    case 'ELLIPSOID':
-      obj[key] = {
-        name: v[0],
-        a: v[1],
-        rf: v[2]
-      };
-      if (v.length === 4) {
-        sExpr(v[3], obj[key]);
-      }
-      return;
-    case 'PROJECTEDCRS':
-    case 'PROJCRS':
-    case 'GEOGCS':
-    case 'GEOCCS':
-    case 'PROJCS':
-    case 'LOCAL_CS':
-    case 'GEODCRS':
-    case 'GEODETICCRS':
-    case 'GEODETICDATUM':
-    case 'EDATUM':
-    case 'ENGINEERINGDATUM':
-    case 'VERT_CS':
-    case 'VERTCRS':
-    case 'VERTICALCRS':
-    case 'COMPD_CS':
-    case 'COMPOUNDCRS':
-    case 'ENGINEERINGCRS':
-    case 'ENGCRS':
-    case 'FITTED_CS':
-    case 'LOCAL_DATUM':
-    case 'DATUM':
-      v[0] = ['name', v[0]];
-      mapit(obj, key, v);
-      return;
-    default:
-      i = -1;
-      while (++i < v.length) {
-        if (!Array.isArray(v[i])) {
-          return sExpr(v, obj[key]);
-        }
-      }
-      return mapit(obj, key, v);
-  }
-}
-
-
-/***/ }),
-/* 106 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11574,48 +10350,48 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _constants = __webpack_require__(2);
+var _constants = __webpack_require__(1);
 
-var _Map = __webpack_require__(35);
+var _Map = __webpack_require__(32);
 
 var _Map2 = _interopRequireDefault(_Map);
 
-var _Layer = __webpack_require__(7);
+var _Layer = __webpack_require__(6);
 
 var _Layer2 = _interopRequireDefault(_Layer);
 
-var _feature = __webpack_require__(23);
+var _feature = __webpack_require__(21);
 
 var _feature2 = _interopRequireDefault(_feature);
 
-var _CoordsTransform = __webpack_require__(41);
+var _CoordsTransform = __webpack_require__(38);
 
 var _CoordsTransform2 = _interopRequireDefault(_CoordsTransform);
 
-var _Ol3Echarts = __webpack_require__(40);
+var _Ol3Echarts = __webpack_require__(37);
 
 var _Ol3Echarts2 = _interopRequireDefault(_Ol3Echarts);
 
-var _LayerSwitcher = __webpack_require__(37);
+var _LayerSwitcher = __webpack_require__(34);
 
 var _LayerSwitcher2 = _interopRequireDefault(_LayerSwitcher);
 
-var _CustomCircle = __webpack_require__(36);
+var _CustomCircle = __webpack_require__(33);
 
 var _CustomCircle2 = _interopRequireDefault(_CustomCircle);
 
-var _Measure = __webpack_require__(38);
+var _Measure = __webpack_require__(35);
 
 var _Measure2 = _interopRequireDefault(_Measure);
 
-var _MeasureTool = __webpack_require__(39);
+var _MeasureTool = __webpack_require__(36);
 
 var _MeasureTool2 = _interopRequireDefault(_MeasureTool);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var HMap = {};
-HMap.version = __webpack_require__(42).version;
+HMap.version = __webpack_require__(39).version;
 
 
 HMap.ol = _constants.ol;
