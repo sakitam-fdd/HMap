@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 104);
+/******/ 	return __webpack_require__(__webpack_require__.s = 102);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -2323,10 +2323,9 @@ var MAX_ITER = 20;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__global__ = __webpack_require__(68);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projString__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__wkt_parser__ = __webpack_require__(34);
 
 
-
+//import wkt from 'wkt-parser';
 
 function defs(name) {
   /*global console*/
@@ -2338,7 +2337,7 @@ function defs(name) {
         defs[name] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__projString__["a" /* default */])(arguments[1]);
       }
       else {
-        defs[name] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__wkt_parser__["a" /* default */])(arguments[1]);
+        defs[name] = wkt(arguments[1]);
       }
     } else {
       defs[name] = def;
@@ -2805,166 +2804,6 @@ function transform(source, dest, point) {
 
 /***/ }),
 /* 34 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parser__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__process__ = __webpack_require__(103);
-var D2R = 0.01745329251994329577;
-
-
-
-
-
-function rename(obj, params) {
-  var outName = params[0];
-  var inName = params[1];
-  if (!(outName in obj) && (inName in obj)) {
-    obj[outName] = obj[inName];
-    if (params.length === 3) {
-      obj[outName] = params[2](obj[outName]);
-    }
-  }
-}
-
-function d2r(input) {
-  return input * D2R;
-}
-
-function cleanWKT(wkt) {
-  if (wkt.type === 'GEOGCS') {
-    wkt.projName = 'longlat';
-  } else if (wkt.type === 'LOCAL_CS') {
-    wkt.projName = 'identity';
-    wkt.local = true;
-  } else {
-    if (typeof wkt.PROJECTION === 'object') {
-      wkt.projName = Object.keys(wkt.PROJECTION)[0];
-    } else {
-      wkt.projName = wkt.PROJECTION;
-    }
-  }
-  if (wkt.UNIT) {
-    wkt.units = wkt.UNIT.name.toLowerCase();
-    if (wkt.units === 'metre') {
-      wkt.units = 'meter';
-    }
-    if (wkt.UNIT.convert) {
-      if (wkt.type === 'GEOGCS') {
-        if (wkt.DATUM && wkt.DATUM.SPHEROID) {
-          wkt.to_meter = wkt.UNIT.convert*wkt.DATUM.SPHEROID.a;
-        }
-      } else {
-        wkt.to_meter = wkt.UNIT.convert, 10;
-      }
-    }
-  }
-  var geogcs = wkt.GEOGCS;
-  if (wkt.type === 'GEOGCS') {
-    geogcs = wkt;
-  }
-  if (geogcs) {
-    //if(wkt.GEOGCS.PRIMEM&&wkt.GEOGCS.PRIMEM.convert){
-    //  wkt.from_greenwich=wkt.GEOGCS.PRIMEM.convert*D2R;
-    //}
-    if (geogcs.DATUM) {
-      wkt.datumCode = geogcs.DATUM.name.toLowerCase();
-    } else {
-      wkt.datumCode = geogcs.name.toLowerCase();
-    }
-    if (wkt.datumCode.slice(0, 2) === 'd_') {
-      wkt.datumCode = wkt.datumCode.slice(2);
-    }
-    if (wkt.datumCode === 'new_zealand_geodetic_datum_1949' || wkt.datumCode === 'new_zealand_1949') {
-      wkt.datumCode = 'nzgd49';
-    }
-    if (wkt.datumCode === 'wgs_1984') {
-      if (wkt.PROJECTION === 'Mercator_Auxiliary_Sphere') {
-        wkt.sphere = true;
-      }
-      wkt.datumCode = 'wgs84';
-    }
-    if (wkt.datumCode.slice(-6) === '_ferro') {
-      wkt.datumCode = wkt.datumCode.slice(0, - 6);
-    }
-    if (wkt.datumCode.slice(-8) === '_jakarta') {
-      wkt.datumCode = wkt.datumCode.slice(0, - 8);
-    }
-    if (~wkt.datumCode.indexOf('belge')) {
-      wkt.datumCode = 'rnb72';
-    }
-    if (geogcs.DATUM && geogcs.DATUM.SPHEROID) {
-      wkt.ellps = geogcs.DATUM.SPHEROID.name.replace('_19', '').replace(/[Cc]larke\_18/, 'clrk');
-      if (wkt.ellps.toLowerCase().slice(0, 13) === 'international') {
-        wkt.ellps = 'intl';
-      }
-
-      wkt.a = geogcs.DATUM.SPHEROID.a;
-      wkt.rf = parseFloat(geogcs.DATUM.SPHEROID.rf, 10);
-    }
-    if (~wkt.datumCode.indexOf('osgb_1936')) {
-      wkt.datumCode = 'osgb36';
-    }
-  }
-  if (wkt.b && !isFinite(wkt.b)) {
-    wkt.b = wkt.a;
-  }
-
-  function toMeter(input) {
-    var ratio = wkt.to_meter || 1;
-    return input * ratio;
-  }
-  var renamer = function(a) {
-    return rename(wkt, a);
-  };
-  var list = [
-    ['standard_parallel_1', 'Standard_Parallel_1'],
-    ['standard_parallel_2', 'Standard_Parallel_2'],
-    ['false_easting', 'False_Easting'],
-    ['false_northing', 'False_Northing'],
-    ['central_meridian', 'Central_Meridian'],
-    ['latitude_of_origin', 'Latitude_Of_Origin'],
-    ['latitude_of_origin', 'Central_Parallel'],
-    ['scale_factor', 'Scale_Factor'],
-    ['k0', 'scale_factor'],
-    ['latitude_of_center', 'Latitude_of_center'],
-    ['lat0', 'latitude_of_center', d2r],
-    ['longitude_of_center', 'Longitude_Of_Center'],
-    ['longc', 'longitude_of_center', d2r],
-    ['x0', 'false_easting', toMeter],
-    ['y0', 'false_northing', toMeter],
-    ['long0', 'central_meridian', d2r],
-    ['lat0', 'latitude_of_origin', d2r],
-    ['lat0', 'standard_parallel_1', d2r],
-    ['lat1', 'standard_parallel_1', d2r],
-    ['lat2', 'standard_parallel_2', d2r],
-    ['alpha', 'azimuth', d2r],
-    ['srsCode', 'name']
-  ];
-  list.forEach(renamer);
-  if (!wkt.long0 && wkt.longc && (wkt.projName === 'Albers_Conic_Equal_Area' || wkt.projName === 'Lambert_Azimuthal_Equal_Area')) {
-    wkt.long0 = wkt.longc;
-  }
-  if (!wkt.lat_ts && wkt.lat1 && (wkt.projName === 'Stereographic_South_Pole' || wkt.projName === 'Polar Stereographic (variant B)')) {
-    wkt.lat0 = d2r(wkt.lat1 > 0 ? 90 : -90);
-    wkt.lat_ts = wkt.lat1;
-  }
-}
-/* harmony default export */ __webpack_exports__["a"] = function(wkt) {
-  var lisp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__parser__["a" /* default */])(wkt);
-  var type = lisp.shift();
-  var name = lisp.shift();
-  lisp.unshift(['name', name]);
-  lisp.unshift(['type', type]);
-  var obj = {};
-  __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__process__["a" /* sExpr */])(lisp, obj);
-  cleanWKT(obj);
-  return obj;
-};
-
-
-/***/ }),
-/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3166,7 +3005,7 @@ exports.default = Map;
 module.exports = exports['default'];
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3190,19 +3029,40 @@ var CustomCircle = function () {
     _classCallCheck(this, CustomCircle);
 
     this.map = map; //当前map对象
+    this.options = options; //当前传输参数
+    this.sphere = new _constants.ol.Sphere(6378137);
     this.center = options.center;
+    this.projection = this.map.getView().getProjection();
     this.minRadius = 500; //最小半径
-    this.maxRadius = 50000; //最大半径
-    this.distance = options.distance ? options.distance : this.minRadius;
+    this.maxRadius = 5000000; //最大半径
+    this.defaultSrc = "../example/images/marker.png"; //默认中心点src样式
+    this.centerPoint = this.addCenterPoint(options.centerPoint ? options.centerPoint.src ? options.centerPoint.src : this.defaultSrc : this.defaultSrc); //中心点
+    this.distance = options.distance ? options.distance > this.minRadius && options.distance < this.maxRadius ? this.transformRadius(this.center, options.distance) : this.transformRadius(this.center, this.minRadius) : this.transformRadius(this.center, this.minRadius);
+    this.unit = options.distance ? options.distance > this.minRadius && options.distance < this.maxRadius ? options.distance : this.minRadius : this.minRadius;
     this.mouseIng = false; //移动状态 false (未移动)true (移动中)
+    this.defaultStyle = new _constants.ol.style.Style({
+      fill: new _constants.ol.style.Fill({
+        color: 'rgba(71, 129, 217, 0.2)'
+      }),
+      stroke: new _constants.ol.style.Stroke({
+        color: 'rgba(71, 129, 217, 1)',
+        width: 1
+      }),
+      image: new _constants.ol.style.Circle({
+        radius: 5,
+        fill: new _constants.ol.style.Fill({
+          color: 'rgba(71, 129, 217, 0.2)'
+        })
+      })
+    }); //默认样式
+    this.style = options.style ? options.style : this.defaultStyle; //圆的样式
     this.feature = this.addRangeCircle(); //圆的feature
     this.editor = this.addEditor(); //编辑器 overlay
-    this.text = this.distance + "m"; //text文本默认显示
   }
 
   _createClass(CustomCircle, [{
-    key: "addCustomCircle",
-    value: function addCustomCircle(src) {
+    key: 'initCustomCircle',
+    value: function initCustomCircle() {
       //创建周边搜索插件
       // 创建一个临时图层 目前先写着 之后调用另一个里的 创建图层的方法
       var layer = new _constants.ol.layer.Vector({
@@ -3211,34 +3071,49 @@ var CustomCircle = function () {
       });
       // 在map里添加该图层
       this.map.addLayer(layer);
-      //distance = distance ? distance : this.minRadius;
-
-      //创建中心点
-      //let centerPoint = this.addCenterPoint(src, this.center);
-      //this.map.addOverlay(centerPoint);
+      //添加范围圆
       layer.getSource().addFeature(this.feature);
+      this.map.addOverlay(this.centerPoint);
 
-      //创建编辑器
-      //this.editor = this.addEditor(this.feature.getGeometry().getLastCoordinate(), distance);
-
-      //this.map.addOverlay(this.editor);
-
-      //this.dragEditor(); // 开启拖拽事件
+      //添加编辑器
+      this.map.addOverlay(this.editor);
+      // 开启拖拽事件
+      this.dragEditor();
+      //默认设置地图范围
+      this.setSuitableExtent();
+      //对overlay中心点进行偏移处理
+      var self = this;
+      this.centerPoint.getElement().onload = function (evt) {
+        var x = -parseInt(self.centerPoint.getElement().width / 2);
+        var y = -parseInt(self.centerPoint.getElement().height / 2);
+        self.centerPoint.setOffset([x, y]);
+      };
     }
+
+    /**
+     * 创建范围圆
+     */
+
   }, {
-    key: "addRangeCircle",
+    key: 'addRangeCircle',
     value: function addRangeCircle() {
-      //创建范围圆
       var feature = new _constants.ol.Feature({
         geometry: new _constants.ol.geom.Circle(this.center, this.distance)
       });
+      feature.setStyle(this.style);
       return feature;
     }
+
+    /**
+     * 创建中心点
+     * @param src
+     * @returns {ol.Overlay}
+     */
+
   }, {
-    key: "addCenterPoint",
+    key: 'addCenterPoint',
     value: function addCenterPoint(src) {
-      //添加中心点
-      var element = document.createElement("image");
+      var element = document.createElement("img");
       element.src = src;
       var centerPoint = new _constants.ol.Overlay({
         element: element
@@ -3246,27 +3121,45 @@ var CustomCircle = function () {
       centerPoint.setPosition(this.center);
       return centerPoint;
     }
+
+    /**
+     * 创建编辑器
+     * @returns {ol.Overlay}
+     */
+
   }, {
-    key: "addEditor",
+    key: 'addEditor',
     value: function addEditor() {
-      //创建编辑器
       var src = "http://webmap0.map.bdstatic.com/wolfman/static/common/images/nbsearch_366e590.png";
       var editor = document.createElement("div");
       editor.setAttribute("id", "editor");
-      editor.style.width = "100px";
-      editor.style.height = "20px";
-      editor.style.position = "relative";
-      editor.style.left = "-18px";
-      editor.style.top = "-7px";
-      editor.style.overflow = "hidden";
       var icon = document.createElement("img");
       icon.setAttribute("id", "icon");
       icon.src = src;
+      icon.style.maxWidth = "none";
+      icon.style.float = "left";
       editor.appendChild(icon);
+      editor.appendChild(this.addText());
+      var overlay = new _constants.ol.Overlay({
+        element: editor,
+        offset: [-15, -10]
+      });
+      overlay.setPosition(this.feature.getGeometry().getLastCoordinate());
+      return overlay;
+    }
+
+    /**
+     * 创建text文本器
+     * @returns {Element}
+     */
+
+  }, {
+    key: 'addText',
+    value: function addText() {
       var text = document.createElement("div");
       text.setAttribute("id", "range");
-      text.innerHTML = this.distance + "m";
-      text.style.width = "63px";
+      text.innerHTML = this.unit + "m";
+      text.style.width = "85px";
       text.style.height = "18px";
       text.style.lineHeight = "18px";
       text.style.border = "1px solid black";
@@ -3275,66 +3168,218 @@ var CustomCircle = function () {
       text.style.float = "left";
       text.style.marginLeft = "5px";
       text.style.textAlign = "center";
-      text.style.position = "relative";
+      text.style.position = "absolute";
       text.style.left = "30px";
-      text.style.top = "-24px";
       text.style.fontSize = "12px";
-      this.text = text;
-      editor.appendChild(text);
-
-      console.info(this.feature.getGeometry().getLastCoordinate());
-      var overlay = new _constants.ol.Overlay({
-        element: editor
-      });
-      overlay.setPosition(this.feature.getGeometry().getLastCoordinate());
-      return overlay;
+      return text;
     }
 
     /**
-     * 设置半径值
-     * @param center 圆的中心点
+     * 求取半径值
      * @param coordinate 当前移动到的位置的坐标
      * @returns {number} 返回圆的半径
      */
 
   }, {
-    key: "getRadius",
+    key: 'getRadius',
     value: function getRadius(coordinate) {
-      var radius = Math.sqrt(Math.pow(coordinate[0] - this.center[0], 2) + Math.pow(coordinate[1] - this.center[1], 2));
-      if (radius > this.maxRadius) {
-        radius = this.maxRadius;
-      } else if (radius < this.minRadius) {
-        radius = this.minRadius;
+      var radius = null;
+      switch (this.projection.getCode()) {
+        case "EPSG:4326":
+          radius = this.sphere.haversineDistance(this.center, coordinate);
+          break;
+        case "EPSG:3857":
+        case "EPSG:102100":
+          radius = Math.sqrt(Math.pow(coordinate[0] - this.center[0], 2) + Math.pow(coordinate[1] - this.center[1], 2));
+          break;
       }
-      return radius;
+      var unit = radius;
+      radius = this.transformRadius(this.center, radius);
+      if (unit > this.maxRadius) {
+        radius = this.transformRadius(this.center, this.maxRadius);
+        unit = this.maxRadius;
+      } else if (unit < this.minRadius) {
+        radius = this.transformRadius(this.center, this.minRadius);
+        unit = this.minRadius;
+      }
+      return { unit: unit, radius: radius };
     }
+
+    /**
+     * 拖拽编辑器
+     */
+
   }, {
-    key: "dragEditor",
+    key: 'dragEditor',
     value: function dragEditor() {
       var self = this;
-      //let mouseIng = this.mouseIng;
-      //let feature = this.feature;
-      //let text = this.text;
-      //let editor = this.editor;
-      //拖拽编辑器
       document.onmouseup = function (evt) {
         self.mouseIng = false;
+        self.options.successCallback(self._getWKT(), self._getCenter(), self._getRadius());
       };
       this.editor.getElement().onmousedown = function (evt) {
         self.mouseIng = true;
       };
       this.map.on("pointermove", function (event) {
         if (self.mouseIng) {
-
           var radius = self.getRadius(event.coordinate);
           //重新设置圆的半径
-          self.feature.getGeometry().setRadius(radius); //全局方法和全局对象如何调用
+          self.feature.getGeometry().setRadius(radius["radius"]);
           //重新设置 text值
-          self.text.innerHTML = parseInt(radius) + "m";
+          var text = document.getElementById("range");
+          text.innerHTML = parseInt(radius["unit"]) + "m";
           //重新设置overlay位置
           self.editor.setPosition(self.feature.getGeometry().getLastCoordinate());
         }
       });
+    }
+
+    /**
+     * 半径和坐标间的转换
+     * @param center
+     * @param meterRadius
+     * @returns {number}
+     */
+
+  }, {
+    key: 'transformRadius',
+    value: function transformRadius(center, meterRadius) {
+      var transformRadiu = 0;
+      switch (this.projection.getCode()) {
+        case 'EPSG:4326':
+          var lastcoord = new _constants.ol.Sphere(6378137).offset(center, meterRadius, 270 / 360 * 2 * Math.PI); //计算偏移量
+          var dx = center[0] - lastcoord[0];
+          var dy = center[1] - lastcoord[1];
+          transformRadiu = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+          break;
+        case 'EPSG:3857':
+        case 'EPSG:102100':
+          transformRadiu = meterRadius;
+          break;
+      }
+      return transformRadiu;
+    }
+
+    /**
+     * 将地图缩放到合适的范围
+     */
+
+  }, {
+    key: 'setSuitableExtent',
+    value: function setSuitableExtent() {
+      var extent = this._getGeometry().getExtent();
+      var size = this.map.getSize();
+      this.map.getView().fit(extent, size);
+    }
+
+    /**
+     * 获取圆的geometry
+     * @private
+     */
+
+  }, {
+    key: '_getGeometry',
+    value: function _getGeometry() {
+      return this.feature.getGeometry();
+    }
+
+    /**
+     * 获取圆的中心点
+     * @returns {ol.Coordinate|ol.Coordinate|undefined|*}
+     * @private
+     */
+
+  }, {
+    key: '_getCenter',
+    value: function _getCenter() {
+      return this._getGeometry().getCenter();
+    }
+
+    /**
+     * 获取圆的半径
+     * @returns {number|*}
+     * @private
+     */
+
+  }, {
+    key: '_getRadius',
+    value: function _getRadius() {
+      return this._getGeometry().getRadius();
+    }
+
+    /**
+     * 获取圆的第一个坐标
+     * @returns {*}
+     * @private
+     */
+
+  }, {
+    key: '_getFirstCoordinate',
+    value: function _getFirstCoordinate() {
+      return this._getCoordinates()[0];
+    }
+
+    /**
+     * 获取圆的最后一个坐标
+     * @returns {*}
+     * @private
+     */
+
+  }, {
+    key: '_getLastCoordinate',
+    value: function _getLastCoordinate() {
+      return this._getCoordinates()[this._getCoordinates().length - 1];
+    }
+
+    /**
+     * 设置圆的半径
+     * @param radius 半径长度
+     * @private
+     */
+
+  }, {
+    key: '_setRadius',
+    value: function _setRadius(radius) {
+      this._getGeometry().setRadius(radius);
+    }
+
+    /**
+     * 设置圆的圆心
+     * @param center 圆心坐标[x,y]
+     * @private
+     */
+
+  }, {
+    key: '_setCenter',
+    value: function _setCenter(center) {
+      this._getGeometry().setCenter(center);
+    }
+
+    /**
+     * 设置中心点 样式
+     * @param src 图片的路径
+     * @private
+     */
+
+  }, {
+    key: '_setCenterPoint',
+    value: function _setCenterPoint(src) {
+      var element = this.centerPoint.getElement();
+      element.src = src;
+    }
+
+    /**
+     * 获取标准WKT数据
+     * @returns {string}
+     * @private
+     */
+
+  }, {
+    key: '_getWKT',
+    value: function _getWKT() {
+      var polygon = _constants.ol.geom.Polygon.fromCircle(this._getGeometry());
+      var wkt = new _constants.ol.format.WKT().writeGeometry(polygon);
+      return wkt;
     }
   }]);
 
@@ -3345,7 +3390,7 @@ exports.default = CustomCircle;
 module.exports = exports['default'];
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3376,7 +3421,7 @@ var Ex = function () {
 }();
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3499,6 +3544,84 @@ var LayerSwitcher = function () {
 }();
 
 exports.default = LayerSwitcher;
+module.exports = exports['default'];
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Created by changjn on 2017/3/16.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+
+
+var _constants = __webpack_require__(2);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Measure = function () {
+  function Measure(map) {
+    _classCallCheck(this, Measure);
+
+    this.inr = null;
+    this.map = map;
+  }
+
+  _createClass(Measure, [{
+    key: 'ranging',
+    value: function ranging() {
+      this.addEvent();
+      this.addInteraction();
+    }
+  }, {
+    key: 'addInteraction',
+    value: function addInteraction() {
+      if (this.inr) {
+        this.map.removeInteraction(this.inr);
+      }
+      this.inr = new _constants.ol.interaction.Draw({
+        type: 'Point',
+        source: this.map.getLayers()[1].getSource() // 注意设置source，这样绘制好的线，就会添加到这个source里
+      });
+      this.map.addInteraction(this.inr);
+    }
+  }, {
+    key: 'addEvent',
+    value: function addEvent() {
+      var _this = this;
+
+      this.map.on('click', function (event) {
+        // 在地图上添加一个圆
+        console.log(event);
+        debugger;
+        var circle = new _constants.ol.Feature({
+          geometry: new _constants.ol.geom.Point(_constants.ol.proj.transform([104, 30], 'EPSG:4326', 'EPSG:3857'))
+        });
+        circle.setStyle(new _constants.ol.style.Style({
+          image: new _constants.ol.style.Circle({
+            radius: 10,
+            fill: new _constants.ol.style.Fill({
+              color: 'red'
+            })
+          })
+        }));
+
+        _this.map.getLayers()[1].getSource().addFeature(circle);
+      });
+    }
+  }]);
+
+  return Measure;
+}();
+
+exports.default = Measure;
 module.exports = exports['default'];
 
 /***/ }),
@@ -3829,6 +3952,13 @@ var Controls = function () {
         rotate: options['rotate'] === false ? false : true,
         zoom: options['zoom'] === false ? false : true
       });
+    }
+  }, {
+    key: '_addScaleLine',
+    value: function _addScaleLine() {
+      var control = this.map.getControls();
+      control.extend([new _constants.ol.control.ScaleLine() //比例尺控件
+      ]);
     }
   }]);
 
@@ -6491,10 +6621,9 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8__projs__["a" /* default */])(_
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defs__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__wkt_parser__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__projString__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projString__ = __webpack_require__(31);
 
-
+//import wkt from 'wkt-parser';
 
 function testObj(code){
   return typeof code === 'string';
@@ -6518,10 +6647,10 @@ function parse(code){
       return __WEBPACK_IMPORTED_MODULE_0__defs__["a" /* default */][code];
     }
     if (testWKT(code)) {
-      return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__wkt_parser__["a" /* default */])(code);
+      return wkt(code);
     }
     if (testProj(code)) {
-      return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__projString__["a" /* default */])(code);
+      return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__projString__["a" /* default */])(code);
     }
   }else{
     return code;
@@ -10022,19 +10151,19 @@ module.exports = {
 	"_args": [
 		[
 			{
-				"raw": "proj4@2.4.3",
+				"raw": "proj4@^2.4.3",
 				"scope": null,
 				"escapedName": "proj4",
 				"name": "proj4",
-				"rawSpec": "2.4.3",
-				"spec": "2.4.3",
-				"type": "version"
+				"rawSpec": "^2.4.3",
+				"spec": ">=2.4.3 <3.0.0",
+				"type": "range"
 			},
-			"H:\\Project\\HMap"
+			"F:\\workspace\\copy\\HMap"
 		]
 	],
 	"_cnpm_publish_time": 1488570791097,
-	"_from": "proj4@2.4.3",
+	"_from": "proj4@>=2.4.3 <3.0.0",
 	"_id": "proj4@2.4.3",
 	"_inCache": true,
 	"_location": "/proj4",
@@ -10050,23 +10179,22 @@ module.exports = {
 	"_npmVersion": "4.0.5",
 	"_phantomChildren": {},
 	"_requested": {
-		"raw": "proj4@2.4.3",
+		"raw": "proj4@^2.4.3",
 		"scope": null,
 		"escapedName": "proj4",
 		"name": "proj4",
-		"rawSpec": "2.4.3",
-		"spec": "2.4.3",
-		"type": "version"
+		"rawSpec": "^2.4.3",
+		"spec": ">=2.4.3 <3.0.0",
+		"type": "range"
 	},
 	"_requiredBy": [
-		"#USER",
 		"/"
 	],
-	"_resolved": "https://registry.npm.taobao.org/proj4/download/proj4-2.4.3.tgz",
+	"_resolved": "http://r.cnpmjs.org/proj4/download/proj4-2.4.3.tgz",
 	"_shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
 	"_shrinkwrap": null,
-	"_spec": "proj4@2.4.3",
-	"_where": "H:\\Project\\HMap",
+	"_spec": "proj4@^2.4.3",
+	"_where": "F:\\workspace\\copy\\HMap",
 	"author": "",
 	"bugs": {
 		"url": "https://github.com/proj4js/proj4js/issues"
@@ -10128,7 +10256,7 @@ module.exports = {
 		"shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
 		"size": 116887,
 		"noattachment": false,
-		"tarball": "http://registry.npm.taobao.org/proj4/download/proj4-2.4.3.tgz"
+		"tarball": "http://r.cnpmjs.org/proj4/download/proj4-2.4.3.tgz"
 	},
 	"gitHead": "e975a5462ad7abb23e33ea75281eb749e77e1510",
 	"homepage": "https://github.com/proj4js/proj4js#readme",
@@ -10270,296 +10398,6 @@ module.exports = g;
 
 /***/ }),
 /* 102 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = parseString;
-
-var NEUTRAL = 1;
-var KEYWORD = 2;
-var NUMBER = 3;
-var QUOTED = 4;
-var AFTERQUOTE = 5;
-var ENDED = -1;
-var whitespace = /\s/;
-var latin = /[A-Za-z]/;
-var keyword = /[A-Za-z84]/;
-var endThings = /[,\]]/;
-var digets = /[\d\.E\-\+]/;
-// const ignoredChar = /[\s_\-\/\(\)]/g;
-function Parser(text) {
-  if (typeof text !== 'string') {
-    throw new Error('not a string');
-  }
-  this.text = text.trim();
-  this.level = 0;
-  this.place = 0;
-  this.root = null;
-  this.stack = [];
-  this.currentObject = null;
-  this.state = NEUTRAL;
-}
-Parser.prototype.readCharicter = function() {
-  var char = this.text[this.place++];
-  if (this.state !== QUOTED) {
-    while (whitespace.test(char)) {
-      if (this.place >= this.text.length) {
-        return;
-      }
-      char = this.text[this.place++];
-    }
-  }
-  switch (this.state) {
-    case NEUTRAL:
-      return this.neutral(char);
-    case KEYWORD:
-      return this.keyword(char)
-    case QUOTED:
-      return this.quoted(char);
-    case AFTERQUOTE:
-      return this.afterquote(char);
-    case NUMBER:
-      return this.number(char);
-    case ENDED:
-      return;
-  }
-};
-Parser.prototype.afterquote = function(char) {
-  if (char === '"') {
-    this.word += '"';
-    this.state = QUOTED;
-    return;
-  }
-  if (endThings.test(char)) {
-    this.word = this.word.trim();
-    this.afterItem(char);
-    return;
-  }
-  throw new Error('havn\'t handled "' +char + '" in afterquote yet, index ' + this.place);
-};
-Parser.prototype.afterItem = function(char) {
-  if (char === ',') {
-    if (this.word !== null) {
-      this.currentObject.push(this.word);
-    }
-    this.word = null;
-    this.state = NEUTRAL;
-    return;
-  }
-  if (char === ']') {
-    this.level--;
-    if (this.word !== null) {
-      this.currentObject.push(this.word);
-      this.word = null;
-    }
-    this.state = NEUTRAL;
-    this.currentObject = this.stack.pop();
-    if (!this.currentObject) {
-      this.state = ENDED;
-    }
-
-    return;
-  }
-};
-Parser.prototype.number = function(char) {
-  if (digets.test(char)) {
-    this.word += char;
-    return;
-  }
-  if (endThings.test(char)) {
-    this.word = parseFloat(this.word);
-    this.afterItem(char);
-    return;
-  }
-  throw new Error('havn\'t handled "' +char + '" in number yet, index ' + this.place);
-};
-Parser.prototype.quoted = function(char) {
-  if (char === '"') {
-    this.state = AFTERQUOTE;
-    return;
-  }
-  this.word += char;
-  return;
-};
-Parser.prototype.keyword = function(char) {
-  if (keyword.test(char)) {
-    this.word += char;
-    return;
-  }
-  if (char === '[') {
-    var newObjects = [];
-    newObjects.push(this.word);
-    this.level++;
-    if (this.root === null) {
-      this.root = newObjects;
-    } else {
-      this.currentObject.push(newObjects);
-    }
-    this.stack.push(this.currentObject);
-    this.currentObject = newObjects;
-    this.state = NEUTRAL;
-    return;
-  }
-  if (endThings.test(char)) {
-    this.afterItem(char);
-    return;
-  }
-  throw new Error('havn\'t handled "' +char + '" in keyword yet, index ' + this.place);
-};
-Parser.prototype.neutral = function(char) {
-  if (latin.test(char)) {
-    this.word = char;
-    this.state = KEYWORD;
-    return;
-  }
-  if (char === '"') {
-    this.word = '';
-    this.state = QUOTED;
-    return;
-  }
-  if (digets.test(char)) {
-    this.word = char;
-    this.state = NUMBER;
-    return;
-  }
-  if (endThings.test(char)) {
-    this.afterItem(char);
-    return;
-  }
-  throw new Error('havn\'t handled "' +char + '" in neutral yet, index ' + this.place);
-};
-Parser.prototype.output = function() {
-  while (this.place < this.text.length) {
-    this.readCharicter();
-  }
-  if (this.state === ENDED) {
-    return this.root;
-  }
-  throw new Error('unable to parse string "' +this.text + '". State is ' + this.state);
-};
-
-function parseString(txt) {
-  var parser = new Parser(txt);
-  return parser.output();
-}
-
-
-/***/ }),
-/* 103 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = sExpr;
-
-
-function mapit(obj, key, value) {
-  if (Array.isArray(key)) {
-    value.unshift(key);
-    key = null;
-  }
-  var thing = key ? {} : obj;
-
-  var out = value.reduce(function(newObj, item) {
-    sExpr(item, newObj);
-    return newObj
-  }, thing);
-  if (key) {
-    obj[key] = out;
-  }
-}
-
-function sExpr(v, obj) {
-  if (!Array.isArray(v)) {
-    obj[v] = true;
-    return;
-  }
-  var key = v.shift();
-  if (key === 'PARAMETER') {
-    key = v.shift();
-  }
-  if (v.length === 1) {
-    if (Array.isArray(v[0])) {
-      obj[key] = {};
-      sExpr(v[0], obj[key]);
-      return;
-    }
-    obj[key] = v[0];
-    return;
-  }
-  if (!v.length) {
-    obj[key] = true;
-    return;
-  }
-  if (key === 'TOWGS84') {
-    obj[key] = v;
-    return;
-  }
-  if (!Array.isArray(key)) {
-    obj[key] = {};
-  }
-
-  var i;
-  switch (key) {
-    case 'UNIT':
-    case 'PRIMEM':
-    case 'VERT_DATUM':
-      obj[key] = {
-        name: v[0].toLowerCase(),
-        convert: v[1]
-      };
-      if (v.length === 3) {
-        sExpr(v[2], obj[key]);
-      }
-      return;
-    case 'SPHEROID':
-    case 'ELLIPSOID':
-      obj[key] = {
-        name: v[0],
-        a: v[1],
-        rf: v[2]
-      };
-      if (v.length === 4) {
-        sExpr(v[3], obj[key]);
-      }
-      return;
-    case 'PROJECTEDCRS':
-    case 'PROJCRS':
-    case 'GEOGCS':
-    case 'GEOCCS':
-    case 'PROJCS':
-    case 'LOCAL_CS':
-    case 'GEODCRS':
-    case 'GEODETICCRS':
-    case 'GEODETICDATUM':
-    case 'EDATUM':
-    case 'ENGINEERINGDATUM':
-    case 'VERT_CS':
-    case 'VERTCRS':
-    case 'VERTICALCRS':
-    case 'COMPD_CS':
-    case 'COMPOUNDCRS':
-    case 'ENGINEERINGCRS':
-    case 'ENGCRS':
-    case 'FITTED_CS':
-    case 'LOCAL_DATUM':
-    case 'DATUM':
-      v[0] = ['name', v[0]];
-      mapit(obj, key, v);
-      return;
-    default:
-      i = -1;
-      while (++i < v.length) {
-        if (!Array.isArray(v[i])) {
-          return sExpr(v, obj[key]);
-        }
-      }
-      return mapit(obj, key, v);
-  }
-}
-
-
-/***/ }),
-/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10571,7 +10409,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _constants = __webpack_require__(2);
 
-var _Map = __webpack_require__(35);
+var _Map = __webpack_require__(34);
 
 var _Map2 = _interopRequireDefault(_Map);
 
@@ -10587,17 +10425,21 @@ var _CoordsTransform = __webpack_require__(39);
 
 var _CoordsTransform2 = _interopRequireDefault(_CoordsTransform);
 
-var _Ex = __webpack_require__(37);
+var _Ex = __webpack_require__(36);
 
 var _Ex2 = _interopRequireDefault(_Ex);
 
-var _LayerSwitcher = __webpack_require__(38);
+var _LayerSwitcher = __webpack_require__(37);
 
 var _LayerSwitcher2 = _interopRequireDefault(_LayerSwitcher);
 
-var _CustomCircle = __webpack_require__(36);
+var _CustomCircle = __webpack_require__(35);
 
 var _CustomCircle2 = _interopRequireDefault(_CustomCircle);
+
+var _Measure = __webpack_require__(38);
+
+var _Measure2 = _interopRequireDefault(_Measure);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -10614,6 +10456,7 @@ HMap.CoordsTransform = _CoordsTransform2.default;
 HMap.Ex = _Ex2.default;
 HMap.LayerSwitcher = _LayerSwitcher2.default;
 HMap.CustomCircle = _CustomCircle2.default;
+HMap.Measure = _Measure2.default;
 
 /**
  * Inherit the prototype methods from one constructor into another.

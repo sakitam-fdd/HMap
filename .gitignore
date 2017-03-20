@@ -1,5 +1,3 @@
 # Created by .ignore support plugin (hsz.mobi)
-.idea/HMap.iml
-.idea/inspectionProfiles/
-.idea/modules.xml
-.idea/workspace.xml
+.idea/
+node_modules/
