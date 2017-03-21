@@ -56,9 +56,20 @@
     geometry: new ol.format.WKT().readGeometry(geom['geometry'])
   });
   var style = new ol.style.Style({
-    stroke: new ol.style.Stroke({
-      color: options['strokeColor'],
-      width: options['strokeWidth']
+    image: new ol.style.Icon({
+      anchor: [0.5, 1],
+      anchorXUnits: 'fraction',
+      anchorYUnits: 'fraction',
+      src: 'images/marker.png'
+    }),
+    text: new ol.style.Text({
+      text: 1 + "",
+      offsetX: 0.5,
+      offsetY: -28,
+      font: "16px serif",
+      fill: new ol.style.Fill({
+        color: "#636363"
+      })
     })
   })
   map.on('click',function (ev) {

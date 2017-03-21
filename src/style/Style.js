@@ -20,6 +20,7 @@ class Style {
       });
     } else {
       style = new ol.style.Style({});
+      debugger
       if (options['stroke'] && this._getStroke(options['stroke'])) {
         style.setStroke(this._getStroke(options['stroke']))
       }

@@ -614,6 +614,7 @@ var Style = function () {
         });
       } else {
         style = new _constants.ol.style.Style({});
+        debugger;
         if (options['stroke'] && this._getStroke(options['stroke'])) {
           style.setStroke(this._getStroke(options['stroke']));
         }
@@ -3088,6 +3089,10 @@ var _Style = __webpack_require__(15);
 
 var _Style2 = _interopRequireDefault(_Style);
 
+var _Overlay = __webpack_require__(92);
+
+var _Overlay2 = _interopRequireDefault(_Overlay);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3238,7 +3243,7 @@ var Map = function (_mix) {
   }]);
 
   return Map;
-}((0, _mixin2.default)(_baseLayer2.default, _Controls2.default, _Interactions2.default, _View2.default, _Style2.default, _Layer2.default, _feature2.default));
+}((0, _mixin2.default)(_baseLayer2.default, _Controls2.default, _Interactions2.default, _View2.default, _Style2.default, _Layer2.default, _feature2.default, _Overlay2.default));
 
 exports.default = Map;
 module.exports = exports['default'];
@@ -10441,6 +10446,158 @@ HMap.inherits = function (childCtor, parentCtor) {
 HMap.nullFunction = function () {};
 
 exports.default = HMap;
+module.exports = exports['default'];
+
+/***/ }),
+/* 92 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Overlay = function () {
+  function Overlay(map) {
+    _classCallCheck(this, Overlay);
+
+    if (map && map instanceof ol.Map) {
+      /**
+       * 地图对象
+       * @type {ol.Map}
+       */
+      this.map = map;
+    } else {
+      throw new Error('传入的不是地图对象或者地图对象为空！');
+    }
+  }
+  /**
+   * 添加字体图标要素
+   * @param point
+   * @param params
+   */
+
+
+  _createClass(Overlay, [{
+    key: 'addOverlayPoint',
+    value: function addOverlayPoint(point, params) {
+      try {
+        if (!this.map) return;
+        var marker = document.createElement('div');
+        var attributes = point['attributes'];
+        var color = '#EB4F38',
+            fontSize = '31px',
+            opacity = 1,
+            style = null,
+            coordinate = [],
+            ele = null,
+            span = null;
+        var id = null;
+
+        marker.className = 'overlay-point iconfont';
+        if (attributes['style']) {
+          style = attributes['style'];
+        } else if (params['style']) {
+          style = params['style'];
+        }
+        if (style) {
+          if (style['className']) {
+            $(marker).addClass(style.className);
+          }
+          if (style['color']) {
+            color = style.color;
+          }
+          if (style['fontSize']) {
+            fontSize = style.fontSize;
+          }
+          if (style['opacity']) {
+            opacity = style.opacity;
+          }
+          if (style['element']) {
+            ele = document.createElement('div');
+            ele.className = style['element']['className'] ? style['element']['className'] : 'maked-point';
+            ele.style.top = style['element']['top'] ? style['element']['top'] : '-100%';
+            ele.style.left = style['element']['left'] ? style['element']['left'] : '100%';
+            ele.style.fontSize = style['element']['fontSize'] ? style['element']['fontSize'] : '16px';
+            ele.style.borderColor = style['element']['borderColor'] ? style['element']['borderColor'] : '#2A2A2A';
+            ele.style.borderWidth = style['element']['borderWidth'] ? style['element']['borderWidth'] : '1px';
+            ele.innerHTML = style['element']['text'] ? style['element']['text'] : '';
+          }
+        }
+        if (params['orderBy']) {
+          m = 1;
+          span = document.createElement('span');
+        } else if (params['orderByNum'] && attributes['number']) {
+          m = Number(attributes.number) + 1;
+          span = document.createElement('span');
+        }
+        if (!!span && ele == '') {
+          span.innerHTML = m;
+          marker.appendChild(span);
+        }
+        if (ele !== '') {
+          marker.appendChild(ele);
+        }
+        marker.style.color = color;
+        marker.style.fontSize = fontSize;
+        marker.style.opacity = opacity;
+        marker.selectColor = "#1b9de8";
+        marker.normalColor = color;
+        marker.onmousedown = function (ev) {
+          if (ev.button == 2) {
+            //鼠标右键
+            window.ObservableObj.set("rightMenuFeature", feature);
+            window.ObservableObj.dispatchEvent("rightMenuEvt");
+          } else if (ev.button == 0) {
+            //鼠标左键
+            window.ObservableObj.set("overlay", feature);
+            window.ObservableObj.dispatchEvent("overlayEvent");
+          }
+        };
+        if (point['attributes'] && (point['attributes']['id'] || point['attributes']['ID'])) {
+          var _id = point.attributes['id'] || point.attributes['ID'] || params['id'];
+          var overlaytemp = this.map.getOverlayById(_id);
+          if (!overlaytemp) {
+            var iconOverlay = new ol.Overlay({
+              element: marker,
+              positioning: 'center-center',
+              id: _id,
+              offset: [0, -10],
+              stopEvent: true
+            });
+            iconOverlay.setPosition(coordinate);
+            iconOverlay.setProperties(point['attributes']);
+            //设置标识参数
+            if (params) {
+              iconOverlay.set("params", params);
+              if (params['layerName']) {
+                iconOverlay.set("layerName", params.layerName);
+              }
+            }
+            this.map.addOverlay(iconOverlay);
+          } else {
+            overlaytemp.setElement(marker);
+          }
+        }
+      } catch (e) {
+        console.info(e);
+      }
+    }
+  }, {
+    key: 'addOverlayPoints',
+    value: function addOverlayPoints(points, params) {}
+  }]);
+
+  return Overlay;
+}();
+
+exports.default = Overlay;
 module.exports = exports['default'];
 
 /***/ })
