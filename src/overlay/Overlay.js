@@ -35,9 +35,9 @@ class Overlay {
     try {
       if (!this.map) return;
       let marker = document.createElement('div');
-      let span = document.createElement('span');
+      let _span = document.createElement('span');
       let attributes = point['attributes'];
-      let [color, fontSize, opacity, style, coordinate, ele, span] = ['#EB4F38', '31px', 1, null, [], null, null];
+      let [color, fontSize, opacity, style, coordinate, ele, _span] = ['#EB4F38', '31px', 1, null, [], null, null];
       let [id] = [null];
       marker.className = 'overlay-point iconfont';
       if (attributes['style']) {
