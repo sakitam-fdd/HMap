@@ -81,8 +81,8 @@ class Map extends mix(BaseLayers, Controls, Interactions, View, Style, Layer, Fe
      */
     this.map = new ol.Map({
       target: mapDiv,
-      loadTilesWhileAnimating: true,
-      loadTilesWhileInteracting: true,
+      loadTilesWhileAnimating: false,
+      loadTilesWhileInteracting: false,
       logo: this._addCopyRight(options['logo']),
       layers: this.addBaseLayers(options['baseLayers'], options['view']),
       view: this._addView(options['view']),

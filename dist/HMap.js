@@ -3259,8 +3259,8 @@ var Map = function (_mix) {
        */
       this.map = new _constants.ol.Map({
         target: mapDiv,
-        loadTilesWhileAnimating: true,
-        loadTilesWhileInteracting: true,
+        loadTilesWhileAnimating: false,
+        loadTilesWhileInteracting: false,
         logo: this._addCopyRight(options['logo']),
         layers: this.addBaseLayers(options['baseLayers'], options['view']),
         view: this._addView(options['view']),
