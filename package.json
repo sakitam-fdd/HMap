@@ -2,7 +2,7 @@
   "name": "HMap",
   "version": "1.1.0",
   "private": false,
-  "description": "HDSXTECH WEBGIS API",
+  "description": "WEBGIS API",
   "keywords": [
     "webgis",
     "canvas",
@@ -12,9 +12,9 @@
   "author": "FDD <smileFDD@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/smilefdd/"
+    "url": "https://github.com/sakitam-fdd/HMap.git"
   },
-  "main": "dist/map.js",
+  "main": "dist/HMap.js",
   "scripts": {
     "build": "webpack --env build",
     "dev": "webpack --progress --colors --watch --env dev",
