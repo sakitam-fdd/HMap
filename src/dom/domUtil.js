@@ -1,11 +1,20 @@
 /**
- * 通过id过去dom
+ * 通过id获取dom
  * @param id
  * @returns {Element}
  */
 export const get = (id) => {
   return typeof id === 'string' ? document.getElementById(id) : id;
 };
+
+/**
+ * 获取dom class
+ * @param elem
+ * @returns {*|getAttribute|string|string}
+ */
+export const getClass = ( elem ) => {
+  return elem.getAttribute && elem.getAttribute( "class" ) || "";
+}
 
 /**
  * 获取dom样式列表（）
@@ -111,6 +120,36 @@ export const removeClass = (el, name) => {
   if (el.classList !== undefined) {
     el.classList.remove(name);
   } else {
-    setClass(el, Util.trim((' ' + getClass(el) + ' ').replace(' ' + name + ' ', ' ')));
+    setClass(el, String.trim((' ' + getClass(el) + ' ').replace(' ' + name + ' ', ' ')));
   }
+}
+
+/**
+ * 设置class
+ * @param el
+ * @param name
+ */
+export const setClass = (el, name) => {
+  if (el.className.baseVal === undefined) {
+    el.className = name;
+  } else {
+    el.className.baseVal = name;
+  }
+}
+/**
+ * 去除字符串前后空格
+ * @param str
+ * @returns {*}
+ */
+export const trim = (str) => {
+  return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g, '');
+}
+
+/**
+ * 将类名截取成数组
+ * @param str
+ * @returns {Array|*}
+ */
+export const splitWords = (str) => {
+  return trim(str).split(/\s+/);
 }
