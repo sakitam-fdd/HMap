@@ -6,13 +6,13 @@
   <link rel="stylesheet" href="../dist/HMap.css" type="text/css">
 </head>
 <body>
-<button onclick="addPoint()">添加线</button>
-<button onclick="addPoints()">添加多线</button>
-<button onclick="removePointById()">通过ID移除标绘线</button>
-<button onclick="removePointByLayerName()">通过LayerName移除标绘线</button>
+<button onclick="addLine()">添加线</button>
+<button onclick="addLines()">添加多线</button>
+<button onclick="removeLineById()">通过ID移除标绘线</button>
+<button onclick="removeLineByLayerName()">通过LayerName移除标绘线</button>
 <div id="map"></div>
 <script src="lib/axios/axios.js"></script>
-<script src="../dist/HMap.min.js"></script>
+<script src="../dist/HMap.js"></script>
 <script type="text/javascript">
   var cor = [
     {
@@ -142,7 +142,7 @@
     ]
   });
   console.log(Maps);
-  function addPoint () {
+  function addLine () {
     // Make a request for a user with a given ID
     axios.get('./json/line.json')
       .then(function (response) {
@@ -155,7 +155,7 @@
         console.log(error);
       });
   }
-  function addPoints () {
+  function addLines () {
     axios.get('./json/lines.json')
       .then(function (response) {
         var lines = response['data']['data']['features'];
@@ -167,10 +167,10 @@
         console.log(error);
       });
   }
-  function removePointById () {
+  function removeLineById () {
     Maps.removeFeatureById('ecc9f2ba-f899-4adb-a86a-284d81bf2911')
   }
-  function removePointByLayerName () {
+  function removeLineByLayerName () {
     Maps.removeFeatureByLayerName('test')
   }
 </script>

@@ -22,11 +22,10 @@ class Feature extends mix(Style, Layer) {
    * @returns {*}
    */
   getFeatureById (id) {
-    let layers = this.map.getLayers(), feature;
+    let layers = this.map.getLayers(), feature = null;
     layers.forEach(layer => {
-      let source = layer.getSource();
-      if (source && source.getFeatureById) {
-        feature = source.getFeatureById(id);
+      if (layer && layer instanceof ol.layer.Vector && layer.getSource() && layer.getSource().getFeatureById) {
+        feature = layer.getSource().getFeatureById(id);
       }
     });
     return feature;

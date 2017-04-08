@@ -9,13 +9,13 @@ import View from './View'
 import Layer from '../layer/Layer'
 import Feature from '../feature/feature'
 import Style from '../style/Style'
-import Overlay from '../overlay/Overlay'
+// import Overlay from '../overlay/Overlay'
 
 const shapeType = {
   views: Symbol.for('views')
 };
 
-class Map extends mix(BaseLayers, Controls, Interactions, View, Style, Layer, Feature, Overlay) {
+class Map extends mix(BaseLayers, Controls, Interactions, View, Style, Layer, Feature) {
   constructor () {
     super();
     this.addPointHandlerClick = null;
@@ -81,8 +81,8 @@ class Map extends mix(BaseLayers, Controls, Interactions, View, Style, Layer, Fe
      */
     this.map = new ol.Map({
       target: mapDiv,
-      loadTilesWhileAnimating: true,
-      loadTilesWhileInteracting: true,
+      loadTilesWhileAnimating: false,
+      loadTilesWhileInteracting: false,
       logo: this._addCopyRight(options['logo']),
       layers: this.addBaseLayers(options['baseLayers'], options['view']),
       view: this._addView(options['view']),

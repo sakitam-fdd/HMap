@@ -11,11 +11,11 @@
   ],
   "pluginsConfig": {
     "edit-link": {
-      "base": "https://github.com/smileFDD/HMap/tree/master/docs/api",
+      "base": "https://github.com/sakitam-fdd/HMap/tree/master/docs/api",
       "label": "编辑此页"
     },
     "github": {
-      "url": "https://github.com/smileFDD/HMap.git"
+      "url": "https://github.com/sakitam-fdd/HMap.git"
     }
   },
   "links": {

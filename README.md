@@ -1,4 +1,4 @@
-# 恒达时讯WEBGIS地图类库
+# WEBGIS地图类库
 
 
 ## build
@@ -6,7 +6,7 @@
 > 重要: Github 仓库的 /dist 文件夹只有在新版本发布时才会更新。如果想要使用 Github 上 HMap 最新的源码，你需要自己构建。
 
 ```bash
-git clone https://github.com/smileFDD/HMap.git
+git clone https://github.com/sakitam-fdd/HMap.git
 npm install
 npm run dev
 npm run build
