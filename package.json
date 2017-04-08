@@ -12,7 +12,7 @@
   "author": "FDD <smileFDD@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/smilefdd/"
+    "url": "https://github.com/sakitam-fdd/HMap.git"
   },
   "main": "dist/map.js",
   "scripts": {
