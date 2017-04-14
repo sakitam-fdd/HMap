@@ -5,7 +5,7 @@
 > 重要: Github 仓库的 /dist 文件夹只有在新版本发布时才会更新。如果想要使用 Github 上 HMap 最新的源码，你需要自己构建。
 
 ```bash
-git clone https://github.com/smileFDD/HMap.git
+git clone https://github.com/sakitam-fdd/HMap.git
 npm install
 npm run dev
 npm run build
@@ -54,4 +54,29 @@ Maps.initMap('map', {
   }
 })
 console.log(Maps)
+```
+
+## 文档生成和查看
+
+> 首先安装gitbook
+
+```bash
+npm install // 或者
+npm install -g gitbook
+```
+> 安装相关插件
+
+```bash
+gitbook install
+```
+
+> 启动本地服务
+
+```bash
+gitbook serve
+```
+
+> 浏览器打开
+```bash
+http://localhost:4000
 ```

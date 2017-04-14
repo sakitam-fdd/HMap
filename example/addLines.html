@@ -10,6 +10,8 @@
 <button onclick="addLines()">添加多线</button>
 <button onclick="removeLineById()">通过ID移除标绘线</button>
 <button onclick="removeLineByLayerName()">通过LayerName移除标绘线</button>
+<button onclick="highlightFeat()">高亮要素</button>
+<button onclick="unHighlightFeat()">恢复默认</button>
 <div id="map"></div>
 <script src="lib/axios/axios.js"></script>
 <script src="../dist/HMap.js"></script>
@@ -147,9 +149,22 @@
     axios.get('./json/line.json')
       .then(function (response) {
         var line = response['data']['data']['features'][0];
-        Maps.addPolyline(line, {
+        line['attributes']['style'] = {
+          stroke: {
+            strokeWidth: 4,
+            strokeColor: '#0000EE'
+          }
+        }
+        line['attributes']['selectStyle'] = {
+          stroke: {
+            strokeWidth: 6,
+            strokeColor: '#E52929'
+          }
+        }
+        var feat = Maps.addPolyline(line, {
           layerName: 'test'
         });
+        console.log(feat.getGeometry().getCoordinates())
       })
       .catch(function (error) {
         console.log(error);
@@ -172,6 +187,13 @@
   }
   function removeLineByLayerName () {
     Maps.removeFeatureByLayerName('test')
+  }
+  function highlightFeat() {
+    Maps.highLightFeature('ecc9f2ba-f899-4adb-a86a-284d81bf2911', '', 'test')
+  }
+
+  function unHighlightFeat () {
+    Maps.unHighLightFeature('ecc9f2ba-f899-4adb-a86a-284d81bf2911', '', 'test')
   }
 </script>
 </body>

@@ -659,11 +659,10 @@ var Style = function () {
 
     /**
      * 获取点样式
-     * @param attr
+     * @param options
      * @returns {ol.style.Style}
      */
-    value: function getStyleByPoint(attr) {
-      var options = attr['style'] || undefined;
+    value: function getStyleByPoint(options) {
       var style = null;
       if (!options) {
         style = new _constants.ol.style.Style({
@@ -677,7 +676,6 @@ var Style = function () {
         });
       } else {
         style = new _constants.ol.style.Style({});
-        debugger;
         if (options['stroke'] && this._getStroke(options['stroke'])) {
           style.setStroke(this._getStroke(options['stroke']));
         }
@@ -696,14 +694,13 @@ var Style = function () {
 
     /**
      * 获取线样式
-     * @param attr
+     * @param options
      * @returns {ol.style.Style}
      */
 
   }, {
     key: 'getStyleByLine',
-    value: function getStyleByLine(attr) {
-      var options = attr['style'] || undefined;
+    value: function getStyleByLine(options) {
       var style = null;
       if (!options) {
         style = new _constants.ol.style.Style({
@@ -875,7 +872,7 @@ var Style = function () {
     key: '_getFill',
     value: function _getFill(options) {
       try {
-        var fill = new _constants.ol.Fill({
+        var fill = new _constants.ol.style.Fill({
           color: options['fillColor'] ? options['fillColor'] : undefined
         });
         if (fill && fill instanceof _constants.ol.style.Fill) {
@@ -1304,12 +1301,19 @@ var Feature = function (_mix) {
      */
     value: function addPoint(point, params) {
       var geometry = this._getGeometryFromPoint(point);
-      var style = this.getStyleByPoint(point['attributes']);
       var feature = new _constants.ol.Feature({
         geometry: geometry,
         params: params
       });
-      feature.setStyle(style);
+      var style = this.getStyleByPoint(point['attributes']['style']);
+      var selectStyle = this.getStyleByPoint(point['attributes']['selectStyle']);
+      if (style && feature) {
+        feature.setStyle(style);
+        feature.set('style', style);
+        if (selectStyle) {
+          feature.set('selectStyle', selectStyle);
+        }
+      }
       if (point['attributes'] && (point['attributes']['id'] || point['attributes']['ID'])) {
         // let id = (point['attributes']['id'] ? point['attributes']['id'] : (point['attributes']['ID'] ? point['attributes']['ID'] : params['id']));
         var id = point.attributes['id'] || point.attributes['ID'] || params['id'];
@@ -1381,10 +1385,15 @@ var Feature = function (_mix) {
           geometry: new _constants.ol.format.WKT().readGeometry(line.geometry)
         });
       }
-      var style = this.getStyleByLine(line['attributes']);
+      var style = this.getStyleByLine(line['attributes']['style']);
+      var selectStyle = this.getStyleByLine(line['attributes']['selectStyle']);
       var extent = linefeature.getGeometry().getExtent();
       if (style && linefeature) {
         linefeature.setStyle(style);
+        linefeature.set('style', style);
+        if (selectStyle) {
+          linefeature.set('selectStyle', selectStyle);
+        }
       }
       if (line['attributes'] && (line.attributes['ID'] || line.attributes['id'])) {
         // let id = (line['attributes']['id'] ? line['attributes']['id'] : (line['attributes']['ID'] ? line['attributes']['ID'] : params['id']));
@@ -1444,10 +1453,14 @@ var Feature = function (_mix) {
         var polygonFeature = new _constants.ol.Feature({
           geometry: new _constants.ol.format.WKT().readGeometry(polygon.geometry)
         });
-        var style = this.getStyleByPolygon(polygon['attributes']);
+        var style = this.getStyleByPolygon(polygon['attributes']['style']);
+        var selectStyle = this.getStyleByPolygon(polygon['attributes']['selectStyle']);
         var extent = polygonFeature.getGeometry().getExtent();
         if (style && polygonFeature) {
           polygonFeature.setStyle(style);
+          if (selectStyle) {
+            polygonFeature.set('selectStyle', selectStyle);
+          }
         }
         if (polygon['attributes'] && (polygon.attributes['ID'] || polygon.attributes['id'])) {
           var id = polygon.attributes['id'] || polygon.attributes['ID'] || params['id'];
@@ -1602,6 +1615,78 @@ var Feature = function (_mix) {
         });
       } else {
         console.info('id为空或者不是数组！');
+      }
+    }
+
+    /**
+     * 高亮要素
+     * @param id (若传feat时其他参数可不传)
+     * @param feat
+     * @param layerName (传入id时layerName可不传)
+     * @returns {*}
+     */
+
+  }, {
+    key: 'highLightFeature',
+    value: function highLightFeature(id, feat, layerName) {
+      if (!this.map) return;
+      if (feat && feat instanceof _constants.ol.Feature) {
+        var selectStyle = feat.get('selectStyle');
+        if (selectStyle && selectStyle instanceof _constants.ol.style.Style) {
+          feat.setStyle(selectStyle);
+        } else if (selectStyle) {
+          var st = this.getStyleByPoint(selectStyle);
+          feat.setStyle(st);
+        }
+        return feat;
+      } else if (id && id.trim() !== "''") {
+        var feature = this.getFeatureById(id, layerName);
+        if (feature && feature instanceof _constants.ol.Feature) {
+          var _selectStyle = feature.get('selectStyle');
+          if (_selectStyle && _selectStyle instanceof _constants.ol.style.Style) {
+            feature.setStyle(_selectStyle);
+          } else if (_selectStyle) {
+            var _st = this.getStyleByPoint(_selectStyle);
+            feature.setStyle(_st);
+          }
+        }
+        return feature;
+      }
+    }
+
+    /**
+     * 取消高亮状态
+     * @param id (若传feat时其他参数可不传)
+     * @param feat
+     * @param layerName (传入id时layerName可不传)
+     * @returns {*}
+     */
+
+  }, {
+    key: 'unHighLightFeature',
+    value: function unHighLightFeature(id, feat, layerName) {
+      if (!this.map) return;
+      if (feat && feat instanceof _constants.ol.Feature) {
+        var normalStyle = feat.get('style');
+        if (normalStyle && normalStyle instanceof _constants.ol.style.Style) {
+          feat.setStyle(normalStyle);
+        } else if (normalStyle) {
+          var st = this.getStyleByPoint(normalStyle);
+          feat.setStyle(st);
+        }
+        return feat;
+      } else if (id && id.trim() !== "''") {
+        var feature = this.getFeatureById(id, layerName);
+        if (feature && feature instanceof _constants.ol.Feature) {
+          var _normalStyle = feature.get('style');
+          if (_normalStyle && _normalStyle instanceof _constants.ol.style.Style) {
+            feature.setStyle(_normalStyle);
+          } else if (_normalStyle) {
+            var _st2 = this.getStyleByPoint(_normalStyle);
+            feature.setStyle(_st2);
+          }
+        }
+        return feature;
       }
     }
   }]);

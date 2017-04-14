@@ -76,7 +76,7 @@ gitbook install
 > 启动本地服务
 
 ```bash
-gitbook server
+gitbook serve
 ```
 
 > 浏览器打开

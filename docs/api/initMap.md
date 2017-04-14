@@ -1,9 +1,26 @@
 # 加载简单地图
 
-## API
+###  引用
+  
+```html
+  <script src='../dist/HMap.min.js'></script>
+```
 
-### `var Maps = new HMap.Map()`
-> 创建地图实例
+### 创建
+
+```html
+  <div id='map'></div>
+```
+
+```js
+  var Maps = new HMap.Map()
+```
+
+### 初始化
+```js
+  Maps.initMap('map', {})
+```
+
 
 ### `Maps.initMap('map', params)`
 > 接收两个参数
@@ -21,21 +38,19 @@ var params = { // 简单参数说明
 }
 ```
 
-## Examples
+## 示例
 
 [加载简单地图](../../example/loadSimpleMap.html)
 
-<html lang="en">
-<head>
-	<link rel="stylesheet" href="./lib/map/HMap.css" type="text/css">
-  <script src="./lib/map/HMap.js"></script>
-  <style>
-    .map {
-      width: 100%;
-      height: 300px;
-    }
-  </style>
-</head>
+{% raw %}
+<link rel="stylesheet" href="./lib/map/HMap.css" type="text/css">
+<script src="./lib/map/HMap.js"></script>
+<style>
+.map {
+  width: 100%;
+  height: 300px;
+}
+</style>
 <div id="map" class="map"></div>
 <script type="text/javascript">
   var Maps = new HMap.Map();
@@ -45,7 +60,7 @@ var params = { // 简单参数说明
       enableRotation: true, // 是否允许旋转
       projection: 'EPSG:3857',
       rotation: 0,
-      zoom: 0, // resolution
+      zoom: 5, // resolution
       zoomFactor: 2 // 用于约束分变率的缩放因子（高分辨率设备需要注意）
     },
     logo: {},
@@ -53,14 +68,14 @@ var params = { // 简单参数说明
   });
   console.log(Maps);
 </script>
-</body>
-</html>
+{% endraw %}
 
 ```html
-<link rel="stylesheet" href="https://smilefdd.github.io/public/scripts/map/HMap.css" type="text/css">
-<script src="https://smilefdd.github.io/public/scripts/map/HMap.js"></script>
+<link rel="stylesheet" href="./lib/map/HMap.css" type="text/css">
+<script src="./lib/map/map/HMap.js"></script>
 <div id="map" class="map"></div>
 ```
+
 ```javascript
 var Maps = new HMap.Map();
   Maps.initMap('map', {
@@ -78,14 +93,14 @@ var Maps = new HMap.Map();
   console.log(Maps);
 ```
 
-### Parameters:
+### 参数:
 
 |Name|Type|Description|
 |:---|:---|:----------|
 |`element`|`Element`| 元素id |
 |`params`|`Object`| 包含视图`view`,控制器`controls`,交互工具`interactions`,版权`logo`,底图`baseLayers` |
 
-### Methods
+### 方法
 
 ##### `initMap(mapDiv, params)`
 
@@ -100,6 +115,6 @@ var Maps = new HMap.Map();
 ### `addControl(control)`
 > 添加控制器（control instanceof ol.control.Control）
 
-### Inherited
+### 继承
 
 

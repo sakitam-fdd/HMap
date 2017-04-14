@@ -175,12 +175,19 @@ class Feature extends mix(Style, Layer) {
    */
   addPoint (point, params) {
     let geometry = this._getGeometryFromPoint(point);
-    let style = this.getStyleByPoint(point['attributes']);
     let feature = new ol.Feature({
       geometry: geometry,
       params: params
     });
-    feature.setStyle(style);
+    let style = this.getStyleByPoint(point['attributes']['style']);
+    let selectStyle = this.getStyleByPoint(point['attributes']['selectStyle']);
+    if (style && feature) {
+      feature.setStyle(style);
+      feature.set('style', style);
+      if (selectStyle) {
+        feature.set('selectStyle', selectStyle)
+      }
+    }
     if (point['attributes'] && (point['attributes']['id'] || point['attributes']['ID'])) {
       // let id = (point['attributes']['id'] ? point['attributes']['id'] : (point['attributes']['ID'] ? point['attributes']['ID'] : params['id']));
       let id = (point.attributes['id'] || point.attributes['ID'] || params['id']);
@@ -245,10 +252,15 @@ class Feature extends mix(Style, Layer) {
         geometry: new ol.format.WKT().readGeometry(line.geometry)
       });
     }
-    let style = this.getStyleByLine(line['attributes']);
+    let style = this.getStyleByLine(line['attributes']['style']);
+    let selectStyle = this.getStyleByLine(line['attributes']['selectStyle'])
     let extent = linefeature.getGeometry().getExtent();
     if (style && linefeature) {
       linefeature.setStyle(style);
+      linefeature.set('style', style)
+      if (selectStyle) {
+        linefeature.set('selectStyle', selectStyle)
+      }
     }
     if (line['attributes'] && (line.attributes['ID'] || line.attributes['id'])) {
       // let id = (line['attributes']['id'] ? line['attributes']['id'] : (line['attributes']['ID'] ? line['attributes']['ID'] : params['id']));
@@ -301,10 +313,14 @@ class Feature extends mix(Style, Layer) {
       let polygonFeature = new ol.Feature({
         geometry: new ol.format.WKT().readGeometry(polygon.geometry)
       });
-      let style = this.getStyleByPolygon(polygon['attributes']);
+      let style = this.getStyleByPolygon(polygon['attributes']['style']);
+      let selectStyle = this.getStyleByPolygon(polygon['attributes']['selectStyle'])
       let extent = polygonFeature.getGeometry().getExtent();
       if (style && polygonFeature) {
         polygonFeature.setStyle(style);
+        if (selectStyle) {
+          polygonFeature.set('selectStyle', selectStyle)
+        }
       }
       if (polygon['attributes'] && (polygon.attributes['ID'] || polygon.attributes['id'])) {
         let id = (polygon.attributes['id'] || polygon.attributes['ID'] || params['id']);
@@ -436,6 +452,72 @@ class Feature extends mix(Style, Layer) {
       })
     } else {
       console.info('id为空或者不是数组！')
+    }
+  }
+
+  /**
+   * 高亮要素
+   * @param id (若传feat时其他参数可不传)
+   * @param feat
+   * @param layerName (传入id时layerName可不传)
+   * @returns {*}
+   */
+  highLightFeature (id, feat, layerName) {
+    if (!this.map) return;
+    if (feat && feat instanceof ol.Feature) {
+      let selectStyle = feat.get('selectStyle');
+      if (selectStyle && selectStyle instanceof ol.style.Style) {
+        feat.setStyle(selectStyle);
+      } else if (selectStyle) {
+        let st = this.getStyleByPoint(selectStyle)
+        feat.setStyle(st)
+      }
+      return feat;
+    } else if (id && id.trim() !== "''") {
+      let feature = this.getFeatureById(id, layerName);
+      if (feature && feature instanceof ol.Feature) {
+        let selectStyle = feature.get('selectStyle');
+        if (selectStyle && selectStyle instanceof ol.style.Style) {
+          feature.setStyle(selectStyle);
+        } else if (selectStyle) {
+          let st = this.getStyleByPoint(selectStyle)
+          feature.setStyle(st)
+        }
+      }
+      return feature;
+    }
+  }
+
+  /**
+   * 取消高亮状态
+   * @param id (若传feat时其他参数可不传)
+   * @param feat
+   * @param layerName (传入id时layerName可不传)
+   * @returns {*}
+   */
+  unHighLightFeature (id, feat, layerName) {
+    if (!this.map) return;
+    if (feat && feat instanceof ol.Feature) {
+      let normalStyle = feat.get('style');
+      if (normalStyle && normalStyle instanceof ol.style.Style) {
+        feat.setStyle(normalStyle);
+      } else if (normalStyle) {
+        let st = this.getStyleByPoint(normalStyle)
+        feat.setStyle(st)
+      }
+      return feat;
+    } else if (id && id.trim() !== "''") {
+      let feature = this.getFeatureById(id, layerName);
+      if (feature && feature instanceof ol.Feature) {
+        let normalStyle = feature.get('style');
+        if (normalStyle && normalStyle instanceof ol.style.Style) {
+          feature.setStyle(normalStyle);
+        } else if (normalStyle) {
+          let st = this.getStyleByPoint(normalStyle)
+          feature.setStyle(st)
+        }
+      }
+      return feature;
     }
   }
 }

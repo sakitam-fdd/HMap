@@ -10,6 +10,8 @@
 <button onclick="addPoints()">添加多点</button>
 <button onclick="removePointById()">通过ID移除标绘点</button>
 <button onclick="removePointByLayerName()">通过LayerName移除标绘点</button>
+<button onclick="highlightFeat()">高亮要素</button>
+<button onclick="unHighlightFeat()">恢复默认</button>
 <div id="map"></div>
 <script src="../dist/HMap.js"></script>
 <script type="text/javascript">
@@ -172,6 +174,24 @@
           icon: {
             imageSrc: './images/icon_position.png'
           }
+        },
+        selectStyle: {
+          text: {
+            text: '1',
+            textFont: '14px sans-serif',
+            textOffsetX: -3,
+            textOffsetY: 0,
+            textStroke: {
+              strokeColor: '#FFFFFF',
+              strokeWidth: 1
+            },
+            textFill: {
+              fillColor: 'transparent'
+            }
+          },
+          icon: {
+            imageSrc: './images/icon_position_hover.png'
+          }
         }
       },
       geometry: 'POINT (115.92466595234826 27.428038204473552)',
@@ -228,6 +248,14 @@
   }
   function removePointByLayerName () {
     Maps.removeFeatureByLayerName('test')
+  }
+
+  function highlightFeat() {
+    Maps.highLightFeature('01', '', 'test')
+  }
+
+  function unHighlightFeat () {
+    Maps.unHighLightFeature('01', '', 'test')
   }
 </script>
 </body>

@@ -2,11 +2,10 @@ import { ol } from '../constants'
 class Style {
   /**
    * 获取点样式
-   * @param attr
+   * @param options
    * @returns {ol.style.Style}
    */
-  getStyleByPoint (attr) {
-    let options = attr['style'] || undefined;
+  getStyleByPoint (options) {
     let style = null;
     if (!options) {
       style = new ol.style.Style({
@@ -20,7 +19,6 @@ class Style {
       });
     } else {
       style = new ol.style.Style({});
-      debugger
       if (options['stroke'] && this._getStroke(options['stroke'])) {
         style.setStroke(this._getStroke(options['stroke']))
       }
@@ -39,11 +37,10 @@ class Style {
 
   /**
    * 获取线样式
-   * @param attr
+   * @param options
    * @returns {ol.style.Style}
    */
-  getStyleByLine (attr) {
-    let options = attr['style'] || undefined;
+  getStyleByLine (options) {
     let style = null;
     if (!options) {
       style = new ol.style.Style({
@@ -200,7 +197,7 @@ class Style {
    */
   _getFill (options) {
     try {
-      let fill = new ol.Fill({
+      let fill = new ol.style.Fill({
         color: (options['fillColor'] ? options['fillColor'] : undefined)
       });
       if (fill && fill instanceof ol.style.Fill) {
