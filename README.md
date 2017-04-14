@@ -1,5 +1,5 @@
 # WEBGIS地图类库
-![图片](https://www.travis-ci.org/sakitam-fdd/HMap.svg?branch=master)
+[![Build Status](https://www.travis-ci.org/sakitam-fdd/HMap.svg?branch=master)](https://www.travis-ci.org/sakitam-fdd/HMap)
 
 ## build
 
