@@ -1361,6 +1361,25 @@ var Feature = function (_mix) {
     }
 
     /**
+     * 设置点的空间信息
+     * @param point
+     * @param geometry
+     */
+
+  }, {
+    key: 'setPointGeometry',
+    value: function setPointGeometry(point, geometry) {
+      if (point && geometry && point instanceof _constants.ol.Feature) {
+        var _geometry = this._getGeometryFromPoint({
+          geometry: geometry
+        });
+        point.setGeometry(_geometry);
+      } else {
+        console.info('传入数据有误！');
+      }
+    }
+
+    /**
      * 添加线要素
      * @param line
      * @param params
@@ -5347,6 +5366,12 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _constants = __webpack_require__(2);
 
+var _appDrag = __webpack_require__(108);
+
+var _appDrag2 = _interopRequireDefault(_appDrag);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Interactions = function () {
@@ -5369,7 +5394,7 @@ var Interactions = function () {
         pinchZoom: options['pinchZoom'] === false ? false : true,
         zoomDelta: options['zoomDelta'] && typeof options['zoomDelta'] === 'number' ? options['zoomDelta'] : 1, // 缩放增量（默认一级）
         zoomDuration: options['zoomDuration'] && typeof options['zoomDelta'] === 'number' ? options['zoomDuration'] : 300 // 缩放持续时间
-      });
+      }).extend([new _appDrag2.default.Drag()]);
     }
   }]);
 
@@ -12051,6 +12076,136 @@ function sExpr(v, obj) {
   }
 }
 
+
+/***/ }),
+/* 107 */,
+/* 108 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _constants = __webpack_require__(2);
+
+var app = {};
+app.Drag = function () {
+  _constants.ol.interaction.Pointer.call(this, {
+    handleDownEvent: app.Drag.prototype.handleDownEvent,
+    handleDragEvent: app.Drag.prototype.handleDragEvent,
+    handleMoveEvent: app.Drag.prototype.handleMoveEvent,
+    handleUpEvent: app.Drag.prototype.handleUpEvent
+  });
+  this.customType = "appDrag";
+  /**
+   * @type {ol.Pixel}
+   * @private
+   */
+  this.coordinate_ = null;
+
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  this.cursor_ = 'pointer';
+
+  /**
+   * @type {ol.Feature}
+   * @private
+   */
+  this.feature_ = null;
+
+  /**
+   * @type {string|undefined}
+   * @private
+   */
+  this.previousCursor_ = undefined;
+};
+_constants.ol.inherits(app.Drag, _constants.ol.interaction.Pointer);
+
+/**
+ * @param {ol.MapBrowserEvent} evt Map browser event.
+ * @return {boolean} `true` to start the drag sequence.
+ */
+app.Drag.prototype.handleDownEvent = function (evt) {
+  if (evt.originalEvent.button === 0 /*鼠标左键*/) {
+      var map = evt.map;
+      var feature = map.forEachFeatureAtPixel(evt.pixel, function (feature) {
+        return feature;
+      });
+      if (feature && feature.get("params") && feature.get("params").moveable) {
+        this.coordinate_ = evt.coordinate;
+        this.feature_ = feature;
+      }
+      map.dispatchEvent({
+        type: 'mouseDownEvent',
+        originEvent: evt,
+        value: feature
+      });
+      return !!feature;
+    }
+};
+
+/**
+ * @param {ol.MapBrowserEvent} evt Map browser event.
+ */
+app.Drag.prototype.handleDragEvent = function (evt) {
+  if (!this.coordinate_) {
+    return;
+  }
+  var deltaX = evt.coordinate[0] - this.coordinate_[0];
+  var deltaY = evt.coordinate[1] - this.coordinate_[1];
+  var geometry = /** @type {ol.geom.SimpleGeometry} */
+  this.feature_.getGeometry();
+  geometry.translate(deltaX, deltaY);
+  this.coordinate_[0] = evt.coordinate[0];
+  this.coordinate_[1] = evt.coordinate[1];
+  this.feature_.dispatchEvent("featureMove");
+};
+
+/**
+ * @param {ol.MapBrowserEvent} evt Event.
+ */
+app.Drag.prototype.handleMoveEvent = function (evt) {
+  if (this.cursor_) {
+    var map = evt.map;
+    var feature = null;
+    if (this.feature_) {
+      feature = this.feature_;
+    } else {
+      feature = map.forEachFeatureAtPixel(evt.pixel, function (feature) {
+        return feature;
+      });
+    }
+
+    var element = evt.map.getTargetElement();
+    if (feature) {
+      if (element.style.cursor != this.cursor_) {
+        this.previousCursor_ = element.style.cursor;
+        element.style.cursor = this.cursor_;
+      }
+    } else if (this.previousCursor_ !== undefined) {
+      element.style.cursor = this.previousCursor_;
+      this.previousCursor_ = undefined;
+    }
+  }
+};
+
+/**
+ * @return {boolean} `false` to stop the drag sequence.
+ */
+app.Drag.prototype.handleUpEvent = function () {
+  window.testdrag = false;
+  this.coordinate_ = null;
+  this.feature_ = null;
+  return false;
+};
+
+exports.default = app;
+module.exports = exports['default'];
 
 /***/ })
 /******/ ]);
