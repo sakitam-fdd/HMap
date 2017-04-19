@@ -2,19 +2,20 @@ import { ol } from '../constants'
 import app from './appDrag'
 class Interactions {
   _addInteractions (params) {
-    let options = params || {};
+    let options = params || {}
+    /* eslint new-cap: ["error", { "newIsCap": false }] */
     return new ol.interaction.defaults({
-      altShiftDragRotate: ((options['altShiftDragRotate'] === false) ? false : true),
-      doubleClickZoom: ((options['doubleClickZoom'] === false) ? false : true),
-      keyboard: ((options['keyboard'] === false) ? false : true),
-      mouseWheelZoom: ((options['mouseWheelZoom'] === false) ? false : true),
-      shiftDragZoom: ((options['shiftDragZoom'] === false) ? false : true),
-      dragPan: ((options['dragPan'] === false) ? false : true),
-      pinchRotate: ((options['pinchRotate'] === false) ? false : true),
-      pinchZoom: ((options['pinchZoom'] === false) ? false : true),
+      altShiftDragRotate: ((options['altShiftDragRotate'] === false) ? options['altShiftDragRotate'] : true),
+      doubleClickZoom: ((options['doubleClickZoom'] === false) ? options['doubleClickZoom'] : true),
+      keyboard: ((options['keyboard'] === false) ? options['keyboard'] : true),
+      mouseWheelZoom: ((options['mouseWheelZoom'] === false) ? options['mouseWheelZoom'] : true),
+      shiftDragZoom: ((options['shiftDragZoom'] === false) ? options['shiftDragZoom'] : true),
+      dragPan: ((options['dragPan'] === false) ? options['dragPan'] : true),
+      pinchRotate: ((options['pinchRotate'] === false) ? options['pinchRotate'] : true),
+      pinchZoom: ((options['pinchZoom'] === false) ? options['pinchZoom'] : true),
       zoomDelta: ((options['zoomDelta'] && (typeof (options['zoomDelta'])) === 'number') ? options['zoomDelta'] : 1), // 缩放增量（默认一级）
       zoomDuration: (options['zoomDuration'] && (typeof (options['zoomDelta'])) === 'number') ? options['zoomDuration'] : 300 // 缩放持续时间
-    }).extend([new app.Drag()]);
+    }).extend([new app.Drag()])
   }
 }
 

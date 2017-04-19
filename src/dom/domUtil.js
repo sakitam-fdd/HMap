@@ -4,16 +4,16 @@
  * @returns {Element}
  */
 export const get = (id) => {
-  return typeof id === 'string' ? document.getElementById(id) : id;
-};
+  return typeof id === 'string' ? document.getElementById(id) : id
+}
 
 /**
  * 获取dom class
  * @param elem
  * @returns {*|getAttribute|string|string}
  */
-export const getClass = ( elem ) => {
-  return elem.getAttribute && elem.getAttribute( "class" ) || "";
+export const getClass = (elem) => {
+  return elem.getAttribute && elem.getAttribute('class') || ''
 }
 
 /**
@@ -23,12 +23,12 @@ export const getClass = ( elem ) => {
  * @returns {*}
  */
 export const getStyle = (el, style) => {
-  let value = el.style[style] || (el.currentStyle && el.currentStyle[style]);
+  let value = el.style[style] || (el.currentStyle && el.currentStyle[style])
   if ((!value || value === 'auto') && document.defaultView) {
-    let css = document.defaultView.getComputedStyle(el, null);
-    value = css ? css[style] : null;
+    let css = document.defaultView.getComputedStyle(el, null)
+    value = css ? css[style] : null
   }
-  return value === 'auto' ? null : value;
+  return value === 'auto' ? null : value
 }
 
 /**
@@ -39,24 +39,24 @@ export const getStyle = (el, style) => {
  * @returns {Element}
  */
 export const create = (tagName, className, container) => {
-  let el = document.createElement(tagName);
-  el.className = className || '';
+  let el = document.createElement(tagName)
+  el.className = className || ''
   if (container) {
-    container.appendChild(el);
+    container.appendChild(el)
   }
-  return el;
-};
+  return el
+}
 
 /**
  * 移除当前dom
  * @param el
  */
 export const remove = (el) => {
-  let parent = el.parentNode;
+  let parent = el.parentNode
   if (parent) {
-    parent.removeChild(el);
+    parent.removeChild(el)
   }
-};
+}
 
 /**
  * 将dom致空
@@ -64,7 +64,7 @@ export const remove = (el) => {
  */
 export const empty = (el) => {
   while (el.firstChild) {
-    el.removeChild(el.firstChild);
+    el.removeChild(el.firstChild)
   }
 }
 
@@ -73,7 +73,7 @@ export const empty = (el) => {
  * @param el
  */
 export const toFront = (el) => {
-  el.parentNode.appendChild(el);
+  el.parentNode.appendChild(el)
 }
 
 /**
@@ -81,17 +81,16 @@ export const toFront = (el) => {
  * @param el
  */
 export const toBack = (el) => {
-  let parent = el.parentNode;
-  parent.insertBefore(el, parent.firstChild);
+  let parent = el.parentNode
+  parent.insertBefore(el, parent.firstChild)
 }
-
 
 export const hasClass = (el, name) => {
   if (el.classList !== undefined) {
-    return el.classList.contains(name);
+    return el.classList.contains(name)
   }
-  let className = getClass(el);
-  return className.length > 0 && new RegExp('(^|\\s)' + name + '(\\s|$)').test(className);
+  let className = getClass(el)
+  return className.length > 0 && new RegExp('(^|\\s)' + name + '(\\s|$)').test(className)
 }
 
 /**
@@ -101,13 +100,13 @@ export const hasClass = (el, name) => {
  */
 export const addClass = (el, name) => {
   if (el.classList !== undefined) {
-    let classes = Util.splitWords(name);
+    let classes = Util.splitWords(name)
     for (let i = 0, len = classes.length; i < len; i++) {
-      el.classList.add(classes[i]);
+      el.classList.add(classes[i])
     }
   } else if (!hasClass(el, name)) {
-    let className = getClass(el);
-    setClass(el, (className ? className + ' ' : '') + name);
+    let className = getClass(el)
+    setClass(el, (className ? className + ' ' : '') + name)
   }
 }
 
@@ -118,9 +117,9 @@ export const addClass = (el, name) => {
  */
 export const removeClass = (el, name) => {
   if (el.classList !== undefined) {
-    el.classList.remove(name);
+    el.classList.remove(name)
   } else {
-    setClass(el, String.trim((' ' + getClass(el) + ' ').replace(' ' + name + ' ', ' ')));
+    setClass(el, String.trim((' ' + getClass(el) + ' ').replace(' ' + name + ' ', ' ')))
   }
 }
 
@@ -131,9 +130,9 @@ export const removeClass = (el, name) => {
  */
 export const setClass = (el, name) => {
   if (el.className.baseVal === undefined) {
-    el.className = name;
+    el.className = name
   } else {
-    el.className.baseVal = name;
+    el.className.baseVal = name
   }
 }
 /**
@@ -142,7 +141,7 @@ export const setClass = (el, name) => {
  * @returns {*}
  */
 export const trim = (str) => {
-  return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g, '');
+  return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g, '')
 }
 
 /**
@@ -151,5 +150,5 @@ export const trim = (str) => {
  * @returns {Array|*}
  */
 export const splitWords = (str) => {
-  return trim(str).split(/\s+/);
+  return trim(str).split(/\s+/)
 }

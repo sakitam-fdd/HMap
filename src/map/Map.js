@@ -11,61 +11,57 @@ import Feature from '../feature/feature'
 import Style from '../style/Style'
 // import Overlay from '../overlay/Overlay'
 
-const shapeType = {
-  views: Symbol.for('views')
-};
-
 class Map extends mix(BaseLayers, Controls, Interactions, View, Style, Layer, Feature) {
   constructor () {
-    super();
-    this.addPointHandlerClick = null;
-    this.plotDraw = null;//标绘工具
-    this.plotEdit = null;
-    this._lastDrawInteractionGeometry = null;
-    window.ObservableObj = new ol.Object();
-    proj4.defs('EPSG:4490', '+proj=longlat +ellps=GRS80 +no_defs');
-    ol.proj.setProj4(proj4);
+    super()
+    this.addPointHandlerClick = null
+    this.plotDraw = null // 标绘工具
+    this.plotEdit = null
+    this._lastDrawInteractionGeometry = null
+    window.ObservableObj = new ol.Object()
+    proj4.defs('EPSG:4490', '+proj=longlat +ellps=GRS80 +no_defs')
+    ol.proj.setProj4(proj4)
 
     /**
      * 当前地图线要素
      * @type {Array}
      */
-    this.currentMapLines = [];
+    this.currentMapLines = []
     /**
      * 当前地图点要素
      * @type {Array}
      */
-    this.currentMapPoints = [];
+    this.currentMapPoints = []
     /**
      * 当前地图面要素
      * @type {Array}
      */
-    this.currentMapPolygon = [];
+    this.currentMapPolygon = []
     /**
      * 当前地图线图层
      * @type {Array}
      */
-    this.lineLayers = new Set();
+    this.lineLayers = new Set()
     /**
      * 当前地图点图层
      * @type {Array}
      */
-    this.pointLayers = new Set();
+    this.pointLayers = new Set()
     /**
      * 当前地图面图层
      * @type {Array}
      */
-    this.polygonLayers = new Set();
+    this.polygonLayers = new Set()
     /**
      * 周边搜索要素
      * @type {null}
      */
-    this.circleSerachFeat = null;
+    this.circleSerachFeat = null
     /**
      * 当前地图气泡
      * @type {null}
      */
-    this.popupOverlay = null;
+    this.popupOverlay = null
   }
 
   /**
@@ -74,7 +70,7 @@ class Map extends mix(BaseLayers, Controls, Interactions, View, Style, Layer, Fe
    * @param params
    */
   initMap (mapDiv, params) {
-    let options = params || {};
+    let options = params || {}
     /**
      * 当前地图对象
      * @type {ol.Map}
@@ -88,7 +84,7 @@ class Map extends mix(BaseLayers, Controls, Interactions, View, Style, Layer, Fe
       view: this._addView(options['view']),
       interactions: this._addInteractions(options['interactions']),
       controls: this._addControls(options['controls'])
-    });
+    })
 
     this.map.on('click', event => {
       console.log(event.coordinate)
@@ -118,7 +114,7 @@ class Map extends mix(BaseLayers, Controls, Interactions, View, Style, Layer, Fe
    */
   setMap (map) {
     if (map && map instanceof ol.Map) {
-      this.map = map;
+      this.map = map
     }
   }
 

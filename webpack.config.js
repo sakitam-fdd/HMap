@@ -1,4 +1,4 @@
-/*global __dirname, require, module*/
+/* global __dirname, require, module */
 
 const webpack = require('webpack');
 const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
@@ -7,7 +7,9 @@ const env  = require('yargs').argv.env; // use --env with webpack 2
 
 let libraryName = 'HMap';
 
-let plugins = [], outputFile;
+let plugins = [
+  new webpack.BannerPlugin('This file is created by FDD')
+], outputFile;
 
 if (env === 'build') {
   plugins.push(new UglifyJsPlugin({ minimize: true }));
@@ -30,13 +32,12 @@ const config = {
     rules: [
       {
         test: /(\.jsx|\.js)$/,
-        loader: 'babel-loader',
+        enforce: 'pre',  // 在babel-loader对源码进行编译前进行lint的检查
+        loaders: [
+          'babel-loader',
+          'eslint-loader'
+        ],
         exclude: /(node_modules|bower_components)/
-      },
-      {
-        test: /(\.jsx|\.js)$/,
-        loader: "eslint-loader",
-        exclude: /node_modules/
       }
     ]
   },

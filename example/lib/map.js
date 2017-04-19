@@ -1073,7 +1073,10 @@ export default class HDMap {
       selectStyle = {width: 6, color: '#FF0000'}
     }
     lineStyle = new ol.style.Style({
-      stroke: new ol.style.Stroke(style)
+      stroke: new ol.style.Stroke({
+        width: 4,
+        color: '#0000EE'
+      })
     });
     lineSelectStyle = new ol.style.Style({
       stroke: new ol.style.Stroke(selectStyle)

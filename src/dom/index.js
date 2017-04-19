@@ -1,2 +1,2 @@
-import * as DomUtil from './domUtil';
-export { DomUtil };
+import * as DomUtil from './domUtil'
+export { DomUtil }

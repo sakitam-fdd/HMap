@@ -15,17 +15,17 @@ const config = {
     attribution: true,
     attributionOptions: {
       className: 'ol-attribution', // Default
-      target: 'attributionTarget',
+      target: 'attributionTarget'
     },
     rotate: true,
     rotateOptions: {
       className: 'ol-rotate', // Default
-      target: 'rotateTarget',
+      target: 'rotateTarget'
     },
     zoom: true,
     zoomOptions: {
       className: 'ol-zoom', // Default
-      target: 'zoomTarget',
+      target: 'zoomTarget'
     },
     overViewMapVisible: false,
     scaleLineVisible: true
@@ -47,6 +47,6 @@ const config = {
     zoomFactor: 2 // 用于约束分变率的缩放因子（高分辨率设备需要注意）
   },
   logo: {}
-};
+}
 
 export default config

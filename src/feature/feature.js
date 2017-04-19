@@ -9,8 +9,8 @@ import Layer from '../layer/Layer'
 
 class Feature extends mix(Style, Layer) {
   constructor (map) {
-    super();
-    this.map = map;
+    super()
+    this.map = map
     if (!this.map) {
       throw new Error('缺少地图对象！')
     }
@@ -22,13 +22,14 @@ class Feature extends mix(Style, Layer) {
    * @returns {*}
    */
   getFeatureById (id) {
-    let layers = this.map.getLayers(), feature = null;
+    let layers = this.map.getLayers()
+    let feature = null
     layers.forEach(layer => {
       if (layer && layer instanceof ol.layer.Vector && layer.getSource() && layer.getSource().getFeatureById) {
-        feature = layer.getSource().getFeatureById(id);
+        feature = layer.getSource().getFeatureById(id)
       }
-    });
-    return feature;
+    })
+    return feature
   }
 
   /**
@@ -39,17 +40,17 @@ class Feature extends mix(Style, Layer) {
    * @returns {*}
    */
   getFeatureById2LayerName (id, layerName) {
-    let feature = null;
-    if (!!layerName) {
-      let layer = this.getLayerByName(layerName);
+    let feature = null
+    if (layerName) {
+      let layer = this.getLayerByName(layerName)
       if (layer && layer instanceof ol.layer.Vector) {
         feature = layer.getSource().getFeatureById(id)
       }
     }
     if (!feature || !(feature instanceof ol.Feature)) {
-      feature = this.getFeatureById(id);
+      feature = this.getFeatureById(id)
     }
-    return feature;
+    return feature
   }
 
   /**
@@ -59,15 +60,15 @@ class Feature extends mix(Style, Layer) {
    * @private
    */
   _getGeometryFromPoint (point) {
-    let geometry = null;
+    let geometry = null
     if (point instanceof ol.geom.Geometry) {
-      geometry = point;
+      geometry = point
     } else if (Array.isArray(point.geometry)) {
-      geometry = new ol.geom.Point(point.geometry);
+      geometry = new ol.geom.Point(point.geometry)
     } else {
-      geometry = new ol.format.WKT().readGeometry(point.geometry);
+      geometry = new ol.format.WKT().readGeometry(point.geometry)
     }
-    return geometry;
+    return geometry
   }
 
   /**
@@ -76,18 +77,18 @@ class Feature extends mix(Style, Layer) {
    * @private
    */
   _getExtent (multiFeatures) {
-    let extent = multiFeatures.getExtent();
-    let bExtent = true;
+    let extent = multiFeatures.getExtent()
+    let bExtent = true
     for (let m = 0; m < 4; m++) {
-      if (extent[m] == Infinity || extent[m] == NaN) {
-        bExtent = false;
-        break;
+      if (extent[m] === Infinity || extent[m].isNaN()) {
+        bExtent = false
+        break
       }
     }
     if (bExtent) {
-      this.zoomToExtent(extent, true);
+      this.zoomToExtent(extent, true)
     }
-    return extent;
+    return extent
   }
 
   /**
@@ -97,19 +98,18 @@ class Feature extends mix(Style, Layer) {
    */
   adjustExtent (extent) {
     if (this.map) {
-      let width = ol.extent.getWidth(extent);
-      let height = ol.extent.getHeight(extent);
-      let adjust = 0.2;
+      let width = ol.extent.getWidth(extent)
+      let adjust = 0.2
       if (width < 0.05) {
-        let bleft = ol.extent.getBottomLeft(extent);//获取xmin,ymin
-        let tright = ol.extent.getTopRight(extent);//获取xmax,ymax
-        let xmin = bleft[0] - adjust;
-        let ymin = bleft[1] - adjust;
-        let xmax = tright[0] + adjust;
-        let ymax = tright[1] + adjust;
-        extent = ol.extent.buffer(extent, adjust);
+        let bleft = ol.extent.getBottomLeft(extent) // 获取xmin,ymin
+        let tright = ol.extent.getTopRight(extent) // 获取xmax,ymax
+        let xmin = bleft[0] - adjust
+        let ymin = bleft[1] - adjust
+        let xmax = tright[0] + adjust
+        let ymax = tright[1] + adjust
+        extent = ol.extent.buffer([xmin, ymin, xmax, ymax], adjust)
       }
-      return extent;
+      return extent
     }
   }
 
@@ -121,38 +121,38 @@ class Feature extends mix(Style, Layer) {
    */
   zoomToExtent (extent, isanimation, duration) {
     if (this.map) {
-      let view = this.map.getView();
-      let size = this.map.getSize();
+      let view = this.map.getView()
+      let size = this.map.getSize()
       /**
        *  @type {ol.Coordinate} center The center of the view.
        */
-      let center = ol.extent.getCenter(extent);
+      let center = ol.extent.getCenter(extent)
       if (!isanimation) {
         view.fit(extent, size, {
           padding: [350, 200, 200, 350]
-        });
-        view.setCenter(center);
+        })
+        view.setCenter(center)
       } else {
         if (!duration) {
-          duration = 2000;
+          duration = 2000
           view.animate({
             center: center,
             duration: duration
-          });
-          view.fit(extent, size);
+          })
+          view.fit(extent, size)
         }
       }
     }
-  };
+  }
 
   /**
    * 判断点是否在视图内，如果不在地图将自动平移
    */
   movePointToView (coordinate) {
     if (this.map) {
-      let extent = this.getMapCurrentExtent();
+      let extent = this.getMapCurrentExtent()
       if (!(ol.extent.containsXY(extent, coordinate[0], coordinate[1]))) {
-        this.map.getView().setCenter([coordinate[0], coordinate[1]]);
+        this.map.getView().setCenter([coordinate[0], coordinate[1]])
       }
     }
   }
@@ -163,9 +163,9 @@ class Feature extends mix(Style, Layer) {
    */
   getMapCurrentExtent () {
     if (this.map) {
-      return this.map.getView().calculateExtent(this.map.getSize());
+      return this.map.getView().calculateExtent(this.map.getSize())
     }
-  };
+  }
 
   /**
    * 添加单点
@@ -174,38 +174,38 @@ class Feature extends mix(Style, Layer) {
    * @returns {ol.Feature|ol.format.Feature|*|ol.render.Feature|Feature}
    */
   addPoint (point, params) {
-    let geometry = this._getGeometryFromPoint(point);
+    let geometry = this._getGeometryFromPoint(point)
     let feature = new ol.Feature({
       geometry: geometry,
       params: params
-    });
-    let style = this.getStyleByPoint(point['attributes']['style']);
-    let selectStyle = this.getStyleByPoint(point['attributes']['selectStyle']);
+    })
+    let style = this.getStyleByPoint(point['attributes']['style'])
+    let selectStyle = this.getStyleByPoint(point['attributes']['selectStyle'])
     if (style && feature) {
-      feature.setStyle(style);
-      feature.set('style', style);
+      feature.setStyle(style)
+      feature.set('style', style)
       if (selectStyle) {
         feature.set('selectStyle', selectStyle)
       }
     }
     if (point['attributes'] && (point['attributes']['id'] || point['attributes']['ID'])) {
-      // let id = (point['attributes']['id'] ? point['attributes']['id'] : (point['attributes']['ID'] ? point['attributes']['ID'] : params['id']));
-      let id = (point.attributes['id'] || point.attributes['ID'] || params['id']);
-      feature.setId(id);
-      feature.setProperties(point['attributes']);
+      // let id = (point['attributes']['id'] ? point['attributes']['id'] : (point['attributes']['ID'] ? point['attributes']['ID'] : params['id']))
+      let id = (point.attributes['id'] || point.attributes['ID'] || params['id'])
+      feature.setId(id)
+      feature.setProperties(point['attributes'])
     }
     if (params['zoomToExtent']) {
-      let coordinate = geometry.getCoordinates();
-      // extent = this.adjustExtent(extent);
-      this.movePointToView(coordinate);
+      let coordinate = geometry.getCoordinates()
+      // extent = this.adjustExtent(extent)
+      this.movePointToView(coordinate)
     }
     if (params['layerName']) {
       let layer = this.creatVectorLayer(params['layerName'], {
         create: true
-      });
-      layer.getSource().addFeature(feature);
+      })
+      layer.getSource().addFeature(feature)
     }
-    return feature;
+    return feature
   }
 
   /**
@@ -215,17 +215,18 @@ class Feature extends mix(Style, Layer) {
    */
   addPoints (points, params) {
     if (points && Array.isArray(points)) {
-      let multiPoint = new ol.geom.MultiPoint([]), change = false;
+      let multiPoint = new ol.geom.MultiPoint([])
+      let change = false
       if (params['zoomToExtent']) {
-        params['zoomToExtent'] = !params['zoomToExtent'];
-        change = true;
+        params['zoomToExtent'] = !params['zoomToExtent']
+        change = true
       };
       for (let i = 0; i < points.length; i++) {
-        let pointFeat = this.addPoint(points[i], params);
-        multiPoint.appendPoint(pointFeat.getGeometry());
+        let pointFeat = this.addPoint(points[i], params)
+        multiPoint.appendPoint(pointFeat.getGeometry())
       }
       if (change) {
-        this._getExtent(multiPoint);
+        this._getExtent(multiPoint)
       }
     }
   }
@@ -239,7 +240,7 @@ class Feature extends mix(Style, Layer) {
     if (point && geometry && point instanceof ol.Feature) {
       let _geometry = this._getGeometryFromPoint({
         geometry: geometry
-      });
+      })
       point.setGeometry(_geometry)
     } else {
       console.info('传入数据有误！')
@@ -253,7 +254,7 @@ class Feature extends mix(Style, Layer) {
    * @returns {*}
    */
   addPolyline (line, params) {
-    let linefeature = null;
+    let linefeature = null
     if (line.geometry.hasOwnProperty('paths')) {
       let feat = {
         'type': 'Feature',
@@ -261,39 +262,39 @@ class Feature extends mix(Style, Layer) {
           'type': 'MultiLineString',
           'coordinates': line.geometry.paths
         }
-      };
-      linefeature = (new ol.format.GeoJSON()).readFeature(feat);
+      }
+      linefeature = (new ol.format.GeoJSON()).readFeature(feat)
     } else {
       linefeature = new ol.Feature({
         geometry: new ol.format.WKT().readGeometry(line.geometry)
-      });
+      })
     }
-    let style = this.getStyleByLine(line['attributes']['style']);
+    let style = this.getStyleByLine(line['attributes']['style'])
     let selectStyle = this.getStyleByLine(line['attributes']['selectStyle'])
-    let extent = linefeature.getGeometry().getExtent();
+    let extent = linefeature.getGeometry().getExtent()
     if (style && linefeature) {
-      linefeature.setStyle(style);
+      linefeature.setStyle(style)
       linefeature.set('style', style)
       if (selectStyle) {
         linefeature.set('selectStyle', selectStyle)
       }
     }
     if (line['attributes'] && (line.attributes['ID'] || line.attributes['id'])) {
-      // let id = (line['attributes']['id'] ? line['attributes']['id'] : (line['attributes']['ID'] ? line['attributes']['ID'] : params['id']));
-      let id = (line.attributes['id'] || line.attributes['ID'] || params['id']);
-      linefeature.setId(id);
-      linefeature.setProperties(line.attributes);
+      // let id = (line['attributes']['id'] ? line['attributes']['id'] : (line['attributes']['ID'] ? line['attributes']['ID'] : params['id']))
+      let id = (line.attributes['id'] || line.attributes['ID'] || params['id'])
+      linefeature.setId(id)
+      linefeature.setProperties(line.attributes)
     }
     if (params['zoomToExtent']) {
-      this.zoomToExtent(extent, true);
+      this.zoomToExtent(extent, true)
     }
     if (params['layerName']) {
       let layer = this.creatVectorLayer(params['layerName'], {
         create: true
-      });
-      layer.getSource().addFeature(linefeature);
+      })
+      layer.getSource().addFeature(linefeature)
     }
-    return linefeature;
+    return linefeature
   }
 
   /**
@@ -303,17 +304,17 @@ class Feature extends mix(Style, Layer) {
    */
   addPolylines (lines, params) {
     if (lines && Array.isArray(lines)) {
-      let MultiLine = new ol.geom.MultiLineString([]), change = false;
+      let [MultiLine, change] = [(new ol.geom.MultiLineString([])), false]
       if (params['zoomToExtent']) {
-        params['zoomToExtent'] = !params['zoomToExtent'];
-        change = true;
+        params['zoomToExtent'] = !params['zoomToExtent']
+        change = true
       };
       for (let i = 0; i < lines.length; i++) {
-        let polyLine = this.addPolyline(lines[i], params);
-        MultiLine.appendLineString(polyLine.getGeometry());
+        let polyLine = this.addPolyline(lines[i], params)
+        MultiLine.appendLineString(polyLine.getGeometry())
       }
       if (change) {
-        this._getExtent(MultiLine);
+        this._getExtent(MultiLine)
       }
     }
   }
@@ -328,31 +329,31 @@ class Feature extends mix(Style, Layer) {
     if (polygon && polygon['geometry']) {
       let polygonFeature = new ol.Feature({
         geometry: new ol.format.WKT().readGeometry(polygon.geometry)
-      });
-      let style = this.getStyleByPolygon(polygon['attributes']['style']);
+      })
+      let style = this.getStyleByPolygon(polygon['attributes']['style'])
       let selectStyle = this.getStyleByPolygon(polygon['attributes']['selectStyle'])
-      let extent = polygonFeature.getGeometry().getExtent();
+      let extent = polygonFeature.getGeometry().getExtent()
       if (style && polygonFeature) {
-        polygonFeature.setStyle(style);
+        polygonFeature.setStyle(style)
         if (selectStyle) {
           polygonFeature.set('selectStyle', selectStyle)
         }
       }
       if (polygon['attributes'] && (polygon.attributes['ID'] || polygon.attributes['id'])) {
-        let id = (polygon.attributes['id'] || polygon.attributes['ID'] || params['id']);
-        polygonFeature.setId(id);
-        polygonFeature.setProperties(polygon.attributes);
+        let id = (polygon.attributes['id'] || polygon.attributes['ID'] || params['id'])
+        polygonFeature.setId(id)
+        polygonFeature.setProperties(polygon.attributes)
       }
       if (params['zoomToExtent']) {
-        this.zoomToExtent(extent, true);
+        this.zoomToExtent(extent, true)
       }
       if (params['layerName']) {
         let layer = this.creatVectorLayer(params['layerName'], {
           create: true
-        });
-        layer.getSource().addFeature(polygonFeature);
+        })
+        layer.getSource().addFeature(polygonFeature)
       }
-      return polygonFeature;
+      return polygonFeature
     } else {
       console.info('传入的数据不标准！')
     }
@@ -365,17 +366,17 @@ class Feature extends mix(Style, Layer) {
    */
   addPolygons (polygons, params) {
     if (polygons && Array.isArray(polygons)) {
-      let MultiPolygon = new ol.geom.MultiPolygon([]), change = false;
+      let [MultiPolygon, change] = [(new ol.geom.MultiPolygon([])), change]
       if (params['zoomToExtent']) {
-        params['zoomToExtent'] = !params['zoomToExtent'];
-        change = true;
-      };
+        params['zoomToExtent'] = !params['zoomToExtent']
+        change = true
+      }
       for (let i = 0; i < polygons.length; i++) {
-        let polygon = this.addPolyline(polygons[i], params);
-        MultiPolygon.appendPolygon(polygon.getGeometry());
+        let polygon = this.addPolyline(polygons[i], params)
+        MultiPolygon.appendPolygon(polygon.getGeometry())
       }
       if (change) {
-        this._getExtent(MultiPolygon);
+        this._getExtent(MultiPolygon)
       }
     }
   }
@@ -386,9 +387,9 @@ class Feature extends mix(Style, Layer) {
    */
   removeFeatureByLayerName (layerName) {
     try {
-      let layer = this.getLayerByLayerName(layerName);
+      let layer = this.getLayerByLayerName(layerName)
       if (layer && layer instanceof ol.layer.Vector && layer.getSource()) {
-        layer.getSource().clear();
+        layer.getSource().clear()
       }
     } catch (e) {
       console.log(e)
@@ -402,7 +403,7 @@ class Feature extends mix(Style, Layer) {
   removeFeatureByLayerNames (layerNames) {
     if (layerNames && Array.isArray(layerNames) && layerNames.length > 0) {
       layerNames.forEach(item => {
-        this.removeFeatureByLayerName(item);
+        this.removeFeatureByLayerName(item)
       })
     } else {
       console.info('id为空或者不是数组！')
@@ -415,11 +416,11 @@ class Feature extends mix(Style, Layer) {
    */
   removeFeature (feature) {
     if (feature && feature instanceof ol.Feature) {
-      let tragetLayer = this.getLayerByFeatuer(feature);
+      let tragetLayer = this.getLayerByFeatuer(feature)
       if (tragetLayer) {
-        let source = tragetLayer.getSource();
+        let source = tragetLayer.getSource()
         if (source && source.removeFeature) {
-          source.removeFeature(feature);
+          source.removeFeature(feature)
         }
       }
     } else {
@@ -435,23 +436,23 @@ class Feature extends mix(Style, Layer) {
   removeFeatureById (id, layerName) {
     if (this.map && id) {
       if (layerName) {
-        let layer = this.getLayerByLayerName(layerName);
+        let layer = this.getLayerByLayerName(layerName)
         if (layer) {
-          let feature = layer.getSource().getFeatureById(id);
+          let feature = layer.getSource().getFeatureById(id)
           if (feature && feature instanceof ol.Feature) {
-            layer.getSource().removeFeature(feature);
+            layer.getSource().removeFeature(feature)
           }
         }
       } else {
-        let layers = this.map.getLayers().getArray();
+        let layers = this.map.getLayers().getArray()
         layers.forEach(layer => {
           if (layer && layer instanceof ol.layer.Vector && layer.getSource()) {
-            let feature = layer.getSource().getFeatureById(id);
+            let feature = layer.getSource().getFeatureById(id)
             if (feature && feature instanceof ol.Feature) {
-              layer.getSource().removeFeature(feature);
+              layer.getSource().removeFeature(feature)
             }
           }
-        });
+        })
       }
     }
   }
@@ -464,7 +465,7 @@ class Feature extends mix(Style, Layer) {
   removeFeatureByIds (ids, layerName) {
     if (ids && Array.isArray(ids) && ids.length > 0) {
       ids.forEach(item => {
-        this.removeFeatureById(item, layerName);
+        this.removeFeatureById(item, layerName)
       })
     } else {
       console.info('id为空或者不是数组！')
@@ -479,28 +480,28 @@ class Feature extends mix(Style, Layer) {
    * @returns {*}
    */
   highLightFeature (id, feat, layerName) {
-    if (!this.map) return;
+    if (!this.map) return
     if (feat && feat instanceof ol.Feature) {
-      let selectStyle = feat.get('selectStyle');
+      let selectStyle = feat.get('selectStyle')
       if (selectStyle && selectStyle instanceof ol.style.Style) {
-        feat.setStyle(selectStyle);
+        feat.setStyle(selectStyle)
       } else if (selectStyle) {
         let st = this.getStyleByPoint(selectStyle)
         feat.setStyle(st)
       }
-      return feat;
+      return feat
     } else if (id && id.trim() !== "''") {
-      let feature = this.getFeatureById(id, layerName);
+      let feature = this.getFeatureById(id, layerName)
       if (feature && feature instanceof ol.Feature) {
-        let selectStyle = feature.get('selectStyle');
+        let selectStyle = feature.get('selectStyle')
         if (selectStyle && selectStyle instanceof ol.style.Style) {
-          feature.setStyle(selectStyle);
+          feature.setStyle(selectStyle)
         } else if (selectStyle) {
           let st = this.getStyleByPoint(selectStyle)
           feature.setStyle(st)
         }
       }
-      return feature;
+      return feature
     }
   }
 
@@ -512,30 +513,29 @@ class Feature extends mix(Style, Layer) {
    * @returns {*}
    */
   unHighLightFeature (id, feat, layerName) {
-    if (!this.map) return;
+    if (!this.map) return
     if (feat && feat instanceof ol.Feature) {
-      let normalStyle = feat.get('style');
+      let normalStyle = feat.get('style')
       if (normalStyle && normalStyle instanceof ol.style.Style) {
-        feat.setStyle(normalStyle);
+        feat.setStyle(normalStyle)
       } else if (normalStyle) {
         let st = this.getStyleByPoint(normalStyle)
         feat.setStyle(st)
       }
-      return feat;
+      return feat
     } else if (id && id.trim() !== "''") {
-      let feature = this.getFeatureById(id, layerName);
+      let feature = this.getFeatureById(id, layerName)
       if (feature && feature instanceof ol.Feature) {
-        let normalStyle = feature.get('style');
+        let normalStyle = feature.get('style')
         if (normalStyle && normalStyle instanceof ol.style.Style) {
-          feature.setStyle(normalStyle);
+          feature.setStyle(normalStyle)
         } else if (normalStyle) {
           let st = this.getStyleByPoint(normalStyle)
           feature.setStyle(st)
         }
       }
-      return feature;
+      return feature
     }
   }
 }
-
 export default Feature
