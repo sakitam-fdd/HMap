@@ -1,6 +1,6 @@
 # WEBGIS地图类库
 [![Build Status](https://www.travis-ci.org/sakitam-fdd/HMap.svg?branch=master)](https://www.travis-ci.org/sakitam-fdd/HMap)
-
+[![NPM](https://nodei.co/npm/hmap-js.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/hmap-js/)
 ## build
 
 > 重要: Github 仓库的 /dist 文件夹只有在新版本发布时才会更新。如果想要使用 Github 上 HMap 最新的源码，你需要自己构建。
@@ -13,6 +13,13 @@ npm run build
 ```
 
 ## 引用方式
+
+### NPM包管理
+
+```bash
+npm install hmap-js --save
+import HMap from 'hmap-js'
+```
 
 ### AMD-模块加载器
 

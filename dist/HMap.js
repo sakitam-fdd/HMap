@@ -880,7 +880,7 @@ module.exports = exports['default'];
 /***/ (function(module, exports) {
 
 module.exports = {
-	"name": "HMap",
+	"name": "hmap-js",
 	"version": "1.1.0",
 	"private": false,
 	"description": "WEBGIS API",
