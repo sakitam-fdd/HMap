@@ -3,12 +3,14 @@
 const webpack = require('webpack');
 const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 const path = require('path');
+const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const env  = require('yargs').argv.env; // use --env with webpack 2
 
 let libraryName = 'HMap';
 
 let plugins = [
-  new webpack.BannerPlugin('This file is created by FDD')
+  new webpack.BannerPlugin('This file is created by FDD'),
+  new FriendlyErrorsPlugin()
 ], outputFile;
 
 if (env === 'build') {

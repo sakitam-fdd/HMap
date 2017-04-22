@@ -10,7 +10,7 @@ export const ee = 0.00669342162296594323
 
 // import _proj4 from '../node_modules/proj4'
 import _ol from '../node_modules/openlayers'
-import _mathjs from '../node_modules/mathjs'
+// import _mathjs from '../node_modules/mathjs'
 // import _olx from '../node_modules/openlayers/externs'
 // import _olx from '../node_modules/openlayers/externs/olx'
 
@@ -20,4 +20,4 @@ export const ol = _ol
 // export const proj4 = _proj4
 // export const olx = _olx;
 export const config = _config
-export const math = _mathjs
+// export const mathjs = _mathjs
