@@ -3,7 +3,8 @@ const mix = (...mixins) => {
   // 以编程方式给Mix类添加
 
   // mixins的所有方法和访问器
-  for (let mixin of mixins) {
+  for (let key in mixins) {
+    let mixin = mixins[key]
     copyProperties(Mix, mixin)
     copyProperties(Mix.prototype, mixin.prototype)
   }

@@ -74,12 +74,39 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 529);
+/******/ 	return __webpack_require__(__webpack_require__.s = 22);
 /******/ })
 /************************************************************************/
-/******/ ({
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
 
-/***/ 143:
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.config = exports.ol = exports.ee = exports.a = exports.PI = exports.X_PI = undefined;
+
+var _openlayers = __webpack_require__(18);
+
+var _openlayers2 = _interopRequireDefault(_openlayers);
+
+var _config2 = __webpack_require__(11);
+
+var _config3 = _interopRequireDefault(_config2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var X_PI = exports.X_PI = 3.14159265358979324 * 3000.0 / 180.0;
+var PI = exports.PI = 3.1415926535897932384626;var a = exports.a = 6378245.0;var ee = exports.ee = 0.00669342162296594323;
+
+var ol = exports.ol = _openlayers2.default;
+var config = exports.config = _config3.default;
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -91,37 +118,1012 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _mixin = __webpack_require__(53);
+var _constants = __webpack_require__(0);
+
+var _mixin = __webpack_require__(2);
 
 var _mixin2 = _interopRequireDefault(_mixin);
 
-var _constants = __webpack_require__(17);
+var _Style = __webpack_require__(3);
 
-var _baseLayer = __webpack_require__(153);
+var _Style2 = _interopRequireDefault(_Style);
 
-var _baseLayer2 = _interopRequireDefault(_baseLayer);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _Controls = __webpack_require__(149);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var _Controls2 = _interopRequireDefault(_Controls);
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-var _Interactions = __webpack_require__(150);
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _Interactions2 = _interopRequireDefault(_Interactions);
+var Layer = function (_mix) {
+  _inherits(Layer, _mix);
 
-var _View = __webpack_require__(151);
+  function Layer(map) {
+    _classCallCheck(this, Layer);
 
-var _View2 = _interopRequireDefault(_View);
+    var _this = _possibleConstructorReturn(this, (Layer.__proto__ || Object.getPrototypeOf(Layer)).call(this));
 
-var _Layer = __webpack_require__(52);
+    _this.map = map || null;
+    if (!_this.map) {
+      throw new Error('缺少地图对象！');
+    }
+    return _this;
+  }
+
+  _createClass(Layer, [{
+    key: 'getLayerByLayerName',
+    value: function getLayerByLayerName(layerName) {
+      try {
+        var targetLayer = null;
+        if (this.map) {
+          var layers = this.map.getLayers().getArray();
+          layers.forEach(function (layer) {
+            if (layer.get('layerName') === layerName) {
+              targetLayer = layer;
+            }
+          });
+        }
+        return targetLayer;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'getLayerByFeatuer',
+    value: function getLayerByFeatuer(feature) {
+      var tragetLayer = null;
+      if (this.map) {
+        if (feature instanceof _constants.ol.Feature) {
+          var layers = this.map.getLayers().getArray();
+          layers.forEach(function (layer) {
+            var source = layer.getSource();
+            if (source.getFeatures) {
+              var features = source.getFeatures();
+              features.forEach(function (feat) {
+                if (feat === feature) {
+                  tragetLayer = layer;
+                }
+              });
+            }
+          });
+        } else {
+          throw new Error('传入的不是要素!');
+        }
+      }
+      return tragetLayer;
+    }
+  }, {
+    key: 'creatVectorLayer',
+    value: function creatVectorLayer(layerName, params) {
+      try {
+        if (this.map) {
+          var vectorLayer = this.getLayerByLayerName(layerName);
+          if (!(vectorLayer instanceof _constants.ol.layer.Vector)) {
+            vectorLayer = null;
+          }
+          if (!vectorLayer) {
+            if (params && params.create) {
+              vectorLayer = new _constants.ol.layer.Vector({
+                layerName: layerName,
+                params: params,
+                layerType: 'vector',
+                source: new _constants.ol.source.Vector({
+                  wrapX: false
+                }),
+                style: new _constants.ol.style.Style({
+                  fill: new _constants.ol.style.Fill({
+                    color: 'rgba(67, 110, 238, 0.4)'
+                  }),
+                  stroke: new _constants.ol.style.Stroke({
+                    color: '#4781d9',
+                    width: 2
+                  }),
+                  image: new _constants.ol.style.Circle({
+                    radius: 7,
+                    fill: new _constants.ol.style.Fill({
+                      color: '#ffcc33'
+                    })
+                  })
+                })
+              });
+            }
+          }
+          if (this.map && vectorLayer) {
+            if (params && params.hasOwnProperty('selectable')) {
+              vectorLayer.set('selectable', params.selectable);
+            }
+            this.map.addLayer(vectorLayer);
+          }
+          return vectorLayer;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'creatTitleLayer',
+    value: function creatTitleLayer(layerName, params) {
+      var titleLayer = null;
+      if (this.map) {
+        var serviceUrl = params['serviceUrl'];
+        if (!serviceUrl) return null;
+        titleLayer = new _constants.ol.layer.Tile({
+          layerName: layerName,
+          layerType: 'title',
+          source: new _constants.ol.source.TileArcGISRest({
+            url: serviceUrl,
+            params: params,
+            wrapX: false
+          }),
+          wrapX: false
+        });
+        this.map.addLayer(titleLayer);
+      }
+      return titleLayer;
+    }
+  }, {
+    key: 'removeLayerByLayerName',
+    value: function removeLayerByLayerName(layerName) {
+      if (this.map) {
+        var layer = this.getLayerByLayerName(layerName);
+        if (layer && layer instanceof _constants.ol.layer.Vector && layer.getSource() && layer.getSource().clear) {
+          layer.getSource().clear();
+        }
+      }
+    }
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      this.map = map;
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }]);
+
+  return Layer;
+}((0, _mixin2.default)(_Style2.default));
+
+exports.default = Layer;
+module.exports = exports['default'];
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var mix = function mix() {
+  for (var _len = arguments.length, mixins = Array(_len), _key = 0; _key < _len; _key++) {
+    mixins[_key] = arguments[_key];
+  }
+
+  var Mix = function Mix() {
+    _classCallCheck(this, Mix);
+  };
+
+  for (var key in mixins) {
+    var mixin = mixins[key];
+    copyProperties(Mix, mixin);
+    copyProperties(Mix.prototype, mixin.prototype);
+  }
+  return Mix;
+};
+
+var copyProperties = function copyProperties(target, source) {
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = Reflect.ownKeys(source)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var key = _step.value;
+
+      if (key !== 'constructor' && key !== 'prototype' && key !== 'name') {
+        var desc = Object.getOwnPropertyDescriptor(source, key);
+        Object.defineProperty(target, key, desc);
+      }
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+};
+
+exports.default = mix;
+module.exports = exports['default'];
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _constants = __webpack_require__(0);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Style = function () {
+  function Style() {
+    _classCallCheck(this, Style);
+  }
+
+  _createClass(Style, [{
+    key: 'getStyleByPoint',
+    value: function getStyleByPoint(options) {
+      var style = null;
+      if (!options) {
+        style = new _constants.ol.style.Style({
+          image: new _constants.ol.style.Icon({
+            anchor: [0.5, 1],
+            anchorXUnits: 'fraction',
+            anchorYUnits: 'fraction',
+            opacity: 0.75,
+            src: 'data:image/png;base64,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0p8zAAA6GWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS41LWMwMTQgNzkuMTUxNDgxLCAyMDEzLzAzLzEzLTEyOjA5OjE1ICAgICAgICAiPgogICA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogICAgICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgICAgICAgICB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iCiAgICAgICAgICAgIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIgogICAgICAgICAgICB4bWxuczpzdEV2dD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlRXZlbnQjIgogICAgICAgICAgICB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iCiAgICAgICAgICAgIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIKICAgICAgICAgICAgeG1sbnM6dGlmZj0iaHR0cDovL25zLmFkb2JlLmNvbS90aWZmLzEuMC8iCiAgICAgICAgICAgIHhtbG5zOmV4aWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20vZXhpZi8xLjAvIj4KICAgICAgICAgPHhtcDpDcmVhdG9yVG9vbD5BZG9iZSBQaG90b3Nob3AgQ0MgKE1hY2ludG9zaCk8L3htcDpDcmVhdG9yVG9vbD4KICAgICAgICAgPHhtcDpDcmVhdGVEYXRlPjIwMTUtMTEtMDNUMTE6MjU6MzcrMDg6MDA8L3htcDpDcmVhdGVEYXRlPgogICAgICAgICA8eG1wOk1ldGFkYXRhRGF0ZT4yMDE1LTExLTAzVDExOjI1OjM3KzA4OjAwPC94bXA6TWV0YWRhdGFEYXRlPgogICAgICAgICA8eG1wOk1vZGlmeURhdGU+MjAxNS0xMS0wM1QxMToyNTozNyswODowMDwveG1wOk1vZGlmeURhdGU+CiAgICAgICAgIDx4bXBNTTpJbnN0YW5jZUlEPnhtcC5paWQ6NGIzODJiN2QtODBkNi00YmYzLTkwOTktOWYyMTZhOTAyNzUyPC94bXBNTTpJbnN0YW5jZUlEPgogICAgICAgICA8eG1wTU06RG9jdW1lbnRJRD54bXAuZGlkOmZiZDY2Yzk5LWM5ZjYtNDBkOS05NzY0LWJkYTA1YmI5NWFmZjwveG1wTU06RG9jdW1lbnRJRD4KICAgICAgICAgPHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD54bXAuZGlkOmZiZDY2Yzk5LWM5ZjYtNDBkOS05NzY0LWJkYTA1YmI5NWFmZjwveG1wTU06T3JpZ2luYWxEb2N1bWVudElEPgogICAgICAgICA8eG1wTU06SGlzdG9yeT4KICAgICAgICAgICAgPHJkZjpTZXE+CiAgICAgICAgICAgICAgIDxyZGY6bGkgcmRmOnBhcnNlVHlwZT0iUmVzb3VyY2UiPgogICAgICAgICAgICAgICAgICA8c3RFdnQ6YWN0aW9uPmNyZWF0ZWQ8L3N0RXZ0OmFjdGlvbj4KICAgICAgICAgICAgICAgICAgPHN0RXZ0Omluc3RhbmNlSUQ+eG1wLmlpZDpmYmQ2NmM5OS1jOWY2LTQwZDktOTc2NC1iZGEwNWJiOTVhZmY8L3N0RXZ0Omluc3RhbmNlSUQ+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDp3aGVuPjIwMTUtMTEtMDNUMTE6MjU6MzcrMDg6MDA8L3N0RXZ0OndoZW4+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDpzb2Z0d2FyZUFnZW50PkFkb2JlIFBob3Rvc2hvcCBDQyAoTWFjaW50b3NoKTwvc3RFdnQ6c29mdHdhcmVBZ2VudD4KICAgICAgICAgICAgICAgPC9yZGY6bGk+CiAgICAgICAgICAgICAgIDxyZGY6bGkgcmRmOnBhcnNlVHlwZT0iUmVzb3VyY2UiPgogICAgICAgICAgICAgICAgICA8c3RFdnQ6YWN0aW9uPnNhdmVkPC9zdEV2dDphY3Rpb24+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDppbnN0YW5jZUlEPnhtcC5paWQ6NGIzODJiN2QtODBkNi00YmYzLTkwOTktOWYyMTZhOTAyNzUyPC9zdEV2dDppbnN0YW5jZUlEPgogICAgICAgICAgICAgICAgICA8c3RFdnQ6d2hlbj4yMDE1LTExLTAzVDExOjI1OjM3KzA4OjAwPC9zdEV2dDp3aGVuPgogICAgICAgICAgICAgICAgICA8c3RFdnQ6c29mdHdhcmVBZ2VudD5BZG9iZSBQaG90b3Nob3AgQ0MgKE1hY2ludG9zaCk8L3N0RXZ0OnNvZnR3YXJlQWdlbnQ+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDpjaGFuZ2VkPi88L3N0RXZ0OmNoYW5nZWQ+CiAgICAgICAgICAgICAgIDwvcmRmOmxpPgogICAgICAgICAgICA8L3JkZjpTZXE+CiAgICAgICAgIDwveG1wTU06SGlzdG9yeT4KICAgICAgICAgPGRjOmZvcm1hdD5pbWFnZS9wbmc8L2RjOmZvcm1hdD4KICAgICAgICAgPHBob3Rvc2hvcDpDb2xvck1vZGU+MzwvcGhvdG9zaG9wOkNvbG9yTW9kZT4KICAgICAgICAgPHBob3Rvc2hvcDpJQ0NQcm9maWxlPnNSR0IgSUVDNjE5NjYtMi4xPC9waG90b3Nob3A6SUNDUHJvZmlsZT4KICAgICAgICAgPHRpZmY6T3JpZW50YXRpb24+MTwvdGlmZjpPcmllbnRhdGlvbj4KICAgICAgICAgPHRpZmY6WFJlc29sdXRpb24+NzIwMDAwLzEwMDAwPC90aWZmOlhSZXNvbHV0aW9uPgogICAgICAgICA8dGlmZjpZUmVzb2x1dGlvbj43MjAwMDAvMTAwMDA8L3RpZmY6WVJlc29sdXRpb24+CiAgICAgICAgIDx0aWZmOlJlc29sdXRpb25Vbml0PjI8L3RpZmY6UmVzb2x1dGlvblVuaXQ+CiAgICAgICAgIDxleGlmOkNvbG9yU3BhY2U+MTwvZXhpZjpDb2xvclNwYWNlPgogICAgICAgICA8ZXhpZjpQaXhlbFhEaW1lbnNpb24+MjA8L2V4aWY6UGl4ZWxYRGltZW5zaW9uPgogICAgICAgICA8ZXhpZjpQaXhlbFlEaW1lbnNpb24+MzA8L2V4aWY6UGl4ZWxZRGltZW5zaW9uPgogICAgICA8L3JkZjpEZXNjcmlwdGlvbj4KICAgPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAKPD94cGFja2V0IGVuZD0idyI/PjRRCfkAAAAgY0hSTQAAeiUAAICDAAD5/wAAgOkAAHUwAADqYAAAOpgAABdvkl/FRgAAAXBJREFUeNqs1TFrFEEUB/DfDWIlBISx9QMErO9bbBpJoQloISZVIjZWWomFYB3sRItTPJjKTxCYKoWkUZvYBY8IQkgRiGczyHG3FzZ386+W9/b9eFPsbE9LRk3/Bu6jwR3cKq1f+IqE9zHl0+nZ3hTUwyO8xE2X5zee4W1MeTwDjpr+dbzDuqtlgM2Y8vl/sGw2wF2L5RPWY8rjUApbS2DK7Bb0Rk1/BT+xYrn8we2AjQqYYmwErKmXtYDViuBqQKwIxoCLiuBFwHFF8DjgoCJ4EPCxIjgI+IyjCtgRhqF81NsVwO2Y8nmAmPIXvFgCe16MmftwF68ROkJ/8TSm/Kb1gi3ovXIvhg7YZkz5w2RxZqi8sNNhu51prHXDiU33yu+gLXsx5cdtjcuOtYsfLfXveDJvaC4YUz7Dg5bWw9Jz1Q3FlPcxnCgNS81CYMmrOc+LZ9T0D0dN/7DLu9c6mgnjmuB+19N0Bb/VBk+6gv8GAHn5ZfPg+9pTAAAAAElFTkSuQmCC'
+          })
+        });
+      } else {
+        style = new _constants.ol.style.Style({});
+        if (options['stroke'] && this._getStroke(options['stroke'])) {
+          style.setStroke(this._getStroke(options['stroke']));
+        }
+        if (options['text'] && this._getText(options['text'])) {
+          style.setText(this._getText(options['text']));
+        }
+        if (options['fill'] && this._getFill(options['fill'])) {
+          style.setFill(this._getFill(options['fill']));
+        }
+        if (options['icon']) {
+          style.setImage(this._getImage(options['icon']));
+        }
+      }
+      return style;
+    }
+  }, {
+    key: 'getStyleByLine',
+    value: function getStyleByLine(options) {
+      var style = null;
+      if (!options) {
+        style = new _constants.ol.style.Style({
+          stroke: new _constants.ol.style.Stroke({
+            width: 4,
+            color: '#0000EE'
+          })
+        });
+      } else {
+        style = new _constants.ol.style.Style({});
+        if (options['stroke'] && this._getStroke(options['stroke'])) {
+          style.setStroke(this._getStroke(options['stroke']));
+        }
+        if (options['text'] && this._getText(options['text'])) {
+          style.setText(this._getText(options['text']));
+        }
+        if (options['fill'] && this._getFill(options['fill'])) {
+          style.setFill(this._getFill(options['fill']));
+        }
+      }
+      return style;
+    }
+  }, {
+    key: 'getStyleByPolygon',
+    value: function getStyleByPolygon(attr) {
+      var options = attr['style'] || undefined;
+      var style = null;
+      if (!options) {
+        style = new _constants.ol.style.Style({
+          fill: new _constants.ol.style.Fill({
+            color: 'rgba(67, 110, 238, 0.4)'
+          }),
+          stroke: new _constants.ol.style.Stroke({
+            color: '#4781d9',
+            width: 2
+          }),
+          image: new _constants.ol.style.Circle({
+            radius: 7,
+            fill: new _constants.ol.style.Fill({
+              color: '#ffcc33'
+            })
+          })
+        });
+      } else {
+        style = new _constants.ol.style.Style({});
+        if (options['stroke'] && this._getStroke(options['stroke'])) {
+          style.setStroke(this._getStroke(options['stroke']));
+        }
+        if (options['text'] && this._getText(options['text'])) {
+          style.setText(this._getText(options['text']));
+        }
+        if (options['fill'] && this._getFill(options['fill'])) {
+          style.setFill(this._getFill(options['fill']));
+        }
+      }
+      return style;
+    }
+  }, {
+    key: '_getImage',
+    value: function _getImage(options) {
+      try {
+        var icon = new _constants.ol.style.Icon({
+          anchor: options['imageAnchor'] ? options['imageAnchor'] : [0.5, 0.5],
+          anchorXUnits: options['imageAnchorXUnits'] ? options['imageAnchorXUnits'] : 'fraction',
+          anchorYUnits: options['imageAnchorYUnits'] ? options['imageAnchorYUnits'] : 'fraction',
+          opacity: options['imageOpacity'] ? options['imageOpacity'] : 1,
+          src: options['imageSrc'] ? options['imageSrc'] : 1
+        });
+        if (icon && icon instanceof _constants.ol.style.Icon) {
+          return icon;
+        } else {
+          return false;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: '_getStroke',
+    value: function _getStroke(options) {
+      try {
+        var stroke = new _constants.ol.style.Stroke({
+          color: options['strokeColor'] ? options['strokeColor'] : undefined,
+          lineCap: options['strokeLineCap'] ? options['strokeLineCap'] : 'round',
+          lineJoin: options['strokeLineJoin'] ? options['strokeLineJoin'] : 'round',
+          lineDash: options['strokeLineDash'] ? options['strokeLineDash'] : undefined,
+          lineDashOffset: options['strokeLineDashOffset'] ? options['strokeLineDashOffset'] : '0',
+          miterLimit: options['strokeMiterLimit'] ? options['strokeMiterLimit'] : 10,
+          width: options['strokeWidth'] ? options['strokeWidth'] : undefined
+        });
+        if (stroke && stroke instanceof _constants.ol.style.Stroke) {
+          return stroke;
+        } else {
+          return false;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, {
+    key: '_getText',
+    value: function _getText(options) {
+      try {
+        var text = new _constants.ol.style.Text({
+          font: options['textFont'] ? options['textFont'] : '10px sans-serif',
+          offsetX: options['textOffsetX'] ? options['textOffsetX'] : 0,
+          offsetY: options['textOffsetY'] ? options['textOffsetY'] : 0,
+          scale: options['textScale'] ? options['textScale'] : undefined,
+          rotation: options['textRotation'] ? options['textRotation'] : 0,
+          text: options['text'] ? options['text'] : undefined,
+          textAlign: options['textAlign'] ? options['textAlign'] : 'start',
+          textBaseline: options['textBaseline'] ? options['textBaseline'] : 'alphabetic'
+        });
+        if (options['textFill']) {
+          text.setFill(this._getFill(options['textFill']));
+        }
+        if (options['textStroke']) {
+          text.setStroke(this._getStroke(options['textStroke']));
+        }
+        if (text && text instanceof _constants.ol.style.Text) {
+          return text;
+        } else {
+          return false;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, {
+    key: '_getFill',
+    value: function _getFill(options) {
+      try {
+        var fill = new _constants.ol.style.Fill({
+          color: options['fillColor'] ? options['fillColor'] : undefined
+        });
+        if (fill && fill instanceof _constants.ol.style.Fill) {
+          return fill;
+        } else {
+          return false;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }]);
+
+  return Style;
+}();
+
+exports.default = Style;
+module.exports = exports['default'];
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _constants = __webpack_require__(0);
+
+var _mixin = __webpack_require__(2);
+
+var _mixin2 = _interopRequireDefault(_mixin);
+
+var _Style = __webpack_require__(3);
+
+var _Style2 = _interopRequireDefault(_Style);
+
+var _Layer = __webpack_require__(1);
 
 var _Layer2 = _interopRequireDefault(_Layer);
 
-var _feature = __webpack_require__(84);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Feature = function (_mix) {
+  _inherits(Feature, _mix);
+
+  function Feature(map) {
+    _classCallCheck(this, Feature);
+
+    var _this = _possibleConstructorReturn(this, (Feature.__proto__ || Object.getPrototypeOf(Feature)).call(this));
+
+    _this.map = map;
+    if (!_this.map) {
+      throw new Error('缺少地图对象！');
+    }
+    return _this;
+  }
+
+  _createClass(Feature, [{
+    key: 'getFeatureById',
+    value: function getFeatureById(id) {
+      var layers = this.map.getLayers();
+      var feature = null;
+      layers.forEach(function (layer) {
+        if (layer && layer instanceof _constants.ol.layer.Vector && layer.getSource() && layer.getSource().getFeatureById) {
+          feature = layer.getSource().getFeatureById(id);
+        }
+      });
+      return feature;
+    }
+  }, {
+    key: 'getFeatureById2LayerName',
+    value: function getFeatureById2LayerName(id, layerName) {
+      var feature = null;
+      if (layerName) {
+        var layer = this.getLayerByName(layerName);
+        if (layer && layer instanceof _constants.ol.layer.Vector) {
+          feature = layer.getSource().getFeatureById(id);
+        }
+      }
+      if (!feature || !(feature instanceof _constants.ol.Feature)) {
+        feature = this.getFeatureById(id);
+      }
+      return feature;
+    }
+  }, {
+    key: '_getGeometryFromPoint',
+    value: function _getGeometryFromPoint(point) {
+      var geometry = null;
+      if (point instanceof _constants.ol.geom.Geometry) {
+        geometry = point;
+      } else if (Array.isArray(point.geometry)) {
+        geometry = new _constants.ol.geom.Point(point.geometry);
+      } else {
+        geometry = new _constants.ol.format.WKT().readGeometry(point.geometry);
+      }
+      return geometry;
+    }
+  }, {
+    key: '_getExtent',
+    value: function _getExtent(multiFeatures) {
+      var extent = multiFeatures.getExtent();
+      var bExtent = true;
+      for (var m = 0; m < 4; m++) {
+        if (extent[m] === Infinity || extent[m].isNaN()) {
+          bExtent = false;
+          break;
+        }
+      }
+      if (bExtent) {
+        this.zoomToExtent(extent, true);
+      }
+      return extent;
+    }
+  }, {
+    key: 'adjustExtent',
+    value: function adjustExtent(extent) {
+      if (this.map) {
+        var width = _constants.ol.extent.getWidth(extent);
+        var adjust = 0.2;
+        if (width < 0.05) {
+          var bleft = _constants.ol.extent.getBottomLeft(extent);
+          var tright = _constants.ol.extent.getTopRight(extent);
+          var xmin = bleft[0] - adjust;
+          var ymin = bleft[1] - adjust;
+          var xmax = tright[0] + adjust;
+          var ymax = tright[1] + adjust;
+          extent = _constants.ol.extent.buffer([xmin, ymin, xmax, ymax], adjust);
+        }
+        return extent;
+      }
+    }
+  }, {
+    key: 'zoomToExtent',
+    value: function zoomToExtent(extent, isanimation, duration) {
+      if (this.map) {
+        var view = this.map.getView();
+        var size = this.map.getSize();
+
+        var center = _constants.ol.extent.getCenter(extent);
+        if (!isanimation) {
+          view.fit(extent, size, {
+            padding: [350, 200, 200, 350]
+          });
+          view.setCenter(center);
+        } else {
+          if (!duration) {
+            duration = 2000;
+            view.animate({
+              center: center,
+              duration: duration
+            });
+            view.fit(extent, size);
+          }
+        }
+      }
+    }
+  }, {
+    key: 'movePointToView',
+    value: function movePointToView(coordinate) {
+      if (this.map) {
+        var extent = this.getMapCurrentExtent();
+        if (!_constants.ol.extent.containsXY(extent, coordinate[0], coordinate[1])) {
+          this.map.getView().setCenter([coordinate[0], coordinate[1]]);
+        }
+      }
+    }
+  }, {
+    key: 'getMapCurrentExtent',
+    value: function getMapCurrentExtent() {
+      if (this.map) {
+        return this.map.getView().calculateExtent(this.map.getSize());
+      }
+    }
+  }, {
+    key: 'addPoint',
+    value: function addPoint(point, params) {
+      var geometry = this._getGeometryFromPoint(point);
+      var feature = new _constants.ol.Feature({
+        geometry: geometry,
+        params: params
+      });
+      var style = this.getStyleByPoint(point['attributes']['style']);
+      var selectStyle = this.getStyleByPoint(point['attributes']['selectStyle']);
+      if (style && feature) {
+        feature.setStyle(style);
+        feature.set('style', style);
+        if (selectStyle) {
+          feature.set('selectStyle', selectStyle);
+        }
+      }
+      if (point['attributes'] && (point['attributes']['id'] || point['attributes']['ID'])) {
+        var id = point.attributes['id'] || point.attributes['ID'] || params['id'];
+        feature.setId(id);
+        feature.setProperties(point['attributes']);
+      }
+      if (params['zoomToExtent']) {
+        var coordinate = geometry.getCoordinates();
+
+        this.movePointToView(coordinate);
+      }
+      if (params['layerName']) {
+        var layer = this.creatVectorLayer(params['layerName'], {
+          create: true
+        });
+        layer.getSource().addFeature(feature);
+      }
+      return feature;
+    }
+  }, {
+    key: 'addPoints',
+    value: function addPoints(points, params) {
+      if (points && Array.isArray(points)) {
+        var multiPoint = new _constants.ol.geom.MultiPoint([]);
+        var change = false;
+        if (params['zoomToExtent']) {
+          params['zoomToExtent'] = !params['zoomToExtent'];
+          change = true;
+        };
+        for (var i = 0; i < points.length; i++) {
+          var pointFeat = this.addPoint(points[i], params);
+          multiPoint.appendPoint(pointFeat.getGeometry());
+        }
+        if (change) {
+          this._getExtent(multiPoint);
+        }
+      }
+    }
+  }, {
+    key: 'setPointGeometry',
+    value: function setPointGeometry(point, geometry) {
+      if (point && geometry && point instanceof _constants.ol.Feature) {
+        var _geometry = this._getGeometryFromPoint({
+          geometry: geometry
+        });
+        point.setGeometry(_geometry);
+      } else {
+        console.info('传入数据有误！');
+      }
+    }
+  }, {
+    key: 'addPolyline',
+    value: function addPolyline(line, params) {
+      var linefeature = null;
+      if (line.geometry.hasOwnProperty('paths')) {
+        var feat = {
+          'type': 'Feature',
+          'geometry': {
+            'type': 'MultiLineString',
+            'coordinates': line.geometry.paths
+          }
+        };
+        linefeature = new _constants.ol.format.GeoJSON().readFeature(feat);
+      } else {
+        linefeature = new _constants.ol.Feature({
+          geometry: new _constants.ol.format.WKT().readGeometry(line.geometry)
+        });
+      }
+      var style = this.getStyleByLine(line['attributes']['style']);
+      var selectStyle = this.getStyleByLine(line['attributes']['selectStyle']);
+      var extent = linefeature.getGeometry().getExtent();
+      if (style && linefeature) {
+        linefeature.setStyle(style);
+        linefeature.set('style', style);
+        if (selectStyle) {
+          linefeature.set('selectStyle', selectStyle);
+        }
+      }
+      if (line['attributes'] && (line.attributes['ID'] || line.attributes['id'])) {
+        var id = line.attributes['id'] || line.attributes['ID'] || params['id'];
+        linefeature.setId(id);
+        linefeature.setProperties(line.attributes);
+      }
+      if (params['zoomToExtent']) {
+        this.zoomToExtent(extent, true);
+      }
+      if (params['layerName']) {
+        var layer = this.creatVectorLayer(params['layerName'], {
+          create: true
+        });
+        layer.getSource().addFeature(linefeature);
+      }
+      return linefeature;
+    }
+  }, {
+    key: 'addPolylines',
+    value: function addPolylines(lines, params) {
+      if (lines && Array.isArray(lines)) {
+        var MultiLine = new _constants.ol.geom.MultiLineString([]),
+            change = false;
+
+        if (params['zoomToExtent']) {
+          params['zoomToExtent'] = !params['zoomToExtent'];
+          change = true;
+        };
+        for (var i = 0; i < lines.length; i++) {
+          var polyLine = this.addPolyline(lines[i], params);
+          MultiLine.appendLineString(polyLine.getGeometry());
+        }
+        if (change) {
+          this._getExtent(MultiLine);
+        }
+      }
+    }
+  }, {
+    key: 'addPolygon',
+    value: function addPolygon(polygon, params) {
+      if (polygon && polygon['geometry']) {
+        var polygonFeature = new _constants.ol.Feature({
+          geometry: new _constants.ol.format.WKT().readGeometry(polygon.geometry)
+        });
+        var style = this.getStyleByPolygon(polygon['attributes']['style']);
+        var selectStyle = this.getStyleByPolygon(polygon['attributes']['selectStyle']);
+        var extent = polygonFeature.getGeometry().getExtent();
+        if (style && polygonFeature) {
+          polygonFeature.setStyle(style);
+          if (selectStyle) {
+            polygonFeature.set('selectStyle', selectStyle);
+          }
+        }
+        if (polygon['attributes'] && (polygon.attributes['ID'] || polygon.attributes['id'])) {
+          var id = polygon.attributes['id'] || polygon.attributes['ID'] || params['id'];
+          polygonFeature.setId(id);
+          polygonFeature.setProperties(polygon.attributes);
+        }
+        if (params['zoomToExtent']) {
+          this.zoomToExtent(extent, true);
+        }
+        if (params['layerName']) {
+          var layer = this.creatVectorLayer(params['layerName'], {
+            create: true
+          });
+          layer.getSource().addFeature(polygonFeature);
+        }
+        return polygonFeature;
+      } else {
+        console.info('传入的数据不标准！');
+      }
+    }
+  }, {
+    key: 'addPolygons',
+    value: function addPolygons(polygons, params) {
+      if (polygons && Array.isArray(polygons)) {
+        var _ref = [new _constants.ol.geom.MultiPolygon([]), change],
+            MultiPolygon = _ref[0],
+            change = _ref[1];
+
+        if (params['zoomToExtent']) {
+          params['zoomToExtent'] = !params['zoomToExtent'];
+          change = true;
+        }
+        for (var i = 0; i < polygons.length; i++) {
+          var polygon = this.addPolyline(polygons[i], params);
+          MultiPolygon.appendPolygon(polygon.getGeometry());
+        }
+        if (change) {
+          this._getExtent(MultiPolygon);
+        }
+      }
+    }
+  }, {
+    key: 'removeFeatureByLayerName',
+    value: function removeFeatureByLayerName(layerName) {
+      try {
+        var layer = this.getLayerByLayerName(layerName);
+        if (layer && layer instanceof _constants.ol.layer.Vector && layer.getSource()) {
+          layer.getSource().clear();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'removeFeatureByLayerNames',
+    value: function removeFeatureByLayerNames(layerNames) {
+      var _this2 = this;
+
+      if (layerNames && Array.isArray(layerNames) && layerNames.length > 0) {
+        layerNames.forEach(function (item) {
+          _this2.removeFeatureByLayerName(item);
+        });
+      } else {
+        console.info('id为空或者不是数组！');
+      }
+    }
+  }, {
+    key: 'removeFeature',
+    value: function removeFeature(feature) {
+      if (feature && feature instanceof _constants.ol.Feature) {
+        var tragetLayer = this.getLayerByFeatuer(feature);
+        if (tragetLayer) {
+          var source = tragetLayer.getSource();
+          if (source && source.removeFeature) {
+            source.removeFeature(feature);
+          }
+        }
+      } else {
+        throw new Error('传入的不是要素!');
+      }
+    }
+  }, {
+    key: 'removeFeatureById',
+    value: function removeFeatureById(id, layerName) {
+      if (this.map && id) {
+        if (layerName) {
+          var layer = this.getLayerByLayerName(layerName);
+          if (layer) {
+            var feature = layer.getSource().getFeatureById(id);
+            if (feature && feature instanceof _constants.ol.Feature) {
+              layer.getSource().removeFeature(feature);
+            }
+          }
+        } else {
+          var layers = this.map.getLayers().getArray();
+          layers.forEach(function (layer) {
+            if (layer && layer instanceof _constants.ol.layer.Vector && layer.getSource()) {
+              var _feature = layer.getSource().getFeatureById(id);
+              if (_feature && _feature instanceof _constants.ol.Feature) {
+                layer.getSource().removeFeature(_feature);
+              }
+            }
+          });
+        }
+      }
+    }
+  }, {
+    key: 'removeFeatureByIds',
+    value: function removeFeatureByIds(ids, layerName) {
+      var _this3 = this;
+
+      if (ids && Array.isArray(ids) && ids.length > 0) {
+        ids.forEach(function (item) {
+          _this3.removeFeatureById(item, layerName);
+        });
+      } else {
+        console.info('id为空或者不是数组！');
+      }
+    }
+  }, {
+    key: 'highLightFeature',
+    value: function highLightFeature(id, feat, layerName) {
+      if (!this.map) return;
+      if (feat && feat instanceof _constants.ol.Feature) {
+        var selectStyle = feat.get('selectStyle');
+        if (selectStyle && selectStyle instanceof _constants.ol.style.Style) {
+          feat.setStyle(selectStyle);
+        } else if (selectStyle) {
+          var st = this.getStyleByPoint(selectStyle);
+          feat.setStyle(st);
+        }
+        return feat;
+      } else if (id && id.trim() !== "''") {
+        var feature = this.getFeatureById(id, layerName);
+        if (feature && feature instanceof _constants.ol.Feature) {
+          var _selectStyle = feature.get('selectStyle');
+          if (_selectStyle && _selectStyle instanceof _constants.ol.style.Style) {
+            feature.setStyle(_selectStyle);
+          } else if (_selectStyle) {
+            var _st = this.getStyleByPoint(_selectStyle);
+            feature.setStyle(_st);
+          }
+        }
+        return feature;
+      }
+    }
+  }, {
+    key: 'unHighLightFeature',
+    value: function unHighLightFeature(id, feat, layerName) {
+      if (!this.map) return;
+      if (feat && feat instanceof _constants.ol.Feature) {
+        var normalStyle = feat.get('style');
+        if (normalStyle && normalStyle instanceof _constants.ol.style.Style) {
+          feat.setStyle(normalStyle);
+        } else if (normalStyle) {
+          var st = this.getStyleByPoint(normalStyle);
+          feat.setStyle(st);
+        }
+        return feat;
+      } else if (id && id.trim() !== "''") {
+        var feature = this.getFeatureById(id, layerName);
+        if (feature && feature instanceof _constants.ol.Feature) {
+          var _normalStyle = feature.get('style');
+          if (_normalStyle && _normalStyle instanceof _constants.ol.style.Style) {
+            feature.setStyle(_normalStyle);
+          } else if (_normalStyle) {
+            var _st2 = this.getStyleByPoint(_normalStyle);
+            feature.setStyle(_st2);
+          }
+        }
+        return feature;
+      }
+    }
+  }]);
+
+  return Feature;
+}((0, _mixin2.default)(_Style2.default, _Layer2.default));
+
+exports.default = Feature;
+module.exports = exports['default'];
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _mixin = __webpack_require__(2);
+
+var _mixin2 = _interopRequireDefault(_mixin);
+
+var _constants = __webpack_require__(0);
+
+var _baseLayer = __webpack_require__(16);
+
+var _baseLayer2 = _interopRequireDefault(_baseLayer);
+
+var _Controls = __webpack_require__(12);
+
+var _Controls2 = _interopRequireDefault(_Controls);
+
+var _Interactions = __webpack_require__(13);
+
+var _Interactions2 = _interopRequireDefault(_Interactions);
+
+var _View = __webpack_require__(14);
+
+var _View2 = _interopRequireDefault(_View);
+
+var _Layer = __webpack_require__(1);
+
+var _Layer2 = _interopRequireDefault(_Layer);
+
+var _feature = __webpack_require__(4);
 
 var _feature2 = _interopRequireDefault(_feature);
 
-var _Style = __webpack_require__(66);
+var _Style = __webpack_require__(3);
 
 var _Style2 = _interopRequireDefault(_Style);
 
@@ -216,8 +1218,7 @@ exports.default = Map;
 module.exports = exports['default'];
 
 /***/ }),
-
-/***/ 144:
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -229,7 +1230,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _constants = __webpack_require__(17);
+var _constants = __webpack_require__(0);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -313,8 +1314,7 @@ exports.default = LayerSwitcher;
 module.exports = exports['default'];
 
 /***/ }),
-
-/***/ 145:
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -326,15 +1326,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _mixin = __webpack_require__(53);
+var _mixin = __webpack_require__(2);
 
 var _mixin2 = _interopRequireDefault(_mixin);
 
-var _Layer = __webpack_require__(52);
+var _Layer = __webpack_require__(1);
 
 var _Layer2 = _interopRequireDefault(_Layer);
 
-var _constants = __webpack_require__(17);
+var _constants = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -763,8 +1763,7 @@ exports.default = MeasureTool;
 module.exports = exports['default'];
 
 /***/ }),
-
-/***/ 146:
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -776,7 +1775,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _constants = __webpack_require__(17);
+var _constants = __webpack_require__(0);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -875,8 +1874,7 @@ exports.default = CoordsTransform;
 module.exports = exports['default'];
 
 /***/ }),
-
-/***/ 147:
+/* 10 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -906,6 +1904,7 @@ module.exports = {
 		"friendly-errors-webpack-plugin": "^1.6.1",
 		"jquery": "^3.1.1",
 		"mathjs": "^3.12.0",
+		"mixin": "^0.2.0",
 		"openlayers": "^4.0.1",
 		"proj4": "^2.4.3",
 		"zrender": "^3.2.2"
@@ -939,8 +1938,7 @@ module.exports = {
 };
 
 /***/ }),
-
-/***/ 148:
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -999,8 +1997,7 @@ exports.default = config;
 module.exports = exports['default'];
 
 /***/ }),
-
-/***/ 149:
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1012,7 +2009,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _constants = __webpack_require__(17);
+var _constants = __webpack_require__(0);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1047,8 +2044,7 @@ exports.default = Controls;
 module.exports = exports['default'];
 
 /***/ }),
-
-/***/ 150:
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1060,9 +2056,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _constants = __webpack_require__(17);
+var _constants = __webpack_require__(0);
 
-var _appDrag = __webpack_require__(152);
+var _appDrag = __webpack_require__(15);
 
 var _appDrag2 = _interopRequireDefault(_appDrag);
 
@@ -1101,8 +2097,7 @@ exports.default = Interactions;
 module.exports = exports['default'];
 
 /***/ }),
-
-/***/ 151:
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1114,7 +2109,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _constants = __webpack_require__(17);
+var _constants = __webpack_require__(0);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1147,8 +2142,7 @@ exports.default = View;
 module.exports = exports['default'];
 
 /***/ }),
-
-/***/ 152:
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1158,7 +2152,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _constants = __webpack_require__(17);
+var _constants = __webpack_require__(0);
 
 var app = {};
 app.Drag = function () {
@@ -1248,8 +2242,7 @@ exports.default = app;
 module.exports = exports['default'];
 
 /***/ }),
-
-/***/ 153:
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1261,7 +2254,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _constants = __webpack_require__(17);
+var _constants = __webpack_require__(0);
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -1471,223 +2464,8 @@ exports.default = BaseLayers;
 module.exports = exports['default'];
 
 /***/ }),
-
-/***/ 17:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.config = exports.ol = exports.ee = exports.a = exports.PI = exports.X_PI = undefined;
-
-var _openlayers = __webpack_require__(527);
-
-var _openlayers2 = _interopRequireDefault(_openlayers);
-
-var _config2 = __webpack_require__(148);
-
-var _config3 = _interopRequireDefault(_config2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var X_PI = exports.X_PI = 3.14159265358979324 * 3000.0 / 180.0;
-var PI = exports.PI = 3.1415926535897932384626;var a = exports.a = 6378245.0;var ee = exports.ee = 0.00669342162296594323;
-
-var ol = exports.ol = _openlayers2.default;
-var config = exports.config = _config3.default;
-
-/***/ }),
-
-/***/ 52:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _constants = __webpack_require__(17);
-
-var _mixin = __webpack_require__(53);
-
-var _mixin2 = _interopRequireDefault(_mixin);
-
-var _Style = __webpack_require__(66);
-
-var _Style2 = _interopRequireDefault(_Style);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Layer = function (_mix) {
-  _inherits(Layer, _mix);
-
-  function Layer(map) {
-    _classCallCheck(this, Layer);
-
-    var _this = _possibleConstructorReturn(this, (Layer.__proto__ || Object.getPrototypeOf(Layer)).call(this));
-
-    _this.map = map || null;
-    if (!_this.map) {
-      throw new Error('缺少地图对象！');
-    }
-    return _this;
-  }
-
-  _createClass(Layer, [{
-    key: 'getLayerByLayerName',
-    value: function getLayerByLayerName(layerName) {
-      try {
-        var targetLayer = null;
-        if (this.map) {
-          var layers = this.map.getLayers().getArray();
-          layers.forEach(function (layer) {
-            if (layer.get('layerName') === layerName) {
-              targetLayer = layer;
-            }
-          });
-        }
-        return targetLayer;
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, {
-    key: 'getLayerByFeatuer',
-    value: function getLayerByFeatuer(feature) {
-      var tragetLayer = null;
-      if (this.map) {
-        if (feature instanceof _constants.ol.Feature) {
-          var layers = this.map.getLayers().getArray();
-          layers.forEach(function (layer) {
-            var source = layer.getSource();
-            if (source.getFeatures) {
-              var features = source.getFeatures();
-              features.forEach(function (feat) {
-                if (feat === feature) {
-                  tragetLayer = layer;
-                }
-              });
-            }
-          });
-        } else {
-          throw new Error('传入的不是要素!');
-        }
-      }
-      return tragetLayer;
-    }
-  }, {
-    key: 'creatVectorLayer',
-    value: function creatVectorLayer(layerName, params) {
-      try {
-        if (this.map) {
-          var vectorLayer = this.getLayerByLayerName(layerName);
-          if (!(vectorLayer instanceof _constants.ol.layer.Vector)) {
-            vectorLayer = null;
-          }
-          if (!vectorLayer) {
-            if (params && params.create) {
-              vectorLayer = new _constants.ol.layer.Vector({
-                layerName: layerName,
-                params: params,
-                layerType: 'vector',
-                source: new _constants.ol.source.Vector({
-                  wrapX: false
-                }),
-                style: new _constants.ol.style.Style({
-                  fill: new _constants.ol.style.Fill({
-                    color: 'rgba(67, 110, 238, 0.4)'
-                  }),
-                  stroke: new _constants.ol.style.Stroke({
-                    color: '#4781d9',
-                    width: 2
-                  }),
-                  image: new _constants.ol.style.Circle({
-                    radius: 7,
-                    fill: new _constants.ol.style.Fill({
-                      color: '#ffcc33'
-                    })
-                  })
-                })
-              });
-            }
-          }
-          if (this.map && vectorLayer) {
-            if (params && params.hasOwnProperty('selectable')) {
-              vectorLayer.set('selectable', params.selectable);
-            }
-            this.map.addLayer(vectorLayer);
-          }
-          return vectorLayer;
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, {
-    key: 'creatTitleLayer',
-    value: function creatTitleLayer(layerName, params) {
-      var titleLayer = null;
-      if (this.map) {
-        var serviceUrl = params['serviceUrl'];
-        if (!serviceUrl) return null;
-        titleLayer = new _constants.ol.layer.Tile({
-          layerName: layerName,
-          layerType: 'title',
-          source: new _constants.ol.source.TileArcGISRest({
-            url: serviceUrl,
-            params: params,
-            wrapX: false
-          }),
-          wrapX: false
-        });
-        this.map.addLayer(titleLayer);
-      }
-      return titleLayer;
-    }
-  }, {
-    key: 'removeLayerByLayerName',
-    value: function removeLayerByLayerName(layerName) {
-      if (this.map) {
-        var layer = this.getLayerByLayerName(layerName);
-        if (layer && layer instanceof _constants.ol.layer.Vector && layer.getSource() && layer.getSource().clear) {
-          layer.getSource().clear();
-        }
-      }
-    }
-  }, {
-    key: 'setMap',
-    value: function setMap(map) {
-      this.map = map;
-    }
-  }, {
-    key: 'getMap',
-    value: function getMap() {
-      return this.map;
-    }
-  }]);
-
-  return Layer;
-}((0, _mixin2.default)(_Style2.default));
-
-exports.default = Layer;
-module.exports = exports['default'];
-
-/***/ }),
-
-/***/ 527:
+/* 17 */,
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var require;var require;var require;var require;var require;var require;var require;var require;// OpenLayers. See https://openlayers.org/
@@ -2698,39 +3476,13 @@ Ok.prototype.changed=Ok.prototype.s;Ok.prototype.dispatchEvent=Ok.prototype.b;Ok
 }));
 
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(528)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
-
-/***/ 528:
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-
-/***/ 529:
+/* 19 */,
+/* 20 */,
+/* 21 */,
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2740,36 +3492,36 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _constants = __webpack_require__(17);
+var _constants = __webpack_require__(0);
 
-var _Map = __webpack_require__(143);
+var _Map = __webpack_require__(6);
 
 var _Map2 = _interopRequireDefault(_Map);
 
-var _Layer = __webpack_require__(52);
+var _Layer = __webpack_require__(1);
 
 var _Layer2 = _interopRequireDefault(_Layer);
 
-var _feature = __webpack_require__(84);
+var _feature = __webpack_require__(4);
 
 var _feature2 = _interopRequireDefault(_feature);
 
-var _CoordsTransform = __webpack_require__(146);
+var _CoordsTransform = __webpack_require__(9);
 
 var _CoordsTransform2 = _interopRequireDefault(_CoordsTransform);
 
-var _LayerSwitcher = __webpack_require__(144);
+var _LayerSwitcher = __webpack_require__(7);
 
 var _LayerSwitcher2 = _interopRequireDefault(_LayerSwitcher);
 
-var _MeasureTool = __webpack_require__(145);
+var _MeasureTool = __webpack_require__(8);
 
 var _MeasureTool2 = _interopRequireDefault(_MeasureTool);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var HMap = {};
-HMap.version = __webpack_require__(147).version;
+HMap.version = __webpack_require__(10).version;
 
 
 HMap.ol = _constants.ol;
@@ -2793,795 +3545,7 @@ HMap.nullFunction = function () {};
 exports.default = HMap;
 module.exports = exports['default'];
 
-/***/ }),
-
-/***/ 53:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var mix = function mix() {
-  for (var _len = arguments.length, mixins = Array(_len), _key = 0; _key < _len; _key++) {
-    mixins[_key] = arguments[_key];
-  }
-
-  var Mix = function Mix() {
-    _classCallCheck(this, Mix);
-  };
-
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
-
-  try {
-    for (var _iterator = mixins[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var mixin = _step.value;
-
-      copyProperties(Mix, mixin);
-      copyProperties(Mix.prototype, mixin.prototype);
-    }
-  } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator.return) {
-        _iterator.return();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
-  }
-
-  return Mix;
-};
-
-var copyProperties = function copyProperties(target, source) {
-  var _iteratorNormalCompletion2 = true;
-  var _didIteratorError2 = false;
-  var _iteratorError2 = undefined;
-
-  try {
-    for (var _iterator2 = Reflect.ownKeys(source)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-      var key = _step2.value;
-
-      if (key !== 'constructor' && key !== 'prototype' && key !== 'name') {
-        var desc = Object.getOwnPropertyDescriptor(source, key);
-        Object.defineProperty(target, key, desc);
-      }
-    }
-  } catch (err) {
-    _didIteratorError2 = true;
-    _iteratorError2 = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion2 && _iterator2.return) {
-        _iterator2.return();
-      }
-    } finally {
-      if (_didIteratorError2) {
-        throw _iteratorError2;
-      }
-    }
-  }
-};
-
-exports.default = mix;
-module.exports = exports['default'];
-
-/***/ }),
-
-/***/ 66:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _constants = __webpack_require__(17);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Style = function () {
-  function Style() {
-    _classCallCheck(this, Style);
-  }
-
-  _createClass(Style, [{
-    key: 'getStyleByPoint',
-    value: function getStyleByPoint(options) {
-      var style = null;
-      if (!options) {
-        style = new _constants.ol.style.Style({
-          image: new _constants.ol.style.Icon({
-            anchor: [0.5, 1],
-            anchorXUnits: 'fraction',
-            anchorYUnits: 'fraction',
-            opacity: 0.75,
-            src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAYAAAAsEj5rAAAACXBIWXMAAAsTAAALEwEAmpwYAAAKTWlDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjanVN3WJP3Fj7f92UPVkLY8LGXbIEAIiOsCMgQWaIQkgBhhBASQMWFiApWFBURnEhVxILVCkidiOKgKLhnQYqIWotVXDjuH9yntX167+3t+9f7vOec5/zOec8PgBESJpHmomoAOVKFPDrYH49PSMTJvYACFUjgBCAQ5svCZwXFAADwA3l4fnSwP/wBr28AAgBw1S4kEsfh/4O6UCZXACCRAOAiEucLAZBSAMguVMgUAMgYALBTs2QKAJQAAGx5fEIiAKoNAOz0ST4FANipk9wXANiiHKkIAI0BAJkoRyQCQLsAYFWBUiwCwMIAoKxAIi4EwK4BgFm2MkcCgL0FAHaOWJAPQGAAgJlCLMwAIDgCAEMeE80DIEwDoDDSv+CpX3CFuEgBAMDLlc2XS9IzFLiV0Bp38vDg4iHiwmyxQmEXKRBmCeQinJebIxNI5wNMzgwAABr50cH+OD+Q5+bk4eZm52zv9MWi/mvwbyI+IfHf/ryMAgQAEE7P79pf5eXWA3DHAbB1v2upWwDaVgBo3/ldM9sJoFoK0Hr5i3k4/EAenqFQyDwdHAoLC+0lYqG9MOOLPv8z4W/gi372/EAe/tt68ABxmkCZrcCjg/1xYW52rlKO58sEQjFu9+cj/seFf/2OKdHiNLFcLBWK8ViJuFAiTcd5uVKRRCHJleIS6X8y8R+W/QmTdw0ArIZPwE62B7XLbMB+7gECiw5Y0nYAQH7zLYwaC5EAEGc0Mnn3AACTv/mPQCsBAM2XpOMAALzoGFyolBdMxggAAESggSqwQQcMwRSswA6cwR28wBcCYQZEQAwkwDwQQgbkgBwKoRiWQRlUwDrYBLWwAxqgEZrhELTBMTgN5+ASXIHrcBcGYBiewhi8hgkEQcgIE2EhOogRYo7YIs4IF5mOBCJhSDSSgKQg6YgUUSLFyHKkAqlCapFdSCPyLXIUOY1cQPqQ28ggMor8irxHMZSBslED1AJ1QLmoHxqKxqBz0XQ0D12AlqJr0Rq0Hj2AtqKn0UvodXQAfYqOY4DRMQ5mjNlhXIyHRWCJWBomxxZj5Vg1Vo81Yx1YN3YVG8CeYe8IJAKLgBPsCF6EEMJsgpCQR1hMWEOoJewjtBK6CFcJg4Qxwicik6hPtCV6EvnEeGI6sZBYRqwm7iEeIZ4lXicOE1+TSCQOyZLkTgohJZAySQtJa0jbSC2kU6Q+0hBpnEwm65Btyd7kCLKArCCXkbeQD5BPkvvJw+S3FDrFiOJMCaIkUqSUEko1ZT/lBKWfMkKZoKpRzame1AiqiDqfWkltoHZQL1OHqRM0dZolzZsWQ8ukLaPV0JppZ2n3aC/pdLoJ3YMeRZfQl9Jr6Afp5+mD9HcMDYYNg8dIYigZaxl7GacYtxkvmUymBdOXmchUMNcyG5lnmA+Yb1VYKvYqfBWRyhKVOpVWlX6V56pUVXNVP9V5qgtUq1UPq15WfaZGVbNQ46kJ1Bar1akdVbupNq7OUndSj1DPUV+jvl/9gvpjDbKGhUaghkijVGO3xhmNIRbGMmXxWELWclYD6yxrmE1iW7L57Ex2Bfsbdi97TFNDc6pmrGaRZp3mcc0BDsax4PA52ZxKziHODc57LQMtPy2x1mqtZq1+rTfaetq+2mLtcu0W7eva73VwnUCdLJ31Om0693UJuja6UbqFutt1z+o+02PreekJ9cr1Dund0Uf1bfSj9Rfq79bv0R83MDQINpAZbDE4Y/DMkGPoa5hpuNHwhOGoEctoupHEaKPRSaMnuCbuh2fjNXgXPmasbxxirDTeZdxrPGFiaTLbpMSkxeS+Kc2Ua5pmutG003TMzMgs3KzYrMnsjjnVnGueYb7ZvNv8jYWlRZzFSos2i8eW2pZ8ywWWTZb3rJhWPlZ5VvVW16xJ1lzrLOtt1ldsUBtXmwybOpvLtqitm63Edptt3xTiFI8p0in1U27aMez87ArsmuwG7Tn2YfYl9m32zx3MHBId1jt0O3xydHXMdmxwvOuk4TTDqcSpw+lXZxtnoXOd8zUXpkuQyxKXdpcXU22niqdun3rLleUa7rrStdP1o5u7m9yt2W3U3cw9xX2r+00umxvJXcM970H08PdY4nHM452nm6fC85DnL152Xlle+70eT7OcJp7WMG3I28Rb4L3Le2A6Pj1l+s7pAz7GPgKfep+Hvqa+It89viN+1n6Zfgf8nvs7+sv9j/i/4XnyFvFOBWABwQHlAb2BGoGzA2sDHwSZBKUHNQWNBbsGLww+FUIMCQ1ZH3KTb8AX8hv5YzPcZyya0RXKCJ0VWhv6MMwmTB7WEY6GzwjfEH5vpvlM6cy2CIjgR2yIuB9pGZkX+X0UKSoyqi7qUbRTdHF09yzWrORZ+2e9jvGPqYy5O9tqtnJ2Z6xqbFJsY+ybuIC4qriBeIf4RfGXEnQTJAntieTE2MQ9ieNzAudsmjOc5JpUlnRjruXcorkX5unOy553PFk1WZB8OIWYEpeyP+WDIEJQLxhP5aduTR0T8oSbhU9FvqKNolGxt7hKPJLmnVaV9jjdO31D+miGT0Z1xjMJT1IreZEZkrkj801WRNberM/ZcdktOZSclJyjUg1plrQr1zC3KLdPZisrkw3keeZtyhuTh8r35CP5c/PbFWyFTNGjtFKuUA4WTC+oK3hbGFt4uEi9SFrUM99m/ur5IwuCFny9kLBQuLCz2Lh4WfHgIr9FuxYji1MXdy4xXVK6ZHhp8NJ9y2jLspb9UOJYUlXyannc8o5Sg9KlpUMrglc0lamUycturvRauWMVYZVkVe9ql9VbVn8qF5VfrHCsqK74sEa45uJXTl/VfPV5bdra3kq3yu3rSOuk626s91m/r0q9akHV0IbwDa0b8Y3lG19tSt50oXpq9Y7NtM3KzQM1YTXtW8y2rNvyoTaj9nqdf13LVv2tq7e+2Sba1r/dd3vzDoMdFTve75TsvLUreFdrvUV99W7S7oLdjxpiG7q/5n7duEd3T8Wej3ulewf2Re/ranRvbNyvv7+yCW1SNo0eSDpw5ZuAb9qb7Zp3tXBaKg7CQeXBJ9+mfHvjUOihzsPcw83fmX+39QjrSHkr0jq/dawto22gPaG97+iMo50dXh1Hvrf/fu8x42N1xzWPV56gnSg98fnkgpPjp2Snnp1OPz3Umdx590z8mWtdUV29Z0PPnj8XdO5Mt1/3yfPe549d8Lxw9CL3Ytslt0utPa49R35w/eFIr1tv62X3y+1XPK509E3rO9Hv03/6asDVc9f41y5dn3m978bsG7duJt0cuCW69fh29u0XdwruTNxdeo94r/y+2v3qB/oP6n+0/rFlwG3g+GDAYM/DWQ/vDgmHnv6U/9OH4dJHzEfVI0YjjY+dHx8bDRq98mTOk+GnsqcTz8p+Vv9563Or59/94vtLz1j82PAL+YvPv655qfNy76uprzrHI8cfvM55PfGm/K3O233vuO+638e9H5ko/ED+UPPR+mPHp9BP9z7nfP78L/eE8/sl0p8zAAA6GWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS41LWMwMTQgNzkuMTUxNDgxLCAyMDEzLzAzLzEzLTEyOjA5OjE1ICAgICAgICAiPgogICA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogICAgICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgICAgICAgICB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iCiAgICAgICAgICAgIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIgogICAgICAgICAgICB4bWxuczpzdEV2dD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlRXZlbnQjIgogICAgICAgICAgICB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iCiAgICAgICAgICAgIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIKICAgICAgICAgICAgeG1sbnM6dGlmZj0iaHR0cDovL25zLmFkb2JlLmNvbS90aWZmLzEuMC8iCiAgICAgICAgICAgIHhtbG5zOmV4aWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20vZXhpZi8xLjAvIj4KICAgICAgICAgPHhtcDpDcmVhdG9yVG9vbD5BZG9iZSBQaG90b3Nob3AgQ0MgKE1hY2ludG9zaCk8L3htcDpDcmVhdG9yVG9vbD4KICAgICAgICAgPHhtcDpDcmVhdGVEYXRlPjIwMTUtMTEtMDNUMTE6MjU6MzcrMDg6MDA8L3htcDpDcmVhdGVEYXRlPgogICAgICAgICA8eG1wOk1ldGFkYXRhRGF0ZT4yMDE1LTExLTAzVDExOjI1OjM3KzA4OjAwPC94bXA6TWV0YWRhdGFEYXRlPgogICAgICAgICA8eG1wOk1vZGlmeURhdGU+MjAxNS0xMS0wM1QxMToyNTozNyswODowMDwveG1wOk1vZGlmeURhdGU+CiAgICAgICAgIDx4bXBNTTpJbnN0YW5jZUlEPnhtcC5paWQ6NGIzODJiN2QtODBkNi00YmYzLTkwOTktOWYyMTZhOTAyNzUyPC94bXBNTTpJbnN0YW5jZUlEPgogICAgICAgICA8eG1wTU06RG9jdW1lbnRJRD54bXAuZGlkOmZiZDY2Yzk5LWM5ZjYtNDBkOS05NzY0LWJkYTA1YmI5NWFmZjwveG1wTU06RG9jdW1lbnRJRD4KICAgICAgICAgPHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD54bXAuZGlkOmZiZDY2Yzk5LWM5ZjYtNDBkOS05NzY0LWJkYTA1YmI5NWFmZjwveG1wTU06T3JpZ2luYWxEb2N1bWVudElEPgogICAgICAgICA8eG1wTU06SGlzdG9yeT4KICAgICAgICAgICAgPHJkZjpTZXE+CiAgICAgICAgICAgICAgIDxyZGY6bGkgcmRmOnBhcnNlVHlwZT0iUmVzb3VyY2UiPgogICAgICAgICAgICAgICAgICA8c3RFdnQ6YWN0aW9uPmNyZWF0ZWQ8L3N0RXZ0OmFjdGlvbj4KICAgICAgICAgICAgICAgICAgPHN0RXZ0Omluc3RhbmNlSUQ+eG1wLmlpZDpmYmQ2NmM5OS1jOWY2LTQwZDktOTc2NC1iZGEwNWJiOTVhZmY8L3N0RXZ0Omluc3RhbmNlSUQ+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDp3aGVuPjIwMTUtMTEtMDNUMTE6MjU6MzcrMDg6MDA8L3N0RXZ0OndoZW4+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDpzb2Z0d2FyZUFnZW50PkFkb2JlIFBob3Rvc2hvcCBDQyAoTWFjaW50b3NoKTwvc3RFdnQ6c29mdHdhcmVBZ2VudD4KICAgICAgICAgICAgICAgPC9yZGY6bGk+CiAgICAgICAgICAgICAgIDxyZGY6bGkgcmRmOnBhcnNlVHlwZT0iUmVzb3VyY2UiPgogICAgICAgICAgICAgICAgICA8c3RFdnQ6YWN0aW9uPnNhdmVkPC9zdEV2dDphY3Rpb24+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDppbnN0YW5jZUlEPnhtcC5paWQ6NGIzODJiN2QtODBkNi00YmYzLTkwOTktOWYyMTZhOTAyNzUyPC9zdEV2dDppbnN0YW5jZUlEPgogICAgICAgICAgICAgICAgICA8c3RFdnQ6d2hlbj4yMDE1LTExLTAzVDExOjI1OjM3KzA4OjAwPC9zdEV2dDp3aGVuPgogICAgICAgICAgICAgICAgICA8c3RFdnQ6c29mdHdhcmVBZ2VudD5BZG9iZSBQaG90b3Nob3AgQ0MgKE1hY2ludG9zaCk8L3N0RXZ0OnNvZnR3YXJlQWdlbnQ+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDpjaGFuZ2VkPi88L3N0RXZ0OmNoYW5nZWQ+CiAgICAgICAgICAgICAgIDwvcmRmOmxpPgogICAgICAgICAgICA8L3JkZjpTZXE+CiAgICAgICAgIDwveG1wTU06SGlzdG9yeT4KICAgICAgICAgPGRjOmZvcm1hdD5pbWFnZS9wbmc8L2RjOmZvcm1hdD4KICAgICAgICAgPHBob3Rvc2hvcDpDb2xvck1vZGU+MzwvcGhvdG9zaG9wOkNvbG9yTW9kZT4KICAgICAgICAgPHBob3Rvc2hvcDpJQ0NQcm9maWxlPnNSR0IgSUVDNjE5NjYtMi4xPC9waG90b3Nob3A6SUNDUHJvZmlsZT4KICAgICAgICAgPHRpZmY6T3JpZW50YXRpb24+MTwvdGlmZjpPcmllbnRhdGlvbj4KICAgICAgICAgPHRpZmY6WFJlc29sdXRpb24+NzIwMDAwLzEwMDAwPC90aWZmOlhSZXNvbHV0aW9uPgogICAgICAgICA8dGlmZjpZUmVzb2x1dGlvbj43MjAwMDAvMTAwMDA8L3RpZmY6WVJlc29sdXRpb24+CiAgICAgICAgIDx0aWZmOlJlc29sdXRpb25Vbml0PjI8L3RpZmY6UmVzb2x1dGlvblVuaXQ+CiAgICAgICAgIDxleGlmOkNvbG9yU3BhY2U+MTwvZXhpZjpDb2xvclNwYWNlPgogICAgICAgICA8ZXhpZjpQaXhlbFhEaW1lbnNpb24+MjA8L2V4aWY6UGl4ZWxYRGltZW5zaW9uPgogICAgICAgICA8ZXhpZjpQaXhlbFlEaW1lbnNpb24+MzA8L2V4aWY6UGl4ZWxZRGltZW5zaW9uPgogICAgICA8L3JkZjpEZXNjcmlwdGlvbj4KICAgPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAKPD94cGFja2V0IGVuZD0idyI/PjRRCfkAAAAgY0hSTQAAeiUAAICDAAD5/wAAgOkAAHUwAADqYAAAOpgAABdvkl/FRgAAAXBJREFUeNqs1TFrFEEUB/DfDWIlBISx9QMErO9bbBpJoQloISZVIjZWWomFYB3sRItTPJjKTxCYKoWkUZvYBY8IQkgRiGczyHG3FzZ386+W9/b9eFPsbE9LRk3/Bu6jwR3cKq1f+IqE9zHl0+nZ3hTUwyO8xE2X5zee4W1MeTwDjpr+dbzDuqtlgM2Y8vl/sGw2wF2L5RPWY8rjUApbS2DK7Bb0Rk1/BT+xYrn8we2AjQqYYmwErKmXtYDViuBqQKwIxoCLiuBFwHFF8DjgoCJ4EPCxIjgI+IyjCtgRhqF81NsVwO2Y8nmAmPIXvFgCe16MmftwF68ROkJ/8TSm/Kb1gi3ovXIvhg7YZkz5w2RxZqi8sNNhu51prHXDiU33yu+gLXsx5cdtjcuOtYsfLfXveDJvaC4YUz7Dg5bWw9Jz1Q3FlPcxnCgNS81CYMmrOc+LZ9T0D0dN/7DLu9c6mgnjmuB+19N0Bb/VBk+6gv8GAHn5ZfPg+9pTAAAAAElFTkSuQmCC'
-          })
-        });
-      } else {
-        style = new _constants.ol.style.Style({});
-        if (options['stroke'] && this._getStroke(options['stroke'])) {
-          style.setStroke(this._getStroke(options['stroke']));
-        }
-        if (options['text'] && this._getText(options['text'])) {
-          style.setText(this._getText(options['text']));
-        }
-        if (options['fill'] && this._getFill(options['fill'])) {
-          style.setFill(this._getFill(options['fill']));
-        }
-        if (options['icon']) {
-          style.setImage(this._getImage(options['icon']));
-        }
-      }
-      return style;
-    }
-  }, {
-    key: 'getStyleByLine',
-    value: function getStyleByLine(options) {
-      var style = null;
-      if (!options) {
-        style = new _constants.ol.style.Style({
-          stroke: new _constants.ol.style.Stroke({
-            width: 4,
-            color: '#0000EE'
-          })
-        });
-      } else {
-        style = new _constants.ol.style.Style({});
-        if (options['stroke'] && this._getStroke(options['stroke'])) {
-          style.setStroke(this._getStroke(options['stroke']));
-        }
-        if (options['text'] && this._getText(options['text'])) {
-          style.setText(this._getText(options['text']));
-        }
-        if (options['fill'] && this._getFill(options['fill'])) {
-          style.setFill(this._getFill(options['fill']));
-        }
-      }
-      return style;
-    }
-  }, {
-    key: 'getStyleByPolygon',
-    value: function getStyleByPolygon(attr) {
-      var options = attr['style'] || undefined;
-      var style = null;
-      if (!options) {
-        style = new _constants.ol.style.Style({
-          fill: new _constants.ol.style.Fill({
-            color: 'rgba(67, 110, 238, 0.4)'
-          }),
-          stroke: new _constants.ol.style.Stroke({
-            color: '#4781d9',
-            width: 2
-          }),
-          image: new _constants.ol.style.Circle({
-            radius: 7,
-            fill: new _constants.ol.style.Fill({
-              color: '#ffcc33'
-            })
-          })
-        });
-      } else {
-        style = new _constants.ol.style.Style({});
-        if (options['stroke'] && this._getStroke(options['stroke'])) {
-          style.setStroke(this._getStroke(options['stroke']));
-        }
-        if (options['text'] && this._getText(options['text'])) {
-          style.setText(this._getText(options['text']));
-        }
-        if (options['fill'] && this._getFill(options['fill'])) {
-          style.setFill(this._getFill(options['fill']));
-        }
-      }
-      return style;
-    }
-  }, {
-    key: '_getImage',
-    value: function _getImage(options) {
-      try {
-        var icon = new _constants.ol.style.Icon({
-          anchor: options['imageAnchor'] ? options['imageAnchor'] : [0.5, 0.5],
-          anchorXUnits: options['imageAnchorXUnits'] ? options['imageAnchorXUnits'] : 'fraction',
-          anchorYUnits: options['imageAnchorYUnits'] ? options['imageAnchorYUnits'] : 'fraction',
-          opacity: options['imageOpacity'] ? options['imageOpacity'] : 1,
-          src: options['imageSrc'] ? options['imageSrc'] : 1
-        });
-        if (icon && icon instanceof _constants.ol.style.Icon) {
-          return icon;
-        } else {
-          return false;
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, {
-    key: '_getStroke',
-    value: function _getStroke(options) {
-      try {
-        var stroke = new _constants.ol.style.Stroke({
-          color: options['strokeColor'] ? options['strokeColor'] : undefined,
-          lineCap: options['strokeLineCap'] ? options['strokeLineCap'] : 'round',
-          lineJoin: options['strokeLineJoin'] ? options['strokeLineJoin'] : 'round',
-          lineDash: options['strokeLineDash'] ? options['strokeLineDash'] : undefined,
-          lineDashOffset: options['strokeLineDashOffset'] ? options['strokeLineDashOffset'] : '0',
-          miterLimit: options['strokeMiterLimit'] ? options['strokeMiterLimit'] : 10,
-          width: options['strokeWidth'] ? options['strokeWidth'] : undefined
-        });
-        if (stroke && stroke instanceof _constants.ol.style.Stroke) {
-          return stroke;
-        } else {
-          return false;
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }, {
-    key: '_getText',
-    value: function _getText(options) {
-      try {
-        var text = new _constants.ol.style.Text({
-          font: options['textFont'] ? options['textFont'] : '10px sans-serif',
-          offsetX: options['textOffsetX'] ? options['textOffsetX'] : 0,
-          offsetY: options['textOffsetY'] ? options['textOffsetY'] : 0,
-          scale: options['textScale'] ? options['textScale'] : undefined,
-          rotation: options['textRotation'] ? options['textRotation'] : 0,
-          text: options['text'] ? options['text'] : undefined,
-          textAlign: options['textAlign'] ? options['textAlign'] : 'start',
-          textBaseline: options['textBaseline'] ? options['textBaseline'] : 'alphabetic'
-        });
-        if (options['textFill']) {
-          text.setFill(this._getFill(options['textFill']));
-        }
-        if (options['textStroke']) {
-          text.setStroke(this._getStroke(options['textStroke']));
-        }
-        if (text && text instanceof _constants.ol.style.Text) {
-          return text;
-        } else {
-          return false;
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }, {
-    key: '_getFill',
-    value: function _getFill(options) {
-      try {
-        var fill = new _constants.ol.style.Fill({
-          color: options['fillColor'] ? options['fillColor'] : undefined
-        });
-        if (fill && fill instanceof _constants.ol.style.Fill) {
-          return fill;
-        } else {
-          return false;
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }]);
-
-  return Style;
-}();
-
-exports.default = Style;
-module.exports = exports['default'];
-
-/***/ }),
-
-/***/ 84:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _constants = __webpack_require__(17);
-
-var _mixin = __webpack_require__(53);
-
-var _mixin2 = _interopRequireDefault(_mixin);
-
-var _Style = __webpack_require__(66);
-
-var _Style2 = _interopRequireDefault(_Style);
-
-var _Layer = __webpack_require__(52);
-
-var _Layer2 = _interopRequireDefault(_Layer);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Feature = function (_mix) {
-  _inherits(Feature, _mix);
-
-  function Feature(map) {
-    _classCallCheck(this, Feature);
-
-    var _this = _possibleConstructorReturn(this, (Feature.__proto__ || Object.getPrototypeOf(Feature)).call(this));
-
-    _this.map = map;
-    if (!_this.map) {
-      throw new Error('缺少地图对象！');
-    }
-    return _this;
-  }
-
-  _createClass(Feature, [{
-    key: 'getFeatureById',
-    value: function getFeatureById(id) {
-      var layers = this.map.getLayers();
-      var feature = null;
-      layers.forEach(function (layer) {
-        if (layer && layer instanceof _constants.ol.layer.Vector && layer.getSource() && layer.getSource().getFeatureById) {
-          feature = layer.getSource().getFeatureById(id);
-        }
-      });
-      return feature;
-    }
-  }, {
-    key: 'getFeatureById2LayerName',
-    value: function getFeatureById2LayerName(id, layerName) {
-      var feature = null;
-      if (layerName) {
-        var layer = this.getLayerByName(layerName);
-        if (layer && layer instanceof _constants.ol.layer.Vector) {
-          feature = layer.getSource().getFeatureById(id);
-        }
-      }
-      if (!feature || !(feature instanceof _constants.ol.Feature)) {
-        feature = this.getFeatureById(id);
-      }
-      return feature;
-    }
-  }, {
-    key: '_getGeometryFromPoint',
-    value: function _getGeometryFromPoint(point) {
-      var geometry = null;
-      if (point instanceof _constants.ol.geom.Geometry) {
-        geometry = point;
-      } else if (Array.isArray(point.geometry)) {
-        geometry = new _constants.ol.geom.Point(point.geometry);
-      } else {
-        geometry = new _constants.ol.format.WKT().readGeometry(point.geometry);
-      }
-      return geometry;
-    }
-  }, {
-    key: '_getExtent',
-    value: function _getExtent(multiFeatures) {
-      var extent = multiFeatures.getExtent();
-      var bExtent = true;
-      for (var m = 0; m < 4; m++) {
-        if (extent[m] === Infinity || extent[m].isNaN()) {
-          bExtent = false;
-          break;
-        }
-      }
-      if (bExtent) {
-        this.zoomToExtent(extent, true);
-      }
-      return extent;
-    }
-  }, {
-    key: 'adjustExtent',
-    value: function adjustExtent(extent) {
-      if (this.map) {
-        var width = _constants.ol.extent.getWidth(extent);
-        var adjust = 0.2;
-        if (width < 0.05) {
-          var bleft = _constants.ol.extent.getBottomLeft(extent);
-          var tright = _constants.ol.extent.getTopRight(extent);
-          var xmin = bleft[0] - adjust;
-          var ymin = bleft[1] - adjust;
-          var xmax = tright[0] + adjust;
-          var ymax = tright[1] + adjust;
-          extent = _constants.ol.extent.buffer([xmin, ymin, xmax, ymax], adjust);
-        }
-        return extent;
-      }
-    }
-  }, {
-    key: 'zoomToExtent',
-    value: function zoomToExtent(extent, isanimation, duration) {
-      if (this.map) {
-        var view = this.map.getView();
-        var size = this.map.getSize();
-
-        var center = _constants.ol.extent.getCenter(extent);
-        if (!isanimation) {
-          view.fit(extent, size, {
-            padding: [350, 200, 200, 350]
-          });
-          view.setCenter(center);
-        } else {
-          if (!duration) {
-            duration = 2000;
-            view.animate({
-              center: center,
-              duration: duration
-            });
-            view.fit(extent, size);
-          }
-        }
-      }
-    }
-  }, {
-    key: 'movePointToView',
-    value: function movePointToView(coordinate) {
-      if (this.map) {
-        var extent = this.getMapCurrentExtent();
-        if (!_constants.ol.extent.containsXY(extent, coordinate[0], coordinate[1])) {
-          this.map.getView().setCenter([coordinate[0], coordinate[1]]);
-        }
-      }
-    }
-  }, {
-    key: 'getMapCurrentExtent',
-    value: function getMapCurrentExtent() {
-      if (this.map) {
-        return this.map.getView().calculateExtent(this.map.getSize());
-      }
-    }
-  }, {
-    key: 'addPoint',
-    value: function addPoint(point, params) {
-      var geometry = this._getGeometryFromPoint(point);
-      var feature = new _constants.ol.Feature({
-        geometry: geometry,
-        params: params
-      });
-      var style = this.getStyleByPoint(point['attributes']['style']);
-      var selectStyle = this.getStyleByPoint(point['attributes']['selectStyle']);
-      if (style && feature) {
-        feature.setStyle(style);
-        feature.set('style', style);
-        if (selectStyle) {
-          feature.set('selectStyle', selectStyle);
-        }
-      }
-      if (point['attributes'] && (point['attributes']['id'] || point['attributes']['ID'])) {
-        var id = point.attributes['id'] || point.attributes['ID'] || params['id'];
-        feature.setId(id);
-        feature.setProperties(point['attributes']);
-      }
-      if (params['zoomToExtent']) {
-        var coordinate = geometry.getCoordinates();
-
-        this.movePointToView(coordinate);
-      }
-      if (params['layerName']) {
-        var layer = this.creatVectorLayer(params['layerName'], {
-          create: true
-        });
-        layer.getSource().addFeature(feature);
-      }
-      return feature;
-    }
-  }, {
-    key: 'addPoints',
-    value: function addPoints(points, params) {
-      if (points && Array.isArray(points)) {
-        var multiPoint = new _constants.ol.geom.MultiPoint([]);
-        var change = false;
-        if (params['zoomToExtent']) {
-          params['zoomToExtent'] = !params['zoomToExtent'];
-          change = true;
-        };
-        for (var i = 0; i < points.length; i++) {
-          var pointFeat = this.addPoint(points[i], params);
-          multiPoint.appendPoint(pointFeat.getGeometry());
-        }
-        if (change) {
-          this._getExtent(multiPoint);
-        }
-      }
-    }
-  }, {
-    key: 'setPointGeometry',
-    value: function setPointGeometry(point, geometry) {
-      if (point && geometry && point instanceof _constants.ol.Feature) {
-        var _geometry = this._getGeometryFromPoint({
-          geometry: geometry
-        });
-        point.setGeometry(_geometry);
-      } else {
-        console.info('传入数据有误！');
-      }
-    }
-  }, {
-    key: 'addPolyline',
-    value: function addPolyline(line, params) {
-      var linefeature = null;
-      if (line.geometry.hasOwnProperty('paths')) {
-        var feat = {
-          'type': 'Feature',
-          'geometry': {
-            'type': 'MultiLineString',
-            'coordinates': line.geometry.paths
-          }
-        };
-        linefeature = new _constants.ol.format.GeoJSON().readFeature(feat);
-      } else {
-        linefeature = new _constants.ol.Feature({
-          geometry: new _constants.ol.format.WKT().readGeometry(line.geometry)
-        });
-      }
-      var style = this.getStyleByLine(line['attributes']['style']);
-      var selectStyle = this.getStyleByLine(line['attributes']['selectStyle']);
-      var extent = linefeature.getGeometry().getExtent();
-      if (style && linefeature) {
-        linefeature.setStyle(style);
-        linefeature.set('style', style);
-        if (selectStyle) {
-          linefeature.set('selectStyle', selectStyle);
-        }
-      }
-      if (line['attributes'] && (line.attributes['ID'] || line.attributes['id'])) {
-        var id = line.attributes['id'] || line.attributes['ID'] || params['id'];
-        linefeature.setId(id);
-        linefeature.setProperties(line.attributes);
-      }
-      if (params['zoomToExtent']) {
-        this.zoomToExtent(extent, true);
-      }
-      if (params['layerName']) {
-        var layer = this.creatVectorLayer(params['layerName'], {
-          create: true
-        });
-        layer.getSource().addFeature(linefeature);
-      }
-      return linefeature;
-    }
-  }, {
-    key: 'addPolylines',
-    value: function addPolylines(lines, params) {
-      if (lines && Array.isArray(lines)) {
-        var MultiLine = new _constants.ol.geom.MultiLineString([]),
-            change = false;
-
-        if (params['zoomToExtent']) {
-          params['zoomToExtent'] = !params['zoomToExtent'];
-          change = true;
-        };
-        for (var i = 0; i < lines.length; i++) {
-          var polyLine = this.addPolyline(lines[i], params);
-          MultiLine.appendLineString(polyLine.getGeometry());
-        }
-        if (change) {
-          this._getExtent(MultiLine);
-        }
-      }
-    }
-  }, {
-    key: 'addPolygon',
-    value: function addPolygon(polygon, params) {
-      if (polygon && polygon['geometry']) {
-        var polygonFeature = new _constants.ol.Feature({
-          geometry: new _constants.ol.format.WKT().readGeometry(polygon.geometry)
-        });
-        var style = this.getStyleByPolygon(polygon['attributes']['style']);
-        var selectStyle = this.getStyleByPolygon(polygon['attributes']['selectStyle']);
-        var extent = polygonFeature.getGeometry().getExtent();
-        if (style && polygonFeature) {
-          polygonFeature.setStyle(style);
-          if (selectStyle) {
-            polygonFeature.set('selectStyle', selectStyle);
-          }
-        }
-        if (polygon['attributes'] && (polygon.attributes['ID'] || polygon.attributes['id'])) {
-          var id = polygon.attributes['id'] || polygon.attributes['ID'] || params['id'];
-          polygonFeature.setId(id);
-          polygonFeature.setProperties(polygon.attributes);
-        }
-        if (params['zoomToExtent']) {
-          this.zoomToExtent(extent, true);
-        }
-        if (params['layerName']) {
-          var layer = this.creatVectorLayer(params['layerName'], {
-            create: true
-          });
-          layer.getSource().addFeature(polygonFeature);
-        }
-        return polygonFeature;
-      } else {
-        console.info('传入的数据不标准！');
-      }
-    }
-  }, {
-    key: 'addPolygons',
-    value: function addPolygons(polygons, params) {
-      if (polygons && Array.isArray(polygons)) {
-        var _ref = [new _constants.ol.geom.MultiPolygon([]), change],
-            MultiPolygon = _ref[0],
-            change = _ref[1];
-
-        if (params['zoomToExtent']) {
-          params['zoomToExtent'] = !params['zoomToExtent'];
-          change = true;
-        }
-        for (var i = 0; i < polygons.length; i++) {
-          var polygon = this.addPolyline(polygons[i], params);
-          MultiPolygon.appendPolygon(polygon.getGeometry());
-        }
-        if (change) {
-          this._getExtent(MultiPolygon);
-        }
-      }
-    }
-  }, {
-    key: 'removeFeatureByLayerName',
-    value: function removeFeatureByLayerName(layerName) {
-      try {
-        var layer = this.getLayerByLayerName(layerName);
-        if (layer && layer instanceof _constants.ol.layer.Vector && layer.getSource()) {
-          layer.getSource().clear();
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, {
-    key: 'removeFeatureByLayerNames',
-    value: function removeFeatureByLayerNames(layerNames) {
-      var _this2 = this;
-
-      if (layerNames && Array.isArray(layerNames) && layerNames.length > 0) {
-        layerNames.forEach(function (item) {
-          _this2.removeFeatureByLayerName(item);
-        });
-      } else {
-        console.info('id为空或者不是数组！');
-      }
-    }
-  }, {
-    key: 'removeFeature',
-    value: function removeFeature(feature) {
-      if (feature && feature instanceof _constants.ol.Feature) {
-        var tragetLayer = this.getLayerByFeatuer(feature);
-        if (tragetLayer) {
-          var source = tragetLayer.getSource();
-          if (source && source.removeFeature) {
-            source.removeFeature(feature);
-          }
-        }
-      } else {
-        throw new Error('传入的不是要素!');
-      }
-    }
-  }, {
-    key: 'removeFeatureById',
-    value: function removeFeatureById(id, layerName) {
-      if (this.map && id) {
-        if (layerName) {
-          var layer = this.getLayerByLayerName(layerName);
-          if (layer) {
-            var feature = layer.getSource().getFeatureById(id);
-            if (feature && feature instanceof _constants.ol.Feature) {
-              layer.getSource().removeFeature(feature);
-            }
-          }
-        } else {
-          var layers = this.map.getLayers().getArray();
-          layers.forEach(function (layer) {
-            if (layer && layer instanceof _constants.ol.layer.Vector && layer.getSource()) {
-              var _feature = layer.getSource().getFeatureById(id);
-              if (_feature && _feature instanceof _constants.ol.Feature) {
-                layer.getSource().removeFeature(_feature);
-              }
-            }
-          });
-        }
-      }
-    }
-  }, {
-    key: 'removeFeatureByIds',
-    value: function removeFeatureByIds(ids, layerName) {
-      var _this3 = this;
-
-      if (ids && Array.isArray(ids) && ids.length > 0) {
-        ids.forEach(function (item) {
-          _this3.removeFeatureById(item, layerName);
-        });
-      } else {
-        console.info('id为空或者不是数组！');
-      }
-    }
-  }, {
-    key: 'highLightFeature',
-    value: function highLightFeature(id, feat, layerName) {
-      if (!this.map) return;
-      if (feat && feat instanceof _constants.ol.Feature) {
-        var selectStyle = feat.get('selectStyle');
-        if (selectStyle && selectStyle instanceof _constants.ol.style.Style) {
-          feat.setStyle(selectStyle);
-        } else if (selectStyle) {
-          var st = this.getStyleByPoint(selectStyle);
-          feat.setStyle(st);
-        }
-        return feat;
-      } else if (id && id.trim() !== "''") {
-        var feature = this.getFeatureById(id, layerName);
-        if (feature && feature instanceof _constants.ol.Feature) {
-          var _selectStyle = feature.get('selectStyle');
-          if (_selectStyle && _selectStyle instanceof _constants.ol.style.Style) {
-            feature.setStyle(_selectStyle);
-          } else if (_selectStyle) {
-            var _st = this.getStyleByPoint(_selectStyle);
-            feature.setStyle(_st);
-          }
-        }
-        return feature;
-      }
-    }
-  }, {
-    key: 'unHighLightFeature',
-    value: function unHighLightFeature(id, feat, layerName) {
-      if (!this.map) return;
-      if (feat && feat instanceof _constants.ol.Feature) {
-        var normalStyle = feat.get('style');
-        if (normalStyle && normalStyle instanceof _constants.ol.style.Style) {
-          feat.setStyle(normalStyle);
-        } else if (normalStyle) {
-          var st = this.getStyleByPoint(normalStyle);
-          feat.setStyle(st);
-        }
-        return feat;
-      } else if (id && id.trim() !== "''") {
-        var feature = this.getFeatureById(id, layerName);
-        if (feature && feature instanceof _constants.ol.Feature) {
-          var _normalStyle = feature.get('style');
-          if (_normalStyle && _normalStyle instanceof _constants.ol.style.Style) {
-            feature.setStyle(_normalStyle);
-          } else if (_normalStyle) {
-            var _st2 = this.getStyleByPoint(_normalStyle);
-            feature.setStyle(_st2);
-          }
-        }
-        return feature;
-      }
-    }
-  }]);
-
-  return Feature;
-}((0, _mixin2.default)(_Style2.default, _Layer2.default));
-
-exports.default = Feature;
-module.exports = exports['default'];
-
 /***/ })
-
-/******/ });
+/******/ ]);
 });
 //# sourceMappingURL=HMap.js.map
