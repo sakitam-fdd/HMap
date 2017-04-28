@@ -12,7 +12,7 @@ const mix = (...mixins) => {
 
 const copyProperties = (target, source) => {
   for (let key of Reflect.ownKeys(source)) {
-    if (key !== 'constructor' && key !== 'prototype' && key !== 'name') {
+    if (key !== 'constructor' && key !== 'prototype' && key !== 'name' && key !== 'length') {
       let desc = Object.getOwnPropertyDescriptor(source, key)
       Object.defineProperty(target, key, desc)
     }
@@ -20,3 +20,4 @@ const copyProperties = (target, source) => {
 }
 
 export default mix
+
