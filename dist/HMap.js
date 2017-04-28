@@ -11763,7 +11763,7 @@ process.umask = function() { return 0; };
 
 module.exports = {
 	"name": "hmap-js",
-	"version": "1.1.0",
+	"version": "1.2.0",
 	"private": false,
 	"description": "WEBGIS API",
 	"keywords": [
