@@ -4,9 +4,13 @@ const webpack = require('webpack');
 const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 const path = require('path');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const env  = require('yargs').argv.env; // use --env with webpack 2
+const env = require('yargs').argv.env; // use --env with webpack 2
 
 let libraryName = 'HMap';
+
+// function resolve (dir) {
+//   return path.join(__dirname, '..', dir)
+// }
 
 let plugins = [
   new webpack.BannerPlugin('This file is created by FDD'),
@@ -21,7 +25,14 @@ if (env === 'build') {
 }
 
 const config = {
-  entry: __dirname + '/src/index.js',
+  // entry: __dirname + '/src/index.js',
+  // entry: {
+  //   app: [require('babel-polyfill'), __dirname + '/src/index.js']
+  // },
+  entry: [
+    path.join(__dirname, 'node_modules/babel-polyfill'),
+    path.resolve(__dirname + '/src/index.js')
+  ],
   devtool: 'source-map',
   output: {
     path: __dirname + '/dist',
