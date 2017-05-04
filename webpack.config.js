@@ -8,9 +8,9 @@ const env = require('yargs').argv.env; // use --env with webpack 2
 
 let libraryName = 'HMap';
 
-// function resolve (dir) {
-//   return path.join(__dirname, '..', dir)
-// }
+const resolve = (dir) => {
+  return path.join(__dirname, '..', dir)
+}
 
 let plugins = [
   new webpack.BannerPlugin('This file is created by FDD'),
@@ -25,10 +25,6 @@ if (env === 'build') {
 }
 
 const config = {
-  // entry: __dirname + '/src/index.js',
-  // entry: {
-  //   app: [require('babel-polyfill'), __dirname + '/src/index.js']
-  // },
   entry: [
     path.join(__dirname, 'node_modules/babel-polyfill'),
     path.resolve(__dirname + '/src/index.js')
@@ -55,8 +51,10 @@ const config = {
     ]
   },
   resolve: {
-    modules: [path.resolve('./src')],
-    extensions: ['.json', '.js']
+    extensions: ['.json', '.js'],
+    alias: {
+      '@': resolve('src')
+    }
   },
   plugins: plugins
 };

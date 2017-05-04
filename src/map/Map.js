@@ -1,5 +1,5 @@
 import mix from '../utils/mixin'
-import { ol } from '../constants'
+import { ol, proj4 } from '../constants'
 
 import BaseLayers from './baseLayer'
 import Controls from './Controls'
@@ -19,8 +19,8 @@ class Map extends mix(BaseLayers, Controls, Interactions, View, Style, Layer, Fe
     this.plotEdit = null
     this._lastDrawInteractionGeometry = null
     window.ObservableObj = new ol.Object()
-    // proj4.defs('EPSG:4490', '+proj=longlat +ellps=GRS80 +no_defs')
-    // ol.proj.setProj4(proj4)
+    proj4.defs('EPSG:4490', '+proj=longlat +ellps=GRS80 +no_defs')
+    ol.proj.setProj4(proj4)
 
     /**
      * 当前地图线要素

@@ -1,6 +1,6 @@
 const HMap = {}
 HMap.version = require('../package.json').version
-import {ol} from './constants'
+import {ol, proj4} from './constants'
 import Map from './map/Map'
 import Layer from './layer/Layer'
 import Feature from './feature/feature'
@@ -11,7 +11,7 @@ import LayerSwitcher from './plugins/LayerSwitcher'
 import MeasureTool from './plugins/MeasureTool'
 
 HMap.ol = ol
-// HMap.proj4 = proj4
+HMap.proj4 = proj4
 HMap.Map = Map
 HMap.Layer = Layer
 HMap.Feature = Feature
