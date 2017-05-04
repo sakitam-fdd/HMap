@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>测试添加点</title>
+  <title>添加动态点</title>
   <link rel="stylesheet" href="../dist/HMap.css" type="text/css">
+  <link rel="stylesheet" href="../asset/css/iconfont/iconfont.css">
 </head>
 <body>
-<button onclick="addPoint()">添加点</button>
-<button onclick="addPoints()">添加多点</button>
+<button onclick="addOverLayPoint()">添加点</button>
+<button onclick="addOverLayPoints()">添加点</button>
 <button onclick="removePointById()">通过ID移除标绘点</button>
 <button onclick="removePointByLayerName()">通过LayerName移除标绘点</button>
 <button onclick="highlightFeat()">高亮要素</button>
@@ -103,6 +104,11 @@
           },
           icon: {
             imageSrc: './images/icon_position.png'
+          },
+          element: {
+            className: 'icon-map4',
+            fontSize: '32px',
+            color: '#FF0000'
           }
         },
         selectStyle: {
@@ -121,8 +127,14 @@
           },
           icon: {
             imageSrc: './images/icon_position_hover.png'
+          },
+          element: {
+            className: 'icon-map4',
+            fontSize: '32px',
+            color: '#3385FF'
           }
-        }
+        },
+        number: 0
       },
       geometry: 'POINT (115.92466595234826 27.428038204473552)',
       geometryType: 'Point'
@@ -142,7 +154,7 @@
         XZQHBM: '360922',
         style: {
           text: {
-            text: '2',
+            text: '1',
             textFont: '14px sans-serif',
             textOffsetX: -3,
             textOffsetY: 0,
@@ -156,20 +168,50 @@
           },
           icon: {
             imageSrc: './images/icon_position.png'
+          },
+          element: {
+            className: 'icon-map4',
+            fontSize: '32px',
+            color: '#FF0000'
           }
-        }
+        },
+        selectStyle: {
+          text: {
+            text: '1',
+            textFont: '14px sans-serif',
+            textOffsetX: -3,
+            textOffsetY: 0,
+            textStroke: {
+              strokeColor: '#FFFFFF',
+              strokeWidth: 1
+            },
+            textFill: {
+              fillColor: 'transparent'
+            }
+          },
+          icon: {
+            imageSrc: './images/icon_position_hover.png'
+          },
+          element: {
+            className: 'icon-map4',
+            fontSize: '32px',
+            color: '#3385FF'
+          }
+        },
+        number: 1
       },
       geometry: 'POINT (115.90466595234826 27.408038204473552)',
       geometryType: 'Point'
     }
   ]
-  function addPoint () {
-    Maps.addPoint(points[0], {
-      layerName: 'test'
+  function addOverLayPoint () {
+    Maps.addOverlayPoint(points[0], {
+      layerName: 'test',
+      orderByNum: true
     });
   }
-  function addPoints () {
-    Maps.addPoints(points, {
+  function addOverLayPoints () {
+    Maps.addOverlayPoints(points, {
       layerName: 'test'
     });
   }

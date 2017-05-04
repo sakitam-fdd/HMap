@@ -100,7 +100,7 @@ export const hasClass = (el, name) => {
  */
 export const addClass = (el, name) => {
   if (el.classList !== undefined) {
-    let classes = Util.splitWords(name)
+    let classes = splitWords(name)
     for (let i = 0, len = classes.length; i < len; i++) {
       el.classList.add(classes[i])
     }

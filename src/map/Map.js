@@ -9,9 +9,9 @@ import View from './View'
 import Layer from '../layer/Layer'
 import Feature from '../feature/feature'
 import Style from '../style/Style'
-// import Overlay from '../overlay/Overlay'
+import Overlay from '../overlay/Overlay'
 
-class Map extends mix(BaseLayers, Controls, Interactions, View, Style, Layer, Feature) {
+class Map extends mix(BaseLayers, Controls, Interactions, View, Style, Layer, Feature, Overlay) {
   constructor () {
     super()
     this.addPointHandlerClick = null

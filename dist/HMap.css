@@ -239,3 +239,33 @@
 .ol-overviewmap-box {
   border: 2px dotted rgba(0,60,136,0.7);
 }
+
+.overlay-point-content {
+  cursor: pointer;
+  position: relative;
+}
+
+.overlay-point-content span {
+  position: absolute;
+  font-size: 13px;
+  color: #ffffff;
+  top: calc(50% - 13px);
+  left: calc(50% - 4px);
+}
+
+.overlay-point-content span:after {
+  content: "";
+  width: 16px;
+  height: 5px;
+  top: 100%;
+  left: 50%;
+  transform: translate(-8px, -13px);
+  -ms-transform: translate(-8px, -13px);
+  /* IE 9 */
+  -webkit-transform: translate(-8px, -13px);
+  /* Safari and Chrome */
+  position: absolute;
+  display: none;
+  background: #ccc;
+  border-radius: 50% 50%;
+}

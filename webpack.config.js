@@ -15,7 +15,9 @@ const resolve = (dir) => {
 let plugins = [
   new webpack.BannerPlugin('This file is created by FDD'),
   new FriendlyErrorsPlugin()
-], outputFile;
+]
+
+let outputFile
 
 if (env === 'build') {
   plugins.push(new UglifyJsPlugin({ minimize: true }));
