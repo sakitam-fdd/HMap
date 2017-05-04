@@ -108,7 +108,8 @@
           element: {
             className: 'icon-map4',
             fontSize: '32px',
-            color: '#FF0000'
+            color: '#FF0000',
+            selectColor: '#3385FF'
           }
         },
         selectStyle: {
@@ -172,7 +173,8 @@
           element: {
             className: 'icon-map4',
             fontSize: '32px',
-            color: '#FF0000'
+            color: '#FF0000',
+            selectColor: '#3385FF'
           }
         },
         selectStyle: {
@@ -207,12 +209,15 @@
   function addOverLayPoint () {
     Maps.addOverlayPoint(points[0], {
       layerName: 'test',
-      orderByNum: true
+      orderByNum: true,
+      zoomToExtent: true
     });
   }
   function addOverLayPoints () {
     Maps.addOverlayPoints(points, {
-      layerName: 'test'
+      layerName: 'test',
+      orderByNum: true,
+      zoomToExtent: true
     });
   }
   function removePointById () {

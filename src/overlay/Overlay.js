@@ -1,7 +1,10 @@
 import { ol } from '../constants'
 import { DomUtil } from '../dom'
-class Overlay {
+import Feature from '../feature/feature'
+import mix from '../utils/mixin'
+class Overlay extends mix(Feature) {
   constructor (map) {
+    super()
     if (map && map instanceof ol.Map) {
       /**
        * 地图对象
@@ -37,10 +40,11 @@ class Overlay {
     try {
       if (point && point['geometry']) {
         let coordinate = this._getCoordinatesFromGeom(point)
-        let marker = this.getElementForOverlay(point, params, index)
         if (point['attributes'] && (point['attributes']['id'] || point['attributes']['ID'])) {
           let id = (point['attributes']['id'] || point['attributes']['ID'] || params['id'])
           let overlay = this.map.getOverlayById(id)
+          let creatEle = this.getElementForOverlay(point, params, index)
+          let [marker, ele] = [creatEle['marker'], creatEle['ele']]
           if (!overlay) {
             let iconOverlay = new ol.Overlay({
               element: marker,
@@ -57,10 +61,15 @@ class Overlay {
                 iconOverlay.set('layerName', params.layerName)
               }
             }
+            this._addOverLayEvent(marker, ele, iconOverlay)
             this.map.addOverlay(iconOverlay)
           } else {
+            this._addOverLayEvent(marker, ele, overlay)
             overlay.setElement(marker)
           }
+        }
+        if (params['zoomToExtent']) {
+          this.movePointToView(coordinate)
         }
       }
     } catch (error) {
@@ -68,6 +77,53 @@ class Overlay {
     }
   }
 
+  /**
+   * 添加要素事件
+   * @param marker
+   * @param OverLay
+   * @private
+   */
+  _addOverLayEvent (marker, ele, OverLay) {
+    marker.onmousedown = function (event) {
+      if (event.button === 2) {
+        window.ObservableObj.dispatchEvent({
+          type: 'rightMenuEvt',
+          originEvent: event,
+          value: OverLay
+        })
+      } else if (event.button === 0) {
+        window.ObservableObj.dispatchEvent({
+          type: 'overlayEvent',
+          originEvent: event,
+          value: OverLay
+        })
+      }
+    }
+    marker.onmouseover = function (event) {
+      ele.style.color = ele.selectColor
+      window.ObservableObj.dispatchEvent({
+        type: 'onMouseoverOverlay',
+        originEvent: event,
+        value: OverLay
+      })
+    }
+    marker.onmouseout = function (event) {
+      ele.style.color = ele.normalColor
+      window.ObservableObj.dispatchEvent({
+        type: 'onMouseOutOverlay',
+        originEvent: event,
+        value: OverLay
+      })
+    }
+  }
+
+  /**
+   * 获取OverLay Dom
+   * @param point
+   * @param params
+   * @param index
+   * @returns {Element}
+   */
   getElementForOverlay (point, params, index) {
     let marker = document.createElement('div')
     marker.className = 'overlay-point-content'
@@ -99,12 +155,39 @@ class Overlay {
       }
       marker.appendChild(ele)
     }
-    return marker
+    return ({
+      marker: marker,
+      ele: ele
+    })
   }
 
+  /**
+   * 添加多个OverLay
+   * @param points
+   * @param params
+   */
   addOverlayPoints (points, params) {
     try {
-      console.log(1)
+      if (points && Array.isArray(points)) {
+        let multiPoint = new ol.geom.MultiPoint([])
+        let change = false
+        points.forEach((item, index) => {
+          if (item && item['geometry']) {
+            let _geom = this._getGeometryFromPoint(item)
+            if (_geom) {
+              this.addOverlayPoint(item, params, index)
+              multiPoint.appendPoint(_geom)
+            }
+          }
+        })
+        if (params['zoomToExtent']) {
+          params['zoomToExtent'] = !params['zoomToExtent']
+          change = true
+        }
+        if (change) {
+          this._getExtent(multiPoint)
+        }
+      }
     } catch (e) {
       console.log(e)
     }

@@ -8,6 +8,16 @@ export const get = (id) => {
 }
 
 /**
+ * 获取父节点下指定的子节点
+ * @param str
+ * @param container
+ * @returns {NodeList|*}
+ */
+export const getChildByTagName = (str, container) => {
+  return container.getElementsByTagName(str)
+}
+
+/**
  * 获取dom class
  * @param elem
  * @returns {*|getAttribute|string|string}
