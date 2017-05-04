@@ -1,5 +1,6 @@
 import { ol } from '../constants'
 import app from './appDrag'
+import '../interaction/LayerSpyglass'
 class Interactions {
   _addInteractions (params) {
     let options = params || {}
