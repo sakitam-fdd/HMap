@@ -34,6 +34,47 @@ class Layer extends mix(Style) {
   }
 
   /**
+   * 根据图层名获取底图
+   * @param layerName
+   * @returns {*}
+   */
+  getBaseLayerByLayerName (layerName) {
+    try {
+      let currentLayer = null
+      this.map.getLayers().getArray().forEach(layer => {
+        if (layer && layer instanceof ol.layer.Group && layer.get('isBaseLayer')) {
+          layer.getLayers().getArray().forEach(_layer => {
+            if (_layer && _layer instanceof ol.layer.Tile && _layer.get('isBaseLayer') && _layer.get('layerName') === layerName) {
+              currentLayer = _layer
+            }
+          })
+        }
+      })
+      return currentLayer
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  /**
+   * 获取底图图层组
+   * @returns {*}
+   */
+  getBaseLayers () {
+    try {
+      let currentLayer = null
+      this.map.getLayers().getArray().forEach(layer => {
+        if (layer && layer instanceof ol.layer.Group && layer.get('isBaseLayer')) {
+          currentLayer = layer
+        }
+      })
+      return currentLayer
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  /**
    * 通过要素获取图层
    * @param feature
    * @returns {*}

@@ -9,6 +9,8 @@ import CoordsTransform from './utils/CoordsTransform'
 import LayerSwitcher from './plugins/LayerSwitcher'
 // import CustomCircle from './plugins/CustomCircle'
 import MeasureTool from './plugins/MeasureTool'
+import LayerSpyglass from './interaction/LayerSpyglass'
+import MisplacesGlass from './interaction/MisplacesGlass'
 
 HMap.ol = ol
 HMap.proj4 = proj4
@@ -20,6 +22,8 @@ HMap.CoordsTransform = CoordsTransform
 HMap.LayerSwitcher = LayerSwitcher
 // HMap.CustomCircle = CustomCircle
 HMap.MeasureTool = MeasureTool
+HMap.LayerSpyglass = LayerSpyglass
+HMap.MisplacesGlass = MisplacesGlass
 
 /**
  * Inherit the prototype methods from one constructor into another.

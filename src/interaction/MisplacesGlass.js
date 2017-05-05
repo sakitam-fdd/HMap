@@ -1,6 +1,6 @@
 import { ol } from '../constants'
 
-class LayerSpyglass {
+class MisplacesGlass {
   constructor (params) {
     this.options = params || {}
     /**
@@ -65,24 +65,46 @@ class LayerSpyglass {
    * 渲染工具
    */
   renderTool () {
-    // 在渲染之前处理渲染图层
-    this.imagery.on('precompose', event => {
-      let [ctx, pixelRatio] = [event.context, event.frameState.pixelRatio]
-      ctx.save()
-      ctx.beginPath()
-      if (this.mousePosition) {
-        ctx.arc(this.mousePosition[0] * pixelRatio, this.mousePosition[1] * pixelRatio,
-          this.radius * pixelRatio, 0, 2 * Math.PI)
-        ctx.lineWidth = 5 * pixelRatio
-        ctx.strokeStyle = 'rgba(0,0,0,0.5)'
-        ctx.stroke()
-      }
-      ctx.clip()
-    })
-
     this.imagery.on('postcompose', event => {
-      let ctx = event.context
-      ctx.restore()
+      if (this.mousePosition) {
+        let context = event.context
+        let pixelRatio = event.frameState.pixelRatio
+        let half = this.radius * pixelRatio
+        let centerX = this.mousePosition[0] * pixelRatio
+        let centerY = this.mousePosition[1] * pixelRatio
+        let originX = centerX - half
+        let originY = centerY - half
+        let size = 2 * half + 1
+        let sourceData = context.getImageData(originX, originY, size, size).data
+        let dest = context.createImageData(size, size)
+        let destData = dest.data
+        for (let j = 0; j < size; ++j) {
+          for (let i = 0; i < size; ++i) {
+            let dI = i - half
+            let dJ = j - half
+            let dist = Math.sqrt(dI * dI + dJ * dJ)
+            let sourceI = i
+            let sourceJ = j
+            if (dist < half) {
+              sourceI = Math.round(half + dI / 2)
+              sourceJ = Math.round(half + dJ / 2)
+            }
+            let destOffset = (j * size + i) * 4
+            let sourceOffset = (sourceJ * size + sourceI) * 4
+            destData[destOffset] = sourceData[sourceOffset]
+            destData[destOffset + 1] = sourceData[sourceOffset + 1]
+            destData[destOffset + 2] = sourceData[sourceOffset + 2]
+            destData[destOffset + 3] = sourceData[sourceOffset + 3]
+          }
+        }
+        context.beginPath()
+        context.arc(centerX, centerY, half, 0, 2 * Math.PI)
+        context.lineWidth = 3 * pixelRatio
+        context.strokeStyle = 'rgba(255,255,255,0.5)'
+        context.putImageData(dest, originX, originY)
+        context.stroke()
+        context.restore()
+      }
     })
   }
 
@@ -112,4 +134,4 @@ class LayerSpyglass {
   }
 }
 
-export default LayerSpyglass
+export default MisplacesGlass
