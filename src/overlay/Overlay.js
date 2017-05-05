@@ -142,6 +142,9 @@ class Overlay extends mix(Feature) {
       ele.style.borderColor = style['element']['borderColor'] ? style['element']['borderColor'] : '#2A2A2A'
       ele.style.borderWidth = style['element']['borderWidth'] ? style['element']['borderWidth'] : '1px'
       ele.style.opacity = style['element']['opacity'] ? style['element']['opacity'] : 1
+      ele.style.width = style['element']['width'] ? style['element']['width'] : '100%'
+      ele.style.height = style['element']['height'] ? style['element']['height'] : '100%'
+      ele.style.borderRadius = style['element']['borderRadius'] ? style['element']['borderRadius'] : '0px'
       ele.normalColor = ele.style.color = style['element']['color'] ? style['element']['color'] : '#1b9de8'
       ele.selectColor = style['element']['selectColor'] ? style['element']['selectColor'] : '#F61717'
       ele.innerHTML = style['element']['text'] ? style['element']['text'] : ''
@@ -343,6 +346,59 @@ class Overlay extends mix(Feature) {
       DomUtil.removeClass(_overlayElement, 'overlay-point-marker-raise')
       return _overlay
     }
+  }
+
+  /**
+   * 通过id获取OverLay
+   * @param id
+   * @returns {ol.Overlay}
+   */
+  getOverLayById (id) {
+    let _id = DomUtil.trim(id)
+    let overLay = this.map.getOverlayById(_id)
+    return overLay
+  }
+
+  /**
+   * 通过LayerNames获取OverLays
+   * @param layerNames
+   * @returns {Array}
+   */
+  getOverLaysByLayerNames (layerNames) {
+    try {
+      let overlays = []
+      if (layerNames && Array.isArray(layerNames) && layerNames.length > 0) {
+        layerNames.forEach(layerName => {
+          if (layerName) {
+            let rOverlays = this.getOverlayByLayerName(layerName)
+            if (rOverlays && rOverlays.length > 0) {
+              overlays = overlays.concat(rOverlays)
+            }
+          }
+        })
+      }
+      return overlays
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  /**
+   * 通过layerName获取OverLays
+   * @param layerName
+   * @returns {Array}
+   */
+  getOverlayByLayerName (layerName) {
+    let _overlays = []
+    if (this.map && layerName) {
+      let overlays = this.map.getOverlays().getArray()
+      overlays.forEach(overlay => {
+        if (overlay && overlay.get('layerName') === layerName) {
+          _overlays.push(overlay)
+        }
+      })
+    }
+    return _overlays
   }
 }
 

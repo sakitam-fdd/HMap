@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>添加动效</title>
+  <link rel="stylesheet" href="../dist/HMap.css" type="text/css">
+  <link rel="stylesheet" href="../asset/css/iconfont/iconfont.css">
+</head>
+<body>
+<div id="map"></div>
+<script src="../dist/HMap.js"></script>
+<script src="lib/axios/axios.js"></script>
+<script src="mapConfig.js"></script>
+<script>
+  var Maps = new HMap.Map();
+  Maps.initMap('map', {
+    view: {
+      center: [115.92466595234826, 27.428038204473552],
+      resolutions: resolutions,
+      fullExtent: [109.72859368643232, 24.010266905347684, 121.13105988819079, 30.76693489432357],
+      tileSize: 256,
+      origin: [-400, 399.9999999999998],
+      projection: 'EPSG:4326',
+      zoom: 1, // resolution
+      zoomFactor: 2 // 用于约束分变率的缩放因子（高分辨率设备需要注意）
+    },
+    baseLayers: [  // 不传时默认加载OSM地图。
+      {
+        layerName: 'vector',
+        isDefault: true,
+        layerType: 'TileXYZ',
+        opaque: false, //图层是否不透明
+        layerUrl: 'http://171.34.40.68:6080/arcgis/rest/services/JXMAP_2016_2/MapServer',
+      }
+    ]
+  });
+  document.onreadystatechange = function () {
+    if (document.readyState === 'complete') {
+      axios.get('./json/points.json')
+        .then(function (response) {
+          var points = response['data']['data']['features'];
+          points.forEach(function (item) {
+            if (item && item['attributes']) {
+              item['attributes']['style'] = {
+                element: {
+                  className: 'overlay-point-marker-blue',
+                  width: '15px',
+                  height: '15px',
+                  borderRadius: '100%'
+                }
+              }
+            }
+          })
+          Maps.addOverlayPoints(points, {
+            layerName: 'test',
+            zoomToExtent: true
+          });
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+  }
+</script>
+</body>
+</html>

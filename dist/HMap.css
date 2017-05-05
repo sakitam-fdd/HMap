@@ -296,7 +296,6 @@
     -ms-transform: scale3d(1.1, .85, 1) translate3d(0, 0, 0);
   }
 }
-
 @-webkit-keyframes overlay-point-marker-raise {
   0% {
     transform: scale3d(0, 0, 1) translate3d(0, 0, 0);
@@ -312,5 +311,322 @@
     transform: scale3d(1.1, .85, 1) translate3d(0, 0, 0);
     -webkit-transform: scale3d(1.1, .85, 1) translate3d(0, 0, 0);
     -ms-transform: scale3d(1.1, .85, 1) translate3d(0, 0, 0);
+  }
+}
+
+.overlay-point-marker-red {
+  animation-name: overlay-point-marker-red;
+  animation-duration: .5s;
+  animation-fill-mode: both;
+  animation-delay: .1s;
+  animation-timing-function: ease-out;
+  transform-origin: 50% 100%;
+}
+
+@keyframes overlay-point-marker-red {
+  0% {
+    box-shadow: 0 0 18px #e63c23,
+    0px 0 11px #e63c23,
+    0px 0 8px #e63c23,
+    0px 0 3px #e63c23,
+    0px 0 2px #e63c23,
+    inset 0 0 3px #e63c23,
+    inset 0 0 5px #e63c23,
+    inset 0 0 6px #e63c23,
+    inset 0 0 8px #e63c23;
+  }
+  50% {
+    box-shadow: 0 0 5px #e63c23,
+    0px 0 2px #e63c23,
+    0px 0 3px #e63c23,
+    0px 0 2px #e63c23,
+    0px 0 1px #e63c23,
+    inset 0 0 2px #e63c23,
+    inset 0 0 3px #e63c23,
+    inset 0 0 28px #e63c23,
+    inset 0 0 32px #e63c23;
+  }
+  100% {
+    box-shadow: 0 0 18px #e63c23,
+    0px 0 11px #e63c23,
+    0px 0 8px #e63c23,
+    0px 0 3px #e63c23,
+    0px 0 2px #e63c23,
+    inset 0 0 3px #e63c23,
+    inset 0 0 5px #e63c23,
+    inset 0 0 6px #e63c23,
+    inset 0 0 8px #e63c23;
+  }
+}
+@-webkit-keyframes overlay-point-marker-red {
+  0% {
+    box-shadow: 0 0 18px #e63c23,
+    0px 0 11px #e63c23,
+    0px 0 8px #e63c23,
+    0px 0 3px #e63c23,
+    0px 0 2px #e63c23,
+    inset 0 0 3px #e63c23,
+    inset 0 0 5px #e63c23,
+    inset 0 0 6px #e63c23,
+    inset 0 0 8px #e63c23;
+  }
+  50% {
+    box-shadow: 0 0 5px #e63c23,
+    0px 0 2px #e63c23,
+    0px 0 3px #e63c23,
+    0px 0 2px #e63c23,
+    0px 0 1px #e63c23,
+    inset 0 0 2px #e63c23,
+    inset 0 0 3px #e63c23,
+    inset 0 0 28px #e63c23,
+    inset 0 0 32px #e63c23;
+  }
+  100% {
+    box-shadow: 0 0 18px #e63c23,
+    0px 0 11px #e63c23,
+    0px 0 8px #e63c23,
+    0px 0 3px #e63c23,
+    0px 0 2px #e63c23,
+    inset 0 0 3px #e63c23,
+    inset 0 0 5px #e63c23,
+    inset 0 0 6px #e63c23,
+    inset 0 0 8px #e63c23;
+  }
+}
+
+.overlay-point-marker-orange {
+  animation-name: overlay-point-marker-orange;
+  animation-duration: .5s;
+  animation-fill-mode: both;
+  animation-delay: .1s;
+  animation-timing-function: ease-out;
+  transform-origin: 50% 100%;
+}
+
+@keyframes overlay-point-marker-orange {
+  0% {
+    box-shadow: 0 0 18px #ff9d15,
+    0px 0 11px #ff9d15,
+    0px 0 8px #ff9d15,
+    0px 0 3px #ff9d15,
+    0px 0 2px #ff9d15,
+    inset 0 0 3px #ff9d15,
+    inset 0 0 5px #ff9d15,
+    inset 0 0 6px #ff9d15,
+    inset 0 0 8px #ff9d15;
+  }
+  50% {
+    box-shadow: 0 0 5px #ff9d15,
+    0px 0 2px #ff9d15,
+    0px 0 3px #ff9d15,
+    0px 0 2px #ff9d15,
+    0px 0 1px #ff9d15,
+    inset 0 0 2px #ff9d15,
+    inset 0 0 3px #ff9d15,
+    inset 0 0 28px #ff9d15,
+    inset 0 0 32px #ff9d15;
+  }
+  100% {
+    box-shadow: 0 0 18px #ff9d15,
+    0px 0 11px #ff9d15,
+    0px 0 8px #ff9d15,
+    0px 0 3px #ff9d15,
+    0px 0 2px #ff9d15,
+    inset 0 0 3px #ff9d15,
+    inset 0 0 5px #ff9d15,
+    inset 0 0 6px #ff9d15,
+    inset 0 0 8px #ff9d15;
+  }
+}
+@-webkit-keyframes overlay-point-marker-orange {
+  0% {
+    box-shadow: 0 0 18px #ff9d15,
+    0px 0 11px #ff9d15,
+    0px 0 8px #ff9d15,
+    0px 0 3px #ff9d15,
+    0px 0 2px #ff9d15,
+    inset 0 0 3px #ff9d15,
+    inset 0 0 5px #ff9d15,
+    inset 0 0 6px #ff9d15,
+    inset 0 0 8px #ff9d15;
+  }
+  50% {
+    box-shadow: 0 0 5px #ff9d15,
+    0px 0 2px #ff9d15,
+    0px 0 3px #ff9d15,
+    0px 0 2px #ff9d15,
+    0px 0 1px #ff9d15,
+    inset 0 0 2px #ff9d15,
+    inset 0 0 3px #ff9d15,
+    inset 0 0 28px #ff9d15,
+    inset 0 0 32px #ff9d15;
+  }
+  100% {
+    box-shadow: 0 0 18px #ff9d15,
+    0px 0 11px #ff9d15,
+    0px 0 8px #ff9d15,
+    0px 0 3px #ff9d15,
+    0px 0 2px #ff9d15,
+    inset 0 0 3px #ff9d15,
+    inset 0 0 5px #ff9d15,
+    inset 0 0 6px #ff9d15,
+    inset 0 0 8px #ff9d15;
+  }
+}
+
+.overlay-point-marker-yellow {
+  animation-name: overlay-point-marker-yellow;
+  animation-duration: .5s;
+  animation-fill-mode: both;
+  animation-delay: .1s;
+  animation-timing-function: ease-out;
+  transform-origin: 50% 100%;
+}
+
+@keyframes overlay-point-marker-yellow {
+  0% {
+    box-shadow: 0 0 18px #ffcb15,
+    0px 0 11px #ffcb15,
+    0px 0 18px #ffcb15,
+    0px 0 3px #ffcb15,
+    0px 0 2px #ffcb15,
+    inset 0 0 3px #ffcb15,
+    inset 0 0 5px #ffcb15,
+    inset 0 0 6px #ffcb15,
+    inset 0 0 8px #ffcb15;
+  }
+  50% {
+    box-shadow: 0 0 8px #ffcb15,
+    0px 0 4px #ffcb15,
+    0px 0 3px #ffcb15,
+    0px 0 2px #ffcb15,
+    0px 0 1px #ffcb15,
+    inset 0 0 2px #ffcb15,
+    inset 0 0 3px #ffcb15,
+    inset 0 0 28px #ffcb15,
+    inset 0 0 32px #ffcb15;
+  }
+  100% {
+    box-shadow: 0 0 18px #ffcb15,
+    0px 0 11px #ffcb15,
+    0px 0 8px #ffcb15,
+    0px 0 3px #ffcb15,
+    0px 0 2px #ffcb15,
+    inset 0 0 3px #ffcb15,
+    inset 0 0 5px #ffcb15,
+    inset 0 0 6px #ffcb15, inset 0 0 8px #ffcb15;
+  }
+}
+@-webkit-keyframes overlay-point-marker-yellow {
+  0% {
+    box-shadow: 0 0 18px #ffcb15,
+    0px 0 11px #ffcb15,
+    0px 0 18px #ffcb15,
+    0px 0 3px #ffcb15,
+    0px 0 2px #ffcb15,
+    inset 0 0 3px #ffcb15,
+    inset 0 0 5px #ffcb15,
+    inset 0 0 6px #ffcb15,
+    inset 0 0 8px #ffcb15;
+  }
+  50% {
+    box-shadow: 0 0 8px #ffcb15,
+    0px 0 4px #ffcb15,
+    0px 0 3px #ffcb15,
+    0px 0 2px #ffcb15,
+    0px 0 1px #ffcb15,
+    inset 0 0 2px #ffcb15,
+    inset 0 0 3px #ffcb15,
+    inset 0 0 28px #ffcb15,
+    inset 0 0 32px #ffcb15;
+  }
+  100% {
+    box-shadow: 0 0 18px #ffcb15,
+    0px 0 11px #ffcb15,
+    0px 0 8px #ffcb15,
+    0px 0 3px #ffcb15,
+    0px 0 2px #ffcb15,
+    inset 0 0 3px #ffcb15,
+    inset 0 0 5px #ffcb15,
+    inset 0 0 6px #ffcb15, inset 0 0 8px #ffcb15;
+  }
+}
+
+.overlay-point-marker-blue {
+  animation-name: overlay-point-marker-blue;
+  animation-duration: .5s;
+  animation-iteration-count: infinite;
+  animation-delay: .1s;
+  animation-timing-function: ease-out;
+}
+
+@keyframes overlay-point-marker-blue {
+  0% {
+    box-shadow: 0 0 18px #1b9de8,
+    0px 0 11px #1b9de8,
+    0px 0 8px #1b9de8,
+    0px 0 5px #1b9de8,
+    0px 0 3px #1b9de8,
+    inset 0 0 4px #1b9de8,
+    inset 0 0 7px #1b9de8,
+    inset 0 0 3px #1b9de8,
+    inset 0 0 6px #1b9de8;
+  }
+  50% {
+    box-shadow: 0 0 3px rgba(27,157,232, 0.54),
+    0px 0 2px rgba(27,157,232, 0.55),
+    0px 0 2px #1b9de8,
+    0px 0 1px #1b9de8,
+    0px 0 1px rgba(0, 150, 136, 0.68),
+    inset 0 0 0 #1b9de8,
+    inset 0 0 9px #1b9de8,
+    inset 0 0 28px #1b9de8,
+    inset 0 0 32px #1b9de8;
+  }
+  100% {
+    box-shadow: 0 0 18px #1b9de8,
+    0px 0 11px #1b9de8,
+    0px 0 8px #1b9de8,
+    0px 0 5px #1b9de8,
+    0px 0 3px #1b9de8,
+    inset 0 0 4px #1b9de8,
+    inset 0 0 7px #1b9de8,
+    inset 0 0 3px #1b9de8,
+    inset 0 0 6px #1b9de8;
+  }
+}
+@-webkit-keyframes overlay-point-marker-blue {
+  0% {
+    box-shadow: 0 0 18px #1b9de8,
+    0px 0 11px #1b9de8,
+    0px 0 8px #1b9de8,
+    0px 0 5px #1b9de8,
+    0px 0 3px #1b9de8,
+    inset 0 0 4px #1b9de8,
+    inset 0 0 7px #1b9de8,
+    inset 0 0 3px #1b9de8,
+    inset 0 0 6px #1b9de8;
+  }
+  50% {
+    box-shadow: 0 0 3px rgba(27,157,232, 0.54),
+    0px 0 2px rgba(27,157,232, 0.55),
+    0px 0 2px #1b9de8,
+    0px 0 1px #1b9de8,
+    0px 0 1px rgba(0, 150, 136, 0.68),
+    inset 0 0 0 #1b9de8,
+    inset 0 0 9px #1b9de8,
+    inset 0 0 28px #1b9de8,
+    inset 0 0 32px #1b9de8;
+  }
+  100% {
+    box-shadow: 0 0 18px #1b9de8,
+    0px 0 11px #1b9de8,
+    0px 0 8px #1b9de8,
+    0px 0 5px #1b9de8,
+    0px 0 3px #1b9de8,
+    inset 0 0 4px #1b9de8,
+    inset 0 0 7px #1b9de8,
+    inset 0 0 3px #1b9de8,
+    inset 0 0 6px #1b9de8;
   }
 }

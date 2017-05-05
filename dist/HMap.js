@@ -7338,6 +7338,9 @@ var Overlay = function (_mix) {
         ele.style.borderColor = style['element']['borderColor'] ? style['element']['borderColor'] : '#2A2A2A';
         ele.style.borderWidth = style['element']['borderWidth'] ? style['element']['borderWidth'] : '1px';
         ele.style.opacity = style['element']['opacity'] ? style['element']['opacity'] : 1;
+        ele.style.width = style['element']['width'] ? style['element']['width'] : '100%';
+        ele.style.height = style['element']['height'] ? style['element']['height'] : '100%';
+        ele.style.borderRadius = style['element']['borderRadius'] ? style['element']['borderRadius'] : '0px';
         ele.normalColor = ele.style.color = style['element']['color'] ? style['element']['color'] : '#1b9de8';
         ele.selectColor = style['element']['selectColor'] ? style['element']['selectColor'] : '#F61717';
         ele.innerHTML = style['element']['text'] ? style['element']['text'] : '';
@@ -7512,6 +7515,49 @@ var Overlay = function (_mix) {
         _dom.DomUtil.removeClass(_overlayElement, 'overlay-point-marker-raise');
         return _overlay;
       }
+    }
+  }, {
+    key: 'getOverLayById',
+    value: function getOverLayById(id) {
+      var _id = _dom.DomUtil.trim(id);
+      var overLay = this.map.getOverlayById(_id);
+      return overLay;
+    }
+  }, {
+    key: 'getOverLaysByLayerNames',
+    value: function getOverLaysByLayerNames(layerNames) {
+      var _this5 = this;
+
+      try {
+        var overlays = [];
+        if (layerNames && Array.isArray(layerNames) && layerNames.length > 0) {
+          layerNames.forEach(function (layerName) {
+            if (layerName) {
+              var rOverlays = _this5.getOverlayByLayerName(layerName);
+              if (rOverlays && rOverlays.length > 0) {
+                overlays = overlays.concat(rOverlays);
+              }
+            }
+          });
+        }
+        return overlays;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'getOverlayByLayerName',
+    value: function getOverlayByLayerName(layerName) {
+      var _overlays = [];
+      if (this.map && layerName) {
+        var overlays = this.map.getOverlays().getArray();
+        overlays.forEach(function (overlay) {
+          if (overlay && overlay.get('layerName') === layerName) {
+            _overlays.push(overlay);
+          }
+        });
+      }
+      return _overlays;
     }
   }]);
 
