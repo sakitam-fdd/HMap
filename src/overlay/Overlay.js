@@ -69,7 +69,9 @@ class Overlay extends mix(Feature) {
           }
         }
         if (params['zoomToExtent']) {
-          this.movePointToView(coordinate)
+          let extent = (new ol.geom.Point(coordinate)).getExtent()
+          let _extent = this.adjustExtent(extent)
+          this.zoomToExtent(_extent, true)
         }
       }
     } catch (error) {
@@ -190,6 +192,156 @@ class Overlay extends mix(Feature) {
       }
     } catch (e) {
       console.log(e)
+    }
+  }
+
+  /**
+   * 移除overlay
+   * @param overlay
+   */
+  removeOverLay (overlay) {
+    try {
+      if (overlay && overlay instanceof ol.Overlay && this.map) {
+        this.map.removeOverlay(overlay)
+        return overlay
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  /**
+   * 通过id移除overlay
+   * @param id
+   * @returns {ol.Overlay}
+   */
+  removeOverlayById (id) {
+    try {
+      if (this.map && id) {
+        let _id = DomUtil.trim(id)
+        let overLay = this.map.getOverlayById(_id)
+        if (overLay && overLay instanceof ol.Overlay) {
+          this.map.removeOverlay(overLay)
+        }
+        return overLay
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  /**
+   * 通过layerName移除OverLay
+   * @param layerName
+   * @returns {Array}
+   */
+  removeOverlayByLayerName (layerName) {
+    let _overlays = []
+    if (this.map && layerName) {
+      let overlays = this.map.getOverlays().getArray()
+      let len = overlays.length
+      for (let i = 0; i < len; i++) {
+        if (overlays[i] && overlays[i].get('layerName') === layerName) {
+          _overlays.push(overlays[i])
+          this.map.removeOverlay(overlays[i])
+          i--
+        }
+      }
+    }
+    return _overlays
+  }
+
+  /**
+   * 通过id数组移除OverLay
+   * @param ids
+   * @returns {Array}
+   */
+  removeOverlayByIds (ids) {
+    try {
+      let overlays = []
+      if (ids && Array.isArray(ids) && ids.length > 0) {
+        ids.forEach(id => {
+          if (id) {
+            let overlay = this.removeOverlayById(id)
+            overlays.push(overlay)
+          }
+        })
+      }
+      return overlays
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  /**
+   * 通过layerNames移除Overlay
+   * @param layerNames
+   * @returns {Array}
+   */
+  removeOverlayByLayerNames (layerNames) {
+    try {
+      let overlays = []
+      if (layerNames && Array.isArray(layerNames) && layerNames.length > 0) {
+        layerNames.forEach(layerName => {
+          if (layerName) {
+            let rOverlays = this.removeOverlayByLayerName(layerName)
+            if (rOverlays && rOverlays.length > 0) {
+              overlays = overlays.concat(rOverlays)
+            }
+          }
+        })
+      }
+      return overlays
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  /**
+   * 高亮OverLay
+   * @param id
+   * @param overlay
+   * @returns {ol.Overlay}
+   */
+  highLightOverLay (id, overlay) {
+    if (!this.map) return
+    if (overlay && overlay instanceof ol.Overlay) {
+      let overlayElement = overlay.getElement()
+      let iconElement = overlayElement.getElementsByTagName('div')[0]
+      iconElement.style.color = iconElement.selectColor
+      DomUtil.addClass(overlayElement, 'overlay-point-marker-raise')
+      return overlay
+    } else if (id && DomUtil.trim(id) !== "''") {
+      let _overlay = this.map.getOverlayById(id)
+      let _overlayElement = _overlay.getElement()
+      let _iconElement = _overlayElement.getElementsByTagName('div')[0]
+      _iconElement.style.color = _iconElement.selectColor
+      DomUtil.addClass(_overlayElement, 'overlay-point-marker-raise')
+      return _overlay
+    }
+  }
+
+  /**
+   * 取消高亮OverLay
+   * @param id
+   * @param overlay
+   * @returns {ol.Overlay}
+   */
+  unHighLightOverLay (id, overlay) {
+    if (!this.map) return
+    if (overlay && overlay instanceof ol.Overlay) {
+      let overlayElement = overlay.getElement()
+      let iconElement = overlayElement.getElementsByTagName('div')[0]
+      iconElement.style.color = iconElement.normalColor
+      DomUtil.removeClass(overlayElement, 'overlay-point-marker-raise')
+      return overlay
+    } else if (id && DomUtil.trim(id) !== "''") {
+      let _overlay = this.map.getOverlayById(id)
+      let _overlayElement = _overlay.getElement()
+      let _iconElement = _overlayElement.getElementsByTagName('div')[0]
+      _iconElement.style.color = _iconElement.normalColor
+      DomUtil.removeClass(_overlayElement, 'overlay-point-marker-raise')
+      return _overlay
     }
   }
 }

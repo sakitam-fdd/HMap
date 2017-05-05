@@ -79,12 +79,14 @@ class Feature extends mix(Style, Layer) {
   _getExtent (multiFeatures) {
     let extent = multiFeatures.getExtent()
     let bExtent = true
-    for (let m = 0; m < 4; m++) {
-      if (extent[m] === Infinity || extent[m].isNaN()) {
+    extent.every(item => {
+      if (item === Infinity || isNaN(item) || item === undefined || item === null) {
         bExtent = false
-        break
+        return false
+      } else {
+        return true
       }
-    }
+    })
     if (bExtent) {
       this.zoomToExtent(extent, true)
     }
@@ -134,12 +136,15 @@ class Feature extends mix(Style, Layer) {
         view.setCenter(center)
       } else {
         if (!duration) {
-          duration = 2000
+          duration = 800
           view.animate({
             center: center,
             duration: duration
           })
-          view.fit(extent, size)
+          view.fit(extent, {
+            size: size,
+            duration: duration
+          })
         }
       }
     }
@@ -154,6 +159,15 @@ class Feature extends mix(Style, Layer) {
       if (!(ol.extent.containsXY(extent, coordinate[0], coordinate[1]))) {
         this.map.getView().setCenter([coordinate[0], coordinate[1]])
       }
+    }
+  }
+
+  setViewCenter (coordinate) {
+    if (coordinate && Array.isArray(coordinate) && this.map) {
+      this.map.getView().animate({
+        center: coordinate,
+        duration: 800
+      })
     }
   }
 
@@ -195,9 +209,9 @@ class Feature extends mix(Style, Layer) {
       feature.setProperties(point['attributes'])
     }
     if (params['zoomToExtent']) {
-      let coordinate = geometry.getCoordinates()
-      // extent = this.adjustExtent(extent)
-      this.movePointToView(coordinate)
+      let extent = geometry.getExtent()
+      let _extent = this.adjustExtent(extent)
+      this.zoomToExtent(_extent, true)
     }
     if (params['layerName']) {
       let layer = this.creatVectorLayer(params['layerName'], {

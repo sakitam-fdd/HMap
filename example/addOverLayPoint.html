@@ -221,18 +221,18 @@
     });
   }
   function removePointById () {
-    Maps.removeFeatureById('01')
+    Maps.removeOverlayById('01')
   }
   function removePointByLayerName () {
-    Maps.removeFeatureByLayerName('test')
+    Maps.removeOverlayByLayerName('test')
   }
 
   function highlightFeat() {
-    Maps.highLightFeature('01', '', 'test')
+    Maps.highLightOverLay('01')
   }
 
   function unHighlightFeat () {
-    Maps.unHighLightFeature('01', '', 'test')
+    Maps.unHighLightOverLay('01')
   }
 </script>
 </body>

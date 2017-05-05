@@ -2276,12 +2276,14 @@ var Feature = function (_mix) {
     value: function _getExtent(multiFeatures) {
       var extent = multiFeatures.getExtent();
       var bExtent = true;
-      for (var m = 0; m < 4; m++) {
-        if (extent[m] === Infinity || extent[m].isNaN()) {
+      extent.every(function (item) {
+        if (item === Infinity || isNaN(item) || item === undefined || item === null) {
           bExtent = false;
-          break;
+          return false;
+        } else {
+          return true;
         }
-      }
+      });
       if (bExtent) {
         this.zoomToExtent(extent, true);
       }
@@ -2320,12 +2322,15 @@ var Feature = function (_mix) {
           view.setCenter(center);
         } else {
           if (!duration) {
-            duration = 2000;
+            duration = 800;
             view.animate({
               center: center,
               duration: duration
             });
-            view.fit(extent, size);
+            view.fit(extent, {
+              size: size,
+              duration: duration
+            });
           }
         }
       }
@@ -2338,6 +2343,16 @@ var Feature = function (_mix) {
         if (!_constants.ol.extent.containsXY(extent, coordinate[0], coordinate[1])) {
           this.map.getView().setCenter([coordinate[0], coordinate[1]]);
         }
+      }
+    }
+  }, {
+    key: 'setViewCenter',
+    value: function setViewCenter(coordinate) {
+      if (coordinate && Array.isArray(coordinate) && this.map) {
+        this.map.getView().animate({
+          center: coordinate,
+          duration: 800
+        });
       }
     }
   }, {
@@ -2370,9 +2385,9 @@ var Feature = function (_mix) {
         feature.setProperties(point['attributes']);
       }
       if (params['zoomToExtent']) {
-        var coordinate = geometry.getCoordinates();
-
-        this.movePointToView(coordinate);
+        var extent = geometry.getExtent();
+        var _extent = this.adjustExtent(extent);
+        this.zoomToExtent(_extent, true);
       }
       if (params['layerName']) {
         var layer = this.creatVectorLayer(params['layerName'], {
@@ -6352,6 +6367,14 @@ var getChildByTagName = exports.getChildByTagName = function getChildByTagName(s
   return container.getElementsByTagName(str);
 };
 
+var getElementsByClassName = exports.getElementsByClassName = function getElementsByClassName(str, container, root) {
+  var _root = root || window;
+  var $ = _root.document.querySelector.bind(_root.document);
+
+  var target = $(str);
+  return target;
+};
+
 var getClass = exports.getClass = function getClass(elem) {
   return elem.getAttribute && elem.getAttribute('class') || '';
 };
@@ -7251,7 +7274,9 @@ var Overlay = function (_mix) {
             }
           }
           if (params['zoomToExtent']) {
-            this.movePointToView(coordinate);
+            var extent = new _constants.ol.geom.Point(coordinate).getExtent();
+            var _extent = this.adjustExtent(extent);
+            this.zoomToExtent(_extent, true);
           }
         }
       } catch (error) {
@@ -7361,6 +7386,131 @@ var Overlay = function (_mix) {
         }
       } catch (e) {
         console.log(e);
+      }
+    }
+  }, {
+    key: 'removeOverLay',
+    value: function removeOverLay(overlay) {
+      try {
+        if (overlay && overlay instanceof _constants.ol.Overlay && this.map) {
+          this.map.removeOverlay(overlay);
+          return overlay;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, {
+    key: 'removeOverlayById',
+    value: function removeOverlayById(id) {
+      try {
+        if (this.map && id) {
+          var _id = _dom.DomUtil.trim(id);
+          var overLay = this.map.getOverlayById(_id);
+          if (overLay && overLay instanceof _constants.ol.Overlay) {
+            this.map.removeOverlay(overLay);
+          }
+          return overLay;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'removeOverlayByLayerName',
+    value: function removeOverlayByLayerName(layerName) {
+      var _overlays = [];
+      if (this.map && layerName) {
+        var overlays = this.map.getOverlays().getArray();
+        var len = overlays.length;
+        for (var i = 0; i < len; i++) {
+          if (overlays[i] && overlays[i].get('layerName') === layerName) {
+            _overlays.push(overlays[i]);
+            this.map.removeOverlay(overlays[i]);
+            i--;
+          }
+        }
+      }
+      return _overlays;
+    }
+  }, {
+    key: 'removeOverlayByIds',
+    value: function removeOverlayByIds(ids) {
+      var _this3 = this;
+
+      try {
+        var overlays = [];
+        if (ids && Array.isArray(ids) && ids.length > 0) {
+          ids.forEach(function (id) {
+            if (id) {
+              var overlay = _this3.removeOverlayById(id);
+              overlays.push(overlay);
+            }
+          });
+        }
+        return overlays;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, {
+    key: 'removeOverlayByLayerNames',
+    value: function removeOverlayByLayerNames(layerNames) {
+      var _this4 = this;
+
+      try {
+        var overlays = [];
+        if (layerNames && Array.isArray(layerNames) && layerNames.length > 0) {
+          layerNames.forEach(function (layerName) {
+            if (layerName) {
+              var rOverlays = _this4.removeOverlayByLayerName(layerName);
+              if (rOverlays && rOverlays.length > 0) {
+                overlays = overlays.concat(rOverlays);
+              }
+            }
+          });
+        }
+        return overlays;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'highLightOverLay',
+    value: function highLightOverLay(id, overlay) {
+      if (!this.map) return;
+      if (overlay && overlay instanceof _constants.ol.Overlay) {
+        var overlayElement = overlay.getElement();
+        var iconElement = overlayElement.getElementsByTagName('div')[0];
+        iconElement.style.color = iconElement.selectColor;
+        _dom.DomUtil.addClass(overlayElement, 'overlay-point-marker-raise');
+        return overlay;
+      } else if (id && _dom.DomUtil.trim(id) !== "''") {
+        var _overlay = this.map.getOverlayById(id);
+        var _overlayElement = _overlay.getElement();
+        var _iconElement = _overlayElement.getElementsByTagName('div')[0];
+        _iconElement.style.color = _iconElement.selectColor;
+        _dom.DomUtil.addClass(_overlayElement, 'overlay-point-marker-raise');
+        return _overlay;
+      }
+    }
+  }, {
+    key: 'unHighLightOverLay',
+    value: function unHighLightOverLay(id, overlay) {
+      if (!this.map) return;
+      if (overlay && overlay instanceof _constants.ol.Overlay) {
+        var overlayElement = overlay.getElement();
+        var iconElement = overlayElement.getElementsByTagName('div')[0];
+        iconElement.style.color = iconElement.normalColor;
+        _dom.DomUtil.removeClass(overlayElement, 'overlay-point-marker-raise');
+        return overlay;
+      } else if (id && _dom.DomUtil.trim(id) !== "''") {
+        var _overlay = this.map.getOverlayById(id);
+        var _overlayElement = _overlay.getElement();
+        var _iconElement = _overlayElement.getElementsByTagName('div')[0];
+        _iconElement.style.color = _iconElement.normalColor;
+        _dom.DomUtil.removeClass(_overlayElement, 'overlay-point-marker-raise');
+        return _overlay;
       }
     }
   }]);
@@ -17953,7 +18103,7 @@ module.exports = {
 				"spec": ">=2.4.3 <3.0.0",
 				"type": "range"
 			},
-			"E:\\codeRepository\\github\\HMap"
+			"E:\\github\\HMap"
 		]
 	],
 	"_cnpm_publish_time": 1488570791097,
@@ -17985,11 +18135,11 @@ module.exports = {
 	"_requiredBy": [
 		"/"
 	],
-	"_resolved": "http://registry.npmjs.org/proj4/-/proj4-2.4.3.tgz",
+	"_resolved": "https://registry.npm.taobao.org/proj4/download/proj4-2.4.3.tgz",
 	"_shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
 	"_shrinkwrap": null,
 	"_spec": "proj4@^2.4.3",
-	"_where": "E:\\codeRepository\\github\\HMap",
+	"_where": "E:\\github\\HMap",
 	"author": "",
 	"bugs": {
 		"url": "https://github.com/proj4js/proj4js/issues"

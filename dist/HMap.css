@@ -269,3 +269,48 @@
   background: #ccc;
   border-radius: 50% 50%;
 }
+
+.overlay-point-marker-raise {
+  animation-name: overlay-point-marker-raise;
+  animation-duration: .5s;
+  animation-fill-mode: both;
+  animation-delay: .1s;
+  animation-timing-function: ease-in;
+  transform-origin: 50% 100%;
+}
+
+@keyframes overlay-point-marker-raise {
+  0% {
+    transform: scale3d(0, 0, 1) translate3d(0, 0, 0);
+    -webkit-transform: scale3d(0, 0, 1) translate3d(0, 0, 0);
+    -ms-transform: scale3d(0, 0, 1) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: scale3d(0.9, 1.1, 1) translate3d(0, -30%, 0);
+    -webkit-transform: scale3d(0.9, 1.1, 1) translate3d(0, -30%, 0);
+    -ms-transform: scale3d(0.9, 1.1, 1) translate3d(0, -30%, 0);
+  }
+  80% {
+    transform: scale3d(1.1, .85, 1) translate3d(0, 0, 0);
+    -webkit-transform: scale3d(1.1, .85, 1) translate3d(0, 0, 0);
+    -ms-transform: scale3d(1.1, .85, 1) translate3d(0, 0, 0);
+  }
+}
+
+@-webkit-keyframes overlay-point-marker-raise {
+  0% {
+    transform: scale3d(0, 0, 1) translate3d(0, 0, 0);
+    -webkit-transform: scale3d(0, 0, 1) translate3d(0, 0, 0);
+    -ms-transform: scale3d(0, 0, 1) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: scale3d(0.9, 1.1, 1) translate3d(0, -30%, 0);
+    -webkit-transform: scale3d(0.9, 1.1, 1) translate3d(0, -30%, 0);
+    -ms-transform: scale3d(0.9, 1.1, 1) translate3d(0, -30%, 0);
+  }
+  80% {
+    transform: scale3d(1.1, .85, 1) translate3d(0, 0, 0);
+    -webkit-transform: scale3d(1.1, .85, 1) translate3d(0, 0, 0);
+    -ms-transform: scale3d(1.1, .85, 1) translate3d(0, 0, 0);
+  }
+}
