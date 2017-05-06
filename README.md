@@ -8,7 +8,7 @@
 ## 浏览器支持
 
 <p align="center">
-  <a href="./asset/brow.svg" alt="Sauce Test Status"></a>
+  <a href="./asset/brow.png" alt="Sauce Test Status"></a>
 </p>
 
 ---
