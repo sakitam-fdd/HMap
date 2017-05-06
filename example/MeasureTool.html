@@ -3,11 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <title>仿百度测量工具</title>
+  <meta name="renderer" content="webkit">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="../dist/HMap.css" type="text/css">
+  <style>
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+    }
+    .tool {
+      position: absolute;
+      top: 10px;
+      left: calc(50% - 290px);
+    }
+    .ol-viewport {
+      position: inherit!important;
+    }
+  </style>
 </head>
 <body>
-<button onclick="measureTool('length')">测距</button>
-<button onclick="measureTool('area')">测面</button>
+<div class="tool">
+  <button onclick="measureTool('length')">测距</button>
+  <button onclick="measureTool('area')">测面</button>
+</div>
 <div id="map"></div>
 <script src="../dist/HMap.js"></script>
 <script type="text/javascript">
@@ -18,7 +42,7 @@
       enableRotation: true, // 是否允许旋转
       projection: 'EPSG:3857',
       rotation: 0,
-      zoom: 0, // resolution
+      zoom: 5, // resolution
       zoomFactor: 2 // 用于约束分变率的缩放因子（高分辨率设备需要注意）
     },
     logo: {},

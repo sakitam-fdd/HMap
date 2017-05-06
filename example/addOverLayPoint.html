@@ -3,53 +3,46 @@
 <head>
   <meta charset="UTF-8">
   <title>添加动态点</title>
+  <meta name="renderer" content="webkit">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="../dist/HMap.css" type="text/css">
   <link rel="stylesheet" href="../asset/css/iconfont/iconfont.css">
+  <style>
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+    }
+    .tool {
+      position: absolute;
+      top: 10px;
+      left: calc(50% - 290px);
+    }
+    .ol-viewport {
+      position: inherit!important;
+    }
+  </style>
 </head>
 <body>
-<button onclick="addOverLayPoint()">添加点</button>
-<button onclick="addOverLayPoints()">添加点</button>
-<button onclick="removePointById()">通过ID移除标绘点</button>
-<button onclick="removePointByLayerName()">通过LayerName移除标绘点</button>
-<button onclick="highlightFeat()">高亮要素</button>
-<button onclick="unHighlightFeat()">恢复默认</button>
+<div class="tool">
+  <button onclick="addOverLayPoint()">添加点</button>
+  <button onclick="addOverLayPoints()">添加多点</button>
+  <button onclick="removePointById()">通过ID移除标绘点</button>
+  <button onclick="removePointByLayerName()">通过LayerName移除标绘点</button>
+  <button onclick="highlightFeat()">高亮要素</button>
+  <button onclick="unHighlightFeat()">恢复默认</button>
+</div>
 <div id="map"></div>
 <script src="../dist/HMap.js"></script>
 <script src="mapConfig.js"></script>
 <script type="text/javascript">
   var Maps = new HMap.Map();
   Maps.initMap('map', {
-    interactions: {
-      altShiftDragRotate: true,
-      doubleClickZoom: true,
-      keyboard: true,
-      mouseWheelZoom: true,
-      shiftDragZoom: true,
-      dragPan: true,
-      pinchRotate: true,
-      pinchZoom: true,
-      zoomDelta: 1, // 缩放增量（默认一级）
-      zoomDuration: 500 // 缩放持续时间
-    },
-    controls: {
-      attribution: true,
-      attributionOptions: {
-        className: 'ol-attribution', // Default
-        target: 'attributionTarget',
-      },
-      rotate: true,
-      rotateOptions: {
-        className: 'ol-rotate', // Default
-        target: 'rotateTarget',
-      },
-      zoom: true,
-      zoomOptions: {
-        className: 'ol-zoom', // Default
-        target: 'zoomTarget',
-      },
-      overViewMapVisible: false,
-      scaleLineVisible: true
-    },
     view: {
       center: [115.92466595234826, 27.428038204473552],
       resolutions: resolutions,
@@ -62,7 +55,6 @@
       zoom: 1, // resolution
       zoomFactor: 2 // 用于约束分变率的缩放因子（高分辨率设备需要注意）
     },
-    logo: {},
     baseLayers: [  // 不传时默认加载OSM地图。
       {
         layerName: 'vector',
@@ -73,7 +65,6 @@
       }
     ]
   });
-  console.log(Maps);
   var points = [
     {
       attributes: {
