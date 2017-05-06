@@ -1,13 +1,23 @@
-/*global __dirname, require, module*/
+/* global __dirname, require, module */
 
 const webpack = require('webpack');
 const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 const path = require('path');
-const env  = require('yargs').argv.env; // use --env with webpack 2
+const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+const env = require('yargs').argv.env; // use --env with webpack 2
 
-let libraryName = 'map';
+let libraryName = 'HMap';
 
-let plugins = [], outputFile;
+const resolve = (dir) => {
+  return path.join(__dirname, '..', dir)
+}
+
+let plugins = [
+  new webpack.BannerPlugin('This file is created by FDD'),
+  new FriendlyErrorsPlugin()
+]
+
+let outputFile
 
 if (env === 'build') {
   plugins.push(new UglifyJsPlugin({ minimize: true }));
@@ -17,7 +27,10 @@ if (env === 'build') {
 }
 
 const config = {
-  entry: __dirname + '/src/index.js',
+  entry: [
+    path.join(__dirname, 'node_modules/babel-polyfill'),
+    path.resolve(__dirname + '/src/index.js')
+  ],
   devtool: 'source-map',
   output: {
     path: __dirname + '/dist',
@@ -30,19 +43,20 @@ const config = {
     rules: [
       {
         test: /(\.jsx|\.js)$/,
-        loader: 'babel-loader',
+        enforce: 'pre',  // 在babel-loader对源码进行编译前进行lint的检查
+        loaders: [
+          'babel-loader',
+          'eslint-loader'
+        ],
         exclude: /(node_modules|bower_components)/
-      },
-      {
-        test: /(\.jsx|\.js)$/,
-        loader: "eslint-loader",
-        exclude: /node_modules/
       }
     ]
   },
   resolve: {
-    modules: [path.resolve('./src')],
-    extensions: ['.json', '.js']
+    extensions: ['.json', '.js'],
+    alias: {
+      '@': resolve('src')
+    }
   },
   plugins: plugins
 };

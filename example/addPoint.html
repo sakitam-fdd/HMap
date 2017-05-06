@@ -158,12 +158,14 @@
   ]
   function addPoint () {
     Maps.addPoint(points[0], {
-      layerName: 'test'
+      layerName: 'test',
+      zoomToExtent: true
     });
   }
   function addPoints () {
     Maps.addPoints(points, {
-      layerName: 'test'
+      layerName: 'test',
+      zoomToExtent: true
     });
   }
   function removePointById () {

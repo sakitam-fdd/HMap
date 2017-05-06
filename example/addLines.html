@@ -88,7 +88,8 @@
         }
         var feat = Maps.addPolyline(line, {
           layerName: 'test',
-          selectable: true
+          selectable: true,
+          zoomToExtent: true
         });
         console.log(feat.getGeometry().getCoordinates())
       })
@@ -101,7 +102,8 @@
       .then(function (response) {
         var lines = response['data']['data']['features'];
         Maps.addPolylines(lines, {
-          layerName: 'test'
+          layerName: 'test',
+          zoomToExtent: true
         });
       })
       .catch(function (error) {

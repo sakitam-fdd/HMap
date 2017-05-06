@@ -66,11 +66,10 @@ class Style {
 
   /**
    * 获取面样式
-   * @param attr
+   * @param options
    * @returns {ol.style.Style}
    */
-  getStyleByPolygon (attr) {
-    let options = attr['style'] || undefined
+  getStyleByPolygon (options) {
     let style = null
     if (!options) {
       style = new ol.style.Style({

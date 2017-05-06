@@ -1782,7 +1782,11 @@ var Layer = function (_mix) {
             if (params && params.hasOwnProperty('selectable')) {
               vectorLayer.set('selectable', params.selectable);
             }
-            this.map.addLayer(vectorLayer);
+
+            var _vectorLayer = this.getLayerByLayerName(layerName);
+            if (!_vectorLayer || !(_vectorLayer instanceof _constants.ol.layer.Vector)) {
+              this.map.addLayer(vectorLayer);
+            }
           }
           return vectorLayer;
         }
@@ -1820,16 +1824,6 @@ var Layer = function (_mix) {
           layer.getSource().clear();
         }
       }
-    }
-  }, {
-    key: 'setMap',
-    value: function setMap(map) {
-      this.map = map;
-    }
-  }, {
-    key: 'getMap',
-    value: function getMap() {
-      return this.map;
     }
   }]);
 
@@ -2399,55 +2393,80 @@ var Feature = function (_mix) {
   }, {
     key: 'addPoint',
     value: function addPoint(point, params) {
-      var geometry = this._getGeometryFromPoint(point);
-      var feature = new _constants.ol.Feature({
-        geometry: geometry,
-        params: params
-      });
-      var style = this.getStyleByPoint(point['attributes']['style']);
-      var selectStyle = this.getStyleByPoint(point['attributes']['selectStyle']);
-      if (style && feature) {
-        feature.setStyle(style);
-        feature.set('style', style);
-        if (selectStyle) {
-          feature.set('selectStyle', selectStyle);
-        }
-      }
-      if (point['attributes'] && (point['attributes']['id'] || point['attributes']['ID'])) {
-        var id = point.attributes['id'] || point.attributes['ID'] || params['id'];
-        feature.setId(id);
-        feature.setProperties(point['attributes']);
-      }
-      if (params['zoomToExtent']) {
-        var extent = geometry.getExtent();
-        var _extent = this.adjustExtent(extent);
-        this.zoomToExtent(_extent, true);
-      }
-      if (params['layerName']) {
-        var layer = this.creatVectorLayer(params['layerName'], {
-          create: true
+      try {
+        var geometry = this._getGeometryFromPoint(point);
+        var feature = new _constants.ol.Feature({
+          geometry: geometry,
+          params: params
         });
-        layer.getSource().addFeature(feature);
+        var style = this.getStyleByPoint(point['attributes']['style']);
+        var selectStyle = this.getStyleByPoint(point['attributes']['selectStyle']);
+        if (style && feature) {
+          feature.setStyle(style);
+          feature.set('style', style);
+          if (selectStyle) {
+            feature.set('selectStyle', selectStyle);
+          }
+        }
+        if (point['attributes'] && (point['attributes']['id'] || point['attributes']['ID'])) {
+          var id = point.attributes['id'] || point.attributes['ID'] || params['id'];
+          feature.setId(id);
+          feature.setProperties(point['attributes']);
+        }
+        if (params['zoomToExtent']) {
+          var extent = geometry.getExtent();
+          var _extent = this.adjustExtent(extent);
+          this.zoomToExtent(_extent, true);
+        }
+        if (params['layerName']) {
+          var layer = this.creatVectorLayer(params['layerName'], {
+            create: true
+          });
+          layer.getSource().addFeature(feature);
+        }
+        return feature;
+      } catch (e) {
+        console.error(e);
       }
-      return feature;
     }
   }, {
     key: 'addPoints',
     value: function addPoints(points, params) {
-      if (points && Array.isArray(points)) {
-        var multiPoint = new _constants.ol.geom.MultiPoint([]);
-        var change = false;
-        if (params['zoomToExtent']) {
-          params['zoomToExtent'] = !params['zoomToExtent'];
-          change = true;
-        };
-        for (var i = 0; i < points.length; i++) {
-          var pointFeat = this.addPoint(points[i], params);
-          multiPoint.appendPoint(pointFeat.getGeometry());
+      var _this2 = this;
+
+      try {
+        if (points && Array.isArray(points)) {
+          var multiPoint = new _constants.ol.geom.MultiPoint([]),
+              change = false;
+
+          if (params['zoomToExtent']) {
+            params['zoomToExtent'] = false;
+            change = true;
+          }
+          points.forEach(function (point) {
+            var pointFeat = _this2.addPoint(point, params);
+            if (pointFeat && pointFeat instanceof _constants.ol.Feature) {
+              var geom = pointFeat.getGeometry();
+              if (geom && geom instanceof _constants.ol.geom.Point) {
+                multiPoint.appendPoint(geom);
+              } else if (geom && geom instanceof _constants.ol.geom.MultiPoint) {
+                var multiGeoms = geom.getPoints();
+                if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
+                  multiGeoms.forEach(function (_geom) {
+                    if (_geom && _geom instanceof _constants.ol.geom.Point) {
+                      multiPoint.appendPoint(geom);
+                    }
+                  });
+                }
+              }
+            }
+          });
+          if (change) {
+            this._getExtent(multiPoint);
+          }
         }
-        if (change) {
-          this._getExtent(multiPoint);
-        }
+      } catch (e) {
+        console.error(e);
       }
     }
   }, {
@@ -2465,87 +2484,36 @@ var Feature = function (_mix) {
   }, {
     key: 'addPolyline',
     value: function addPolyline(line, params) {
-      var linefeature = null;
-      if (line.geometry.hasOwnProperty('paths')) {
-        var feat = {
-          'type': 'Feature',
-          'geometry': {
-            'type': 'MultiLineString',
-            'coordinates': line.geometry.paths
-          }
-        };
-        linefeature = new _constants.ol.format.GeoJSON().readFeature(feat);
-      } else {
-        linefeature = new _constants.ol.Feature({
-          geometry: new _constants.ol.format.WKT().readGeometry(line.geometry)
-        });
-      }
-      var style = this.getStyleByLine(line['attributes']['style']);
-      var selectStyle = this.getStyleByLine(line['attributes']['selectStyle']);
-      var extent = linefeature.getGeometry().getExtent();
-      if (style && linefeature) {
-        linefeature.setStyle(style);
-        linefeature.set('style', style);
-        if (selectStyle) {
-          linefeature.set('selectStyle', selectStyle);
+      try {
+        var linefeature = null;
+        if (line.geometry.hasOwnProperty('paths')) {
+          var feat = {
+            'type': 'Feature',
+            'geometry': {
+              'type': 'MultiLineString',
+              'coordinates': line.geometry.paths
+            }
+          };
+          linefeature = new _constants.ol.format.GeoJSON().readFeature(feat);
+        } else {
+          linefeature = new _constants.ol.Feature({
+            geometry: new _constants.ol.format.WKT().readGeometry(line.geometry)
+          });
         }
-      }
-      if (line['attributes'] && (line.attributes['ID'] || line.attributes['id'])) {
-        var id = line.attributes['id'] || line.attributes['ID'] || params['id'];
-        linefeature.setId(id);
-        linefeature.setProperties(line.attributes);
-      }
-      if (params['zoomToExtent']) {
-        this.zoomToExtent(extent, true);
-      }
-      if (params['layerName']) {
-        var layer = this.creatVectorLayer(params['layerName'], {
-          create: true
-        });
-        layer.getSource().addFeature(linefeature);
-      }
-      return linefeature;
-    }
-  }, {
-    key: 'addPolylines',
-    value: function addPolylines(lines, params) {
-      if (lines && Array.isArray(lines)) {
-        var MultiLine = new _constants.ol.geom.MultiLineString([]),
-            change = false;
-
-        if (params['zoomToExtent']) {
-          params['zoomToExtent'] = !params['zoomToExtent'];
-          change = true;
-        };
-        for (var i = 0; i < lines.length; i++) {
-          var polyLine = this.addPolyline(lines[i], params);
-          MultiLine.appendLineString(polyLine.getGeometry());
-        }
-        if (change) {
-          this._getExtent(MultiLine);
-        }
-      }
-    }
-  }, {
-    key: 'addPolygon',
-    value: function addPolygon(polygon, params) {
-      if (polygon && polygon['geometry']) {
-        var polygonFeature = new _constants.ol.Feature({
-          geometry: new _constants.ol.format.WKT().readGeometry(polygon.geometry)
-        });
-        var style = this.getStyleByPolygon(polygon['attributes']['style']);
-        var selectStyle = this.getStyleByPolygon(polygon['attributes']['selectStyle']);
-        var extent = polygonFeature.getGeometry().getExtent();
-        if (style && polygonFeature) {
-          polygonFeature.setStyle(style);
+        var style = this.getStyleByLine(line['attributes']['style']);
+        var selectStyle = this.getStyleByLine(line['attributes']['selectStyle']);
+        var extent = linefeature.getGeometry().getExtent();
+        if (style && linefeature) {
+          linefeature.setStyle(style);
+          linefeature.set('style', style);
           if (selectStyle) {
-            polygonFeature.set('selectStyle', selectStyle);
+            linefeature.set('selectStyle', selectStyle);
           }
         }
-        if (polygon['attributes'] && (polygon.attributes['ID'] || polygon.attributes['id'])) {
-          var id = polygon.attributes['id'] || polygon.attributes['ID'] || params['id'];
-          polygonFeature.setId(id);
-          polygonFeature.setProperties(polygon.attributes);
+        if (line['attributes'] && (line.attributes['ID'] || line.attributes['id'])) {
+          var id = line.attributes['id'] || line.attributes['ID'] || params['id'];
+          linefeature.setId(id);
+          linefeature.setProperties(line.attributes);
         }
         if (params['zoomToExtent']) {
           this.zoomToExtent(extent, true);
@@ -2554,32 +2522,130 @@ var Feature = function (_mix) {
           var layer = this.creatVectorLayer(params['layerName'], {
             create: true
           });
-          layer.getSource().addFeature(polygonFeature);
+          layer.getSource().addFeature(linefeature);
         }
-        return polygonFeature;
-      } else {
-        console.info('传入的数据不标准！');
+        return linefeature;
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, {
+    key: 'addPolylines',
+    value: function addPolylines(lines, params) {
+      var _this3 = this;
+
+      try {
+        if (lines && Array.isArray(lines)) {
+          var MultiLine = new _constants.ol.geom.MultiLineString([]),
+              change = false;
+
+          if (params['zoomToExtent']) {
+            params['zoomToExtent'] = false;
+            change = true;
+          }
+          lines.forEach(function (line) {
+            var polyLine = _this3.addPolyline(line, params);
+            if (polyLine && polyLine instanceof _constants.ol.Feature) {
+              var geom = polyLine.getGeometry();
+              if (geom && geom instanceof _constants.ol.geom.LineString) {
+                MultiLine.appendLineString(geom);
+              } else if (geom && geom instanceof _constants.ol.geom.MultiLineString) {
+                var multiGeoms = geom.getLineStrings();
+                if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
+                  multiGeoms.forEach(function (_geom) {
+                    if (_geom && _geom instanceof _constants.ol.geom.LineString) {
+                      MultiLine.appendLineString(geom);
+                    }
+                  });
+                }
+              }
+            }
+          });
+          if (change) {
+            this._getExtent(MultiLine);
+          }
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, {
+    key: 'addPolygon',
+    value: function addPolygon(polygon, params) {
+      try {
+        if (polygon && polygon['geometry']) {
+          var polygonFeature = new _constants.ol.Feature({
+            geometry: new _constants.ol.format.WKT().readGeometry(polygon.geometry)
+          });
+          var style = this.getStyleByPolygon(polygon['attributes']['style']);
+          var selectStyle = this.getStyleByPolygon(polygon['attributes']['selectStyle']);
+          var extent = polygonFeature.getGeometry().getExtent();
+          if (style && polygonFeature) {
+            polygonFeature.setStyle(style);
+            if (selectStyle) {
+              polygonFeature.set('selectStyle', selectStyle);
+            }
+          }
+          if (polygon['attributes'] && (polygon.attributes['ID'] || polygon.attributes['id'])) {
+            var id = polygon.attributes['id'] || polygon.attributes['ID'] || params['id'];
+            polygonFeature.setId(id);
+            polygonFeature.setProperties(polygon.attributes);
+          }
+          if (params['zoomToExtent']) {
+            this.zoomToExtent(extent, true);
+          }
+          if (params['layerName']) {
+            var layer = this.creatVectorLayer(params['layerName'], {
+              create: true
+            });
+            layer.getSource().addFeature(polygonFeature);
+          }
+          return polygonFeature;
+        } else {
+          console.info('传入的数据不标准！');
+        }
+      } catch (e) {
+        console.log(e);
       }
     }
   }, {
     key: 'addPolygons',
     value: function addPolygons(polygons, params) {
-      if (polygons && Array.isArray(polygons)) {
-        var _ref = [new _constants.ol.geom.MultiPolygon([]), change],
-            MultiPolygon = _ref[0],
-            change = _ref[1];
+      var _this4 = this;
 
-        if (params['zoomToExtent']) {
-          params['zoomToExtent'] = !params['zoomToExtent'];
-          change = true;
+      try {
+        if (polygons && Array.isArray(polygons)) {
+          var MultiPolygon = new _constants.ol.geom.MultiPolygon([]),
+              change = false;
+
+          if (params['zoomToExtent']) {
+            params['zoomToExtent'] = false;
+            change = true;
+          }
+          polygons.forEach(function (polygon) {
+            var polygonFeat = _this4.addPolygon(polygon, params);
+            if (polygonFeat && polygonFeat instanceof _constants.ol.Feature) {
+              var geom = polygonFeat.getGeometry();
+              if (geom && geom instanceof _constants.ol.geom.Polygon) {
+                MultiPolygon.appendPolygon(geom);
+              } else if (geom && geom instanceof _constants.ol.geom.MultiPolygon) {
+                var multiGeoms = geom.getPolygons();
+                if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
+                  multiGeoms.forEach(function (_geom) {
+                    if (_geom && _geom instanceof _constants.ol.geom.Polygon) {
+                      MultiPolygon.appendPolygon(_geom);
+                    }
+                  });
+                }
+              }
+            }
+          });
+          if (change) {
+            this._getExtent(MultiPolygon);
+          }
         }
-        for (var i = 0; i < polygons.length; i++) {
-          var polygon = this.addPolyline(polygons[i], params);
-          MultiPolygon.appendPolygon(polygon.getGeometry());
-        }
-        if (change) {
-          this._getExtent(MultiPolygon);
-        }
+      } catch (e) {
+        console.log(e);
       }
     }
   }, {
@@ -2597,11 +2663,11 @@ var Feature = function (_mix) {
   }, {
     key: 'removeFeatureByLayerNames',
     value: function removeFeatureByLayerNames(layerNames) {
-      var _this2 = this;
+      var _this5 = this;
 
       if (layerNames && Array.isArray(layerNames) && layerNames.length > 0) {
         layerNames.forEach(function (item) {
-          _this2.removeFeatureByLayerName(item);
+          _this5.removeFeatureByLayerName(item);
         });
       } else {
         console.info('id为空或者不是数组！');
@@ -2650,11 +2716,11 @@ var Feature = function (_mix) {
   }, {
     key: 'removeFeatureByIds',
     value: function removeFeatureByIds(ids, layerName) {
-      var _this3 = this;
+      var _this6 = this;
 
       if (ids && Array.isArray(ids) && ids.length > 0) {
         ids.forEach(function (item) {
-          _this3.removeFeatureById(item, layerName);
+          _this6.removeFeatureById(item, layerName);
         });
       } else {
         console.info('id为空或者不是数组！');
@@ -2802,8 +2868,7 @@ var Style = function () {
     }
   }, {
     key: 'getStyleByPolygon',
-    value: function getStyleByPolygon(attr) {
-      var options = attr['style'] || undefined;
+    value: function getStyleByPolygon(options) {
       var style = null;
       if (!options) {
         style = new _constants.ol.style.Style({
@@ -18371,7 +18436,7 @@ module.exports = {
 				"spec": ">=2.4.3 <3.0.0",
 				"type": "range"
 			},
-			"E:\\github\\HMap"
+			"E:\\codeRepository\\github\\HMap"
 		]
 	],
 	"_cnpm_publish_time": 1488570791097,
@@ -18403,11 +18468,11 @@ module.exports = {
 	"_requiredBy": [
 		"/"
 	],
-	"_resolved": "https://registry.npm.taobao.org/proj4/download/proj4-2.4.3.tgz",
+	"_resolved": "http://registry.npmjs.org/proj4/-/proj4-2.4.3.tgz",
 	"_shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
 	"_shrinkwrap": null,
 	"_spec": "proj4@^2.4.3",
-	"_where": "E:\\github\\HMap",
+	"_where": "E:\\codeRepository\\github\\HMap",
 	"author": "",
 	"bugs": {
 		"url": "https://github.com/proj4js/proj4js/issues"

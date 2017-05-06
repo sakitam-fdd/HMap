@@ -188,38 +188,42 @@ class Feature extends mix(Style, Layer) {
    * @returns {ol.Feature|ol.format.Feature|*|ol.render.Feature|Feature}
    */
   addPoint (point, params) {
-    let geometry = this._getGeometryFromPoint(point)
-    let feature = new ol.Feature({
-      geometry: geometry,
-      params: params
-    })
-    let style = this.getStyleByPoint(point['attributes']['style'])
-    let selectStyle = this.getStyleByPoint(point['attributes']['selectStyle'])
-    if (style && feature) {
-      feature.setStyle(style)
-      feature.set('style', style)
-      if (selectStyle) {
-        feature.set('selectStyle', selectStyle)
-      }
-    }
-    if (point['attributes'] && (point['attributes']['id'] || point['attributes']['ID'])) {
-      // let id = (point['attributes']['id'] ? point['attributes']['id'] : (point['attributes']['ID'] ? point['attributes']['ID'] : params['id']))
-      let id = (point.attributes['id'] || point.attributes['ID'] || params['id'])
-      feature.setId(id)
-      feature.setProperties(point['attributes'])
-    }
-    if (params['zoomToExtent']) {
-      let extent = geometry.getExtent()
-      let _extent = this.adjustExtent(extent)
-      this.zoomToExtent(_extent, true)
-    }
-    if (params['layerName']) {
-      let layer = this.creatVectorLayer(params['layerName'], {
-        create: true
+    try {
+      let geometry = this._getGeometryFromPoint(point)
+      let feature = new ol.Feature({
+        geometry: geometry,
+        params: params
       })
-      layer.getSource().addFeature(feature)
+      let style = this.getStyleByPoint(point['attributes']['style'])
+      let selectStyle = this.getStyleByPoint(point['attributes']['selectStyle'])
+      if (style && feature) {
+        feature.setStyle(style)
+        feature.set('style', style)
+        if (selectStyle) {
+          feature.set('selectStyle', selectStyle)
+        }
+      }
+      if (point['attributes'] && (point['attributes']['id'] || point['attributes']['ID'])) {
+        // let id = (point['attributes']['id'] ? point['attributes']['id'] : (point['attributes']['ID'] ? point['attributes']['ID'] : params['id']))
+        let id = (point.attributes['id'] || point.attributes['ID'] || params['id'])
+        feature.setId(id)
+        feature.setProperties(point['attributes'])
+      }
+      if (params['zoomToExtent']) {
+        let extent = geometry.getExtent()
+        let _extent = this.adjustExtent(extent)
+        this.zoomToExtent(_extent, true)
+      }
+      if (params['layerName']) {
+        let layer = this.creatVectorLayer(params['layerName'], {
+          create: true
+        })
+        layer.getSource().addFeature(feature)
+      }
+      return feature
+    } catch (e) {
+      console.error(e)
     }
-    return feature
   }
 
   /**
@@ -228,20 +232,37 @@ class Feature extends mix(Style, Layer) {
    * @param params
    */
   addPoints (points, params) {
-    if (points && Array.isArray(points)) {
-      let multiPoint = new ol.geom.MultiPoint([])
-      let change = false
-      if (params['zoomToExtent']) {
-        params['zoomToExtent'] = !params['zoomToExtent']
-        change = true
-      };
-      for (let i = 0; i < points.length; i++) {
-        let pointFeat = this.addPoint(points[i], params)
-        multiPoint.appendPoint(pointFeat.getGeometry())
+    try {
+      if (points && Array.isArray(points)) {
+        let [multiPoint, change] = [(new ol.geom.MultiPoint([])), false]
+        if (params['zoomToExtent']) {
+          params['zoomToExtent'] = false
+          change = true
+        }
+        points.forEach(point => {
+          let pointFeat = this.addPoint(point, params)
+          if (pointFeat && pointFeat instanceof ol.Feature) {
+            let geom = pointFeat.getGeometry()
+            if (geom && geom instanceof ol.geom.Point) {
+              multiPoint.appendPoint(geom)
+            } else if (geom && geom instanceof ol.geom.MultiPoint) {
+              let multiGeoms = geom.getPoints()
+              if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
+                multiGeoms.forEach(_geom => {
+                  if (_geom && _geom instanceof ol.geom.Point) {
+                    multiPoint.appendPoint(geom)
+                  }
+                })
+              }
+            }
+          }
+        })
+        if (change) {
+          this._getExtent(multiPoint)
+        }
       }
-      if (change) {
-        this._getExtent(multiPoint)
-      }
+    } catch (e) {
+      console.error(e)
     }
   }
 
@@ -268,47 +289,50 @@ class Feature extends mix(Style, Layer) {
    * @returns {*}
    */
   addPolyline (line, params) {
-    let linefeature = null
-    if (line.geometry.hasOwnProperty('paths')) {
-      let feat = {
-        'type': 'Feature',
-        'geometry': {
-          'type': 'MultiLineString',
-          'coordinates': line.geometry.paths
+    try {
+      let linefeature = null
+      if (line.geometry.hasOwnProperty('paths')) {
+        let feat = {
+          'type': 'Feature',
+          'geometry': {
+            'type': 'MultiLineString',
+            'coordinates': line.geometry.paths
+          }
+        }
+        linefeature = (new ol.format.GeoJSON()).readFeature(feat)
+      } else {
+        linefeature = new ol.Feature({
+          geometry: new ol.format.WKT().readGeometry(line.geometry)
+        })
+      }
+      let style = this.getStyleByLine(line['attributes']['style'])
+      let selectStyle = this.getStyleByLine(line['attributes']['selectStyle'])
+      let extent = linefeature.getGeometry().getExtent()
+      if (style && linefeature) {
+        linefeature.setStyle(style)
+        linefeature.set('style', style)
+        if (selectStyle) {
+          linefeature.set('selectStyle', selectStyle)
         }
       }
-      linefeature = (new ol.format.GeoJSON()).readFeature(feat)
-    } else {
-      linefeature = new ol.Feature({
-        geometry: new ol.format.WKT().readGeometry(line.geometry)
-      })
-    }
-    let style = this.getStyleByLine(line['attributes']['style'])
-    let selectStyle = this.getStyleByLine(line['attributes']['selectStyle'])
-    let extent = linefeature.getGeometry().getExtent()
-    if (style && linefeature) {
-      linefeature.setStyle(style)
-      linefeature.set('style', style)
-      if (selectStyle) {
-        linefeature.set('selectStyle', selectStyle)
+      if (line['attributes'] && (line.attributes['ID'] || line.attributes['id'])) {
+        let id = (line.attributes['id'] || line.attributes['ID'] || params['id'])
+        linefeature.setId(id)
+        linefeature.setProperties(line.attributes)
       }
+      if (params['zoomToExtent']) {
+        this.zoomToExtent(extent, true)
+      }
+      if (params['layerName']) {
+        let layer = this.creatVectorLayer(params['layerName'], {
+          create: true
+        })
+        layer.getSource().addFeature(linefeature)
+      }
+      return linefeature
+    } catch (e) {
+      console.error(e)
     }
-    if (line['attributes'] && (line.attributes['ID'] || line.attributes['id'])) {
-      // let id = (line['attributes']['id'] ? line['attributes']['id'] : (line['attributes']['ID'] ? line['attributes']['ID'] : params['id']))
-      let id = (line.attributes['id'] || line.attributes['ID'] || params['id'])
-      linefeature.setId(id)
-      linefeature.setProperties(line.attributes)
-    }
-    if (params['zoomToExtent']) {
-      this.zoomToExtent(extent, true)
-    }
-    if (params['layerName']) {
-      let layer = this.creatVectorLayer(params['layerName'], {
-        create: true
-      })
-      layer.getSource().addFeature(linefeature)
-    }
-    return linefeature
   }
 
   /**
@@ -317,19 +341,37 @@ class Feature extends mix(Style, Layer) {
    * @param params
    */
   addPolylines (lines, params) {
-    if (lines && Array.isArray(lines)) {
-      let [MultiLine, change] = [(new ol.geom.MultiLineString([])), false]
-      if (params['zoomToExtent']) {
-        params['zoomToExtent'] = !params['zoomToExtent']
-        change = true
-      };
-      for (let i = 0; i < lines.length; i++) {
-        let polyLine = this.addPolyline(lines[i], params)
-        MultiLine.appendLineString(polyLine.getGeometry())
+    try {
+      if (lines && Array.isArray(lines)) {
+        let [MultiLine, change] = [(new ol.geom.MultiLineString([])), false]
+        if (params['zoomToExtent']) {
+          params['zoomToExtent'] = false
+          change = true
+        }
+        lines.forEach(line => {
+          let polyLine = this.addPolyline(line, params)
+          if (polyLine && polyLine instanceof ol.Feature) {
+            let geom = polyLine.getGeometry()
+            if (geom && geom instanceof ol.geom.LineString) {
+              MultiLine.appendLineString(geom)
+            } else if (geom && geom instanceof ol.geom.MultiLineString) {
+              let multiGeoms = geom.getLineStrings()
+              if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
+                multiGeoms.forEach(_geom => {
+                  if (_geom && _geom instanceof ol.geom.LineString) {
+                    MultiLine.appendLineString(geom)
+                  }
+                })
+              }
+            }
+          }
+        })
+        if (change) {
+          this._getExtent(MultiLine)
+        }
       }
-      if (change) {
-        this._getExtent(MultiLine)
-      }
+    } catch (e) {
+      console.error(e)
     }
   }
 
@@ -340,36 +382,40 @@ class Feature extends mix(Style, Layer) {
    * @returns {ol.render.Feature|ol.format.Feature|Feature|*|ol.Feature}
    */
   addPolygon (polygon, params) {
-    if (polygon && polygon['geometry']) {
-      let polygonFeature = new ol.Feature({
-        geometry: new ol.format.WKT().readGeometry(polygon.geometry)
-      })
-      let style = this.getStyleByPolygon(polygon['attributes']['style'])
-      let selectStyle = this.getStyleByPolygon(polygon['attributes']['selectStyle'])
-      let extent = polygonFeature.getGeometry().getExtent()
-      if (style && polygonFeature) {
-        polygonFeature.setStyle(style)
-        if (selectStyle) {
-          polygonFeature.set('selectStyle', selectStyle)
-        }
-      }
-      if (polygon['attributes'] && (polygon.attributes['ID'] || polygon.attributes['id'])) {
-        let id = (polygon.attributes['id'] || polygon.attributes['ID'] || params['id'])
-        polygonFeature.setId(id)
-        polygonFeature.setProperties(polygon.attributes)
-      }
-      if (params['zoomToExtent']) {
-        this.zoomToExtent(extent, true)
-      }
-      if (params['layerName']) {
-        let layer = this.creatVectorLayer(params['layerName'], {
-          create: true
+    try {
+      if (polygon && polygon['geometry']) {
+        let polygonFeature = new ol.Feature({
+          geometry: new ol.format.WKT().readGeometry(polygon.geometry)
         })
-        layer.getSource().addFeature(polygonFeature)
+        let style = this.getStyleByPolygon(polygon['attributes']['style'])
+        let selectStyle = this.getStyleByPolygon(polygon['attributes']['selectStyle'])
+        let extent = polygonFeature.getGeometry().getExtent()
+        if (style && polygonFeature) {
+          polygonFeature.setStyle(style)
+          if (selectStyle) {
+            polygonFeature.set('selectStyle', selectStyle)
+          }
+        }
+        if (polygon['attributes'] && (polygon.attributes['ID'] || polygon.attributes['id'])) {
+          let id = (polygon.attributes['id'] || polygon.attributes['ID'] || params['id'])
+          polygonFeature.setId(id)
+          polygonFeature.setProperties(polygon.attributes)
+        }
+        if (params['zoomToExtent']) {
+          this.zoomToExtent(extent, true)
+        }
+        if (params['layerName']) {
+          let layer = this.creatVectorLayer(params['layerName'], {
+            create: true
+          })
+          layer.getSource().addFeature(polygonFeature)
+        }
+        return polygonFeature
+      } else {
+        console.info('传入的数据不标准！')
       }
-      return polygonFeature
-    } else {
-      console.info('传入的数据不标准！')
+    } catch (e) {
+      console.log(e)
     }
   }
 
@@ -379,19 +425,37 @@ class Feature extends mix(Style, Layer) {
    * @param params
    */
   addPolygons (polygons, params) {
-    if (polygons && Array.isArray(polygons)) {
-      let [MultiPolygon, change] = [(new ol.geom.MultiPolygon([])), change]
-      if (params['zoomToExtent']) {
-        params['zoomToExtent'] = !params['zoomToExtent']
-        change = true
+    try {
+      if (polygons && Array.isArray(polygons)) {
+        let [MultiPolygon, change] = [(new ol.geom.MultiPolygon([])), false]
+        if (params['zoomToExtent']) {
+          params['zoomToExtent'] = false
+          change = true
+        }
+        polygons.forEach(polygon => {
+          let polygonFeat = this.addPolygon(polygon, params)
+          if (polygonFeat && polygonFeat instanceof ol.Feature) {
+            let geom = polygonFeat.getGeometry()
+            if (geom && geom instanceof ol.geom.Polygon) {
+              MultiPolygon.appendPolygon(geom)
+            } else if (geom && geom instanceof ol.geom.MultiPolygon) {
+              let multiGeoms = geom.getPolygons()
+              if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
+                multiGeoms.forEach(_geom => {
+                  if (_geom && _geom instanceof ol.geom.Polygon) {
+                    MultiPolygon.appendPolygon(_geom)
+                  }
+                })
+              }
+            }
+          }
+        })
+        if (change) {
+          this._getExtent(MultiPolygon)
+        }
       }
-      for (let i = 0; i < polygons.length; i++) {
-        let polygon = this.addPolyline(polygons[i], params)
-        MultiPolygon.appendPolygon(polygon.getGeometry())
-      }
-      if (change) {
-        this._getExtent(MultiPolygon)
-      }
+    } catch (e) {
+      console.log(e)
     }
   }
 

@@ -146,7 +146,11 @@ class Layer extends mix(Style) {
           if (params && params.hasOwnProperty('selectable')) {
             vectorLayer.set('selectable', params.selectable)
           }
-          this.map.addLayer(vectorLayer)
+          // 图层只添加一次
+          let _vectorLayer = this.getLayerByLayerName(layerName)
+          if (!_vectorLayer || !(_vectorLayer instanceof ol.layer.Vector)) {
+            this.map.addLayer(vectorLayer)
+          }
         }
         return vectorLayer
       }
@@ -192,22 +196,6 @@ class Layer extends mix(Style) {
         layer.getSource().clear()
       }
     }
-  }
-
-  /**
-   * 设置地图
-   * @param map
-   */
-  setMap (map) {
-    this.map = map
-  }
-
-  /**
-   * 获取当前地图对象
-   * @returns {*|null}
-   */
-  getMap () {
-    return this.map
   }
 }
 
