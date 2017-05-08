@@ -18436,7 +18436,7 @@ module.exports = {
 				"spec": ">=2.4.3 <3.0.0",
 				"type": "range"
 			},
-			"E:\\codeRepository\\github\\HMap"
+			"E:\\github\\HMap"
 		]
 	],
 	"_cnpm_publish_time": 1488570791097,
@@ -18468,11 +18468,11 @@ module.exports = {
 	"_requiredBy": [
 		"/"
 	],
-	"_resolved": "http://registry.npmjs.org/proj4/-/proj4-2.4.3.tgz",
+	"_resolved": "https://registry.npm.taobao.org/proj4/download/proj4-2.4.3.tgz",
 	"_shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
 	"_shrinkwrap": null,
 	"_spec": "proj4@^2.4.3",
-	"_where": "E:\\codeRepository\\github\\HMap",
+	"_where": "E:\\github\\HMap",
 	"author": "",
 	"bugs": {
 		"url": "https://github.com/proj4js/proj4js/issues"
@@ -19686,7 +19686,7 @@ function sExpr(v, obj) {
 
 module.exports = {
 	"name": "hmap-js",
-	"version": "1.2.1",
+	"version": "1.2.3",
 	"private": false,
 	"description": "WEBGIS API",
 	"keywords": [
@@ -19700,7 +19700,7 @@ module.exports = {
 		"type": "git",
 		"url": "https://github.com/sakitam-fdd/HMap.git"
 	},
-	"main": "index.js",
+	"main": "src/index.js",
 	"scripts": {
 		"build": "webpack --env build",
 		"dev": "webpack --progress --colors --watch --env dev",
@@ -19710,11 +19710,9 @@ module.exports = {
 	"dependencies": {
 		"babel-preset-stage-3": "^6.24.1",
 		"friendly-errors-webpack-plugin": "^1.6.1",
-		"jquery": "^3.1.1",
 		"mathjs": "^3.12.0",
 		"openlayers": "^4.0.1",
-		"proj4": "^2.4.3",
-		"webpack-dashboard": "^0.4.0"
+		"proj4": "^2.4.3"
 	},
 	"devDependencies": {
 		"babel": "^6.0.0",

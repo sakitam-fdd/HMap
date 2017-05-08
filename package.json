@@ -1,6 +1,6 @@
 {
   "name": "hmap-js",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "private": false,
   "description": "WEBGIS API",
   "keywords": [
@@ -14,7 +14,7 @@
     "type": "git",
     "url": "https://github.com/sakitam-fdd/HMap.git"
   },
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "build": "webpack --env build",
     "dev": "webpack --progress --colors --watch --env dev",
@@ -24,11 +24,9 @@
   "dependencies": {
     "babel-preset-stage-3": "^6.24.1",
     "friendly-errors-webpack-plugin": "^1.6.1",
-    "jquery": "^3.1.1",
     "mathjs": "^3.12.0",
     "openlayers": "^4.0.1",
-    "proj4": "^2.4.3",
-    "webpack-dashboard": "^0.4.0"
+    "proj4": "^2.4.3"
   },
   "devDependencies": {
     "babel": "^6.0.0",
