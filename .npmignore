@@ -1,1 +1,5 @@
-/build
+build/
+example/
+docs/
+node_modules/
+test/

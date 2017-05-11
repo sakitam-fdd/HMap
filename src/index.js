@@ -11,6 +11,7 @@ import LayerSwitcher from './plugins/LayerSwitcher'
 import MeasureTool from './plugins/MeasureTool'
 import LayerSpyglass from './interaction/LayerSpyglass'
 import MisplacesGlass from './interaction/MisplacesGlass'
+import GeomCoder from './plugins/GeomCoder'
 
 HMap.ol = ol
 HMap.proj4 = proj4
@@ -24,6 +25,7 @@ HMap.LayerSwitcher = LayerSwitcher
 HMap.MeasureTool = MeasureTool
 HMap.LayerSpyglass = LayerSpyglass
 HMap.MisplacesGlass = MisplacesGlass
+HMap.GeomCoder = GeomCoder
 
 /**
  * Inherit the prototype methods from one constructor into another.

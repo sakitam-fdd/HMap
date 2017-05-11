@@ -152,6 +152,7 @@ class Feature extends mix(Style, Layer) {
 
   /**
    * 判断点是否在视图内，如果不在地图将自动平移
+   * @param coordinate (当前点坐标)
    */
   movePointToView (coordinate) {
     if (this.map) {
@@ -162,6 +163,10 @@ class Feature extends mix(Style, Layer) {
     }
   }
 
+  /**
+   * 设置视图中心点
+   * @param coordinate （传入坐标）
+   */
   setViewCenter (coordinate) {
     if (coordinate && Array.isArray(coordinate) && this.map) {
       this.map.getView().animate({
