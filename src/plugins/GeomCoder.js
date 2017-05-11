@@ -253,7 +253,7 @@ class GeomCoder {
    * @returns {null}
    */
   encodeUnsignedInteger (num) {
-    let [value, encoded] = ['', null]
+    let [value, encoded] = ['', '']
     while (num >= 0x20) {
       value = (0x20 | (num & 0x1f)) + 63
       encoded += String.fromCharCode(value)

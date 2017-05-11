@@ -69,7 +69,7 @@
     axios.get('./json/polygons.json')
       .then(function (response) {
         var polygon = response['data']['data']['features'][0];
-        Maps.addPolygon(polygon, {
+        var feat = Maps.addPolygon(polygon, {
           layerName: 'test',
           zoomToExtent: true
         });
@@ -82,7 +82,7 @@
     axios.get('./json/polygons.json')
       .then(function (response) {
         var polygons = response['data']['data']['features'];
-        Maps.addPolygons(polygons, {
+        var feat = Maps.addPolygons(polygons, {
           layerName: 'test',
           zoomToExtent: true
         });

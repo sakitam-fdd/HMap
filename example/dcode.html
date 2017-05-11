@@ -63,14 +63,14 @@
     factor: 1e6
   }).readGeometry(polyline, {
     dataProjection: 'EPSG:4326',
-    featureProjection: 'EPSG:3857'
+    featureProjection: 'EPSG:4326'
   }));
 
   var oooo = (new ol.format.Polyline({
     factor: 1e6
   })).writeGeometry(route, {
     dataProjection: 'EPSG:4326',
-    featureProjection: 'EPSG:3857'
+    featureProjection: 'EPSG:4326'
   })
   console.log(oooo)
 

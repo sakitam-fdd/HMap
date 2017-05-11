@@ -158,7 +158,10 @@ class Feature extends mix(Style, Layer) {
     if (this.map) {
       let extent = this.getMapCurrentExtent()
       if (!(ol.extent.containsXY(extent, coordinate[0], coordinate[1]))) {
-        this.map.getView().setCenter([coordinate[0], coordinate[1]])
+        this.map.getView().animate({
+          center: [coordinate[0], coordinate[1]],
+          duration: 400
+        })
       }
     }
   }

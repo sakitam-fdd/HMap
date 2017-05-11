@@ -2369,7 +2369,10 @@ var Feature = function (_mix) {
       if (this.map) {
         var extent = this.getMapCurrentExtent();
         if (!_constants.ol.extent.containsXY(extent, coordinate[0], coordinate[1])) {
-          this.map.getView().setCenter([coordinate[0], coordinate[1]]);
+          this.map.getView().animate({
+            center: [coordinate[0], coordinate[1]],
+            duration: 400
+          });
         }
       }
     }
@@ -8072,7 +8075,7 @@ var GeomCoder = function () {
     key: 'encodeUnsignedInteger',
     value: function encodeUnsignedInteger(num) {
       var value = '',
-          encoded = null;
+          encoded = '';
 
       while (num >= 0x20) {
         value = (0x20 | num & 0x1f) + 63;
