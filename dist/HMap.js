@@ -74,7 +74,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 407);
+/******/ 	return __webpack_require__(__webpack_require__.s = 408);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -293,7 +293,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.config = exports.proj4 = exports.ol = exports.ee = exports.a = exports.PI = exports.X_PI = undefined;
 
-var _proj = __webpack_require__(371);
+var _proj = __webpack_require__(372);
 
 var _proj2 = _interopRequireDefault(_proj);
 
@@ -1795,6 +1795,46 @@ var Layer = function (_mix) {
       }
     }
   }, {
+    key: 'creatHeatMapLayer',
+    value: function creatHeatMapLayer(layerName, params) {
+      try {
+        var currentLayer = '';
+        if (this.map) {
+          currentLayer = this.getLayerByLayerName(layerName);
+          if (!(currentLayer instanceof _constants.ol.layer.Heatmap)) {
+            currentLayer = '';
+          }
+          if (!currentLayer && params && params['create']) {
+            currentLayer = new _constants.ol.layer.Heatmap({
+              layerName: layerName,
+              gradient: params['gradient'] ? params['gradient'] : ['#00f', '#0ff', '#0f0', '#ff0', '#f00'],
+              source: new _constants.ol.source.Vector({
+                wrapX: false
+              }),
+              blur: params['blur'] ? params['blur'] : 15,
+              radius: params['radius'] ? params['radius'] : 8,
+              shadow: params['shadow'] ? params['shadow'] : 250,
+              weight: params['weight'] ? params['weight'] : 'weight',
+              extent: params['extent'] ? params['extent'] : undefined,
+              minResolution: params['minResolution'] ? params['minResolution'] : undefined,
+              maxResolution: params['maxResolution'] ? params['maxResolution'] : undefined,
+              opacity: params['opacity'] ? params['opacity'] : 1,
+              visible: params['visible'] === false ? params['visible'] : true
+            });
+            if (params && params.hasOwnProperty('selectable')) {
+              currentLayer.set('selectable', params.selectable);
+            }
+            this.map.addLayer(currentLayer);
+          }
+          return currentLayer;
+        } else {
+          throw new Error('未创建地图对象！');
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, {
     key: 'creatTitleLayer',
     value: function creatTitleLayer(layerName, params) {
       var titleLayer = null;
@@ -2220,6 +2260,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _constants = __webpack_require__(11);
@@ -2457,7 +2499,7 @@ var Feature = function (_mix) {
                 if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
                   multiGeoms.forEach(function (_geom) {
                     if (_geom && _geom instanceof _constants.ol.geom.Point) {
-                      multiPoint.appendPoint(geom);
+                      multiPoint.appendPoint(_geom);
                     }
                   });
                 }
@@ -2652,6 +2694,96 @@ var Feature = function (_mix) {
       }
     }
   }, {
+    key: 'addHeatFeatures',
+    value: function addHeatFeatures(points, params) {
+      var _this5 = this;
+
+      try {
+        var feature = '';
+        if (points && Array.isArray(points) && points.length > 0) {
+          var multiPoint = new _constants.ol.geom.MultiPoint([]),
+              change = false;
+
+          if (params['zoomToExtent']) {
+            params['zoomToExtent'] = false;
+            change = true;
+          }
+          points.forEach(function (item) {
+            if (item && item['geometry']) {
+              var geometry = _this5._getGeometryFromPoint(item);
+              if (geometry && geometry instanceof _constants.ol.geom.Point) {
+                multiPoint.appendPoint(geometry);
+              } else if (geometry && geometry instanceof _constants.ol.geom.MultiPoint) {
+                var multiGeoms = geometry.getPoints();
+                if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
+                  multiGeoms.forEach(function (_geom) {
+                    if (_geom && _geom instanceof _constants.ol.geom.Point) {
+                      multiPoint.appendPoint(_geom);
+                    }
+                  });
+                }
+              }
+            }
+          });
+          if (params['layerName']) {
+            feature = new _constants.ol.Feature({
+              geometry: multiPoint,
+              params: params
+            });
+            params['create'] = true;
+            var layer = this.creatHeatMapLayer(params['layerName'], params);
+            if (layer && layer instanceof _constants.ol.layer.Heatmap) {
+              layer.getSource().addFeature(feature);
+            }
+          }
+          if (change) {
+            this._getExtent(multiPoint);
+          }
+        }
+        return feature;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'setHeatLayerStyle',
+    value: function setHeatLayerStyle(layerName, params) {
+      try {
+        var layer = null;
+        if (layerName) {
+          layerName = layerName.trim();
+          var _layer = this.getLayerByLayerName(layerName);
+          if (_layer && _layer instanceof _constants.ol.layer.Heatmap) {
+            layer = _layer;
+            if (params && (typeof params === 'undefined' ? 'undefined' : _typeof(params)) === 'object') {
+              for (var key in params) {
+                switch (key) {
+                  case 'blur':
+                    layer.setBlur(params[key]);
+                    break;
+                  case 'radius':
+                    layer.setRadius(params[key]);
+                    break;
+                  case 'gradient':
+                    layer.setGradient(params[key]);
+                    break;
+                  case 'visible':
+                    layer.setVisible(params[key]);
+                    break;
+                  case 'opacity':
+                    layer.setOpacity(params[key]);
+                    break;
+                }
+              }
+            }
+          }
+        }
+        return layer;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
     key: 'removeFeatureByLayerName',
     value: function removeFeatureByLayerName(layerName) {
       try {
@@ -2666,11 +2798,11 @@ var Feature = function (_mix) {
   }, {
     key: 'removeFeatureByLayerNames',
     value: function removeFeatureByLayerNames(layerNames) {
-      var _this5 = this;
+      var _this6 = this;
 
       if (layerNames && Array.isArray(layerNames) && layerNames.length > 0) {
         layerNames.forEach(function (item) {
-          _this5.removeFeatureByLayerName(item);
+          _this6.removeFeatureByLayerName(item);
         });
       } else {
         console.info('id为空或者不是数组！');
@@ -2719,11 +2851,11 @@ var Feature = function (_mix) {
   }, {
     key: 'removeFeatureByIds',
     value: function removeFeatureByIds(ids, layerName) {
-      var _this6 = this;
+      var _this7 = this;
 
       if (ids && Array.isArray(ids) && ids.length > 0) {
         ids.forEach(function (item) {
-          _this6.removeFeatureById(item, layerName);
+          _this7.removeFeatureById(item, layerName);
         });
       } else {
         console.info('id为空或者不是数组！');
@@ -3849,12 +3981,12 @@ addToUnscopables('entries');
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parseCode__ = __webpack_require__(372);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__extend__ = __webpack_require__(369);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__projections__ = __webpack_require__(373);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__deriveConstants__ = __webpack_require__(368);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_Datum__ = __webpack_require__(360);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__datum__ = __webpack_require__(365);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parseCode__ = __webpack_require__(373);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__extend__ = __webpack_require__(370);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__projections__ = __webpack_require__(374);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__deriveConstants__ = __webpack_require__(369);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_Datum__ = __webpack_require__(361);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__datum__ = __webpack_require__(366);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__match__ = __webpack_require__(108);
 
 
@@ -5644,7 +5776,7 @@ var MAX_ITER = 20;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__global__ = __webpack_require__(370);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__global__ = __webpack_require__(371);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projString__ = __webpack_require__(145);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_wkt_parser__ = __webpack_require__(148);
 
@@ -5710,8 +5842,8 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__global__["a" /* default */])(
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_PrimeMeridian__ = __webpack_require__(362);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_units__ = __webpack_require__(363);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_PrimeMeridian__ = __webpack_require__(363);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_units__ = __webpack_require__(364);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__match__ = __webpack_require__(108);
 
 
@@ -5857,10 +5989,10 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__global__["a" /* default */])(
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_sinh__ = __webpack_require__(142);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_hypot__ = __webpack_require__(139);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_asinhy__ = __webpack_require__(352);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_gatg__ = __webpack_require__(356);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_clens__ = __webpack_require__(353);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_clens_cmplx__ = __webpack_require__(354);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_asinhy__ = __webpack_require__(353);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_gatg__ = __webpack_require__(357);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_clens__ = __webpack_require__(354);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_clens_cmplx__ = __webpack_require__(355);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__ = __webpack_require__(7);
 /* unused harmony export init */
 /* unused harmony export forward */
@@ -6039,8 +6171,8 @@ var names = ["Extended_Transverse_Mercator", "Extended Transverse Mercator", "et
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__datum_transform__ = __webpack_require__(367);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__adjust_axis__ = __webpack_require__(350);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__datum_transform__ = __webpack_require__(368);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__adjust_axis__ = __webpack_require__(351);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Proj__ = __webpack_require__(103);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_toPoint__ = __webpack_require__(143);
 /* harmony export (immutable) */ __webpack_exports__["a"] = transform;
@@ -6131,8 +6263,8 @@ function transform(source, dest, point) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parser__ = __webpack_require__(404);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__process__ = __webpack_require__(405);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parser__ = __webpack_require__(405);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__process__ = __webpack_require__(406);
 var D2R = 0.01745329251994329577;
 
 
@@ -6342,15 +6474,22 @@ var _GeomCoder = __webpack_require__(163);
 
 var _GeomCoder2 = _interopRequireDefault(_GeomCoder);
 
+var _utils = __webpack_require__(409);
+
+var utils = _interopRequireWildcard(_utils);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var HMap = {};
-HMap.version = __webpack_require__(406).version;
+HMap.version = __webpack_require__(407).version;
 
 
 HMap.ol = _constants.ol;
 HMap.proj4 = _constants.proj4;
 HMap.Map = _Map2.default;
+HMap.Utils = utils;
 HMap.Layer = _Layer2.default;
 HMap.Feature = _feature2.default;
 HMap.CoordsTransform = _CoordsTransform2.default;
@@ -6381,7 +6520,7 @@ module.exports = exports['default'];
 
 __webpack_require__(347);
 
-__webpack_require__(403);
+__webpack_require__(404);
 
 __webpack_require__(167);
 
@@ -7060,7 +7199,7 @@ var Map = function (_mix) {
         target: mapDiv,
         loadTilesWhileAnimating: false,
         loadTilesWhileInteracting: false,
-        logo: this._addCopyRight(options['logo']),
+        logo: this._addCopyRight(options['logo'] || {}),
         layers: this.addBaseLayers(options['baseLayers'], options['view']),
         view: this._addView(options['view']),
         interactions: this._addInteractions(options['interactions']),
@@ -7073,8 +7212,18 @@ var Map = function (_mix) {
     }
   }, {
     key: '_addCopyRight',
-    value: function _addCopyRight() {
-      return true;
+    value: function _addCopyRight(params) {
+      var logo = {
+        href: 'https://aurorafe.github.io',
+        src: 'data:image/png;base64,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'
+      };
+      if (params['href']) {
+        logo.href = params['href'];
+      }
+      if (params['src']) {
+        logo.src = params['src'];
+      }
+      return logo;
     }
   }, {
     key: 'getMap',
@@ -7925,7 +8074,7 @@ var GeomCoder = function () {
         stride = 2;
       }
       this.flipXY(flatCoordinates, 0, flatCoordinates.length, stride, flatCoordinates);
-      return this.encodeDeltas(flatCoordinates, stride, this.factor_);
+      return this.encodeDeltas(flatCoordinates, stride);
     }
   }, {
     key: 'getText_',
@@ -13908,7 +14057,8 @@ Qk.prototype.changed=Qk.prototype.s;Qk.prototype.dispatchEvent=Qk.prototype.b;Qk
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(109)))
 
 /***/ }),
-/* 349 */
+/* 349 */,
+/* 350 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13950,7 +14100,7 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 350 */
+/* 351 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14009,7 +14159,7 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 351 */
+/* 352 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14031,12 +14181,12 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 352 */
+/* 353 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hypot__ = __webpack_require__(139);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__log1py__ = __webpack_require__(358);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__log1py__ = __webpack_require__(359);
 
 
 
@@ -14049,7 +14199,7 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 353 */
+/* 354 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14071,12 +14221,12 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 354 */
+/* 355 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sinh__ = __webpack_require__(142);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__cosh__ = __webpack_require__(355);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__cosh__ = __webpack_require__(356);
 
 
 
@@ -14112,7 +14262,7 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 355 */
+/* 356 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14123,7 +14273,7 @@ Point.prototype.toMGRS = function(accuracy) {
 });
 
 /***/ }),
-/* 356 */
+/* 357 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14145,7 +14295,7 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 357 */
+/* 358 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14185,7 +14335,7 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 358 */
+/* 359 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14198,7 +14348,7 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 359 */
+/* 360 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14207,7 +14357,7 @@ Point.prototype.toMGRS = function(accuracy) {
 });
 
 /***/ }),
-/* 360 */
+/* 361 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14312,7 +14462,7 @@ exports.rnb72 = {
 
 
 /***/ }),
-/* 361 */
+/* 362 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14580,7 +14730,7 @@ exports.sphere = {
 
 
 /***/ }),
-/* 362 */
+/* 363 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14604,7 +14754,7 @@ exports.oslo = 10.722916666667; //"10d43'22.5\"E"
 
 
 /***/ }),
-/* 363 */
+/* 364 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14615,7 +14765,7 @@ exports.oslo = 10.722916666667; //"10d43'22.5\"E"
 
 
 /***/ }),
-/* 364 */
+/* 365 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14687,7 +14837,7 @@ function proj4(fromProj, toProj, coord) {
 /* harmony default export */ __webpack_exports__["a"] = (proj4);
 
 /***/ }),
-/* 365 */
+/* 366 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14730,7 +14880,7 @@ function datum(datumCode, datum_params, a, b, es, ep2) {
 
 
 /***/ }),
-/* 366 */
+/* 367 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14985,12 +15135,12 @@ function geocentricFromWgs84(p, datum_type, datum_params) {
 
 
 /***/ }),
-/* 367 */
+/* 368 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__datumUtils__ = __webpack_require__(366);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__datumUtils__ = __webpack_require__(367);
 
 
 
@@ -15033,12 +15183,12 @@ function checkParams(type) {
 
 
 /***/ }),
-/* 368 */
+/* 369 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_Ellipsoid__ = __webpack_require__(361);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_Ellipsoid__ = __webpack_require__(362);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__match__ = __webpack_require__(108);
 /* harmony export (immutable) */ __webpack_exports__["b"] = eccentricity;
 /* harmony export (immutable) */ __webpack_exports__["a"] = sphere;
@@ -15093,7 +15243,7 @@ function sphere(a, b, rf, ellps, sphere) {
 
 
 /***/ }),
-/* 369 */
+/* 370 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15114,7 +15264,7 @@ function sphere(a, b, rf, ellps, sphere) {
 
 
 /***/ }),
-/* 370 */
+/* 371 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15132,20 +15282,20 @@ function sphere(a, b, rf, ellps, sphere) {
 
 
 /***/ }),
-/* 371 */
+/* 372 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core__ = __webpack_require__(364);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core__ = __webpack_require__(365);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Proj__ = __webpack_require__(103);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Point__ = __webpack_require__(349);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Point__ = __webpack_require__(350);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_toPoint__ = __webpack_require__(143);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__defs__ = __webpack_require__(144);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__transform__ = __webpack_require__(147);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_mgrs__ = __webpack_require__(138);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__version__ = __webpack_require__(400);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__projs__ = __webpack_require__(402);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__version__ = __webpack_require__(401);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__projs__ = __webpack_require__(403);
 
 
 
@@ -15170,7 +15320,7 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8__projs__["a" /* default */])(_
 
 
 /***/ }),
-/* 372 */
+/* 373 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15216,12 +15366,12 @@ function parse(code){
 
 
 /***/ }),
-/* 373 */
+/* 374 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__projections_merc__ = __webpack_require__(386);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projections_longlat__ = __webpack_require__(385);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__projections_merc__ = __webpack_require__(387);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projections_longlat__ = __webpack_require__(386);
 /* unused harmony export add */
 /* unused harmony export get */
 /* unused harmony export start */
@@ -15267,7 +15417,7 @@ function start() {
 
 
 /***/ }),
-/* 374 */
+/* 375 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15413,7 +15563,7 @@ var names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
 
 
 /***/ }),
-/* 375 */
+/* 376 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15641,7 +15791,7 @@ var names = ["Azimuthal_Equidistant", "aeqd"];
 
 
 /***/ }),
-/* 376 */
+/* 377 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15770,14 +15920,14 @@ var names = ["Cassini", "Cassini_Soldner", "cass"];
 
 
 /***/ }),
-/* 377 */
+/* 378 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_qsfnz__ = __webpack_require__(107);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_msfnz__ = __webpack_require__(49);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_iqsfnz__ = __webpack_require__(357);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_iqsfnz__ = __webpack_require__(358);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
@@ -15855,7 +16005,7 @@ var names = ["cea"];
 
 
 /***/ }),
-/* 378 */
+/* 379 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15916,7 +16066,7 @@ var names = ["Equirectangular", "Equidistant_Cylindrical", "eqc"];
 
 
 /***/ }),
-/* 379 */
+/* 380 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16054,11 +16204,11 @@ var names = ["Equidistant_Conic", "eqdc"];
 
 
 /***/ }),
-/* 380 */
+/* 381 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_srat__ = __webpack_require__(359);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_srat__ = __webpack_require__(360);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(3);
 /* unused harmony export init */
 /* unused harmony export forward */
@@ -16119,7 +16269,7 @@ var names = ["gauss"];
 
 
 /***/ }),
-/* 381 */
+/* 382 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16237,7 +16387,7 @@ var names = ["gnom"];
 
 
 /***/ }),
-/* 382 */
+/* 383 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16355,7 +16505,7 @@ var names = ["Krovak", "krovak"];
 
 
 /***/ }),
-/* 383 */
+/* 384 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16671,7 +16821,7 @@ var names = ["Lambert Azimuthal Equal Area", "Lambert_Azimuthal_Equal_Area", "la
 
 
 /***/ }),
-/* 384 */
+/* 385 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16827,7 +16977,7 @@ var names = ["Lambert Tangential Conformal Conic Projection", "Lambert_Conformal
 
 
 /***/ }),
-/* 385 */
+/* 386 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16854,7 +17004,7 @@ var names = ["longlat", "identity"];
 
 
 /***/ }),
-/* 386 */
+/* 387 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16970,7 +17120,7 @@ var names = ["Mercator", "Popular Visualisation Pseudo Mercator", "Mercator_1SP"
 
 
 /***/ }),
-/* 387 */
+/* 388 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17034,7 +17184,7 @@ var names = ["Miller_Cylindrical", "mill"];
 
 
 /***/ }),
-/* 388 */
+/* 389 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17130,7 +17280,7 @@ var names = ["Mollweide", "moll"];
 
 
 /***/ }),
-/* 389 */
+/* 390 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17369,7 +17519,7 @@ var names = ["New_Zealand_Map_Grid", "nzmg"];
 
 
 /***/ }),
-/* 390 */
+/* 391 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17555,7 +17705,7 @@ var names = ["Hotine_Oblique_Mercator", "Hotine Oblique Mercator", "Hotine_Obliq
 
 
 /***/ }),
-/* 391 */
+/* 392 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17660,7 +17810,7 @@ var names = ["ortho"];
 
 
 /***/ }),
-/* 392 */
+/* 393 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17815,7 +17965,7 @@ var names = ["Polyconic", "poly"];
 
 
 /***/ }),
-/* 393 */
+/* 394 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17948,7 +18098,7 @@ var names = ["Sinusoidal", "sinu"];
 
 
 /***/ }),
-/* 394 */
+/* 395 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18045,7 +18195,7 @@ var names = ["somerc"];
 
 
 /***/ }),
-/* 395 */
+/* 396 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18237,11 +18387,11 @@ var names = ["stere", "Stereographic_South_Pole", "Polar Stereographic (variant 
 
 
 /***/ }),
-/* 396 */
+/* 397 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gauss__ = __webpack_require__(380);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gauss__ = __webpack_require__(381);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_adjust_lon__ = __webpack_require__(7);
 /* unused harmony export init */
 /* unused harmony export forward */
@@ -18314,7 +18464,7 @@ var names = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_Stereog
 
 
 /***/ }),
-/* 397 */
+/* 398 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18504,11 +18654,11 @@ var names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
 
 
 /***/ }),
-/* 398 */
+/* 399 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_zone__ = __webpack_require__(351);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_zone__ = __webpack_require__(352);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__etmerc__ = __webpack_require__(146);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_values__ = __webpack_require__(3);
 /* unused harmony export dependsOn */
@@ -18545,7 +18695,7 @@ var names = ["Universal Transverse Mercator System", "utm"];
 
 
 /***/ }),
-/* 399 */
+/* 400 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18688,18 +18838,18 @@ var names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
 
 
 /***/ }),
-/* 400 */
+/* 401 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__package_json__ = __webpack_require__(401);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__package_json__ = __webpack_require__(402);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__package_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__package_json__);
 /* harmony reexport (binding) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_0__package_json__, "version")) __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__package_json__["version"]; });
 
 
 
 /***/ }),
-/* 401 */
+/* 402 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -18846,34 +18996,34 @@ module.exports = {
 };
 
 /***/ }),
-/* 402 */
+/* 403 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_projections_tmerc__ = __webpack_require__(397);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_projections_tmerc__ = __webpack_require__(398);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_projections_etmerc__ = __webpack_require__(146);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_projections_utm__ = __webpack_require__(398);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_projections_sterea__ = __webpack_require__(396);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_projections_stere__ = __webpack_require__(395);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_projections_somerc__ = __webpack_require__(394);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_projections_omerc__ = __webpack_require__(390);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__lib_projections_lcc__ = __webpack_require__(384);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_projections_krovak__ = __webpack_require__(382);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__lib_projections_cass__ = __webpack_require__(376);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__lib_projections_laea__ = __webpack_require__(383);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__lib_projections_aea__ = __webpack_require__(374);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__lib_projections_gnom__ = __webpack_require__(381);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__lib_projections_cea__ = __webpack_require__(377);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__lib_projections_eqc__ = __webpack_require__(378);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__lib_projections_poly__ = __webpack_require__(392);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__lib_projections_nzmg__ = __webpack_require__(389);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__lib_projections_mill__ = __webpack_require__(387);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__lib_projections_sinu__ = __webpack_require__(393);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__lib_projections_moll__ = __webpack_require__(388);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__lib_projections_eqdc__ = __webpack_require__(379);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__lib_projections_vandg__ = __webpack_require__(399);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__lib_projections_aeqd__ = __webpack_require__(375);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__lib_projections_ortho__ = __webpack_require__(391);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_projections_utm__ = __webpack_require__(399);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_projections_sterea__ = __webpack_require__(397);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_projections_stere__ = __webpack_require__(396);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_projections_somerc__ = __webpack_require__(395);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_projections_omerc__ = __webpack_require__(391);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__lib_projections_lcc__ = __webpack_require__(385);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_projections_krovak__ = __webpack_require__(383);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__lib_projections_cass__ = __webpack_require__(377);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__lib_projections_laea__ = __webpack_require__(384);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__lib_projections_aea__ = __webpack_require__(375);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__lib_projections_gnom__ = __webpack_require__(382);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__lib_projections_cea__ = __webpack_require__(378);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__lib_projections_eqc__ = __webpack_require__(379);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__lib_projections_poly__ = __webpack_require__(393);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__lib_projections_nzmg__ = __webpack_require__(390);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__lib_projections_mill__ = __webpack_require__(388);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__lib_projections_sinu__ = __webpack_require__(394);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__lib_projections_moll__ = __webpack_require__(389);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__lib_projections_eqdc__ = __webpack_require__(380);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__lib_projections_vandg__ = __webpack_require__(400);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__lib_projections_aeqd__ = __webpack_require__(376);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__lib_projections_ortho__ = __webpack_require__(392);
 
 
 
@@ -18926,7 +19076,7 @@ module.exports = {
 });
 
 /***/ }),
-/* 403 */
+/* 404 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/**
@@ -19669,7 +19819,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(109)))
 
 /***/ }),
-/* 404 */
+/* 405 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -19845,7 +19995,7 @@ function parseString(txt) {
 
 
 /***/ }),
-/* 405 */
+/* 406 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -19959,7 +20109,7 @@ function sExpr(v, obj) {
 
 
 /***/ }),
-/* 406 */
+/* 407 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -20025,12 +20175,41 @@ module.exports = {
 };
 
 /***/ }),
-/* 407 */
+/* 408 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(150);
 module.exports = __webpack_require__(149);
 
+
+/***/ }),
+/* 409 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var getrandom = exports.getrandom = function getrandom(t1, t2, t3) {
+  if (!t1 || isNaN(t1)) {
+    t1 = 0;
+  }
+  if (!t2 || isNaN(t2)) {
+    t2 = 1;
+  }
+  if (!t3 || isNaN(t3)) {
+    t3 = 0;
+  }
+  t3 = t3 > 15 ? 15 : t3;
+  var _ref = [Math.random() * (t2 - t1) + t1, Math.pow(10, t3)],
+      ra = _ref[0],
+      du = _ref[1];
+
+  ra = Math.round(ra * du) / du;
+  return ra;
+};
 
 /***/ })
 /******/ ]);

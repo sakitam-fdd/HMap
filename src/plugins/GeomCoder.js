@@ -38,6 +38,14 @@ class GeomCoder {
     this.geometryLayout_ = this.options.geometryLayout ? this.options.geometryLayout : this.GeometryLayout.XY
   }
 
+  // readGeometryFromEnCodes (codes) {
+  //   if (codes && Array.isArray(codes) && codes.length > 0) { // 压缩后的数组
+  //
+  //   } else if (typeof codes === 'string') { // 压缩后的字符串
+  //
+  //   }
+  // }
+
   /**
    * 读取加密数据
    * @param text
@@ -78,7 +86,7 @@ class GeomCoder {
       stride = 2
     }
     this.flipXY(flatCoordinates, 0, flatCoordinates.length, stride, flatCoordinates)
-    return (this.encodeDeltas(flatCoordinates, stride, this.factor_))
+    return (this.encodeDeltas(flatCoordinates, stride))
   }
 
   /**
@@ -265,7 +273,7 @@ class GeomCoder {
   }
 
   /**
-   * 裁剪XY坐标
+   * 反转XY坐标
    * @param flatCoordinates
    * @param offset
    * @param end

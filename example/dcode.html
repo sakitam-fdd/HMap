@@ -4,7 +4,8 @@
   <title>Marker Animation</title>
   <link rel="stylesheet" href="../node_modules/openlayers/dist/ol.css" type="text/css">
   <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
-  <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+  <script
+    src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
   <script src="../node_modules/openlayers/dist/ol-debug.js"></script>
 </head>
 <body>
@@ -58,6 +59,44 @@
     'uEeFymAssAkdAmhAyTcVkFeEoKiH}l@kp@wg@sj@ku@ey@uh@kj@}EsFmG}Jk^_r@_f@m',
     '~@ym@yjA??a@cFd@kBrCgDbAUnAcBhAyAdk@et@??kF}D??OL'
   ].join('');
+
+  var Polyline = {
+    "type": "LineString",
+    "coordinates": [
+      'hldhx@lnau`BCG_EaC??cFjAwDjF??uBlKMd@}@z@??aC^yk@z_@se@b[wFdE??wFfE}N'
+    ]
+  }
+
+  var Polylines = {
+    "type": "MultiLineString",
+    "coordinates": [
+      'hldhx@lnau`BCG_EaC??cFjAwDjF??uBlKMd@}@z@??aC^yk@z_@se@b[wFdE??wFfE}N',
+      'fIoGxB_I\\gG}@eHoCyTmPqGaBaHOoD\\??yVrGotA|N??o[N_STiwAtEmHGeHcAkiA}^',
+      'aMyBiHOkFNoI`CcVvM??gG^gF_@iJwC??eCcA]OoL}DwFyCaCgCcCwDcGwHsSoX??wI_E'
+    ]
+  }
+
+  var Polygon = {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        'hldhx@lnau`BCG_EaC??cFjAwDjF??uBlKMd@}@z@??aC^yk@z_@se@b[wFdE??wFfE}N'
+      ]
+    ]
+  }
+
+  var Polygons = {
+    "type": "MultiPolygon",
+    "coordinates": [
+      [
+        'hldhx@lnau`BCG_EaC??cFjAwDjF??uBlKMd@}@z@??aC^yk@z_@se@b[wFdE??wFfE}N'
+      ],
+      [
+        'hldhx@lnau`BCG_EaC??cFjAwDjF??uBlKMd@}@z@??aC^yk@z_@se@b[wFdE??wFfE}N',
+        'hldhx@lnau`BCG_EaC??cFjAwDjF??uBlKMd@}@z@??aC^yk@z_@se@b[wFdE??wFfE}N',
+      ]
+    ]
+  }
 
   var route = /** @type {ol.geom.LineString} */ (new ol.format.Polyline({
     factor: 1e6
@@ -127,7 +166,7 @@
     source: new ol.source.Vector({
       features: [routeFeature, geoMarker, startMarker, endMarker]
     }),
-    style: function(feature) {
+    style: function (feature) {
       // hide geoMarker if animation is active
       if (animating && feature.get('type') === 'geoMarker') {
         return null;
@@ -157,7 +196,7 @@
     ]
   });
 
-  var moveFeature = function(event) {
+  var moveFeature = function (event) {
     var vectorContext = event.vectorContext;
     var frameState = event.frameState;
 

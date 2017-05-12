@@ -160,6 +160,51 @@ class Layer extends mix(Style) {
   }
 
   /**
+   * 创建热力图图层
+   * @param layerName
+   * @param params
+   * @returns {string}
+   */
+  creatHeatMapLayer (layerName, params) {
+    try {
+      let currentLayer = ''
+      if (this.map) {
+        currentLayer = this.getLayerByLayerName(layerName)
+        if (!(currentLayer instanceof ol.layer.Heatmap)) {
+          currentLayer = ''
+        }
+        if (!currentLayer && params && params['create']) {
+          currentLayer = new ol.layer.Heatmap({
+            layerName: layerName,
+            gradient: (params['gradient'] ? params['gradient'] : ['#00f', '#0ff', '#0f0', '#ff0', '#f00']),
+            source: new ol.source.Vector({
+              wrapX: false
+            }),
+            blur: (params['blur'] ? params['blur'] : 15),
+            radius: (params['radius'] ? params['radius'] : 8),
+            shadow: (params['shadow'] ? params['shadow'] : 250),
+            weight: (params['weight'] ? params['weight'] : 'weight'),
+            extent: (params['extent'] ? params['extent'] : undefined),
+            minResolution: (params['minResolution'] ? params['minResolution'] : undefined),
+            maxResolution: (params['maxResolution'] ? params['maxResolution'] : undefined),
+            opacity: (params['opacity'] ? params['opacity'] : 1),
+            visible: ((params['visible'] === false) ? params['visible'] : true)
+          })
+          if (params && params.hasOwnProperty('selectable')) {
+            currentLayer.set('selectable', params.selectable)
+          }
+          this.map.addLayer(currentLayer)
+        }
+        return currentLayer
+      } else {
+        throw new Error('未创建地图对象！')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  /**
    * 创建专题图层
    * @param layerName
    * @param params

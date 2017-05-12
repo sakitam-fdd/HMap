@@ -258,7 +258,7 @@ class Feature extends mix(Style, Layer) {
               if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
                 multiGeoms.forEach(_geom => {
                   if (_geom && _geom instanceof ol.geom.Point) {
-                    multiPoint.appendPoint(geom)
+                    multiPoint.appendPoint(_geom)
                   }
                 })
               }
@@ -462,6 +462,102 @@ class Feature extends mix(Style, Layer) {
           this._getExtent(MultiPolygon)
         }
       }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  /**
+   * 添加热力图要素
+   * @param points
+   * @param params
+   * @returns {string}
+   */
+  addHeatFeatures (points, params) {
+    try {
+      let feature = ''
+      if (points && Array.isArray(points) && points.length > 0) {
+        let [multiPoint, change] = [(new ol.geom.MultiPoint([])), false]
+        if (params['zoomToExtent']) {
+          params['zoomToExtent'] = false
+          change = true
+        }
+        points.forEach(item => {
+          if (item && item['geometry']) {
+            let geometry = this._getGeometryFromPoint(item)
+            if (geometry && geometry instanceof ol.geom.Point) {
+              multiPoint.appendPoint(geometry)
+            } else if (geometry && geometry instanceof ol.geom.MultiPoint) {
+              let multiGeoms = geometry.getPoints()
+              if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
+                multiGeoms.forEach(_geom => {
+                  if (_geom && _geom instanceof ol.geom.Point) {
+                    multiPoint.appendPoint(_geom)
+                  }
+                })
+              }
+            }
+          }
+        })
+        if (params['layerName']) {
+          feature = new ol.Feature({
+            geometry: multiPoint,
+            params: params
+          })
+          params['create'] = true
+          let layer = this.creatHeatMapLayer(params['layerName'], params)
+          if (layer && layer instanceof ol.layer.Heatmap) {
+            layer.getSource().addFeature(feature)
+          }
+        }
+        if (change) {
+          this._getExtent(multiPoint)
+        }
+      }
+      return feature
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  /**
+   * 设置热力图样式
+   * @param layerName
+   * @param params
+   * @returns {*}
+   */
+  setHeatLayerStyle (layerName, params) {
+    try {
+      let layer = null
+      if (layerName) {
+        layerName = layerName.trim()
+        let _layer = this.getLayerByLayerName(layerName)
+        if (_layer && _layer instanceof ol.layer.Heatmap) {
+          layer = _layer
+          if (params && typeof params === 'object') {
+            for (let key in params) {
+              switch (key) {
+                case 'blur':
+                  layer.setBlur(params[key])
+                  break
+                case 'radius':
+                  layer.setRadius(params[key])
+                  break
+                case 'gradient':
+                  layer.setGradient(params[key])
+                  break
+                case 'visible':
+                  layer.setVisible(params[key])
+                  break
+                case 'opacity':
+                  layer.setOpacity(params[key])
+                  break
+              }
+            }
+          }
+        }
+      }
+      return layer
     } catch (e) {
       console.log(e)
     }

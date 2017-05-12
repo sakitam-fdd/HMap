@@ -92,7 +92,7 @@
           factor: 1e6,
           geometryLayout: 'XY'
         })
-        var testCoor = geomCoder.writeCoordinatesText(feat.getGeometry().getCoordinates())
+        var testCoor = geomCoder.writeCoordinatesText([[116.34933163308892, -46.38606703777741]])
         var _testCoor = geomCoder.readCoordinatesFromText(testCoor)
         console.log(testCoor)
         console.log(_testCoor)
