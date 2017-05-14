@@ -1,7 +1,8 @@
 import { ol } from '../constants'
-
-class appDrag {
+let Pointer = ol.interaction.Pointer
+class appDrag extends Pointer {
   constructor () {
+    super()
     ol.interaction.Pointer.call(this, {
       handleDownEvent: this.handleDownEvent,
       handleDragEvent: this.handleDragEvent,
@@ -111,7 +112,5 @@ class appDrag {
     return false
   }
 }
-
-ol.inherits(appDrag, ol.interaction.Pointer)
 
 export default appDrag

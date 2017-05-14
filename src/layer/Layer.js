@@ -34,6 +34,31 @@ class Layer extends mix(Style) {
   }
 
   /**
+   * 通过layerName获取专题图层
+   * @param layerName
+   * @returns {*}
+   */
+  getTitleLayerByLayerName (layerName) {
+    try {
+      let targetLayer = null
+      if (this.map) {
+        let layers = this.map.getLayers().getArray()
+        layers.every(layer => {
+          if (layer.get('layerType') === 'title' && layer.get('layerName') === layerName) {
+            targetLayer = layer
+            return false
+          } else {
+            return true
+          }
+        })
+      }
+      return targetLayer
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  /**
    * 根据图层名获取底图
    * @param layerName
    * @returns {*}
@@ -215,6 +240,10 @@ class Layer extends mix(Style) {
     if (this.map) {
       let serviceUrl = params['serviceUrl']
       if (!serviceUrl) return null
+      let ooLayer = this.getTitleLayerByLayerName(layerName)
+      if (ooLayer && ooLayer instanceof ol.layer.Tile) {
+        this.map.removeLayer(ooLayer)
+      }
       titleLayer = new ol.layer.Tile({
         layerName: layerName,
         layerType: 'title',
@@ -240,6 +269,33 @@ class Layer extends mix(Style) {
       if (layer && layer instanceof ol.layer.Vector && layer.getSource() && layer.getSource().clear) {
         layer.getSource().clear()
       }
+    }
+  }
+
+  /**
+   * 通过layerName移除专题图层
+   * @param layerName
+   */
+  removeTileLayerByLayerName (layerName) {
+    if (this.map) {
+      let layer = this.getTitleLayerByLayerName(layerName)
+      if (layer && layer instanceof ol.layer.Tile) {
+        this.map.removeLayer(layer)
+      }
+    }
+  }
+
+  /**
+   * 移除所有图层（除底图）
+   */
+  removeAllLayer () {
+    if (this.map) {
+      let layers = this.map.getLayers().getArray()
+      layers.forEach(layer => {
+        if (!layer.get('isBaseLayer')) {
+          this.map.removeLayer(layer)
+        }
+      })
     }
   }
 }

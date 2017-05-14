@@ -1,5 +1,5 @@
 import { ol } from '../constants'
-import app from './appDrag'
+import appDrag from '../event/appDrag'
 class Interactions {
   _addInteractions (params) {
     let options = params || {}
@@ -15,7 +15,7 @@ class Interactions {
       pinchZoom: ((options['pinchZoom'] === false) ? options['pinchZoom'] : true),
       zoomDelta: ((options['zoomDelta'] && (typeof (options['zoomDelta'])) === 'number') ? options['zoomDelta'] : 1), // 缩放增量（默认一级）
       zoomDuration: (options['zoomDuration'] && (typeof (options['zoomDelta'])) === 'number') ? options['zoomDuration'] : 300 // 缩放持续时间
-    }).extend([new app.Drag()])
+    }).extend([new appDrag()])
   }
 }
 

@@ -82,7 +82,7 @@
           t3 = 0
         }
         t3 = t3 > 15 ? 15 : t3
-        let [ra, du] = [(Math.random() * (t2 - t1) + t1), (Math.pow(10, t3))]
+        var ra = (Math.random() * (t2 - t1) + t1), du = (Math.pow(10, t3));
         ra = (Math.round(ra * du) / du)
         return ra
       }

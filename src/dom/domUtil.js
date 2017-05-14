@@ -17,6 +17,13 @@ export const getChildByTagName = (str, container) => {
   return container.getElementsByTagName(str)
 }
 
+/**
+ * 通过类名获取元素
+ * @param str
+ * @param container
+ * @param root
+ * @returns {HTMLElement}
+ */
 export const getElementsByClassName = (str, container, root) => {
   let _root = root || window
   let $ = _root.document.querySelector.bind(_root.document)
