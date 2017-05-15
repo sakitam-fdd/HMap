@@ -3,7 +3,7 @@
  * @desc 原作者 Wandergis <https://github.com/wandergis/coordtransform>
  * 在此基础上添加优化和处理，并改写为es6
  */
-import { PI, X_PI, a, ee } from '../constants'
+import {PI, X_PI, a, ee} from '../constants'
 class CoordsTransform {
   /**
    * 转换纬度
@@ -120,6 +120,33 @@ class CoordsTransform {
     let ggLng = z * Math.cos(theta)
     let ggLat = z * Math.sin(theta)
     return [ggLng, ggLat]
+  }
+
+  /**
+   * 经纬度转Mercator
+   * @param lontitude
+   * @param latitude
+   * @returns {[*,*]}
+   */
+  lonLatToMercator (lontitude, latitude) {
+    let x = lontitude * 20037508.34 / 180
+    let y = Math.log(Math.tan((90 + latitude) * Math.PI / 360)) / (Math.PI / 180)
+    y = y * 20037508.34 / 180
+    return [x, y]
+  }
+
+  /**
+   * Mercator转经纬度
+   * @param x
+   * @param y
+   * @returns {[*,*]}
+   * @constructor
+   */
+  MercatorTolonLat (x, y) {
+    let longtitude = x / 20037508.34 * 180
+    let latitude = y / 20037508.34 * 180
+    latitude = 180 / Math.PI * (2 * Math.atan(Math.exp(latitude * Math.PI / 180)) - Math.PI / 2)
+    return [longtitude, latitude]
   }
 }
 
