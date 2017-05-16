@@ -1,5 +1,6 @@
 import { ol } from '../constants'
 import { DomUtil } from '../dom'
+import { trim } from '../utils/utils'
 import Feature from '../feature/feature'
 import mix from '../utils/mixin'
 class Overlay extends mix(Feature) {
@@ -221,7 +222,7 @@ class Overlay extends mix(Feature) {
   removeOverlayById (id) {
     try {
       if (this.map && id) {
-        let _id = DomUtil.trim(id)
+        let _id = trim(id)
         let overLay = this.map.getOverlayById(_id)
         if (overLay && overLay instanceof ol.Overlay) {
           this.map.removeOverlay(overLay)
@@ -314,7 +315,7 @@ class Overlay extends mix(Feature) {
       iconElement.style.color = iconElement.selectColor
       DomUtil.addClass(overlayElement, 'overlay-point-marker-raise')
       return overlay
-    } else if (id && DomUtil.trim(id) !== "''") {
+    } else if (id && trim(id) !== "''") {
       let _overlay = this.map.getOverlayById(id)
       let _overlayElement = _overlay.getElement()
       let _iconElement = _overlayElement.getElementsByTagName('div')[0]
@@ -338,7 +339,7 @@ class Overlay extends mix(Feature) {
       iconElement.style.color = iconElement.normalColor
       DomUtil.removeClass(overlayElement, 'overlay-point-marker-raise')
       return overlay
-    } else if (id && DomUtil.trim(id) !== "''") {
+    } else if (id && trim(id) !== "''") {
       let _overlay = this.map.getOverlayById(id)
       let _overlayElement = _overlay.getElement()
       let _iconElement = _overlayElement.getElementsByTagName('div')[0]
@@ -354,7 +355,7 @@ class Overlay extends mix(Feature) {
    * @returns {ol.Overlay}
    */
   getOverLayById (id) {
-    let _id = DomUtil.trim(id)
+    let _id = trim(id)
     let overLay = this.map.getOverlayById(_id)
     return overLay
   }

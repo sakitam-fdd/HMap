@@ -12,12 +12,14 @@ import MeasureTool from './plugins/MeasureTool'
 import LayerSpyglass from './interaction/LayerSpyglass'
 import MisplacesGlass from './interaction/MisplacesGlass'
 import GeomCoder from './plugins/GeomCoder'
+import Plot from './plot/index'
 import * as utils from './utils/utils'
 
 HMap.ol = ol
 HMap.proj4 = proj4
 HMap.Map = Map
 HMap.Utils = utils
+HMap.Plot = Plot
 HMap.Layer = Layer
 HMap.Feature = Feature
 HMap.CoordsTransform = CoordsTransform

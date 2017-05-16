@@ -1,3 +1,5 @@
+import { splitWords, stamp } from '../utils/utils'
+
 /**
  * 通过id获取dom
  * @param id
@@ -110,6 +112,12 @@ export const toBack = (el) => {
   parent.insertBefore(el, parent.firstChild)
 }
 
+/**
+ * 判断DOM对象是否有此类名
+ * @param el
+ * @param name
+ * @returns {boolean}
+ */
 export const hasClass = (el, name) => {
   if (el.classList !== undefined) {
     return el.classList.contains(name)
@@ -160,20 +168,63 @@ export const setClass = (el, name) => {
     el.className.baseVal = name
   }
 }
+
 /**
- * 去除字符串前后空格
- * @param str
- * @returns {*}
+ * 获取事件唯一标识
+ * @param type
+ * @param fn
+ * @param context
+ * @returns {string}
  */
-export const trim = (str) => {
-  return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g, '')
+export const getDomEventKey = (type, fn, context) => {
+  return '_p_dom_event_' + type + '_' + stamp(fn) + (context ? '_' + stamp(context) : '')
 }
 
 /**
- * 将类名截取成数组
- * @param str
- * @returns {Array|*}
+ * 对DOM对象添加事件监听
+ * @param element
+ * @param type
+ * @param fn
+ * @param context
+ * @returns {*}
  */
-export const splitWords = (str) => {
-  return trim(str).split(/\s+/)
+export const addListener = function (element, type, fn, context) {
+  let eventKey = getDomEventKey(type, fn, context)
+  let handler = element[eventKey]
+  if (handler) {
+    return this
+  }
+  handler = function (e) {
+    return fn.call(context || element, e)
+  }
+  if ('addEventListener' in element) {
+    element.addEventListener(type, handler, false)
+  } else if ('attachEvent' in element) {
+    element.attachEvent('on' + type, handler)
+  }
+  element[eventKey] = handler
+  return this
+}
+
+/**
+ * 移除DOM对象监听事件
+ * @param element
+ * @param type
+ * @param fn
+ * @param context
+ * @returns {removeListener}
+ */
+export const removeListener = function (element, type, fn, context) {
+  let eventKey = getDomEventKey(type, fn, context)
+  let handler = element[eventKey]
+  if (!handler) {
+    return this
+  }
+  if ('removeEventListener' in element) {
+    element.removeEventListener(type, handler, false)
+  } else if ('detachEvent' in element) {
+    element.detachEvent('on' + type, handler)
+  }
+  element[eventKey] = null
+  return this
 }
