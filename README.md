@@ -8,7 +8,9 @@
 ## 浏览器支持
 
 <p align="center">
-  <a href="https://github.com/sakitam-fdd/HMap/raw/master/asset/brow.png" alt="Sauce Test Status"></a>
+  <a href="" alt="Sauce Test Status">
+    <img src="https://github.com/sakitam-fdd/HMap/raw/master/asset/brow.png"/> 
+  </a>
 </p>
 
 ---

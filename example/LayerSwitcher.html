@@ -56,6 +56,11 @@
       {
         layerName: 'vector', // 图层名，必传
         isDefault: true, // 是否是默认图层
+        attribution: {
+          url: 'https://aurorafe.github.io',
+          title: '恒达时讯',
+          messages: '版权所有'
+        },
         layerType: 'TileXYZ', // 图层类型（arcgis加载的为TileXYZ）
         layerUrl: 'http://171.34.40.68:6080/arcgis/rest/services/JXMAP_2016_2/MapServer',
       },
@@ -63,6 +68,11 @@
         layerName: 'earth',
         layerType: 'TitleWMTS',
         layer: 'img',
+        attribution: {
+          url: 'https://aurorafe.github.io',
+          title: '恒达时讯',
+          messages: '版权所有'
+        },
         isDefault: false,
         layerUrl: 'http://t{0-6}.tianditu.cn/img_c/wmts',
         label: { // 对应的标注层
@@ -78,6 +88,11 @@
         layerName: 'panorama',
         layerType: 'TitleWMTS',
         layer: 'ter',
+        attribution: {
+          url: 'https://aurorafe.github.io',
+          title: '恒达时讯',
+          messages: '版权所有'
+        },
         isDefault: false,
         layerUrl: 'http://t{0-6}.tianditu.com/ter_c/wmts',
         label: {

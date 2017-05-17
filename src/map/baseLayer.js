@@ -137,6 +137,7 @@ class BaseLayers {
     let tileArcGISXYZ = new ol.source.XYZ({
       wrapX: false,
       tileGrid: tileGrid,
+      attributions: (this._getAttribution(config['attribution'])),
       tileSize: this.tileSize,
       opaque: (config['opaque'] === true) ? config['opaque'] : false, // 图层是否不透明（主题相关）
       tilePixelRatio: 1, // todo 对于高分辨率设备，例如苹果等可能2、3（移动端开发需要注意）
@@ -175,6 +176,7 @@ class BaseLayers {
       visible: (config['isDefault'] === true) ? config['isDefault'] : false,
       layerName: config['layerName'] ? config.layerName : '',
       source: new ol.source.OSM({
+        attributions: (this._getAttribution(config['attribution'])),
         wrapX: false,
         opaque: (config['opaque'] === true) ? config['opaque'] : false, // 图层是否不透明（主题相关）
         url: config['layerUrl'] ? config['layerUrl'] : 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -211,6 +213,7 @@ class BaseLayers {
         matrixSet: 'c',
         format: 'tiles',
         crossOrigin: 'Anonymous',
+        attributions: (this._getAttribution(config['attribution'])),
         projection: projection,
         tileGrid: new ol.tilegrid.WMTS({
           origin: ol.extent.getTopLeft(projection.getExtent()),
@@ -222,6 +225,24 @@ class BaseLayers {
       })
     })
     return layer
+  }
+
+  /**
+   * 获取版权信息
+   * @returns {Xr.Attribution|Jr.Attribution|Wr.Attribution|*|ol.Attribution|ol.control.Attribution}
+   * @private
+   */
+  _getAttribution (params) {
+    if (!params) {
+      params = {}
+      params['url'] = 'https://aurorafe.github.io'
+      params['messages'] = 'contributors.'
+      params['title'] = 'HMap'
+    }
+    let attribution = new ol.Attribution({
+      html: '&copy; ' + '<a href="' + params['url'] + '">' + params['title'] + '</a> ' + params['messages']
+    })
+    return attribution
   }
 }
 
