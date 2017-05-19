@@ -3,7 +3,8 @@
  * @desc 基于openlayer的动态标绘
  */
 import { ol } from '../constants'
-
+import PlotDraw from './Event/PlotDraw'
+import PlotEdit from './Event/PlotEdit'
 class Plot {
   constructor (map) {
     this.version = '1.0.0'
@@ -173,5 +174,6 @@ class Plot {
 
   generate () {}
 }
-
+Plot.PlotEdit = PlotEdit
+Plot.PlotDraw = PlotDraw
 export default Plot

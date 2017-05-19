@@ -63,11 +63,15 @@ export const getStyle = (el, style) => {
  * @param tagName (标签名)
  * @param className (类名)
  * @param container (容器)
+ * @param id (唯一标识)
  * @returns {Element}
  */
-export const create = (tagName, className, container) => {
+export const create = (tagName, className, container, id) => {
   let el = document.createElement(tagName)
   el.className = className || ''
+  if (id) {
+    el.id = id
+  }
   if (container) {
     container.appendChild(el)
   }
@@ -167,6 +171,25 @@ export const setClass = (el, name) => {
   } else {
     el.className.baseVal = name
   }
+}
+
+/**
+ * 创建一个隐藏的元素
+ * @param tagName
+ * @param parent
+ * @param id
+ * @returns {Element}
+ */
+export const createHidden = (tagName, parent, id) => {
+  let element = document.createElement(tagName)
+  element.style.display = 'none'
+  if (id) {
+    element.id = id
+  }
+  if (parent) {
+    parent.appendChild(element)
+  }
+  return element
 }
 
 /**

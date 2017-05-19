@@ -1,4 +1,6 @@
 import { ol } from '../../constants'
+import EditEvent from './EditEvent'
+import { DomUtil } from '../../dom'
 const Observable = ol.Observable
 class PlotEdit extends Observable {
   constructor (map) {
@@ -55,144 +57,212 @@ class PlotEdit extends Observable {
     this.mapDragPan = null
   }
 
+  /**
+   * 初始化提示DOM
+   * @returns {boolean}
+   */
   initHelperDom () {
     if (!this.map || !this.activePlot) {
       return false
     }
-    var parent = this.getMapParentElement()
+    let parent = this.getMapParentElement()
     if (!parent) {
       return false
-    }
-    var hiddenDiv = P.DomUtils.createHidden('div', parent, this.Constants.HELPER_HIDDEN_DIV)
-    var cPnts = this.getControlPoints()
-    for (var i = 0; i < cPnts.length; i++) {
-      var id = this.Constants.HELPER_CONTROL_POINT_DIV + '-' + i
-      // P.DomUtils.create('div', this.Constants.HELPER_CONTROL_POINT_DIV, hiddenDiv, id)
-      this.elementTable[id] = i
+    } else {
+      let hiddenDiv = DomUtil.createHidden('div', parent, 'plot-helper-hidden-div')
+      let cPnts = this.getControlPoints()
+      if (cPnts && Array.isArray(cPnts) && cPnts.length > 0) {
+        cPnts.forEach((item, index) => {
+          let id = 'plot-helper-control-point-div' + '-' + index
+          DomUtil.create('div', 'plot-helper-control-point-div', hiddenDiv, id)
+          this.elementTable[id] = index
+        })
+      }
     }
   }
 
+  /**
+   * 获取地图元素的父元素
+   * @returns {*}
+   */
   getMapParentElement () {
-    var mapElement = this.map.getTargetElement()
+    let mapElement = this.map.getTargetElement()
     if (!mapElement) {
       return false
+    } else {
+      return mapElement.parentNode
     }
-    return mapElement.parentNode
   }
 
+  /**
+   * 销毁帮助提示DOM
+   */
   destroyHelperDom () {
-    if (this.controlPoints) {
-      for (var i = 0; i < this.controlPoints.length; i++) {
-        this.map.removeOverlay(this.controlPoints[i])
-        var element = P.DomUtils.get(this.Constants.HELPER_CONTROL_POINT_DIV + '-' + i)
-        if (element) {
-          P.DomUtils.removeListener(element, 'mousedown', this.controlPointMouseDownHandler, this)
-          P.DomUtils.removeListener(element, 'mousemove', this.controlPointMouseMoveHandler2, this)
+    if (this.controlPoints && Array.isArray(this.controlPoints) && this.controlPoints.length > 0) {
+      this.controlPoints.forEach((item, index) => {
+        if (item && item instanceof ol.Overlay) {
+          this.map.removeOverlay(item)
         }
-      }
-      this.controlPoints = null
-    }
-    var parent = this.getMapParentElement()
-    var hiddenDiv = P.DomUtils.get(this.Constants.HELPER_HIDDEN_DIV)
-    if (hiddenDiv && parent) {
-      P.DomUtils.remove(hiddenDiv, parent)
-    }
-  }
-
-  initControlPoints () {
-    if (!this.map) {
-      return false
-    }
-    this.controlPoints = []
-    var cPnts = this.getControlPoints()
-    for (var i = 0; i < cPnts.length; i++) {
-      var id = this.Constants.HELPER_CONTROL_POINT_DIV + '-' + i
-      var element = ''
-      var pnt = new ol.Overlay({
-        id: id,
-        position: cPnts[i],
-        positioning: 'center-center',
-        element: element
+        let element = DomUtil.get('plot-helper-control-point-div' + '-' + index)
+        if (element) {
+          DomUtil.removeListener(element, 'mousedown', this.controlPointMouseDownHandler, this)
+          DomUtil.removeListener(element, 'mousemove', this.controlPointMouseMoveHandler2, this)
+        }
       })
-      this.controlPoints.push(pnt)
-      this.map.addOverlay(pnt)
-      // P.DomUtils.addListener(element, 'mousedown', this.controlPointMouseDownHandler, this)
-      // P.DomUtils.addListener(element, 'mousemove', this.controlPointMouseMoveHandler2, this)
+      this.controlPoints = []
+    }
+    let parent = this.getMapParentElement()
+    let hiddenDiv = DomUtil.get('plot-helper-hidden-div')
+    if (hiddenDiv && parent) {
+      DomUtil.remove(hiddenDiv, parent)
     }
   }
 
+  /**
+   * 初始化要素控制点
+   */
+  initControlPoints () {
+    this.controlPoints = []
+    let cPnts = this.getControlPoints()
+    if (cPnts && Array.isArray(cPnts) && cPnts.length > 0) {
+      cPnts.forEach((item, index) => {
+        let id = 'plot-helper-control-point-div' + '-' + index
+        this.elementTable[id] = index
+        let element = ''
+        let pnt = new ol.Overlay({
+          id: id,
+          position: cPnts[index],
+          positioning: 'center-center',
+          element: element
+        })
+        this.controlPoints.push(pnt)
+        this.map.addOverlay(pnt)
+        DomUtil.addListener(element, 'mousedown', this.controlPointMouseDownHandler, this)
+        DomUtil.addListener(element, 'mousemove', this.controlPointMouseMoveHandler2, this)
+      })
+    }
+  }
+
+  /**
+   * 对控制点的移动事件
+   * @param e
+   */
   controlPointMouseMoveHandler2 (e) {
     e.stopImmediatePropagation()
   }
 
+  /**
+   * 对控制点的鼠标按下事件
+   * @param e
+   */
   controlPointMouseDownHandler (e) {
-    var id = e.target.id
+    let id = e.target.id
     this.activeControlPointId = id
-    // ol.events.listen(this.mapViewport, P.Event.EventType.MOUSEMOVE, this.controlPointMouseMoveHandler, false, this)
-    // ol.events.listen(this.mapViewport, P.Event.EventType.MOUSEUP, this.controlPointMouseUpHandler, false, this)
+    ol.events.listen(this.mapViewport, ol.events.EventType.MOUSEMOVE, this.controlPointMouseMoveHandler, this, false)
+    ol.events.listen(this.mapViewport, ol.events.EventType.MOUSEUP, this.controlPointMouseUpHandler, this, false)
   }
 
+  /**
+   * 对控制点的移动事件
+   * @param e
+   */
   controlPointMouseMoveHandler (e) {
-    var coordinate = this.map.getCoordinateFromPixel([e.offsetX, e.offsetY])
+    let coordinate = this.map.getCoordinateFromPixel([e.offsetX, e.offsetY])
     if (this.activeControlPointId) {
-      var plot = this.activePlot.getGeometry()
-      var index = this.elementTable[this.activeControlPointId]
+      let plot = this.activePlot.getGeometry()
+      let index = this.elementTable[this.activeControlPointId]
       plot.updatePoint(coordinate, index)
-      var overlay = this.map.getOverlayById(this.activeControlPointId)
+      let overlay = this.map.getOverlayById(this.activeControlPointId)
       overlay.setPosition(coordinate)
     }
   }
 
+  /**
+   * 对控制点的鼠标抬起事件
+   * @param e
+   */
   controlPointMouseUpHandler (e) {
-    // ol.events.unlisten(this.mapViewport, P.Event.EventType.MOUSEMOVE, this.controlPointMouseMoveHandler, this)
-    // ol.events.unlisten(this.mapViewport, P.Event.EventType.MOUSEUP, this.controlPointMouseUpHandler, this)
+    ol.events.unlisten(this.mapViewport, ol.events.EventType.MOUSEMOVE, this.controlPointMouseMoveHandler, this)
+    ol.events.unlisten(this.mapViewport, ol.events.EventType.MOUSEUP, this.controlPointMouseUpHandler, this)
   }
 
+  /**
+   * 激活工具
+   * @param plot
+   * @returns {boolean}
+   */
   activate (plot) {
-    if (!plot || !(plot instanceof ol.Feature) || plot === this.activePlot) {
-      return false
+    try {
+      if (!plot || !(plot instanceof ol.Feature) || plot === this.activePlot) {
+        return false
+      } else {
+        let geom = plot.getGeometry()
+        if (!geom.isPlot()) {
+          return false
+        } else {
+          this.deactivate()
+          this.activePlot = plot
+          window.setTimeout(() => {
+            this.dispatchEvent(new EditEvent(EditEvent.ACTIVE_PLOT_CHANGE, this.activePlot))
+          }, 500)
+          this.map.on('pointermove', this.plotMouseOverOutHandler, this)
+          this.initHelperDom()
+          this.initControlPoints()
+        }
+      }
+    } catch (e) {
+      console.log(e)
     }
-    var geom = plot.getGeometry()
-    if (!geom.isPlot()) {
-      return
-    }
-    this.deactivate()
-    this.activePlot = plot
-    setTimeout(function () {
-      // self.dispatchEvent(new P.Event.PlotEditEvent(P.Event.PlotEditEvent.ACTIVE_PLOT_CHANGE, self.activePlot))
-    }, 500)
-    this.map.on('pointermove', this.plotMouseOverOutHandler, this)
-    this.initHelperDom()
-    this.initControlPoints()
   }
 
+  /**
+   * 获取要素的控制点
+   * @returns {Array}
+   */
   getControlPoints () {
-    if (!this.activePlot) {
-      return []
+    let points = []
+    if (this.activePlot) {
+      let geom = this.activePlot.getGeometry()
+      if (geom) {
+        points = geom.getPoints()
+      }
     }
-    var geom = this.activePlot.getGeometry()
-    return geom.getPoints()
+    return points
   }
 
+  /**
+   * 鼠标移出要编辑的要素范围
+   * @param e
+   * @returns {T|undefined}
+   */
   plotMouseOverOutHandler (e) {
-    var feature = this.map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
+    try {
+      let feature = this.map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
+        return feature
+      })
+      if (feature && feature === this.activePlot) {
+        if (!this.mouseOver) {
+          this.mouseOver = true
+          this.map.getViewport().style.cursor = 'move'
+          this.map.on('pointerdown', this.plotMouseDownHandler, this)
+        }
+      } else {
+        if (this.mouseOver) {
+          this.mouseOver = false
+          this.map.getViewport().style.cursor = 'default'
+          this.map.un('pointerdown', this.plotMouseDownHandler, this)
+        }
+      }
       return feature
-    })
-    if (feature && feature === this.activePlot) {
-      if (!this.mouseOver) {
-        this.mouseOver = true
-        this.map.getViewport().style.cursor = 'move'
-        this.map.on('pointerdown', this.plotMouseDownHandler, this)
-      }
-    } else {
-      if (this.mouseOver) {
-        this.mouseOver = false
-        this.map.getViewport().style.cursor = 'default'
-        this.map.un('pointerdown', this.plotMouseDownHandler, this)
-      }
+    } catch (e) {
+      console.log(e)
     }
   }
 
+  /**
+   * 在要编辑的要素按下鼠标按键
+   * @param e
+   */
   plotMouseDownHandler (e) {
     this.ghostControlPoints = this.getControlPoints()
     this.startPoint = e.coordinate
@@ -201,41 +271,56 @@ class PlotEdit extends Observable {
     this.map.on('pointerdrag', this.plotMouseMoveHandler, this)
   }
 
+  /**
+   * 在要编辑的要素上移动鼠标
+   * @param e
+   */
   plotMouseMoveHandler (e) {
-    var point = e.coordinate
-    var dx = point[0] - this.startPoint[0]
-    var dy = point[1] - this.startPoint[1]
-    var newPoints = []
-    for (var i = 0; i < this.ghostControlPoints.length; i++) {
-      var p = this.ghostControlPoints[i]
-      var coordinate = [p[0] + dx, p[1] + dy]
-      newPoints.push(coordinate)
-      var id = this.Constants.HELPER_CONTROL_POINT_DIV + '-' + i
-      var overlay = this.map.getOverlayById(id)
-      overlay.setPosition(coordinate)
-      overlay.setPositioning('center-center')
+    try {
+      let [point, dx, dy, newPoints] = [e.coordinate, (point[0] - this.startPoint[0]), (point[1] - this.startPoint[1]), []]
+      if (this.ghostControlPoints && Array.isArray(this.ghostControlPoints) && this.ghostControlPoints.length > 0) {
+        this.ghostControlPoints.forEach((item, index) => {
+          let p = this.ghostControlPoints[index]
+          let coordinate = [p[0] + dx, p[1] + dy]
+          newPoints.push(coordinate)
+          let id = 'p-helper-control-point-div' + '-' + index
+          let overlay = this.map.getOverlayById(id)
+          overlay.setPosition(coordinate)
+          overlay.setPositioning('center-center')
+        })
+      }
+      let plot = this.activePlot.getGeometry()
+      plot.setPoints(newPoints)
+    } catch (e) {
+      console.log(e)
     }
-    var plot = this.activePlot.getGeometry()
-    plot.setPoints(newPoints)
   }
 
+  /**
+   * 鼠标抬起事件
+   * @param e
+   */
   plotMouseUpHandler (e) {
     this.enableMapDragPan()
     this.map.un('pointerup', this.plotMouseUpHandler, this)
     this.map.un('pointerdrag', this.plotMouseMoveHandler, this)
   }
 
+  /**
+   * 取消事件关联
+   */
   disconnectEventHandlers () {
     this.map.un('pointermove', this.plotMouseOverOutHandler, this)
-    ol.events.unlisten(this.mapViewport, '',
-      this.controlPointMouseMoveHandler, this)
-    ol.events.unlisten(this.mapViewport, '',
-      this.controlPointMouseUpHandler, this)
+    ol.events.unlisten(this.mapViewport, ol.events.EventType, this.controlPointMouseMoveHandler, this)
+    ol.events.unlisten(this.mapViewport, ol.events.EventType.MOUSEUP, this.controlPointMouseUpHandler, this)
     this.map.un('pointerdown', this.plotMouseDownHandler, this)
     this.map.un('pointerup', this.plotMouseUpHandler, this)
     this.map.un('pointerdrag', this.plotMouseMoveHandler, this)
   }
 
+  /**
+   * 取消激活工具
+   */
   deactivate () {
     this.activePlot = null
     this.mouseOver = false
@@ -246,22 +331,30 @@ class PlotEdit extends Observable {
     this.startPoint = null
   }
 
+  /**
+   * 禁止地图的拖拽平移
+   */
   disableMapDragPan () {
-    var interactions = this.map.getInteractions()
-    var length = interactions.getLength()
-    for (var i = 0; i < length; i++) {
-      var item = interactions.item(i)
+    let interactions = this.map.getInteractions().getArray()
+    interactions.every(item => {
       if (item instanceof ol.interaction.DragPan) {
         this.mapDragPan = item
         item.setActive(false)
-        break
+        this.map.removeInteraction(item)
+        return false
+      } else {
+        return true
       }
-    }
+    })
   }
 
+  /**
+   * 激活地图的拖拽平移
+   */
   enableMapDragPan () {
-    if (this.mapDragPan !== null) {
+    if (this.mapDragPan && this.mapDragPan instanceof ol.interaction.DragPan) {
       this.mapDragPan.setActive(true)
+      this.map.addInteraction(this.mapDragPan)
       this.mapDragPan = null
     }
   }
