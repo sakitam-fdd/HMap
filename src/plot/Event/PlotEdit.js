@@ -1,6 +1,8 @@
 import { ol } from '../../constants'
-import EditEvent from './EditEvent'
+// import EditEvent from './EditEvent'
+import EventType from './EventType'
 import { DomUtil } from '../../dom'
+import * as Events from '../../event/Events'
 const Observable = ol.Observable
 class PlotEdit extends Observable {
   constructor (map) {
@@ -158,8 +160,8 @@ class PlotEdit extends Observable {
   controlPointMouseDownHandler (e) {
     let id = e.target.id
     this.activeControlPointId = id
-    ol.events.listen(this.mapViewport, ol.events.EventType.MOUSEMOVE, this.controlPointMouseMoveHandler, this, false)
-    ol.events.listen(this.mapViewport, ol.events.EventType.MOUSEUP, this.controlPointMouseUpHandler, this, false)
+    Events.listen(this.mapViewport, EventType.MOUSEMOVE, this.controlPointMouseMoveHandler, this, false)
+    Events.listen(this.mapViewport, EventType.MOUSEUP, this.controlPointMouseUpHandler, this, false)
   }
 
   /**
@@ -182,8 +184,8 @@ class PlotEdit extends Observable {
    * @param e
    */
   controlPointMouseUpHandler (e) {
-    ol.events.unlisten(this.mapViewport, ol.events.EventType.MOUSEMOVE, this.controlPointMouseMoveHandler, this)
-    ol.events.unlisten(this.mapViewport, ol.events.EventType.MOUSEUP, this.controlPointMouseUpHandler, this)
+    Events.unlisten(this.mapViewport, EventType.MOUSEMOVE, this.controlPointMouseMoveHandler, this)
+    Events.unlisten(this.mapViewport, EventType.MOUSEUP, this.controlPointMouseUpHandler, this)
   }
 
   /**
@@ -203,7 +205,7 @@ class PlotEdit extends Observable {
           this.deactivate()
           this.activePlot = plot
           window.setTimeout(() => {
-            this.dispatchEvent(new EditEvent(EditEvent.ACTIVE_PLOT_CHANGE, this.activePlot))
+            // this.dispatchEvent(new EditEvent(EditEvent.ACTIVE_PLOT_CHANGE, this.activePlot))
           }, 500)
           this.map.on('pointermove', this.plotMouseOverOutHandler, this)
           this.initHelperDom()
@@ -311,8 +313,8 @@ class PlotEdit extends Observable {
    */
   disconnectEventHandlers () {
     this.map.un('pointermove', this.plotMouseOverOutHandler, this)
-    ol.events.unlisten(this.mapViewport, ol.events.EventType, this.controlPointMouseMoveHandler, this)
-    ol.events.unlisten(this.mapViewport, ol.events.EventType.MOUSEUP, this.controlPointMouseUpHandler, this)
+    Events.unlisten(this.mapViewport, EventType.MOUSEMOVE, this.controlPointMouseMoveHandler, this)
+    Events.unlisten(this.mapViewport, EventType.MOUSEUP, this.controlPointMouseUpHandler, this)
     this.map.un('pointerdown', this.plotMouseDownHandler, this)
     this.map.un('pointerup', this.plotMouseUpHandler, this)
     this.map.un('pointerdrag', this.plotMouseMoveHandler, this)

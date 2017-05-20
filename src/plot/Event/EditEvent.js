@@ -2,6 +2,8 @@
  * Created by FDD on 2017/5/18.
  */
 import { ol } from '../../constants'
+import goog from 'google-closure-library'
+console.log(goog)
 const Event = ol.events.Event
 class EditEvent extends Event {
   constructor (type, feature) {

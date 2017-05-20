@@ -66,16 +66,16 @@
     ]
   });
 
-//  // 初始化标绘绘制工具，添加绘制结束事件响应
-//  var plotDraw = new HMap.PlotDraw(Maps.map);
-//  // 初始化标绘编辑工具
-//  var plotEdit = new HMap.PlotEdit(Maps.map);
-//
-//  // 指定标绘类型，开始绘制。
-//  function activate(type) {
-//    plotEdit.deactivate();
-//    plotDraw.activate(type);
-//  }
+  // 初始化标绘绘制工具，添加绘制结束事件响应
+  var plotDraw = new HMap.PlotDraw(Maps.map);
+  // 初始化标绘编辑工具
+  var plotEdit = new HMap.PlotEdit(Maps.map);
+
+  // 指定标绘类型，开始绘制。
+  function activate(type) {
+    plotEdit.deactivate();
+    plotDraw.active('polyline');
+  }
 </script>
 </body>
 </html>

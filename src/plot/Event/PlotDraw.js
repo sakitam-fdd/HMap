@@ -5,8 +5,12 @@
 
 import { ol } from '../../constants'
 import { MathDistance } from '../Utils/utils'
+import EventType from './EventType'
+import * as Events from '../../event/Events'
+import mix from '../../utils/mixin'
+import Plot from '../index'
 const Observable = ol.Observable
-class PlotDraw extends Observable {
+class PlotDraw extends mix(Observable, Plot) {
   constructor (map) {
     super()
     if (map && map instanceof ol.Map) {
@@ -117,13 +121,12 @@ class PlotDraw extends Observable {
     this.points.push(event.coordinate)
     this.plot = this.createPlot(this.plotType, this.points, this.plotParams)
     this.plot.setMap(this.map)
-
     this.map.un('click', this.mapFirstClickHandler, this)
     this.map.on('click', this.mapNextClickHandler, this)
     if (!this.plot.freehand) {
       this.map.on('dblclick', this.mapDoubleClickHandler, this)
     }
-    ol.events.listen(this.mapViewport, 'mousemove', this.mapMouseMoveHandler, false, this)
+    Events.listen(this.mapViewport, EventType.MOUSEMOVE, this.mapMouseMoveHandler, false, this)
   }
 
   /**
@@ -183,7 +186,7 @@ class PlotDraw extends Observable {
   removeEventHandlers () {
     this.map.un('click', this.mapFirstClickHandler, this)
     this.map.un('click', this.mapNextClickHandler, this)
-    ol.events.unlisten(this.mapViewport, 'mousemove', this.mapMouseMoveHandler, this)
+    Events.unlisten(this.mapViewport, EventType.MOUSEMOVE, this.mapMouseMoveHandler, this)
     this.map.un('dblclick', this.mapDoubleClickHandler, this)
   }
 
@@ -240,7 +243,7 @@ class PlotDraw extends Observable {
    * 还原之前状态
    */
   activateMapTools () {
-    if (this.dblClickZoomInteraction && this.dblClickZoomInteraction instanceof ol.interaction.interactions) {
+    if (this.dblClickZoomInteraction && this.dblClickZoomInteraction instanceof ol.interaction.DoubleClickZoom) {
       this.map.addInteraction(this.dblClickZoomInteraction)
       this.dblClickZoomInteraction = null
     }
