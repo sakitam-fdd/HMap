@@ -27,6 +27,12 @@ class Plot {
     switch (type) {
       case PlotTypes.POLYLINE:
         return new Plots.Polyline(points, params)
+      case PlotTypes.ARC:
+        return new Plots.Arc(points, params)
+      case PlotTypes.CIRCLE:
+        return new Plots.Circle(points, params)
+      case PlotTypes.CURVE:
+        return new Plots.Curve(points, params)
     }
     return null
   }

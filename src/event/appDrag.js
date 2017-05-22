@@ -1,6 +1,5 @@
 import { ol } from '../constants'
-let Pointer = ol.interaction.Pointer
-class appDrag extends Pointer {
+class appDrag extends (ol.interaction.Pointer) {
   constructor () {
     super()
     ol.interaction.Pointer.call(this, {

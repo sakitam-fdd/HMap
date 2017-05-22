@@ -1,7 +1,7 @@
 /**
  * Created by FDD on 2017/5/20.
  */
-const EventType = {
+export default {
   /**
    * Generic change event. Triggered when the revision counter is increased.
    * @event ol.events.Event#change
@@ -29,5 +29,3 @@ const EventType = {
   TOUCHEND: 'touchend',
   WHEEL: 'wheel'
 }
-
-export default EventType

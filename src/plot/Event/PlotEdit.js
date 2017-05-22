@@ -1,5 +1,4 @@
 import { ol } from '../../constants'
-// import EditEvent from './EditEvent'
 import EventType from './EventType'
 import { DomUtil } from '../../dom'
 import * as Events from '../../event/Events'
@@ -130,7 +129,7 @@ class PlotEdit extends Observable {
       cPnts.forEach((item, index) => {
         let id = 'plot-helper-control-point-div' + '-' + index
         this.elementTable[id] = index
-        let element = ''
+        let element = DomUtil.get(id)
         let pnt = new ol.Overlay({
           id: id,
           position: cPnts[index],
@@ -139,6 +138,7 @@ class PlotEdit extends Observable {
         })
         this.controlPoints.push(pnt)
         this.map.addOverlay(pnt)
+        this.map.render()
         DomUtil.addListener(element, 'mousedown', this.controlPointMouseDownHandler, this)
         DomUtil.addListener(element, 'mousemove', this.controlPointMouseMoveHandler2, this)
       })
@@ -279,13 +279,14 @@ class PlotEdit extends Observable {
    */
   plotMouseMoveHandler (e) {
     try {
-      let [point, dx, dy, newPoints] = [e.coordinate, (point[0] - this.startPoint[0]), (point[1] - this.startPoint[1]), []]
+      let point = e.coordinate
+      let [dx, dy, newPoints] = [(point[0] - this.startPoint[0]), (point[1] - this.startPoint[1]), []]
       if (this.ghostControlPoints && Array.isArray(this.ghostControlPoints) && this.ghostControlPoints.length > 0) {
         this.ghostControlPoints.forEach((item, index) => {
           let p = this.ghostControlPoints[index]
           let coordinate = [p[0] + dx, p[1] + dy]
           newPoints.push(coordinate)
-          let id = 'p-helper-control-point-div' + '-' + index
+          let id = 'plot-helper-control-point-div' + '-' + index
           let overlay = this.map.getOverlayById(id)
           overlay.setPosition(coordinate)
           overlay.setPositioning('center-center')

@@ -1,10 +1,16 @@
+/**
+ * Created by FDD on 2017/5/22.
+ * @desc 标绘曲线算法
+ */
 import PlotTypes from '../../Utils/PlotTypes'
 import { ol } from '../../../constants'
-class Polyline extends (ol.geom.LineString) {
+import * as PlotUtils from '../../Utils/utils'
+class Curve extends (ol.geom.LineString) {
   constructor (points, params) {
     super()
     ol.geom.LineString.call(this, [])
-    this.type = PlotTypes.POLYLINE
+    this.type = PlotTypes.CURVE
+    this.t = 0.3
     this.set('params', params)
     this.setPoints(points)
   }
@@ -13,7 +19,12 @@ class Polyline extends (ol.geom.LineString) {
    * 执行动作
    */
   generate () {
-    this.setCoordinates(this.points)
+    if (this.getPointCount() === 2) {
+      this.setCoordinates(this.points)
+    } else {
+      let points = PlotUtils.getCurvePoints(this.t, this.points)
+      this.setCoordinates(points)
+    }
   }
 
   /**
@@ -98,4 +109,4 @@ class Polyline extends (ol.geom.LineString) {
   }
 }
 
-export default Polyline
+export default Curve
