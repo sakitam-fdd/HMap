@@ -1,7 +1,6 @@
 import {ol} from '../constants'
 class BaseLayers {
   addBaseLayers (params, view) {
-    debugger
     let options = params || []
     let _view = view || {}
     if (_view) {

@@ -8132,7 +8132,6 @@ var BaseLayers = function () {
   _createClass(BaseLayers, [{
     key: 'addBaseLayers',
     value: function addBaseLayers(params, view) {
-      debugger;
       var options = params || [];
       var _view = view || {};
       if (_view) {
