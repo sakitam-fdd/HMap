@@ -1,6 +1,7 @@
 import {ol} from '../constants'
 class BaseLayers {
   addBaseLayers (params, view) {
+    debugger
     let options = params || []
     let _view = view || {}
     if (_view) {
@@ -70,6 +71,9 @@ class BaseLayers {
               break
             case 'OSM':
               layer = this._getOSMLayer(config)
+              break
+            case 'ImageWMS':
+              layer = this._getWMSLayer(config)
               break
           }
           if (layer) layers.push(layer)
@@ -222,6 +226,38 @@ class BaseLayers {
         }),
         style: 'default',
         wrapX: false
+      })
+    })
+    return layer
+  }
+
+  /**
+   * WMS 方式加载
+   * @param config
+   * @private
+   */
+  _getWMSLayer (config) {
+    let layer = new ol.layer.Image({
+      isBaseLayer: true,
+      alias: config['alias'] ? config['alias'] : '',
+      isDefault: (config['isDefault'] === true) ? config['isDefault'] : false,
+      layerName: config['layerName'] ? config.layerName : '',
+      visible: (config['isDefault'] === true) ? config['isDefault'] : false,
+      opacity: (config['opacity'] && (typeof config['opacity'] === 'number')) ? config['opacity'] : 1,
+      source: new ol.source.ImageWMS({
+        url: config['layerUrl'],
+        params: {
+          LAYERS: config['layers'], // require
+          STYLES: config['style'] ? config['style'] : '',
+          VERSION: config['version'] ? config['version'] : '1.1.1',
+          WIDTH: config['width'] ? config['width'] : 500,
+          HEIGHT: config['height'] ? config['height'] : 700,
+          BBOX: config['bbox'], // require
+          SRS: config['projection'] ? config['projection'] : 'EPSG:4326',
+          REQUEST: 'GetMap',
+          TRANSPARENT: true,
+          SERVICE: 'WMS'
+        }
       })
     })
     return layer
