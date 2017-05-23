@@ -9,107 +9,34 @@
 <body>
 <div id="map"></div>
 <script>
-
-var cor = [
-  {
-    "level": 0,
-    "resolution": 0.010986328383069278,
-    "scale": 4617150
-  },
-  {
-    "level": 1,
-    "resolution": 0.005493164191534639,
-    "scale": 2308575
-  },
-  {
-    "level": 2,
-    "resolution": 0.0027465809060368165,
-    "scale": 1154287
-  },
-  {
-    "level": 3,
-    "resolution": 0.0013732916427489112,
-    "scale": 577144
-  },
-  {
-    "level": 4,
-    "resolution": 6.866458213744556E-4,
-    "scale": 288572
-  },
-  {
-    "level": 5,
-    "resolution": 3.433229106872278E-4,
-    "scale": 144286
-  },
-  {
-    "level": 6,
-    "resolution": 1.716614553436139E-4,
-    "scale": 72143
-  },
-  {
-    "level": 7,
-    "resolution": 8.582953794130404E-5,
-    "scale": 36071
-  },
-  {
-    "level": 8,
-    "resolution": 4.291595870115493E-5,
-    "scale": 18036
-  },
-  {
-    "level": 9,
-    "resolution": 2.1457979350577466E-5,
-    "scale": 9018
-  },
-  {
-    "level": 10,
-    "resolution": 1.0728989675288733E-5,
-    "scale": 4509
-  },
-  {
-    "level": 11,
-    "resolution": 5.363305107141452E-6,
-    "scale": 2254
-  },
-  {
-    "level": 12,
-    "resolution": 2.681652553570726E-6,
-    "scale": 1127
-  }
-];
-var resolutions = [];
-for (var i = 0; i < cor.length; i++) {
-  resolutions.push(cor[i].resolution);
-}
-
 var Maps = new HMap.Map();
 Maps.initMap('map', {
   view: {
     center: [115.92466595234826, 27.428038204473552],
     fullExtent: [109.72859368643232, 24.010266905347684, 121.13105988819079, 30.76693489432357],
-    tileSize: 256,
-    origin: [-400, 399.9999999999998],
-    enableRotation: true, // 是否允许旋转
     projection: 'EPSG:4326',
-//    resolutions: resolutions,
-    rotation: 0,
     zoom: 3, // resolution
-    zoomFactor: 2 // 用于约束分变率的缩放因子（高分辨率设备需要注意）
   },
   baseLayers: [  // 不传时默认加载OSM地图。
     {
-      layerName: 'ImageWMS',
+      layerName: 'TileWMS',
       isDefault: true,
-      layerType: 'ImageWMS',
+      layerType: 'TileWMS',
       opacity: 1, //图层不透明度
       layerUrl: 'http://211.101.37.234:8097/hdmapserver/jxdx/wms',
       layers: 'jxdx',
       styles: '',
-      version: '1.1.1',
-      width: '507',
-      height: '768',
+      tiled: true,
+      version: '1.3.0',
+      width: '256',
+      height: '256',
+      tiledsorrigin: '24.389814897017,113.23591752486',
       bbox: '110.54164929824,21.456465287642,121.33545918898,33.189863725142',
-      projection: 'EPSG:4326'
+      attribution: {
+        url: 'https://aurorafe.github.io',
+        title: '恒达时讯',
+        messages: '版权所有'
+      }
     }
   ]
 });
