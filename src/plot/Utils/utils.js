@@ -1,3 +1,4 @@
+import * as Constants from '../Constants'
 /**
  * 计算两个坐标之间的距离
  * @param pnt1
@@ -155,7 +156,10 @@ export const getPointOnLine = (t, startPnt, endPnt) => {
  */
 export const getCubicValue = (t, startPnt, cPnt1, cPnt2, endPnt) => {
   t = Math.max(Math.min(t, 1), 0)
-  let [tp, t2, t3, tp2, tp3] = [(1 - t), (t * t), (t2 * t), (tp * tp), (tp2 * tp)]
+  let [tp, t2] = [(1 - t), (t * t)]
+  let t3 = t2 * t
+  let tp2 = tp * tp
+  let tp3 = tp2 * tp
   let x = (tp3 * startPnt[0]) + (3 * tp2 * t * cPnt1[0]) + (3 * tp * t2 * cPnt2[0]) + (t3 * endPnt[0])
   let y = (tp3 * startPnt[1]) + (3 * tp2 * t * cPnt1[1]) + (3 * tp * t2 * cPnt2[1]) + (t3 * endPnt[1])
   return [x, y]
@@ -176,4 +180,217 @@ export const getThirdPoint = (startPnt, endPnt, angle, distance, clockWise) => {
   let dx = distance * Math.cos(alpha)
   let dy = distance * Math.sin(alpha)
   return ([endPnt[0] + dx, endPnt[1] + dy])
+}
+
+/**
+ * 函数继承
+ * @param childCtor
+ * @param parentCtor
+ */
+export const inherits = (childCtor, parentCtor) => {
+  /** @constructor */
+  function TempCtor () {
+  }
+
+  TempCtor.prototype = parentCtor.prototype
+  childCtor.superClass_ = parentCtor.prototype
+  childCtor.prototype = new TempCtor()
+  /** @override */
+  childCtor.prototype.constructor = childCtor
+  childCtor.base = function (me, methodName, varArgs) {
+    let args = Array.prototype.slice.call(arguments, 2)
+    return parentCtor.prototype[methodName].apply(me, args)
+  }
+}
+
+/**
+ * 插值弓形线段点
+ * @param center
+ * @param radius
+ * @param startAngle
+ * @param endAngle
+ * @returns {null}
+ */
+export const getArcPoints = (center, radius, startAngle, endAngle) => {
+  let [x, y, pnts, angleDiff] = [null, null, [], (endAngle - startAngle)]
+  angleDiff = ((angleDiff < 0) ? (angleDiff + (Math.PI * 2)) : angleDiff)
+  for (let i = 0; i <= 100; i++) {
+    let angle = startAngle + angleDiff * i / 100
+    x = center[0] + radius * Math.cos(angle)
+    y = center[1] + radius * Math.sin(angle)
+    pnts.push([x, y])
+  }
+  return pnts
+}
+
+/**
+ * getBisectorNormals
+ * @param t
+ * @param pnt1
+ * @param pnt2
+ * @param pnt3
+ * @returns {[*,*]}
+ */
+export const getBisectorNormals = (t, pnt1, pnt2, pnt3) => {
+  let normal = getNormal(pnt1, pnt2, pnt3)
+  let [bisectorNormalRight, bisectorNormalLeft, dt, x, y] = [null, null, null, null, null]
+  let dist = Math.sqrt(normal[0] * normal[0] + normal[1] * normal[1])
+  let uX = normal[0] / dist
+  let uY = normal[1] / dist
+  let d1 = MathDistance(pnt1, pnt2)
+  let d2 = MathDistance(pnt2, pnt3)
+  if (dist > Constants.ZERO_TOLERANCE) {
+    if (isClockWise(pnt1, pnt2, pnt3)) {
+      dt = t * d1
+      x = pnt2[0] - dt * uY
+      y = pnt2[1] + dt * uX
+      bisectorNormalRight = [x, y]
+      dt = t * d2
+      x = pnt2[0] + dt * uY
+      y = pnt2[1] - dt * uX
+      bisectorNormalLeft = [x, y]
+    } else {
+      dt = t * d1
+      x = pnt2[0] + dt * uY
+      y = pnt2[1] - dt * uX
+      bisectorNormalRight = [x, y]
+      dt = t * d2
+      x = pnt2[0] - dt * uY
+      y = pnt2[1] + dt * uX
+      bisectorNormalLeft = [x, y]
+    }
+  } else {
+    x = pnt2[0] + t * (pnt1[0] - pnt2[0])
+    y = pnt2[1] + t * (pnt1[1] - pnt2[1])
+    bisectorNormalRight = [x, y]
+    x = pnt2[0] + t * (pnt3[0] - pnt2[0])
+    y = pnt2[1] + t * (pnt3[1] - pnt2[1])
+    bisectorNormalLeft = [x, y]
+  }
+  return [bisectorNormalRight, bisectorNormalLeft]
+}
+
+/**
+ * 获取默认三点的内切圆
+ * @param pnt1
+ * @param pnt2
+ * @param pnt3
+ * @returns {[*,*]}
+ */
+export const getNormal = (pnt1, pnt2, pnt3) => {
+  let dX1 = pnt1[0] - pnt2[0]
+  let dY1 = pnt1[1] - pnt2[1]
+  let d1 = Math.sqrt(dX1 * dX1 + dY1 * dY1)
+  dX1 /= d1
+  dY1 /= d1
+  let dX2 = pnt3[0] - pnt2[0]
+  let dY2 = pnt3[1] - pnt2[1]
+  let d2 = Math.sqrt(dX2 * dX2 + dY2 * dY2)
+  dX2 /= d2
+  dY2 /= d2
+  let uX = dX1 + dX2
+  let uY = dY1 + dY2
+  return [uX, uY]
+}
+
+/**
+ * 获取左边控制点
+ * @param controlPoints
+ * @returns {[*,*]}
+ */
+export const getLeftMostControlPoint = (controlPoints, t) => {
+  let [pnt1, pnt2, pnt3, controlX, controlY] = [controlPoints[0], controlPoints[1], controlPoints[2], null, null]
+  let pnts = getBisectorNormals(0, pnt1, pnt2, pnt3)
+  let normalRight = pnts[0]
+  let normal = getNormal(pnt1, pnt2, pnt3)
+  let dist = Math.sqrt(normal[0] * normal[0] + normal[1] * normal[1])
+  if (dist > Constants.ZERO_TOLERANCE) {
+    let mid = Mid(pnt1, pnt2)
+    let pX = pnt1[0] - mid[0]
+    let pY = pnt1[1] - mid[1]
+    let d1 = MathDistance(pnt1, pnt2)
+    let n = 2.0 / d1
+    let nX = -n * pY
+    let nY = n * pX
+    let a11 = nX * nX - nY * nY
+    let a12 = 2 * nX * nY
+    let a22 = nY * nY - nX * nX
+    let dX = normalRight[0] - mid[0]
+    let dY = normalRight[1] - mid[1]
+    controlX = mid[0] + a11 * dX + a12 * dY
+    controlY = mid[1] + a12 * dX + a22 * dY
+  } else {
+    controlX = pnt1[0] + t * (pnt2[0] - pnt1[0])
+    controlY = pnt1[1] + t * (pnt2[1] - pnt1[1])
+  }
+  return [controlX, controlY]
+}
+
+/**
+ * 获取右边控制点
+ * @param controlPoints
+ * @param t
+ * @returns {[*,*]}
+ */
+export const getRightMostControlPoint = (controlPoints, t) => {
+  let count = controlPoints.length
+  let pnt1 = controlPoints[count - 3]
+  let pnt2 = controlPoints[count - 2]
+  let pnt3 = controlPoints[count - 1]
+  let pnts = getBisectorNormals(0, pnt1, pnt2, pnt3)
+  let normalLeft = pnts[1]
+  let normal = getNormal(pnt1, pnt2, pnt3)
+  let dist = Math.sqrt(normal[0] * normal[0] + normal[1] * normal[1])
+  let [controlX, controlY] = [null, null]
+  if (dist > Constants.ZERO_TOLERANCE) {
+    let mid = Mid(pnt2, pnt3)
+    let pX = pnt3[0] - mid[0]
+    let pY = pnt3[1] - mid[1]
+    let d1 = MathDistance(pnt2, pnt3)
+    let n = 2.0 / d1
+    let nX = -n * pY
+    let nY = n * pX
+    let a11 = nX * nX - nY * nY
+    let a12 = 2 * nX * nY
+    let a22 = nY * nY - nX * nX
+    let dX = normalLeft[0] - mid[0]
+    let dY = normalLeft[1] - mid[1]
+    controlX = mid[0] + a11 * dX + a12 * dY
+    controlY = mid[1] + a12 * dX + a22 * dY
+  } else {
+    controlX = pnt3[0] + t * (pnt2[0] - pnt3[0])
+    controlY = pnt3[1] + t * (pnt2[1] - pnt3[1])
+  }
+  return [controlX, controlY]
+}
+
+/**
+ * 插值曲线点
+ * @param t
+ * @param controlPoints
+ * @returns {null}
+ */
+export const getCurvePoints = (t, controlPoints) => {
+  let leftControl = getLeftMostControlPoint(controlPoints, t)
+  let [pnt1, pnt2, pnt3, normals, points] = [null, null, null, [leftControl], []]
+  for (let i = 0; i < controlPoints.length - 2; i++) {
+    [pnt1, pnt2, pnt3] = [controlPoints[i], controlPoints[i + 1], controlPoints[i + 2]]
+    let normalPoints = getBisectorNormals(t, pnt1, pnt2, pnt3)
+    normals = normals.concat(normalPoints)
+  }
+  let rightControl = getRightMostControlPoint(controlPoints, t)
+  if (rightControl) {
+    normals.push(rightControl)
+  }
+  for (let i = 0; i < controlPoints.length - 1; i++) {
+    pnt1 = controlPoints[i]
+    pnt2 = controlPoints[i + 1]
+    points.push(pnt1)
+    for (let t = 0; t < Constants.FITTING_COUNT; t++) {
+      let pnt = getCubicValue(t / Constants.FITTING_COUNT, pnt1, normals[i * 2], normals[i * 2 + 1], pnt2)
+      points.push(pnt)
+    }
+    points.push(pnt2)
+  }
+  return points
 }

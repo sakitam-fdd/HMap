@@ -1,10 +1,19 @@
+/**
+ * Created by FDD on 2017/5/24.
+ * @desc 弓形
+ * @Inherits ol.geom.Polygon
+ */
+
 import PlotTypes from '../../Utils/PlotTypes'
 import { ol } from '../../../constants'
-class Polyline extends (ol.geom.LineString) {
+import * as Constants from '../../Constants'
+import * as PlotUtils from '../../Utils/utils'
+class Lune extends (ol.geom.Polygon) {
   constructor (points, params) {
     super()
-    ol.geom.LineString.call(this, [])
-    this.type = PlotTypes.POLYLINE
+    ol.geom.Polygon.call(this, [])
+    this.type = PlotTypes.LUNE
+    this.fixPointCount = 3
     this.set('params', params)
     this.setPoints(points)
   }
@@ -13,7 +22,32 @@ class Polyline extends (ol.geom.LineString) {
    * 执行动作
    */
   generate () {
-    this.setCoordinates(this.points)
+    if (this.getPointCount() < 2) {
+      return false
+    } else {
+      let pnts = this.getPoints()
+      if (this.getPointCount() === 2) {
+        let mid = PlotUtils.Mid(pnts[0], pnts[1])
+        let d = PlotUtils.MathDistance(pnts[0], mid)
+        let pnt = PlotUtils.getThirdPoint(pnts[0], mid, Constants.HALF_PI, d)
+        pnts.push(pnt)
+      }
+      let [pnt1, pnt2, pnt3, startAngle, endAngle] = [pnts[0], pnts[1], pnts[2], undefined, undefined]
+      let center = PlotUtils.getCircleCenterOfThreePoints(pnt1, pnt2, pnt3)
+      let radius = PlotUtils.MathDistance(pnt1, center)
+      let angle1 = PlotUtils.getAzimuth(pnt1, center)
+      let angle2 = PlotUtils.getAzimuth(pnt2, center)
+      if (PlotUtils.isClockWise(pnt1, pnt2, pnt3)) {
+        startAngle = angle2
+        endAngle = angle1
+      } else {
+        startAngle = angle1
+        endAngle = angle2
+      }
+      pnts = PlotUtils.getArcPoints(center, radius, startAngle, endAngle)
+      pnts.push(pnts[0])
+      this.setCoordinates([pnts])
+    }
   }
 
   /**
@@ -98,4 +132,4 @@ class Polyline extends (ol.geom.LineString) {
   }
 }
 
-export default Polyline
+export default Lune

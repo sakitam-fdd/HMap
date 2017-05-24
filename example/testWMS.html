@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>testWMS</title>
+  <script type="text/javascript" src="../dist/HMap.js"></script>
+  <link rel="stylesheet" href="../dist/HMap.css"/>
+</head>
+<body>
+<div id="map"></div>
+<script>
+var Maps = new HMap.Map();
+Maps.initMap('map', {
+  view: {
+    center: [115.92466595234826, 27.428038204473552],
+    fullExtent: [109.72859368643232, 24.010266905347684, 121.13105988819079, 30.76693489432357],
+    projection: 'EPSG:4326',
+    zoom: 3, // resolution
+  },
+  baseLayers: [  // 不传时默认加载OSM地图。
+    {
+      layerName: 'TileWMS',
+      isDefault: true,
+      layerType: 'TileWMS',
+      opacity: 1, //图层不透明度
+      layerUrl: 'http://211.101.37.234:8097/hdmapserver/jxdx/wms',
+      layers: 'jxdx',
+      styles: '',
+      tiled: true,
+      version: '1.3.0',
+      width: '256',
+      height: '256',
+      tiledsorrigin: '24.389814897017,113.23591752486',
+      bbox: '110.54164929824,21.456465287642,121.33545918898,33.189863725142',
+      attribution: {
+        url: 'https://aurorafe.github.io',
+        title: '恒达时讯',
+        messages: '版权所有'
+      }
+    }
+  ]
+});
+
+</script>
+</body>
+</html>

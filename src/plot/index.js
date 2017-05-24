@@ -27,6 +27,20 @@ class Plot {
     switch (type) {
       case PlotTypes.POLYLINE:
         return new Plots.Polyline(points, params)
+      case PlotTypes.ARC:
+        return new Plots.Arc(points, params)
+      case PlotTypes.CIRCLE:
+        return new Plots.Circle(points, params)
+      case PlotTypes.CURVE:
+        return new Plots.Curve(points, params)
+      case PlotTypes.FREEHAND_LINE:
+        return new Plots.FreeHandLine(points, params)
+      case PlotTypes.RECTANGLE:
+        return new Plots.RectAngle(points, params)
+      case PlotTypes.ELLIPSE:
+        return new Plots.Ellipse(points, params)
+      case PlotTypes.LUNE:
+        return new Plots.Lune(points, params)
     }
     return null
   }

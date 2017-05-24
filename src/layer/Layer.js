@@ -21,9 +21,12 @@ class Layer extends mix(Style) {
       let targetLayer = null
       if (this.map) {
         let layers = this.map.getLayers().getArray()
-        layers.forEach(layer => {
+        layers.every(layer => {
           if (layer.get('layerName') === layerName) {
             targetLayer = layer
+            return false
+          } else {
+            return true
           }
         })
       }
@@ -125,6 +128,51 @@ class Layer extends mix(Style) {
       }
     }
     return tragetLayer
+  }
+
+  /**
+   * 创建WFS图层
+   * @param layerName
+   * @param params
+   * @returns {*}
+   */
+  creatWfsVectorLayer (layerName, params) {
+    try {
+      let vectorLayer = this.getLayerByLayerName(layerName)
+      if (!(vectorLayer instanceof ol.layer.Vector)) {
+        vectorLayer = null
+      }
+      if (!vectorLayer) {
+        let proj = params['projection'] ? params['projection'] : 'EPSG:3857'
+        let style = this.getStyleByParams(params['style'])
+        vectorLayer = new ol.layer.Vector({
+          layerName: layerName,
+          params: params,
+          layerType: 'vector',
+          source: new ol.source.Vector({
+            format: new ol.format.GeoJSON(),
+            url: function (extent) {
+              return params['layerUrl'] + extent.join(',') + ',' + proj
+            },
+            strategy: ol.loadingstrategy.bbox
+          }),
+          style: style
+        })
+      }
+      if (this.map && vectorLayer) {
+        if (params && params.hasOwnProperty('selectable')) {
+          vectorLayer.set('selectable', params.selectable)
+        }
+        // 图层只添加一次
+        let _vectorLayer = this.getLayerByLayerName(layerName)
+        if (!_vectorLayer || !(_vectorLayer instanceof ol.layer.Vector)) {
+          this.map.addLayer(vectorLayer)
+        }
+      }
+      return vectorLayer
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   /**

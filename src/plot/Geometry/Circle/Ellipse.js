@@ -1,19 +1,50 @@
+/**
+ * Created by FDD on 2017/5/22.
+ * @desc 标绘画圆算法，继承面要素相关方法和属性
+ */
 import PlotTypes from '../../Utils/PlotTypes'
 import { ol } from '../../../constants'
-class Polyline extends (ol.geom.LineString) {
+import * as Constants from '../../Constants'
+import * as PlotUtils from '../../Utils/utils'
+class Ellipse extends (ol.geom.Polygon) {
   constructor (points, params) {
     super()
-    ol.geom.LineString.call(this, [])
-    this.type = PlotTypes.POLYLINE
+    ol.geom.Polygon.call(this, [])
+    this.type = PlotTypes.ELLIPSE
+    this.fixPointCount = 2
     this.set('params', params)
     this.setPoints(points)
   }
 
-  /**
-   * 执行动作
-   */
   generate () {
-    this.setCoordinates(this.points)
+    if (this.getPointCount() < 2) {
+      return false
+    } else {
+      let [pnt1, pnt2] = [this.points[0], this.points[1]]
+      let center = PlotUtils.Mid(pnt1, pnt2)
+      let majorRadius = Math.abs((pnt1[0] - pnt2[0]) / 2)
+      let minorRadius = Math.abs((pnt1[1] - pnt2[1]) / 2)
+      let res = this.generatePoints(center, majorRadius, minorRadius)
+      this.setCoordinates([res])
+    }
+  }
+
+  /**
+   * 对圆边线进行插值
+   * @param center
+   * @param majorRadius
+   * @param minorRadius
+   * @returns {*}
+   */
+  generatePoints (center, majorRadius, minorRadius) {
+    let [x, y, angle, points] = [null, null, null, []]
+    for (let i = 0; i <= Constants.FITTING_COUNT; i++) {
+      angle = Math.PI * 2 * i / Constants.FITTING_COUNT
+      x = center[0] + majorRadius * Math.cos(angle)
+      y = center[1] + minorRadius * Math.sin(angle)
+      points.push([x, y])
+    }
+    return points
   }
 
   /**
@@ -98,4 +129,4 @@ class Polyline extends (ol.geom.LineString) {
   }
 }
 
-export default Polyline
+export default Ellipse

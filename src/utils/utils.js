@@ -41,9 +41,9 @@ export const getuuid = () => {
  * @param obj
  * @returns {*}
  */
-export const stamp = (obj) => {
+export const stamp = function (obj) {
   let key = '_p_id_'
-  obj[key] = obj[key] || this._stampId++
+  obj[key] = obj[key] || (getuuid())
   return obj[key]
 }
 

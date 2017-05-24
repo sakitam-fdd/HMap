@@ -29,7 +29,14 @@
 </head>
 <body>
 <div class="user-tool">
-  <button onclick="activate()">测试滤镜</button>
+  <button onclick="activate('polyline')">测试画线</button>
+  <button onclick="activate('curve')">测试画曲线</button>
+  <button onclick="activate('arc')">测试画弓形</button>
+  <button onclick="activate('circle')">测试画圆</button>
+  <button onclick="activate('freehandline')">测试画自由线</button>
+  <button onclick="activate('rectangle')">测试画矩形</button>
+  <button onclick="activate('ellipse')">测试椭圆</button>
+  <button onclick="activate('lune')">测试弓形</button>
 </div>
 <div id="map"></div>
 <script src="../dist/HMap.js"></script>
@@ -74,8 +81,32 @@
   // 指定标绘类型，开始绘制。
   function activate(type) {
     plotEdit.deactivate();
-    plotDraw.active('polyline');
+    plotDraw.active(type);
   }
+
+  function onDrawEnd (event) {
+    let feature = event.feature;
+    // 开始编辑
+    plotEdit.activate(feature);
+  }
+
+  Maps.map.on('click', function (e) {
+    if (!plotDraw.isDrawing()) {
+      var feature = Maps.map.forEachFeatureAtPixel(e.pixel, function (feature) {
+        return feature;
+      });
+      if (feature) {
+        // 开始编辑
+        plotEdit.activate(feature);
+      } else {
+        // 结束编辑
+        plotEdit.deactivate();
+      }
+    }
+  })
+
+  plotDraw.Observable.on('drawEnd', onDrawEnd)
+
 </script>
 </body>
 </html>

@@ -1,19 +1,41 @@
+/**
+ * Created by FDD on 2017/5/22.
+ * @desc 标绘画圆算法，继承面要素相关方法和属性
+ */
 import PlotTypes from '../../Utils/PlotTypes'
 import { ol } from '../../../constants'
-class Polyline extends (ol.geom.LineString) {
+import * as PlotUtils from '../../Utils/utils'
+class Circle extends (ol.geom.Polygon) {
   constructor (points, params) {
     super()
-    ol.geom.LineString.call(this, [])
-    this.type = PlotTypes.POLYLINE
+    ol.geom.Polygon.call(this, [])
+    this.type = PlotTypes.CIRCLE
+    this.fixPointCount = 2
     this.set('params', params)
     this.setPoints(points)
   }
 
-  /**
-   * 执行动作
-   */
   generate () {
-    this.setCoordinates(this.points)
+    let center = this.points[0]
+    let radius = PlotUtils.MathDistance(center, this.points[1])
+    this.setCoordinates([this.generatePoints(center, radius)])
+  }
+
+  /**
+   * 对圆边线进行插值
+   * @param center
+   * @param radius
+   * @returns {null}
+   */
+  generatePoints (center, radius) {
+    let [x, y, angle, points] = [null, null, null, []]
+    for (let i = 0; i <= 100; i++) {
+      angle = Math.PI * 2 * i / 100
+      x = center[0] + radius * Math.cos(angle)
+      y = center[1] + radius * Math.sin(angle)
+      points.push([x, y])
+    }
+    return points
   }
 
   /**
@@ -98,4 +120,4 @@ class Polyline extends (ol.geom.LineString) {
   }
 }
 
-export default Polyline
+export default Circle

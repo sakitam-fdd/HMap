@@ -1,19 +1,39 @@
+/**
+ * Created by FDD on 2017/5/24.
+ * @desc 规则矩形
+ * @Inherits ol.geom.Polygon
+ */
+
 import PlotTypes from '../../Utils/PlotTypes'
 import { ol } from '../../../constants'
-class Polyline extends (ol.geom.LineString) {
+class RectAngle extends (ol.geom.Polygon) {
   constructor (points, params) {
     super()
-    ol.geom.LineString.call(this, [])
-    this.type = PlotTypes.POLYLINE
+    ol.geom.Polygon.call(this, [])
+    this.type = PlotTypes.Rectangle
+    this.fixPointCount = 2
     this.set('params', params)
     this.setPoints(points)
+    this.isFill = ((params['isFill'] === false) ? params['isFill'] : true)
   }
 
   /**
    * 执行动作
    */
   generate () {
-    this.setCoordinates(this.points)
+    if (this.points.length === 2) {
+      let coordinates = []
+      if (this.isFill) {
+        let extent = ol.extent.boundingExtent(this.points)
+        let polygon = ol.geom.Polygon.fromExtent(extent)
+        coordinates = polygon.getCoordinates()
+      } else {
+        let start = this.points[0]
+        let end = this.points[1]
+        coordinates = [start, [start[0], end[1]], end, [end[0], start[1]], start]
+      }
+      this.setCoordinates(coordinates)
+    }
   }
 
   /**
@@ -98,4 +118,4 @@ class Polyline extends (ol.geom.LineString) {
   }
 }
 
-export default Polyline
+export default RectAngle

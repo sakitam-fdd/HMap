@@ -1,10 +1,17 @@
+/**
+ * Created by FDD on 2017/5/24.
+ * @desc 自由线
+ * @Inherits ol.geom.LineString
+ */
+
 import PlotTypes from '../../Utils/PlotTypes'
 import { ol } from '../../../constants'
-class Polyline extends (ol.geom.LineString) {
+class FreeHandLine extends (ol.geom.LineString) {
   constructor (points, params) {
     super()
     ol.geom.LineString.call(this, [])
-    this.type = PlotTypes.POLYLINE
+    this.type = PlotTypes.FREEHAND_LINE
+    this.freehand = true
     this.set('params', params)
     this.setPoints(points)
   }
@@ -98,4 +105,5 @@ class Polyline extends (ol.geom.LineString) {
   }
 }
 
-export default Polyline
+export default FreeHandLine
+

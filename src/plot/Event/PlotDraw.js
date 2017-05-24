@@ -8,16 +8,19 @@ import { MathDistance } from '../Utils/utils'
 import EventType from './EventType'
 import * as Events from '../../event/Events'
 import mix from '../../utils/mixin'
+import Layer from '../../layer/Layer'
 import Plot from '../index'
 const Observable = ol.Observable
-class PlotDraw extends mix(Observable, Plot) {
-  constructor (map) {
+class PlotDraw extends mix(Observable, Plot, Layer) {
+  constructor (map, params) {
     super()
+    ol.Observable.call(this, [])
     if (map && map instanceof ol.Map) {
       this.map = map
     } else {
       throw new Error('传入的不是地图对象！')
     }
+    this.options = params || {}
     /**
      * 交互点
      * @type {null}
@@ -64,23 +67,20 @@ class PlotDraw extends mix(Observable, Plot) {
      * 事件监听器
      * @type {*}
      */
-    this.dispatchEvent = new ol.Observable()
+    this.Observable = new ol.Object()
+
     /**
-     * 当前默认样式
-     * @type {ol.style.Style}
+     * 创建图层名称
+     * @type {string}
      */
-    this.style = new ol.style.Style({
-      fill: new ol.style.Fill({
-        color: 'rgba(0,0,0,0.4)'
-      }),
-      stroke: new ol.style.Stroke({
-        color: '#000000',
-        width: 1.25
-      })
-    })
-    this.drawLayer = new ol.layer.Vector({
-      source: new ol.source.Vector(),
-      style: this.style
+    this.layerName = 'GISPLOTLAYER'
+
+    /**
+     * 当前矢量图层
+     * @type {*}
+     */
+    this.drawLayer = this.creatVectorLayer(this.layerName, {
+      create: true
     })
   }
 
@@ -95,7 +95,6 @@ class PlotDraw extends mix(Observable, Plot) {
     this.map.on('click', this.mapFirstClickHandler, this)
     this.plotType = type
     this.plotParams = params
-    this.map.addLayer(this.drawLayer)
   }
 
   /**
@@ -113,6 +112,14 @@ class PlotDraw extends mix(Observable, Plot) {
   }
 
   /**
+   * PLOT是否处于激活状态
+   * @returns {boolean}
+   */
+  isDrawing () {
+    return (this.plotType !== null)
+  }
+
+  /**
    * 地图事件处理
    * 激活工具后第一次点击事件
    * @param event
@@ -121,12 +128,14 @@ class PlotDraw extends mix(Observable, Plot) {
     this.points.push(event.coordinate)
     this.plot = this.createPlot(this.plotType, this.points, this.plotParams)
     this.plot.setMap(this.map)
+    this.feature = new ol.Feature(this.plot)
+    this.drawLayer.getSource().addFeature(this.feature)
     this.map.un('click', this.mapFirstClickHandler, this)
     this.map.on('click', this.mapNextClickHandler, this)
     if (!this.plot.freehand) {
       this.map.on('dblclick', this.mapDoubleClickHandler, this)
     }
-    Events.listen(this.mapViewport, EventType.MOUSEMOVE, this.mapMouseMoveHandler, false, this)
+    Events.listen(this.mapViewport, EventType.MOUSEMOVE, this.mapMouseMoveHandler, this, false)
   }
 
   /**
@@ -194,7 +203,12 @@ class PlotDraw extends mix(Observable, Plot) {
    * 绘制结束
    */
   drawEnd (event) {
-    if (this.feature) {
+    this.Observable.dispatchEvent({
+      type: 'drawEnd',
+      event: event,
+      feature: this.feature
+    })
+    if (this.feature && this.options['isClear']) {
       this.drawLayer.getSource().removeFeature(this.feature)
     }
     this.activateMapTools()
@@ -205,11 +219,6 @@ class PlotDraw extends mix(Observable, Plot) {
     this.plotType = null
     this.plotParams = null
     this.feature = null
-    this.dispatchEvent({
-      type: 'drawEnd',
-      originEvent: event,
-      value: this.feature
-    })
   }
 
   /**

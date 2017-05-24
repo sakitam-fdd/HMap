@@ -71,6 +71,12 @@ class BaseLayers {
             case 'OSM':
               layer = this._getOSMLayer(config)
               break
+            case 'ImageWMS':
+              layer = this._getImageWMSLayer(config)
+              break
+            case 'TileWMS':
+              layer = this._getTileWMSLayer(config)
+              break
           }
           if (layer) layers.push(layer)
           if (config['label']) {
@@ -108,6 +114,12 @@ class BaseLayers {
                 break
               case 'TitleWMTS':
                 labelLayer = this._getWMTSLayer(configM)
+                break
+              case 'ImageWMS':
+                labelLayer = this._getImageWMSLayer(configM)
+                break
+              case 'TileWMS':
+                labelLayer = this._getTileWMSLayer(configM)
                 break
             }
             if (labelLayer) labelLayers.push(labelLayer)
@@ -221,6 +233,85 @@ class BaseLayers {
           matrixIds: matrixIds
         }),
         style: 'default',
+        wrapX: false
+      })
+    })
+    return layer
+  }
+
+  /**
+   * Images WMS 方式加载
+   * @param config
+   * @private
+   */
+  _getImageWMSLayer (config) {
+    let proj = this.projection.getCode()
+    let layer = new ol.layer.Image({
+      isBaseLayer: true,
+      alias: config['alias'] ? config['alias'] : '',
+      isDefault: (config['isDefault'] === true) ? config['isDefault'] : false,
+      layerName: config['layerName'] ? config.layerName : '',
+      visible: (config['isDefault'] === true) ? config['isDefault'] : false,
+      opacity: (config['opacity'] && (typeof config['opacity'] === 'number')) ? config['opacity'] : 1,
+      source: new ol.source.ImageWMS({
+        url: config['layerUrl'],
+        attributions: (this._getAttribution(config['attribution'])),
+        params: {
+          LAYERS: config['layers'], // require
+          STYLES: config['style'] ? config['style'] : '',
+          VERSION: config['version'] ? config['version'] : '1.1.1',
+          WIDTH: config['width'] ? config['width'] : 256,
+          HEIGHT: config['height'] ? config['height'] : 256,
+          BBOX: config['bbox'], // require
+          SRS: !proj ? 'EPSG:4326' : proj,
+          CRS: !proj ? 'EPSG:4326' : proj,
+          REQUEST: 'GetMap',
+          TRANSPARENT: true,
+          TILED: (config['tiled'] === false) ? config['tiled'] : true,
+          TILESORIGIN: config['tiledsorrigin'] ? config['tiledsorrigin'] : undefined,
+          SERVICE: 'WMS',
+          FORMAT: config['format'] ? config['format'] : 'image/png'
+        },
+        wrapX: false
+      })
+    })
+    return layer
+  }
+
+  /**
+   * Title WMS 方式加载
+   * @param config
+   * @returns {ol.layer.Tile}
+   * @private
+   */
+  _getTileWMSLayer (config) {
+    let proj = this.projection.getCode()
+    let layer = new ol.layer.Tile({
+      isBaseLayer: true,
+      alias: config['alias'] ? config['alias'] : '',
+      isDefault: (config['isDefault'] === true) ? config['isDefault'] : false,
+      layerName: config['layerName'] ? config.layerName : '',
+      visible: (config['isDefault'] === true) ? config['isDefault'] : false,
+      opacity: (config['opacity'] && (typeof config['opacity'] === 'number')) ? config['opacity'] : 1,
+      source: new ol.source.TileWMS({
+        url: config['layerUrl'],
+        attributions: (this._getAttribution(config['attribution'])),
+        params: {
+          LAYERS: config['layers'], // require
+          STYLES: config['style'] ? config['style'] : '',
+          VERSION: config['version'] ? config['version'] : '1.1.1',
+          WIDTH: config['width'] ? config['width'] : 256,
+          HEIGHT: config['height'] ? config['height'] : 256,
+          BBOX: config['bbox'], // require
+          SRS: !proj ? 'EPSG:4326' : proj,
+          CRS: !proj ? 'EPSG:4326' : proj,
+          REQUEST: 'GetMap',
+          TRANSPARENT: true,
+          TILED: (config['tiled'] === false) ? config['tiled'] : true,
+          TILESORIGIN: config['tiledsorrigin'] ? config['tiledsorrigin'] : undefined,
+          SERVICE: 'WMS',
+          FORMAT: config['format'] ? config['format'] : 'image/png'
+        },
         wrapX: false
       })
     })

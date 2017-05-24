@@ -630,3 +630,13 @@
     inset 0 0 6px #1b9de8;
   }
 }
+
+.plot-helper-control-point-div {
+  width: 10px;
+  height: 10px;
+  border: 1px solid #000;
+  border-radius: 100%;
+  background-color: #ffffff;
+  opacity: 0.6;
+  cursor: move;
+}

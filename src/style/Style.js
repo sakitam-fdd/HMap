@@ -103,6 +103,51 @@ class Style {
   }
 
   /**
+   * 根据params获取样式信息
+   * @param options
+   * @returns {*}
+   */
+  getStyleByParams (options) {
+    try {
+      let style = null
+      if (!options) {
+        style = new ol.style.Style({
+          fill: new ol.style.Fill({
+            color: 'rgba(67, 110, 238, 0.4)'
+          }),
+          stroke: new ol.style.Stroke({
+            color: '#4781d9',
+            width: 2
+          }),
+          image: new ol.style.Circle({
+            radius: 7,
+            fill: new ol.style.Fill({
+              color: '#ffcc33'
+            })
+          })
+        })
+      } else {
+        style = new ol.style.Style({})
+        if (options['stroke'] && this._getStroke(options['stroke'])) {
+          style.setStroke(this._getStroke(options['stroke']))
+        }
+        if (options['text'] && this._getText(options['text'])) {
+          style.setText(this._getText(options['text']))
+        }
+        if (options['fill'] && this._getFill(options['fill'])) {
+          style.setFill(this._getFill(options['fill']))
+        }
+        if (options['icon']) {
+          style.setImage(this._getImage(options['icon']))
+        }
+      }
+      return style
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  /**
    * 获取图标样式
    * @param options
    * @returns {*}
