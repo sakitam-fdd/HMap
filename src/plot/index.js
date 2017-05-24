@@ -33,6 +33,14 @@ class Plot {
         return new Plots.Circle(points, params)
       case PlotTypes.CURVE:
         return new Plots.Curve(points, params)
+      case PlotTypes.FREEHAND_LINE:
+        return new Plots.FreeHandLine(points, params)
+      case PlotTypes.RECTANGLE:
+        return new Plots.RectAngle(points, params)
+      case PlotTypes.ELLIPSE:
+        return new Plots.Ellipse(points, params)
+      case PlotTypes.LUNE:
+        return new Plots.Lune(points, params)
     }
     return null
   }

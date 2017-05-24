@@ -240,7 +240,7 @@ class BaseLayers {
   }
 
   /**
-   * WMS 方式加载
+   * Images WMS 方式加载
    * @param config
    * @private
    */
@@ -271,12 +271,19 @@ class BaseLayers {
           TILESORIGIN: config['tiledsorrigin'] ? config['tiledsorrigin'] : undefined,
           SERVICE: 'WMS',
           FORMAT: config['format'] ? config['format'] : 'image/png'
-        }
+        },
+        wrapX: false
       })
     })
     return layer
   }
 
+  /**
+   * Title WMS 方式加载
+   * @param config
+   * @returns {ol.layer.Tile}
+   * @private
+   */
   _getTileWMSLayer (config) {
     let proj = this.projection.getCode()
     let layer = new ol.layer.Tile({
@@ -304,7 +311,8 @@ class BaseLayers {
           TILESORIGIN: config['tiledsorrigin'] ? config['tiledsorrigin'] : undefined,
           SERVICE: 'WMS',
           FORMAT: config['format'] ? config['format'] : 'image/png'
-        }
+        },
+        wrapX: false
       })
     })
     return layer
