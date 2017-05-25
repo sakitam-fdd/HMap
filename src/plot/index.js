@@ -33,7 +33,7 @@ class Plot {
         return new Plots.Circle(points, params)
       case PlotTypes.CURVE:
         return new Plots.Curve(points, params)
-      case PlotTypes.FREEHAND_LINE:
+      case PlotTypes.FREE_LINE:
         return new Plots.FreeHandLine(points, params)
       case PlotTypes.RECTANGLE:
         return new Plots.RectAngle(points, params)
@@ -41,6 +41,16 @@ class Plot {
         return new Plots.Ellipse(points, params)
       case PlotTypes.LUNE:
         return new Plots.Lune(points, params)
+      case PlotTypes.SECTOR:
+        return new Plots.Sector(points, params)
+      case PlotTypes.CLOSED_CURVE:
+        return new Plots.ClosedCurve(points, params)
+      case PlotTypes.POLYGON:
+        return new Plots.Polygon(points, params)
+      case PlotTypes.FREE_POLYGON:
+        return new Plots.FreePolygon(points, params)
+      case PlotTypes.DOUBLE_ARROW:
+        return new Plots.DoubleArrow(points, params)
     }
     return null
   }

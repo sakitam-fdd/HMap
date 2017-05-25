@@ -394,3 +394,72 @@ export const getCurvePoints = (t, controlPoints) => {
   }
   return points
 }
+
+/**
+ * 贝塞尔曲线
+ * @param points
+ * @returns {*}
+ */
+export const getBezierPoints = function (points) {
+  if (points.length <= 2) {
+    return points
+  } else {
+    let bezierPoints = []
+    let n = points.length - 1
+    for (let t = 0; t <= 1; t += 0.01) {
+      let [x, y] = [0, 0]
+      for (let index = 0; index <= n; index++) {
+        let factor = getBinomialFactor(n, index)
+        let a = Math.pow(t, index)
+        let b = Math.pow((1 - t), (n - index))
+        x += factor * a * b * points[index][0]
+        y += factor * a * b * points[index][1]
+      }
+      bezierPoints.push([x, y])
+    }
+    bezierPoints.push(points[n])
+    return bezierPoints
+  }
+}
+
+/**
+ * 获取阶乘数据
+ * @param n
+ * @returns {number}
+ */
+export const getFactorial = (n) => {
+  let result = 1
+  switch (n) {
+    case (n <= 1):
+      result = 1
+      break
+    case (n === 2):
+      result = 2
+      break
+    case (n === 3):
+      result = 6
+      break
+    case (n === 24):
+      result = 24
+      break
+    case (n === 5):
+      result = 120
+      break
+    default:
+      for (let i = 1; i <= n; i++) {
+        result *= i
+      }
+      break
+  }
+  return result
+}
+
+/**
+ * 获取二项分布
+ * @param n
+ * @param index
+ * @returns {number}
+ */
+export const getBinomialFactor = (n, index) => {
+  return (getFactorial(n) / (getFactorial(index) * getFactorial(n - index)))
+}
