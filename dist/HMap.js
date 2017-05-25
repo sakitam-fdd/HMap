@@ -511,21 +511,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var PlotTypes = {
   ARC: 'arc',
+  CIRCLE: 'circle',
   ELLIPSE: 'ellipse',
   CURVE: 'curve',
   CLOSED_CURVE: 'closedcurve',
   LUNE: 'lune',
   SECTOR: 'sector',
   GATHERING_PLACE: 'gatheringplace',
-  STRAIGHT_ARROW: 'straightarrow',
-  ASSAULT_DIRECTION: 'assaultdirection',
   ATTACK_ARROW: 'attackarrow',
   TAILED_ATTACK_ARROW: 'tailedattackarrow',
   SQUAD_COMBAT: 'squadcombat',
   TAILED_SQUAD_COMBAT: 'tailedsquadcombat',
-  FINE_ARROW: 'finearrow',
-  CIRCLE: 'circle',
-  DOUBLE_ARROW: 'DoubleArrow',
   POLYLINE: 'Polyline',
   FREE_LINE: 'FreeLine',
   POLYGON: 'Polygon',
@@ -533,7 +529,11 @@ var PlotTypes = {
   RECTANGLE: 'rectangle',
   POINT: 'point',
   TRIANGLE: 'triangle',
-  Rectangle: 'rectangle'
+  Rectangle: 'rectangle',
+  DOUBLE_ARROW: 'DoubleArrow',
+  STRAIGHT_ARROW: 'StraightArrow',
+  FINE_ARROW: 'FineArrow',
+  ASSAULT_DIRECTION: 'AssaultDirection'
 };
 
 exports.default = PlotTypes;
@@ -10783,6 +10783,18 @@ var _DoubleArrow = __webpack_require__(430);
 
 var _DoubleArrow2 = _interopRequireDefault(_DoubleArrow);
 
+var _StraightArrow = __webpack_require__(431);
+
+var _StraightArrow2 = _interopRequireDefault(_StraightArrow);
+
+var _FineArrow = __webpack_require__(432);
+
+var _FineArrow2 = _interopRequireDefault(_FineArrow);
+
+var _AssaultDirection = __webpack_require__(433);
+
+var _AssaultDirection2 = _interopRequireDefault(_AssaultDirection);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
@@ -10798,7 +10810,10 @@ exports.default = {
   ClosedCurve: _ClosedCurve2.default,
   Polygon: _Polygon2.default,
   FreePolygon: _FreePolygon2.default,
-  DoubleArrow: _DoubleArrow2.default
+  DoubleArrow: _DoubleArrow2.default,
+  StraightArrow: _StraightArrow2.default,
+  FineArrow: _FineArrow2.default,
+  AssaultDirection: _AssaultDirection2.default
 };
 module.exports = exports['default'];
 
@@ -10872,6 +10887,12 @@ var Plot = function () {
           return new _index2.default.FreePolygon(points, params);
         case _PlotTypes2.default.DOUBLE_ARROW:
           return new _index2.default.DoubleArrow(points, params);
+        case _PlotTypes2.default.STRAIGHT_ARROW:
+          return new _index2.default.StraightArrow(points, params);
+        case _PlotTypes2.default.FINE_ARROW:
+          return new _index2.default.FineArrow(points, params);
+        case _PlotTypes2.default.ASSAULT_DIRECTION:
+          return new _index2.default.AssaultDirection(points, params);
       }
       return null;
     }
@@ -23775,6 +23796,339 @@ var DoubleArrow = function (_ol$geom$Polygon) {
 }(_constants.ol.geom.Polygon);
 
 exports.default = DoubleArrow;
+module.exports = exports['default'];
+
+/***/ }),
+/* 431 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _PlotTypes = __webpack_require__(24);
+
+var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
+
+var _constants = __webpack_require__(5);
+
+var _utils = __webpack_require__(35);
+
+var PlotUtils = _interopRequireWildcard(_utils);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var StraightArrow = function (_ol$geom$LineString) {
+  _inherits(StraightArrow, _ol$geom$LineString);
+
+  function StraightArrow(points, params) {
+    _classCallCheck(this, StraightArrow);
+
+    var _this = _possibleConstructorReturn(this, (StraightArrow.__proto__ || Object.getPrototypeOf(StraightArrow)).call(this));
+
+    _constants.ol.geom.LineString.call(_this, []);
+    _this.type = _PlotTypes2.default.STRAIGHT_ARROW;
+    _this.fixPointCount = 2;
+    _this.maxArrowLength = 3000000;
+    _this.arrowLengthScale = 5;
+    _this.set('params', params);
+    _this.setPoints(points);
+    return _this;
+  }
+
+  _createClass(StraightArrow, [{
+    key: 'generate',
+    value: function generate() {
+      try {
+        var count = this.getPointCount();
+        if (count < 2) {
+          return false;
+        } else {
+          var pnts = this.getPoints();
+          var _ref = [pnts[0], pnts[1]],
+              pnt1 = _ref[0],
+              pnt2 = _ref[1];
+
+          var distance = PlotUtils.MathDistance(pnt1, pnt2);
+          var len = distance / this.arrowLengthScale;
+          len = len > this.maxArrowLength ? this.maxArrowLength : len;
+          var leftPnt = PlotUtils.getThirdPoint(pnt1, pnt2, Math.PI / 6, len, false);
+          var rightPnt = PlotUtils.getThirdPoint(pnt1, pnt2, Math.PI / 6, len, true);
+          this.setCoordinates([pnt1, pnt2, leftPnt, pnt2, rightPnt]);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      if (map && map instanceof _constants.ol.Map) {
+        this.map = map;
+      } else {
+        throw new Error('传入的不是地图对象！');
+      }
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }, {
+    key: 'isPlot',
+    value: function isPlot() {
+      return true;
+    }
+  }, {
+    key: 'setPoints',
+    value: function setPoints(value) {
+      this.points = !value ? [] : value;
+      if (this.points.length >= 2) {
+        this.generate();
+      }
+    }
+  }, {
+    key: 'getPoints',
+    value: function getPoints() {
+      return this.points.slice(0);
+    }
+  }, {
+    key: 'getPointCount',
+    value: function getPointCount() {
+      return this.points.length;
+    }
+  }, {
+    key: 'updatePoint',
+    value: function updatePoint(point, index) {
+      if (index >= 0 && index < this.points.length) {
+        this.points[index] = point;
+        this.generate();
+      }
+    }
+  }, {
+    key: 'updateLastPoint',
+    value: function updateLastPoint(point) {
+      this.updatePoint(point, this.points.length - 1);
+    }
+  }, {
+    key: 'finishDrawing',
+    value: function finishDrawing() {}
+  }]);
+
+  return StraightArrow;
+}(_constants.ol.geom.LineString);
+
+exports.default = StraightArrow;
+module.exports = exports['default'];
+
+/***/ }),
+/* 432 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _PlotTypes = __webpack_require__(24);
+
+var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
+
+var _constants = __webpack_require__(5);
+
+var _utils = __webpack_require__(35);
+
+var PlotUtils = _interopRequireWildcard(_utils);
+
+var _Constants = __webpack_require__(78);
+
+var Constants = _interopRequireWildcard(_Constants);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var FineArrow = function (_ol$geom$Polygon) {
+  _inherits(FineArrow, _ol$geom$Polygon);
+
+  function FineArrow(points, params) {
+    _classCallCheck(this, FineArrow);
+
+    var _this = _possibleConstructorReturn(this, (FineArrow.__proto__ || Object.getPrototypeOf(FineArrow)).call(this));
+
+    _constants.ol.geom.Polygon.call(_this, []);
+    _this.type = _PlotTypes2.default.FINE_ARROW;
+    _this.tailWidthFactor = 0.1;
+    _this.neckWidthFactor = 0.2;
+    _this.headWidthFactor = 0.25;
+    _this.headAngle = Math.PI / 8.5;
+    _this.neckAngle = Math.PI / 13;
+    _this.fixPointCount = 2;
+    _this.set('params', params);
+    _this.setPoints(points);
+    return _this;
+  }
+
+  _createClass(FineArrow, [{
+    key: 'generate',
+    value: function generate() {
+      try {
+        var pnts = this.getPoints();
+        var _ref = [pnts[0], pnts[1]],
+            pnt1 = _ref[0],
+            pnt2 = _ref[1];
+
+        var len = PlotUtils.getBaseLength(pnts);
+        var tailWidth = len * this.tailWidthFactor;
+        var neckWidth = len * this.neckWidthFactor;
+        var headWidth = len * this.headWidthFactor;
+        var tailLeft = PlotUtils.getThirdPoint(pnt2, pnt1, Constants.HALF_PI, tailWidth, true);
+        var tailRight = PlotUtils.getThirdPoint(pnt2, pnt1, Constants.HALF_PI, tailWidth, false);
+        var headLeft = PlotUtils.getThirdPoint(pnt1, pnt2, this.headAngle, headWidth, false);
+        var headRight = PlotUtils.getThirdPoint(pnt1, pnt2, this.headAngle, headWidth, true);
+        var neckLeft = PlotUtils.getThirdPoint(pnt1, pnt2, this.neckAngle, neckWidth, false);
+        var neckRight = PlotUtils.getThirdPoint(pnt1, pnt2, this.neckAngle, neckWidth, true);
+        var pList = [tailLeft, neckLeft, headLeft, pnt2, headRight, neckRight, tailRight];
+        this.setCoordinates([pList]);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      if (map && map instanceof _constants.ol.Map) {
+        this.map = map;
+      } else {
+        throw new Error('传入的不是地图对象！');
+      }
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }, {
+    key: 'isPlot',
+    value: function isPlot() {
+      return true;
+    }
+  }, {
+    key: 'setPoints',
+    value: function setPoints(value) {
+      this.points = !value ? [] : value;
+      if (this.points.length >= 2) {
+        this.generate();
+      }
+    }
+  }, {
+    key: 'getPoints',
+    value: function getPoints() {
+      return this.points.slice(0);
+    }
+  }, {
+    key: 'getPointCount',
+    value: function getPointCount() {
+      return this.points.length;
+    }
+  }, {
+    key: 'updatePoint',
+    value: function updatePoint(point, index) {
+      if (index >= 0 && index < this.points.length) {
+        this.points[index] = point;
+        this.generate();
+      }
+    }
+  }, {
+    key: 'updateLastPoint',
+    value: function updateLastPoint(point) {
+      this.updatePoint(point, this.points.length - 1);
+    }
+  }, {
+    key: 'finishDrawing',
+    value: function finishDrawing() {}
+  }]);
+
+  return FineArrow;
+}(_constants.ol.geom.Polygon);
+
+exports.default = FineArrow;
+module.exports = exports['default'];
+
+/***/ }),
+/* 433 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _FineArrow2 = __webpack_require__(432);
+
+var _FineArrow3 = _interopRequireDefault(_FineArrow2);
+
+var _PlotTypes = __webpack_require__(24);
+
+var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var AssaultDirection = function (_FineArrow) {
+  _inherits(AssaultDirection, _FineArrow);
+
+  function AssaultDirection(points, params) {
+    _classCallCheck(this, AssaultDirection);
+
+    var _this = _possibleConstructorReturn(this, (AssaultDirection.__proto__ || Object.getPrototypeOf(AssaultDirection)).call(this));
+
+    _FineArrow3.default.call(_this, points, params);
+    _this.tailWidthFactor = 0.05;
+    _this.neckWidthFactor = 0.1;
+    _this.headWidthFactor = 0.15;
+    _this.type = _PlotTypes2.default.ASSAULT_DIRECTION;
+    _this.headAngle = Math.PI / 4;
+    _this.neckAngle = Math.PI * 0.17741;
+    _this.setPoints(points);
+    _this.set('params', params);
+    return _this;
+  }
+
+  return AssaultDirection;
+}(_FineArrow3.default);
+
+exports.default = AssaultDirection;
 module.exports = exports['default'];
 
 /***/ })

@@ -4,15 +4,13 @@
  * @Inherits ol.geom.Point
  */
 import { ol } from '../../../constants'
-import Plot from '../../index'
-import mix from '../../../utils/mixin'
 const GeomPoint = ol.geom.Point
-class Point extends mix(GeomPoint, Plot) {
+class Point extends GeomPoint {
   constructor (point, params) {
     super()
     this.type = 'POINT'
     this.options = params || {}
-    this.set('params', this.options);
+    this.set('params', this.options)
     this.setPoints(point)
   }
 

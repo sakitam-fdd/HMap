@@ -51,6 +51,12 @@ class Plot {
         return new Plots.FreePolygon(points, params)
       case PlotTypes.DOUBLE_ARROW:
         return new Plots.DoubleArrow(points, params)
+      case PlotTypes.STRAIGHT_ARROW:
+        return new Plots.StraightArrow(points, params)
+      case PlotTypes.FINE_ARROW:
+        return new Plots.FineArrow(points, params)
+      case PlotTypes.ASSAULT_DIRECTION:
+        return new Plots.AssaultDirection(points, params)
     }
     return null
   }

@@ -15,6 +15,9 @@ import ClosedCurve from './Polygon/ClosedCurve'
 import Polygon from './Polygon/Polygon'
 import FreePolygon from './Polygon/FreePolygon'
 import DoubleArrow from './Arrow/DoubleArrow'
+import StraightArrow from './Arrow/StraightArrow'
+import FineArrow from './Arrow/FineArrow'
+import AssaultDirection from './Arrow/AssaultDirection'
 export default {
   Polyline: Polyline,
   Arc: Arc,
@@ -28,5 +31,8 @@ export default {
   ClosedCurve: ClosedCurve,
   Polygon: Polygon,
   FreePolygon: FreePolygon,
-  DoubleArrow: DoubleArrow
+  DoubleArrow: DoubleArrow,
+  StraightArrow: StraightArrow,
+  FineArrow: FineArrow,
+  AssaultDirection: AssaultDirection
 }

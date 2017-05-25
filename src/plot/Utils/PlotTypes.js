@@ -3,21 +3,17 @@
  */
 const PlotTypes = {
   ARC: 'arc',
+  CIRCLE: 'circle',
   ELLIPSE: 'ellipse',
   CURVE: 'curve',
   CLOSED_CURVE: 'closedcurve',
   LUNE: 'lune',
   SECTOR: 'sector',
   GATHERING_PLACE: 'gatheringplace',
-  STRAIGHT_ARROW: 'straightarrow',
-  ASSAULT_DIRECTION: 'assaultdirection',
   ATTACK_ARROW: 'attackarrow',
   TAILED_ATTACK_ARROW: 'tailedattackarrow',
   SQUAD_COMBAT: 'squadcombat',
   TAILED_SQUAD_COMBAT: 'tailedsquadcombat',
-  FINE_ARROW: 'finearrow',
-  CIRCLE: 'circle',
-  DOUBLE_ARROW: 'DoubleArrow',
   POLYLINE: 'Polyline',
   FREE_LINE: 'FreeLine',
   POLYGON: 'Polygon',
@@ -25,7 +21,11 @@ const PlotTypes = {
   RECTANGLE: 'rectangle',
   POINT: 'point',
   TRIANGLE: 'triangle',
-  Rectangle: 'rectangle'
+  Rectangle: 'rectangle',
+  DOUBLE_ARROW: 'DoubleArrow',
+  STRAIGHT_ARROW: 'StraightArrow',
+  FINE_ARROW: 'FineArrow',
+  ASSAULT_DIRECTION: 'AssaultDirection'
 }
 
 export default PlotTypes
