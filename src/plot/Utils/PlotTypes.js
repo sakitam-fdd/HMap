@@ -11,9 +11,6 @@ const PlotTypes = {
   SECTOR: 'sector',
   GATHERING_PLACE: 'gatheringplace',
   ATTACK_ARROW: 'attackarrow',
-  TAILED_ATTACK_ARROW: 'tailedattackarrow',
-  SQUAD_COMBAT: 'squadcombat',
-  TAILED_SQUAD_COMBAT: 'tailedsquadcombat',
   POLYLINE: 'Polyline',
   FREE_LINE: 'FreeLine',
   POLYGON: 'Polygon',
@@ -25,7 +22,10 @@ const PlotTypes = {
   DOUBLE_ARROW: 'DoubleArrow',
   STRAIGHT_ARROW: 'StraightArrow',
   FINE_ARROW: 'FineArrow',
-  ASSAULT_DIRECTION: 'AssaultDirection'
+  ASSAULT_DIRECTION: 'AssaultDirection',
+  TAILED_ATTACK_ARROW: 'TailedAttackArrow',
+  SQUAD_COMBAT: 'SquadCombat',
+  TAILED_SQUAD_COMBAT: 'TailedSquadCombat'
 }
 
 export default PlotTypes

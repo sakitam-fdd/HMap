@@ -18,6 +18,9 @@ import DoubleArrow from './Arrow/DoubleArrow'
 import StraightArrow from './Arrow/StraightArrow'
 import FineArrow from './Arrow/FineArrow'
 import AssaultDirection from './Arrow/AssaultDirection'
+import TailedAttackArrow from './Arrow/TailedAttackArrow'
+import SquadCombat from './Arrow/SquadCombat'
+import TailedSquadCombat from './Arrow/TailedSquadCombat'
 export default {
   Polyline: Polyline,
   Arc: Arc,
@@ -34,5 +37,8 @@ export default {
   DoubleArrow: DoubleArrow,
   StraightArrow: StraightArrow,
   FineArrow: FineArrow,
-  AssaultDirection: AssaultDirection
+  AssaultDirection: AssaultDirection,
+  TailedAttackArrow: TailedAttackArrow,
+  SquadCombat: SquadCombat,
+  TailedSquadCombat: TailedSquadCombat
 }

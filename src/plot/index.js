@@ -57,6 +57,12 @@ class Plot {
         return new Plots.FineArrow(points, params)
       case PlotTypes.ASSAULT_DIRECTION:
         return new Plots.AssaultDirection(points, params)
+      case PlotTypes.TAILED_ATTACK_ARROW:
+        return new Plots.TailedAttackArrow(points, params)
+      case PlotTypes.SQUAD_COMBAT:
+        return new Plots.SquadCombat(points, params)
+      case PlotTypes.TAILED_SQUAD_COMBAT:
+        return new Plots.TailedSquadCombat(points, params)
     }
     return null
   }

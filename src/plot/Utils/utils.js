@@ -463,3 +463,49 @@ export const getFactorial = (n) => {
 export const getBinomialFactor = (n, index) => {
   return (getFactorial(n) / (getFactorial(index) * getFactorial(n - index)))
 }
+
+/**
+ * 插值线性点
+ * @param points
+ * @returns {*}
+ */
+export const getQBSplinePoints = points => {
+  if (points.length <= 2) {
+    return points
+  } else {
+    let [n, bSplinePoints] = [2, []]
+    let m = points.length - n - 1
+    bSplinePoints.push(points[0])
+    for (let i = 0; i <= m; i++) {
+      for (let t = 0; t <= 1; t += 0.05) {
+        let [x, y] = [0, 0]
+        for (let k = 0; k <= n; k++) {
+          let factor = getQuadricBSplineFactor(k, t)
+          x += factor * points[i + k][0]
+          y += factor * points[i + k][1]
+        }
+        bSplinePoints.push([x, y])
+      }
+    }
+    bSplinePoints.push(points[points.length - 1])
+    return bSplinePoints
+  }
+}
+
+/**
+ * 得到二次线性因子
+ * @param k
+ * @param t
+ * @returns {number}
+ */
+export const getQuadricBSplineFactor = (k, t) => {
+  let res = 0
+  if (k === 0) {
+    res = Math.pow(t - 1, 2) / 2
+  } else if (k === 1) {
+    res = (-2 * Math.pow(t, 2) + 2 * t + 1) / 2
+  } else if (k === 2) {
+    res = Math.pow(t, 2) / 2
+  }
+  return res
+}
