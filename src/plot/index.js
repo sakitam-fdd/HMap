@@ -47,6 +47,8 @@ class Plot {
         return new Plots.ClosedCurve(points, params)
       case PlotTypes.POLYGON:
         return new Plots.Polygon(points, params)
+      case PlotTypes.ATTACK_ARROW:
+        return new Plots.AttackArrow(points, params)
       case PlotTypes.FREE_POLYGON:
         return new Plots.FreePolygon(points, params)
       case PlotTypes.DOUBLE_ARROW:
@@ -63,6 +65,8 @@ class Plot {
         return new Plots.SquadCombat(points, params)
       case PlotTypes.TAILED_SQUAD_COMBAT:
         return new Plots.TailedSquadCombat(points, params)
+      case PlotTypes.GATHERING_PLACE:
+        return new Plots.GatheringPlace(points, params)
     }
     return null
   }

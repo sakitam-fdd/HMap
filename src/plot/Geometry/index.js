@@ -14,6 +14,7 @@ import Sector from './Polygon/Sector'
 import ClosedCurve from './Polygon/ClosedCurve'
 import Polygon from './Polygon/Polygon'
 import FreePolygon from './Polygon/FreePolygon'
+import AttackArrow from './Arrow/AttackArrow'
 import DoubleArrow from './Arrow/DoubleArrow'
 import StraightArrow from './Arrow/StraightArrow'
 import FineArrow from './Arrow/FineArrow'
@@ -21,6 +22,7 @@ import AssaultDirection from './Arrow/AssaultDirection'
 import TailedAttackArrow from './Arrow/TailedAttackArrow'
 import SquadCombat from './Arrow/SquadCombat'
 import TailedSquadCombat from './Arrow/TailedSquadCombat'
+import GatheringPlace from './Polygon/GatheringPlace'
 export default {
   Polyline: Polyline,
   Arc: Arc,
@@ -34,11 +36,13 @@ export default {
   ClosedCurve: ClosedCurve,
   Polygon: Polygon,
   FreePolygon: FreePolygon,
+  AttackArrow: AttackArrow,
   DoubleArrow: DoubleArrow,
   StraightArrow: StraightArrow,
   FineArrow: FineArrow,
   AssaultDirection: AssaultDirection,
   TailedAttackArrow: TailedAttackArrow,
   SquadCombat: SquadCombat,
-  TailedSquadCombat: TailedSquadCombat
+  TailedSquadCombat: TailedSquadCombat,
+  GatheringPlace: GatheringPlace
 }

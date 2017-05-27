@@ -285,23 +285,21 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var PlotTypes = {
-  ARC: 'arc',
-  CIRCLE: 'circle',
-  ELLIPSE: 'ellipse',
-  CURVE: 'curve',
-  CLOSED_CURVE: 'closedcurve',
-  LUNE: 'lune',
-  SECTOR: 'sector',
-  GATHERING_PLACE: 'gatheringplace',
-  ATTACK_ARROW: 'attackarrow',
+  ARC: 'Arc',
+  CURVE: 'Curve',
+  GATHERING_PLACE: 'GatheringPlace',
   POLYLINE: 'Polyline',
   FREE_LINE: 'FreeLine',
+  POINT: 'point',
+  RECTANGLE: 'RectAngle',
+  CIRCLE: 'Circle',
+  ELLIPSE: 'Ellipse',
+  LUNE: 'Lune',
+  SECTOR: 'Sector',
+  CLOSED_CURVE: 'ClosedCurve',
   POLYGON: 'Polygon',
   FREE_POLYGON: 'FreePolygon',
-  RECTANGLE: 'rectangle',
-  POINT: 'point',
-  TRIANGLE: 'triangle',
-  Rectangle: 'rectangle',
+  ATTACK_ARROW: 'AttackArrow',
   DOUBLE_ARROW: 'DoubleArrow',
   STRAIGHT_ARROW: 'StraightArrow',
   FINE_ARROW: 'FineArrow',
@@ -3555,6 +3553,122 @@ var AttackArrow = function (_ol$geom$Polygon) {
         var neckRight = PlotUtils.getThirdPoint(pnt1, pnt2, this.neckAngle, neckWidth, true);
         var pList = [tailLeft, neckLeft, headLeft, pnt2, headRight, neckRight, tailRight];
         this.setCoordinates([pList]);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'getArrowPoints',
+    value: function getArrowPoints(pnt1, pnt2, pnt3, clockWise) {
+      var midPnt = PlotUtils.Mid(pnt1, pnt2);
+      var len = PlotUtils.MathDistance(midPnt, pnt3);
+      var midPnt1 = PlotUtils.getThirdPoint(pnt3, midPnt, 0, len * 0.3, true);
+      var midPnt2 = PlotUtils.getThirdPoint(pnt3, midPnt, 0, len * 0.5, true);
+      midPnt1 = PlotUtils.getThirdPoint(midPnt, midPnt1, Constants.HALF_PI, len / 5, clockWise);
+      midPnt2 = PlotUtils.getThirdPoint(midPnt, midPnt2, Constants.HALF_PI, len / 4, clockWise);
+      var points = [midPnt, midPnt1, midPnt2, pnt3];
+      var arrowPnts = this.getArrowHeadPoints(points);
+      if (arrowPnts && Array.isArray(arrowPnts) && arrowPnts.length > 0) {
+        var _ref2 = [arrowPnts[0], arrowPnts[4]],
+            neckLeftPoint = _ref2[0],
+            neckRightPoint = _ref2[1];
+
+        var tailWidthFactor = PlotUtils.MathDistance(pnt1, pnt2) / PlotUtils.getBaseLength(points) / 2;
+        var bodyPnts = this.getArrowBodyPoints(points, neckLeftPoint, neckRightPoint, tailWidthFactor);
+        if (bodyPnts) {
+          var n = bodyPnts.length;
+          var lPoints = bodyPnts.slice(0, n / 2);
+          var rPoints = bodyPnts.slice(n / 2, n);
+          lPoints.push(neckLeftPoint);
+          rPoints.push(neckRightPoint);
+          lPoints = lPoints.reverse();
+          lPoints.push(pnt2);
+          rPoints = rPoints.reverse();
+          rPoints.push(pnt1);
+          return lPoints.reverse().concat(arrowPnts, rPoints);
+        }
+      } else {
+        throw new Error('插值出错');
+      }
+    }
+  }, {
+    key: 'getArrowHeadPoints',
+    value: function getArrowHeadPoints(points) {
+      try {
+        var len = PlotUtils.getBaseLength(points);
+        var headHeight = len * this.headHeightFactor;
+        var headPnt = points[points.length - 1];
+        var headWidth = headHeight * this.headWidthFactor;
+        var neckWidth = headHeight * this.neckWidthFactor;
+        var neckHeight = headHeight * this.neckHeightFactor;
+        var headEndPnt = PlotUtils.getThirdPoint(points[points.length - 2], headPnt, 0, headHeight, true);
+        var neckEndPnt = PlotUtils.getThirdPoint(points[points.length - 2], headPnt, 0, neckHeight, true);
+        var headLeft = PlotUtils.getThirdPoint(headPnt, headEndPnt, Constants.HALF_PI, headWidth, false);
+        var headRight = PlotUtils.getThirdPoint(headPnt, headEndPnt, Constants.HALF_PI, headWidth, true);
+        var neckLeft = PlotUtils.getThirdPoint(headPnt, neckEndPnt, Constants.HALF_PI, neckWidth, false);
+        var neckRight = PlotUtils.getThirdPoint(headPnt, neckEndPnt, Constants.HALF_PI, neckWidth, true);
+        return [neckLeft, headLeft, headPnt, headRight, neckRight];
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'getArrowBodyPoints',
+    value: function getArrowBodyPoints(points, neckLeft, neckRight, tailWidthFactor) {
+      var allLen = PlotUtils.wholeDistance(points);
+      var len = PlotUtils.getBaseLength(points);
+      var tailWidth = len * tailWidthFactor;
+      var neckWidth = PlotUtils.MathDistance(neckLeft, neckRight);
+      var widthDif = (tailWidth - neckWidth) / 2;
+      var tempLen = 0,
+          leftBodyPnts = [],
+          rightBodyPnts = [];
+
+      for (var i = 1; i < points.length - 1; i++) {
+        var angle = PlotUtils.getAngleOfThreePoints(points[i - 1], points[i], points[i + 1]) / 2;
+        tempLen += PlotUtils.MathDistance(points[i - 1], points[i]);
+        var w = (tailWidth / 2 - tempLen / allLen * widthDif) / Math.sin(angle);
+        var left = PlotUtils.getThirdPoint(points[i - 1], points[i], Math.PI - angle, w, true);
+        var right = PlotUtils.getThirdPoint(points[i - 1], points[i], angle, w, false);
+        leftBodyPnts.push(left);
+        rightBodyPnts.push(right);
+      }
+      return leftBodyPnts.concat(rightBodyPnts);
+    }
+  }, {
+    key: 'getTempPoint4',
+    value: function getTempPoint4(linePnt1, linePnt2, point) {
+      try {
+        var midPnt = PlotUtils.Mid(linePnt1, linePnt2);
+        var len = PlotUtils.MathDistance(midPnt, point);
+        var angle = PlotUtils.getAngleOfThreePoints(linePnt1, midPnt, point);
+        var symPnt = undefined,
+            distance1 = undefined,
+            distance2 = undefined,
+            mid = undefined;
+
+        if (angle < Constants.HALF_PI) {
+          distance1 = len * Math.sin(angle);
+          distance2 = len * Math.cos(angle);
+          mid = PlotUtils.getThirdPoint(linePnt1, midPnt, Constants.HALF_PI, distance1, false);
+          symPnt = PlotUtils.getThirdPoint(midPnt, mid, Constants.HALF_PI, distance2, true);
+        } else if (angle >= Constants.HALF_PI && angle < Math.PI) {
+          distance1 = len * Math.sin(Math.PI - angle);
+          distance2 = len * Math.cos(Math.PI - angle);
+          mid = PlotUtils.getThirdPoint(linePnt1, midPnt, Constants.HALF_PI, distance1, false);
+          symPnt = PlotUtils.getThirdPoint(midPnt, mid, Constants.HALF_PI, distance2, false);
+        } else if (angle >= Math.PI && angle < Math.PI * 1.5) {
+          distance1 = len * Math.sin(angle - Math.PI);
+          distance2 = len * Math.cos(angle - Math.PI);
+          mid = PlotUtils.getThirdPoint(linePnt1, midPnt, Constants.HALF_PI, distance1, true);
+          symPnt = PlotUtils.getThirdPoint(midPnt, mid, Constants.HALF_PI, distance2, true);
+        } else {
+          distance1 = len * Math.sin(Math.PI * 2 - angle);
+          distance2 = len * Math.cos(Math.PI * 2 - angle);
+          mid = PlotUtils.getThirdPoint(linePnt1, midPnt, Constants.HALF_PI, distance1, true);
+          symPnt = PlotUtils.getThirdPoint(midPnt, mid, Constants.HALF_PI, distance2, false);
+        }
+        return symPnt;
       } catch (e) {
         console.log(e);
       }
@@ -11810,7 +11924,7 @@ var RectAngle = function (_ol$geom$Polygon) {
     var _this = _possibleConstructorReturn(this, (RectAngle.__proto__ || Object.getPrototypeOf(RectAngle)).call(this));
 
     _constants.ol.geom.Polygon.call(_this, []);
-    _this.type = _PlotTypes2.default.Rectangle;
+    _this.type = _PlotTypes2.default.RECTANGLE;
     _this.fixPointCount = 2;
     _this.set('params', params);
     _this.setPoints(points);
@@ -12425,6 +12539,10 @@ var _FreePolygon = __webpack_require__(183);
 
 var _FreePolygon2 = _interopRequireDefault(_FreePolygon);
 
+var _AttackArrow = __webpack_require__(79);
+
+var _AttackArrow2 = _interopRequireDefault(_AttackArrow);
+
 var _DoubleArrow = __webpack_require__(175);
 
 var _DoubleArrow2 = _interopRequireDefault(_DoubleArrow);
@@ -12453,6 +12571,10 @@ var _TailedSquadCombat = __webpack_require__(179);
 
 var _TailedSquadCombat2 = _interopRequireDefault(_TailedSquadCombat);
 
+var _GatheringPlace = __webpack_require__(438);
+
+var _GatheringPlace2 = _interopRequireDefault(_GatheringPlace);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
@@ -12468,13 +12590,15 @@ exports.default = {
   ClosedCurve: _ClosedCurve2.default,
   Polygon: _Polygon2.default,
   FreePolygon: _FreePolygon2.default,
+  AttackArrow: _AttackArrow2.default,
   DoubleArrow: _DoubleArrow2.default,
   StraightArrow: _StraightArrow2.default,
   FineArrow: _FineArrow2.default,
   AssaultDirection: _AssaultDirection2.default,
   TailedAttackArrow: _TailedAttackArrow2.default,
   SquadCombat: _SquadCombat2.default,
-  TailedSquadCombat: _TailedSquadCombat2.default
+  TailedSquadCombat: _TailedSquadCombat2.default,
+  GatheringPlace: _GatheringPlace2.default
 };
 module.exports = exports['default'];
 
@@ -12544,6 +12668,8 @@ var Plot = function () {
           return new _index2.default.ClosedCurve(points, params);
         case _PlotTypes2.default.POLYGON:
           return new _index2.default.Polygon(points, params);
+        case _PlotTypes2.default.ATTACK_ARROW:
+          return new _index2.default.AttackArrow(points, params);
         case _PlotTypes2.default.FREE_POLYGON:
           return new _index2.default.FreePolygon(points, params);
         case _PlotTypes2.default.DOUBLE_ARROW:
@@ -12560,6 +12686,8 @@ var Plot = function () {
           return new _index2.default.SquadCombat(points, params);
         case _PlotTypes2.default.TAILED_SQUAD_COMBAT:
           return new _index2.default.TailedSquadCombat(points, params);
+        case _PlotTypes2.default.GATHERING_PLACE:
+          return new _index2.default.GatheringPlace(points, params);
       }
       return null;
     }
@@ -23492,7 +23620,7 @@ module.exports = {
 				"spec": ">=2.4.3 <3.0.0",
 				"type": "range"
 			},
-			"E:\\codeRepository\\github\\HMap"
+			"E:\\github\\HMap"
 		]
 	],
 	"_cnpm_publish_time": 1488570791097,
@@ -23524,11 +23652,11 @@ module.exports = {
 	"_requiredBy": [
 		"/"
 	],
-	"_resolved": "http://registry.npmjs.org/proj4/-/proj4-2.4.3.tgz",
+	"_resolved": "https://registry.npm.taobao.org/proj4/download/proj4-2.4.3.tgz",
 	"_shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
 	"_shrinkwrap": null,
 	"_spec": "proj4@^2.4.3",
-	"_where": "E:\\codeRepository\\github\\HMap",
+	"_where": "E:\\github\\HMap",
 	"author": "",
 	"bugs": {
 		"url": "https://github.com/proj4js/proj4js/issues"
@@ -24809,6 +24937,165 @@ module.exports = {
 __webpack_require__(159);
 module.exports = __webpack_require__(158);
 
+
+/***/ }),
+/* 438 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _PlotTypes = __webpack_require__(9);
+
+var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
+
+var _constants = __webpack_require__(1);
+
+var _utils = __webpack_require__(14);
+
+var PlotUtils = _interopRequireWildcard(_utils);
+
+var _Constants = __webpack_require__(29);
+
+var Constants = _interopRequireWildcard(_Constants);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var GatheringPlace = function (_ol$geom$Polygon) {
+  _inherits(GatheringPlace, _ol$geom$Polygon);
+
+  function GatheringPlace(points, params) {
+    _classCallCheck(this, GatheringPlace);
+
+    var _this = _possibleConstructorReturn(this, (GatheringPlace.__proto__ || Object.getPrototypeOf(GatheringPlace)).call(this));
+
+    _constants.ol.geom.Polygon.call(_this, []);
+    _this.type = _PlotTypes2.default.GATHERING_PLACE;
+    _this.t = 0.4;
+    _this.fixPointCount = 3;
+    _this.set('params', params);
+    _this.setPoints(points);
+    return _this;
+  }
+
+  _createClass(GatheringPlace, [{
+    key: 'generate',
+    value: function generate() {
+      var pnts = this.getPoints();
+      var points = this.getPointCount();
+      if (pnts.length < 2) {
+        return false;
+      } else {
+        if (points === 2) {
+          var _mid = PlotUtils.Mid(pnts[0], pnts[1]);
+          var d = PlotUtils.MathDistance(pnts[0], _mid) / 0.9;
+          var pnt = PlotUtils.getThirdPoint(pnts[0], _mid, Constants.HALF_PI, d, true);
+          pnts = [pnts[0], pnt, pnts[1]];
+        }
+        var mid = PlotUtils.Mid(pnts[0], pnts[2]);
+        pnts.push(mid, pnts[0], pnts[1]);
+        var normals = [],
+            pnt1 = undefined,
+            pnt2 = undefined,
+            pnt3 = undefined,
+            pList = [];
+
+        for (var i = 0; i < pnts.length - 2; i++) {
+          pnt1 = pnts[i];
+          pnt2 = pnts[i + 1];
+          pnt3 = pnts[i + 2];
+          var normalPoints = PlotUtils.getBisectorNormals(this.t, pnt1, pnt2, pnt3);
+          normals = normals.concat(normalPoints);
+        }
+        var count = normals.length;
+        normals = [normals[count - 1]].concat(normals.slice(0, count - 1));
+        for (var _i = 0; _i < pnts.length - 2; _i++) {
+          pnt1 = pnts[_i];
+          pnt2 = pnts[_i + 1];
+          pList.push(pnt1);
+          for (var t = 0; t <= Constants.FITTING_COUNT; t++) {
+            var _pnt = PlotUtils.getCubicValue(t / Constants.FITTING_COUNT, pnt1, normals[_i * 2], normals[_i * 2 + 1], pnt2);
+            pList.push(_pnt);
+          }
+          pList.push(pnt2);
+        }
+        this.setCoordinates([pList]);
+      }
+    }
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      if (map && map instanceof _constants.ol.Map) {
+        this.map = map;
+      } else {
+        throw new Error('传入的不是地图对象！');
+      }
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }, {
+    key: 'isPlot',
+    value: function isPlot() {
+      return true;
+    }
+  }, {
+    key: 'setPoints',
+    value: function setPoints(value) {
+      this.points = !value ? [] : value;
+      if (this.points.length >= 2) {
+        this.generate();
+      }
+    }
+  }, {
+    key: 'getPoints',
+    value: function getPoints() {
+      return this.points.slice(0);
+    }
+  }, {
+    key: 'getPointCount',
+    value: function getPointCount() {
+      return this.points.length;
+    }
+  }, {
+    key: 'updatePoint',
+    value: function updatePoint(point, index) {
+      if (index >= 0 && index < this.points.length) {
+        this.points[index] = point;
+        this.generate();
+      }
+    }
+  }, {
+    key: 'updateLastPoint',
+    value: function updateLastPoint(point) {
+      this.updatePoint(point, this.points.length - 1);
+    }
+  }, {
+    key: 'finishDrawing',
+    value: function finishDrawing() {}
+  }]);
+
+  return GatheringPlace;
+}(_constants.ol.geom.Polygon);
+
+exports.default = GatheringPlace;
+module.exports = exports['default'];
 
 /***/ })
 /******/ ]);

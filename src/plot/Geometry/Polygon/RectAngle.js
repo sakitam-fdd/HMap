@@ -10,7 +10,7 @@ class RectAngle extends (ol.geom.Polygon) {
   constructor (points, params) {
     super()
     ol.geom.Polygon.call(this, [])
-    this.type = PlotTypes.Rectangle
+    this.type = PlotTypes.RECTANGLE
     this.fixPointCount = 2
     this.set('params', params)
     this.setPoints(points)
