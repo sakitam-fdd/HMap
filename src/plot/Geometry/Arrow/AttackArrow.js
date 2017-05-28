@@ -27,20 +27,33 @@ class AttackArrow extends (ol.geom.Polygon) {
    */
   generate () {
     try {
-      let pnts = this.getPoints()
-      let [pnt1, pnt2] = [pnts[0], pnts[1]]
-      let len = PlotUtils.getBaseLength(pnts)
-      let tailWidth = len * this.tailWidthFactor
-      let neckWidth = len * this.neckWidthFactor
-      let headWidth = len * this.headWidthFactor
-      let tailLeft = PlotUtils.getThirdPoint(pnt2, pnt1, Constants.HALF_PI, tailWidth, true)
-      let tailRight = PlotUtils.getThirdPoint(pnt2, pnt1, Constants.HALF_PI, tailWidth, false)
-      let headLeft = PlotUtils.getThirdPoint(pnt1, pnt2, this.headAngle, headWidth, false)
-      let headRight = PlotUtils.getThirdPoint(pnt1, pnt2, this.headAngle, headWidth, true)
-      let neckLeft = PlotUtils.getThirdPoint(pnt1, pnt2, this.neckAngle, neckWidth, false)
-      let neckRight = PlotUtils.getThirdPoint(pnt1, pnt2, this.neckAngle, neckWidth, true)
-      let pList = [tailLeft, neckLeft, headLeft, pnt2, headRight, neckRight, tailRight]
-      this.setCoordinates([pList])
+      let points = this.getPointCount()
+      if (points < 2) {
+        return false
+      } else if (points === 2) {
+        this.setCoordinates([this.points])
+      } else {
+        let pnts = this.getPoints()
+        let [tailLeft, tailRight] = [pnts[0], pnts[1]]
+        if (PlotUtils.isClockWise(pnts[0], pnts[1], pnts[2])) {
+          tailLeft = pnts[1]
+          tailRight = pnts[0]
+        }
+        let midTail = PlotUtils.Mid(tailLeft, tailRight)
+        let bonePnts = [midTail].concat(pnts.slice(2))
+        let headPnts = this.getArrowHeadPoints(bonePnts, tailLeft, tailRight)
+        let [neckLeft, neckRight] = [headPnts[0], headPnts[4]]
+        let tailWidthFactor = PlotUtils.MathDistance(tailLeft, tailRight) / PlotUtils.getBaseLength(bonePnts)
+        let bodyPnts = this.getArrowBodyPoints(bonePnts, neckLeft, neckRight, tailWidthFactor)
+        let count = bodyPnts.length
+        let leftPnts = [tailLeft].concat(bodyPnts.slice(0, count / 2))
+        leftPnts.push(neckLeft)
+        let rightPnts = [tailRight].concat(bodyPnts.slice(count / 2, count))
+        rightPnts.push(neckRight)
+        leftPnts = PlotUtils.getQBSplinePoints(leftPnts)
+        rightPnts = PlotUtils.getQBSplinePoints(rightPnts)
+        this.setCoordinates([leftPnts.concat(headPnts, rightPnts.reverse())])
+      }
     } catch (e) {
       console.log(e)
     }
@@ -89,13 +102,19 @@ class AttackArrow extends (ol.geom.Polygon) {
    * @param points
    * @returns {[*,*,*,*,*]}
    */
-  getArrowHeadPoints (points) {
+  getArrowHeadPoints (points, tailLeft, tailRight) {
     try {
       let len = PlotUtils.getBaseLength(points)
       let headHeight = len * this.headHeightFactor
       let headPnt = points[points.length - 1]
+      len = PlotUtils.MathDistance(headPnt, points[points.length - 2])
+      let tailWidth = PlotUtils.MathDistance(tailLeft, tailRight)
+      if (headHeight > tailWidth * this.headTailFactor) {
+        headHeight = tailWidth * this.headTailFactor
+      }
       let headWidth = headHeight * this.headWidthFactor
       let neckWidth = headHeight * this.neckWidthFactor
+      headHeight = headHeight > len ? len : headHeight
       let neckHeight = headHeight * this.neckHeightFactor
       let headEndPnt = PlotUtils.getThirdPoint(points[points.length - 2], headPnt, 0, headHeight, true)
       let neckEndPnt = PlotUtils.getThirdPoint(points[points.length - 2], headPnt, 0, neckHeight, true)
