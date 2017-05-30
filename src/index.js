@@ -5,7 +5,7 @@ import Map from './map/Map'
 import Layer from './layer/Layer'
 import Feature from './feature/feature'
 import CoordsTransform from './plugins/CoordsTransform'
-// import Ol3Echarts from './plugins/Ol3Echarts'
+import EchartsComponent from './EchartsComponent/index'
 import LayerSwitcher from './plugins/LayerSwitcher'
 // import CustomCircle from './plugins/CustomCircle'
 import MeasureTool from './plugins/MeasureTool'
@@ -25,7 +25,7 @@ HMap.PlotEdit = PlotEdit
 HMap.Layer = Layer
 HMap.Feature = Feature
 HMap.CoordsTransform = CoordsTransform
-// HMap.Ol3Echarts = Ol3Echarts
+HMap.EchartsComponent = EchartsComponent
 HMap.LayerSwitcher = LayerSwitcher
 // HMap.CustomCircle = CustomCircle
 HMap.MeasureTool = MeasureTool

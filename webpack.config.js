@@ -1,12 +1,12 @@
 /* global __dirname, require, module */
 
-const webpack = require('webpack');
-const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
-const path = require('path');
+const webpack = require('webpack')
+const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin
+const path = require('path')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const env = require('yargs').argv.env; // use --env with webpack 2
+const env = require('yargs').argv.env // use --env with webpack 2
 
-let libraryName = 'HMap';
+let libraryName = 'HMap'
 
 const resolve = (dir) => {
   return path.join(__dirname, '..', dir)
@@ -20,10 +20,10 @@ let plugins = [
 let outputFile
 
 if (env === 'build') {
-  plugins.push(new UglifyJsPlugin({ minimize: true }));
-  outputFile = libraryName + '.min.js';
+  plugins.push(new UglifyJsPlugin({ minimize: true }))
+  outputFile = libraryName + '.min.js'
 } else {
-  outputFile = libraryName + '.js';
+  outputFile = libraryName + '.js'
 }
 
 const config = {
@@ -38,6 +38,9 @@ const config = {
     library: libraryName,
     libraryTarget: 'umd',
     umdNamedDefine: true
+  },
+  externals: {
+    'echarts': 'echarts'
   },
   module: {
     rules: [
@@ -59,6 +62,6 @@ const config = {
     }
   },
   plugins: plugins
-};
+}
 
-module.exports = config;
+module.exports = config

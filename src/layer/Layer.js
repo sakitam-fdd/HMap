@@ -308,6 +308,104 @@ class Layer extends mix(Style) {
   }
 
   /**
+   * 创建ImageWMSLayer
+   * @param layerName
+   * @param params
+   * @returns {string}
+   */
+  creatImageWMSLayer (layerName, params) {
+    let proj = this.projection.getCode()
+    let layer = ''
+    if (this.map) {
+      layer = this.getLayerByLayerName(layerName)
+      if (!(layer instanceof ol.layer.Image)) {
+        layer = ''
+      } else {
+        this.map.removeLayer(layer)
+        layer = ''
+      }
+      if (!layer && params && params['layerUrl'] && params['create']) {
+        layer = new ol.layer.Image({
+          layerName: layerName,
+          visible: (params['visible'] === true) ? params['visible'] : false,
+          opacity: (params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1,
+          source: new ol.source.ImageWMS({
+            url: params['layerUrl'],
+            params: {
+              LAYERS: params['layers'], // require
+              STYLES: params['style'] ? params['style'] : '',
+              VERSION: params['version'] ? params['version'] : '1.3.0',
+              WIDTH: params['width'] ? params['width'] : 256,
+              HEIGHT: params['height'] ? params['height'] : 256,
+              BBOX: params['bbox'], // require
+              SRS: !proj ? 'EPSG:4326' : proj,
+              CRS: !proj ? 'EPSG:4326' : proj,
+              REQUEST: 'GetMap',
+              TRANSPARENT: true,
+              TILED: (params['tiled'] === false) ? params['tiled'] : true,
+              TILESORIGIN: params['tiledsorrigin'] ? params['tiledsorrigin'] : undefined,
+              SERVICE: 'WMS',
+              FORMAT: params['format'] ? params['format'] : 'image/png'
+            },
+            wrapX: false
+          })
+        })
+        this.map.addLayer(layer)
+      }
+    }
+    return layer
+  }
+
+  /**
+   * 创建TileWMSLayer
+   * @param layerName
+   * @param params
+   * @returns {string}
+   */
+  creatTileWMSLayer (layerName, params) {
+    let proj = this.projection.getCode()
+    let layer = ''
+    if (this.map) {
+      layer = this.getLayerByLayerName(layerName)
+      if (!(layer instanceof ol.layer.Image)) {
+        layer = ''
+      } else {
+        this.map.removeLayer(layer)
+        layer = ''
+      }
+      if (!layer && params && params['layerUrl'] && params['create']) {
+        layer = new ol.layer.TileWMS({
+          layerName: layerName,
+          visible: (params['visible'] === true) ? params['visible'] : false,
+          opacity: (params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1,
+          source: new ol.source.ImageWMS({
+            url: params['layerUrl'],
+            params: {
+              LAYERS: params['layers'], // require
+              STYLES: params['style'] ? params['style'] : '',
+              VERSION: params['version'] ? params['version'] : '1.3.0',
+              WIDTH: params['width'] ? params['width'] : 256,
+              HEIGHT: params['height'] ? params['height'] : 256,
+              BBOX: params['bbox'], // require
+              SRS: !proj ? 'EPSG:4326' : proj,
+              CRS: !proj ? 'EPSG:4326' : proj,
+              REQUEST: 'GetMap',
+              TRANSPARENT: true,
+              TILED: (params['tiled'] === false) ? params['tiled'] : true,
+              TILESORIGIN: params['tiledsorrigin'] ? params['tiledsorrigin'] : undefined,
+              SERVICE: 'WMS',
+              FORMAT: params['format'] ? params['format'] : 'image/png'
+            },
+            wrapX: false
+          })
+        })
+        this.map.addLayer(layer)
+      }
+    }
+    return layer
+  }
+
+  /**
    * 移除图层
    * @param layerName
    */

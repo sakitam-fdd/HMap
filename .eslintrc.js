@@ -28,7 +28,8 @@ module.exports = {
     "before": true,
     "it": true,
     "expect": true,
-    "sinon": true
+    "sinon": true,
+    "define": true
   },
   "rules": {
     "arrow-parens": 0,
