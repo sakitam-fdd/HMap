@@ -1,14 +1,14 @@
 /*! This file is created by FDD */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("echarts"));
+		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
-		define("HMap", ["echarts"], factory);
+		define("HMap", [], factory);
 	else if(typeof exports === 'object')
-		exports["HMap"] = factory(require("echarts"));
+		exports["HMap"] = factory();
 	else
-		root["HMap"] = factory(root["echarts"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_54__) {
+		root["HMap"] = factory();
+})(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -141,11 +141,11 @@ var _proj = __webpack_require__(409);
 
 var _proj2 = _interopRequireDefault(_proj);
 
-var _openlayers = __webpack_require__(386);
+var _openlayers = __webpack_require__(149);
 
 var _openlayers2 = _interopRequireDefault(_openlayers);
 
-var _config2 = __webpack_require__(167);
+var _config2 = __webpack_require__(168);
 
 var _config3 = _interopRequireDefault(_config2);
 
@@ -973,7 +973,7 @@ var ctx      = __webpack_require__(31)
   , IObject  = __webpack_require__(57)
   , toObject = __webpack_require__(14)
   , toLength = __webpack_require__(12)
-  , asc      = __webpack_require__(207);
+  , asc      = __webpack_require__(208);
 module.exports = function(TYPE, $create){
   var IS_MAP        = TYPE == 1
     , IS_FILTER     = TYPE == 2
@@ -2013,12 +2013,7 @@ module.exports = exporter;
 });
 
 /***/ }),
-/* 54 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_54__;
-
-/***/ }),
+/* 54 */,
 /* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5206,7 +5201,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.DomUtil = undefined;
 
-var _domUtil = __webpack_require__(168);
+var _domUtil = __webpack_require__(169);
 
 var DomUtil = _interopRequireWildcard(_domUtil);
 
@@ -7026,11108 +7021,6 @@ function getMinNorthing(zoneLetter) {
 
 /***/ }),
 /* 149 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = (function(x, y) {
-  x = Math.abs(x);
-  y = Math.abs(y);
-  var a = Math.max(x, y);
-  var b = Math.min(x, y) / (a ? a : 1);
-
-  return a * Math.sqrt(1 + Math.pow(b, 2));
-});
-
-
-/***/ }),
-/* 150 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var C00 = 1;
-var C02 = 0.25;
-var C04 = 0.046875;
-var C06 = 0.01953125;
-var C08 = 0.01068115234375;
-var C22 = 0.75;
-var C44 = 0.46875;
-var C46 = 0.01302083333333333333;
-var C48 = 0.00712076822916666666;
-var C66 = 0.36458333333333333333;
-var C68 = 0.00569661458333333333;
-var C88 = 0.3076171875;
-
-/* harmony default export */ __webpack_exports__["a"] = (function(es) {
-  var en = [];
-  en[0] = C00 - es * (C02 + es * (C04 + es * (C06 + es * C08)));
-  en[1] = es * (C22 - es * (C04 + es * (C06 + es * C08)));
-  var t = es * es;
-  en[2] = t * (C44 - es * (C46 + es * C48));
-  t *= es;
-  en[3] = t * (C66 - es * C68);
-  en[4] = t * es * C88;
-  return en;
-});
-
-/***/ }),
-/* 151 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pj_mlfn__ = __webpack_require__(112);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(4);
-
-
-
-var MAX_ITER = 20;
-
-/* harmony default export */ __webpack_exports__["a"] = (function(arg, es, en) {
-  var k = 1 / (1 - es);
-  var phi = arg;
-  for (var i = MAX_ITER; i; --i) { /* rarely goes over 2 iterations */
-    var s = Math.sin(phi);
-    var t = 1 - es * s * s;
-    //t = this.pj_mlfn(phi, s, Math.cos(phi), en) - arg;
-    //phi -= t * (t * Math.sqrt(t)) * k;
-    t = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__pj_mlfn__["a" /* default */])(phi, s, Math.cos(phi), en) - arg) * (t * Math.sqrt(t)) * k;
-    phi -= t;
-    if (Math.abs(t) < __WEBPACK_IMPORTED_MODULE_1__constants_values__["a" /* EPSLN */]) {
-      return phi;
-    }
-  }
-  //..reportError("cass:pj_inv_mlfn: Convergence error");
-  return phi;
-});
-
-
-/***/ }),
-/* 152 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = (function(x) {
-  var r = Math.exp(x);
-  r = (r - 1 / r) / 2;
-  return r;
-});
-
-/***/ }),
-/* 153 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = (function (array){
-  var out = {
-    x: array[0],
-    y: array[1]
-  };
-  if (array.length>2) {
-    out.z = array[2];
-  }
-  if (array.length>3) {
-    out.m = array[3];
-  }
-  return out;
-});
-
-/***/ }),
-/* 154 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__global__ = __webpack_require__(408);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projString__ = __webpack_require__(155);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_wkt_parser__ = __webpack_require__(158);
-
-
-
-
-function defs(name) {
-  /*global console*/
-  var that = this;
-  if (arguments.length === 2) {
-    var def = arguments[1];
-    if (typeof def === 'string') {
-      if (def.charAt(0) === '+') {
-        defs[name] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__projString__["a" /* default */])(arguments[1]);
-      }
-      else {
-        defs[name] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_wkt_parser__["a" /* default */])(arguments[1]);
-      }
-    } else {
-      defs[name] = def;
-    }
-  }
-  else if (arguments.length === 1) {
-    if (Array.isArray(name)) {
-      return name.map(function(v) {
-        if (Array.isArray(v)) {
-          defs.apply(that, v);
-        }
-        else {
-          defs(v);
-        }
-      });
-    }
-    else if (typeof name === 'string') {
-      if (name in defs) {
-        return defs[name];
-      }
-    }
-    else if ('EPSG' in name) {
-      defs['EPSG:' + name.EPSG] = name;
-    }
-    else if ('ESRI' in name) {
-      defs['ESRI:' + name.ESRI] = name;
-    }
-    else if ('IAU2000' in name) {
-      defs['IAU2000:' + name.IAU2000] = name;
-    }
-    else {
-      console.log(name);
-    }
-    return;
-  }
-
-
-}
-__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__global__["a" /* default */])(defs);
-/* harmony default export */ __webpack_exports__["a"] = (defs);
-
-
-/***/ }),
-/* 155 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_PrimeMeridian__ = __webpack_require__(400);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_units__ = __webpack_require__(401);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__match__ = __webpack_require__(114);
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["a"] = (function(defData) {
-  var self = {};
-  var paramObj = defData.split('+').map(function(v) {
-    return v.trim();
-  }).filter(function(a) {
-    return a;
-  }).reduce(function(p, a) {
-    var split = a.split('=');
-    split.push(true);
-    p[split[0].toLowerCase()] = split[1];
-    return p;
-  }, {});
-  var paramName, paramVal, paramOutname;
-  var params = {
-    proj: 'projName',
-    datum: 'datumCode',
-    rf: function(v) {
-      self.rf = parseFloat(v);
-    },
-    lat_0: function(v) {
-      self.lat0 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    lat_1: function(v) {
-      self.lat1 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    lat_2: function(v) {
-      self.lat2 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    lat_ts: function(v) {
-      self.lat_ts = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    lon_0: function(v) {
-      self.long0 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    lon_1: function(v) {
-      self.long1 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    lon_2: function(v) {
-      self.long2 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    alpha: function(v) {
-      self.alpha = parseFloat(v) * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    lonc: function(v) {
-      self.longc = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    x_0: function(v) {
-      self.x0 = parseFloat(v);
-    },
-    y_0: function(v) {
-      self.y0 = parseFloat(v);
-    },
-    k_0: function(v) {
-      self.k0 = parseFloat(v);
-    },
-    k: function(v) {
-      self.k0 = parseFloat(v);
-    },
-    a: function(v) {
-      self.a = parseFloat(v);
-    },
-    b: function(v) {
-      self.b = parseFloat(v);
-    },
-    r_a: function() {
-      self.R_A = true;
-    },
-    zone: function(v) {
-      self.zone = parseInt(v, 10);
-    },
-    south: function() {
-      self.utmSouth = true;
-    },
-    towgs84: function(v) {
-      self.datum_params = v.split(",").map(function(a) {
-        return parseFloat(a);
-      });
-    },
-    to_meter: function(v) {
-      self.to_meter = parseFloat(v);
-    },
-    units: function(v) {
-      self.units = v;
-      var unit = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__match__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_2__constants_units__["a" /* default */], v);
-      if (unit) {
-        self.to_meter = unit.to_meter;
-      }
-    },
-    from_greenwich: function(v) {
-      self.from_greenwich = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    pm: function(v) {
-      var pm = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__match__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_1__constants_PrimeMeridian__["a" /* default */], v);
-      self.from_greenwich = (pm ? pm : parseFloat(v)) * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    nadgrids: function(v) {
-      if (v === '@null') {
-        self.datumCode = 'none';
-      }
-      else {
-        self.nadgrids = v;
-      }
-    },
-    axis: function(v) {
-      var legalAxis = "ewnsud";
-      if (v.length === 3 && legalAxis.indexOf(v.substr(0, 1)) !== -1 && legalAxis.indexOf(v.substr(1, 1)) !== -1 && legalAxis.indexOf(v.substr(2, 1)) !== -1) {
-        self.axis = v;
-      }
-    }
-  };
-  for (paramName in paramObj) {
-    paramVal = paramObj[paramName];
-    if (paramName in params) {
-      paramOutname = params[paramName];
-      if (typeof paramOutname === 'function') {
-        paramOutname(paramVal);
-      }
-      else {
-        self[paramOutname] = paramVal;
-      }
-    }
-    else {
-      self[paramName] = paramVal;
-    }
-  }
-  if(typeof self.datumCode === 'string' && self.datumCode !== "WGS84"){
-    self.datumCode = self.datumCode.toLowerCase();
-  }
-  return self;
-});
-
-
-/***/ }),
-/* 156 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_sinh__ = __webpack_require__(152);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_hypot__ = __webpack_require__(149);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_asinhy__ = __webpack_require__(390);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_gatg__ = __webpack_require__(394);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_clens__ = __webpack_require__(391);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_clens_cmplx__ = __webpack_require__(392);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__ = __webpack_require__(8);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-// Heavily based on this etmerc projection implementation
-// https://github.com/mbloch/mapshaper-proj/blob/master/src/projections/etmerc.js
-
-
-
-
-
-
-
-
-
-function init() {
-  if (this.es === undefined || this.es <= 0) {
-    throw new Error('incorrect elliptical usage');
-  }
-
-  this.x0 = this.x0 !== undefined ? this.x0 : 0;
-  this.y0 = this.y0 !== undefined ? this.y0 : 0;
-  this.long0 = this.long0 !== undefined ? this.long0 : 0;
-  this.lat0 = this.lat0 !== undefined ? this.lat0 : 0;
-
-  this.cgb = [];
-  this.cbg = [];
-  this.utg = [];
-  this.gtu = [];
-
-  var f = this.es / (1 + Math.sqrt(1 - this.es));
-  var n = f / (2 - f);
-  var np = n;
-
-  this.cgb[0] = n * (2 + n * (-2 / 3 + n * (-2 + n * (116 / 45 + n * (26 / 45 + n * (-2854 / 675 ))))));
-  this.cbg[0] = n * (-2 + n * ( 2 / 3 + n * ( 4 / 3 + n * (-82 / 45 + n * (32 / 45 + n * (4642 / 4725))))));
-
-  np = np * n;
-  this.cgb[1] = np * (7 / 3 + n * (-8 / 5 + n * (-227 / 45 + n * (2704 / 315 + n * (2323 / 945)))));
-  this.cbg[1] = np * (5 / 3 + n * (-16 / 15 + n * ( -13 / 9 + n * (904 / 315 + n * (-1522 / 945)))));
-
-  np = np * n;
-  this.cgb[2] = np * (56 / 15 + n * (-136 / 35 + n * (-1262 / 105 + n * (73814 / 2835))));
-  this.cbg[2] = np * (-26 / 15 + n * (34 / 21 + n * (8 / 5 + n * (-12686 / 2835))));
-
-  np = np * n;
-  this.cgb[3] = np * (4279 / 630 + n * (-332 / 35 + n * (-399572 / 14175)));
-  this.cbg[3] = np * (1237 / 630 + n * (-12 / 5 + n * ( -24832 / 14175)));
-
-  np = np * n;
-  this.cgb[4] = np * (4174 / 315 + n * (-144838 / 6237));
-  this.cbg[4] = np * (-734 / 315 + n * (109598 / 31185));
-
-  np = np * n;
-  this.cgb[5] = np * (601676 / 22275);
-  this.cbg[5] = np * (444337 / 155925);
-
-  np = Math.pow(n, 2);
-  this.Qn = this.k0 / (1 + n) * (1 + np * (1 / 4 + np * (1 / 64 + np / 256)));
-
-  this.utg[0] = n * (-0.5 + n * ( 2 / 3 + n * (-37 / 96 + n * ( 1 / 360 + n * (81 / 512 + n * (-96199 / 604800))))));
-  this.gtu[0] = n * (0.5 + n * (-2 / 3 + n * (5 / 16 + n * (41 / 180 + n * (-127 / 288 + n * (7891 / 37800))))));
-
-  this.utg[1] = np * (-1 / 48 + n * (-1 / 15 + n * (437 / 1440 + n * (-46 / 105 + n * (1118711 / 3870720)))));
-  this.gtu[1] = np * (13 / 48 + n * (-3 / 5 + n * (557 / 1440 + n * (281 / 630 + n * (-1983433 / 1935360)))));
-
-  np = np * n;
-  this.utg[2] = np * (-17 / 480 + n * (37 / 840 + n * (209 / 4480 + n * (-5569 / 90720 ))));
-  this.gtu[2] = np * (61 / 240 + n * (-103 / 140 + n * (15061 / 26880 + n * (167603 / 181440))));
-
-  np = np * n;
-  this.utg[3] = np * (-4397 / 161280 + n * (11 / 504 + n * (830251 / 7257600)));
-  this.gtu[3] = np * (49561 / 161280 + n * (-179 / 168 + n * (6601661 / 7257600)));
-
-  np = np * n;
-  this.utg[4] = np * (-4583 / 161280 + n * (108847 / 3991680));
-  this.gtu[4] = np * (34729 / 80640 + n * (-3418889 / 1995840));
-
-  np = np * n;
-  this.utg[5] = np * (-20648693 / 638668800);
-  this.gtu[5] = np * (212378941 / 319334400);
-
-  var Z = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_gatg__["a" /* default */])(this.cbg, this.lat0);
-  this.Zb = -this.Qn * (Z + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_clens__["a" /* default */])(this.gtu, 2 * Z));
-}
-
-function forward(p) {
-  var Ce = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__["a" /* default */])(p.x - this.long0);
-  var Cn = p.y;
-
-  Cn = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_gatg__["a" /* default */])(this.cbg, Cn);
-  var sin_Cn = Math.sin(Cn);
-  var cos_Cn = Math.cos(Cn);
-  var sin_Ce = Math.sin(Ce);
-  var cos_Ce = Math.cos(Ce);
-
-  Cn = Math.atan2(sin_Cn, cos_Ce * cos_Cn);
-  Ce = Math.atan2(sin_Ce * cos_Cn, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_hypot__["a" /* default */])(sin_Cn, cos_Cn * cos_Ce));
-  Ce = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_asinhy__["a" /* default */])(Math.tan(Ce));
-
-  var tmp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_clens_cmplx__["a" /* default */])(this.gtu, 2 * Cn, 2 * Ce);
-
-  Cn = Cn + tmp[0];
-  Ce = Ce + tmp[1];
-
-  var x;
-  var y;
-
-  if (Math.abs(Ce) <= 2.623395162778) {
-    x = this.a * (this.Qn * Ce) + this.x0;
-    y = this.a * (this.Qn * Cn + this.Zb) + this.y0;
-  }
-  else {
-    x = Infinity;
-    y = Infinity;
-  }
-
-  p.x = x;
-  p.y = y;
-
-  return p;
-}
-
-function inverse(p) {
-  var Ce = (p.x - this.x0) * (1 / this.a);
-  var Cn = (p.y - this.y0) * (1 / this.a);
-
-  Cn = (Cn - this.Zb) / this.Qn;
-  Ce = Ce / this.Qn;
-
-  var lon;
-  var lat;
-
-  if (Math.abs(Ce) <= 2.623395162778) {
-    var tmp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_clens_cmplx__["a" /* default */])(this.utg, 2 * Cn, 2 * Ce);
-
-    Cn = Cn + tmp[0];
-    Ce = Ce + tmp[1];
-    Ce = Math.atan(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_sinh__["a" /* default */])(Ce));
-
-    var sin_Cn = Math.sin(Cn);
-    var cos_Cn = Math.cos(Cn);
-    var sin_Ce = Math.sin(Ce);
-    var cos_Ce = Math.cos(Ce);
-
-    Cn = Math.atan2(sin_Cn * cos_Ce, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_hypot__["a" /* default */])(sin_Ce, cos_Ce * cos_Cn));
-    Ce = Math.atan2(sin_Ce, cos_Ce * cos_Cn);
-
-    lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__["a" /* default */])(Ce + this.long0);
-    lat = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_gatg__["a" /* default */])(this.cgb, Cn);
-  }
-  else {
-    lon = Infinity;
-    lat = Infinity;
-  }
-
-  p.x = lon;
-  p.y = lat;
-
-  return p;
-}
-
-var names = ["Extended_Transverse_Mercator", "Extended Transverse Mercator", "etmerc"];
-/* harmony default export */ __webpack_exports__["a"] = ({
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names
-});
-
-
-/***/ }),
-/* 157 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__datum_transform__ = __webpack_require__(405);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__adjust_axis__ = __webpack_require__(388);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Proj__ = __webpack_require__(109);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_toPoint__ = __webpack_require__(153);
-/* harmony export (immutable) */ __webpack_exports__["a"] = transform;
-
-
-
-
-
-function checkNotWGS(source, dest) {
-  return ((source.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["h" /* PJD_3PARAM */] || source.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["i" /* PJD_7PARAM */]) && dest.datumCode !== 'WGS84') || ((dest.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["h" /* PJD_3PARAM */] || dest.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["i" /* PJD_7PARAM */]) && source.datumCode !== 'WGS84');
-}
-
-function transform(source, dest, point) {
-  var wgs84;
-  if (Array.isArray(point)) {
-    point = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_toPoint__["a" /* default */])(point);
-  }
-
-  // Workaround for datum shifts towgs84, if either source or destination projection is not wgs84
-  if (source.datum && dest.datum && checkNotWGS(source, dest)) {
-    wgs84 = new __WEBPACK_IMPORTED_MODULE_3__Proj__["a" /* default */]('WGS84');
-    point = transform(source, wgs84, point);
-    source = wgs84;
-  }
-  // DGR, 2010/11/12
-  if (source.axis !== 'enu') {
-    point = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__adjust_axis__["a" /* default */])(source, false, point);
-  }
-  // Transform source points to long/lat, if they aren't already.
-  if (source.projName === 'longlat') {
-    point = {
-      x: point.x * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */],
-      y: point.y * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */]
-    };
-  }
-  else {
-    if (source.to_meter) {
-      point = {
-        x: point.x * source.to_meter,
-        y: point.y * source.to_meter
-      };
-    }
-    point = source.inverse(point); // Convert Cartesian to longlat
-  }
-  // Adjust for the prime meridian if necessary
-  if (source.from_greenwich) {
-    point.x += source.from_greenwich;
-  }
-
-  // Convert datums if needed, and if possible.
-  point = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__datum_transform__["a" /* default */])(source.datum, dest.datum, point);
-
-  // Adjust for the prime meridian if necessary
-  if (dest.from_greenwich) {
-    point = {
-      x: point.x - dest.from_greenwich,
-      y: point.y
-    };
-  }
-
-  if (dest.projName === 'longlat') {
-    // convert radians to decimal degrees
-    point = {
-      x: point.x * __WEBPACK_IMPORTED_MODULE_0__constants_values__["j" /* R2D */],
-      y: point.y * __WEBPACK_IMPORTED_MODULE_0__constants_values__["j" /* R2D */]
-    };
-  } else { // else project
-    point = dest.forward(point);
-    if (dest.to_meter) {
-      point = {
-        x: point.x / dest.to_meter,
-        y: point.y / dest.to_meter
-      };
-    }
-  }
-
-  // DGR, 2010/11/12
-  if (dest.axis !== 'enu') {
-    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__adjust_axis__["a" /* default */])(dest, true, point);
-  }
-
-  return point;
-}
-
-
-/***/ }),
-/* 158 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parser__ = __webpack_require__(442);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__process__ = __webpack_require__(443);
-var D2R = 0.01745329251994329577;
-
-
-
-
-
-function rename(obj, params) {
-  var outName = params[0];
-  var inName = params[1];
-  if (!(outName in obj) && (inName in obj)) {
-    obj[outName] = obj[inName];
-    if (params.length === 3) {
-      obj[outName] = params[2](obj[outName]);
-    }
-  }
-}
-
-function d2r(input) {
-  return input * D2R;
-}
-
-function cleanWKT(wkt) {
-  if (wkt.type === 'GEOGCS') {
-    wkt.projName = 'longlat';
-  } else if (wkt.type === 'LOCAL_CS') {
-    wkt.projName = 'identity';
-    wkt.local = true;
-  } else {
-    if (typeof wkt.PROJECTION === 'object') {
-      wkt.projName = Object.keys(wkt.PROJECTION)[0];
-    } else {
-      wkt.projName = wkt.PROJECTION;
-    }
-  }
-  if (wkt.UNIT) {
-    wkt.units = wkt.UNIT.name.toLowerCase();
-    if (wkt.units === 'metre') {
-      wkt.units = 'meter';
-    }
-    if (wkt.UNIT.convert) {
-      if (wkt.type === 'GEOGCS') {
-        if (wkt.DATUM && wkt.DATUM.SPHEROID) {
-          wkt.to_meter = wkt.UNIT.convert*wkt.DATUM.SPHEROID.a;
-        }
-      } else {
-        wkt.to_meter = wkt.UNIT.convert, 10;
-      }
-    }
-  }
-  var geogcs = wkt.GEOGCS;
-  if (wkt.type === 'GEOGCS') {
-    geogcs = wkt;
-  }
-  if (geogcs) {
-    //if(wkt.GEOGCS.PRIMEM&&wkt.GEOGCS.PRIMEM.convert){
-    //  wkt.from_greenwich=wkt.GEOGCS.PRIMEM.convert*D2R;
-    //}
-    if (geogcs.DATUM) {
-      wkt.datumCode = geogcs.DATUM.name.toLowerCase();
-    } else {
-      wkt.datumCode = geogcs.name.toLowerCase();
-    }
-    if (wkt.datumCode.slice(0, 2) === 'd_') {
-      wkt.datumCode = wkt.datumCode.slice(2);
-    }
-    if (wkt.datumCode === 'new_zealand_geodetic_datum_1949' || wkt.datumCode === 'new_zealand_1949') {
-      wkt.datumCode = 'nzgd49';
-    }
-    if (wkt.datumCode === 'wgs_1984') {
-      if (wkt.PROJECTION === 'Mercator_Auxiliary_Sphere') {
-        wkt.sphere = true;
-      }
-      wkt.datumCode = 'wgs84';
-    }
-    if (wkt.datumCode.slice(-6) === '_ferro') {
-      wkt.datumCode = wkt.datumCode.slice(0, - 6);
-    }
-    if (wkt.datumCode.slice(-8) === '_jakarta') {
-      wkt.datumCode = wkt.datumCode.slice(0, - 8);
-    }
-    if (~wkt.datumCode.indexOf('belge')) {
-      wkt.datumCode = 'rnb72';
-    }
-    if (geogcs.DATUM && geogcs.DATUM.SPHEROID) {
-      wkt.ellps = geogcs.DATUM.SPHEROID.name.replace('_19', '').replace(/[Cc]larke\_18/, 'clrk');
-      if (wkt.ellps.toLowerCase().slice(0, 13) === 'international') {
-        wkt.ellps = 'intl';
-      }
-
-      wkt.a = geogcs.DATUM.SPHEROID.a;
-      wkt.rf = parseFloat(geogcs.DATUM.SPHEROID.rf, 10);
-    }
-    if (~wkt.datumCode.indexOf('osgb_1936')) {
-      wkt.datumCode = 'osgb36';
-    }
-    if (~wkt.datumCode.indexOf('osni_1952')) {
-      wkt.datumCode = 'osni52';
-    }
-    if (~wkt.datumCode.indexOf('tm65')
-      || ~wkt.datumCode.indexOf('geodetic_datum_of_1965')) {
-      wkt.datumCode = 'ire65';
-    }
-  }
-  if (wkt.b && !isFinite(wkt.b)) {
-    wkt.b = wkt.a;
-  }
-
-  function toMeter(input) {
-    var ratio = wkt.to_meter || 1;
-    return input * ratio;
-  }
-  var renamer = function(a) {
-    return rename(wkt, a);
-  };
-  var list = [
-    ['standard_parallel_1', 'Standard_Parallel_1'],
-    ['standard_parallel_2', 'Standard_Parallel_2'],
-    ['false_easting', 'False_Easting'],
-    ['false_northing', 'False_Northing'],
-    ['central_meridian', 'Central_Meridian'],
-    ['latitude_of_origin', 'Latitude_Of_Origin'],
-    ['latitude_of_origin', 'Central_Parallel'],
-    ['scale_factor', 'Scale_Factor'],
-    ['k0', 'scale_factor'],
-    ['latitude_of_center', 'Latitude_of_center'],
-    ['lat0', 'latitude_of_center', d2r],
-    ['longitude_of_center', 'Longitude_Of_Center'],
-    ['longc', 'longitude_of_center', d2r],
-    ['x0', 'false_easting', toMeter],
-    ['y0', 'false_northing', toMeter],
-    ['long0', 'central_meridian', d2r],
-    ['lat0', 'latitude_of_origin', d2r],
-    ['lat0', 'standard_parallel_1', d2r],
-    ['lat1', 'standard_parallel_1', d2r],
-    ['lat2', 'standard_parallel_2', d2r],
-    ['alpha', 'azimuth', d2r],
-    ['srsCode', 'name']
-  ];
-  list.forEach(renamer);
-  if (!wkt.long0 && wkt.longc && (wkt.projName === 'Albers_Conic_Equal_Area' || wkt.projName === 'Lambert_Azimuthal_Equal_Area')) {
-    wkt.long0 = wkt.longc;
-  }
-  if (!wkt.lat_ts && wkt.lat1 && (wkt.projName === 'Stereographic_South_Pole' || wkt.projName === 'Polar Stereographic (variant B)')) {
-    wkt.lat0 = d2r(wkt.lat1 > 0 ? 90 : -90);
-    wkt.lat_ts = wkt.lat1;
-  }
-}
-/* harmony default export */ __webpack_exports__["a"] = (function(wkt) {
-  var lisp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__parser__["a" /* default */])(wkt);
-  var type = lisp.shift();
-  var name = lisp.shift();
-  lisp.unshift(['name', name]);
-  lisp.unshift(['type', type]);
-  var obj = {};
-  __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__process__["a" /* sExpr */])(lisp, obj);
-  cleanWKT(obj);
-  return obj;
-});
-
-
-/***/ }),
-/* 159 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _constants = __webpack_require__(1);
-
-var _Map = __webpack_require__(174);
-
-var _Map2 = _interopRequireDefault(_Map);
-
-var _Layer = __webpack_require__(55);
-
-var _Layer2 = _interopRequireDefault(_Layer);
-
-var _feature = __webpack_require__(80);
-
-var _feature2 = _interopRequireDefault(_feature);
-
-var _CoordsTransform = __webpack_require__(201);
-
-var _CoordsTransform2 = _interopRequireDefault(_CoordsTransform);
-
-var _index = __webpack_require__(161);
-
-var _index2 = _interopRequireDefault(_index);
-
-var _LayerSwitcher = __webpack_require__(203);
-
-var _LayerSwitcher2 = _interopRequireDefault(_LayerSwitcher);
-
-var _MeasureTool = __webpack_require__(204);
-
-var _MeasureTool2 = _interopRequireDefault(_MeasureTool);
-
-var _LayerSpyglass = __webpack_require__(170);
-
-var _LayerSpyglass2 = _interopRequireDefault(_LayerSpyglass);
-
-var _MisplacesGlass = __webpack_require__(171);
-
-var _MisplacesGlass2 = _interopRequireDefault(_MisplacesGlass);
-
-var _GeomCoder = __webpack_require__(202);
-
-var _GeomCoder2 = _interopRequireDefault(_GeomCoder);
-
-var _PlotDraw = __webpack_require__(178);
-
-var _PlotDraw2 = _interopRequireDefault(_PlotDraw);
-
-var _PlotEdit = __webpack_require__(179);
-
-var _PlotEdit2 = _interopRequireDefault(_PlotEdit);
-
-var _utils = __webpack_require__(82);
-
-var utils = _interopRequireWildcard(_utils);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var HMap = {};
-HMap.version = __webpack_require__(444).version;
-
-
-HMap.ol = _constants.ol;
-HMap.proj4 = _constants.proj4;
-HMap.Map = _Map2.default;
-HMap.Utils = utils;
-HMap.PlotDraw = _PlotDraw2.default;
-HMap.PlotEdit = _PlotEdit2.default;
-HMap.Layer = _Layer2.default;
-HMap.Feature = _feature2.default;
-HMap.CoordsTransform = _CoordsTransform2.default;
-HMap.EchartsComponent = _index2.default;
-HMap.LayerSwitcher = _LayerSwitcher2.default;
-
-HMap.MeasureTool = _MeasureTool2.default;
-HMap.LayerSpyglass = _LayerSpyglass2.default;
-HMap.MisplacesGlass = _MisplacesGlass2.default;
-HMap.GeomCoder = _GeomCoder2.default;
-
-HMap.inherits = function (childCtor, parentCtor) {
-  childCtor.prototype = Object.create(parentCtor.prototype);
-  childCtor.prototype.constructor = childCtor;
-};
-
-HMap.nullFunction = function () {};
-
-exports.default = HMap;
-module.exports = exports['default'];
-
-/***/ }),
-/* 160 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {
-
-__webpack_require__(385);
-
-__webpack_require__(441);
-
-__webpack_require__(205);
-
-if (global._babelPolyfill) {
-  throw new Error("only one instance of babel-polyfill is allowed");
-}
-global._babelPolyfill = true;
-
-var DEFINE_PROPERTY = "defineProperty";
-function define(O, key, value) {
-  O[key] || Object[DEFINE_PROPERTY](O, key, {
-    writable: true,
-    configurable: true,
-    value: value
-  });
-}
-
-define(String.prototype, "padLeft", "".padStart);
-define(String.prototype, "padRight", "".padEnd);
-
-"pop,reverse,shift,keys,values,entries,indexOf,every,some,forEach,map,filter,find,findIndex,includes,join,slice,concat,push,splice,unshift,sort,lastIndexOf,reduce,reduceRight,copyWithin,fill".split(",").forEach(function (key) {
-  [][key] && define(Array, key, Function.call.bind([][key]));
-});
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(115)))
-
-/***/ }),
-/* 161 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-__webpack_require__(163);
-var EchartsComponent = __webpack_require__(162);
-module.exports = EchartsComponent;
-
-/***/ }),
-/* 162 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var echarts = __webpack_require__(54);
-
-var EchartsComponent = function EchartsComponent(map) {
-  this.map = map;
-  var size = this.map.getSize();
-  var div = document.createElement('div');
-  div.style.position = 'absolute';
-  div.style.height = size[1] + 'px';
-  div.style.width = size[0] + 'px';
-  div.style.top = 0;
-  div.style.left = 0;
-  this.map.getViewport().appendChild(div);
-  this._echartsContainer = div;
-  this.chart = echarts.init(div);
-  if (!echarts) {
-    throw new Error('请先引入echarts3！');
-  }
-  echarts.Map = map;
-  this.resize();
-};
-
-EchartsComponent.prototype.remove = function () {
-  this._echartsContainer.parentNode.removeChild(this._echartsContainer);
-  this.map = undefined;
-  echarts.Map = undefined;
-};
-
-EchartsComponent.prototype.resize = function () {
-  var that = this;
-  var size = this.map.getSize();
-  that._echartsContainer.style.width = size[0] + 'px';
-  that._echartsContainer.style.height = size[1] + 'px';
-  window.onresize = function () {
-    that.chart.resize();
-  };
-};
-
-module.exports = EchartsComponent;
-
-/***/ }),
-/* 163 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var __WEBPACK_AMD_DEFINE_RESULT__;
-
-!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
-  __webpack_require__(54).registerCoordinateSystem('HMap', __webpack_require__(164));
-  __webpack_require__(165);
-  __webpack_require__(166);
-  __webpack_require__(54).registerAction({
-    type: 'MapRoam',
-    event: 'MapRoam',
-    update: 'updateLayout'
-  }, function (payload, ecModel) {});
-  return {
-    version: '1.2.0'
-  };
-}.call(exports, __webpack_require__, exports, module),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-/***/ }),
-/* 164 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var __WEBPACK_AMD_DEFINE_RESULT__;
-
-var ol = __webpack_require__(386);
-!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
-  var echarts = __webpack_require__(54);
-  var CoordSys = function CoordSys(mapInstance, api) {
-    this.Map = mapInstance;
-    this.dimensions = ['lng', 'lat'];
-    this._mapOffset = [0, 0];
-    this._api = api;
-  };
-
-  CoordSys.prototype.dimensions = ['lng', 'lat'];
-
-  CoordSys.prototype.setMapOffset = function (mapOffset) {
-    this._mapOffset = mapOffset;
-  };
-
-  CoordSys.prototype.getBMap = function () {
-    return this.Map;
-  };
-
-  CoordSys.prototype.setMap = function (map) {
-    if (map && map instanceof ol.Map) {
-      this.Map = map;
-    } else {
-      throw new Error('传入的不是地图对象！');
-    }
-  };
-
-  CoordSys.prototype.dataToPoint = function (coords) {
-    return this.Map.getPixelFromCoordinate(ol.proj.fromLonLat(coords));
-  };
-
-  CoordSys.prototype.pointToData = function (pixel) {
-    return this.Map.getCoordinateFromPixel(pixel);
-  };
-
-  CoordSys.prototype.getViewRect = function () {
-    var api = this._api;
-    return new echarts.graphic.BoundingRect(0, 0, api.getWidth(), api.getHeight());
-  };
-
-  CoordSys.prototype.getRoamTransform = function () {
-    return echarts.matrix.create();
-  };
-
-  CoordSys.dimensions = CoordSys.prototype.dimensions;
-
-  CoordSys.create = function (echartModel, api) {
-    var _coordSys = null;
-    echartModel.eachComponent('HMap', function (MapModel) {
-      var _HMap = echarts.Map;
-      _coordSys = new CoordSys(_HMap, api);
-      _coordSys.setMapOffset(MapModel.mapOffset || [0, 0]);
-      MapModel.coordinateSystem = _coordSys;
-    });
-
-    echartModel.eachSeries(function (seriesModel) {
-      if (seriesModel.get('coordinateSystem') === 'HMap') {
-        seriesModel.coordinateSystem = _coordSys;
-      }
-    });
-  };
-
-  return CoordSys;
-}.call(exports, __webpack_require__, exports, module),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-/***/ }),
-/* 165 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var __WEBPACK_AMD_DEFINE_RESULT__;
-
-!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
-  return __webpack_require__(54).extendComponentModel({
-    type: 'HMap',
-    getBMap: function getBMap() {
-      return this.Map;
-    },
-    defaultOption: {
-      roam: false
-    }
-  });
-}.call(exports, __webpack_require__, exports, module),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-/***/ }),
-/* 166 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-var __WEBPACK_AMD_DEFINE_RESULT__;
-
-!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
-  var echarts = __webpack_require__(54);
-  return echarts.extendComponentView({
-    type: 'HMap',
-    render: function render(MapModel, echartModel, api) {
-      var rendering = true;
-      var Map = echarts.Map;
-      var viewportRoot = api.getZr().painter.getViewportRoot();
-      var coordSys = MapModel.coordinateSystem;
-      var moveHandler = function moveHandler(type, target) {
-        if (rendering) {
-          return;
-        }
-        var offsetEl = viewportRoot.parentNode.parentNode.parentNode;
-        var mapOffset = [-parseInt(offsetEl.style.left, 10) || 0, -parseInt(offsetEl.style.top, 10) || 0];
-        viewportRoot.style.left = mapOffset[0] + 'px';
-        viewportRoot.style.top = mapOffset[1] + 'px';
-        coordSys.setMapOffset(mapOffset);
-        MapModel.mapOffset = mapOffset;
-        api.dispatchAction({
-          type: 'MapRoam'
-        });
-      };
-      var zoomEndHandler = function zoomEndHandler() {
-        if (rendering) {
-          return;
-        }
-        api.dispatchAction({
-          type: 'MapRoam'
-        });
-      };
-      this._oldMoveHandler = moveHandler;
-      this._oldZoomEndHandler = zoomEndHandler;
-      Map.getView().on('change:resolution', moveHandler);
-      Map.getView().on('change:center', moveHandler);
-      Map.getView().on('change:rotation', moveHandler);
-      Map.on('moveend', moveHandler);
-      var roam = MapModel.get('roam');
-      if (roam && roam !== 'scale') {} else {}
-      if (roam && roam !== 'move') {} else {}
-      rendering = false;
-    }
-  });
-}.call(exports, __webpack_require__, exports, module),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-/***/ }),
-/* 167 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var config = {
-  interactions: {
-    altShiftDragRotate: true,
-    doubleClickZoom: true,
-    keyboard: true,
-    mouseWheelZoom: true,
-    shiftDragZoom: true,
-    dragPan: true,
-    pinchRotate: true,
-    pinchZoom: true,
-    zoomDelta: 5,
-    zoomDuration: 5 },
-  controls: {
-    attribution: true,
-    attributionOptions: {
-      className: 'ol-attribution',
-      target: 'attributionTarget'
-    },
-    rotate: true,
-    rotateOptions: {
-      className: 'ol-rotate',
-      target: 'rotateTarget'
-    },
-    zoom: true,
-    zoomOptions: {
-      className: 'ol-zoom',
-      target: 'zoomTarget'
-    },
-    overViewMapVisible: false,
-    scaleLineVisible: true
-  },
-  view: {
-    center: [0, 0],
-
-    enableRotation: true,
-    extent: [],
-
-    projection: 'EPSG:3857',
-    resolutions: [],
-    rotation: 0,
-    resolution: '',
-    zoom: 0,
-    zoomFactor: 2 },
-  logo: {}
-};
-
-exports.default = config;
-module.exports = exports['default'];
-
-/***/ }),
-/* 168 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.removeListener = exports.addListener = exports.getDomEventKey = exports.createHidden = exports.setClass = exports.removeClass = exports.addClass = exports.hasClass = exports.toBack = exports.toFront = exports.empty = exports.remove = exports.create = exports.getStyle = exports.getClass = exports.getElementsByClassName = exports.getChildByTagName = exports.get = undefined;
-
-var _utils = __webpack_require__(82);
-
-var get = exports.get = function get(id) {
-  return typeof id === 'string' ? document.getElementById(id) : id;
-};
-
-var getChildByTagName = exports.getChildByTagName = function getChildByTagName(str, container) {
-  return container.getElementsByTagName(str);
-};
-
-var getElementsByClassName = exports.getElementsByClassName = function getElementsByClassName(str, container, root) {
-  var _root = root || window;
-  var $ = _root.document.querySelector.bind(_root.document);
-
-  var target = $(str);
-  return target;
-};
-
-var getClass = exports.getClass = function getClass(elem) {
-  return elem.getAttribute && elem.getAttribute('class') || '';
-};
-
-var getStyle = exports.getStyle = function getStyle(el, style) {
-  var value = el.style[style] || el.currentStyle && el.currentStyle[style];
-  if ((!value || value === 'auto') && document.defaultView) {
-    var css = document.defaultView.getComputedStyle(el, null);
-    value = css ? css[style] : null;
-  }
-  return value === 'auto' ? null : value;
-};
-
-var create = exports.create = function create(tagName, className, container, id) {
-  var el = document.createElement(tagName);
-  el.className = className || '';
-  if (id) {
-    el.id = id;
-  }
-  if (container) {
-    container.appendChild(el);
-  }
-  return el;
-};
-
-var remove = exports.remove = function remove(el) {
-  var parent = el.parentNode;
-  if (parent) {
-    parent.removeChild(el);
-  }
-};
-
-var empty = exports.empty = function empty(el) {
-  while (el.firstChild) {
-    el.removeChild(el.firstChild);
-  }
-};
-
-var toFront = exports.toFront = function toFront(el) {
-  el.parentNode.appendChild(el);
-};
-
-var toBack = exports.toBack = function toBack(el) {
-  var parent = el.parentNode;
-  parent.insertBefore(el, parent.firstChild);
-};
-
-var hasClass = exports.hasClass = function hasClass(el, name) {
-  if (el.classList !== undefined) {
-    return el.classList.contains(name);
-  }
-  var className = getClass(el);
-  return className.length > 0 && new RegExp('(^|\\s)' + name + '(\\s|$)').test(className);
-};
-
-var addClass = exports.addClass = function addClass(el, name) {
-  if (el.classList !== undefined) {
-    var classes = (0, _utils.splitWords)(name);
-    for (var i = 0, len = classes.length; i < len; i++) {
-      el.classList.add(classes[i]);
-    }
-  } else if (!hasClass(el, name)) {
-    var className = getClass(el);
-    setClass(el, (className ? className + ' ' : '') + name);
-  }
-};
-
-var removeClass = exports.removeClass = function removeClass(el, name) {
-  if (el.classList !== undefined) {
-    el.classList.remove(name);
-  } else {
-    setClass(el, String.trim((' ' + getClass(el) + ' ').replace(' ' + name + ' ', ' ')));
-  }
-};
-
-var setClass = exports.setClass = function setClass(el, name) {
-  if (el.className.baseVal === undefined) {
-    el.className = name;
-  } else {
-    el.className.baseVal = name;
-  }
-};
-
-var createHidden = exports.createHidden = function createHidden(tagName, parent, id) {
-  var element = document.createElement(tagName);
-  element.style.display = 'none';
-  if (id) {
-    element.id = id;
-  }
-  if (parent) {
-    parent.appendChild(element);
-  }
-  return element;
-};
-
-var getDomEventKey = exports.getDomEventKey = function getDomEventKey(type, fn, context) {
-  return '_p_dom_event_' + type + '_' + (0, _utils.stamp)(fn) + (context ? '_' + (0, _utils.stamp)(context) : '');
-};
-
-var addListener = exports.addListener = function addListener(element, type, fn, context) {
-  var eventKey = getDomEventKey(type, fn, context);
-  var handler = element[eventKey];
-  if (handler) {
-    return this;
-  }
-  handler = function handler(e) {
-    return fn.call(context || element, e);
-  };
-  if ('addEventListener' in element) {
-    element.addEventListener(type, handler, false);
-  } else if ('attachEvent' in element) {
-    element.attachEvent('on' + type, handler);
-  }
-  element[eventKey] = handler;
-  return this;
-};
-
-var removeListener = exports.removeListener = function removeListener(element, type, fn, context) {
-  var eventKey = getDomEventKey(type, fn, context);
-  var handler = element[eventKey];
-  if (!handler) {
-    return this;
-  }
-  if ('removeEventListener' in element) {
-    element.removeEventListener(type, handler, false);
-  } else if ('detachEvent' in element) {
-    element.detachEvent('on' + type, handler);
-  }
-  element[eventKey] = null;
-  return this;
-};
-
-/***/ }),
-/* 169 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _constants = __webpack_require__(1);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var appDrag = function (_ol$interaction$Point) {
-  _inherits(appDrag, _ol$interaction$Point);
-
-  function appDrag() {
-    _classCallCheck(this, appDrag);
-
-    var _this = _possibleConstructorReturn(this, (appDrag.__proto__ || Object.getPrototypeOf(appDrag)).call(this));
-
-    _constants.ol.interaction.Pointer.call(_this, {
-      handleDownEvent: _this.handleDownEvent,
-      handleDragEvent: _this.handleDragEvent,
-      handleMoveEvent: _this.handleMoveEvent,
-      handleUpEvent: _this.handleUpEvent
-    });
-
-    _this.customType = 'appDrag';
-
-    _this.coordinate_ = null;
-
-    _this.cursor_ = 'pointer';
-
-    _this.feature_ = null;
-
-    _this.previousCursor_ = undefined;
-    return _this;
-  }
-
-  _createClass(appDrag, [{
-    key: 'handleDownEvent',
-    value: function handleDownEvent(evt) {
-      if (evt.originalEvent.button === 0) {
-        var map = evt.map;
-        var feature = map.forEachFeatureAtPixel(evt.pixel, function (feature) {
-          return feature;
-        });
-        if (feature && feature.get('params') && feature.get('params').moveable) {
-          this.coordinate_ = evt.coordinate;
-          this.feature_ = feature;
-        }
-        map.dispatchEvent({
-          type: 'mouseDownEvent',
-          originEvent: evt,
-          value: feature
-        });
-        return !!feature;
-      }
-    }
-  }, {
-    key: 'handleDragEvent',
-    value: function handleDragEvent(evt) {
-      if (!this.coordinate_) {
-        return;
-      }
-      var deltaX = evt.coordinate[0] - this.coordinate_[0];
-      var deltaY = evt.coordinate[1] - this.coordinate_[1];
-      var geometry = this.feature_.getGeometry();
-      geometry.translate(deltaX, deltaY);
-      this.coordinate_[0] = evt.coordinate[0];
-      this.coordinate_[1] = evt.coordinate[1];
-      this.feature_.dispatchEvent('featureMove');
-    }
-  }, {
-    key: 'handleMoveEvent',
-    value: function handleMoveEvent(evt) {
-      if (this.cursor_) {
-        var map = evt.map;
-        var feature = null;
-        if (this.feature_) {
-          feature = this.feature_;
-        } else {
-          feature = map.forEachFeatureAtPixel(evt.pixel, function (feature) {
-            return feature;
-          });
-        }
-        var element = evt.map.getTargetElement();
-        if (feature) {
-          if (element.style.cursor !== this.cursor_) {
-            this.previousCursor_ = element.style.cursor;
-            element.style.cursor = this.cursor_;
-          }
-        } else if (this.previousCursor_ !== undefined) {
-          element.style.cursor = this.previousCursor_;
-          this.previousCursor_ = undefined;
-        }
-      }
-    }
-  }, {
-    key: 'handleUpEvent',
-    value: function handleUpEvent() {
-      this.coordinate_ = null;
-      this.feature_ = null;
-      return false;
-    }
-  }]);
-
-  return appDrag;
-}(_constants.ol.interaction.Pointer);
-
-exports.default = appDrag;
-module.exports = exports['default'];
-
-/***/ }),
-/* 170 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _constants = __webpack_require__(1);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var LayerSpyglass = function () {
-  function LayerSpyglass(params) {
-    _classCallCheck(this, LayerSpyglass);
-
-    this.options = params || {};
-
-    if (this.options.map && this.options.map instanceof _constants.ol.Map) {
-      this.map = this.options.map;
-    } else {
-      throw new Error('缺少地图对象！');
-    }
-
-    this.container = this.map.getTargetElement();
-
-    this.imagery = this.options['imagery'];
-
-    this.mousePosition = null;
-
-    this.radius = 0;
-
-    this.activate();
-  }
-
-  _createClass(LayerSpyglass, [{
-    key: 'activate',
-    value: function activate() {
-      var _this = this;
-
-      this.container.addEventListener('mousemove', function (event) {
-        _this.mousePosition = _this.map.getEventPixel(event);
-        _this.map.render();
-      });
-
-      this.container.addEventListener('mouseout', function () {
-        _this.map.render();
-      });
-
-      document.addEventListener('keydown', function (evt) {
-        if (evt.which === 38) {
-          _this.radius = Math.min(_this.radius + 5, 150);
-          _this.map.render();
-          evt.preventDefault();
-        } else if (evt.which === 40) {
-          _this.radius = Math.max(_this.radius - 5, 25);
-          _this.map.render();
-          evt.preventDefault();
-        }
-      });
-
-      this.renderTool();
-    }
-  }, {
-    key: 'renderTool',
-    value: function renderTool() {
-      var _this2 = this;
-
-      this.imagery.on('precompose', function (event) {
-        var _ref = [event.context, event.frameState.pixelRatio],
-            ctx = _ref[0],
-            pixelRatio = _ref[1];
-
-        ctx.save();
-        ctx.beginPath();
-        if (_this2.mousePosition) {
-          ctx.arc(_this2.mousePosition[0] * pixelRatio, _this2.mousePosition[1] * pixelRatio, _this2.radius * pixelRatio, 0, 2 * Math.PI);
-          ctx.lineWidth = 5 * pixelRatio;
-          ctx.strokeStyle = 'rgba(0,0,0,0.5)';
-          ctx.stroke();
-        }
-        ctx.clip();
-      });
-
-      this.imagery.on('postcompose', function (event) {
-        var ctx = event.context;
-        ctx.restore();
-      });
-    }
-  }, {
-    key: 'destroy',
-    value: function destroy() {
-      console.log('destroying');
-    }
-  }, {
-    key: 'setMap',
-    value: function setMap(map) {
-      if (map && map instanceof _constants.ol.Map) {
-        this.map = map;
-      }
-    }
-  }, {
-    key: 'getMap',
-    value: function getMap() {
-      return this.map;
-    }
-  }]);
-
-  return LayerSpyglass;
-}();
-
-exports.default = LayerSpyglass;
-module.exports = exports['default'];
-
-/***/ }),
-/* 171 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _constants = __webpack_require__(1);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var MisplacesGlass = function () {
-  function MisplacesGlass(params) {
-    _classCallCheck(this, MisplacesGlass);
-
-    this.options = params || {};
-
-    if (this.options.map && this.options.map instanceof _constants.ol.Map) {
-      this.map = this.options.map;
-    } else {
-      throw new Error('缺少地图对象！');
-    }
-
-    this.container = this.map.getTargetElement();
-
-    this.imagery = this.options['imagery'];
-
-    this.mousePosition = null;
-
-    this.radius = 0;
-
-    this.activate();
-  }
-
-  _createClass(MisplacesGlass, [{
-    key: 'activate',
-    value: function activate() {
-      var _this = this;
-
-      this.container.addEventListener('mousemove', function (event) {
-        _this.mousePosition = _this.map.getEventPixel(event);
-        _this.map.render();
-      });
-
-      this.container.addEventListener('mouseout', function () {
-        _this.map.render();
-      });
-
-      document.addEventListener('keydown', function (evt) {
-        if (evt.which === 38) {
-          _this.radius = Math.min(_this.radius + 5, 150);
-          _this.map.render();
-          evt.preventDefault();
-        } else if (evt.which === 40) {
-          _this.radius = Math.max(_this.radius - 5, 25);
-          _this.map.render();
-          evt.preventDefault();
-        }
-      });
-
-      this.renderTool();
-    }
-  }, {
-    key: 'renderTool',
-    value: function renderTool() {
-      var _this2 = this;
-
-      this.imagery.on('postcompose', function (event) {
-        if (_this2.mousePosition) {
-          var context = event.context;
-          var pixelRatio = event.frameState.pixelRatio;
-          var half = _this2.radius * pixelRatio;
-          var centerX = _this2.mousePosition[0] * pixelRatio;
-          var centerY = _this2.mousePosition[1] * pixelRatio;
-          var originX = centerX - half;
-          var originY = centerY - half;
-          var size = 2 * half + 1;
-          var sourceData = context.getImageData(originX, originY, size, size).data;
-          var dest = context.createImageData(size, size);
-          var destData = dest.data;
-          for (var j = 0; j < size; ++j) {
-            for (var i = 0; i < size; ++i) {
-              var dI = i - half;
-              var dJ = j - half;
-              var dist = Math.sqrt(dI * dI + dJ * dJ);
-              var sourceI = i;
-              var sourceJ = j;
-              if (dist < half) {
-                sourceI = Math.round(half + dI / 2);
-                sourceJ = Math.round(half + dJ / 2);
-              }
-              var destOffset = (j * size + i) * 4;
-              var sourceOffset = (sourceJ * size + sourceI) * 4;
-              destData[destOffset] = sourceData[sourceOffset];
-              destData[destOffset + 1] = sourceData[sourceOffset + 1];
-              destData[destOffset + 2] = sourceData[sourceOffset + 2];
-              destData[destOffset + 3] = sourceData[sourceOffset + 3];
-            }
-          }
-          context.beginPath();
-          context.arc(centerX, centerY, half, 0, 2 * Math.PI);
-          context.lineWidth = 3 * pixelRatio;
-          context.strokeStyle = 'rgba(255,255,255,0.5)';
-          context.putImageData(dest, originX, originY);
-          context.stroke();
-          context.restore();
-        }
-      });
-    }
-  }, {
-    key: 'destroy',
-    value: function destroy() {
-      console.log('destroying');
-    }
-  }, {
-    key: 'setMap',
-    value: function setMap(map) {
-      if (map && map instanceof _constants.ol.Map) {
-        this.map = map;
-      }
-    }
-  }, {
-    key: 'getMap',
-    value: function getMap() {
-      return this.map;
-    }
-  }]);
-
-  return MisplacesGlass;
-}();
-
-exports.default = MisplacesGlass;
-module.exports = exports['default'];
-
-/***/ }),
-/* 172 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _constants = __webpack_require__(1);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Controls = function () {
-  function Controls() {
-    _classCallCheck(this, Controls);
-  }
-
-  _createClass(Controls, [{
-    key: '_addControls',
-    value: function _addControls(params) {
-      var options = params || {};
-
-      return new _constants.ol.control.defaults({
-        attribution: options['attribution'] === false ? options['attribution'] : true,
-        rotate: options['rotate'] === false ? options['rotate'] : true,
-        zoom: options['zoom'] === false ? options['zoom'] : true
-      });
-    }
-  }, {
-    key: '_addScaleLine',
-    value: function _addScaleLine() {
-      var control = this.map.getControls();
-      control.extend([new _constants.ol.control.ScaleLine()]);
-    }
-  }]);
-
-  return Controls;
-}();
-
-exports.default = Controls;
-module.exports = exports['default'];
-
-/***/ }),
-/* 173 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _constants = __webpack_require__(1);
-
-var _appDrag = __webpack_require__(169);
-
-var _appDrag2 = _interopRequireDefault(_appDrag);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Interactions = function () {
-  function Interactions() {
-    _classCallCheck(this, Interactions);
-  }
-
-  _createClass(Interactions, [{
-    key: '_addInteractions',
-    value: function _addInteractions(params) {
-      var options = params || {};
-
-      return new _constants.ol.interaction.defaults({
-        altShiftDragRotate: options['altShiftDragRotate'] === false ? options['altShiftDragRotate'] : true,
-        doubleClickZoom: options['doubleClickZoom'] === false ? options['doubleClickZoom'] : true,
-        keyboard: options['keyboard'] === false ? options['keyboard'] : true,
-        mouseWheelZoom: options['mouseWheelZoom'] === false ? options['mouseWheelZoom'] : true,
-        shiftDragZoom: options['shiftDragZoom'] === false ? options['shiftDragZoom'] : true,
-        dragPan: options['dragPan'] === false ? options['dragPan'] : true,
-        pinchRotate: options['pinchRotate'] === false ? options['pinchRotate'] : true,
-        pinchZoom: options['pinchZoom'] === false ? options['pinchZoom'] : true,
-        zoomDelta: options['zoomDelta'] && typeof options['zoomDelta'] === 'number' ? options['zoomDelta'] : 1,
-        zoomDuration: options['zoomDuration'] && typeof options['zoomDelta'] === 'number' ? options['zoomDuration'] : 300 }).extend([new _appDrag2.default()]);
-    }
-  }]);
-
-  return Interactions;
-}();
-
-exports.default = Interactions;
-module.exports = exports['default'];
-
-/***/ }),
-/* 174 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _mixin = __webpack_require__(46);
-
-var _mixin2 = _interopRequireDefault(_mixin);
-
-var _constants = __webpack_require__(1);
-
-var _baseLayer = __webpack_require__(176);
-
-var _baseLayer2 = _interopRequireDefault(_baseLayer);
-
-var _Controls = __webpack_require__(172);
-
-var _Controls2 = _interopRequireDefault(_Controls);
-
-var _Interactions = __webpack_require__(173);
-
-var _Interactions2 = _interopRequireDefault(_Interactions);
-
-var _View = __webpack_require__(175);
-
-var _View2 = _interopRequireDefault(_View);
-
-var _Layer = __webpack_require__(55);
-
-var _Layer2 = _interopRequireDefault(_Layer);
-
-var _feature = __webpack_require__(80);
-
-var _feature2 = _interopRequireDefault(_feature);
-
-var _Style = __webpack_require__(81);
-
-var _Style2 = _interopRequireDefault(_Style);
-
-var _Overlay = __webpack_require__(177);
-
-var _Overlay2 = _interopRequireDefault(_Overlay);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Map = function (_mix) {
-  _inherits(Map, _mix);
-
-  function Map() {
-    _classCallCheck(this, Map);
-
-    var _this = _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).call(this));
-
-    _this.addPointHandlerClick = null;
-    _this.plotDraw = null;
-    _this.plotEdit = null;
-    _this._lastDrawInteractionGeometry = null;
-    window.ObservableObj = new _constants.ol.Object();
-    _constants.proj4.defs('EPSG:4490', '+proj=longlat +ellps=GRS80 +no_defs');
-    _constants.ol.proj.setProj4(_constants.proj4);
-
-    _this.currentMapLines = [];
-
-    _this.currentMapPoints = [];
-
-    _this.currentMapPolygon = [];
-
-    _this.lineLayers = new Set();
-
-    _this.pointLayers = new Set();
-
-    _this.polygonLayers = new Set();
-
-    _this.circleSerachFeat = null;
-
-    _this.popupOverlay = null;
-    return _this;
-  }
-
-  _createClass(Map, [{
-    key: 'initMap',
-    value: function initMap(mapDiv, params) {
-      var options = params || {};
-
-      this.map = new _constants.ol.Map({
-        target: mapDiv,
-        loadTilesWhileAnimating: false,
-        loadTilesWhileInteracting: false,
-        logo: this._addCopyRight(options['logo'] || {}),
-        layers: this.addBaseLayers(options['baseLayers'], options['view']),
-        view: this._addView(options['view']),
-        interactions: this._addInteractions(options['interactions']),
-        controls: this._addControls(options['controls'])
-      });
-
-      this.map.on('click', function (event) {
-        console.log(event.coordinate);
-      });
-    }
-  }, {
-    key: '_addCopyRight',
-    value: function _addCopyRight(params) {
-      var logo = {
-        href: 'https://aurorafe.github.io',
-        src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAKTWlDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjanVN3WJP3Fj7f92UPVkLY8LGXbIEAIiOsCMgQWaIQkgBhhBASQMWFiApWFBURnEhVxILVCkidiOKgKLhnQYqIWotVXDjuH9yntX167+3t+9f7vOec5/zOec8PgBESJpHmomoAOVKFPDrYH49PSMTJvYACFUjgBCAQ5svCZwXFAADwA3l4fnSwP/wBr28AAgBw1S4kEsfh/4O6UCZXACCRAOAiEucLAZBSAMguVMgUAMgYALBTs2QKAJQAAGx5fEIiAKoNAOz0ST4FANipk9wXANiiHKkIAI0BAJkoRyQCQLsAYFWBUiwCwMIAoKxAIi4EwK4BgFm2MkcCgL0FAHaOWJAPQGAAgJlCLMwAIDgCAEMeE80DIEwDoDDSv+CpX3CFuEgBAMDLlc2XS9IzFLiV0Bp38vDg4iHiwmyxQmEXKRBmCeQinJebIxNI5wNMzgwAABr50cH+OD+Q5+bk4eZm52zv9MWi/mvwbyI+IfHf/ryMAgQAEE7P79pf5eXWA3DHAbB1v2upWwDaVgBo3/ldM9sJoFoK0Hr5i3k4/EAenqFQyDwdHAoLC+0lYqG9MOOLPv8z4W/gi372/EAe/tt68ABxmkCZrcCjg/1xYW52rlKO58sEQjFu9+cj/seFf/2OKdHiNLFcLBWK8ViJuFAiTcd5uVKRRCHJleIS6X8y8R+W/QmTdw0ArIZPwE62B7XLbMB+7gECiw5Y0nYAQH7zLYwaC5EAEGc0Mnn3AACTv/mPQCsBAM2XpOMAALzoGFyolBdMxggAAESggSqwQQcMwRSswA6cwR28wBcCYQZEQAwkwDwQQgbkgBwKoRiWQRlUwDrYBLWwAxqgEZrhELTBMTgN5+ASXIHrcBcGYBiewhi8hgkEQcgIE2EhOogRYo7YIs4IF5mOBCJhSDSSgKQg6YgUUSLFyHKkAqlCapFdSCPyLXIUOY1cQPqQ28ggMor8irxHMZSBslED1AJ1QLmoHxqKxqBz0XQ0D12AlqJr0Rq0Hj2AtqKn0UvodXQAfYqOY4DRMQ5mjNlhXIyHRWCJWBomxxZj5Vg1Vo81Yx1YN3YVG8CeYe8IJAKLgBPsCF6EEMJsgpCQR1hMWEOoJewjtBK6CFcJg4Qxwicik6hPtCV6EvnEeGI6sZBYRqwm7iEeIZ4lXicOE1+TSCQOyZLkTgohJZAySQtJa0jbSC2kU6Q+0hBpnEwm65Btyd7kCLKArCCXkbeQD5BPkvvJw+S3FDrFiOJMCaIkUqSUEko1ZT/lBKWfMkKZoKpRzame1AiqiDqfWkltoHZQL1OHqRM0dZolzZsWQ8ukLaPV0JppZ2n3aC/pdLoJ3YMeRZfQl9Jr6Afp5+mD9HcMDYYNg8dIYigZaxl7GacYtxkvmUymBdOXmchUMNcyG5lnmA+Yb1VYKvYqfBWRyhKVOpVWlX6V56pUVXNVP9V5qgtUq1UPq15WfaZGVbNQ46kJ1Bar1akdVbupNq7OUndSj1DPUV+jvl/9gvpjDbKGhUaghkijVGO3xhmNIRbGMmXxWELWclYD6yxrmE1iW7L57Ex2Bfsbdi97TFNDc6pmrGaRZp3mcc0BDsax4PA52ZxKziHODc57LQMtPy2x1mqtZq1+rTfaetq+2mLtcu0W7eva73VwnUCdLJ31Om0693UJuja6UbqFutt1z+o+02PreekJ9cr1Dund0Uf1bfSj9Rfq79bv0R83MDQINpAZbDE4Y/DMkGPoa5hpuNHwhOGoEctoupHEaKPRSaMnuCbuh2fjNXgXPmasbxxirDTeZdxrPGFiaTLbpMSkxeS+Kc2Ua5pmutG003TMzMgs3KzYrMnsjjnVnGueYb7ZvNv8jYWlRZzFSos2i8eW2pZ8ywWWTZb3rJhWPlZ5VvVW16xJ1lzrLOtt1ldsUBtXmwybOpvLtqitm63Edptt3xTiFI8p0in1U27aMez87ArsmuwG7Tn2YfYl9m32zx3MHBId1jt0O3xydHXMdmxwvOuk4TTDqcSpw+lXZxtnoXOd8zUXpkuQyxKXdpcXU22niqdun3rLleUa7rrStdP1o5u7m9yt2W3U3cw9xX2r+00umxvJXcM970H08PdY4nHM452nm6fC85DnL152Xlle+70eT7OcJp7WMG3I28Rb4L3Le2A6Pj1l+s7pAz7GPgKfep+Hvqa+It89viN+1n6Zfgf8nvs7+sv9j/i/4XnyFvFOBWABwQHlAb2BGoGzA2sDHwSZBKUHNQWNBbsGLww+FUIMCQ1ZH3KTb8AX8hv5YzPcZyya0RXKCJ0VWhv6MMwmTB7WEY6GzwjfEH5vpvlM6cy2CIjgR2yIuB9pGZkX+X0UKSoyqi7qUbRTdHF09yzWrORZ+2e9jvGPqYy5O9tqtnJ2Z6xqbFJsY+ybuIC4qriBeIf4RfGXEnQTJAntieTE2MQ9ieNzAudsmjOc5JpUlnRjruXcorkX5unOy553PFk1WZB8OIWYEpeyP+WDIEJQLxhP5aduTR0T8oSbhU9FvqKNolGxt7hKPJLmnVaV9jjdO31D+miGT0Z1xjMJT1IreZEZkrkj801WRNberM/ZcdktOZSclJyjUg1plrQr1zC3KLdPZisrkw3keeZtyhuTh8r35CP5c/PbFWyFTNGjtFKuUA4WTC+oK3hbGFt4uEi9SFrUM99m/ur5IwuCFny9kLBQuLCz2Lh4WfHgIr9FuxYji1MXdy4xXVK6ZHhp8NJ9y2jLspb9UOJYUlXyannc8o5Sg9KlpUMrglc0lamUycturvRauWMVYZVkVe9ql9VbVn8qF5VfrHCsqK74sEa45uJXTl/VfPV5bdra3kq3yu3rSOuk626s91m/r0q9akHV0IbwDa0b8Y3lG19tSt50oXpq9Y7NtM3KzQM1YTXtW8y2rNvyoTaj9nqdf13LVv2tq7e+2Sba1r/dd3vzDoMdFTve75TsvLUreFdrvUV99W7S7oLdjxpiG7q/5n7duEd3T8Wej3ulewf2Re/ranRvbNyvv7+yCW1SNo0eSDpw5ZuAb9qb7Zp3tXBaKg7CQeXBJ9+mfHvjUOihzsPcw83fmX+39QjrSHkr0jq/dawto22gPaG97+iMo50dXh1Hvrf/fu8x42N1xzWPV56gnSg98fnkgpPjp2Snnp1OPz3Umdx590z8mWtdUV29Z0PPnj8XdO5Mt1/3yfPe549d8Lxw9CL3Ytslt0utPa49R35w/eFIr1tv62X3y+1XPK509E3rO9Hv03/6asDVc9f41y5dn3m978bsG7duJt0cuCW69fh29u0XdwruTNxdeo94r/y+2v3qB/oP6n+0/rFlwG3g+GDAYM/DWQ/vDgmHnv6U/9OH4dJHzEfVI0YjjY+dHx8bDRq98mTOk+GnsqcTz8p+Vv9563Or59/94vtLz1j82PAL+YvPv655qfNy76uprzrHI8cfvM55PfGm/K3O233vuO+638e9H5ko/ED+UPPR+mPHp9BP9z7nfP78L/eE8/sl0p8zAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAACizSURBVHja7J1rjF3Xdd9/a59zX+feO8O3RHIoWhRJkXpRot6x7MSRlLZBPxgGktowWrQ1ECBBgib9VAT+YKBAPjsIkhYu3Lg1HTuJJb8aO3ETP6U2lS2OLDkWJT5mOBxKlDjkzH2/ztmrH865wztzL8mhxDtzz+VZxIVEYiTes8//v/Zaa//X2qKqJJbYrWomWYLEEgIkllhCgMQSSwiQWGIJARJLLCFAYoklBEgssYQAiSWWECCxxBICJJZYQoDEEksIkFhiCQESSywhQGKJJQRILLGEAIkllhAgscQSAiSWWEKAxBJLCJBYYgkBEkssIUBiiSUESCyx0TJ32H/Bf37+wnV/RkURFQCscRAFIx0UF0UQ24l+zgAOEAjoVpBHRO1TKvKYwO3ADmATkBnmMykgwNTkJf7lAz9hW2EJrKDIlR+SaHUvg33Roq8ppKOvH19rAUvAu8AFVV5y4AWQn1pjL4kxanxQjd6pI6CKWhAHFIv6JlwbUbCypr809Z/+Y3wJMATbAuwHHoo+9wIHgc1Aaj2/SLmVY/bSbWzKVUg5HdSuWk4LZEF2CjqnUAp/j8SWABngtugd3AbkFLaB7gWmBU6FlE92gGHY3hDw9leAD4ryCKIgsu54kmgXeLc6yd++/hDWwkN3nCLtBFhrrmwTPlAAeUQwKYN9wUI5glF8SUDkaHaIsEPhKQ33vp+q8qLAD4Bp4GxCgJtjtwNPAB8X9NfBFkE2HEAC5NwOzU6K775+FBE4esdJXBNgrXPlh5oh4OWIYMRgf2ShShgOxZsEPWshoDyiqo9Y5N8jfBv4CvCPwIWEAO/N8qD3Ar+F8O9AzBVUjYYpkHU7NDppvnviQbx0k8M7z+KsJkErBLzcLxgM9gc2JIY7PiToyeeKwL9C+Q0sfy7C54B/AmpJFWjtznULyKcgeB4NPnUF/CP4woFcqk2tneVbrz3Gibc/QEcFMXblE3Wif71fML9iIAcEY1xeEYxV/ZS1+rwIn4ryBkkIcN0dSQ6B/VO1fBaV3XFwkAoUUm0qrRzf+vmjnLiwN0SAWTV52w9/WO6LSJAZbxKIACK7LfJZ4E8FDo1a1GFG7Ls8I9r+smA/jsQrOLAoWbfNQnWSsxdvp9FOgwxAdxCR4F7BfMSEucA47wRRYGQtH7eBfBl4ZpRwN0oE+CiinxPkgTi+YqtCvZ3l4T0neXzfCbxME7XO1djST4JodxhrE3kAw+eAjyYEWGm/jeifAFNxTAtVhUY7w5GpGX7t8HG2FZawgYOqXGvLuEKCXzHh+UBn7EkgwBTCnwC/fWtUgUQGroMVg7E+wEcFPg3siqvnb7SzIfgPTbOlWAZr+rIEEYuqWclvG7oguS8qkX7fQp0hn2OPBAl2gXwaeBvRrzuuhGtxa+0AAvAvEP3jWIO/k+HI7jM8e/g4W4slRGWF5xexIIra1JXfr94J6EmM84Ql0vG3XRj+OMTALRkCySEV+0fAHXEFf8tPcWR3N+wpodZcOQmOwC5iaTVvY2nxQRr13YhpIaL9iTEgDwjyYUGKAo1bICeAOxD5I8Lq0C1FgG2inc8I8mAc35pvDZ0gxZHds/yzw8fZWiyj1qzy/AEiAc3mDqqV/TSbO6nV9tGo7Y1IsGon8KMX8oBBPiQwwa1Cggc14DPAtrEkgIqu+AAZkeCTovZj8QS/Q2Adjuya4dnDx9kysdQHfmMCRCzNxm1UywfptCcR6RD4eaqVgzRqdyDi95OgHeUERwTzlAl1rY3xj4Ws8jFV/SRCRlQQu/ITbwKs+AUW84Cif4Csr3LzZmQsvg0rOw/smuXpQ8fZUlxCfbc/5sfSbNxOpXKQdntTtBv4QIDv56lU7qZRn+onQVc2IatIUB97DqSs8gdq5AHGjQCrbItgf0dV9sbtDbUDBxTu3zXLM/eEnt920n1hD1gaEfg77U09IBdEFJGAwPeolO+mXp9azhP6SODcWiRQZK8N+B2ULWOWA5joI46gHxaCT0gcwQ/ct3OOpw9Ps2XiMrazslbZBX+ruYPqMviD/oQXRcQn8D2q5cM06rvolklXkKC5KhyaHO+cQATU6icU+8sq6qwKm8eBAGYK+CRIbKrcAnQCBxG4b9ccz9zzMlsmF9F2dtXLi6o9rdtCz9+ZHBzj9/43xifwc5RL99Js3B6RIOgnQTcc+lBEgtZYkyCjhk+o6O4xIkCoiBJ4VNBn4vRCOtZBEO7feZZnD7/M5olFtJlddcIbgrzZvI1K6VAIfq4N/isk6GBtJiLBzrD981o5wYcMFKNkeUxJoMivKjyk0SMO+zHXiQBmE8iHUd0UH/AbrAr37jrLs4enQ/C3citeSBjTK63WVsqlQ3Q6ExixA8Kea3m9DtbmKJfuo9m4PSLXABIQSak/ZMBjbLVDim618EGrFKyC1dgToC2irYNigw/GZQhFYAVrHe7feZZfO/QymwaAvxv6tFrbKZcOE/hFjPF5L2f6Im2sTVMu3UereVtPTtEbi/WQoKsdGlMVqcLTDnKPsw6S4PXYAbaqyIMqejQOi2+toRO43L97lmcPH2fTRAnbzg4AP7Sa2yiX7iHw81GZ8727K5EOGqQpl+6h2bw9nDxxlcOyZQHduPYTCEcRHmIdhJFDJ4BYHhXL0ThUfqwKrSDFA7vP8uyhaTYXy9h2ZhWuw2S13dpMudwF/81RconpYIMMlfI9NBs7o+T6KrKJMe4nCINAfciim4dNguHvAKIfRPSeOIC/0c7wwM4Znj00zZZiCfXdAdWegFZrO6XSPfidQuT5b+JyGT8kQekwjcYuRDpXF9DdE5EgNX45gYoeRvQQQj7eOwA8JuHcntFd7B49/7OHp9lcKGE7qVWHXGFNotXeQbl0qCfsGcKaiY+1uZAE9SnEXIUEGpFgLPsJZL9Rc7+j5vaY5wDsYoOETmv1/PV2liNTsz16fmcVIAMg9PyVpUME/sRNC3uuRYIgyIayidoexLT7w6Hot8tS6hxhiXQ8bNKKvUsJ7ow7AbYxouUfq0L9unr+IJI0b6dSvhvfn3jfCe9aayGhbCJPpXyQem0PIq3BO4H0JMZ5xkVA51nhsG8YaovsenTobxrZhNdP8dDuGZ49dJythUGS5vCEt9m8jUrlbvzORLQbrFecEckmglBFCuDl58CuOowLwjcp90fisRdAyxr3MYwiyh2EYzBjTYCRkz4E1uBblyO7Z8OEt3A1Pb+l2bydSjmUNxjZiEyzuxMUqFUOIgi5/BzYzEoS+EAq7CdQFH1BwzGMuTinAbIF2B53AozOegJt6xBYw4O7ZkJhW1TtWa3nDyXNt1GtHKDT3rRB4F9JAr9ToFq5G1By3nnAjfqMI+uEJJAjglGDfdGGA3m9mFaClMlhE8DcSuDvRHr+B29Yz++D2I2GA0iA73tRP8HuqzfVOCAPCuZolBi3Yvva8sDOZAe4CdYOHAQ4smuWpw9Ps7mwdBVJs9Jo3B5JmruqztGoLYbfw48S40Mogue9FXnLntGprTDwlKNhTqA/1TAxzsYtAsIM+1ubWwX8APfvCvX8m9+Xnn8UgNHbT7CTvn4CIhIUwDxqkIclzMTiuRMECQHeT9gT6fnv3zXHM4dfZvNN0vNv+LOt6CfY2UPiHmuE8b953CCPRiRok9itEgJd0fPP8szh46Gqs7la1blKz+8XIz3/6B+phv0EWcrle1B1yOYuIBKsTIybYSVIHhcEwb5sQxKkEvCP9Q7QsQZrhft2neWZe6YHSppvhp5/48OhDjbIUi7dS722B1W3f+dqgmQlJMHDEoI/SMA/tgTo6vkf2H2WXzv8MpuKw9XzjwIJVJ2w0b42harTHw5FibF5PMoJnIQEYxkCWWvwrRNNbJtmsljCtrKDKgw9ev7c0IRt65kYq7pUuifG3hxi7MBzAvOEwYpFX9ZlKUWyA4wD+FVoBimO7D7Ls4deYbIQ6flX2PD0/KNAAtShWjlAvX4HYFY+W/fiPrdnJyCWm16yAwwCf72V4eieMzxzaJpNhRLa6dfzg6XV2hGFPYXYe/6r7QTVyl0gkMudi8KhHl8XAE60E6hFj2tIDOfWI8BY7AC6fDlF2MyyqVDC+qkVF1evp55/JBJjm6Ne3Uu7tTXKbVZlQNFodvPErZ0TxJ4AVoVaOxt6/sPHQ21PsPF6/o11CClEfDLZi6TSpejGygGBvu0Jhx6JSNBJCBCfao8K9XaGh6OwZ0s+upxiJPT8GwV+F1XI52cpFE/jOK1rxzZBlBh3c4IUt9RhWWwJYFVod9Ih+A8fZ2uhhKrBav98/lDPf2gD9PzrD36AfGEWr3AGx2lc5ZqmAbdXZnrCoXREglugOhTLJNiP9PxH75jh6buPszlfGWE9/zqDP38Wr3gGxzQHhD4WYyxqBURWlkjbQDbcCazYUEDXDP9snO8oiN0O0LEOVh0enprhmcPH2VxYQoNrzeeP9PyMuedX8PKz5ItncJ0mqivB360E1Wt7qNb29fxZj7WAXE84lGHsr2uKzQ4gRKpOEY5OzfCRQ9NsypfQzupqT6+e/8DyiHLGNOlVdRCUXOEsheJpjGlFnr/Hyxkfax0a9Smq5f0oBhHF82Yj7ZAzkASW6LAs0hONo/+IDQFagYMrcGT3LB85fJzJfKnvkGvU9fzDAD9i8bxz5IunMaa5EszRbqhqQvBX7iIIPEQCapW7QJV8YS50DqsFdHkwj0Uk6IZDmYQAG2Jt38ExyoNTc3zk0DQThUVsKzcA/OGFdNUVl1OMK/hNBP45CsUziGkt5wFX1sRH1aFen6Ja2U8QeBgnbAqwNkW1uh8x3cOyVbKJBmE/weM9h2Wt8SPByBOgbR1cR3lo91l+9fA0hfwS2hqs5w+rPfHQ87/vsEd8srnzFIsnERP0ef6w1OvQqO+mWt6P7+ejkugVh6E2TbV8EBRy3vwyYVaQwFulHRozEow0ATq+g+vAQ1NnefrQNHkvBP+46Pnfq+cX8cl55ykU30RMp8/zm4gQ9foUtXLk+U1/O1g4gc6l0iVBfh4k6A+HPJAnon6Cn9plUV1CgGGCPzAYgaNTZ/nIoWny+aiZRXpfYCRvaG2jXArr/OFEh3Gt2xlEAnL58xSLbyzrflaHgqoSJbx3EQQ5jLn6ydYVFendKEIuPx+J6laSQLICT4AQ9RhHeqL4r+gImh8YBMMje2d5+vDxMOxZBf5u6DMOev41x/wEZL15JibeiIC+2n+F2uZGfYpKeT9BkMeY62sbuqFPpXI3zfpuuFY/wZhph0aOAIE1WBwe2zvDrx6cxsuGev5+8N/c+fyjDn5jAjxvnuLEm4A/IOZXBKVem6JaOUAQZBFZu6ah6/XDMYxTqHX6c6huP8GTBjkqIXo0IcBNBb9vXR7fO8MvH5zGy5X7pjeMs57/agkvYsl65ylMnMQMCHu6UyEajT1Uq/sJggzG+MgNShm64VCtcoB6fQ+KWXl+0ttP8Evj0U9gRgn8nSDFk3vP8MsHpynkyqifGlDtGe58/pEDP0ouNx9We64CfmMCGvXdVMr7sUG2P3y5QRJYTVGtHqBR30Pf7ZVEoY/pIUGMw6GRIIBVwbcpntp3ig8f/BnFbPWW1vP3gt/z5ihOnFru++0LeySgXt9DpXIQazPvC/wrdgLrUi3fRb26dzm57ks3zKpwKIYk2PAqUGAN7SDFU3ee5oP7XwnBbw39Ohal1dpBpdTV8/sxA7SiqmFYohKONI8CaEVANboXDNAUiODl5ygWTyOm3Qf+bthTr09RKR9AbeamhoIiAdamqVXDzrJ8fjYqkTorSeD2dJa9rLErkW4oAcLRJSH4nzr4ChO5StjMMkjV2dgRjiiPmZ5f1UZhiouTypDKZHHcNCKCGBc0wFrFBm3azSZBu4PVFp53lkJhPjrhNX3VHhGlXttDpbwf1cxQ1kPEYm2WevUuECGfn4kScHdlOBQlxlYU7c4dSicEuKb5VjA4PLXvFE/e9RrFbAj+0ZrP/349PjiuQzrjkc4VcVIZjAg4UdOOSPQoCmpJZRXrW8TOkEpfwjhlVNP0lltELKjSqN8RyRsy0dnHUJ4iHM0eZKhX7gQL+cJMfy6y3E8gWAT9KdDSWEipN4QA7cAhZeCXPnCKJ+96lXymOl56flVQJZXJks1vIp31MI4bhXVKFOyEPxeFeiIubkowmRaO2Y4GD4A9iejbaBRXhDufLGt7rM1GZx9DfRhELEGQo169MwqHZvoFdL39BEZjM5B3XQmghPKGjCs8ufc0Tx74GV6mgvXdFTH/6M3nv5FnDL9jJlcgW9yEm/YQiYCvdtVqXPmnYjF0MNI9cboTZBJ4HewZxDRAM9Tru5fr/MMH/+qdIEutug8RIefNXF1K/ZgQGBd+YqFuR5oE7vqC38VzLU984AxP7n+VbLaC7birEt746vk18v7pbJ7sxBZS6Vzo7/Va3z0kh5F2JFlQIEDEQdmGOPeBBKidpVnbRbV6gMD3ME573Z9OTIANslQr+1Br8fJzVyfBo4I1LrzkQ210SeCuG/gDl4lMwON3nOHx/a+SyVSwnXRf5SHWen5rcdMZcsXNpDJZNAqFrplodsHvtBFHo7xACXwfwSJmEpHDNJubqFTzGwT+lSVSG2SoVfYDMrifoAGSs5iHDaoG/X8KDR1JEgydAL4VAuswmQl48gMzPH7XK6TSFWwnOwD8MdbzW4uIIVMIwx6U64IfVYzTwUm1QcJ8YLFqOXOhzW0TDru3hhSxupNAt6F6OUTXBh/fhIdl6av3EwiRgM4iDws2MOhLwUhKqYdOAFGHTRmfJ+6c4Yl9r+KmK2g7s6JXexz0/Aqkcx7pjBc1nOs1/b6I4rodxG3TCSylmjJ/0ef4mTaXa5ZffyjLlJPCdhwCm8FNp8l6derVGqNwfrnmfoKcYh4LDzv1p6PXTzB0AhzavsjuTZd58q5XcVJltL1a2DYmen4xZLxCWO1RvWrCbkQwBozp0LYtlkoBp97q8Pq8z+l3Oswv+Pzzh3Ls3eGCpgiCNAo4LqRyeZxGBRsEUWK90SS4Tj9BtBOQA3lMEB29foKhE+CZQ6/gZas4qRK2nV3l+cdEz6+Km8ngOOlVFZ5VwBdAlI7fZrFW4423faZn2ry9FNBoWRzHsHOLw4GdKfKZDNbPYFWi2r/guClS6SytehVkNIb23FA/weOj108wdAJsmzwPSqjqHKDnbza3R9qe4uAZlnEI/1XJpTIY111OYq88IxHwhWYn4N1SgzffrvLybJN3FxUMpByhmDNUmsquzQ47J3NAFj+QFTuhESckQKM6WptfDwlEdHA41CE8J+gdyDsCJBg6AUJdz6BFG6f5/Io4aURMVNS8EgEYgU4AcwsNXp2r8vr5OhdLAZm0IZuRZZ9go4rQ1NYMmwo5UIOqXXb0GjIA46QZxZFtyyQoH0QVPO/cyvsJlBX9BMsjV3RjH8fdELCIpd3a1qPnj7mqU8GYsIutF/wtH2YvNnh5psrpC02qrQBjQm+/ep/zfaWQNezd7pFNGYJAV0Y5GpZIxXEiEd3okqBWOQCAVzi3skS6qp9gmQR24/J6d30XaFzn8/cAUiHtCm8vdfjhP5V4eaZGvROQSxmyKXOVDAECq2wtuOzZnMZ1DO2OvWoFaaRrAT39BGIgN2j4Vk8/gcWi0xt3P4G7fgszxnp+ERS7DGw/UDZ5KR69q8DmApx8p8m5BZ9qQ8lmBMf0w1iBu3c5THh+JICTVVSJhHNqY7AcV/oJ1Cr5wtl+EvT0EyzPIt2AnMBdnwWJv57/unuAtaAWMQar4Dqw93bD1G1pHms6vHXJcvJCh1+cb7NQsmRTsswCC6Rdw4FdabJZH7UNkEwUOkQkkPBUWW049UFk1EkQj36CoRMgnEogNBvbY6nnX9PLRgg6bVS7LkwRaeFKG9dApuAw6bncuTPFo/sz/ORkix++3sBLh7lAu6Psvz3F9mJ4qbfQxhhQm40UshqWD9Xi+1dOjUd/J7jBfgKi6tA69hMMnQBBkKXTmaRSOTi28/lFDJ1OExsojiMY6eCYdqQFCrFqRPEygpdxsb7y6nyLSl1JuYJv4dCuFHnPhK0BCI50sAIBmWWvaa3FbzUhHvjnhvsJeknQYl20Q0PPvSuVA1Sr++h0Ni/rfcbOBPyOT6fdxkgTx2mvfE6NQnc/JH5hUthzW4ogEHxf2VIQ9u1wSTm9vkExpo0jrUgJKwR+i067ORKnwDda9ev2E9Rqd0ZrtgoH3X6CJ6Ie4wxQY+i31QydAM3GLvz2JgxjfjmFWoyewMilCKCmr3ajQLUTUDfKnbtdchlotpU7t6XYNumEP6Mrqz3GtHGcNkEQ0Kw3sdYHidvVLSv7Cer1fQycNtFieRapHBUoDH+nG34SHE03GPf5/F5hnkxmBrFNVO6Lglh/+f0pULaWUmCxwK7tDts3O9Sbys7tLpm0DN5axOBIk0DfwnYaKDniOYNkjf0E3dHsRw22YKES+yrQ+A+tCufzn8GYGthTYSeX2Rctr78M/qXAEmj4p9mUcNeUS6Vm2bbdULWWScyqYWtOWAmyb+HKq3g5B2sPEXQ8jBPP6xzX2k9AAcwRE+YH8SbAuIJ/9Xz+djSdoQLBLxBJIWYPkKIWtJfBbyKXIAr7dqdotJTJCRPuDBY2uSaqI7lhGGUvYIPXEXmLXN4Fk6Ja7rZExpgE1+on6CbG7vARmhDgvYY9Ysl2J7atmM/vInoRsT+jo20qOkVT04DihCdZdMXShZzwwIE0roFAoayKCWCzm0II0OAtCH4Oeh7FjXpxz4FCpbIftdnYnqesqZ+g+2iphAAj5fmvPZ/fIEZoBe/wf8qLzPp3ss/bzx3ZTaQktdw0301zN3nQ8SPFKMJl3+eyX2a7ucCEnMLqxTAUwonkQJacNwcQzgH1hzkWZR12guvdTzBkSwhwg0WzK/P5TwwcUW5EaCn8uKQcu/gOF/wLHM6f5dGJQ+zJ3k7R5Mg7WRwxpIxDs2PxNaBuW9SCBm+1LvOP5RPck73IRzen2ZzKYO0VWUQYJli8/DkQQrnB8mAsjSUJrttPkBBgVMKegKz3FhMTJwA74GaWsGz94lKLv1ioc8F38IzldH2eM/XzbE1Psi+7kx3prWSNi+fkaAYtGrbDZb/ETONt3mkvUgt8flEzoEV+Y1uGggPWriSiquLlwwSyGo1GjGuZeU39BAkBNjbsMSYgl5snP/EGMMjzh0XPF5aaHFuo8Y4fMGEAcXAljP6X/CovlV/Hj8YlWtVwRCKCEUNKHFxx2eI61Kzy9cUGqPDxbR45x2B1tTjO4OXOIRoeONogE9tR8YP7CYIBYyETAqy75w/n889TuMq1RAawRnhhscmxi1Uu+hbPrKzrC+Di4JrrezULeEZoWOVbSw1U4JPb8mQcwVrt+W4COHheGA5VSgewNntTJkRvJAlqlQMIkCucGzqhEwJcD/wIue5tjDLY8yOGHy/WObZQ41JgyRp53weYCuSM0LTKtxfrgPJvdhRwzUoShGNTHHLePFYNtcr+aCeIcWKsKWq1O7E2i+PW8HIJATYI/IRTmidODpzP3+31/WG5zrFLdRZ8S0rkpp3eK5AxQkuVv1tqIsC/3VHAiAwOh7w5UKhV9xP42XCcpMSUBDZNPbqgw9uaEGBDPL+XPxvV+fvn85uIAT9YbISe31dckaGIqzISkuC7S020SwIzKBwS8t45DEq5cgANvBu6J2zE3sLQ4//l95hYL/hdVB3y+VkKy5dTmH7PH4H/ixdrLPiKK8NdzLQIDYXvlpp84d0qqooxMuB1Ktn8PMWJUxinjrVp4itCHH5pN9kBVoE/1KfM4BVO4zhNrHVYHmEehvsAfG+pyZcu1VnwA9LGDD3SECAl0AiU75bCcOhfb+/PCZSwXOt586BEdwiEO4FI8o4TAlwn5s/nZ/CKZ3DMAPBHAPqHpRbHLlZZ8C3ZdQB/1xcKkI4S479dagLwyW0F0o6g9soZc3jFqR+SQELZRNDJ4zit5EUnIdBVwK8GLz9LvngG12ks5wHLHtgIivAPi02OLVR5xw9uSrXnvewEaRFaVvmbKP9oBIqYlX3Cqi5IQM6bp1A8het2w6HEkh1gFfgFIVcIY35jWli7+oRXCFT5QanFsYU6b3cCio7Z0AJL2oQk+NZiA1B+c1uegmOWL9vrksCYgLw3jyjhxRo2h4ltYpzsADff84vi5WcpFE9iTLM/4TVCgPL9Uuj5RwH8XctGxPzG5QZ/vVCj7FvEWbkrheFQdyc4iePUsUGyE9zyBFgGvzdHoXgKY9rLSXAv+DtW+cFiky9drHG+HTDhyMiU1ruHZQo8d7nBVy/VWOqEo1l6O9GsdZGocadQPIVx66hN0r9blgBdPX94A3tX0uz0ef62wo9KLY4tVJlv+2xyRm+5FJZlF89dbvC1SzWWOsEKEvQSPuedC2XcTmPArfMJAW4B8Hf1/OcoTpyIwN8f9rRU+XGpwbFLVc63LZud0V0qCxRMeAj33OU6X7tUo+QHAxLjsPHe8+bJF0+BaaLWJAS4lR53Wc8/cQLT18zS1fMrL5aaHLtY43wrYNIxIz+JwQJ5EypLn7vc4LkeEvQ5AIRC/hxedycIi7wJAcY+5scu6/nDHtQBen6BF0stvnixxoWOZdI1sTlA6pIAgecvN3juUp2qb/tOjJXw8rqJ/DlyE2+CaSQEGPewx5jwdLQ4cYJQz98vbOvV87/rW4omfrDohkMCfGOxwV9frNPwbXhD/QoLpdQT+bfIFU+i0lwX7U1CgA2q9mS9eQoTb2CupedfivT8nSBMLGOqHej2E6jCt5YafPlSnZbt1w6pCliHCe8tvImTYU6gTkKA8Qp71qDnN4YfLzY4tlC9aXr+UagO5aJzgm8v1vnSQhV/gIBOEUQdJrzz5IunMaa5coJzQoA4gz/U8xcn3twQPf8okCBjhA7wd0tNvthVkUo/CcBQzJ/DK54CpxWeE+j4E8AdX/CPjp5/o22t/QSCUPDmEaBWOYCNdT/BLboDhINqzcjp+Tfa1tJPoFE/gZefpzAW/QS3GAHCZhYhl5+N9PyNCPxXJM0m+u33lpp8MdLz91zWMra2up/gC+9W8QclxjiIKF6kInWcOtZmxpYD7riBP5ufIV84M7iZZQP1/KOQD9xoP0HOm0dFqVYOoJ08Mob9BGZ8wA+Z/AyF4hlcd3T1/KOwE6y1nyDsLDsfCehq4U6Q7ACjl/Aqlkz+LMXiGdJOK5qs3MPyEdTzb3hOcEP9BOc2sp9gqDVZMxbg985SLJ4m5YSnmb0TQ0ZZz7/RtvZ+Aruqn2DdrnG0hFdmJAToB384JDbnzVGcOEXKCfX8GiM9/yjkBe+ln8Bxm1i7LiSoAW8nBBjg+btDVCcm3iQdYz3/KJDgxvsJTmLWo59AKaFcjDsBWjcX/L16/jcwxscOAH+c9PwbbTfaT5Dz5igWT2GWK21Dwr9wWSX+BFi6mV93XPX8o0CCtfYThKfsUTjkNCMYyRDwz5zAqbgTYIGbcFPeraDnHxUSIPC1yw2ev0o/QXg/geDl5yhMnkJMaxgEqCPyOkZejTkB5C2Qhfcb9twqev5RCYcE+OZig68u1KlfrZ9ADV4uDIfE3PR+ghLIaTAz8SaA2pdQ++b78vxr0fOL8EJpPPT8o0CCnBEC4JtLDb5yjX4CVQfPm6M4cTqarHGTcgLVU9jgNWxwId4EEHkRkV+897BnjXr+UoNjF8dHzz8K1aGcCIFVvr1U5y8uDe4nuHI/wTnyE6cxzk1qqhF5HZEThKXQodnwT4JN6ieovUPV50Zgueb5/Ag/Ktc5drHOQseSSsB/U0mwfD/BYhNDOJD36vcTnAXV6H6CDEaC9xSDKopIahp0EQ2GKsMz67CIlxR9RVSPrx38LoKSL8xQnHhz4Nba1fP/sNzgf75bY8G3uEaSYadDsIwITVX+ttTkf7xbxepV2is1vJ+gWDiFcdqovrfDMlGOA9OsgwZ16HhJ42haMm86JvOiXrcYpNGiKYXiKQrFk4Pn9nT1/Eu3jp5/oy0tQiOAvys1+cLCYBJcuZ/gXHQ/QeO9nhj/A7bzC6zPCl1LLHcABVVdAn4kyNI1wW/TCJbCxJt4hVmM8fv1/NGaf3+pyRcv1rnYuTX0/Bttvf0E/ztqr7x2P8E5CsXuHQvpteNY5JKKeVHFVFUMKibmBAh/qSI/AfP3g3c1RTUNElCYeJN8fhZjOtGU5n49//dKLb54scq7nfW5nCKxlf0EDat8JxIXtoKQBKsFdBCEJJg4hXEbaxzNrqB8D5FpJKriDbmSN3QCWLHdz7zCl3SANEI18vzFk3j52eiStJUxvxjBAj8sh+C/cIvq+UdjJwhJ8DeLDb503fsJzkX3E1yfBAothS8jcn58CBD9UjTAmB854n6lL+EVn8LESfKF2Z57eFeqOhGYrnY4tlDjrXZAPvH8G0qCjAhtC/9rscFXFqpUAxte+r2KBEYs+a6K1Glgr5EYO+J+BWN+CKzbHa9mfRdOLhvcP0Pt2RXgL54iXzgz+BLqaEVfqYaef67VYcJNwD8KljWCr8o3lnr6CeRq9xOci/oJGoP7CdSeNbh/Jsjl9XyGoRPAaO9HQYNXDOazqqYTgv80+cIZYJC2J/L8lTZ//k6N1xodio6TgH+E8oJw+BY8v9jgq5drLPnX6yc4HfUTrHjXHYN8Fg1eMaqrMBNzAriqyx+jCti2EedYyvGf9wqnwzHdMOCQS1AJPf8XLlZ5rdFhi2twEtyNHAnyEo5hfP5Sg68vq0iv1k8wF/UTXDkxNuI8b8Q9BrZtevDS/cS8CtR/26uIXchmy5+ZmHjjFdQMqPOH4P9Ztc2fv1vj5402W6NOLk0wN3K2LKBT+OrlOl+7vJZ+gvA+NkVfcSX1GULVcB9mhv2+10EMZwZ8HFTNCQj+UNXMrQR/KGx7rdrmv79T5eeNDpsdM0CNmNiokSDvhPcMPHe5wfPX7SeYI184PSfW/KGqnBiMk+gzzAhl6DmA269lEgExTcB8R1X/g4j8KbDLCAQivF5r8d/erfLGMvgTzx+nnaBqlecWGwD8RjRtoncMY9hPoPPZ3PzvNWpT3zGOj9pgQ/b3oRNg0/bvX7UmFAQZgK8DOwU+bcXsPFFvy+feqXK61WHSkUTRHFMS1KzyjcUGgvCbWz08x3QFdAq8BfppMN/csv3FNfxfH44vAdbUOK36X8TIOydq7c/+13cqU2daHfGSOn+sSeAZoaHKN5caWOCT2/JkHNRa5lX190T4xprxEescYM3fxHz9KwuV3zrbbL/qiSTVnjGoDuVE8K3ynaUGX7pUoekHrxrV3wK+NTKwGyXHESh/L2I+oWL+UpOwfyxIkDVCPVD9fqn9ly/U2p/AyN9zE3rEx5EACPjACZTftcrvK3o+4UG8KSDoeVR/v6P8bls5QfiOSQhwbcexAHzeqvmYVfN50CABU+zAH1g1n7dqPgZ8XmBhFIt5ozwctwa8hDCn6N+gfBzh1wUpJOAaZZ+vJZTvIPpXCP8X5cIof984TIe+AHzNYqdF5csCHwQ+gsjDCdxGCfn6MvA9RX+k8JqBs3H42nEajz4LOgvyfeCvrdqHBB4COSwi+4EJwCPpjBy2BUADKKvqKdDXFaYNTIOcAMpxepg43g9QAl5S9CVgiyD3WLX3CrIP5D5B94EUFS0gTCYtM+87pAGlIkgJuKxwNgS9nhHknxT9hcLluDalxv2CjMsCr1n0AshpgUtRyDQJbAN2AllGqOwWMzORt383+lwETim8quiMQS5q6JBia6KalBkTu7UZnlhiCQESSywhQGKJJQRILLGEAIkllhAgscQSAiSWWEKAxBJLCJBYYgkBEkssIUBiiSUESCyxhACJJZYQILHEEgIkllhCgMQSSwiQWGIJARJLLCFAYoklBEgssYQAiSWWECCxxEbN/v8AhJUoJvrkO6AAAAAASUVORK5CYII='
-      };
-      if (params['href']) {
-        logo.href = params['href'];
-      }
-      if (params['src']) {
-        logo.src = params['src'];
-      }
-      return logo;
-    }
-  }, {
-    key: 'getMap',
-    value: function getMap() {
-      return this.map;
-    }
-  }, {
-    key: 'setMap',
-    value: function setMap(map) {
-      if (map && map instanceof _constants.ol.Map) {
-        this.map = map;
-      }
-    }
-  }, {
-    key: 'updateSize',
-    value: function updateSize() {
-      this.map.updateSize();
-    }
-  }]);
-
-  return Map;
-}((0, _mixin2.default)(_baseLayer2.default, _Controls2.default, _Interactions2.default, _View2.default, _Style2.default, _Layer2.default, _feature2.default, _Overlay2.default));
-
-exports.default = Map;
-module.exports = exports['default'];
-
-/***/ }),
-/* 175 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _constants = __webpack_require__(1);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var View = function () {
-  function View() {
-    _classCallCheck(this, View);
-  }
-
-  _createClass(View, [{
-    key: '_addView',
-    value: function _addView(params) {
-      var option = params || {};
-      return new _constants.ol.View({
-        center: option['center'] && Array.isArray(option['center']) ? option['center'] : [0, 0],
-        zoom: option['zoom'] && typeof option['zoom'] === 'number' ? option['zoom'] : 0,
-        zoomFactor: option['zoomFactor'] && typeof option['zoomFactor'] === 'number' ? option['zoomFactor'] : 2,
-        rotation: option['rotation'] && typeof option['rotation'] === 'number' ? option['rotation'] : 0,
-        enableRotation: option['enableRotation'] === false ? option['enableRotation'] : true,
-        projection: option['projection'] ? option['projection'] : 'EPSG:3857',
-        extent: option['extent'] && Array.isArray(option['extent']) && option['extent'].length === 4 ? option['extent'] : undefined,
-        resolutions: option['resolutions'] && Array.isArray(option['resolutions']) && option['resolutions'].length > 0 ? option['resolutions'] : undefined
-      });
-    }
-  }]);
-
-  return View;
-}();
-
-exports.default = View;
-module.exports = exports['default'];
-
-/***/ }),
-/* 176 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _constants = __webpack_require__(1);
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var BaseLayers = function () {
-  function BaseLayers() {
-    _classCallCheck(this, BaseLayers);
-  }
-
-  _createClass(BaseLayers, [{
-    key: 'addBaseLayers',
-    value: function addBaseLayers(params, view) {
-      var options = params || [];
-      var _view = view || {};
-      if (_view) {
-        this.projection = _constants.ol.proj.get(_view['projection'] ? _view.projection : 'EPSG:3857');
-
-        this.fullExtent = _view['fullExtent'] ? _view.fullExtent : [-180, -90, 180, 90];
-
-        this.projection.setExtent(this.fullExtent);
-
-        this.origin = _view.origin;
-
-        this.tileSize = _view.tileSize;
-
-        this.resolutions = _view['resolutions'];
-      }
-
-      if (!options || !Array.isArray(options) || options.length <= 0) {
-        return [new _constants.ol.layer.Group({
-          layers: [new _constants.ol.layer.Tile({
-            source: new _constants.ol.source.OSM()
-          })],
-          isBaseLayer: true
-        })];
-      } else {
-        return [new _constants.ol.layer.Group({
-          layers: this._getBaseLayerGroup(params),
-          isBaseLayer: true
-        })];
-      }
-    }
-  }, {
-    key: '_getBaseLayerGroup',
-    value: function _getBaseLayerGroup(layerConfig) {
-      var _this = this;
-
-      var layers = [],
-          labelLayers = [],
-          _layers = [],
-          labelLayersConfig = [];
-
-      if (layerConfig && Array.isArray(layerConfig) && layerConfig.length > 0) {
-        layerConfig.forEach(function (config) {
-          if (config['layerName'] && config['layerUrl'] && config['layerType']) {
-            var layer = null;
-            switch (config['layerType']) {
-              case 'TileXYZ':
-                layer = _this._getXYZLayer(config);
-                break;
-              case 'TitleWMTS':
-                layer = _this._getWMTSLayer(config);
-                break;
-              case 'OSM':
-                layer = _this._getOSMLayer(config);
-                break;
-              case 'ImageWMS':
-                layer = _this._getImageWMSLayer(config);
-                break;
-              case 'TileWMS':
-                layer = _this._getTileWMSLayer(config);
-                break;
-            }
-            if (layer) layers.push(layer);
-            if (config['label']) {
-              labelLayersConfig.push(config['label']);
-            }
-          }
-        });
-      }
-      labelLayers = this._getBaseLayerLabel(labelLayersConfig);
-      _layers = layers.concat(labelLayers);
-      return _layers;
-    }
-  }, {
-    key: '_getBaseLayerLabel',
-    value: function _getBaseLayerLabel(labelLayersConfig) {
-      var _this2 = this;
-
-      var labelLayers = [],
-          _labelLayersLayerNames = new Set();
-
-      if (labelLayersConfig && Array.isArray(labelLayersConfig) && labelLayersConfig.length > 0) {
-        labelLayersConfig.forEach(function (config) {
-          if (config['layerName'] && config['layerUrl'] && config['layerType']) {
-            _labelLayersLayerNames.add(config['layerName']);
-          }
-        });
-        [].concat(_toConsumableArray(_labelLayersLayerNames)).forEach(function (layerName) {
-          labelLayersConfig.every(function (configM) {
-            if (configM && configM['layerName'] === layerName) {
-              var labelLayer = null;
-              switch (configM['layerType']) {
-                case 'TileXYZ':
-                  labelLayer = _this2._getXYZLayer(configM);
-                  break;
-                case 'TitleWMTS':
-                  labelLayer = _this2._getWMTSLayer(configM);
-                  break;
-                case 'ImageWMS':
-                  labelLayer = _this2._getImageWMSLayer(configM);
-                  break;
-                case 'TileWMS':
-                  labelLayer = _this2._getTileWMSLayer(configM);
-                  break;
-              }
-              if (labelLayer) labelLayers.push(labelLayer);
-              return false;
-            }
-            return true;
-          });
-        });
-      }
-      return labelLayers;
-    }
-  }, {
-    key: '_getXYZLayer',
-    value: function _getXYZLayer(config) {
-      var tileUrl = config['layerUrl'];
-      var tileGrid = new _constants.ol.tilegrid.TileGrid({
-        tileSize: this.tileSize,
-        origin: this.origin,
-        extent: this.fullExtent,
-        resolutions: this.resolutions
-      });
-      var tileArcGISXYZ = new _constants.ol.source.XYZ({
-        wrapX: false,
-        tileGrid: tileGrid,
-        attributions: this._getAttribution(config['attribution']),
-        tileSize: this.tileSize,
-        opaque: config['opaque'] === true ? config['opaque'] : false,
-        tilePixelRatio: 1,
-        projection: this.projection,
-
-        tileUrlFunction: function tileUrlFunction(tileCoord) {
-          var url = (tileUrl + '/tile/{z}/{y}/{x}').replace('{z}', tileCoord[0].toString()).replace('{x}', tileCoord[1].toString()).replace('{y}', (-tileCoord[2] - 1).toString());
-          return url;
-        }
-      });
-      var baseLayer = new _constants.ol.layer.Tile({
-        isBaseLayer: true,
-        alias: config['alias'] ? config['alias'] : '',
-        isDefault: config['isDefault'] === true ? config['isDefault'] : false,
-        visible: config['isDefault'] === true ? config['isDefault'] : false,
-        layerName: config['layerName'] ? config.layerName : '',
-        source: tileArcGISXYZ
-      });
-      return baseLayer;
-    }
-  }, {
-    key: '_getOSMLayer',
-    value: function _getOSMLayer(config) {
-      var baseLayer = new _constants.ol.layer.Tile({
-        isBaseLayer: true,
-        alias: config['alias'] ? config['alias'] : '',
-        isDefault: config['isDefault'] === true ? config['isDefault'] : false,
-        visible: config['isDefault'] === true ? config['isDefault'] : false,
-        layerName: config['layerName'] ? config.layerName : '',
-        source: new _constants.ol.source.OSM({
-          attributions: this._getAttribution(config['attribution']),
-          wrapX: false,
-          opaque: config['opaque'] === true ? config['opaque'] : false,
-          url: config['layerUrl'] ? config['layerUrl'] : 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-          crossOrigin: 'Anonymous'
-        })
-      });
-      return baseLayer;
-    }
-  }, {
-    key: '_getWMTSLayer',
-    value: function _getWMTSLayer(config) {
-      var projection = _constants.ol.proj.get('EPSG:4326');
-      var size = _constants.ol.extent.getWidth(projection.getExtent()) / 256;
-      var resolutions = new Array(19);
-      var matrixIds = new Array(19);
-      for (var z = 0; z < 19; ++z) {
-        resolutions[z] = size / Math.pow(2, z);
-        matrixIds[z] = z;
-      }
-      var layer = new _constants.ol.layer.Tile({
-        isBaseLayer: true,
-        alias: config['alias'] ? config['alias'] : '',
-        isDefault: config['isDefault'] === true ? config['isDefault'] : false,
-        layerName: config['layerName'] ? config.layerName : '',
-        visible: config['isDefault'] === true ? config['isDefault'] : false,
-        source: new _constants.ol.source.WMTS({
-          url: config['layerUrl'],
-          layer: config['layer'],
-          matrixSet: 'c',
-          format: 'tiles',
-          crossOrigin: 'Anonymous',
-          attributions: this._getAttribution(config['attribution']),
-          projection: projection,
-          tileGrid: new _constants.ol.tilegrid.WMTS({
-            origin: _constants.ol.extent.getTopLeft(projection.getExtent()),
-            resolutions: resolutions,
-            matrixIds: matrixIds
-          }),
-          style: 'default',
-          wrapX: false
-        })
-      });
-      return layer;
-    }
-  }, {
-    key: '_getImageWMSLayer',
-    value: function _getImageWMSLayer(config) {
-      var proj = this.projection.getCode();
-      var layer = new _constants.ol.layer.Image({
-        isBaseLayer: true,
-        alias: config['alias'] ? config['alias'] : '',
-        isDefault: config['isDefault'] === true ? config['isDefault'] : false,
-        layerName: config['layerName'] ? config.layerName : '',
-        visible: config['isDefault'] === true ? config['isDefault'] : false,
-        opacity: config['opacity'] && typeof config['opacity'] === 'number' ? config['opacity'] : 1,
-        source: new _constants.ol.source.ImageWMS({
-          url: config['layerUrl'],
-          attributions: this._getAttribution(config['attribution']),
-          params: {
-            LAYERS: config['layers'],
-            STYLES: config['style'] ? config['style'] : '',
-            VERSION: config['version'] ? config['version'] : '1.1.1',
-            WIDTH: config['width'] ? config['width'] : 256,
-            HEIGHT: config['height'] ? config['height'] : 256,
-            BBOX: config['bbox'],
-            SRS: !proj ? 'EPSG:4326' : proj,
-            CRS: !proj ? 'EPSG:4326' : proj,
-            REQUEST: 'GetMap',
-            TRANSPARENT: true,
-            TILED: config['tiled'] === false ? config['tiled'] : true,
-            TILESORIGIN: config['tiledsorrigin'] ? config['tiledsorrigin'] : undefined,
-            SERVICE: 'WMS',
-            FORMAT: config['format'] ? config['format'] : 'image/png'
-          },
-          wrapX: false
-        })
-      });
-      return layer;
-    }
-  }, {
-    key: '_getTileWMSLayer',
-    value: function _getTileWMSLayer(config) {
-      var proj = this.projection.getCode();
-      var layer = new _constants.ol.layer.Tile({
-        isBaseLayer: true,
-        alias: config['alias'] ? config['alias'] : '',
-        isDefault: config['isDefault'] === true ? config['isDefault'] : false,
-        layerName: config['layerName'] ? config.layerName : '',
-        visible: config['isDefault'] === true ? config['isDefault'] : false,
-        opacity: config['opacity'] && typeof config['opacity'] === 'number' ? config['opacity'] : 1,
-        source: new _constants.ol.source.TileWMS({
-          url: config['layerUrl'],
-          attributions: this._getAttribution(config['attribution']),
-          params: {
-            LAYERS: config['layers'],
-            STYLES: config['style'] ? config['style'] : '',
-            VERSION: config['version'] ? config['version'] : '1.1.1',
-            WIDTH: config['width'] ? config['width'] : 256,
-            HEIGHT: config['height'] ? config['height'] : 256,
-            BBOX: config['bbox'],
-            SRS: !proj ? 'EPSG:4326' : proj,
-            CRS: !proj ? 'EPSG:4326' : proj,
-            REQUEST: 'GetMap',
-            TRANSPARENT: true,
-            TILED: config['tiled'] === false ? config['tiled'] : true,
-            TILESORIGIN: config['tiledsorrigin'] ? config['tiledsorrigin'] : undefined,
-            SERVICE: 'WMS',
-            FORMAT: config['format'] ? config['format'] : 'image/png'
-          },
-          wrapX: false
-        })
-      });
-      return layer;
-    }
-  }, {
-    key: '_getAttribution',
-    value: function _getAttribution(params) {
-      if (!params) {
-        params = {};
-        params['url'] = 'https://aurorafe.github.io';
-        params['messages'] = 'contributors.';
-        params['title'] = 'HMap';
-      }
-      var attribution = new _constants.ol.Attribution({
-        html: '&copy; ' + '<a href="' + params['url'] + '">' + params['title'] + '</a> ' + params['messages']
-      });
-      return attribution;
-    }
-  }]);
-
-  return BaseLayers;
-}();
-
-exports.default = BaseLayers;
-module.exports = exports['default'];
-
-/***/ }),
-/* 177 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _constants = __webpack_require__(1);
-
-var _dom = __webpack_require__(116);
-
-var _utils = __webpack_require__(82);
-
-var _feature = __webpack_require__(80);
-
-var _feature2 = _interopRequireDefault(_feature);
-
-var _mixin = __webpack_require__(46);
-
-var _mixin2 = _interopRequireDefault(_mixin);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Overlay = function (_mix) {
-  _inherits(Overlay, _mix);
-
-  function Overlay(map) {
-    _classCallCheck(this, Overlay);
-
-    var _this = _possibleConstructorReturn(this, (Overlay.__proto__ || Object.getPrototypeOf(Overlay)).call(this));
-
-    if (map && map instanceof _constants.ol.Map) {
-      _this.map = map;
-    } else {
-      throw new Error('传入的不是地图对象或者地图对象为空！');
-    }
-    return _this;
-  }
-
-  _createClass(Overlay, [{
-    key: '_getCoordinatesFromGeom',
-    value: function _getCoordinatesFromGeom(point) {
-      var geometry = null;
-
-      if (point instanceof _constants.ol.geom.Geometry) {
-        geometry = point;
-      } else if (Array.isArray(point.geometry)) {
-        geometry = new _constants.ol.geom.Point(point.geometry);
-      } else {
-        geometry = new _constants.ol.format.WKT().readGeometry(point.geometry);
-      }
-      return geometry.getCoordinates();
-    }
-  }, {
-    key: 'addOverlayPoint',
-    value: function addOverlayPoint(point, params, index) {
-      try {
-        if (point && point['geometry']) {
-          var coordinate = this._getCoordinatesFromGeom(point);
-          if (point['attributes'] && (point['attributes']['id'] || point['attributes']['ID'])) {
-            var id = point['attributes']['id'] || point['attributes']['ID'] || params['id'];
-            var overlay = this.map.getOverlayById(id);
-            var creatEle = this.getElementForOverlay(point, params, index);
-            var _ref = [creatEle['marker'], creatEle['ele']],
-                marker = _ref[0],
-                ele = _ref[1];
-
-            if (!overlay) {
-              var iconOverlay = new _constants.ol.Overlay({
-                element: marker,
-                positioning: 'center-center',
-                id: id,
-                offset: [0, 0],
-                stopEvent: true
-              });
-              iconOverlay.setPosition(coordinate);
-              iconOverlay.setProperties(point['attributes']);
-              if (params) {
-                iconOverlay.set('params', params);
-                if (params['layerName']) {
-                  iconOverlay.set('layerName', params.layerName);
-                }
-              }
-              this._addOverLayEvent(marker, ele, iconOverlay);
-              this.map.addOverlay(iconOverlay);
-            } else {
-              this._addOverLayEvent(marker, ele, overlay);
-              overlay.setElement(marker);
-            }
-          }
-          if (params['zoomToExtent']) {
-            var extent = new _constants.ol.geom.Point(coordinate).getExtent();
-            var _extent = this.adjustExtent(extent);
-            this.zoomToExtent(_extent, true);
-          }
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }, {
-    key: '_addOverLayEvent',
-    value: function _addOverLayEvent(marker, ele, OverLay) {
-      marker.onmousedown = function (event) {
-        if (event.button === 2) {
-          window.ObservableObj.dispatchEvent({
-            type: 'rightMenuEvt',
-            originEvent: event,
-            value: OverLay
-          });
-        } else if (event.button === 0) {
-          window.ObservableObj.dispatchEvent({
-            type: 'overlayEvent',
-            originEvent: event,
-            value: OverLay
-          });
-        }
-      };
-      marker.onmouseover = function (event) {
-        ele.style.color = ele.selectColor;
-        window.ObservableObj.dispatchEvent({
-          type: 'onMouseoverOverlay',
-          originEvent: event,
-          value: OverLay
-        });
-      };
-      marker.onmouseout = function (event) {
-        ele.style.color = ele.normalColor;
-        window.ObservableObj.dispatchEvent({
-          type: 'onMouseOutOverlay',
-          originEvent: event,
-          value: OverLay
-        });
-      };
-    }
-  }, {
-    key: 'getElementForOverlay',
-    value: function getElementForOverlay(point, params, index) {
-      var marker = document.createElement('div');
-      marker.className = 'overlay-point-content';
-      var style = point['attributes']['style'] || params['style'];
-      var ele = '',
-          spanEle = '';
-
-      if (style['element']) {
-        ele = document.createElement('div');
-        var eleClass = style['element']['className'] ? style['element']['className'] : 'maker-point';
-        _dom.DomUtil.addClass(ele, 'iconfont');
-        _dom.DomUtil.addClass(ele, eleClass);
-        ele.style.top = style['element']['top'] ? style['element']['top'] : '-100%';
-        ele.style.left = style['element']['left'] ? style['element']['left'] : '100%';
-        ele.style.fontSize = style['element']['fontSize'] ? style['element']['fontSize'] : '16px';
-        ele.style.borderColor = style['element']['borderColor'] ? style['element']['borderColor'] : '#2A2A2A';
-        ele.style.borderWidth = style['element']['borderWidth'] ? style['element']['borderWidth'] : '1px';
-        ele.style.opacity = style['element']['opacity'] ? style['element']['opacity'] : 1;
-        ele.style.width = style['element']['width'] ? style['element']['width'] : '100%';
-        ele.style.height = style['element']['height'] ? style['element']['height'] : '100%';
-        ele.style.borderRadius = style['element']['borderRadius'] ? style['element']['borderRadius'] : '0px';
-        ele.normalColor = ele.style.color = style['element']['color'] ? style['element']['color'] : '#1b9de8';
-        ele.selectColor = style['element']['selectColor'] ? style['element']['selectColor'] : '#F61717';
-        ele.innerHTML = style['element']['text'] ? style['element']['text'] : '';
-        if (params['orderBy']) {
-          spanEle = document.createElement('span');
-          spanEle.innerHTML = Number(index) + 1;
-        } else if (params['orderByNum'] && point['attributes']['number'] !== undefined && point['attributes']['number'] !== '' && point['attributes']['number'] !== null) {
-          spanEle = document.createElement('span');
-          spanEle.innerHTML = Number(point['attributes']['number']) + 1;
-        }
-        if (spanEle) {
-          ele.appendChild(spanEle);
-        }
-        marker.appendChild(ele);
-      }
-      return {
-        marker: marker,
-        ele: ele
-      };
-    }
-  }, {
-    key: 'addOverlayPoints',
-    value: function addOverlayPoints(points, params) {
-      var _this2 = this;
-
-      try {
-        if (points && Array.isArray(points)) {
-          var multiPoint = new _constants.ol.geom.MultiPoint([]);
-          var change = false;
-          points.forEach(function (item, index) {
-            if (item && item['geometry']) {
-              var _geom = _this2._getGeometryFromPoint(item);
-              if (_geom) {
-                _this2.addOverlayPoint(item, params, index);
-                multiPoint.appendPoint(_geom);
-              }
-            }
-          });
-          if (params['zoomToExtent']) {
-            params['zoomToExtent'] = !params['zoomToExtent'];
-            change = true;
-          }
-          if (change) {
-            this._getExtent(multiPoint);
-          }
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, {
-    key: 'removeOverLay',
-    value: function removeOverLay(overlay) {
-      try {
-        if (overlay && overlay instanceof _constants.ol.Overlay && this.map) {
-          this.map.removeOverlay(overlay);
-          return overlay;
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }, {
-    key: 'removeOverlayById',
-    value: function removeOverlayById(id) {
-      try {
-        if (this.map && id) {
-          var _id = (0, _utils.trim)(id);
-          var overLay = this.map.getOverlayById(_id);
-          if (overLay && overLay instanceof _constants.ol.Overlay) {
-            this.map.removeOverlay(overLay);
-          }
-          return overLay;
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, {
-    key: 'removeOverlayByLayerName',
-    value: function removeOverlayByLayerName(layerName) {
-      var _overlays = [];
-      if (this.map && layerName) {
-        var overlays = this.map.getOverlays().getArray();
-        var len = overlays.length;
-        for (var i = 0; i < len; i++) {
-          if (overlays[i] && overlays[i].get('layerName') === layerName) {
-            _overlays.push(overlays[i]);
-            this.map.removeOverlay(overlays[i]);
-            i--;
-          }
-        }
-      }
-      return _overlays;
-    }
-  }, {
-    key: 'removeOverlayByIds',
-    value: function removeOverlayByIds(ids) {
-      var _this3 = this;
-
-      try {
-        var overlays = [];
-        if (ids && Array.isArray(ids) && ids.length > 0) {
-          ids.forEach(function (id) {
-            if (id) {
-              var overlay = _this3.removeOverlayById(id);
-              overlays.push(overlay);
-            }
-          });
-        }
-        return overlays;
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }, {
-    key: 'removeOverlayByLayerNames',
-    value: function removeOverlayByLayerNames(layerNames) {
-      var _this4 = this;
-
-      try {
-        var overlays = [];
-        if (layerNames && Array.isArray(layerNames) && layerNames.length > 0) {
-          layerNames.forEach(function (layerName) {
-            if (layerName) {
-              var rOverlays = _this4.removeOverlayByLayerName(layerName);
-              if (rOverlays && rOverlays.length > 0) {
-                overlays = overlays.concat(rOverlays);
-              }
-            }
-          });
-        }
-        return overlays;
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, {
-    key: 'highLightOverLay',
-    value: function highLightOverLay(id, overlay) {
-      if (!this.map) return;
-      if (overlay && overlay instanceof _constants.ol.Overlay) {
-        var overlayElement = overlay.getElement();
-        var iconElement = overlayElement.getElementsByTagName('div')[0];
-        iconElement.style.color = iconElement.selectColor;
-        _dom.DomUtil.addClass(overlayElement, 'overlay-point-marker-raise');
-        return overlay;
-      } else if (id && (0, _utils.trim)(id) !== "''") {
-        var _overlay = this.map.getOverlayById(id);
-        var _overlayElement = _overlay.getElement();
-        var _iconElement = _overlayElement.getElementsByTagName('div')[0];
-        _iconElement.style.color = _iconElement.selectColor;
-        _dom.DomUtil.addClass(_overlayElement, 'overlay-point-marker-raise');
-        return _overlay;
-      }
-    }
-  }, {
-    key: 'unHighLightOverLay',
-    value: function unHighLightOverLay(id, overlay) {
-      if (!this.map) return;
-      if (overlay && overlay instanceof _constants.ol.Overlay) {
-        var overlayElement = overlay.getElement();
-        var iconElement = overlayElement.getElementsByTagName('div')[0];
-        iconElement.style.color = iconElement.normalColor;
-        _dom.DomUtil.removeClass(overlayElement, 'overlay-point-marker-raise');
-        return overlay;
-      } else if (id && (0, _utils.trim)(id) !== "''") {
-        var _overlay = this.map.getOverlayById(id);
-        var _overlayElement = _overlay.getElement();
-        var _iconElement = _overlayElement.getElementsByTagName('div')[0];
-        _iconElement.style.color = _iconElement.normalColor;
-        _dom.DomUtil.removeClass(_overlayElement, 'overlay-point-marker-raise');
-        return _overlay;
-      }
-    }
-  }, {
-    key: 'getOverLayById',
-    value: function getOverLayById(id) {
-      var _id = (0, _utils.trim)(id);
-      var overLay = this.map.getOverlayById(_id);
-      return overLay;
-    }
-  }, {
-    key: 'getOverLaysByLayerNames',
-    value: function getOverLaysByLayerNames(layerNames) {
-      var _this5 = this;
-
-      try {
-        var overlays = [];
-        if (layerNames && Array.isArray(layerNames) && layerNames.length > 0) {
-          layerNames.forEach(function (layerName) {
-            if (layerName) {
-              var rOverlays = _this5.getOverlayByLayerName(layerName);
-              if (rOverlays && rOverlays.length > 0) {
-                overlays = overlays.concat(rOverlays);
-              }
-            }
-          });
-        }
-        return overlays;
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, {
-    key: 'getOverlayByLayerName',
-    value: function getOverlayByLayerName(layerName) {
-      var _overlays = [];
-      if (this.map && layerName) {
-        var overlays = this.map.getOverlays().getArray();
-        overlays.forEach(function (overlay) {
-          if (overlay && overlay.get('layerName') === layerName) {
-            _overlays.push(overlay);
-          }
-        });
-      }
-      return _overlays;
-    }
-  }]);
-
-  return Overlay;
-}((0, _mixin2.default)(_feature2.default));
-
-exports.default = Overlay;
-module.exports = exports['default'];
-
-/***/ }),
-/* 178 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _constants = __webpack_require__(1);
-
-var _utils = __webpack_require__(13);
-
-var _EventType = __webpack_require__(118);
-
-var _EventType2 = _interopRequireDefault(_EventType);
-
-var _Events = __webpack_require__(117);
-
-var Events = _interopRequireWildcard(_Events);
-
-var _mixin = __webpack_require__(46);
-
-var _mixin2 = _interopRequireDefault(_mixin);
-
-var _Layer = __webpack_require__(55);
-
-var _Layer2 = _interopRequireDefault(_Layer);
-
-var _index = __webpack_require__(200);
-
-var _index2 = _interopRequireDefault(_index);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Observable = _constants.ol.Observable;
-
-var PlotDraw = function (_mix) {
-  _inherits(PlotDraw, _mix);
-
-  function PlotDraw(map, params) {
-    _classCallCheck(this, PlotDraw);
-
-    var _this = _possibleConstructorReturn(this, (PlotDraw.__proto__ || Object.getPrototypeOf(PlotDraw)).call(this));
-
-    _constants.ol.Observable.call(_this, []);
-    if (map && map instanceof _constants.ol.Map) {
-      _this.map = map;
-    } else {
-      throw new Error('传入的不是地图对象！');
-    }
-    _this.options = params || {};
-
-    _this.points = null;
-
-    _this.plot = null;
-
-    _this.feature = null;
-
-    _this.plotType = null;
-
-    _this.plotParams = null;
-
-    _this.mapViewport = _this.map.getViewport();
-
-    _this.dblClickZoomInteraction = null;
-
-    _this.drawOverlay = null;
-
-    _this.Observable = new _constants.ol.Object();
-
-    _this.layerName = 'GISPLOTLAYER';
-
-    _this.drawLayer = _this.creatVectorLayer(_this.layerName, {
-      create: true
-    });
-    return _this;
-  }
-
-  _createClass(PlotDraw, [{
-    key: 'active',
-    value: function active(type, params) {
-      this.disActive();
-      this.deactiveMapTools();
-      this.map.on('click', this.mapFirstClickHandler, this);
-      this.plotType = type;
-      this.plotParams = params;
-    }
-  }, {
-    key: 'disActive',
-    value: function disActive() {
-      this.removeEventHandlers();
-      this.map.removeLayer(this.drawOverlay);
-      this.points = [];
-      this.plot = null;
-      this.feature = null;
-      this.plotType = null;
-      this.plotParams = null;
-      this.activateMapTools();
-    }
-  }, {
-    key: 'isDrawing',
-    value: function isDrawing() {
-      return this.plotType !== null;
-    }
-  }, {
-    key: 'mapFirstClickHandler',
-    value: function mapFirstClickHandler(event) {
-      this.points.push(event.coordinate);
-      this.plot = this.createPlot(this.plotType, this.points, this.plotParams);
-      this.plot.setMap(this.map);
-      this.feature = new _constants.ol.Feature(this.plot);
-      this.drawLayer.getSource().addFeature(this.feature);
-      this.map.un('click', this.mapFirstClickHandler, this);
-      this.map.on('click', this.mapNextClickHandler, this);
-      if (!this.plot.freehand) {
-        this.map.on('dblclick', this.mapDoubleClickHandler, this);
-      }
-      Events.listen(this.mapViewport, _EventType2.default.MOUSEMOVE, this.mapMouseMoveHandler, this, false);
-    }
-  }, {
-    key: 'mapNextClickHandler',
-    value: function mapNextClickHandler(event) {
-      if (!this.plot.freehand) {
-        if ((0, _utils.MathDistance)(event.coordinate, this.points[this.points.length - 1]) < 0.0001) {
-          return false;
-        }
-      }
-      this.points.push(event.coordinate);
-      this.plot.setPoints(this.points);
-      if (this.plot.fixPointCount === this.plot.getPointCount()) {
-        this.mapDoubleClickHandler(event);
-      }
-      if (this.plot && this.plot.freehand) {
-        this.mapDoubleClickHandler(event);
-      }
-    }
-  }, {
-    key: 'mapDoubleClickHandler',
-    value: function mapDoubleClickHandler(event) {
-      event.preventDefault();
-      this.plot.finishDrawing();
-      this.drawEnd(event);
-    }
-  }, {
-    key: 'mapMouseMoveHandler',
-    value: function mapMouseMoveHandler(event) {
-      var coordinate = this.map.getCoordinateFromPixel([event.offsetX, event.offsetY]);
-      if ((0, _utils.MathDistance)(coordinate, this.points[this.points.length - 1]) < 0.0001) {
-        return false;
-      }
-      if (!this.plot.freehand) {
-        var pnts = this.points.concat([coordinate]);
-        this.plot.setPoints(pnts);
-      } else {
-        this.points.push(coordinate);
-        this.plot.setPoints(this.points);
-      }
-    }
-  }, {
-    key: 'removeEventHandlers',
-    value: function removeEventHandlers() {
-      this.map.un('click', this.mapFirstClickHandler, this);
-      this.map.un('click', this.mapNextClickHandler, this);
-      Events.unlisten(this.mapViewport, _EventType2.default.MOUSEMOVE, this.mapMouseMoveHandler, this);
-      this.map.un('dblclick', this.mapDoubleClickHandler, this);
-    }
-  }, {
-    key: 'drawEnd',
-    value: function drawEnd(event) {
-      this.Observable.dispatchEvent({
-        type: 'drawEnd',
-        event: event,
-        feature: this.feature
-      });
-      if (this.feature && this.options['isClear']) {
-        this.drawLayer.getSource().removeFeature(this.feature);
-      }
-      this.activateMapTools();
-      this.removeEventHandlers();
-      this.map.removeOverlay(this.drawOverlay);
-      this.points = [];
-      this.plot = null;
-      this.plotType = null;
-      this.plotParams = null;
-      this.feature = null;
-    }
-  }, {
-    key: 'addFeature',
-    value: function addFeature() {
-      this.feature = new _constants.ol.Feature(this.plot);
-      if (this.feature && this.drawLayer) {
-        this.drawLayer.getSource().addFeature(this.feature);
-      }
-    }
-  }, {
-    key: 'deactiveMapTools',
-    value: function deactiveMapTools() {
-      var _this2 = this;
-
-      var interactions = this.map.getInteractions().getArray();
-      interactions.every(function (item) {
-        if (item instanceof _constants.ol.interaction.DoubleClickZoom) {
-          _this2.dblClickZoomInteraction = item;
-          _this2.map.removeInteraction(item);
-          return false;
-        } else {
-          return true;
-        }
-      });
-    }
-  }, {
-    key: 'activateMapTools',
-    value: function activateMapTools() {
-      if (this.dblClickZoomInteraction && this.dblClickZoomInteraction instanceof _constants.ol.interaction.DoubleClickZoom) {
-        this.map.addInteraction(this.dblClickZoomInteraction);
-        this.dblClickZoomInteraction = null;
-      }
-    }
-  }]);
-
-  return PlotDraw;
-}((0, _mixin2.default)(Observable, _index2.default, _Layer2.default));
-
-exports.default = PlotDraw;
-module.exports = exports['default'];
-
-/***/ }),
-/* 179 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _constants = __webpack_require__(1);
-
-var _EventType = __webpack_require__(118);
-
-var _EventType2 = _interopRequireDefault(_EventType);
-
-var _dom = __webpack_require__(116);
-
-var _Events = __webpack_require__(117);
-
-var Events = _interopRequireWildcard(_Events);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Observable = _constants.ol.Observable;
-
-var PlotEdit = function (_Observable) {
-  _inherits(PlotEdit, _Observable);
-
-  function PlotEdit(map) {
-    _classCallCheck(this, PlotEdit);
-
-    var _this = _possibleConstructorReturn(this, (PlotEdit.__proto__ || Object.getPrototypeOf(PlotEdit)).call(this));
-
-    if (map && map instanceof _constants.ol.Map) {
-      _this.map = map;
-    } else {
-      throw new Error('传入的不是地图对象！');
-    }
-
-    _this.mapViewport = _this.map.getViewport();
-
-    _this.activePlot = null;
-
-    _this.startPoint = null;
-
-    _this.ghostControlPoints = null;
-
-    _this.controlPoints = null;
-
-    _this.mouseOver = false;
-
-    _this.elementTable = {};
-
-    _this.activeControlPointId = null;
-
-    _this.mapDragPan = null;
-    return _this;
-  }
-
-  _createClass(PlotEdit, [{
-    key: 'initHelperDom',
-    value: function initHelperDom() {
-      var _this2 = this;
-
-      if (!this.map || !this.activePlot) {
-        return false;
-      }
-      var parent = this.getMapParentElement();
-      if (!parent) {
-        return false;
-      } else {
-        var hiddenDiv = _dom.DomUtil.createHidden('div', parent, 'plot-helper-hidden-div');
-        var cPnts = this.getControlPoints();
-        if (cPnts && Array.isArray(cPnts) && cPnts.length > 0) {
-          cPnts.forEach(function (item, index) {
-            var id = 'plot-helper-control-point-div' + '-' + index;
-            _dom.DomUtil.create('div', 'plot-helper-control-point-div', hiddenDiv, id);
-            _this2.elementTable[id] = index;
-          });
-        }
-      }
-    }
-  }, {
-    key: 'getMapParentElement',
-    value: function getMapParentElement() {
-      var mapElement = this.map.getTargetElement();
-      if (!mapElement) {
-        return false;
-      } else {
-        return mapElement.parentNode;
-      }
-    }
-  }, {
-    key: 'destroyHelperDom',
-    value: function destroyHelperDom() {
-      var _this3 = this;
-
-      if (this.controlPoints && Array.isArray(this.controlPoints) && this.controlPoints.length > 0) {
-        this.controlPoints.forEach(function (item, index) {
-          if (item && item instanceof _constants.ol.Overlay) {
-            _this3.map.removeOverlay(item);
-          }
-          var element = _dom.DomUtil.get('plot-helper-control-point-div' + '-' + index);
-          if (element) {
-            _dom.DomUtil.removeListener(element, 'mousedown', _this3.controlPointMouseDownHandler, _this3);
-            _dom.DomUtil.removeListener(element, 'mousemove', _this3.controlPointMouseMoveHandler2, _this3);
-          }
-        });
-        this.controlPoints = [];
-      }
-      var parent = this.getMapParentElement();
-      var hiddenDiv = _dom.DomUtil.get('plot-helper-hidden-div');
-      if (hiddenDiv && parent) {
-        _dom.DomUtil.remove(hiddenDiv, parent);
-      }
-    }
-  }, {
-    key: 'initControlPoints',
-    value: function initControlPoints() {
-      var _this4 = this;
-
-      this.controlPoints = [];
-      var cPnts = this.getControlPoints();
-      if (cPnts && Array.isArray(cPnts) && cPnts.length > 0) {
-        cPnts.forEach(function (item, index) {
-          var id = 'plot-helper-control-point-div' + '-' + index;
-          _this4.elementTable[id] = index;
-          var element = _dom.DomUtil.get(id);
-          var pnt = new _constants.ol.Overlay({
-            id: id,
-            position: cPnts[index],
-            positioning: 'center-center',
-            element: element
-          });
-          _this4.controlPoints.push(pnt);
-          _this4.map.addOverlay(pnt);
-          _this4.map.render();
-          _dom.DomUtil.addListener(element, 'mousedown', _this4.controlPointMouseDownHandler, _this4);
-          _dom.DomUtil.addListener(element, 'mousemove', _this4.controlPointMouseMoveHandler2, _this4);
-        });
-      }
-    }
-  }, {
-    key: 'controlPointMouseMoveHandler2',
-    value: function controlPointMouseMoveHandler2(e) {
-      e.stopImmediatePropagation();
-    }
-  }, {
-    key: 'controlPointMouseDownHandler',
-    value: function controlPointMouseDownHandler(e) {
-      var id = e.target.id;
-      this.activeControlPointId = id;
-      Events.listen(this.mapViewport, _EventType2.default.MOUSEMOVE, this.controlPointMouseMoveHandler, this, false);
-      Events.listen(this.mapViewport, _EventType2.default.MOUSEUP, this.controlPointMouseUpHandler, this, false);
-    }
-  }, {
-    key: 'controlPointMouseMoveHandler',
-    value: function controlPointMouseMoveHandler(e) {
-      var coordinate = this.map.getCoordinateFromPixel([e.offsetX, e.offsetY]);
-      if (this.activeControlPointId) {
-        var plot = this.activePlot.getGeometry();
-        var index = this.elementTable[this.activeControlPointId];
-        plot.updatePoint(coordinate, index);
-        var overlay = this.map.getOverlayById(this.activeControlPointId);
-        overlay.setPosition(coordinate);
-      }
-    }
-  }, {
-    key: 'controlPointMouseUpHandler',
-    value: function controlPointMouseUpHandler(e) {
-      Events.unlisten(this.mapViewport, _EventType2.default.MOUSEMOVE, this.controlPointMouseMoveHandler, this);
-      Events.unlisten(this.mapViewport, _EventType2.default.MOUSEUP, this.controlPointMouseUpHandler, this);
-    }
-  }, {
-    key: 'activate',
-    value: function activate(plot) {
-      try {
-        if (!plot || !(plot instanceof _constants.ol.Feature) || plot === this.activePlot) {
-          return false;
-        } else {
-          var geom = plot.getGeometry();
-          if (!geom.isPlot()) {
-            return false;
-          } else {
-            this.deactivate();
-            this.activePlot = plot;
-            window.setTimeout(function () {}, 500);
-            this.map.on('pointermove', this.plotMouseOverOutHandler, this);
-            this.initHelperDom();
-            this.initControlPoints();
-          }
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, {
-    key: 'getControlPoints',
-    value: function getControlPoints() {
-      var points = [];
-      if (this.activePlot) {
-        var geom = this.activePlot.getGeometry();
-        if (geom) {
-          points = geom.getPoints();
-        }
-      }
-      return points;
-    }
-  }, {
-    key: 'plotMouseOverOutHandler',
-    value: function plotMouseOverOutHandler(e) {
-      try {
-        var feature = this.map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
-          return feature;
-        });
-        if (feature && feature === this.activePlot) {
-          if (!this.mouseOver) {
-            this.mouseOver = true;
-            this.map.getViewport().style.cursor = 'move';
-            this.map.on('pointerdown', this.plotMouseDownHandler, this);
-          }
-        } else {
-          if (this.mouseOver) {
-            this.mouseOver = false;
-            this.map.getViewport().style.cursor = 'default';
-            this.map.un('pointerdown', this.plotMouseDownHandler, this);
-          }
-        }
-        return feature;
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, {
-    key: 'plotMouseDownHandler',
-    value: function plotMouseDownHandler(e) {
-      this.ghostControlPoints = this.getControlPoints();
-      this.startPoint = e.coordinate;
-      this.disableMapDragPan();
-      this.map.on('pointerup', this.plotMouseUpHandler, this);
-      this.map.on('pointerdrag', this.plotMouseMoveHandler, this);
-    }
-  }, {
-    key: 'plotMouseMoveHandler',
-    value: function plotMouseMoveHandler(e) {
-      var _this5 = this;
-
-      try {
-        var point = e.coordinate;
-        var dx = point[0] - this.startPoint[0],
-            dy = point[1] - this.startPoint[1],
-            newPoints = [];
-
-        if (this.ghostControlPoints && Array.isArray(this.ghostControlPoints) && this.ghostControlPoints.length > 0) {
-          this.ghostControlPoints.forEach(function (item, index) {
-            var p = _this5.ghostControlPoints[index];
-            var coordinate = [p[0] + dx, p[1] + dy];
-            newPoints.push(coordinate);
-            var id = 'plot-helper-control-point-div' + '-' + index;
-            var overlay = _this5.map.getOverlayById(id);
-            overlay.setPosition(coordinate);
-            overlay.setPositioning('center-center');
-          });
-        }
-        var plot = this.activePlot.getGeometry();
-        plot.setPoints(newPoints);
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, {
-    key: 'plotMouseUpHandler',
-    value: function plotMouseUpHandler(e) {
-      this.enableMapDragPan();
-      this.map.un('pointerup', this.plotMouseUpHandler, this);
-      this.map.un('pointerdrag', this.plotMouseMoveHandler, this);
-    }
-  }, {
-    key: 'disconnectEventHandlers',
-    value: function disconnectEventHandlers() {
-      this.map.un('pointermove', this.plotMouseOverOutHandler, this);
-      Events.unlisten(this.mapViewport, _EventType2.default.MOUSEMOVE, this.controlPointMouseMoveHandler, this);
-      Events.unlisten(this.mapViewport, _EventType2.default.MOUSEUP, this.controlPointMouseUpHandler, this);
-      this.map.un('pointerdown', this.plotMouseDownHandler, this);
-      this.map.un('pointerup', this.plotMouseUpHandler, this);
-      this.map.un('pointerdrag', this.plotMouseMoveHandler, this);
-    }
-  }, {
-    key: 'deactivate',
-    value: function deactivate() {
-      this.activePlot = null;
-      this.mouseOver = false;
-      this.destroyHelperDom();
-      this.disconnectEventHandlers();
-      this.elementTable = {};
-      this.activeControlPointId = null;
-      this.startPoint = null;
-    }
-  }, {
-    key: 'disableMapDragPan',
-    value: function disableMapDragPan() {
-      var _this6 = this;
-
-      var interactions = this.map.getInteractions().getArray();
-      interactions.every(function (item) {
-        if (item instanceof _constants.ol.interaction.DragPan) {
-          _this6.mapDragPan = item;
-          item.setActive(false);
-          _this6.map.removeInteraction(item);
-          return false;
-        } else {
-          return true;
-        }
-      });
-    }
-  }, {
-    key: 'enableMapDragPan',
-    value: function enableMapDragPan() {
-      if (this.mapDragPan && this.mapDragPan instanceof _constants.ol.interaction.DragPan) {
-        this.mapDragPan.setActive(true);
-        this.map.addInteraction(this.mapDragPan);
-        this.mapDragPan = null;
-      }
-    }
-  }]);
-
-  return PlotEdit;
-}(Observable);
-
-exports.default = PlotEdit;
-module.exports = exports['default'];
-
-/***/ }),
-/* 180 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _PlotTypes = __webpack_require__(9);
-
-var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
-
-var _constants = __webpack_require__(1);
-
-var _utils = __webpack_require__(13);
-
-var PlotUtils = _interopRequireWildcard(_utils);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Arc = function (_ol$geom$LineString) {
-  _inherits(Arc, _ol$geom$LineString);
-
-  function Arc(points, params) {
-    _classCallCheck(this, Arc);
-
-    var _this = _possibleConstructorReturn(this, (Arc.__proto__ || Object.getPrototypeOf(Arc)).call(this));
-
-    _constants.ol.geom.LineString.call(_this, []);
-    _this.type = _PlotTypes2.default.ARC;
-    _this.fixPointCount = 3;
-    _this.set('params', params);
-    _this.setPoints(points);
-    return _this;
-  }
-
-  _createClass(Arc, [{
-    key: 'generate',
-    value: function generate() {
-      var count = this.getPointCount();
-      if (count < 2) return;
-      if (count === 2) {
-        this.setCoordinates(this.points);
-      } else {
-        var _ref = [this.points[0], this.points[1], this.points[2], null, null],
-            pnt1 = _ref[0],
-            pnt2 = _ref[1],
-            pnt3 = _ref[2],
-            startAngle = _ref[3],
-            endAngle = _ref[4];
-
-        var center = PlotUtils.getCircleCenterOfThreePoints(pnt1, pnt2, pnt3);
-        var radius = PlotUtils.MathDistance(pnt1, center);
-        var angle1 = PlotUtils.getAzimuth(pnt1, center);
-        var angle2 = PlotUtils.getAzimuth(pnt2, center);
-        if (PlotUtils.isClockWise(pnt1, pnt2, pnt3)) {
-          startAngle = angle2;
-          endAngle = angle1;
-        } else {
-          startAngle = angle1;
-          endAngle = angle2;
-        }
-        this.setCoordinates(PlotUtils.getArcPoints(center, radius, startAngle, endAngle));
-      }
-    }
-  }, {
-    key: 'setMap',
-    value: function setMap(map) {
-      if (map && map instanceof _constants.ol.Map) {
-        this.map = map;
-      } else {
-        throw new Error('传入的不是地图对象！');
-      }
-    }
-  }, {
-    key: 'getMap',
-    value: function getMap() {
-      return this.map;
-    }
-  }, {
-    key: 'isPlot',
-    value: function isPlot() {
-      return true;
-    }
-  }, {
-    key: 'setPoints',
-    value: function setPoints(value) {
-      this.points = !value ? [] : value;
-      if (this.points.length >= 2) {
-        this.generate();
-      }
-    }
-  }, {
-    key: 'getPoints',
-    value: function getPoints() {
-      return this.points.slice(0);
-    }
-  }, {
-    key: 'getPointCount',
-    value: function getPointCount() {
-      return this.points.length;
-    }
-  }, {
-    key: 'updatePoint',
-    value: function updatePoint(point, index) {
-      if (index >= 0 && index < this.points.length) {
-        this.points[index] = point;
-        this.generate();
-      }
-    }
-  }, {
-    key: 'updateLastPoint',
-    value: function updateLastPoint(point) {
-      this.updatePoint(point, this.points.length - 1);
-    }
-  }, {
-    key: 'finishDrawing',
-    value: function finishDrawing() {}
-  }]);
-
-  return Arc;
-}(_constants.ol.geom.LineString);
-
-exports.default = Arc;
-module.exports = exports['default'];
-
-/***/ }),
-/* 181 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _FineArrow2 = __webpack_require__(119);
-
-var _FineArrow3 = _interopRequireDefault(_FineArrow2);
-
-var _PlotTypes = __webpack_require__(9);
-
-var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var AssaultDirection = function (_FineArrow) {
-  _inherits(AssaultDirection, _FineArrow);
-
-  function AssaultDirection(points, params) {
-    _classCallCheck(this, AssaultDirection);
-
-    var _this = _possibleConstructorReturn(this, (AssaultDirection.__proto__ || Object.getPrototypeOf(AssaultDirection)).call(this));
-
-    _FineArrow3.default.call(_this, points, params);
-    _this.tailWidthFactor = 0.05;
-    _this.neckWidthFactor = 0.1;
-    _this.headWidthFactor = 0.15;
-    _this.type = _PlotTypes2.default.ASSAULT_DIRECTION;
-    _this.headAngle = Math.PI / 4;
-    _this.neckAngle = Math.PI * 0.17741;
-    _this.setPoints(points);
-    _this.set('params', params);
-    return _this;
-  }
-
-  return AssaultDirection;
-}(_FineArrow3.default);
-
-exports.default = AssaultDirection;
-module.exports = exports['default'];
-
-/***/ }),
-/* 182 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _PlotTypes = __webpack_require__(9);
-
-var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
-
-var _constants = __webpack_require__(1);
-
-var _Constants = __webpack_require__(26);
-
-var Constants = _interopRequireWildcard(_Constants);
-
-var _utils = __webpack_require__(13);
-
-var PlotUtils = _interopRequireWildcard(_utils);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var DoubleArrow = function (_ol$geom$Polygon) {
-  _inherits(DoubleArrow, _ol$geom$Polygon);
-
-  function DoubleArrow(points, params) {
-    _classCallCheck(this, DoubleArrow);
-
-    var _this = _possibleConstructorReturn(this, (DoubleArrow.__proto__ || Object.getPrototypeOf(DoubleArrow)).call(this));
-
-    _constants.ol.geom.Polygon.call(_this, []);
-    _this.type = _PlotTypes2.default.DOUBLE_ARROW;
-    _this.headHeightFactor = 0.25;
-    _this.headWidthFactor = 0.3;
-    _this.neckHeightFactor = 0.85;
-    _this.neckWidthFactor = 0.15;
-    _this.connPoint = null;
-    _this.tempPoint4 = null;
-    _this.fixPointCount = 4;
-    _this.set('params', params);
-    _this.setPoints(points);
-    return _this;
-  }
-
-  _createClass(DoubleArrow, [{
-    key: 'generate',
-    value: function generate() {
-      try {
-        var count = this.getPointCount();
-        var _ref = [this.points[0], this.points[1], this.points[2]],
-            pnt1 = _ref[0],
-            pnt2 = _ref[1],
-            pnt3 = _ref[2];
-
-        if (count === 2) {
-          this.setCoordinates([this.points]);
-          return false;
-        } else if (count === 3) {
-          this.tempPoint4 = this.getTempPoint4(pnt1, pnt2, pnt3);
-          this.connPoint = PlotUtils.Mid(pnt1, pnt2);
-        } else if (count === 4) {
-          this.tempPoint4 = this.points[3];
-          this.connPoint = PlotUtils.Mid(pnt1, pnt2);
-        } else {
-          this.tempPoint4 = this.points[3];
-          this.connPoint = this.points[4];
-        }
-        var leftArrowPnts = undefined,
-            rightArrowPnts = undefined;
-
-        if (PlotUtils.isClockWise(pnt1, pnt2, pnt3)) {
-          leftArrowPnts = this.getArrowPoints(pnt1, this.connPoint, this.tempPoint4, false);
-          rightArrowPnts = this.getArrowPoints(this.connPoint, pnt2, pnt3, true);
-        } else {
-          leftArrowPnts = this.getArrowPoints(pnt2, this.connPoint, pnt3, false);
-          rightArrowPnts = this.getArrowPoints(this.connPoint, pnt1, this.tempPoint4, true);
-        }
-        var m = leftArrowPnts.length;
-        var t = (m - 5) / 2;
-        var llBodyPnts = leftArrowPnts.slice(0, t);
-        var lArrowPnts = leftArrowPnts.slice(t, t + 5);
-        var lrBodyPnts = leftArrowPnts.slice(t + 5, m);
-        var rlBodyPnts = rightArrowPnts.slice(0, t);
-        var rArrowPnts = rightArrowPnts.slice(t, t + 5);
-        var rrBodyPnts = rightArrowPnts.slice(t + 5, m);
-        rlBodyPnts = PlotUtils.getBezierPoints(rlBodyPnts);
-        var bodyPnts = PlotUtils.getBezierPoints(rrBodyPnts.concat(llBodyPnts.slice(1)));
-        lrBodyPnts = PlotUtils.getBezierPoints(lrBodyPnts);
-        var pnts = rlBodyPnts.concat(rArrowPnts, bodyPnts, lArrowPnts, lrBodyPnts);
-        this.setCoordinates([pnts]);
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, {
-    key: 'getArrowPoints',
-    value: function getArrowPoints(pnt1, pnt2, pnt3, clockWise) {
-      var midPnt = PlotUtils.Mid(pnt1, pnt2);
-      var len = PlotUtils.MathDistance(midPnt, pnt3);
-      var midPnt1 = PlotUtils.getThirdPoint(pnt3, midPnt, 0, len * 0.3, true);
-      var midPnt2 = PlotUtils.getThirdPoint(pnt3, midPnt, 0, len * 0.5, true);
-      midPnt1 = PlotUtils.getThirdPoint(midPnt, midPnt1, Constants.HALF_PI, len / 5, clockWise);
-      midPnt2 = PlotUtils.getThirdPoint(midPnt, midPnt2, Constants.HALF_PI, len / 4, clockWise);
-      var points = [midPnt, midPnt1, midPnt2, pnt3];
-      var arrowPnts = this.getArrowHeadPoints(points);
-      if (arrowPnts && Array.isArray(arrowPnts) && arrowPnts.length > 0) {
-        var _ref2 = [arrowPnts[0], arrowPnts[4]],
-            neckLeftPoint = _ref2[0],
-            neckRightPoint = _ref2[1];
-
-        var tailWidthFactor = PlotUtils.MathDistance(pnt1, pnt2) / PlotUtils.getBaseLength(points) / 2;
-        var bodyPnts = this.getArrowBodyPoints(points, neckLeftPoint, neckRightPoint, tailWidthFactor);
-        if (bodyPnts) {
-          var n = bodyPnts.length;
-          var lPoints = bodyPnts.slice(0, n / 2);
-          var rPoints = bodyPnts.slice(n / 2, n);
-          lPoints.push(neckLeftPoint);
-          rPoints.push(neckRightPoint);
-          lPoints = lPoints.reverse();
-          lPoints.push(pnt2);
-          rPoints = rPoints.reverse();
-          rPoints.push(pnt1);
-          return lPoints.reverse().concat(arrowPnts, rPoints);
-        }
-      } else {
-        throw new Error('插值出错');
-      }
-    }
-  }, {
-    key: 'getArrowHeadPoints',
-    value: function getArrowHeadPoints(points) {
-      try {
-        var len = PlotUtils.getBaseLength(points);
-        var headHeight = len * this.headHeightFactor;
-        var headPnt = points[points.length - 1];
-        var headWidth = headHeight * this.headWidthFactor;
-        var neckWidth = headHeight * this.neckWidthFactor;
-        var neckHeight = headHeight * this.neckHeightFactor;
-        var headEndPnt = PlotUtils.getThirdPoint(points[points.length - 2], headPnt, 0, headHeight, true);
-        var neckEndPnt = PlotUtils.getThirdPoint(points[points.length - 2], headPnt, 0, neckHeight, true);
-        var headLeft = PlotUtils.getThirdPoint(headPnt, headEndPnt, Constants.HALF_PI, headWidth, false);
-        var headRight = PlotUtils.getThirdPoint(headPnt, headEndPnt, Constants.HALF_PI, headWidth, true);
-        var neckLeft = PlotUtils.getThirdPoint(headPnt, neckEndPnt, Constants.HALF_PI, neckWidth, false);
-        var neckRight = PlotUtils.getThirdPoint(headPnt, neckEndPnt, Constants.HALF_PI, neckWidth, true);
-        return [neckLeft, headLeft, headPnt, headRight, neckRight];
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, {
-    key: 'getArrowBodyPoints',
-    value: function getArrowBodyPoints(points, neckLeft, neckRight, tailWidthFactor) {
-      var allLen = PlotUtils.wholeDistance(points);
-      var len = PlotUtils.getBaseLength(points);
-      var tailWidth = len * tailWidthFactor;
-      var neckWidth = PlotUtils.MathDistance(neckLeft, neckRight);
-      var widthDif = (tailWidth - neckWidth) / 2;
-      var tempLen = 0,
-          leftBodyPnts = [],
-          rightBodyPnts = [];
-
-      for (var i = 1; i < points.length - 1; i++) {
-        var angle = PlotUtils.getAngleOfThreePoints(points[i - 1], points[i], points[i + 1]) / 2;
-        tempLen += PlotUtils.MathDistance(points[i - 1], points[i]);
-        var w = (tailWidth / 2 - tempLen / allLen * widthDif) / Math.sin(angle);
-        var left = PlotUtils.getThirdPoint(points[i - 1], points[i], Math.PI - angle, w, true);
-        var right = PlotUtils.getThirdPoint(points[i - 1], points[i], angle, w, false);
-        leftBodyPnts.push(left);
-        rightBodyPnts.push(right);
-      }
-      return leftBodyPnts.concat(rightBodyPnts);
-    }
-  }, {
-    key: 'getTempPoint4',
-    value: function getTempPoint4(linePnt1, linePnt2, point) {
-      try {
-        var midPnt = PlotUtils.Mid(linePnt1, linePnt2);
-        var len = PlotUtils.MathDistance(midPnt, point);
-        var angle = PlotUtils.getAngleOfThreePoints(linePnt1, midPnt, point);
-        var symPnt = undefined,
-            distance1 = undefined,
-            distance2 = undefined,
-            mid = undefined;
-
-        if (angle < Constants.HALF_PI) {
-          distance1 = len * Math.sin(angle);
-          distance2 = len * Math.cos(angle);
-          mid = PlotUtils.getThirdPoint(linePnt1, midPnt, Constants.HALF_PI, distance1, false);
-          symPnt = PlotUtils.getThirdPoint(midPnt, mid, Constants.HALF_PI, distance2, true);
-        } else if (angle >= Constants.HALF_PI && angle < Math.PI) {
-          distance1 = len * Math.sin(Math.PI - angle);
-          distance2 = len * Math.cos(Math.PI - angle);
-          mid = PlotUtils.getThirdPoint(linePnt1, midPnt, Constants.HALF_PI, distance1, false);
-          symPnt = PlotUtils.getThirdPoint(midPnt, mid, Constants.HALF_PI, distance2, false);
-        } else if (angle >= Math.PI && angle < Math.PI * 1.5) {
-          distance1 = len * Math.sin(angle - Math.PI);
-          distance2 = len * Math.cos(angle - Math.PI);
-          mid = PlotUtils.getThirdPoint(linePnt1, midPnt, Constants.HALF_PI, distance1, true);
-          symPnt = PlotUtils.getThirdPoint(midPnt, mid, Constants.HALF_PI, distance2, true);
-        } else {
-          distance1 = len * Math.sin(Math.PI * 2 - angle);
-          distance2 = len * Math.cos(Math.PI * 2 - angle);
-          mid = PlotUtils.getThirdPoint(linePnt1, midPnt, Constants.HALF_PI, distance1, true);
-          symPnt = PlotUtils.getThirdPoint(midPnt, mid, Constants.HALF_PI, distance2, false);
-        }
-        return symPnt;
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, {
-    key: 'setMap',
-    value: function setMap(map) {
-      if (map && map instanceof _constants.ol.Map) {
-        this.map = map;
-      } else {
-        throw new Error('传入的不是地图对象！');
-      }
-    }
-  }, {
-    key: 'getMap',
-    value: function getMap() {
-      return this.map;
-    }
-  }, {
-    key: 'isPlot',
-    value: function isPlot() {
-      return true;
-    }
-  }, {
-    key: 'setPoints',
-    value: function setPoints(value) {
-      this.points = !value ? [] : value;
-      if (this.points.length >= 2) {
-        this.generate();
-      }
-    }
-  }, {
-    key: 'getPoints',
-    value: function getPoints() {
-      return this.points.slice(0);
-    }
-  }, {
-    key: 'getPointCount',
-    value: function getPointCount() {
-      return this.points.length;
-    }
-  }, {
-    key: 'updatePoint',
-    value: function updatePoint(point, index) {
-      if (index >= 0 && index < this.points.length) {
-        this.points[index] = point;
-        this.generate();
-      }
-    }
-  }, {
-    key: 'updateLastPoint',
-    value: function updateLastPoint(point) {
-      this.updatePoint(point, this.points.length - 1);
-    }
-  }, {
-    key: 'finishDrawing',
-    value: function finishDrawing() {
-      if (this.getPointCount() === 3 && this.tempPoint4 !== null) {
-        this.points.push(this.tempPoint4);
-      }
-      if (this.connPoint !== null) {
-        this.points.push(this.connPoint);
-      }
-    }
-  }]);
-
-  return DoubleArrow;
-}(_constants.ol.geom.Polygon);
-
-exports.default = DoubleArrow;
-module.exports = exports['default'];
-
-/***/ }),
-/* 183 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _PlotTypes = __webpack_require__(9);
-
-var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
-
-var _AttackArrow2 = __webpack_require__(61);
-
-var _AttackArrow3 = _interopRequireDefault(_AttackArrow2);
-
-var _utils = __webpack_require__(13);
-
-var PlotUtils = _interopRequireWildcard(_utils);
-
-var _Constants = __webpack_require__(26);
-
-var Constants = _interopRequireWildcard(_Constants);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var SquadCombat = function (_AttackArrow) {
-  _inherits(SquadCombat, _AttackArrow);
-
-  function SquadCombat(points, params) {
-    _classCallCheck(this, SquadCombat);
-
-    var _this = _possibleConstructorReturn(this, (SquadCombat.__proto__ || Object.getPrototypeOf(SquadCombat)).call(this));
-
-    _AttackArrow3.default.call(_this, points, params);
-    _this.type = _PlotTypes2.default.SQUAD_COMBAT;
-    _this.headHeightFactor = 0.18;
-    _this.headWidthFactor = 0.3;
-    _this.neckHeightFactor = 0.85;
-    _this.neckWidthFactor = 0.15;
-    _this.tailWidthFactor = 0.1;
-    _this.set('params', params);
-    _this.setPoints(points);
-    return _this;
-  }
-
-  _createClass(SquadCombat, [{
-    key: 'generate',
-    value: function generate() {
-      try {
-        var pnts = this.getPoints();
-        var tailPnts = this.getTailPoints(pnts);
-        var headPnts = this.getArrowHeadPoints(pnts, tailPnts[0], tailPnts[1]);
-        var neckLeft = headPnts[0];
-        var neckRight = headPnts[4];
-        var bodyPnts = this.getArrowBodyPoints(pnts, neckLeft, neckRight, this.tailWidthFactor);
-        var count = bodyPnts.length;
-        var leftPnts = [tailPnts[0]].concat(bodyPnts.slice(0, count / 2));
-        leftPnts.push(neckLeft);
-        var rightPnts = [tailPnts[1]].concat(bodyPnts.slice(count / 2, count));
-        rightPnts.push(neckRight);
-        leftPnts = PlotUtils.getQBSplinePoints(leftPnts);
-        rightPnts = PlotUtils.getQBSplinePoints(rightPnts);
-        this.setCoordinates([leftPnts.concat(headPnts, rightPnts.reverse())]);
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, {
-    key: 'getTailPoints',
-    value: function getTailPoints(points) {
-      var allLen = PlotUtils.getBaseLength(points);
-      var tailWidth = allLen * this.tailWidthFactor;
-      var tailLeft = PlotUtils.getThirdPoint(points[1], points[0], Constants.HALF_PI, tailWidth, false);
-      var tailRight = PlotUtils.getThirdPoint(points[1], points[0], Constants.HALF_PI, tailWidth, true);
-      return [tailLeft, tailRight];
-    }
-  }]);
-
-  return SquadCombat;
-}(_AttackArrow3.default);
-
-exports.default = SquadCombat;
-module.exports = exports['default'];
-
-/***/ }),
-/* 184 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _PlotTypes = __webpack_require__(9);
-
-var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
-
-var _constants = __webpack_require__(1);
-
-var _utils = __webpack_require__(13);
-
-var PlotUtils = _interopRequireWildcard(_utils);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var StraightArrow = function (_ol$geom$LineString) {
-  _inherits(StraightArrow, _ol$geom$LineString);
-
-  function StraightArrow(points, params) {
-    _classCallCheck(this, StraightArrow);
-
-    var _this = _possibleConstructorReturn(this, (StraightArrow.__proto__ || Object.getPrototypeOf(StraightArrow)).call(this));
-
-    _constants.ol.geom.LineString.call(_this, []);
-    _this.type = _PlotTypes2.default.STRAIGHT_ARROW;
-    _this.fixPointCount = 2;
-    _this.maxArrowLength = 3000000;
-    _this.arrowLengthScale = 5;
-    _this.set('params', params);
-    _this.setPoints(points);
-    return _this;
-  }
-
-  _createClass(StraightArrow, [{
-    key: 'generate',
-    value: function generate() {
-      try {
-        var count = this.getPointCount();
-        if (count < 2) {
-          return false;
-        } else {
-          var pnts = this.getPoints();
-          var _ref = [pnts[0], pnts[1]],
-              pnt1 = _ref[0],
-              pnt2 = _ref[1];
-
-          var distance = PlotUtils.MathDistance(pnt1, pnt2);
-          var len = distance / this.arrowLengthScale;
-          len = len > this.maxArrowLength ? this.maxArrowLength : len;
-          var leftPnt = PlotUtils.getThirdPoint(pnt1, pnt2, Math.PI / 6, len, false);
-          var rightPnt = PlotUtils.getThirdPoint(pnt1, pnt2, Math.PI / 6, len, true);
-          this.setCoordinates([pnt1, pnt2, leftPnt, pnt2, rightPnt]);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, {
-    key: 'setMap',
-    value: function setMap(map) {
-      if (map && map instanceof _constants.ol.Map) {
-        this.map = map;
-      } else {
-        throw new Error('传入的不是地图对象！');
-      }
-    }
-  }, {
-    key: 'getMap',
-    value: function getMap() {
-      return this.map;
-    }
-  }, {
-    key: 'isPlot',
-    value: function isPlot() {
-      return true;
-    }
-  }, {
-    key: 'setPoints',
-    value: function setPoints(value) {
-      this.points = !value ? [] : value;
-      if (this.points.length >= 2) {
-        this.generate();
-      }
-    }
-  }, {
-    key: 'getPoints',
-    value: function getPoints() {
-      return this.points.slice(0);
-    }
-  }, {
-    key: 'getPointCount',
-    value: function getPointCount() {
-      return this.points.length;
-    }
-  }, {
-    key: 'updatePoint',
-    value: function updatePoint(point, index) {
-      if (index >= 0 && index < this.points.length) {
-        this.points[index] = point;
-        this.generate();
-      }
-    }
-  }, {
-    key: 'updateLastPoint',
-    value: function updateLastPoint(point) {
-      this.updatePoint(point, this.points.length - 1);
-    }
-  }, {
-    key: 'finishDrawing',
-    value: function finishDrawing() {}
-  }]);
-
-  return StraightArrow;
-}(_constants.ol.geom.LineString);
-
-exports.default = StraightArrow;
-module.exports = exports['default'];
-
-/***/ }),
-/* 185 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _PlotTypes = __webpack_require__(9);
-
-var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
-
-var _AttackArrow2 = __webpack_require__(61);
-
-var _AttackArrow3 = _interopRequireDefault(_AttackArrow2);
-
-var _utils = __webpack_require__(13);
-
-var PlotUtils = _interopRequireWildcard(_utils);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var TailedAttackArrow = function (_AttackArrow) {
-  _inherits(TailedAttackArrow, _AttackArrow);
-
-  function TailedAttackArrow(points, params) {
-    _classCallCheck(this, TailedAttackArrow);
-
-    var _this = _possibleConstructorReturn(this, (TailedAttackArrow.__proto__ || Object.getPrototypeOf(TailedAttackArrow)).call(this));
-
-    _AttackArrow3.default.call(_this, points, params);
-    _this.type = _PlotTypes2.default.TAILED_ATTACK_ARROW;
-    _this.headHeightFactor = 0.18;
-    _this.headWidthFactor = 0.3;
-    _this.neckHeightFactor = 0.85;
-    _this.neckWidthFactor = 0.15;
-    _this.tailWidthFactor = 0.1;
-    _this.headTailFactor = 0.8;
-    _this.swallowTailFactor = 1;
-    _this.swallowTailPnt = null;
-    _this.set('params', params);
-    _this.setPoints(points);
-    return _this;
-  }
-
-  _createClass(TailedAttackArrow, [{
-    key: 'generate',
-    value: function generate() {
-      try {
-        var points = this.getPointCount();
-        if (points === 2) {
-          this.setCoordinates([this.points]);
-          return false;
-        } else {
-          var pnts = this.getPoints();
-          var _ref = [pnts[0], pnts[1]],
-              tailLeft = _ref[0],
-              tailRight = _ref[1];
-
-          if (PlotUtils.isClockWise(pnts[0], pnts[1], pnts[2])) {
-            tailLeft = pnts[1];
-            tailRight = pnts[0];
-          }
-          var midTail = PlotUtils.Mid(tailLeft, tailRight);
-          var bonePnts = [midTail].concat(pnts.slice(2));
-          var headPnts = this.getArrowHeadPoints(bonePnts, tailLeft, tailRight);
-          var _ref2 = [headPnts[0], headPnts[4]],
-              neckLeft = _ref2[0],
-              neckRight = _ref2[1];
-
-          var tailWidth = PlotUtils.MathDistance(tailLeft, tailRight);
-          var allLen = PlotUtils.getBaseLength(bonePnts);
-          var len = allLen * this.tailWidthFactor * this.swallowTailFactor;
-          this.swallowTailPnt = PlotUtils.getThirdPoint(bonePnts[1], bonePnts[0], 0, len, true);
-          var factor = tailWidth / allLen;
-          var bodyPnts = this.getArrowBodyPoints(bonePnts, neckLeft, neckRight, factor);
-          var count = bodyPnts.length;
-          var leftPnts = [tailLeft].concat(bodyPnts.slice(0, count / 2));
-          leftPnts.push(neckLeft);
-          var rightPnts = [tailRight].concat(bodyPnts.slice(count / 2, count));
-          rightPnts.push(neckRight);
-          leftPnts = PlotUtils.getQBSplinePoints(leftPnts);
-          rightPnts = PlotUtils.getQBSplinePoints(rightPnts);
-          this.setCoordinates([leftPnts.concat(headPnts, rightPnts.reverse(), [this.swallowTailPnt, leftPnts[0]])]);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }]);
-
-  return TailedAttackArrow;
-}(_AttackArrow3.default);
-
-exports.default = TailedAttackArrow;
-module.exports = exports['default'];
-
-/***/ }),
-/* 186 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _PlotTypes = __webpack_require__(9);
-
-var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
-
-var _AttackArrow2 = __webpack_require__(61);
-
-var _AttackArrow3 = _interopRequireDefault(_AttackArrow2);
-
-var _utils = __webpack_require__(13);
-
-var PlotUtils = _interopRequireWildcard(_utils);
-
-var _Constants = __webpack_require__(26);
-
-var Constants = _interopRequireWildcard(_Constants);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var TailedSquadCombat = function (_AttackArrow) {
-  _inherits(TailedSquadCombat, _AttackArrow);
-
-  function TailedSquadCombat(points, params) {
-    _classCallCheck(this, TailedSquadCombat);
-
-    var _this = _possibleConstructorReturn(this, (TailedSquadCombat.__proto__ || Object.getPrototypeOf(TailedSquadCombat)).call(this));
-
-    _AttackArrow3.default.call(_this, points, params);
-    _this.type = _PlotTypes2.default.TAILED_SQUAD_COMBAT;
-    _this.headHeightFactor = 0.18;
-    _this.headWidthFactor = 0.3;
-    _this.neckHeightFactor = 0.85;
-    _this.neckWidthFactor = 0.15;
-    _this.tailWidthFactor = 0.1;
-    _this.swallowTailFactor = 1;
-    _this.swallowTailPnt = null;
-    _this.fixPointCount = 2;
-    _this.set('params', params);
-    _this.setPoints(points);
-    return _this;
-  }
-
-  _createClass(TailedSquadCombat, [{
-    key: 'generate',
-    value: function generate() {
-      try {
-        var pnts = this.getPoints();
-        var tailPnts = this.getTailPoints(pnts);
-        var headPnts = this.getArrowHeadPoints(pnts, tailPnts[0], tailPnts[2]);
-        var neckLeft = headPnts[0];
-        var neckRight = headPnts[4];
-        var bodyPnts = this.getArrowBodyPoints(pnts, neckLeft, neckRight, this.tailWidthFactor);
-        var count = bodyPnts.length;
-        var leftPnts = [tailPnts[0]].concat(bodyPnts.slice(0, count / 2));
-        leftPnts.push(neckLeft);
-        var rightPnts = [tailPnts[2]].concat(bodyPnts.slice(count / 2, count));
-        rightPnts.push(neckRight);
-        leftPnts = PlotUtils.getQBSplinePoints(leftPnts);
-        rightPnts = PlotUtils.getQBSplinePoints(rightPnts);
-        this.setCoordinates([leftPnts.concat(headPnts, rightPnts.reverse(), [tailPnts[1], leftPnts[0]])]);
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, {
-    key: 'getTailPoints',
-    value: function getTailPoints(points) {
-      var allLen = PlotUtils.getBaseLength(points);
-      var tailWidth = allLen * this.tailWidthFactor;
-      var tailLeft = PlotUtils.getThirdPoint(points[1], points[0], Constants.HALF_PI, tailWidth, false);
-      var tailRight = PlotUtils.getThirdPoint(points[1], points[0], Constants.HALF_PI, tailWidth, true);
-      var len = tailWidth * this.swallowTailFactor;
-      var swallowTailPnt = PlotUtils.getThirdPoint(points[1], points[0], 0, len, true);
-      return [tailLeft, swallowTailPnt, tailRight];
-    }
-  }]);
-
-  return TailedSquadCombat;
-}(_AttackArrow3.default);
-
-exports.default = TailedSquadCombat;
-module.exports = exports['default'];
-
-/***/ }),
-/* 187 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _PlotTypes = __webpack_require__(9);
-
-var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
-
-var _constants = __webpack_require__(1);
-
-var _utils = __webpack_require__(13);
-
-var PlotUtils = _interopRequireWildcard(_utils);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Circle = function (_ol$geom$Polygon) {
-  _inherits(Circle, _ol$geom$Polygon);
-
-  function Circle(points, params) {
-    _classCallCheck(this, Circle);
-
-    var _this = _possibleConstructorReturn(this, (Circle.__proto__ || Object.getPrototypeOf(Circle)).call(this));
-
-    _constants.ol.geom.Polygon.call(_this, []);
-    _this.type = _PlotTypes2.default.CIRCLE;
-    _this.fixPointCount = 2;
-    _this.set('params', params);
-    _this.setPoints(points);
-    return _this;
-  }
-
-  _createClass(Circle, [{
-    key: 'generate',
-    value: function generate() {
-      var center = this.points[0];
-      var radius = PlotUtils.MathDistance(center, this.points[1]);
-      this.setCoordinates([this.generatePoints(center, radius)]);
-    }
-  }, {
-    key: 'generatePoints',
-    value: function generatePoints(center, radius) {
-      var x = null,
-          y = null,
-          angle = null,
-          points = [];
-
-      for (var i = 0; i <= 100; i++) {
-        angle = Math.PI * 2 * i / 100;
-        x = center[0] + radius * Math.cos(angle);
-        y = center[1] + radius * Math.sin(angle);
-        points.push([x, y]);
-      }
-      return points;
-    }
-  }, {
-    key: 'setMap',
-    value: function setMap(map) {
-      if (map && map instanceof _constants.ol.Map) {
-        this.map = map;
-      } else {
-        throw new Error('传入的不是地图对象！');
-      }
-    }
-  }, {
-    key: 'getMap',
-    value: function getMap() {
-      return this.map;
-    }
-  }, {
-    key: 'isPlot',
-    value: function isPlot() {
-      return true;
-    }
-  }, {
-    key: 'setPoints',
-    value: function setPoints(value) {
-      this.points = !value ? [] : value;
-      if (this.points.length >= 2) {
-        this.generate();
-      }
-    }
-  }, {
-    key: 'getPoints',
-    value: function getPoints() {
-      return this.points.slice(0);
-    }
-  }, {
-    key: 'getPointCount',
-    value: function getPointCount() {
-      return this.points.length;
-    }
-  }, {
-    key: 'updatePoint',
-    value: function updatePoint(point, index) {
-      if (index >= 0 && index < this.points.length) {
-        this.points[index] = point;
-        this.generate();
-      }
-    }
-  }, {
-    key: 'updateLastPoint',
-    value: function updateLastPoint(point) {
-      this.updatePoint(point, this.points.length - 1);
-    }
-  }, {
-    key: 'finishDrawing',
-    value: function finishDrawing() {}
-  }]);
-
-  return Circle;
-}(_constants.ol.geom.Polygon);
-
-exports.default = Circle;
-module.exports = exports['default'];
-
-/***/ }),
-/* 188 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _PlotTypes = __webpack_require__(9);
-
-var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
-
-var _constants = __webpack_require__(1);
-
-var _Constants = __webpack_require__(26);
-
-var Constants = _interopRequireWildcard(_Constants);
-
-var _utils = __webpack_require__(13);
-
-var PlotUtils = _interopRequireWildcard(_utils);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Ellipse = function (_ol$geom$Polygon) {
-  _inherits(Ellipse, _ol$geom$Polygon);
-
-  function Ellipse(points, params) {
-    _classCallCheck(this, Ellipse);
-
-    var _this = _possibleConstructorReturn(this, (Ellipse.__proto__ || Object.getPrototypeOf(Ellipse)).call(this));
-
-    _constants.ol.geom.Polygon.call(_this, []);
-    _this.type = _PlotTypes2.default.ELLIPSE;
-    _this.fixPointCount = 2;
-    _this.set('params', params);
-    _this.setPoints(points);
-    return _this;
-  }
-
-  _createClass(Ellipse, [{
-    key: 'generate',
-    value: function generate() {
-      if (this.getPointCount() < 2) {
-        return false;
-      } else {
-        var _ref = [this.points[0], this.points[1]],
-            pnt1 = _ref[0],
-            pnt2 = _ref[1];
-
-        var center = PlotUtils.Mid(pnt1, pnt2);
-        var majorRadius = Math.abs((pnt1[0] - pnt2[0]) / 2);
-        var minorRadius = Math.abs((pnt1[1] - pnt2[1]) / 2);
-        var res = this.generatePoints(center, majorRadius, minorRadius);
-        this.setCoordinates([res]);
-      }
-    }
-  }, {
-    key: 'generatePoints',
-    value: function generatePoints(center, majorRadius, minorRadius) {
-      var x = null,
-          y = null,
-          angle = null,
-          points = [];
-
-      for (var i = 0; i <= Constants.FITTING_COUNT; i++) {
-        angle = Math.PI * 2 * i / Constants.FITTING_COUNT;
-        x = center[0] + majorRadius * Math.cos(angle);
-        y = center[1] + minorRadius * Math.sin(angle);
-        points.push([x, y]);
-      }
-      return points;
-    }
-  }, {
-    key: 'setMap',
-    value: function setMap(map) {
-      if (map && map instanceof _constants.ol.Map) {
-        this.map = map;
-      } else {
-        throw new Error('传入的不是地图对象！');
-      }
-    }
-  }, {
-    key: 'getMap',
-    value: function getMap() {
-      return this.map;
-    }
-  }, {
-    key: 'isPlot',
-    value: function isPlot() {
-      return true;
-    }
-  }, {
-    key: 'setPoints',
-    value: function setPoints(value) {
-      this.points = !value ? [] : value;
-      if (this.points.length >= 2) {
-        this.generate();
-      }
-    }
-  }, {
-    key: 'getPoints',
-    value: function getPoints() {
-      return this.points.slice(0);
-    }
-  }, {
-    key: 'getPointCount',
-    value: function getPointCount() {
-      return this.points.length;
-    }
-  }, {
-    key: 'updatePoint',
-    value: function updatePoint(point, index) {
-      if (index >= 0 && index < this.points.length) {
-        this.points[index] = point;
-        this.generate();
-      }
-    }
-  }, {
-    key: 'updateLastPoint',
-    value: function updateLastPoint(point) {
-      this.updatePoint(point, this.points.length - 1);
-    }
-  }, {
-    key: 'finishDrawing',
-    value: function finishDrawing() {}
-  }]);
-
-  return Ellipse;
-}(_constants.ol.geom.Polygon);
-
-exports.default = Ellipse;
-module.exports = exports['default'];
-
-/***/ }),
-/* 189 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _PlotTypes = __webpack_require__(9);
-
-var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
-
-var _constants = __webpack_require__(1);
-
-var _utils = __webpack_require__(13);
-
-var PlotUtils = _interopRequireWildcard(_utils);
-
-var _Constants = __webpack_require__(26);
-
-var Constants = _interopRequireWildcard(_Constants);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var ClosedCurve = function (_ol$geom$Polygon) {
-  _inherits(ClosedCurve, _ol$geom$Polygon);
-
-  function ClosedCurve(points, params) {
-    _classCallCheck(this, ClosedCurve);
-
-    var _this = _possibleConstructorReturn(this, (ClosedCurve.__proto__ || Object.getPrototypeOf(ClosedCurve)).call(this));
-
-    _constants.ol.geom.Polygon.call(_this, []);
-    _this.type = _PlotTypes2.default.CLOSED_CURVE;
-    _this.t = 0.3;
-    _this.set('params', params);
-    _this.setPoints(points);
-    return _this;
-  }
-
-  _createClass(ClosedCurve, [{
-    key: 'generate',
-    value: function generate() {
-      var points = this.getPointCount();
-      if (points === 2) {
-        this.setCoordinates([this.points]);
-      } else {
-        var pnts = this.getPoints();
-        pnts.push(pnts[0], pnts[1]);
-        var normals = [],
-            pList = [];
-
-        for (var i = 0; i < pnts.length - 2; i++) {
-          var normalPoints = PlotUtils.getBisectorNormals(this.t, pnts[i], pnts[i + 1], pnts[i + 2]);
-          normals = normals.concat(normalPoints);
-        }
-        var count = normals.length;
-        normals = [normals[count - 1]].concat(normals.slice(0, count - 1));
-        for (var _i = 0; _i < pnts.length - 2; _i++) {
-          var pnt1 = pnts[_i];
-          var pnt2 = pnts[_i + 1];
-          pList.push(pnt1);
-          for (var t = 0; t <= Constants.FITTING_COUNT; t++) {
-            var pnt = PlotUtils.getCubicValue(t / Constants.FITTING_COUNT, pnt1, normals[_i * 2], normals[_i * 2 + 1], pnt2);
-            pList.push(pnt);
-          }
-          pList.push(pnt2);
-        }
-        this.setCoordinates([pList]);
-      }
-    }
-  }, {
-    key: 'setMap',
-    value: function setMap(map) {
-      if (map && map instanceof _constants.ol.Map) {
-        this.map = map;
-      } else {
-        throw new Error('传入的不是地图对象！');
-      }
-    }
-  }, {
-    key: 'getMap',
-    value: function getMap() {
-      return this.map;
-    }
-  }, {
-    key: 'isPlot',
-    value: function isPlot() {
-      return true;
-    }
-  }, {
-    key: 'setPoints',
-    value: function setPoints(value) {
-      this.points = !value ? [] : value;
-      if (this.points.length >= 2) {
-        this.generate();
-      }
-    }
-  }, {
-    key: 'getPoints',
-    value: function getPoints() {
-      return this.points.slice(0);
-    }
-  }, {
-    key: 'getPointCount',
-    value: function getPointCount() {
-      return this.points.length;
-    }
-  }, {
-    key: 'updatePoint',
-    value: function updatePoint(point, index) {
-      if (index >= 0 && index < this.points.length) {
-        this.points[index] = point;
-        this.generate();
-      }
-    }
-  }, {
-    key: 'updateLastPoint',
-    value: function updateLastPoint(point) {
-      this.updatePoint(point, this.points.length - 1);
-    }
-  }, {
-    key: 'finishDrawing',
-    value: function finishDrawing() {}
-  }]);
-
-  return ClosedCurve;
-}(_constants.ol.geom.Polygon);
-
-exports.default = ClosedCurve;
-module.exports = exports['default'];
-
-/***/ }),
-/* 190 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _PlotTypes = __webpack_require__(9);
-
-var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
-
-var _constants = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var FreePolygon = function (_ol$geom$Polygon) {
-  _inherits(FreePolygon, _ol$geom$Polygon);
-
-  function FreePolygon(points, params) {
-    _classCallCheck(this, FreePolygon);
-
-    var _this = _possibleConstructorReturn(this, (FreePolygon.__proto__ || Object.getPrototypeOf(FreePolygon)).call(this));
-
-    _constants.ol.geom.Polygon.call(_this, []);
-    _this.type = _PlotTypes2.default.FREEHAND_POLYGON;
-    _this.freehand = true;
-    _this.set('params', params);
-    _this.setPoints(points);
-    return _this;
-  }
-
-  _createClass(FreePolygon, [{
-    key: 'generate',
-    value: function generate() {
-      this.setCoordinates([this.points]);
-    }
-  }, {
-    key: 'setMap',
-    value: function setMap(map) {
-      if (map && map instanceof _constants.ol.Map) {
-        this.map = map;
-      } else {
-        throw new Error('传入的不是地图对象！');
-      }
-    }
-  }, {
-    key: 'getMap',
-    value: function getMap() {
-      return this.map;
-    }
-  }, {
-    key: 'isPlot',
-    value: function isPlot() {
-      return true;
-    }
-  }, {
-    key: 'setPoints',
-    value: function setPoints(value) {
-      this.points = !value ? [] : value;
-      if (this.points.length >= 2) {
-        this.generate();
-      }
-    }
-  }, {
-    key: 'getPoints',
-    value: function getPoints() {
-      return this.points.slice(0);
-    }
-  }, {
-    key: 'getPointCount',
-    value: function getPointCount() {
-      return this.points.length;
-    }
-  }, {
-    key: 'updatePoint',
-    value: function updatePoint(point, index) {
-      if (index >= 0 && index < this.points.length) {
-        this.points[index] = point;
-        this.generate();
-      }
-    }
-  }, {
-    key: 'updateLastPoint',
-    value: function updateLastPoint(point) {
-      this.updatePoint(point, this.points.length - 1);
-    }
-  }, {
-    key: 'finishDrawing',
-    value: function finishDrawing() {}
-  }]);
-
-  return FreePolygon;
-}(_constants.ol.geom.Polygon);
-
-exports.default = FreePolygon;
-module.exports = exports['default'];
-
-/***/ }),
-/* 191 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _PlotTypes = __webpack_require__(9);
-
-var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
-
-var _constants = __webpack_require__(1);
-
-var _utils = __webpack_require__(13);
-
-var PlotUtils = _interopRequireWildcard(_utils);
-
-var _Constants = __webpack_require__(26);
-
-var Constants = _interopRequireWildcard(_Constants);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var GatheringPlace = function (_ol$geom$Polygon) {
-  _inherits(GatheringPlace, _ol$geom$Polygon);
-
-  function GatheringPlace(points, params) {
-    _classCallCheck(this, GatheringPlace);
-
-    var _this = _possibleConstructorReturn(this, (GatheringPlace.__proto__ || Object.getPrototypeOf(GatheringPlace)).call(this));
-
-    _constants.ol.geom.Polygon.call(_this, []);
-    _this.type = _PlotTypes2.default.GATHERING_PLACE;
-    _this.t = 0.4;
-    _this.fixPointCount = 3;
-    _this.set('params', params);
-    _this.setPoints(points);
-    return _this;
-  }
-
-  _createClass(GatheringPlace, [{
-    key: 'generate',
-    value: function generate() {
-      var pnts = this.getPoints();
-      var points = this.getPointCount();
-      if (pnts.length < 2) {
-        return false;
-      } else {
-        if (points === 2) {
-          var _mid = PlotUtils.Mid(pnts[0], pnts[1]);
-          var d = PlotUtils.MathDistance(pnts[0], _mid) / 0.9;
-          var pnt = PlotUtils.getThirdPoint(pnts[0], _mid, Constants.HALF_PI, d, true);
-          pnts = [pnts[0], pnt, pnts[1]];
-        }
-        var mid = PlotUtils.Mid(pnts[0], pnts[2]);
-        pnts.push(mid, pnts[0], pnts[1]);
-        var normals = [],
-            pnt1 = undefined,
-            pnt2 = undefined,
-            pnt3 = undefined,
-            pList = [];
-
-        for (var i = 0; i < pnts.length - 2; i++) {
-          pnt1 = pnts[i];
-          pnt2 = pnts[i + 1];
-          pnt3 = pnts[i + 2];
-          var normalPoints = PlotUtils.getBisectorNormals(this.t, pnt1, pnt2, pnt3);
-          normals = normals.concat(normalPoints);
-        }
-        var count = normals.length;
-        normals = [normals[count - 1]].concat(normals.slice(0, count - 1));
-        for (var _i = 0; _i < pnts.length - 2; _i++) {
-          pnt1 = pnts[_i];
-          pnt2 = pnts[_i + 1];
-          pList.push(pnt1);
-          for (var t = 0; t <= Constants.FITTING_COUNT; t++) {
-            var _pnt = PlotUtils.getCubicValue(t / Constants.FITTING_COUNT, pnt1, normals[_i * 2], normals[_i * 2 + 1], pnt2);
-            pList.push(_pnt);
-          }
-          pList.push(pnt2);
-        }
-        this.setCoordinates([pList]);
-      }
-    }
-  }, {
-    key: 'setMap',
-    value: function setMap(map) {
-      if (map && map instanceof _constants.ol.Map) {
-        this.map = map;
-      } else {
-        throw new Error('传入的不是地图对象！');
-      }
-    }
-  }, {
-    key: 'getMap',
-    value: function getMap() {
-      return this.map;
-    }
-  }, {
-    key: 'isPlot',
-    value: function isPlot() {
-      return true;
-    }
-  }, {
-    key: 'setPoints',
-    value: function setPoints(value) {
-      this.points = !value ? [] : value;
-      if (this.points.length >= 2) {
-        this.generate();
-      }
-    }
-  }, {
-    key: 'getPoints',
-    value: function getPoints() {
-      return this.points.slice(0);
-    }
-  }, {
-    key: 'getPointCount',
-    value: function getPointCount() {
-      return this.points.length;
-    }
-  }, {
-    key: 'updatePoint',
-    value: function updatePoint(point, index) {
-      if (index >= 0 && index < this.points.length) {
-        this.points[index] = point;
-        this.generate();
-      }
-    }
-  }, {
-    key: 'updateLastPoint',
-    value: function updateLastPoint(point) {
-      this.updatePoint(point, this.points.length - 1);
-    }
-  }, {
-    key: 'finishDrawing',
-    value: function finishDrawing() {}
-  }]);
-
-  return GatheringPlace;
-}(_constants.ol.geom.Polygon);
-
-exports.default = GatheringPlace;
-module.exports = exports['default'];
-
-/***/ }),
-/* 192 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _PlotTypes = __webpack_require__(9);
-
-var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
-
-var _constants = __webpack_require__(1);
-
-var _Constants = __webpack_require__(26);
-
-var Constants = _interopRequireWildcard(_Constants);
-
-var _utils = __webpack_require__(13);
-
-var PlotUtils = _interopRequireWildcard(_utils);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Lune = function (_ol$geom$Polygon) {
-  _inherits(Lune, _ol$geom$Polygon);
-
-  function Lune(points, params) {
-    _classCallCheck(this, Lune);
-
-    var _this = _possibleConstructorReturn(this, (Lune.__proto__ || Object.getPrototypeOf(Lune)).call(this));
-
-    _constants.ol.geom.Polygon.call(_this, []);
-    _this.type = _PlotTypes2.default.LUNE;
-    _this.fixPointCount = 3;
-    _this.set('params', params);
-    _this.setPoints(points);
-    return _this;
-  }
-
-  _createClass(Lune, [{
-    key: 'generate',
-    value: function generate() {
-      if (this.getPointCount() < 2) {
-        return false;
-      } else {
-        var pnts = this.getPoints();
-        if (this.getPointCount() === 2) {
-          var mid = PlotUtils.Mid(pnts[0], pnts[1]);
-          var d = PlotUtils.MathDistance(pnts[0], mid);
-          var pnt = PlotUtils.getThirdPoint(pnts[0], mid, Constants.HALF_PI, d);
-          pnts.push(pnt);
-        }
-        var _ref = [pnts[0], pnts[1], pnts[2], undefined, undefined],
-            pnt1 = _ref[0],
-            pnt2 = _ref[1],
-            pnt3 = _ref[2],
-            startAngle = _ref[3],
-            endAngle = _ref[4];
-
-        var center = PlotUtils.getCircleCenterOfThreePoints(pnt1, pnt2, pnt3);
-        var radius = PlotUtils.MathDistance(pnt1, center);
-        var angle1 = PlotUtils.getAzimuth(pnt1, center);
-        var angle2 = PlotUtils.getAzimuth(pnt2, center);
-        if (PlotUtils.isClockWise(pnt1, pnt2, pnt3)) {
-          startAngle = angle2;
-          endAngle = angle1;
-        } else {
-          startAngle = angle1;
-          endAngle = angle2;
-        }
-        pnts = PlotUtils.getArcPoints(center, radius, startAngle, endAngle);
-        pnts.push(pnts[0]);
-        this.setCoordinates([pnts]);
-      }
-    }
-  }, {
-    key: 'setMap',
-    value: function setMap(map) {
-      if (map && map instanceof _constants.ol.Map) {
-        this.map = map;
-      } else {
-        throw new Error('传入的不是地图对象！');
-      }
-    }
-  }, {
-    key: 'getMap',
-    value: function getMap() {
-      return this.map;
-    }
-  }, {
-    key: 'isPlot',
-    value: function isPlot() {
-      return true;
-    }
-  }, {
-    key: 'setPoints',
-    value: function setPoints(value) {
-      this.points = !value ? [] : value;
-      if (this.points.length >= 2) {
-        this.generate();
-      }
-    }
-  }, {
-    key: 'getPoints',
-    value: function getPoints() {
-      return this.points.slice(0);
-    }
-  }, {
-    key: 'getPointCount',
-    value: function getPointCount() {
-      return this.points.length;
-    }
-  }, {
-    key: 'updatePoint',
-    value: function updatePoint(point, index) {
-      if (index >= 0 && index < this.points.length) {
-        this.points[index] = point;
-        this.generate();
-      }
-    }
-  }, {
-    key: 'updateLastPoint',
-    value: function updateLastPoint(point) {
-      this.updatePoint(point, this.points.length - 1);
-    }
-  }, {
-    key: 'finishDrawing',
-    value: function finishDrawing() {}
-  }]);
-
-  return Lune;
-}(_constants.ol.geom.Polygon);
-
-exports.default = Lune;
-module.exports = exports['default'];
-
-/***/ }),
-/* 193 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _PlotTypes = __webpack_require__(9);
-
-var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
-
-var _constants = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Polygon = function (_ol$geom$Polygon) {
-  _inherits(Polygon, _ol$geom$Polygon);
-
-  function Polygon(points, params) {
-    _classCallCheck(this, Polygon);
-
-    var _this = _possibleConstructorReturn(this, (Polygon.__proto__ || Object.getPrototypeOf(Polygon)).call(this));
-
-    _constants.ol.geom.Polygon.call(_this, []);
-    _this.type = _PlotTypes2.default.POLYGON;
-    _this.set('params', params);
-    _this.setPoints(points);
-    return _this;
-  }
-
-  _createClass(Polygon, [{
-    key: 'generate',
-    value: function generate() {
-      this.setCoordinates([this.points]);
-    }
-  }, {
-    key: 'setMap',
-    value: function setMap(map) {
-      if (map && map instanceof _constants.ol.Map) {
-        this.map = map;
-      } else {
-        throw new Error('传入的不是地图对象！');
-      }
-    }
-  }, {
-    key: 'getMap',
-    value: function getMap() {
-      return this.map;
-    }
-  }, {
-    key: 'isPlot',
-    value: function isPlot() {
-      return true;
-    }
-  }, {
-    key: 'setPoints',
-    value: function setPoints(value) {
-      this.points = !value ? [] : value;
-      if (this.points.length >= 2) {
-        this.generate();
-      }
-    }
-  }, {
-    key: 'getPoints',
-    value: function getPoints() {
-      return this.points.slice(0);
-    }
-  }, {
-    key: 'getPointCount',
-    value: function getPointCount() {
-      return this.points.length;
-    }
-  }, {
-    key: 'updatePoint',
-    value: function updatePoint(point, index) {
-      if (index >= 0 && index < this.points.length) {
-        this.points[index] = point;
-        this.generate();
-      }
-    }
-  }, {
-    key: 'updateLastPoint',
-    value: function updateLastPoint(point) {
-      this.updatePoint(point, this.points.length - 1);
-    }
-  }, {
-    key: 'finishDrawing',
-    value: function finishDrawing() {}
-  }]);
-
-  return Polygon;
-}(_constants.ol.geom.Polygon);
-
-exports.default = Polygon;
-module.exports = exports['default'];
-
-/***/ }),
-/* 194 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _PlotTypes = __webpack_require__(9);
-
-var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
-
-var _constants = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var RectAngle = function (_ol$geom$Polygon) {
-  _inherits(RectAngle, _ol$geom$Polygon);
-
-  function RectAngle(points, params) {
-    _classCallCheck(this, RectAngle);
-
-    var _this = _possibleConstructorReturn(this, (RectAngle.__proto__ || Object.getPrototypeOf(RectAngle)).call(this));
-
-    _constants.ol.geom.Polygon.call(_this, []);
-    _this.type = _PlotTypes2.default.RECTANGLE;
-    _this.fixPointCount = 2;
-    _this.set('params', params);
-    _this.setPoints(points);
-    _this.isFill = params['isFill'] === false ? params['isFill'] : true;
-    return _this;
-  }
-
-  _createClass(RectAngle, [{
-    key: 'generate',
-    value: function generate() {
-      if (this.points.length === 2) {
-        var coordinates = [];
-        if (this.isFill) {
-          var extent = _constants.ol.extent.boundingExtent(this.points);
-          var polygon = _constants.ol.geom.Polygon.fromExtent(extent);
-          coordinates = polygon.getCoordinates();
-        } else {
-          var start = this.points[0];
-          var end = this.points[1];
-          coordinates = [start, [start[0], end[1]], end, [end[0], start[1]], start];
-        }
-        this.setCoordinates(coordinates);
-      }
-    }
-  }, {
-    key: 'setMap',
-    value: function setMap(map) {
-      if (map && map instanceof _constants.ol.Map) {
-        this.map = map;
-      } else {
-        throw new Error('传入的不是地图对象！');
-      }
-    }
-  }, {
-    key: 'getMap',
-    value: function getMap() {
-      return this.map;
-    }
-  }, {
-    key: 'isPlot',
-    value: function isPlot() {
-      return true;
-    }
-  }, {
-    key: 'setPoints',
-    value: function setPoints(value) {
-      this.points = !value ? [] : value;
-      if (this.points.length >= 2) {
-        this.generate();
-      }
-    }
-  }, {
-    key: 'getPoints',
-    value: function getPoints() {
-      return this.points.slice(0);
-    }
-  }, {
-    key: 'getPointCount',
-    value: function getPointCount() {
-      return this.points.length;
-    }
-  }, {
-    key: 'updatePoint',
-    value: function updatePoint(point, index) {
-      if (index >= 0 && index < this.points.length) {
-        this.points[index] = point;
-        this.generate();
-      }
-    }
-  }, {
-    key: 'updateLastPoint',
-    value: function updateLastPoint(point) {
-      this.updatePoint(point, this.points.length - 1);
-    }
-  }, {
-    key: 'finishDrawing',
-    value: function finishDrawing() {}
-  }]);
-
-  return RectAngle;
-}(_constants.ol.geom.Polygon);
-
-exports.default = RectAngle;
-module.exports = exports['default'];
-
-/***/ }),
-/* 195 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _PlotTypes = __webpack_require__(9);
-
-var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
-
-var _constants = __webpack_require__(1);
-
-var _utils = __webpack_require__(13);
-
-var PlotUtils = _interopRequireWildcard(_utils);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Sector = function (_ol$geom$Polygon) {
-  _inherits(Sector, _ol$geom$Polygon);
-
-  function Sector(points, params) {
-    _classCallCheck(this, Sector);
-
-    var _this = _possibleConstructorReturn(this, (Sector.__proto__ || Object.getPrototypeOf(Sector)).call(this));
-
-    _constants.ol.geom.Polygon.call(_this, []);
-    _this.type = _PlotTypes2.default.SECTOR;
-    _this.fixPointCount = 3;
-    _this.set('params', params);
-    _this.setPoints(points);
-    return _this;
-  }
-
-  _createClass(Sector, [{
-    key: 'generate',
-    value: function generate() {
-      var points = this.getPointCount();
-      if (points < 2) {
-        return false;
-      } else if (points === 2) {
-        this.setCoordinates([this.points]);
-      } else {
-        var pnts = this.getPoints();
-        var _ref = [pnts[0], pnts[1], pnts[2]],
-            center = _ref[0],
-            pnt2 = _ref[1],
-            pnt3 = _ref[2];
-
-        var radius = PlotUtils.MathDistance(pnt2, center);
-        var startAngle = PlotUtils.getAzimuth(pnt2, center);
-        var endAngle = PlotUtils.getAzimuth(pnt3, center);
-        var pList = PlotUtils.getArcPoints(center, radius, startAngle, endAngle);
-        pList.push(center, pList[0]);
-        this.setCoordinates([pList]);
-      }
-    }
-  }, {
-    key: 'setMap',
-    value: function setMap(map) {
-      if (map && map instanceof _constants.ol.Map) {
-        this.map = map;
-      } else {
-        throw new Error('传入的不是地图对象！');
-      }
-    }
-  }, {
-    key: 'getMap',
-    value: function getMap() {
-      return this.map;
-    }
-  }, {
-    key: 'isPlot',
-    value: function isPlot() {
-      return true;
-    }
-  }, {
-    key: 'setPoints',
-    value: function setPoints(value) {
-      this.points = !value ? [] : value;
-      if (this.points.length >= 2) {
-        this.generate();
-      }
-    }
-  }, {
-    key: 'getPoints',
-    value: function getPoints() {
-      return this.points.slice(0);
-    }
-  }, {
-    key: 'getPointCount',
-    value: function getPointCount() {
-      return this.points.length;
-    }
-  }, {
-    key: 'updatePoint',
-    value: function updatePoint(point, index) {
-      if (index >= 0 && index < this.points.length) {
-        this.points[index] = point;
-        this.generate();
-      }
-    }
-  }, {
-    key: 'updateLastPoint',
-    value: function updateLastPoint(point) {
-      this.updatePoint(point, this.points.length - 1);
-    }
-  }, {
-    key: 'finishDrawing',
-    value: function finishDrawing() {}
-  }]);
-
-  return Sector;
-}(_constants.ol.geom.Polygon);
-
-exports.default = Sector;
-module.exports = exports['default'];
-
-/***/ }),
-/* 196 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _PlotTypes = __webpack_require__(9);
-
-var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
-
-var _constants = __webpack_require__(1);
-
-var _utils = __webpack_require__(13);
-
-var PlotUtils = _interopRequireWildcard(_utils);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Curve = function (_ol$geom$LineString) {
-  _inherits(Curve, _ol$geom$LineString);
-
-  function Curve(points, params) {
-    _classCallCheck(this, Curve);
-
-    var _this = _possibleConstructorReturn(this, (Curve.__proto__ || Object.getPrototypeOf(Curve)).call(this));
-
-    _constants.ol.geom.LineString.call(_this, []);
-    _this.type = _PlotTypes2.default.CURVE;
-    _this.t = 0.3;
-    _this.set('params', params);
-    _this.setPoints(points);
-    return _this;
-  }
-
-  _createClass(Curve, [{
-    key: 'generate',
-    value: function generate() {
-      if (this.getPointCount() === 2) {
-        this.setCoordinates(this.points);
-      } else {
-        var points = PlotUtils.getCurvePoints(this.t, this.points);
-        this.setCoordinates(points);
-      }
-    }
-  }, {
-    key: 'setMap',
-    value: function setMap(map) {
-      if (map && map instanceof _constants.ol.Map) {
-        this.map = map;
-      } else {
-        throw new Error('传入的不是地图对象！');
-      }
-    }
-  }, {
-    key: 'getMap',
-    value: function getMap() {
-      return this.map;
-    }
-  }, {
-    key: 'isPlot',
-    value: function isPlot() {
-      return true;
-    }
-  }, {
-    key: 'setPoints',
-    value: function setPoints(value) {
-      this.points = !value ? [] : value;
-      if (this.points.length >= 2) {
-        this.generate();
-      }
-    }
-  }, {
-    key: 'getPoints',
-    value: function getPoints() {
-      return this.points.slice(0);
-    }
-  }, {
-    key: 'getPointCount',
-    value: function getPointCount() {
-      return this.points.length;
-    }
-  }, {
-    key: 'updatePoint',
-    value: function updatePoint(point, index) {
-      if (index >= 0 && index < this.points.length) {
-        this.points[index] = point;
-        this.generate();
-      }
-    }
-  }, {
-    key: 'updateLastPoint',
-    value: function updateLastPoint(point) {
-      this.updatePoint(point, this.points.length - 1);
-    }
-  }, {
-    key: 'finishDrawing',
-    value: function finishDrawing() {}
-  }]);
-
-  return Curve;
-}(_constants.ol.geom.LineString);
-
-exports.default = Curve;
-module.exports = exports['default'];
-
-/***/ }),
-/* 197 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _PlotTypes = __webpack_require__(9);
-
-var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
-
-var _constants = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var FreeHandLine = function (_ol$geom$LineString) {
-  _inherits(FreeHandLine, _ol$geom$LineString);
-
-  function FreeHandLine(points, params) {
-    _classCallCheck(this, FreeHandLine);
-
-    var _this = _possibleConstructorReturn(this, (FreeHandLine.__proto__ || Object.getPrototypeOf(FreeHandLine)).call(this));
-
-    _constants.ol.geom.LineString.call(_this, []);
-    _this.type = _PlotTypes2.default.FREEHAND_LINE;
-    _this.freehand = true;
-    _this.set('params', params);
-    _this.setPoints(points);
-    return _this;
-  }
-
-  _createClass(FreeHandLine, [{
-    key: 'generate',
-    value: function generate() {
-      this.setCoordinates(this.points);
-    }
-  }, {
-    key: 'setMap',
-    value: function setMap(map) {
-      if (map && map instanceof _constants.ol.Map) {
-        this.map = map;
-      } else {
-        throw new Error('传入的不是地图对象！');
-      }
-    }
-  }, {
-    key: 'getMap',
-    value: function getMap() {
-      return this.map;
-    }
-  }, {
-    key: 'isPlot',
-    value: function isPlot() {
-      return true;
-    }
-  }, {
-    key: 'setPoints',
-    value: function setPoints(value) {
-      this.points = !value ? [] : value;
-      if (this.points.length >= 2) {
-        this.generate();
-      }
-    }
-  }, {
-    key: 'getPoints',
-    value: function getPoints() {
-      return this.points.slice(0);
-    }
-  }, {
-    key: 'getPointCount',
-    value: function getPointCount() {
-      return this.points.length;
-    }
-  }, {
-    key: 'updatePoint',
-    value: function updatePoint(point, index) {
-      if (index >= 0 && index < this.points.length) {
-        this.points[index] = point;
-        this.generate();
-      }
-    }
-  }, {
-    key: 'updateLastPoint',
-    value: function updateLastPoint(point) {
-      this.updatePoint(point, this.points.length - 1);
-    }
-  }, {
-    key: 'finishDrawing',
-    value: function finishDrawing() {}
-  }]);
-
-  return FreeHandLine;
-}(_constants.ol.geom.LineString);
-
-exports.default = FreeHandLine;
-module.exports = exports['default'];
-
-/***/ }),
-/* 198 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _PlotTypes = __webpack_require__(9);
-
-var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
-
-var _constants = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Polyline = function (_ol$geom$LineString) {
-  _inherits(Polyline, _ol$geom$LineString);
-
-  function Polyline(points, params) {
-    _classCallCheck(this, Polyline);
-
-    var _this = _possibleConstructorReturn(this, (Polyline.__proto__ || Object.getPrototypeOf(Polyline)).call(this));
-
-    _constants.ol.geom.LineString.call(_this, []);
-    _this.type = _PlotTypes2.default.POLYLINE;
-    _this.set('params', params);
-    _this.setPoints(points);
-    return _this;
-  }
-
-  _createClass(Polyline, [{
-    key: 'generate',
-    value: function generate() {
-      this.setCoordinates(this.points);
-    }
-  }, {
-    key: 'setMap',
-    value: function setMap(map) {
-      if (map && map instanceof _constants.ol.Map) {
-        this.map = map;
-      } else {
-        throw new Error('传入的不是地图对象！');
-      }
-    }
-  }, {
-    key: 'getMap',
-    value: function getMap() {
-      return this.map;
-    }
-  }, {
-    key: 'isPlot',
-    value: function isPlot() {
-      return true;
-    }
-  }, {
-    key: 'setPoints',
-    value: function setPoints(value) {
-      this.points = !value ? [] : value;
-      if (this.points.length >= 2) {
-        this.generate();
-      }
-    }
-  }, {
-    key: 'getPoints',
-    value: function getPoints() {
-      return this.points.slice(0);
-    }
-  }, {
-    key: 'getPointCount',
-    value: function getPointCount() {
-      return this.points.length;
-    }
-  }, {
-    key: 'updatePoint',
-    value: function updatePoint(point, index) {
-      if (index >= 0 && index < this.points.length) {
-        this.points[index] = point;
-        this.generate();
-      }
-    }
-  }, {
-    key: 'updateLastPoint',
-    value: function updateLastPoint(point) {
-      this.updatePoint(point, this.points.length - 1);
-    }
-  }, {
-    key: 'finishDrawing',
-    value: function finishDrawing() {}
-  }]);
-
-  return Polyline;
-}(_constants.ol.geom.LineString);
-
-exports.default = Polyline;
-module.exports = exports['default'];
-
-/***/ }),
-/* 199 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _Polyline = __webpack_require__(198);
-
-var _Polyline2 = _interopRequireDefault(_Polyline);
-
-var _Arc = __webpack_require__(180);
-
-var _Arc2 = _interopRequireDefault(_Arc);
-
-var _Circle = __webpack_require__(187);
-
-var _Circle2 = _interopRequireDefault(_Circle);
-
-var _Curve = __webpack_require__(196);
-
-var _Curve2 = _interopRequireDefault(_Curve);
-
-var _FreeHandLine = __webpack_require__(197);
-
-var _FreeHandLine2 = _interopRequireDefault(_FreeHandLine);
-
-var _RectAngle = __webpack_require__(194);
-
-var _RectAngle2 = _interopRequireDefault(_RectAngle);
-
-var _Ellipse = __webpack_require__(188);
-
-var _Ellipse2 = _interopRequireDefault(_Ellipse);
-
-var _Lune = __webpack_require__(192);
-
-var _Lune2 = _interopRequireDefault(_Lune);
-
-var _Sector = __webpack_require__(195);
-
-var _Sector2 = _interopRequireDefault(_Sector);
-
-var _ClosedCurve = __webpack_require__(189);
-
-var _ClosedCurve2 = _interopRequireDefault(_ClosedCurve);
-
-var _Polygon = __webpack_require__(193);
-
-var _Polygon2 = _interopRequireDefault(_Polygon);
-
-var _FreePolygon = __webpack_require__(190);
-
-var _FreePolygon2 = _interopRequireDefault(_FreePolygon);
-
-var _AttackArrow = __webpack_require__(61);
-
-var _AttackArrow2 = _interopRequireDefault(_AttackArrow);
-
-var _DoubleArrow = __webpack_require__(182);
-
-var _DoubleArrow2 = _interopRequireDefault(_DoubleArrow);
-
-var _StraightArrow = __webpack_require__(184);
-
-var _StraightArrow2 = _interopRequireDefault(_StraightArrow);
-
-var _FineArrow = __webpack_require__(119);
-
-var _FineArrow2 = _interopRequireDefault(_FineArrow);
-
-var _AssaultDirection = __webpack_require__(181);
-
-var _AssaultDirection2 = _interopRequireDefault(_AssaultDirection);
-
-var _TailedAttackArrow = __webpack_require__(185);
-
-var _TailedAttackArrow2 = _interopRequireDefault(_TailedAttackArrow);
-
-var _SquadCombat = __webpack_require__(183);
-
-var _SquadCombat2 = _interopRequireDefault(_SquadCombat);
-
-var _TailedSquadCombat = __webpack_require__(186);
-
-var _TailedSquadCombat2 = _interopRequireDefault(_TailedSquadCombat);
-
-var _GatheringPlace = __webpack_require__(191);
-
-var _GatheringPlace2 = _interopRequireDefault(_GatheringPlace);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = {
-  Polyline: _Polyline2.default,
-  Arc: _Arc2.default,
-  Circle: _Circle2.default,
-  Curve: _Curve2.default,
-  FreeHandLine: _FreeHandLine2.default,
-  RectAngle: _RectAngle2.default,
-  Ellipse: _Ellipse2.default,
-  Lune: _Lune2.default,
-  Sector: _Sector2.default,
-  ClosedCurve: _ClosedCurve2.default,
-  Polygon: _Polygon2.default,
-  FreePolygon: _FreePolygon2.default,
-  AttackArrow: _AttackArrow2.default,
-  DoubleArrow: _DoubleArrow2.default,
-  StraightArrow: _StraightArrow2.default,
-  FineArrow: _FineArrow2.default,
-  AssaultDirection: _AssaultDirection2.default,
-  TailedAttackArrow: _TailedAttackArrow2.default,
-  SquadCombat: _SquadCombat2.default,
-  TailedSquadCombat: _TailedSquadCombat2.default,
-  GatheringPlace: _GatheringPlace2.default
-};
-module.exports = exports['default'];
-
-/***/ }),
-/* 200 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _constants = __webpack_require__(1);
-
-var _index = __webpack_require__(199);
-
-var _index2 = _interopRequireDefault(_index);
-
-var _PlotTypes = __webpack_require__(9);
-
-var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Plot = function () {
-  function Plot(map) {
-    _classCallCheck(this, Plot);
-
-    this.version = '1.0.0';
-    if (map && map instanceof _constants.ol.Map) {
-      this.map = map;
-    } else {
-      throw new Error('缺少地图对象！');
-    }
-  }
-
-  _createClass(Plot, [{
-    key: 'createPlot',
-    value: function createPlot(type, points, _params) {
-      var params = _params || {};
-      switch (type) {
-        case _PlotTypes2.default.POLYLINE:
-          return new _index2.default.Polyline(points, params);
-        case _PlotTypes2.default.ARC:
-          return new _index2.default.Arc(points, params);
-        case _PlotTypes2.default.CIRCLE:
-          return new _index2.default.Circle(points, params);
-        case _PlotTypes2.default.CURVE:
-          return new _index2.default.Curve(points, params);
-        case _PlotTypes2.default.FREE_LINE:
-          return new _index2.default.FreeHandLine(points, params);
-        case _PlotTypes2.default.RECTANGLE:
-          return new _index2.default.RectAngle(points, params);
-        case _PlotTypes2.default.ELLIPSE:
-          return new _index2.default.Ellipse(points, params);
-        case _PlotTypes2.default.LUNE:
-          return new _index2.default.Lune(points, params);
-        case _PlotTypes2.default.SECTOR:
-          return new _index2.default.Sector(points, params);
-        case _PlotTypes2.default.CLOSED_CURVE:
-          return new _index2.default.ClosedCurve(points, params);
-        case _PlotTypes2.default.POLYGON:
-          return new _index2.default.Polygon(points, params);
-        case _PlotTypes2.default.ATTACK_ARROW:
-          return new _index2.default.AttackArrow(points, params);
-        case _PlotTypes2.default.FREE_POLYGON:
-          return new _index2.default.FreePolygon(points, params);
-        case _PlotTypes2.default.DOUBLE_ARROW:
-          return new _index2.default.DoubleArrow(points, params);
-        case _PlotTypes2.default.STRAIGHT_ARROW:
-          return new _index2.default.StraightArrow(points, params);
-        case _PlotTypes2.default.FINE_ARROW:
-          return new _index2.default.FineArrow(points, params);
-        case _PlotTypes2.default.ASSAULT_DIRECTION:
-          return new _index2.default.AssaultDirection(points, params);
-        case _PlotTypes2.default.TAILED_ATTACK_ARROW:
-          return new _index2.default.TailedAttackArrow(points, params);
-        case _PlotTypes2.default.SQUAD_COMBAT:
-          return new _index2.default.SquadCombat(points, params);
-        case _PlotTypes2.default.TAILED_SQUAD_COMBAT:
-          return new _index2.default.TailedSquadCombat(points, params);
-        case _PlotTypes2.default.GATHERING_PLACE:
-          return new _index2.default.GatheringPlace(points, params);
-      }
-      return null;
-    }
-  }, {
-    key: 'setMap',
-    value: function setMap(map) {
-      if (map && map instanceof _constants.ol.Map) {
-        this.map = map;
-      } else {
-        throw new Error('传入的不是地图对象！');
-      }
-    }
-  }, {
-    key: 'getMap',
-    value: function getMap() {
-      return this.map;
-    }
-  }, {
-    key: 'isPlot',
-    value: function isPlot() {
-      return true;
-    }
-  }, {
-    key: 'setPoints',
-    value: function setPoints(value) {
-      this.points = !value ? [] : value;
-      if (this.points.length >= 2) {
-        this.generate();
-      }
-    }
-  }, {
-    key: 'getPoints',
-    value: function getPoints() {
-      return this.points.slice(0);
-    }
-  }, {
-    key: 'getPointCount',
-    value: function getPointCount() {
-      return this.points.length;
-    }
-  }, {
-    key: 'updatePoint',
-    value: function updatePoint(point, index) {
-      if (index >= 0 && index < this.points.length) {
-        this.points[index] = point;
-        this.generate();
-      }
-    }
-  }, {
-    key: 'updateLastPoint',
-    value: function updateLastPoint(point) {
-      this.updatePoint(point, this.points.length - 1);
-    }
-  }, {
-    key: 'generate',
-    value: function generate() {}
-  }]);
-
-  return Plot;
-}();
-
-exports.default = Plot;
-module.exports = exports['default'];
-
-/***/ }),
-/* 201 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _constants = __webpack_require__(1);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var CoordsTransform = function () {
-  function CoordsTransform() {
-    _classCallCheck(this, CoordsTransform);
-  }
-
-  _createClass(CoordsTransform, [{
-    key: 'transformlat',
-    value: function transformlat(lng, lat) {
-      var ret = -100.0 + 2.0 * lng + 3.0 * lat + 0.2 * lat * lat + 0.1 * lng * lat + 0.2 * Math.sqrt(Math.abs(lng));
-      ret += (20.0 * Math.sin(6.0 * lng * _constants.PI) + 20.0 * Math.sin(2.0 * lng * _constants.PI)) * 2.0 / 3.0;
-      ret += (20.0 * Math.sin(lat * _constants.PI) + 40.0 * Math.sin(lat / 3.0 * _constants.PI)) * 2.0 / 3.0;
-      ret += (160.0 * Math.sin(lat / 12.0 * _constants.PI) + 320 * Math.sin(lat * _constants.PI / 30.0)) * 2.0 / 3.0;
-      return ret;
-    }
-  }, {
-    key: 'transformlng',
-    value: function transformlng(lng, lat) {
-      var ret = 300.0 + lng + 2.0 * lat + 0.1 * lng * lng + 0.1 * lng * lat + 0.1 * Math.sqrt(Math.abs(lng));
-      ret += (20.0 * Math.sin(6.0 * lng * _constants.PI) + 20.0 * Math.sin(2.0 * lng * _constants.PI)) * 2.0 / 3.0;
-      ret += (20.0 * Math.sin(lng * _constants.PI) + 40.0 * Math.sin(lng / 3.0 * _constants.PI)) * 2.0 / 3.0;
-      ret += (150.0 * Math.sin(lng / 12.0 * _constants.PI) + 300.0 * Math.sin(lng / 30.0 * _constants.PI)) * 2.0 / 3.0;
-      return ret;
-    }
-  }, {
-    key: 'outOfChina',
-    value: function outOfChina(lng, lat) {
-      return !(lng > 73.66 && lng < 135.05 && lat > 3.86 && lat < 53.55);
-    }
-  }, {
-    key: 'gcj02towgs84',
-    value: function gcj02towgs84(lng, lat) {
-      if (this.outOfChina(lng, lat)) {
-        return [lng, lat];
-      } else {
-        var dlat = this.transformlat(lng - 105.0, lat - 35.0);
-        var dlng = this.transformlng(lng - 105.0, lat - 35.0);
-        var radlat = lat / 180.0 * _constants.PI;
-        var magic = Math.sin(radlat);
-        magic = 1 - _constants.ee * magic * magic;
-        var sqrtmagic = Math.sqrt(magic);
-        dlat = dlat * 180.0 / (_constants.a * (1 - _constants.ee) / (magic * sqrtmagic) * _constants.PI);
-        dlng = dlng * 180.0 / (_constants.a / sqrtmagic * Math.cos(radlat) * _constants.PI);
-        var mglat = lat + dlat;
-        var mglng = lng + dlng;
-        return [lng * 2 - mglng, lat * 2 - mglat];
-      }
-    }
-  }, {
-    key: 'wgs84togcj02',
-    value: function wgs84togcj02(lng, lat) {
-      if (this.outOfChina(lng, lat)) {
-        return [lng, lat];
-      } else {
-        var dlat = this.transformlat(lng - 105.0, lat - 35.0);
-        var dlng = this.transformlng(lng - 105.0, lat - 35.0);
-        var radlat = lat / 180.0 * _constants.PI;
-        var magic = Math.sin(radlat);
-        magic = 1 - _constants.ee * magic * magic;
-        var sqrtmagic = Math.sqrt(magic);
-        dlat = dlat * 180.0 / (_constants.a * (1 - _constants.ee) / (magic * sqrtmagic) * _constants.PI);
-        dlng = dlng * 180.0 / (_constants.a / sqrtmagic * Math.cos(radlat) * _constants.PI);
-        var mglat = lat + dlat;
-        var mglng = lng + dlng;
-        return [mglng, mglat];
-      }
-    }
-  }, {
-    key: 'gcj02tobd',
-    value: function gcj02tobd(lng, lat) {
-      var z = Math.sqrt(lng * lng + lat * lat) + 0.00002 * Math.sin(lat * _constants.X_PI);
-      var theta = Math.atan2(lat, lng) + 0.000003 * Math.cos(lng * _constants.X_PI);
-      var bdLng = z * Math.cos(theta) + 0.0065;
-      var bdLat = z * Math.sin(theta) + 0.006;
-      return [bdLng, bdLat];
-    }
-  }, {
-    key: 'bdtogcj02',
-    value: function bdtogcj02(lon, lat) {
-      var x = lon - 0.0065;
-      var y = lat - 0.006;
-      var z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * _constants.X_PI);
-      var theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * _constants.X_PI);
-      var ggLng = z * Math.cos(theta);
-      var ggLat = z * Math.sin(theta);
-      return [ggLng, ggLat];
-    }
-  }, {
-    key: 'lonLatToMercator',
-    value: function lonLatToMercator(lontitude, latitude) {
-      var x = lontitude * 20037508.34 / 180;
-      var y = Math.log(Math.tan((90 + latitude) * Math.PI / 360)) / (Math.PI / 180);
-      y = y * 20037508.34 / 180;
-      return [x, y];
-    }
-  }, {
-    key: 'MercatorTolonLat',
-    value: function MercatorTolonLat(x, y) {
-      var longtitude = x / 20037508.34 * 180;
-      var latitude = y / 20037508.34 * 180;
-      latitude = 180 / Math.PI * (2 * Math.atan(Math.exp(latitude * Math.PI / 180)) - Math.PI / 2);
-      return [longtitude, latitude];
-    }
-  }]);
-
-  return CoordsTransform;
-}();
-
-exports.default = CoordsTransform;
-module.exports = exports['default'];
-
-/***/ }),
-/* 202 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var GeomCoder = function () {
-  function GeomCoder(params) {
-    _classCallCheck(this, GeomCoder);
-
-    this.options = !params ? {} : params;
-
-    this.version = '1.0.0';
-
-    this.factor_ = this.options.factor ? this.options.factor : 1e5;
-
-    this.GeometryLayout = {
-      XY: 'XY',
-      XYM: 'XYM',
-      XYZ: 'XYZ',
-      XYZM: 'XYZM'
-    };
-
-    this.geometryLayout_ = this.options.geometryLayout ? this.options.geometryLayout : this.GeometryLayout.XY;
-  }
-
-  _createClass(GeomCoder, [{
-    key: 'readCoordinatesFromText',
-    value: function readCoordinatesFromText(text) {
-      var stride = this.getStrideForLayout(this.geometryLayout_);
-      var flatCoordinates = this.decodeDeltas(text, stride);
-      this.flipXY(flatCoordinates, 0, flatCoordinates.length, stride, flatCoordinates);
-      var coordinates = this.coordinates(flatCoordinates, 0, flatCoordinates.length, stride);
-      return coordinates;
-    }
-  }, {
-    key: 'writeCoordinatesText',
-    value: function writeCoordinatesText(coordinates, stride) {
-      var flatCoordinates = [];
-      if (coordinates && Array.isArray(coordinates) && coordinates.length > 0) {
-        coordinates.forEach(function (item) {
-          if (item && Array.isArray(item) && item.length > 0) {
-            item.forEach(function (_item) {
-              if (_item) {
-                flatCoordinates.push(_item);
-              }
-            });
-          }
-        });
-      }
-      if (!stride) {
-        stride = 2;
-      }
-      this.flipXY(flatCoordinates, 0, flatCoordinates.length, stride, flatCoordinates);
-      return this.encodeDeltas(flatCoordinates, stride);
-    }
-  }, {
-    key: 'getText_',
-    value: function getText_(source) {
-      if (typeof source === 'string') {
-        return source;
-      } else {
-        return '';
-      }
-    }
-  }, {
-    key: 'getStrideForLayout',
-    value: function getStrideForLayout(layout) {
-      var stride = null;
-      if (layout === this.GeometryLayout.XY) {
-        stride = 2;
-      } else if (layout === this.GeometryLayout.XYZ || layout === this.GeometryLayout.XYM) {
-        stride = 3;
-      } else if (layout === this.GeometryLayout.XYZM) {
-        stride = 4;
-      }
-      return stride;
-    }
-  }, {
-    key: 'decodeDeltas',
-    value: function decodeDeltas(encoded, stride) {
-      var lastNumbers = new Array(stride);
-      for (var d = 0; d < stride; ++d) {
-        lastNumbers[d] = 0;
-      }
-      var numbers = this.decodeFloats(encoded, this.factor_);
-      var i = null,
-          ii = null;
-
-      for (i = 0, ii = numbers.length; i < ii;) {
-        for (var _d = 0; _d < stride; ++_d, ++i) {
-          lastNumbers[_d] += numbers[i];
-          numbers[i] = lastNumbers[_d];
-        }
-      }
-      return numbers;
-    }
-  }, {
-    key: 'encodeDeltas',
-    value: function encodeDeltas(numbers, stride) {
-      var d = null,
-          lastNumbers = new Array(stride),
-          i = null,
-          ii = null;
-
-      for (d = 0; d < stride; ++d) {
-        lastNumbers[d] = 0;
-      }
-      for (i = 0, ii = numbers.length; i < ii;) {
-        for (d = 0; d < stride; ++d, ++i) {
-          var num = numbers[i];
-          var delta = num - lastNumbers[d];
-          lastNumbers[d] = num;
-          numbers[i] = delta;
-        }
-      }
-      return this.encodeFloats(numbers);
-    }
-  }, {
-    key: 'decodeFloats',
-    value: function decodeFloats(encoded) {
-      var numbers = this.decodeSignedIntegers(encoded);
-      var i = null,
-          ii = null;
-
-      for (i = 0, ii = numbers.length; i < ii; ++i) {
-        numbers[i] /= this.factor_;
-      }
-      return numbers;
-    }
-  }, {
-    key: 'encodeFloats',
-    value: function encodeFloats(numbers) {
-      var i = null,
-          ii = null;
-
-      for (i = 0, ii = numbers.length; i < ii; ++i) {
-        numbers[i] = Math.round(numbers[i] * this.factor_);
-      }
-      return this.encodeSignedIntegers(numbers);
-    }
-  }, {
-    key: 'decodeSignedIntegers',
-    value: function decodeSignedIntegers(encoded) {
-      var numbers = this.decodeUnsignedIntegers(encoded);
-      var i = null,
-          ii = null;
-
-      for (i = 0, ii = numbers.length; i < ii; ++i) {
-        var num = numbers[i];
-        numbers[i] = num & 1 ? ~(num >> 1) : num >> 1;
-      }
-      return numbers;
-    }
-  }, {
-    key: 'encodeSignedIntegers',
-    value: function encodeSignedIntegers(numbers) {
-      var i = null,
-          ii = null;
-
-      for (i = 0, ii = numbers.length; i < ii; ++i) {
-        var num = numbers[i];
-        numbers[i] = num < 0 ? ~(num << 1) : num << 1;
-      }
-      return this.encodeUnsignedIntegers(numbers);
-    }
-  }, {
-    key: 'decodeUnsignedIntegers',
-    value: function decodeUnsignedIntegers(encoded) {
-      var numbers = [],
-          current = 0,
-          shift = 0,
-          i = null,
-          ii = null;
-
-      for (i = 0, ii = encoded.length; i < ii; ++i) {
-        var b = encoded.charCodeAt(i) - 63;
-        current |= (b & 0x1f) << shift;
-        if (b < 0x20) {
-          numbers.push(current);
-          current = 0;
-          shift = 0;
-        } else {
-          shift += 5;
-        }
-      }
-      return numbers;
-    }
-  }, {
-    key: 'encodeUnsignedIntegers',
-    value: function encodeUnsignedIntegers(numbers) {
-      var encoded = '',
-          i = null,
-          ii = null;
-
-      for (i = 0, ii = numbers.length; i < ii; ++i) {
-        encoded += this.encodeUnsignedInteger(numbers[i]);
-      }
-      return encoded;
-    }
-  }, {
-    key: 'encodeUnsignedInteger',
-    value: function encodeUnsignedInteger(num) {
-      var value = '',
-          encoded = '';
-
-      while (num >= 0x20) {
-        value = (0x20 | num & 0x1f) + 63;
-        encoded += String.fromCharCode(value);
-        num >>= 5;
-      }
-      value = num + 63;
-      encoded += String.fromCharCode(value);
-      return encoded;
-    }
-  }, {
-    key: 'flipXY',
-    value: function flipXY(flatCoordinates, offset, end, stride, optDest, optDestOffset) {
-      var dest = '',
-          destOffset = '';
-
-      if (optDest !== undefined) {
-        dest = optDest;
-        destOffset = optDestOffset !== undefined ? optDestOffset : 0;
-      } else {
-        dest = [];
-        destOffset = 0;
-      }
-      var j = offset;
-      while (j < end) {
-        var x = flatCoordinates[j++];
-        dest[destOffset++] = flatCoordinates[j++];
-        dest[destOffset++] = x;
-        for (var k = 2; k < stride; ++k) {
-          dest[destOffset++] = flatCoordinates[j++];
-        }
-      }
-      dest.length = destOffset;
-      return dest;
-    }
-  }, {
-    key: 'coordinates',
-    value: function coordinates(flatCoordinates, offset, end, stride, optCoordinates) {
-      var coordinates = optCoordinates !== undefined ? optCoordinates : [];
-      var i = 0,
-          j = null;
-
-      for (j = offset; j < end; j += stride) {
-        coordinates[i++] = flatCoordinates.slice(j, j + stride);
-      }
-      coordinates.length = i;
-      return coordinates;
-    }
-  }]);
-
-  return GeomCoder;
-}();
-
-exports.default = GeomCoder;
-module.exports = exports['default'];
-
-/***/ }),
-/* 203 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _constants = __webpack_require__(1);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var LayerSwitcher = function () {
-  function LayerSwitcher(map) {
-    _classCallCheck(this, LayerSwitcher);
-
-    this.map = map || null;
-    if (!this.map) {
-      throw new Error('缺少地图对象！');
-    }
-  }
-
-  _createClass(LayerSwitcher, [{
-    key: '_getBaseLayers',
-    value: function _getBaseLayers() {
-      var _this = this;
-
-      if (this.map) {
-        this.baseLayers = [];
-        this.map.getLayers().getArray().forEach(function (layer) {
-          if (layer && layer instanceof _constants.ol.layer.Group && layer.get('isBaseLayer')) {
-            layer.getLayers().getArray().forEach(function (_layer) {
-              if (_layer && _layer instanceof _constants.ol.layer.Tile && _layer.get('isBaseLayer')) {
-                _this.baseLayers.push(_layer);
-              }
-            });
-          }
-        });
-      }
-    }
-  }, {
-    key: 'getBaseLayerNames',
-    value: function getBaseLayerNames() {
-      this._getBaseLayers();
-      this.baseLayerNames = [];
-      if (this.baseLayers && Array.isArray(this.baseLayers) && this.baseLayers.length > 0) {
-        this.baseLayerNames = this.baseLayers.map(function (layer) {
-          var layerName = '';
-          if (layer.get('layerNames') && !layer.get('alias')) {
-            layerName = layer.get('layerNames');
-          }
-          return layerName;
-        });
-      }
-      return this.baseLayerNames;
-    }
-  }, {
-    key: 'switchLayer',
-    value: function switchLayer(layerName) {
-      this._getBaseLayers();
-      this.baseLayers.forEach(function (layer) {
-        if (layer.get('layerName') === layerName || layer.get('alias') === layerName) {
-          layer.set('isDefault', true);
-          layer.setVisible(true);
-        } else {
-          layer.set('isDefault', false);
-          layer.setVisible(false);
-        }
-      });
-    }
-  }, {
-    key: 'setMap',
-    value: function setMap(map) {
-      if (map && map instanceof _constants.ol.Map) {
-        this.map = map;
-        return this.map;
-      }
-    }
-  }, {
-    key: 'getMap',
-    value: function getMap() {
-      return this.map;
-    }
-  }]);
-
-  return LayerSwitcher;
-}();
-
-exports.default = LayerSwitcher;
-module.exports = exports['default'];
-
-/***/ }),
-/* 204 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _mixin = __webpack_require__(46);
-
-var _mixin2 = _interopRequireDefault(_mixin);
-
-var _Layer = __webpack_require__(55);
-
-var _Layer2 = _interopRequireDefault(_Layer);
-
-var _constants = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var MeasureTool = function (_mix) {
-  _inherits(MeasureTool, _mix);
-
-  function MeasureTool(map) {
-    _classCallCheck(this, MeasureTool);
-
-    var _this = _possibleConstructorReturn(this, (MeasureTool.__proto__ || Object.getPrototypeOf(MeasureTool)).call(this));
-
-    if (map && map instanceof _constants.ol.Map) {
-      _this.map = map;
-
-      _this.wgs84Sphere = new _constants.ol.Sphere(6378137);
-
-      _this.measureTypes = {
-        measureLength: 'measureLength',
-        measureArea: 'measureArea'
-      };
-
-      _this.dragPanInteraction = null;
-    } else {
-      throw new Error('传入的不是地图对象或者地图对象为空！');
-    }
-    return _this;
-  }
-
-  _createClass(MeasureTool, [{
-    key: 'setUp',
-    value: function setUp(params) {
-      var _this2 = this;
-
-      this.options = params || {};
-
-      this.layerName = this.options['layerName'] || 'measureTool';
-
-      this.clickCount = 0;
-
-      this.drawSketch = null;
-
-      this.draw = null;
-
-      this.beforeMeasurePointerMoveHandler = null;
-
-      this.listener = null;
-
-      this.drawSketch = null;
-
-      this.measureHelpTooltip = '';
-
-      this.measureAreaTooltip = null;
-
-      this.measureAreaTooltipElement = null;
-
-      if (this.options['measureType'] === this.measureTypes.measureLength) {
-        this.measureLengthClick = this.map.on('singleclick', function (event) {
-          _this2.clickCount += 1;
-          if (_this2.clickCount === 1) {
-            _this2.drawSketch.length = '起点';
-          }
-          _this2.addMeasureOverLay(event.coordinate, _this2.drawSketch.length);
-          _this2.addMeasurecircle(event.coordinate);
-        });
-        this.beforeMeasurePointerMoveHandler = this.map.on('pointermove', this.beforeDrawPointMoveHandler, this);
-      } else if (this.options['measureType'] === this.measureTypes.measureArea) {
-        this.measureAreaClick = this.map.on('singleclick', function (event) {});
-      }
-      this.addDrawInteraction();
-    }
-  }, {
-    key: 'addDrawInteraction',
-    value: function addDrawInteraction() {
-      this.removeDrawInteraion();
-      var type = '';
-      if (this.options['measureType'] === this.measureTypes.measureLength) {
-        type = 'LineString';
-      } else if (this.options['measureType'] === this.measureTypes.measureArea) {
-        type = 'Polygon';
-      }
-      this.options['create'] = true;
-      this.layer = this.creatVectorLayer(this.layerName, this.options);
-      this.layer.setStyle(new _constants.ol.style.Style({
-        fill: new _constants.ol.style.Fill({
-          color: 'rgba(67, 110, 238, 0.4)'
-        }),
-        stroke: new _constants.ol.style.Stroke({
-          color: 'rgba(242,123,57,1)',
-          width: 2
-        }),
-        image: new _constants.ol.style.Circle({
-          radius: 4,
-          stroke: new _constants.ol.style.Stroke({
-            color: 'rgba(255,0,0,1)',
-            width: 1
-          }),
-          fill: new _constants.ol.style.Fill({
-            color: 'rgba(255,255,255,1)'
-          })
-        })
-      }));
-      this.draw = new _constants.ol.interaction.Draw({
-        source: this.layer.getSource(),
-        type: type,
-        style: new _constants.ol.style.Style({
-          fill: new _constants.ol.style.Fill({
-            color: 'rgba(254, 164, 164, 1)'
-          }),
-          stroke: new _constants.ol.style.Stroke({
-            color: 'rgba(252, 129, 129, 1)',
-            width: 3
-          }),
-          image: new _constants.ol.style.Circle({
-            radius: 1,
-            fill: new _constants.ol.style.Fill({
-              color: '#ffcc33'
-            })
-          })
-        })
-      });
-      this.map.addInteraction(this.draw);
-      this.drawListener();
-      this.getDragPanInteraction().setActive(false);
-    }
-  }, {
-    key: 'removeDrawInteraion',
-    value: function removeDrawInteraion() {
-      if (this.draw) {
-        this.map.removeInteraction(this.draw);
-      }
-      this.draw = null;
-    }
-  }, {
-    key: 'beforeDrawPointMoveHandler',
-    value: function beforeDrawPointMoveHandler(event) {
-      if (!this.measureHelpTooltip) {
-        var helpTooltipElement = document.createElement('label');
-        helpTooltipElement.className = 'BMapLabel';
-        helpTooltipElement.style.position = 'absolute';
-        helpTooltipElement.style.display = 'inline';
-        helpTooltipElement.style.cursor = 'inherit';
-        helpTooltipElement.style.border = 'none';
-        helpTooltipElement.style.padding = '0';
-        helpTooltipElement.style.whiteSpace = 'nowrap';
-        helpTooltipElement.style.fontVariant = 'normal';
-        helpTooltipElement.style.fontWeight = 'normal';
-        helpTooltipElement.style.fontStretch = 'normal';
-        helpTooltipElement.style.fontSize = '12px';
-        helpTooltipElement.style.lineHeight = 'normal';
-        helpTooltipElement.style.fontFamily = 'arial,simsun';
-        helpTooltipElement.style.color = 'rgb(51, 51, 51)';
-        helpTooltipElement.style.webkitUserSelect = 'none';
-        helpTooltipElement.innerHTML = "<span class='BMap_diso'><span class='BMap_disi'>单击确定起点</span></span>";
-        this.measureHelpTooltip = new _constants.ol.Overlay({
-          element: helpTooltipElement,
-          offset: [55, 20],
-          positioning: 'center-center'
-        });
-        this.map.addOverlay(this.measureHelpTooltip);
-      }
-      this.measureHelpTooltip.setPosition(event.coordinate);
-    }
-  }, {
-    key: 'drawPointerMoveHandler',
-    value: function drawPointerMoveHandler(event) {
-      if (this.measureTypes.measureLength === this.options['measureType']) {
-        if (event.dragging) {
-          return;
-        }
-        var helpTooltipElement = this.measureHelpTooltip.getElement();
-        helpTooltipElement.className = ' BMapLabel BMap_disLabel';
-        helpTooltipElement.style.position = 'absolute';
-        helpTooltipElement.style.display = 'inline';
-        helpTooltipElement.style.cursor = 'inherit';
-        helpTooltipElement.style.border = '1px solid rgb(255, 1, 3)';
-        helpTooltipElement.style.padding = '3px 5px';
-        helpTooltipElement.style.whiteSpace = 'nowrap';
-        helpTooltipElement.style.fontVariant = 'normal';
-        helpTooltipElement.style.fontWeight = 'normal';
-        helpTooltipElement.style.fontStretch = 'normal';
-        helpTooltipElement.style.fontSize = '12px';
-        helpTooltipElement.style.lineHeight = 'normal';
-        helpTooltipElement.style.fontFamily = 'arial,simsun';
-        helpTooltipElement.style.color = 'rgb(51, 51, 51)';
-        helpTooltipElement.style.backgroundColor = 'rgb(255, 255, 255)';
-        helpTooltipElement.style.webkitUserSelect = 'none';
-        helpTooltipElement.innerHTML = '<span>总长:<span class="BMap_disBoxDis"></span></span><br><span style="color: #7a7a7a">单击确定地点,双击结束</span>';
-        this.measureHelpTooltip.setPosition(event.coordinate);
-      }
-    }
-  }, {
-    key: 'drawListener',
-    value: function drawListener() {
-      var _this3 = this;
-
-      this.draw.on('drawstart', function (event) {
-        _this3.drawSketch = event.feature;
-        _this3.drawSketch.set('uuid', Math.floor(Math.random() * 100000000 + 1));
-        if (_this3.measureTypes.measureLength === _this3.options['measureType']) {
-          _constants.ol.Observable.unByKey(_this3.beforeMeasurePointerMoveHandler);
-          _this3.listener = _this3.drawSketch.getGeometry().on('change', function (evt) {
-            var geom = evt.target;
-            if (geom instanceof _constants.ol.geom.LineString) {
-              var output = _this3.formatData(geom);
-              _this3.drawSketch.length = output;
-              _this3.measureHelpTooltip.getElement().firstElementChild.firstElementChild.innerHTML = output;
-            }
-          });
-          _this3.drawPointermove = _this3.map.on('pointermove', _this3.drawPointerMoveHandler, _this3);
-        } else if (_this3.measureTypes.measureArea === _this3.options['measureType']) {
-          var uuid = Math.floor(Math.random() * 100000000 + 1);
-          _this3.createMeasureAreaTooltip();
-          _this3.drawSketch.set('uuid', uuid);
-          _this3.measureAreaTooltip.set('uuid', uuid);
-          _this3.listener = _this3.drawSketch.getGeometry().on('change', function (evts) {
-            var geom = evts.target;
-            var area = _this3.formatData(geom);
-            if (_this3.measureAreaTooltip) {
-              _this3.measureAreaTooltipElement.innerHTML = '面积' + area;
-              _this3.measureAreaTooltip.setPosition(geom.getInteriorPoint().getCoordinates());
-            }
-          });
-        }
-      });
-      this.draw.on('drawend', function (ev) {
-        _this3.getDragPanInteraction().setActive(true);
-        _this3.map.getTargetElement().style.cursor = 'default';
-        _this3.map.removeOverlay(_this3.measureHelpTooltip);
-        _this3.measureHelpTooltip = null;
-        if (_this3.measureTypes.measureLength === _this3.options['measureType']) {
-          _this3.addMeasureOverLay(ev.feature.getGeometry().getLastCoordinate(), _this3.drawSketch.length, '止点');
-          _this3.addMeasurecircle(ev.feature.getGeometry().getLastCoordinate());
-          _constants.ol.Observable.unByKey(_this3.listener);
-          _constants.ol.Observable.unByKey(_this3.drawPointermove);
-          _constants.ol.Observable.unByKey(_this3.measureLengthClick);
-        } else if (_this3.options['measureType'] === _this3.measureTypes.measureArea) {
-          _constants.ol.Observable.unByKey(_this3.listener);
-          _this3.addMeasureRemoveButton(ev.feature.getGeometry().getCoordinates()[0][0]);
-        }
-        _this3.listener = null;
-        _this3.drawSketch = null;
-        _this3.removeDrawInteraion();
-      });
-    }
-  }, {
-    key: 'formatData',
-    value: function formatData(geom) {
-      var output = 0;
-      if (geom) {
-        if (this.options['measureType'] === this.measureTypes.measureLength) {
-          var _ref = [geom.getCoordinates(), 0],
-              coordinates = _ref[0],
-              length = _ref[1];
-
-          var sourceProj = this.map.getView().getProjection();
-          for (var i = 0, ii = coordinates.length - 1; i < ii; ++i) {
-            var c1 = _constants.ol.proj.transform(coordinates[i], sourceProj, 'EPSG:4326');
-            var c2 = _constants.ol.proj.transform(coordinates[i + 1], sourceProj, 'EPSG:4326');
-            length += this.wgs84Sphere.haversineDistance(c1, c2);
-          }
-          if (length > 100) {
-            output = Math.round(length / 1000 * 100) / 100 + ' ' + '公里';
-          } else {
-            output = Math.round(length * 100) / 100 + ' ' + '米';
-          }
-        } else if (this.options['measureType'] === this.measureTypes.measureArea) {
-          var _sourceProj = this.getMap().getView().getProjection();
-          var geometry = geom.clone().transform(_sourceProj, 'EPSG:4326');
-          var _coordinates = geometry.getLinearRing(0).getCoordinates();
-          var area = Math.abs(this.wgs84Sphere.geodesicArea(_coordinates));
-          if (area > 10000000000) {
-            output = Math.round(area / (1000 * 1000 * 10000) * 100) / 100 + ' ' + '万平方公里';
-          } else if (area > 1000000 || area < 10000000000) {
-            output = Math.round(area / (1000 * 1000) * 100) / 100 + ' ' + '平方公里';
-          } else {
-            output = Math.round(area * 100) / 100 + ' ' + '平方米';
-          }
-        }
-      }
-      return output;
-    }
-  }, {
-    key: 'addMeasurecircle',
-    value: function addMeasurecircle(coordinate) {
-      var feature = new _constants.ol.Feature({
-        uuid: this.drawSketch.get('uuid'),
-        geometry: new _constants.ol.geom.Point(coordinate)
-      });
-      this.layer.getSource().addFeature(feature);
-    }
-  }, {
-    key: 'addMeasureOverLay',
-    value: function addMeasureOverLay(coordinate, length, type) {
-      var helpTooltipElement = document.createElement('label');
-      helpTooltipElement.style.position = 'absolute';
-      helpTooltipElement.style.display = 'inline';
-      helpTooltipElement.style.cursor = 'inherit';
-      helpTooltipElement.style.border = 'none';
-      helpTooltipElement.style.padding = '0';
-      helpTooltipElement.style.whiteSpace = 'nowrap';
-      helpTooltipElement.style.fontVariant = 'normal';
-      helpTooltipElement.style.fontWeight = 'normal';
-      helpTooltipElement.style.fontStretch = 'normal';
-      helpTooltipElement.style.fontSize = '12px';
-      helpTooltipElement.style.lineHeight = 'normal';
-      helpTooltipElement.style.fontFamily = 'arial,simsun';
-      helpTooltipElement.style.color = 'rgb(51, 51, 51)';
-      helpTooltipElement.style.webkitUserSelect = 'none';
-      if (type === '止点') {
-        helpTooltipElement.style.border = '1px solid rgb(255, 1, 3)';
-        helpTooltipElement.style.padding = '3px 5px';
-        helpTooltipElement.className = ' BMapLabel BMap_disLabel';
-        helpTooltipElement.innerHTML = "总长<span class='BMap_disBoxDis'>" + length + '</span>';
-        this.addMeasureRemoveButton(coordinate);
-      } else {
-        helpTooltipElement.className = 'BMapLabel';
-        helpTooltipElement.innerHTML = "<span class='BMap_diso'><span class='BMap_disi'>" + length + '</span></span>';
-      }
-      var tempMeasureTooltip = new _constants.ol.Overlay({
-        element: helpTooltipElement,
-        offset: [10, -10],
-        positioning: 'center-center'
-      });
-      this.map.addOverlay(tempMeasureTooltip);
-      tempMeasureTooltip.setPosition(coordinate);
-      tempMeasureTooltip.set('uuid', this.drawSketch.get('uuid'));
-    }
-  }, {
-    key: 'addMeasureRemoveButton',
-    value: function addMeasureRemoveButton(coordinate) {
-      var _this4 = this;
-
-      var pos = [coordinate[0] - 5 * this.map.getView().getResolution(), coordinate[1]];
-      var btnImg = document.createElement('img');
-      btnImg.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NEYzMzc1RDY3RDU1MTFFNUFDNDJFNjQ4NUUwMzRDRDYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NEYzMzc1RDc3RDU1MTFFNUFDNDJFNjQ4NUUwMzRDRDYiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo0RjMzNzVENDdENTUxMUU1QUM0MkU2NDg1RTAzNENENiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo0RjMzNzVENTdENTUxMUU1QUM0MkU2NDg1RTAzNENENiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsDx84AAAAC3SURBVHjavJIxDoMwDEV/ok5wDCbu0DvAdUBIwMLFSs/AxDXY6tZ2SCGVUikd+ifn20+2k5hHVd0AXJGmGQw+UyWMxY8KQGpbUNcB23aYHIsnuSgIy8dlAQ2DgwWSmD0YE5ReAq5pQOMIrKsDRByjKGC/dsxz2L7XQgU8JB7n4qDoY6SYF4J+p72T7/zeOXqr03SMx8XnsTUX7UgElKVCyDK3s8Tsae6sv/8ceceZ6jr1k99fAgwAsZy0Sa2HgDcAAAAASUVORK5CYII=';
-      btnImg.style.cursor = 'pointer';
-      btnImg.title = '清除测量结果';
-      btnImg.groupId = this.drawSketch.get('uuid');
-      btnImg.pos = coordinate;
-      btnImg.onclick = function (evt) {
-        _this4.RemoveMeasure(btnImg.groupId, coordinate);
-      };
-      var closeBtn = new _constants.ol.Overlay({
-        element: btnImg,
-        offset: [-2, -6],
-        positioning: 'center-center'
-      });
-      this.map.addOverlay(closeBtn);
-      closeBtn.setPosition(pos);
-      closeBtn.set('uuid', this.drawSketch.get('uuid'));
-    }
-  }, {
-    key: 'createMeasureAreaTooltip',
-    value: function createMeasureAreaTooltip() {
-      this.measureAreaTooltipElement = document.createElement('div');
-      this.measureAreaTooltipElement.style.marginLeft = '-6.25em';
-      this.measureAreaTooltipElement.className = 'measureTooltip hidden';
-      this.measureAreaTooltip = new _constants.ol.Overlay({
-        element: this.measureAreaTooltipElement,
-        offset: [15, 0],
-        positioning: 'center-left'
-      });
-      this.map.addOverlay(this.measureAreaTooltip);
-    }
-  }, {
-    key: 'RemoveMeasure',
-    value: function RemoveMeasure(groupId, pos) {
-      var overlays = this.getMap().getOverlays().getArray();
-      if (overlays && Array.isArray(overlays)) {
-        var length = overlays.length;
-
-        for (var j = 0, i = 0; j < length; j++) {
-          i++;
-          if (overlays[length - i] && overlays[length - i] instanceof _constants.ol.Overlay && overlays[length - i].get('uuid') === groupId) {
-            this.map.removeOverlay(overlays[length - i]);
-          }
-        }
-      }
-      if (this.layer && this.layer.getSource()) {
-        var source = this.layer.getSource();
-        var features = source.getFeatures();
-        features.forEach(function (feat) {
-          var lastCoord = feat.getGeometry().getLastCoordinate();
-          if (lastCoord[0] === pos[0] && lastCoord[1] === pos[1] || feat.get('uuid') === groupId) {
-            source.removeFeature(feat);
-          }
-        }, this);
-      }
-    }
-  }, {
-    key: 'getDragPanInteraction',
-    value: function getDragPanInteraction() {
-      var _this5 = this;
-
-      if (!this.dragPanInteraction) {
-        var items = this.getMap().getInteractions().getArray();
-        items.forEach(function (item) {
-          if (item && item instanceof _constants.ol.interaction.DragPan) {
-            _this5.dragPanInteraction = item;
-          }
-        });
-      }
-      return this.dragPanInteraction;
-    }
-  }, {
-    key: 'getMap',
-    value: function getMap() {
-      return this.map;
-    }
-  }]);
-
-  return MeasureTool;
-}((0, _mixin2.default)(_Layer2.default));
-
-exports.default = MeasureTool;
-module.exports = exports['default'];
-
-/***/ }),
-/* 205 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(214);
-module.exports = __webpack_require__(30).RegExp.escape;
-
-/***/ }),
-/* 206 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var isObject = __webpack_require__(6)
-  , isArray  = __webpack_require__(91)
-  , SPECIES  = __webpack_require__(7)('species');
-
-module.exports = function(original){
-  var C;
-  if(isArray(original)){
-    C = original.constructor;
-    // cross-realm fallback
-    if(typeof C == 'function' && (C === Array || isArray(C.prototype)))C = undefined;
-    if(isObject(C)){
-      C = C[SPECIES];
-      if(C === null)C = undefined;
-    }
-  } return C === undefined ? Array : C;
-};
-
-/***/ }),
-/* 207 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 9.4.2.3 ArraySpeciesCreate(originalArray, length)
-var speciesConstructor = __webpack_require__(206);
-
-module.exports = function(original, length){
-  return new (speciesConstructor(original))(length);
-};
-
-/***/ }),
-/* 208 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var anObject    = __webpack_require__(2)
-  , toPrimitive = __webpack_require__(29)
-  , NUMBER      = 'number';
-
-module.exports = function(hint){
-  if(hint !== 'string' && hint !== NUMBER && hint !== 'default')throw TypeError('Incorrect hint');
-  return toPrimitive(anObject(this), hint != NUMBER);
-};
-
-/***/ }),
-/* 209 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// all enumerable object keys, includes symbols
-var getKeys = __webpack_require__(41)
-  , gOPS    = __webpack_require__(70)
-  , pIE     = __webpack_require__(58);
-module.exports = function(it){
-  var result     = getKeys(it)
-    , getSymbols = gOPS.f;
-  if(getSymbols){
-    var symbols = getSymbols(it)
-      , isEnum  = pIE.f
-      , i       = 0
-      , key;
-    while(symbols.length > i)if(isEnum.call(it, key = symbols[i++]))result.push(key);
-  } return result;
-};
-
-/***/ }),
-/* 210 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var getKeys   = __webpack_require__(41)
-  , toIObject = __webpack_require__(20);
-module.exports = function(object, el){
-  var O      = toIObject(object)
-    , keys   = getKeys(O)
-    , length = keys.length
-    , index  = 0
-    , key;
-  while(length > index)if(O[key = keys[index++]] === el)return key;
-};
-
-/***/ }),
-/* 211 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var path      = __webpack_require__(212)
-  , invoke    = __webpack_require__(66)
-  , aFunction = __webpack_require__(16);
-module.exports = function(/* ...pargs */){
-  var fn     = aFunction(this)
-    , length = arguments.length
-    , pargs  = Array(length)
-    , i      = 0
-    , _      = path._
-    , holder = false;
-  while(length > i)if((pargs[i] = arguments[i++]) === _)holder = true;
-  return function(/* ...args */){
-    var that = this
-      , aLen = arguments.length
-      , j = 0, k = 0, args;
-    if(!holder && !aLen)return invoke(fn, pargs, that);
-    args = pargs.slice();
-    if(holder)for(;length > j; j++)if(args[j] === _)args[j] = arguments[k++];
-    while(aLen > k)args.push(arguments[k++]);
-    return invoke(fn, args, that);
-  };
-};
-
-/***/ }),
-/* 212 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(3);
-
-/***/ }),
-/* 213 */
-/***/ (function(module, exports) {
-
-module.exports = function(regExp, replace){
-  var replacer = replace === Object(replace) ? function(part){
-    return replace[part];
-  } : replace;
-  return function(it){
-    return String(it).replace(regExp, replacer);
-  };
-};
-
-/***/ }),
-/* 214 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// https://github.com/benjamingr/RexExp.escape
-var $export = __webpack_require__(0)
-  , $re     = __webpack_require__(213)(/[\\^$*+?.()|[\]{}]/g, '\\$&');
-
-$export($export.S, 'RegExp', {escape: function escape(it){ return $re(it); }});
-
-
-/***/ }),
-/* 215 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 22.1.3.3 Array.prototype.copyWithin(target, start, end = this.length)
-var $export = __webpack_require__(0);
-
-$export($export.P, 'Array', {copyWithin: __webpack_require__(121)});
-
-__webpack_require__(47)('copyWithin');
-
-/***/ }),
-/* 216 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $export = __webpack_require__(0)
-  , $every  = __webpack_require__(27)(4);
-
-$export($export.P + $export.F * !__webpack_require__(25)([].every, true), 'Array', {
-  // 22.1.3.5 / 15.4.4.16 Array.prototype.every(callbackfn [, thisArg])
-  every: function every(callbackfn /* , thisArg */){
-    return $every(this, callbackfn, arguments[1]);
-  }
-});
-
-/***/ }),
-/* 217 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 22.1.3.6 Array.prototype.fill(value, start = 0, end = this.length)
-var $export = __webpack_require__(0);
-
-$export($export.P, 'Array', {fill: __webpack_require__(83)});
-
-__webpack_require__(47)('fill');
-
-/***/ }),
-/* 218 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $export = __webpack_require__(0)
-  , $filter = __webpack_require__(27)(2);
-
-$export($export.P + $export.F * !__webpack_require__(25)([].filter, true), 'Array', {
-  // 22.1.3.7 / 15.4.4.20 Array.prototype.filter(callbackfn [, thisArg])
-  filter: function filter(callbackfn /* , thisArg */){
-    return $filter(this, callbackfn, arguments[1]);
-  }
-});
-
-/***/ }),
-/* 219 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// 22.1.3.9 Array.prototype.findIndex(predicate, thisArg = undefined)
-var $export = __webpack_require__(0)
-  , $find   = __webpack_require__(27)(6)
-  , KEY     = 'findIndex'
-  , forced  = true;
-// Shouldn't skip holes
-if(KEY in [])Array(1)[KEY](function(){ forced = false; });
-$export($export.P + $export.F * forced, 'Array', {
-  findIndex: function findIndex(callbackfn/*, that = undefined */){
-    return $find(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
-  }
-});
-__webpack_require__(47)(KEY);
-
-/***/ }),
-/* 220 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// 22.1.3.8 Array.prototype.find(predicate, thisArg = undefined)
-var $export = __webpack_require__(0)
-  , $find   = __webpack_require__(27)(5)
-  , KEY     = 'find'
-  , forced  = true;
-// Shouldn't skip holes
-if(KEY in [])Array(1)[KEY](function(){ forced = false; });
-$export($export.P + $export.F * forced, 'Array', {
-  find: function find(callbackfn/*, that = undefined */){
-    return $find(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
-  }
-});
-__webpack_require__(47)(KEY);
-
-/***/ }),
-/* 221 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $export  = __webpack_require__(0)
-  , $forEach = __webpack_require__(27)(0)
-  , STRICT   = __webpack_require__(25)([].forEach, true);
-
-$export($export.P + $export.F * !STRICT, 'Array', {
-  // 22.1.3.10 / 15.4.4.18 Array.prototype.forEach(callbackfn [, thisArg])
-  forEach: function forEach(callbackfn /* , thisArg */){
-    return $forEach(this, callbackfn, arguments[1]);
-  }
-});
-
-/***/ }),
-/* 222 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var ctx            = __webpack_require__(31)
-  , $export        = __webpack_require__(0)
-  , toObject       = __webpack_require__(14)
-  , call           = __webpack_require__(130)
-  , isArrayIter    = __webpack_require__(90)
-  , toLength       = __webpack_require__(12)
-  , createProperty = __webpack_require__(84)
-  , getIterFn      = __webpack_require__(107);
-
-$export($export.S + $export.F * !__webpack_require__(68)(function(iter){ Array.from(iter); }), 'Array', {
-  // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
-  from: function from(arrayLike/*, mapfn = undefined, thisArg = undefined*/){
-    var O       = toObject(arrayLike)
-      , C       = typeof this == 'function' ? this : Array
-      , aLen    = arguments.length
-      , mapfn   = aLen > 1 ? arguments[1] : undefined
-      , mapping = mapfn !== undefined
-      , index   = 0
-      , iterFn  = getIterFn(O)
-      , length, result, step, iterator;
-    if(mapping)mapfn = ctx(mapfn, aLen > 2 ? arguments[2] : undefined, 2);
-    // if object isn't iterable or it's array with default iterator - use simple case
-    if(iterFn != undefined && !(C == Array && isArrayIter(iterFn))){
-      for(iterator = iterFn.call(O), result = new C; !(step = iterator.next()).done; index++){
-        createProperty(result, index, mapping ? call(iterator, mapfn, [step.value, index], true) : step.value);
-      }
-    } else {
-      length = toLength(O.length);
-      for(result = new C(length); length > index; index++){
-        createProperty(result, index, mapping ? mapfn(O[index], index) : O[index]);
-      }
-    }
-    result.length = index;
-    return result;
-  }
-});
-
-
-/***/ }),
-/* 223 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $export       = __webpack_require__(0)
-  , $indexOf      = __webpack_require__(62)(false)
-  , $native       = [].indexOf
-  , NEGATIVE_ZERO = !!$native && 1 / [1].indexOf(1, -0) < 0;
-
-$export($export.P + $export.F * (NEGATIVE_ZERO || !__webpack_require__(25)($native)), 'Array', {
-  // 22.1.3.11 / 15.4.4.14 Array.prototype.indexOf(searchElement [, fromIndex])
-  indexOf: function indexOf(searchElement /*, fromIndex = 0 */){
-    return NEGATIVE_ZERO
-      // convert -0 to +0
-      ? $native.apply(this, arguments) || 0
-      : $indexOf(this, searchElement, arguments[1]);
-  }
-});
-
-/***/ }),
-/* 224 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 22.1.2.2 / 15.4.3.2 Array.isArray(arg)
-var $export = __webpack_require__(0);
-
-$export($export.S, 'Array', {isArray: __webpack_require__(91)});
-
-/***/ }),
-/* 225 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// 22.1.3.13 Array.prototype.join(separator)
-var $export   = __webpack_require__(0)
-  , toIObject = __webpack_require__(20)
-  , arrayJoin = [].join;
-
-// fallback for not array-like strings
-$export($export.P + $export.F * (__webpack_require__(57) != Object || !__webpack_require__(25)(arrayJoin)), 'Array', {
-  join: function join(separator){
-    return arrayJoin.call(toIObject(this), separator === undefined ? ',' : separator);
-  }
-});
-
-/***/ }),
-/* 226 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $export       = __webpack_require__(0)
-  , toIObject     = __webpack_require__(20)
-  , toInteger     = __webpack_require__(36)
-  , toLength      = __webpack_require__(12)
-  , $native       = [].lastIndexOf
-  , NEGATIVE_ZERO = !!$native && 1 / [1].lastIndexOf(1, -0) < 0;
-
-$export($export.P + $export.F * (NEGATIVE_ZERO || !__webpack_require__(25)($native)), 'Array', {
-  // 22.1.3.14 / 15.4.4.15 Array.prototype.lastIndexOf(searchElement [, fromIndex])
-  lastIndexOf: function lastIndexOf(searchElement /*, fromIndex = @[*-1] */){
-    // convert -0 to +0
-    if(NEGATIVE_ZERO)return $native.apply(this, arguments) || 0;
-    var O      = toIObject(this)
-      , length = toLength(O.length)
-      , index  = length - 1;
-    if(arguments.length > 1)index = Math.min(index, toInteger(arguments[1]));
-    if(index < 0)index = length + index;
-    for(;index >= 0; index--)if(index in O)if(O[index] === searchElement)return index || 0;
-    return -1;
-  }
-});
-
-/***/ }),
-/* 227 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $export = __webpack_require__(0)
-  , $map    = __webpack_require__(27)(1);
-
-$export($export.P + $export.F * !__webpack_require__(25)([].map, true), 'Array', {
-  // 22.1.3.15 / 15.4.4.19 Array.prototype.map(callbackfn [, thisArg])
-  map: function map(callbackfn /* , thisArg */){
-    return $map(this, callbackfn, arguments[1]);
-  }
-});
-
-/***/ }),
-/* 228 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $export        = __webpack_require__(0)
-  , createProperty = __webpack_require__(84);
-
-// WebKit Array.of isn't generic
-$export($export.S + $export.F * __webpack_require__(5)(function(){
-  function F(){}
-  return !(Array.of.call(F) instanceof F);
-}), 'Array', {
-  // 22.1.2.3 Array.of( ...items)
-  of: function of(/* ...args */){
-    var index  = 0
-      , aLen   = arguments.length
-      , result = new (typeof this == 'function' ? this : Array)(aLen);
-    while(aLen > index)createProperty(result, index, arguments[index++]);
-    result.length = aLen;
-    return result;
-  }
-});
-
-/***/ }),
-/* 229 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $export = __webpack_require__(0)
-  , $reduce = __webpack_require__(123);
-
-$export($export.P + $export.F * !__webpack_require__(25)([].reduceRight, true), 'Array', {
-  // 22.1.3.19 / 15.4.4.22 Array.prototype.reduceRight(callbackfn [, initialValue])
-  reduceRight: function reduceRight(callbackfn /* , initialValue */){
-    return $reduce(this, callbackfn, arguments.length, arguments[1], true);
-  }
-});
-
-/***/ }),
-/* 230 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $export = __webpack_require__(0)
-  , $reduce = __webpack_require__(123);
-
-$export($export.P + $export.F * !__webpack_require__(25)([].reduce, true), 'Array', {
-  // 22.1.3.18 / 15.4.4.21 Array.prototype.reduce(callbackfn [, initialValue])
-  reduce: function reduce(callbackfn /* , initialValue */){
-    return $reduce(this, callbackfn, arguments.length, arguments[1], false);
-  }
-});
-
-/***/ }),
-/* 231 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $export    = __webpack_require__(0)
-  , html       = __webpack_require__(88)
-  , cof        = __webpack_require__(23)
-  , toIndex    = __webpack_require__(44)
-  , toLength   = __webpack_require__(12)
-  , arraySlice = [].slice;
-
-// fallback for not array-like ES3 strings and DOM objects
-$export($export.P + $export.F * __webpack_require__(5)(function(){
-  if(html)arraySlice.call(html);
-}), 'Array', {
-  slice: function slice(begin, end){
-    var len   = toLength(this.length)
-      , klass = cof(this);
-    end = end === undefined ? len : end;
-    if(klass == 'Array')return arraySlice.call(this, begin, end);
-    var start  = toIndex(begin, len)
-      , upTo   = toIndex(end, len)
-      , size   = toLength(upTo - start)
-      , cloned = Array(size)
-      , i      = 0;
-    for(; i < size; i++)cloned[i] = klass == 'String'
-      ? this.charAt(start + i)
-      : this[start + i];
-    return cloned;
-  }
-});
-
-/***/ }),
-/* 232 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $export = __webpack_require__(0)
-  , $some   = __webpack_require__(27)(3);
-
-$export($export.P + $export.F * !__webpack_require__(25)([].some, true), 'Array', {
-  // 22.1.3.23 / 15.4.4.17 Array.prototype.some(callbackfn [, thisArg])
-  some: function some(callbackfn /* , thisArg */){
-    return $some(this, callbackfn, arguments[1]);
-  }
-});
-
-/***/ }),
-/* 233 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $export   = __webpack_require__(0)
-  , aFunction = __webpack_require__(16)
-  , toObject  = __webpack_require__(14)
-  , fails     = __webpack_require__(5)
-  , $sort     = [].sort
-  , test      = [1, 2, 3];
-
-$export($export.P + $export.F * (fails(function(){
-  // IE8-
-  test.sort(undefined);
-}) || !fails(function(){
-  // V8 bug
-  test.sort(null);
-  // Old WebKit
-}) || !__webpack_require__(25)($sort)), 'Array', {
-  // 22.1.3.25 Array.prototype.sort(comparefn)
-  sort: function sort(comparefn){
-    return comparefn === undefined
-      ? $sort.call(toObject(this))
-      : $sort.call(toObject(this), aFunction(comparefn));
-  }
-});
-
-/***/ }),
-/* 234 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(43)('Array');
-
-/***/ }),
-/* 235 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 20.3.3.1 / 15.9.4.4 Date.now()
-var $export = __webpack_require__(0);
-
-$export($export.S, 'Date', {now: function(){ return new Date().getTime(); }});
-
-/***/ }),
-/* 236 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// 20.3.4.36 / 15.9.5.43 Date.prototype.toISOString()
-var $export = __webpack_require__(0)
-  , fails   = __webpack_require__(5)
-  , getTime = Date.prototype.getTime;
-
-var lz = function(num){
-  return num > 9 ? num : '0' + num;
-};
-
-// PhantomJS / old WebKit has a broken implementations
-$export($export.P + $export.F * (fails(function(){
-  return new Date(-5e13 - 1).toISOString() != '0385-07-25T07:06:39.999Z';
-}) || !fails(function(){
-  new Date(NaN).toISOString();
-})), 'Date', {
-  toISOString: function toISOString(){
-    if(!isFinite(getTime.call(this)))throw RangeError('Invalid time value');
-    var d = this
-      , y = d.getUTCFullYear()
-      , m = d.getUTCMilliseconds()
-      , s = y < 0 ? '-' : y > 9999 ? '+' : '';
-    return s + ('00000' + Math.abs(y)).slice(s ? -6 : -4) +
-      '-' + lz(d.getUTCMonth() + 1) + '-' + lz(d.getUTCDate()) +
-      'T' + lz(d.getUTCHours()) + ':' + lz(d.getUTCMinutes()) +
-      ':' + lz(d.getUTCSeconds()) + '.' + (m > 99 ? m : '0' + lz(m)) + 'Z';
-  }
-});
-
-/***/ }),
-/* 237 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $export     = __webpack_require__(0)
-  , toObject    = __webpack_require__(14)
-  , toPrimitive = __webpack_require__(29);
-
-$export($export.P + $export.F * __webpack_require__(5)(function(){
-  return new Date(NaN).toJSON() !== null || Date.prototype.toJSON.call({toISOString: function(){ return 1; }}) !== 1;
-}), 'Date', {
-  toJSON: function toJSON(key){
-    var O  = toObject(this)
-      , pv = toPrimitive(O);
-    return typeof pv == 'number' && !isFinite(pv) ? null : O.toISOString();
-  }
-});
-
-/***/ }),
-/* 238 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var TO_PRIMITIVE = __webpack_require__(7)('toPrimitive')
-  , proto        = Date.prototype;
-
-if(!(TO_PRIMITIVE in proto))__webpack_require__(17)(proto, TO_PRIMITIVE, __webpack_require__(208));
-
-/***/ }),
-/* 239 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var DateProto    = Date.prototype
-  , INVALID_DATE = 'Invalid Date'
-  , TO_STRING    = 'toString'
-  , $toString    = DateProto[TO_STRING]
-  , getTime      = DateProto.getTime;
-if(new Date(NaN) + '' != INVALID_DATE){
-  __webpack_require__(18)(DateProto, TO_STRING, function toString(){
-    var value = getTime.call(this);
-    return value === value ? $toString.call(this) : INVALID_DATE;
-  });
-}
-
-/***/ }),
-/* 240 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 19.2.3.2 / 15.3.4.5 Function.prototype.bind(thisArg, args...)
-var $export = __webpack_require__(0);
-
-$export($export.P, 'Function', {bind: __webpack_require__(124)});
-
-/***/ }),
-/* 241 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var isObject       = __webpack_require__(6)
-  , getPrototypeOf = __webpack_require__(22)
-  , HAS_INSTANCE   = __webpack_require__(7)('hasInstance')
-  , FunctionProto  = Function.prototype;
-// 19.2.3.6 Function.prototype[@@hasInstance](V)
-if(!(HAS_INSTANCE in FunctionProto))__webpack_require__(11).f(FunctionProto, HAS_INSTANCE, {value: function(O){
-  if(typeof this != 'function' || !isObject(O))return false;
-  if(!isObject(this.prototype))return O instanceof this;
-  // for environment w/o native `@@hasInstance` logic enough `instanceof`, but add this:
-  while(O = getPrototypeOf(O))if(this.prototype === O)return true;
-  return false;
-}});
-
-/***/ }),
-/* 242 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var dP         = __webpack_require__(11).f
-  , createDesc = __webpack_require__(35)
-  , has        = __webpack_require__(15)
-  , FProto     = Function.prototype
-  , nameRE     = /^\s*function ([^ (]*)/
-  , NAME       = 'name';
-
-var isExtensible = Object.isExtensible || function(){
-  return true;
-};
-
-// 19.2.4.2 name
-NAME in FProto || __webpack_require__(10) && dP(FProto, NAME, {
-  configurable: true,
-  get: function(){
-    try {
-      var that = this
-        , name = ('' + that).match(nameRE)[1];
-      has(that, NAME) || !isExtensible(that) || dP(that, NAME, createDesc(5, name));
-      return name;
-    } catch(e){
-      return '';
-    }
-  }
-});
-
-/***/ }),
-/* 243 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 20.2.2.3 Math.acosh(x)
-var $export = __webpack_require__(0)
-  , log1p   = __webpack_require__(132)
-  , sqrt    = Math.sqrt
-  , $acosh  = Math.acosh;
-
-$export($export.S + $export.F * !($acosh
-  // V8 bug: https://code.google.com/p/v8/issues/detail?id=3509
-  && Math.floor($acosh(Number.MAX_VALUE)) == 710
-  // Tor Browser bug: Math.acosh(Infinity) -> NaN 
-  && $acosh(Infinity) == Infinity
-), 'Math', {
-  acosh: function acosh(x){
-    return (x = +x) < 1 ? NaN : x > 94906265.62425156
-      ? Math.log(x) + Math.LN2
-      : log1p(x - 1 + sqrt(x - 1) * sqrt(x + 1));
-  }
-});
-
-/***/ }),
-/* 244 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 20.2.2.5 Math.asinh(x)
-var $export = __webpack_require__(0)
-  , $asinh  = Math.asinh;
-
-function asinh(x){
-  return !isFinite(x = +x) || x == 0 ? x : x < 0 ? -asinh(-x) : Math.log(x + Math.sqrt(x * x + 1));
-}
-
-// Tor Browser bug: Math.asinh(0) -> -0 
-$export($export.S + $export.F * !($asinh && 1 / $asinh(0) > 0), 'Math', {asinh: asinh});
-
-/***/ }),
-/* 245 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 20.2.2.7 Math.atanh(x)
-var $export = __webpack_require__(0)
-  , $atanh  = Math.atanh;
-
-// Tor Browser bug: Math.atanh(-0) -> 0 
-$export($export.S + $export.F * !($atanh && 1 / $atanh(-0) < 0), 'Math', {
-  atanh: function atanh(x){
-    return (x = +x) == 0 ? x : Math.log((1 + x) / (1 - x)) / 2;
-  }
-});
-
-/***/ }),
-/* 246 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 20.2.2.9 Math.cbrt(x)
-var $export = __webpack_require__(0)
-  , sign    = __webpack_require__(95);
-
-$export($export.S, 'Math', {
-  cbrt: function cbrt(x){
-    return sign(x = +x) * Math.pow(Math.abs(x), 1 / 3);
-  }
-});
-
-/***/ }),
-/* 247 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 20.2.2.11 Math.clz32(x)
-var $export = __webpack_require__(0);
-
-$export($export.S, 'Math', {
-  clz32: function clz32(x){
-    return (x >>>= 0) ? 31 - Math.floor(Math.log(x + 0.5) * Math.LOG2E) : 32;
-  }
-});
-
-/***/ }),
-/* 248 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 20.2.2.12 Math.cosh(x)
-var $export = __webpack_require__(0)
-  , exp     = Math.exp;
-
-$export($export.S, 'Math', {
-  cosh: function cosh(x){
-    return (exp(x = +x) + exp(-x)) / 2;
-  }
-});
-
-/***/ }),
-/* 249 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 20.2.2.14 Math.expm1(x)
-var $export = __webpack_require__(0)
-  , $expm1  = __webpack_require__(94);
-
-$export($export.S + $export.F * ($expm1 != Math.expm1), 'Math', {expm1: $expm1});
-
-/***/ }),
-/* 250 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 20.2.2.16 Math.fround(x)
-var $export   = __webpack_require__(0)
-  , sign      = __webpack_require__(95)
-  , pow       = Math.pow
-  , EPSILON   = pow(2, -52)
-  , EPSILON32 = pow(2, -23)
-  , MAX32     = pow(2, 127) * (2 - EPSILON32)
-  , MIN32     = pow(2, -126);
-
-var roundTiesToEven = function(n){
-  return n + 1 / EPSILON - 1 / EPSILON;
-};
-
-
-$export($export.S, 'Math', {
-  fround: function fround(x){
-    var $abs  = Math.abs(x)
-      , $sign = sign(x)
-      , a, result;
-    if($abs < MIN32)return $sign * roundTiesToEven($abs / MIN32 / EPSILON32) * MIN32 * EPSILON32;
-    a = (1 + EPSILON32 / EPSILON) * $abs;
-    result = a - (a - $abs);
-    if(result > MAX32 || result != result)return $sign * Infinity;
-    return $sign * result;
-  }
-});
-
-/***/ }),
-/* 251 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 20.2.2.17 Math.hypot([value1[, value2[, … ]]])
-var $export = __webpack_require__(0)
-  , abs     = Math.abs;
-
-$export($export.S, 'Math', {
-  hypot: function hypot(value1, value2){ // eslint-disable-line no-unused-vars
-    var sum  = 0
-      , i    = 0
-      , aLen = arguments.length
-      , larg = 0
-      , arg, div;
-    while(i < aLen){
-      arg = abs(arguments[i++]);
-      if(larg < arg){
-        div  = larg / arg;
-        sum  = sum * div * div + 1;
-        larg = arg;
-      } else if(arg > 0){
-        div  = arg / larg;
-        sum += div * div;
-      } else sum += arg;
-    }
-    return larg === Infinity ? Infinity : larg * Math.sqrt(sum);
-  }
-});
-
-/***/ }),
-/* 252 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 20.2.2.18 Math.imul(x, y)
-var $export = __webpack_require__(0)
-  , $imul   = Math.imul;
-
-// some WebKit versions fails with big numbers, some has wrong arity
-$export($export.S + $export.F * __webpack_require__(5)(function(){
-  return $imul(0xffffffff, 5) != -5 || $imul.length != 2;
-}), 'Math', {
-  imul: function imul(x, y){
-    var UINT16 = 0xffff
-      , xn = +x
-      , yn = +y
-      , xl = UINT16 & xn
-      , yl = UINT16 & yn;
-    return 0 | xl * yl + ((UINT16 & xn >>> 16) * yl + xl * (UINT16 & yn >>> 16) << 16 >>> 0);
-  }
-});
-
-/***/ }),
-/* 253 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 20.2.2.21 Math.log10(x)
-var $export = __webpack_require__(0);
-
-$export($export.S, 'Math', {
-  log10: function log10(x){
-    return Math.log(x) / Math.LN10;
-  }
-});
-
-/***/ }),
-/* 254 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 20.2.2.20 Math.log1p(x)
-var $export = __webpack_require__(0);
-
-$export($export.S, 'Math', {log1p: __webpack_require__(132)});
-
-/***/ }),
-/* 255 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 20.2.2.22 Math.log2(x)
-var $export = __webpack_require__(0);
-
-$export($export.S, 'Math', {
-  log2: function log2(x){
-    return Math.log(x) / Math.LN2;
-  }
-});
-
-/***/ }),
-/* 256 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 20.2.2.28 Math.sign(x)
-var $export = __webpack_require__(0);
-
-$export($export.S, 'Math', {sign: __webpack_require__(95)});
-
-/***/ }),
-/* 257 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 20.2.2.30 Math.sinh(x)
-var $export = __webpack_require__(0)
-  , expm1   = __webpack_require__(94)
-  , exp     = Math.exp;
-
-// V8 near Chromium 38 has a problem with very small numbers
-$export($export.S + $export.F * __webpack_require__(5)(function(){
-  return !Math.sinh(-2e-17) != -2e-17;
-}), 'Math', {
-  sinh: function sinh(x){
-    return Math.abs(x = +x) < 1
-      ? (expm1(x) - expm1(-x)) / 2
-      : (exp(x - 1) - exp(-x - 1)) * (Math.E / 2);
-  }
-});
-
-/***/ }),
-/* 258 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 20.2.2.33 Math.tanh(x)
-var $export = __webpack_require__(0)
-  , expm1   = __webpack_require__(94)
-  , exp     = Math.exp;
-
-$export($export.S, 'Math', {
-  tanh: function tanh(x){
-    var a = expm1(x = +x)
-      , b = expm1(-x);
-    return a == Infinity ? 1 : b == Infinity ? -1 : (a - b) / (exp(x) + exp(-x));
-  }
-});
-
-/***/ }),
-/* 259 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 20.2.2.34 Math.trunc(x)
-var $export = __webpack_require__(0);
-
-$export($export.S, 'Math', {
-  trunc: function trunc(it){
-    return (it > 0 ? Math.floor : Math.ceil)(it);
-  }
-});
-
-/***/ }),
-/* 260 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var global            = __webpack_require__(3)
-  , has               = __webpack_require__(15)
-  , cof               = __webpack_require__(23)
-  , inheritIfRequired = __webpack_require__(89)
-  , toPrimitive       = __webpack_require__(29)
-  , fails             = __webpack_require__(5)
-  , gOPN              = __webpack_require__(40).f
-  , gOPD              = __webpack_require__(21).f
-  , dP                = __webpack_require__(11).f
-  , $trim             = __webpack_require__(51).trim
-  , NUMBER            = 'Number'
-  , $Number           = global[NUMBER]
-  , Base              = $Number
-  , proto             = $Number.prototype
-  // Opera ~12 has broken Object#toString
-  , BROKEN_COF        = cof(__webpack_require__(39)(proto)) == NUMBER
-  , TRIM              = 'trim' in String.prototype;
-
-// 7.1.3 ToNumber(argument)
-var toNumber = function(argument){
-  var it = toPrimitive(argument, false);
-  if(typeof it == 'string' && it.length > 2){
-    it = TRIM ? it.trim() : $trim(it, 3);
-    var first = it.charCodeAt(0)
-      , third, radix, maxCode;
-    if(first === 43 || first === 45){
-      third = it.charCodeAt(2);
-      if(third === 88 || third === 120)return NaN; // Number('+0x1') should be NaN, old V8 fix
-    } else if(first === 48){
-      switch(it.charCodeAt(1)){
-        case 66 : case 98  : radix = 2; maxCode = 49; break; // fast equal /^0b[01]+$/i
-        case 79 : case 111 : radix = 8; maxCode = 55; break; // fast equal /^0o[0-7]+$/i
-        default : return +it;
-      }
-      for(var digits = it.slice(2), i = 0, l = digits.length, code; i < l; i++){
-        code = digits.charCodeAt(i);
-        // parseInt parses a string to a first unavailable symbol
-        // but ToNumber should return NaN if a string contains unavailable symbols
-        if(code < 48 || code > maxCode)return NaN;
-      } return parseInt(digits, radix);
-    }
-  } return +it;
-};
-
-if(!$Number(' 0o1') || !$Number('0b1') || $Number('+0x1')){
-  $Number = function Number(value){
-    var it = arguments.length < 1 ? 0 : value
-      , that = this;
-    return that instanceof $Number
-      // check on 1..constructor(foo) case
-      && (BROKEN_COF ? fails(function(){ proto.valueOf.call(that); }) : cof(that) != NUMBER)
-        ? inheritIfRequired(new Base(toNumber(it)), that, $Number) : toNumber(it);
-  };
-  for(var keys = __webpack_require__(10) ? gOPN(Base) : (
-    // ES3:
-    'MAX_VALUE,MIN_VALUE,NaN,NEGATIVE_INFINITY,POSITIVE_INFINITY,' +
-    // ES6 (in case, if modules with ES6 Number statics required before):
-    'EPSILON,isFinite,isInteger,isNaN,isSafeInteger,MAX_SAFE_INTEGER,' +
-    'MIN_SAFE_INTEGER,parseFloat,parseInt,isInteger'
-  ).split(','), j = 0, key; keys.length > j; j++){
-    if(has(Base, key = keys[j]) && !has($Number, key)){
-      dP($Number, key, gOPD(Base, key));
-    }
-  }
-  $Number.prototype = proto;
-  proto.constructor = $Number;
-  __webpack_require__(18)(global, NUMBER, $Number);
-}
-
-/***/ }),
-/* 261 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 20.1.2.1 Number.EPSILON
-var $export = __webpack_require__(0);
-
-$export($export.S, 'Number', {EPSILON: Math.pow(2, -52)});
-
-/***/ }),
-/* 262 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 20.1.2.2 Number.isFinite(number)
-var $export   = __webpack_require__(0)
-  , _isFinite = __webpack_require__(3).isFinite;
-
-$export($export.S, 'Number', {
-  isFinite: function isFinite(it){
-    return typeof it == 'number' && _isFinite(it);
-  }
-});
-
-/***/ }),
-/* 263 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 20.1.2.3 Number.isInteger(number)
-var $export = __webpack_require__(0);
-
-$export($export.S, 'Number', {isInteger: __webpack_require__(129)});
-
-/***/ }),
-/* 264 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 20.1.2.4 Number.isNaN(number)
-var $export = __webpack_require__(0);
-
-$export($export.S, 'Number', {
-  isNaN: function isNaN(number){
-    return number != number;
-  }
-});
-
-/***/ }),
-/* 265 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 20.1.2.5 Number.isSafeInteger(number)
-var $export   = __webpack_require__(0)
-  , isInteger = __webpack_require__(129)
-  , abs       = Math.abs;
-
-$export($export.S, 'Number', {
-  isSafeInteger: function isSafeInteger(number){
-    return isInteger(number) && abs(number) <= 0x1fffffffffffff;
-  }
-});
-
-/***/ }),
-/* 266 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 20.1.2.6 Number.MAX_SAFE_INTEGER
-var $export = __webpack_require__(0);
-
-$export($export.S, 'Number', {MAX_SAFE_INTEGER: 0x1fffffffffffff});
-
-/***/ }),
-/* 267 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 20.1.2.10 Number.MIN_SAFE_INTEGER
-var $export = __webpack_require__(0);
-
-$export($export.S, 'Number', {MIN_SAFE_INTEGER: -0x1fffffffffffff});
-
-/***/ }),
-/* 268 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var $export     = __webpack_require__(0)
-  , $parseFloat = __webpack_require__(139);
-// 20.1.2.12 Number.parseFloat(string)
-$export($export.S + $export.F * (Number.parseFloat != $parseFloat), 'Number', {parseFloat: $parseFloat});
-
-/***/ }),
-/* 269 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var $export   = __webpack_require__(0)
-  , $parseInt = __webpack_require__(140);
-// 20.1.2.13 Number.parseInt(string, radix)
-$export($export.S + $export.F * (Number.parseInt != $parseInt), 'Number', {parseInt: $parseInt});
-
-/***/ }),
-/* 270 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $export      = __webpack_require__(0)
-  , toInteger    = __webpack_require__(36)
-  , aNumberValue = __webpack_require__(120)
-  , repeat       = __webpack_require__(102)
-  , $toFixed     = 1..toFixed
-  , floor        = Math.floor
-  , data         = [0, 0, 0, 0, 0, 0]
-  , ERROR        = 'Number.toFixed: incorrect invocation!'
-  , ZERO         = '0';
-
-var multiply = function(n, c){
-  var i  = -1
-    , c2 = c;
-  while(++i < 6){
-    c2 += n * data[i];
-    data[i] = c2 % 1e7;
-    c2 = floor(c2 / 1e7);
-  }
-};
-var divide = function(n){
-  var i = 6
-    , c = 0;
-  while(--i >= 0){
-    c += data[i];
-    data[i] = floor(c / n);
-    c = (c % n) * 1e7;
-  }
-};
-var numToString = function(){
-  var i = 6
-    , s = '';
-  while(--i >= 0){
-    if(s !== '' || i === 0 || data[i] !== 0){
-      var t = String(data[i]);
-      s = s === '' ? t : s + repeat.call(ZERO, 7 - t.length) + t;
-    }
-  } return s;
-};
-var pow = function(x, n, acc){
-  return n === 0 ? acc : n % 2 === 1 ? pow(x, n - 1, acc * x) : pow(x * x, n / 2, acc);
-};
-var log = function(x){
-  var n  = 0
-    , x2 = x;
-  while(x2 >= 4096){
-    n += 12;
-    x2 /= 4096;
-  }
-  while(x2 >= 2){
-    n  += 1;
-    x2 /= 2;
-  } return n;
-};
-
-$export($export.P + $export.F * (!!$toFixed && (
-  0.00008.toFixed(3) !== '0.000' ||
-  0.9.toFixed(0) !== '1' ||
-  1.255.toFixed(2) !== '1.25' ||
-  1000000000000000128..toFixed(0) !== '1000000000000000128'
-) || !__webpack_require__(5)(function(){
-  // V8 ~ Android 4.3-
-  $toFixed.call({});
-})), 'Number', {
-  toFixed: function toFixed(fractionDigits){
-    var x = aNumberValue(this, ERROR)
-      , f = toInteger(fractionDigits)
-      , s = ''
-      , m = ZERO
-      , e, z, j, k;
-    if(f < 0 || f > 20)throw RangeError(ERROR);
-    if(x != x)return 'NaN';
-    if(x <= -1e21 || x >= 1e21)return String(x);
-    if(x < 0){
-      s = '-';
-      x = -x;
-    }
-    if(x > 1e-21){
-      e = log(x * pow(2, 69, 1)) - 69;
-      z = e < 0 ? x * pow(2, -e, 1) : x / pow(2, e, 1);
-      z *= 0x10000000000000;
-      e = 52 - e;
-      if(e > 0){
-        multiply(0, z);
-        j = f;
-        while(j >= 7){
-          multiply(1e7, 0);
-          j -= 7;
-        }
-        multiply(pow(10, j, 1), 0);
-        j = e - 1;
-        while(j >= 23){
-          divide(1 << 23);
-          j -= 23;
-        }
-        divide(1 << j);
-        multiply(1, 1);
-        divide(2);
-        m = numToString();
-      } else {
-        multiply(0, z);
-        multiply(1 << -e, 0);
-        m = numToString() + repeat.call(ZERO, f);
-      }
-    }
-    if(f > 0){
-      k = m.length;
-      m = s + (k <= f ? '0.' + repeat.call(ZERO, f - k) + m : m.slice(0, k - f) + '.' + m.slice(k - f));
-    } else {
-      m = s + m;
-    } return m;
-  }
-});
-
-/***/ }),
-/* 271 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $export      = __webpack_require__(0)
-  , $fails       = __webpack_require__(5)
-  , aNumberValue = __webpack_require__(120)
-  , $toPrecision = 1..toPrecision;
-
-$export($export.P + $export.F * ($fails(function(){
-  // IE7-
-  return $toPrecision.call(1, undefined) !== '1';
-}) || !$fails(function(){
-  // V8 ~ Android 4.3-
-  $toPrecision.call({});
-})), 'Number', {
-  toPrecision: function toPrecision(precision){
-    var that = aNumberValue(this, 'Number#toPrecision: incorrect invocation!');
-    return precision === undefined ? $toPrecision.call(that) : $toPrecision.call(that, precision); 
-  }
-});
-
-/***/ }),
-/* 272 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 19.1.3.1 Object.assign(target, source)
-var $export = __webpack_require__(0);
-
-$export($export.S + $export.F, 'Object', {assign: __webpack_require__(133)});
-
-/***/ }),
-/* 273 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var $export = __webpack_require__(0)
-// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-$export($export.S, 'Object', {create: __webpack_require__(39)});
-
-/***/ }),
-/* 274 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var $export = __webpack_require__(0);
-// 19.1.2.3 / 15.2.3.7 Object.defineProperties(O, Properties)
-$export($export.S + $export.F * !__webpack_require__(10), 'Object', {defineProperties: __webpack_require__(134)});
-
-/***/ }),
-/* 275 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var $export = __webpack_require__(0);
-// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-$export($export.S + $export.F * !__webpack_require__(10), 'Object', {defineProperty: __webpack_require__(11).f});
-
-/***/ }),
-/* 276 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 19.1.2.5 Object.freeze(O)
-var isObject = __webpack_require__(6)
-  , meta     = __webpack_require__(34).onFreeze;
-
-__webpack_require__(28)('freeze', function($freeze){
-  return function freeze(it){
-    return $freeze && isObject(it) ? $freeze(meta(it)) : it;
-  };
-});
-
-/***/ }),
-/* 277 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
-var toIObject                 = __webpack_require__(20)
-  , $getOwnPropertyDescriptor = __webpack_require__(21).f;
-
-__webpack_require__(28)('getOwnPropertyDescriptor', function(){
-  return function getOwnPropertyDescriptor(it, key){
-    return $getOwnPropertyDescriptor(toIObject(it), key);
-  };
-});
-
-/***/ }),
-/* 278 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 19.1.2.7 Object.getOwnPropertyNames(O)
-__webpack_require__(28)('getOwnPropertyNames', function(){
-  return __webpack_require__(135).f;
-});
-
-/***/ }),
-/* 279 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 19.1.2.9 Object.getPrototypeOf(O)
-var toObject        = __webpack_require__(14)
-  , $getPrototypeOf = __webpack_require__(22);
-
-__webpack_require__(28)('getPrototypeOf', function(){
-  return function getPrototypeOf(it){
-    return $getPrototypeOf(toObject(it));
-  };
-});
-
-/***/ }),
-/* 280 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 19.1.2.11 Object.isExtensible(O)
-var isObject = __webpack_require__(6);
-
-__webpack_require__(28)('isExtensible', function($isExtensible){
-  return function isExtensible(it){
-    return isObject(it) ? $isExtensible ? $isExtensible(it) : true : false;
-  };
-});
-
-/***/ }),
-/* 281 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 19.1.2.12 Object.isFrozen(O)
-var isObject = __webpack_require__(6);
-
-__webpack_require__(28)('isFrozen', function($isFrozen){
-  return function isFrozen(it){
-    return isObject(it) ? $isFrozen ? $isFrozen(it) : false : true;
-  };
-});
-
-/***/ }),
-/* 282 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 19.1.2.13 Object.isSealed(O)
-var isObject = __webpack_require__(6);
-
-__webpack_require__(28)('isSealed', function($isSealed){
-  return function isSealed(it){
-    return isObject(it) ? $isSealed ? $isSealed(it) : false : true;
-  };
-});
-
-/***/ }),
-/* 283 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 19.1.3.10 Object.is(value1, value2)
-var $export = __webpack_require__(0);
-$export($export.S, 'Object', {is: __webpack_require__(141)});
-
-/***/ }),
-/* 284 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 19.1.2.14 Object.keys(O)
-var toObject = __webpack_require__(14)
-  , $keys    = __webpack_require__(41);
-
-__webpack_require__(28)('keys', function(){
-  return function keys(it){
-    return $keys(toObject(it));
-  };
-});
-
-/***/ }),
-/* 285 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 19.1.2.15 Object.preventExtensions(O)
-var isObject = __webpack_require__(6)
-  , meta     = __webpack_require__(34).onFreeze;
-
-__webpack_require__(28)('preventExtensions', function($preventExtensions){
-  return function preventExtensions(it){
-    return $preventExtensions && isObject(it) ? $preventExtensions(meta(it)) : it;
-  };
-});
-
-/***/ }),
-/* 286 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 19.1.2.17 Object.seal(O)
-var isObject = __webpack_require__(6)
-  , meta     = __webpack_require__(34).onFreeze;
-
-__webpack_require__(28)('seal', function($seal){
-  return function seal(it){
-    return $seal && isObject(it) ? $seal(meta(it)) : it;
-  };
-});
-
-/***/ }),
-/* 287 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 19.1.3.19 Object.setPrototypeOf(O, proto)
-var $export = __webpack_require__(0);
-$export($export.S, 'Object', {setPrototypeOf: __webpack_require__(97).set});
-
-/***/ }),
-/* 288 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// 19.1.3.6 Object.prototype.toString()
-var classof = __webpack_require__(56)
-  , test    = {};
-test[__webpack_require__(7)('toStringTag')] = 'z';
-if(test + '' != '[object z]'){
-  __webpack_require__(18)(Object.prototype, 'toString', function toString(){
-    return '[object ' + classof(this) + ']';
-  }, true);
-}
-
-/***/ }),
-/* 289 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var $export     = __webpack_require__(0)
-  , $parseFloat = __webpack_require__(139);
-// 18.2.4 parseFloat(string)
-$export($export.G + $export.F * (parseFloat != $parseFloat), {parseFloat: $parseFloat});
-
-/***/ }),
-/* 290 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var $export   = __webpack_require__(0)
-  , $parseInt = __webpack_require__(140);
-// 18.2.5 parseInt(string, radix)
-$export($export.G + $export.F * (parseInt != $parseInt), {parseInt: $parseInt});
-
-/***/ }),
-/* 291 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var LIBRARY            = __webpack_require__(38)
-  , global             = __webpack_require__(3)
-  , ctx                = __webpack_require__(31)
-  , classof            = __webpack_require__(56)
-  , $export            = __webpack_require__(0)
-  , isObject           = __webpack_require__(6)
-  , aFunction          = __webpack_require__(16)
-  , anInstance         = __webpack_require__(37)
-  , forOf              = __webpack_require__(48)
-  , speciesConstructor = __webpack_require__(99)
-  , task               = __webpack_require__(104).set
-  , microtask          = __webpack_require__(96)()
-  , PROMISE            = 'Promise'
-  , TypeError          = global.TypeError
-  , process            = global.process
-  , $Promise           = global[PROMISE]
-  , process            = global.process
-  , isNode             = classof(process) == 'process'
-  , empty              = function(){ /* empty */ }
-  , Internal, GenericPromiseCapability, Wrapper;
-
-var USE_NATIVE = !!function(){
-  try {
-    // correct subclassing with @@species support
-    var promise     = $Promise.resolve(1)
-      , FakePromise = (promise.constructor = {})[__webpack_require__(7)('species')] = function(exec){ exec(empty, empty); };
-    // unhandled rejections tracking support, NodeJS Promise without it fails @@species test
-    return (isNode || typeof PromiseRejectionEvent == 'function') && promise.then(empty) instanceof FakePromise;
-  } catch(e){ /* empty */ }
-}();
-
-// helpers
-var sameConstructor = function(a, b){
-  // with library wrapper special case
-  return a === b || a === $Promise && b === Wrapper;
-};
-var isThenable = function(it){
-  var then;
-  return isObject(it) && typeof (then = it.then) == 'function' ? then : false;
-};
-var newPromiseCapability = function(C){
-  return sameConstructor($Promise, C)
-    ? new PromiseCapability(C)
-    : new GenericPromiseCapability(C);
-};
-var PromiseCapability = GenericPromiseCapability = function(C){
-  var resolve, reject;
-  this.promise = new C(function($$resolve, $$reject){
-    if(resolve !== undefined || reject !== undefined)throw TypeError('Bad Promise constructor');
-    resolve = $$resolve;
-    reject  = $$reject;
-  });
-  this.resolve = aFunction(resolve);
-  this.reject  = aFunction(reject);
-};
-var perform = function(exec){
-  try {
-    exec();
-  } catch(e){
-    return {error: e};
-  }
-};
-var notify = function(promise, isReject){
-  if(promise._n)return;
-  promise._n = true;
-  var chain = promise._c;
-  microtask(function(){
-    var value = promise._v
-      , ok    = promise._s == 1
-      , i     = 0;
-    var run = function(reaction){
-      var handler = ok ? reaction.ok : reaction.fail
-        , resolve = reaction.resolve
-        , reject  = reaction.reject
-        , domain  = reaction.domain
-        , result, then;
-      try {
-        if(handler){
-          if(!ok){
-            if(promise._h == 2)onHandleUnhandled(promise);
-            promise._h = 1;
-          }
-          if(handler === true)result = value;
-          else {
-            if(domain)domain.enter();
-            result = handler(value);
-            if(domain)domain.exit();
-          }
-          if(result === reaction.promise){
-            reject(TypeError('Promise-chain cycle'));
-          } else if(then = isThenable(result)){
-            then.call(result, resolve, reject);
-          } else resolve(result);
-        } else reject(value);
-      } catch(e){
-        reject(e);
-      }
-    };
-    while(chain.length > i)run(chain[i++]); // variable length - can't use forEach
-    promise._c = [];
-    promise._n = false;
-    if(isReject && !promise._h)onUnhandled(promise);
-  });
-};
-var onUnhandled = function(promise){
-  task.call(global, function(){
-    var value = promise._v
-      , abrupt, handler, console;
-    if(isUnhandled(promise)){
-      abrupt = perform(function(){
-        if(isNode){
-          process.emit('unhandledRejection', value, promise);
-        } else if(handler = global.onunhandledrejection){
-          handler({promise: promise, reason: value});
-        } else if((console = global.console) && console.error){
-          console.error('Unhandled promise rejection', value);
-        }
-      });
-      // Browsers should not trigger `rejectionHandled` event if it was handled here, NodeJS - should
-      promise._h = isNode || isUnhandled(promise) ? 2 : 1;
-    } promise._a = undefined;
-    if(abrupt)throw abrupt.error;
-  });
-};
-var isUnhandled = function(promise){
-  if(promise._h == 1)return false;
-  var chain = promise._a || promise._c
-    , i     = 0
-    , reaction;
-  while(chain.length > i){
-    reaction = chain[i++];
-    if(reaction.fail || !isUnhandled(reaction.promise))return false;
-  } return true;
-};
-var onHandleUnhandled = function(promise){
-  task.call(global, function(){
-    var handler;
-    if(isNode){
-      process.emit('rejectionHandled', promise);
-    } else if(handler = global.onrejectionhandled){
-      handler({promise: promise, reason: promise._v});
-    }
-  });
-};
-var $reject = function(value){
-  var promise = this;
-  if(promise._d)return;
-  promise._d = true;
-  promise = promise._w || promise; // unwrap
-  promise._v = value;
-  promise._s = 2;
-  if(!promise._a)promise._a = promise._c.slice();
-  notify(promise, true);
-};
-var $resolve = function(value){
-  var promise = this
-    , then;
-  if(promise._d)return;
-  promise._d = true;
-  promise = promise._w || promise; // unwrap
-  try {
-    if(promise === value)throw TypeError("Promise can't be resolved itself");
-    if(then = isThenable(value)){
-      microtask(function(){
-        var wrapper = {_w: promise, _d: false}; // wrap
-        try {
-          then.call(value, ctx($resolve, wrapper, 1), ctx($reject, wrapper, 1));
-        } catch(e){
-          $reject.call(wrapper, e);
-        }
-      });
-    } else {
-      promise._v = value;
-      promise._s = 1;
-      notify(promise, false);
-    }
-  } catch(e){
-    $reject.call({_w: promise, _d: false}, e); // wrap
-  }
-};
-
-// constructor polyfill
-if(!USE_NATIVE){
-  // 25.4.3.1 Promise(executor)
-  $Promise = function Promise(executor){
-    anInstance(this, $Promise, PROMISE, '_h');
-    aFunction(executor);
-    Internal.call(this);
-    try {
-      executor(ctx($resolve, this, 1), ctx($reject, this, 1));
-    } catch(err){
-      $reject.call(this, err);
-    }
-  };
-  Internal = function Promise(executor){
-    this._c = [];             // <- awaiting reactions
-    this._a = undefined;      // <- checked in isUnhandled reactions
-    this._s = 0;              // <- state
-    this._d = false;          // <- done
-    this._v = undefined;      // <- value
-    this._h = 0;              // <- rejection state, 0 - default, 1 - handled, 2 - unhandled
-    this._n = false;          // <- notify
-  };
-  Internal.prototype = __webpack_require__(42)($Promise.prototype, {
-    // 25.4.5.3 Promise.prototype.then(onFulfilled, onRejected)
-    then: function then(onFulfilled, onRejected){
-      var reaction    = newPromiseCapability(speciesConstructor(this, $Promise));
-      reaction.ok     = typeof onFulfilled == 'function' ? onFulfilled : true;
-      reaction.fail   = typeof onRejected == 'function' && onRejected;
-      reaction.domain = isNode ? process.domain : undefined;
-      this._c.push(reaction);
-      if(this._a)this._a.push(reaction);
-      if(this._s)notify(this, false);
-      return reaction.promise;
-    },
-    // 25.4.5.1 Promise.prototype.catch(onRejected)
-    'catch': function(onRejected){
-      return this.then(undefined, onRejected);
-    }
-  });
-  PromiseCapability = function(){
-    var promise  = new Internal;
-    this.promise = promise;
-    this.resolve = ctx($resolve, promise, 1);
-    this.reject  = ctx($reject, promise, 1);
-  };
-}
-
-$export($export.G + $export.W + $export.F * !USE_NATIVE, {Promise: $Promise});
-__webpack_require__(50)($Promise, PROMISE);
-__webpack_require__(43)(PROMISE);
-Wrapper = __webpack_require__(30)[PROMISE];
-
-// statics
-$export($export.S + $export.F * !USE_NATIVE, PROMISE, {
-  // 25.4.4.5 Promise.reject(r)
-  reject: function reject(r){
-    var capability = newPromiseCapability(this)
-      , $$reject   = capability.reject;
-    $$reject(r);
-    return capability.promise;
-  }
-});
-$export($export.S + $export.F * (LIBRARY || !USE_NATIVE), PROMISE, {
-  // 25.4.4.6 Promise.resolve(x)
-  resolve: function resolve(x){
-    // instanceof instead of internal slot check because we should fix it without replacement native Promise core
-    if(x instanceof $Promise && sameConstructor(x.constructor, this))return x;
-    var capability = newPromiseCapability(this)
-      , $$resolve  = capability.resolve;
-    $$resolve(x);
-    return capability.promise;
-  }
-});
-$export($export.S + $export.F * !(USE_NATIVE && __webpack_require__(68)(function(iter){
-  $Promise.all(iter)['catch'](empty);
-})), PROMISE, {
-  // 25.4.4.1 Promise.all(iterable)
-  all: function all(iterable){
-    var C          = this
-      , capability = newPromiseCapability(C)
-      , resolve    = capability.resolve
-      , reject     = capability.reject;
-    var abrupt = perform(function(){
-      var values    = []
-        , index     = 0
-        , remaining = 1;
-      forOf(iterable, false, function(promise){
-        var $index        = index++
-          , alreadyCalled = false;
-        values.push(undefined);
-        remaining++;
-        C.resolve(promise).then(function(value){
-          if(alreadyCalled)return;
-          alreadyCalled  = true;
-          values[$index] = value;
-          --remaining || resolve(values);
-        }, reject);
-      });
-      --remaining || resolve(values);
-    });
-    if(abrupt)reject(abrupt.error);
-    return capability.promise;
-  },
-  // 25.4.4.4 Promise.race(iterable)
-  race: function race(iterable){
-    var C          = this
-      , capability = newPromiseCapability(C)
-      , reject     = capability.reject;
-    var abrupt = perform(function(){
-      forOf(iterable, false, function(promise){
-        C.resolve(promise).then(capability.resolve, reject);
-      });
-    });
-    if(abrupt)reject(abrupt.error);
-    return capability.promise;
-  }
-});
-
-/***/ }),
-/* 292 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 26.1.1 Reflect.apply(target, thisArgument, argumentsList)
-var $export   = __webpack_require__(0)
-  , aFunction = __webpack_require__(16)
-  , anObject  = __webpack_require__(2)
-  , rApply    = (__webpack_require__(3).Reflect || {}).apply
-  , fApply    = Function.apply;
-// MS Edge argumentsList argument is optional
-$export($export.S + $export.F * !__webpack_require__(5)(function(){
-  rApply(function(){});
-}), 'Reflect', {
-  apply: function apply(target, thisArgument, argumentsList){
-    var T = aFunction(target)
-      , L = anObject(argumentsList);
-    return rApply ? rApply(T, thisArgument, L) : fApply.call(T, thisArgument, L);
-  }
-});
-
-/***/ }),
-/* 293 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 26.1.2 Reflect.construct(target, argumentsList [, newTarget])
-var $export    = __webpack_require__(0)
-  , create     = __webpack_require__(39)
-  , aFunction  = __webpack_require__(16)
-  , anObject   = __webpack_require__(2)
-  , isObject   = __webpack_require__(6)
-  , fails      = __webpack_require__(5)
-  , bind       = __webpack_require__(124)
-  , rConstruct = (__webpack_require__(3).Reflect || {}).construct;
-
-// MS Edge supports only 2 arguments and argumentsList argument is optional
-// FF Nightly sets third argument as `new.target`, but does not create `this` from it
-var NEW_TARGET_BUG = fails(function(){
-  function F(){}
-  return !(rConstruct(function(){}, [], F) instanceof F);
-});
-var ARGS_BUG = !fails(function(){
-  rConstruct(function(){});
-});
-
-$export($export.S + $export.F * (NEW_TARGET_BUG || ARGS_BUG), 'Reflect', {
-  construct: function construct(Target, args /*, newTarget*/){
-    aFunction(Target);
-    anObject(args);
-    var newTarget = arguments.length < 3 ? Target : aFunction(arguments[2]);
-    if(ARGS_BUG && !NEW_TARGET_BUG)return rConstruct(Target, args, newTarget);
-    if(Target == newTarget){
-      // w/o altered newTarget, optimization for 0-4 arguments
-      switch(args.length){
-        case 0: return new Target;
-        case 1: return new Target(args[0]);
-        case 2: return new Target(args[0], args[1]);
-        case 3: return new Target(args[0], args[1], args[2]);
-        case 4: return new Target(args[0], args[1], args[2], args[3]);
-      }
-      // w/o altered newTarget, lot of arguments case
-      var $args = [null];
-      $args.push.apply($args, args);
-      return new (bind.apply(Target, $args));
-    }
-    // with altered newTarget, not support built-in constructors
-    var proto    = newTarget.prototype
-      , instance = create(isObject(proto) ? proto : Object.prototype)
-      , result   = Function.apply.call(Target, instance, args);
-    return isObject(result) ? result : instance;
-  }
-});
-
-/***/ }),
-/* 294 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 26.1.3 Reflect.defineProperty(target, propertyKey, attributes)
-var dP          = __webpack_require__(11)
-  , $export     = __webpack_require__(0)
-  , anObject    = __webpack_require__(2)
-  , toPrimitive = __webpack_require__(29);
-
-// MS Edge has broken Reflect.defineProperty - throwing instead of returning false
-$export($export.S + $export.F * __webpack_require__(5)(function(){
-  Reflect.defineProperty(dP.f({}, 1, {value: 1}), 1, {value: 2});
-}), 'Reflect', {
-  defineProperty: function defineProperty(target, propertyKey, attributes){
-    anObject(target);
-    propertyKey = toPrimitive(propertyKey, true);
-    anObject(attributes);
-    try {
-      dP.f(target, propertyKey, attributes);
-      return true;
-    } catch(e){
-      return false;
-    }
-  }
-});
-
-/***/ }),
-/* 295 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 26.1.4 Reflect.deleteProperty(target, propertyKey)
-var $export  = __webpack_require__(0)
-  , gOPD     = __webpack_require__(21).f
-  , anObject = __webpack_require__(2);
-
-$export($export.S, 'Reflect', {
-  deleteProperty: function deleteProperty(target, propertyKey){
-    var desc = gOPD(anObject(target), propertyKey);
-    return desc && !desc.configurable ? false : delete target[propertyKey];
-  }
-});
-
-/***/ }),
-/* 296 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// 26.1.5 Reflect.enumerate(target)
-var $export  = __webpack_require__(0)
-  , anObject = __webpack_require__(2);
-var Enumerate = function(iterated){
-  this._t = anObject(iterated); // target
-  this._i = 0;                  // next index
-  var keys = this._k = []       // keys
-    , key;
-  for(key in iterated)keys.push(key);
-};
-__webpack_require__(92)(Enumerate, 'Object', function(){
-  var that = this
-    , keys = that._k
-    , key;
-  do {
-    if(that._i >= keys.length)return {value: undefined, done: true};
-  } while(!((key = keys[that._i++]) in that._t));
-  return {value: key, done: false};
-});
-
-$export($export.S, 'Reflect', {
-  enumerate: function enumerate(target){
-    return new Enumerate(target);
-  }
-});
-
-/***/ }),
-/* 297 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 26.1.7 Reflect.getOwnPropertyDescriptor(target, propertyKey)
-var gOPD     = __webpack_require__(21)
-  , $export  = __webpack_require__(0)
-  , anObject = __webpack_require__(2);
-
-$export($export.S, 'Reflect', {
-  getOwnPropertyDescriptor: function getOwnPropertyDescriptor(target, propertyKey){
-    return gOPD.f(anObject(target), propertyKey);
-  }
-});
-
-/***/ }),
-/* 298 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 26.1.8 Reflect.getPrototypeOf(target)
-var $export  = __webpack_require__(0)
-  , getProto = __webpack_require__(22)
-  , anObject = __webpack_require__(2);
-
-$export($export.S, 'Reflect', {
-  getPrototypeOf: function getPrototypeOf(target){
-    return getProto(anObject(target));
-  }
-});
-
-/***/ }),
-/* 299 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 26.1.6 Reflect.get(target, propertyKey [, receiver])
-var gOPD           = __webpack_require__(21)
-  , getPrototypeOf = __webpack_require__(22)
-  , has            = __webpack_require__(15)
-  , $export        = __webpack_require__(0)
-  , isObject       = __webpack_require__(6)
-  , anObject       = __webpack_require__(2);
-
-function get(target, propertyKey/*, receiver*/){
-  var receiver = arguments.length < 3 ? target : arguments[2]
-    , desc, proto;
-  if(anObject(target) === receiver)return target[propertyKey];
-  if(desc = gOPD.f(target, propertyKey))return has(desc, 'value')
-    ? desc.value
-    : desc.get !== undefined
-      ? desc.get.call(receiver)
-      : undefined;
-  if(isObject(proto = getPrototypeOf(target)))return get(proto, propertyKey, receiver);
-}
-
-$export($export.S, 'Reflect', {get: get});
-
-/***/ }),
-/* 300 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 26.1.9 Reflect.has(target, propertyKey)
-var $export = __webpack_require__(0);
-
-$export($export.S, 'Reflect', {
-  has: function has(target, propertyKey){
-    return propertyKey in target;
-  }
-});
-
-/***/ }),
-/* 301 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 26.1.10 Reflect.isExtensible(target)
-var $export       = __webpack_require__(0)
-  , anObject      = __webpack_require__(2)
-  , $isExtensible = Object.isExtensible;
-
-$export($export.S, 'Reflect', {
-  isExtensible: function isExtensible(target){
-    anObject(target);
-    return $isExtensible ? $isExtensible(target) : true;
-  }
-});
-
-/***/ }),
-/* 302 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 26.1.11 Reflect.ownKeys(target)
-var $export = __webpack_require__(0);
-
-$export($export.S, 'Reflect', {ownKeys: __webpack_require__(138)});
-
-/***/ }),
-/* 303 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 26.1.12 Reflect.preventExtensions(target)
-var $export            = __webpack_require__(0)
-  , anObject           = __webpack_require__(2)
-  , $preventExtensions = Object.preventExtensions;
-
-$export($export.S, 'Reflect', {
-  preventExtensions: function preventExtensions(target){
-    anObject(target);
-    try {
-      if($preventExtensions)$preventExtensions(target);
-      return true;
-    } catch(e){
-      return false;
-    }
-  }
-});
-
-/***/ }),
-/* 304 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 26.1.14 Reflect.setPrototypeOf(target, proto)
-var $export  = __webpack_require__(0)
-  , setProto = __webpack_require__(97);
-
-if(setProto)$export($export.S, 'Reflect', {
-  setPrototypeOf: function setPrototypeOf(target, proto){
-    setProto.check(target, proto);
-    try {
-      setProto.set(target, proto);
-      return true;
-    } catch(e){
-      return false;
-    }
-  }
-});
-
-/***/ }),
-/* 305 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 26.1.13 Reflect.set(target, propertyKey, V [, receiver])
-var dP             = __webpack_require__(11)
-  , gOPD           = __webpack_require__(21)
-  , getPrototypeOf = __webpack_require__(22)
-  , has            = __webpack_require__(15)
-  , $export        = __webpack_require__(0)
-  , createDesc     = __webpack_require__(35)
-  , anObject       = __webpack_require__(2)
-  , isObject       = __webpack_require__(6);
-
-function set(target, propertyKey, V/*, receiver*/){
-  var receiver = arguments.length < 4 ? target : arguments[3]
-    , ownDesc  = gOPD.f(anObject(target), propertyKey)
-    , existingDescriptor, proto;
-  if(!ownDesc){
-    if(isObject(proto = getPrototypeOf(target))){
-      return set(proto, propertyKey, V, receiver);
-    }
-    ownDesc = createDesc(0);
-  }
-  if(has(ownDesc, 'value')){
-    if(ownDesc.writable === false || !isObject(receiver))return false;
-    existingDescriptor = gOPD.f(receiver, propertyKey) || createDesc(0);
-    existingDescriptor.value = V;
-    dP.f(receiver, propertyKey, existingDescriptor);
-    return true;
-  }
-  return ownDesc.set === undefined ? false : (ownDesc.set.call(receiver, V), true);
-}
-
-$export($export.S, 'Reflect', {set: set});
-
-/***/ }),
-/* 306 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var global            = __webpack_require__(3)
-  , inheritIfRequired = __webpack_require__(89)
-  , dP                = __webpack_require__(11).f
-  , gOPN              = __webpack_require__(40).f
-  , isRegExp          = __webpack_require__(67)
-  , $flags            = __webpack_require__(65)
-  , $RegExp           = global.RegExp
-  , Base              = $RegExp
-  , proto             = $RegExp.prototype
-  , re1               = /a/g
-  , re2               = /a/g
-  // "new" creates a new object, old webkit buggy here
-  , CORRECT_NEW       = new $RegExp(re1) !== re1;
-
-if(__webpack_require__(10) && (!CORRECT_NEW || __webpack_require__(5)(function(){
-  re2[__webpack_require__(7)('match')] = false;
-  // RegExp constructor can alter flags and IsRegExp works correct with @@match
-  return $RegExp(re1) != re1 || $RegExp(re2) == re2 || $RegExp(re1, 'i') != '/a/i';
-}))){
-  $RegExp = function RegExp(p, f){
-    var tiRE = this instanceof $RegExp
-      , piRE = isRegExp(p)
-      , fiU  = f === undefined;
-    return !tiRE && piRE && p.constructor === $RegExp && fiU ? p
-      : inheritIfRequired(CORRECT_NEW
-        ? new Base(piRE && !fiU ? p.source : p, f)
-        : Base((piRE = p instanceof $RegExp) ? p.source : p, piRE && fiU ? $flags.call(p) : f)
-      , tiRE ? this : proto, $RegExp);
-  };
-  var proxy = function(key){
-    key in $RegExp || dP($RegExp, key, {
-      configurable: true,
-      get: function(){ return Base[key]; },
-      set: function(it){ Base[key] = it; }
-    });
-  };
-  for(var keys = gOPN(Base), i = 0; keys.length > i; )proxy(keys[i++]);
-  proto.constructor = $RegExp;
-  $RegExp.prototype = proto;
-  __webpack_require__(18)(global, 'RegExp', $RegExp);
-}
-
-__webpack_require__(43)('RegExp');
-
-/***/ }),
-/* 307 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// @@match logic
-__webpack_require__(64)('match', 1, function(defined, MATCH, $match){
-  // 21.1.3.11 String.prototype.match(regexp)
-  return [function match(regexp){
-    'use strict';
-    var O  = defined(this)
-      , fn = regexp == undefined ? undefined : regexp[MATCH];
-    return fn !== undefined ? fn.call(regexp, O) : new RegExp(regexp)[MATCH](String(O));
-  }, $match];
-});
-
-/***/ }),
-/* 308 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// @@replace logic
-__webpack_require__(64)('replace', 2, function(defined, REPLACE, $replace){
-  // 21.1.3.14 String.prototype.replace(searchValue, replaceValue)
-  return [function replace(searchValue, replaceValue){
-    'use strict';
-    var O  = defined(this)
-      , fn = searchValue == undefined ? undefined : searchValue[REPLACE];
-    return fn !== undefined
-      ? fn.call(searchValue, O, replaceValue)
-      : $replace.call(String(O), searchValue, replaceValue);
-  }, $replace];
-});
-
-/***/ }),
-/* 309 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// @@search logic
-__webpack_require__(64)('search', 1, function(defined, SEARCH, $search){
-  // 21.1.3.15 String.prototype.search(regexp)
-  return [function search(regexp){
-    'use strict';
-    var O  = defined(this)
-      , fn = regexp == undefined ? undefined : regexp[SEARCH];
-    return fn !== undefined ? fn.call(regexp, O) : new RegExp(regexp)[SEARCH](String(O));
-  }, $search];
-});
-
-/***/ }),
-/* 310 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// @@split logic
-__webpack_require__(64)('split', 2, function(defined, SPLIT, $split){
-  'use strict';
-  var isRegExp   = __webpack_require__(67)
-    , _split     = $split
-    , $push      = [].push
-    , $SPLIT     = 'split'
-    , LENGTH     = 'length'
-    , LAST_INDEX = 'lastIndex';
-  if(
-    'abbc'[$SPLIT](/(b)*/)[1] == 'c' ||
-    'test'[$SPLIT](/(?:)/, -1)[LENGTH] != 4 ||
-    'ab'[$SPLIT](/(?:ab)*/)[LENGTH] != 2 ||
-    '.'[$SPLIT](/(.?)(.?)/)[LENGTH] != 4 ||
-    '.'[$SPLIT](/()()/)[LENGTH] > 1 ||
-    ''[$SPLIT](/.?/)[LENGTH]
-  ){
-    var NPCG = /()??/.exec('')[1] === undefined; // nonparticipating capturing group
-    // based on es5-shim implementation, need to rework it
-    $split = function(separator, limit){
-      var string = String(this);
-      if(separator === undefined && limit === 0)return [];
-      // If `separator` is not a regex, use native split
-      if(!isRegExp(separator))return _split.call(string, separator, limit);
-      var output = [];
-      var flags = (separator.ignoreCase ? 'i' : '') +
-                  (separator.multiline ? 'm' : '') +
-                  (separator.unicode ? 'u' : '') +
-                  (separator.sticky ? 'y' : '');
-      var lastLastIndex = 0;
-      var splitLimit = limit === undefined ? 4294967295 : limit >>> 0;
-      // Make `global` and avoid `lastIndex` issues by working with a copy
-      var separatorCopy = new RegExp(separator.source, flags + 'g');
-      var separator2, match, lastIndex, lastLength, i;
-      // Doesn't need flags gy, but they don't hurt
-      if(!NPCG)separator2 = new RegExp('^' + separatorCopy.source + '$(?!\\s)', flags);
-      while(match = separatorCopy.exec(string)){
-        // `separatorCopy.lastIndex` is not reliable cross-browser
-        lastIndex = match.index + match[0][LENGTH];
-        if(lastIndex > lastLastIndex){
-          output.push(string.slice(lastLastIndex, match.index));
-          // Fix browsers whose `exec` methods don't consistently return `undefined` for NPCG
-          if(!NPCG && match[LENGTH] > 1)match[0].replace(separator2, function(){
-            for(i = 1; i < arguments[LENGTH] - 2; i++)if(arguments[i] === undefined)match[i] = undefined;
-          });
-          if(match[LENGTH] > 1 && match.index < string[LENGTH])$push.apply(output, match.slice(1));
-          lastLength = match[0][LENGTH];
-          lastLastIndex = lastIndex;
-          if(output[LENGTH] >= splitLimit)break;
-        }
-        if(separatorCopy[LAST_INDEX] === match.index)separatorCopy[LAST_INDEX]++; // Avoid an infinite loop
-      }
-      if(lastLastIndex === string[LENGTH]){
-        if(lastLength || !separatorCopy.test(''))output.push('');
-      } else output.push(string.slice(lastLastIndex));
-      return output[LENGTH] > splitLimit ? output.slice(0, splitLimit) : output;
-    };
-  // Chakra, V8
-  } else if('0'[$SPLIT](undefined, 0)[LENGTH]){
-    $split = function(separator, limit){
-      return separator === undefined && limit === 0 ? [] : _split.call(this, separator, limit);
-    };
-  }
-  // 21.1.3.17 String.prototype.split(separator, limit)
-  return [function split(separator, limit){
-    var O  = defined(this)
-      , fn = separator == undefined ? undefined : separator[SPLIT];
-    return fn !== undefined ? fn.call(separator, O, limit) : $split.call(String(O), separator, limit);
-  }, $split];
-});
-
-/***/ }),
-/* 311 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-__webpack_require__(145);
-var anObject    = __webpack_require__(2)
-  , $flags      = __webpack_require__(65)
-  , DESCRIPTORS = __webpack_require__(10)
-  , TO_STRING   = 'toString'
-  , $toString   = /./[TO_STRING];
-
-var define = function(fn){
-  __webpack_require__(18)(RegExp.prototype, TO_STRING, fn, true);
-};
-
-// 21.2.5.14 RegExp.prototype.toString()
-if(__webpack_require__(5)(function(){ return $toString.call({source: 'a', flags: 'b'}) != '/a/b'; })){
-  define(function toString(){
-    var R = anObject(this);
-    return '/'.concat(R.source, '/',
-      'flags' in R ? R.flags : !DESCRIPTORS && R instanceof RegExp ? $flags.call(R) : undefined);
-  });
-// FF44- RegExp#toString has a wrong name
-} else if($toString.name != TO_STRING){
-  define(function toString(){
-    return $toString.call(this);
-  });
-}
-
-/***/ }),
-/* 312 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// B.2.3.2 String.prototype.anchor(name)
-__webpack_require__(19)('anchor', function(createHTML){
-  return function anchor(name){
-    return createHTML(this, 'a', 'name', name);
-  }
-});
-
-/***/ }),
-/* 313 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// B.2.3.3 String.prototype.big()
-__webpack_require__(19)('big', function(createHTML){
-  return function big(){
-    return createHTML(this, 'big', '', '');
-  }
-});
-
-/***/ }),
-/* 314 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// B.2.3.4 String.prototype.blink()
-__webpack_require__(19)('blink', function(createHTML){
-  return function blink(){
-    return createHTML(this, 'blink', '', '');
-  }
-});
-
-/***/ }),
-/* 315 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// B.2.3.5 String.prototype.bold()
-__webpack_require__(19)('bold', function(createHTML){
-  return function bold(){
-    return createHTML(this, 'b', '', '');
-  }
-});
-
-/***/ }),
-/* 316 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $export = __webpack_require__(0)
-  , $at     = __webpack_require__(100)(false);
-$export($export.P, 'String', {
-  // 21.1.3.3 String.prototype.codePointAt(pos)
-  codePointAt: function codePointAt(pos){
-    return $at(this, pos);
-  }
-});
-
-/***/ }),
-/* 317 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-// 21.1.3.6 String.prototype.endsWith(searchString [, endPosition])
-
-var $export   = __webpack_require__(0)
-  , toLength  = __webpack_require__(12)
-  , context   = __webpack_require__(101)
-  , ENDS_WITH = 'endsWith'
-  , $endsWith = ''[ENDS_WITH];
-
-$export($export.P + $export.F * __webpack_require__(87)(ENDS_WITH), 'String', {
-  endsWith: function endsWith(searchString /*, endPosition = @length */){
-    var that = context(this, searchString, ENDS_WITH)
-      , endPosition = arguments.length > 1 ? arguments[1] : undefined
-      , len    = toLength(that.length)
-      , end    = endPosition === undefined ? len : Math.min(toLength(endPosition), len)
-      , search = String(searchString);
-    return $endsWith
-      ? $endsWith.call(that, search, end)
-      : that.slice(end - search.length, end) === search;
-  }
-});
-
-/***/ }),
-/* 318 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// B.2.3.6 String.prototype.fixed()
-__webpack_require__(19)('fixed', function(createHTML){
-  return function fixed(){
-    return createHTML(this, 'tt', '', '');
-  }
-});
-
-/***/ }),
-/* 319 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// B.2.3.7 String.prototype.fontcolor(color)
-__webpack_require__(19)('fontcolor', function(createHTML){
-  return function fontcolor(color){
-    return createHTML(this, 'font', 'color', color);
-  }
-});
-
-/***/ }),
-/* 320 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// B.2.3.8 String.prototype.fontsize(size)
-__webpack_require__(19)('fontsize', function(createHTML){
-  return function fontsize(size){
-    return createHTML(this, 'font', 'size', size);
-  }
-});
-
-/***/ }),
-/* 321 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var $export        = __webpack_require__(0)
-  , toIndex        = __webpack_require__(44)
-  , fromCharCode   = String.fromCharCode
-  , $fromCodePoint = String.fromCodePoint;
-
-// length should be 1, old FF problem
-$export($export.S + $export.F * (!!$fromCodePoint && $fromCodePoint.length != 1), 'String', {
-  // 21.1.2.2 String.fromCodePoint(...codePoints)
-  fromCodePoint: function fromCodePoint(x){ // eslint-disable-line no-unused-vars
-    var res  = []
-      , aLen = arguments.length
-      , i    = 0
-      , code;
-    while(aLen > i){
-      code = +arguments[i++];
-      if(toIndex(code, 0x10ffff) !== code)throw RangeError(code + ' is not a valid code point');
-      res.push(code < 0x10000
-        ? fromCharCode(code)
-        : fromCharCode(((code -= 0x10000) >> 10) + 0xd800, code % 0x400 + 0xdc00)
-      );
-    } return res.join('');
-  }
-});
-
-/***/ }),
-/* 322 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-// 21.1.3.7 String.prototype.includes(searchString, position = 0)
-
-var $export  = __webpack_require__(0)
-  , context  = __webpack_require__(101)
-  , INCLUDES = 'includes';
-
-$export($export.P + $export.F * __webpack_require__(87)(INCLUDES), 'String', {
-  includes: function includes(searchString /*, position = 0 */){
-    return !!~context(this, searchString, INCLUDES)
-      .indexOf(searchString, arguments.length > 1 ? arguments[1] : undefined);
-  }
-});
-
-/***/ }),
-/* 323 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// B.2.3.9 String.prototype.italics()
-__webpack_require__(19)('italics', function(createHTML){
-  return function italics(){
-    return createHTML(this, 'i', '', '');
-  }
-});
-
-/***/ }),
-/* 324 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $at  = __webpack_require__(100)(true);
-
-// 21.1.3.27 String.prototype[@@iterator]()
-__webpack_require__(93)(String, 'String', function(iterated){
-  this._t = String(iterated); // target
-  this._i = 0;                // next index
-// 21.1.5.2.1 %StringIteratorPrototype%.next()
-}, function(){
-  var O     = this._t
-    , index = this._i
-    , point;
-  if(index >= O.length)return {value: undefined, done: true};
-  point = $at(O, index);
-  this._i += point.length;
-  return {value: point, done: false};
-});
-
-/***/ }),
-/* 325 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// B.2.3.10 String.prototype.link(url)
-__webpack_require__(19)('link', function(createHTML){
-  return function link(url){
-    return createHTML(this, 'a', 'href', url);
-  }
-});
-
-/***/ }),
-/* 326 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var $export   = __webpack_require__(0)
-  , toIObject = __webpack_require__(20)
-  , toLength  = __webpack_require__(12);
-
-$export($export.S, 'String', {
-  // 21.1.2.4 String.raw(callSite, ...substitutions)
-  raw: function raw(callSite){
-    var tpl  = toIObject(callSite.raw)
-      , len  = toLength(tpl.length)
-      , aLen = arguments.length
-      , res  = []
-      , i    = 0;
-    while(len > i){
-      res.push(String(tpl[i++]));
-      if(i < aLen)res.push(String(arguments[i]));
-    } return res.join('');
-  }
-});
-
-/***/ }),
-/* 327 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var $export = __webpack_require__(0);
-
-$export($export.P, 'String', {
-  // 21.1.3.13 String.prototype.repeat(count)
-  repeat: __webpack_require__(102)
-});
-
-/***/ }),
-/* 328 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// B.2.3.11 String.prototype.small()
-__webpack_require__(19)('small', function(createHTML){
-  return function small(){
-    return createHTML(this, 'small', '', '');
-  }
-});
-
-/***/ }),
-/* 329 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-// 21.1.3.18 String.prototype.startsWith(searchString [, position ])
-
-var $export     = __webpack_require__(0)
-  , toLength    = __webpack_require__(12)
-  , context     = __webpack_require__(101)
-  , STARTS_WITH = 'startsWith'
-  , $startsWith = ''[STARTS_WITH];
-
-$export($export.P + $export.F * __webpack_require__(87)(STARTS_WITH), 'String', {
-  startsWith: function startsWith(searchString /*, position = 0 */){
-    var that   = context(this, searchString, STARTS_WITH)
-      , index  = toLength(Math.min(arguments.length > 1 ? arguments[1] : undefined, that.length))
-      , search = String(searchString);
-    return $startsWith
-      ? $startsWith.call(that, search, index)
-      : that.slice(index, index + search.length) === search;
-  }
-});
-
-/***/ }),
-/* 330 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// B.2.3.12 String.prototype.strike()
-__webpack_require__(19)('strike', function(createHTML){
-  return function strike(){
-    return createHTML(this, 'strike', '', '');
-  }
-});
-
-/***/ }),
-/* 331 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// B.2.3.13 String.prototype.sub()
-__webpack_require__(19)('sub', function(createHTML){
-  return function sub(){
-    return createHTML(this, 'sub', '', '');
-  }
-});
-
-/***/ }),
-/* 332 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// B.2.3.14 String.prototype.sup()
-__webpack_require__(19)('sup', function(createHTML){
-  return function sup(){
-    return createHTML(this, 'sup', '', '');
-  }
-});
-
-/***/ }),
-/* 333 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// 21.1.3.25 String.prototype.trim()
-__webpack_require__(51)('trim', function($trim){
-  return function trim(){
-    return $trim(this, 3);
-  };
-});
-
-/***/ }),
-/* 334 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// ECMAScript 6 symbols shim
-var global         = __webpack_require__(3)
-  , has            = __webpack_require__(15)
-  , DESCRIPTORS    = __webpack_require__(10)
-  , $export        = __webpack_require__(0)
-  , redefine       = __webpack_require__(18)
-  , META           = __webpack_require__(34).KEY
-  , $fails         = __webpack_require__(5)
-  , shared         = __webpack_require__(71)
-  , setToStringTag = __webpack_require__(50)
-  , uid            = __webpack_require__(45)
-  , wks            = __webpack_require__(7)
-  , wksExt         = __webpack_require__(143)
-  , wksDefine      = __webpack_require__(106)
-  , keyOf          = __webpack_require__(210)
-  , enumKeys       = __webpack_require__(209)
-  , isArray        = __webpack_require__(91)
-  , anObject       = __webpack_require__(2)
-  , toIObject      = __webpack_require__(20)
-  , toPrimitive    = __webpack_require__(29)
-  , createDesc     = __webpack_require__(35)
-  , _create        = __webpack_require__(39)
-  , gOPNExt        = __webpack_require__(135)
-  , $GOPD          = __webpack_require__(21)
-  , $DP            = __webpack_require__(11)
-  , $keys          = __webpack_require__(41)
-  , gOPD           = $GOPD.f
-  , dP             = $DP.f
-  , gOPN           = gOPNExt.f
-  , $Symbol        = global.Symbol
-  , $JSON          = global.JSON
-  , _stringify     = $JSON && $JSON.stringify
-  , PROTOTYPE      = 'prototype'
-  , HIDDEN         = wks('_hidden')
-  , TO_PRIMITIVE   = wks('toPrimitive')
-  , isEnum         = {}.propertyIsEnumerable
-  , SymbolRegistry = shared('symbol-registry')
-  , AllSymbols     = shared('symbols')
-  , OPSymbols      = shared('op-symbols')
-  , ObjectProto    = Object[PROTOTYPE]
-  , USE_NATIVE     = typeof $Symbol == 'function'
-  , QObject        = global.QObject;
-// Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173
-var setter = !QObject || !QObject[PROTOTYPE] || !QObject[PROTOTYPE].findChild;
-
-// fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687
-var setSymbolDesc = DESCRIPTORS && $fails(function(){
-  return _create(dP({}, 'a', {
-    get: function(){ return dP(this, 'a', {value: 7}).a; }
-  })).a != 7;
-}) ? function(it, key, D){
-  var protoDesc = gOPD(ObjectProto, key);
-  if(protoDesc)delete ObjectProto[key];
-  dP(it, key, D);
-  if(protoDesc && it !== ObjectProto)dP(ObjectProto, key, protoDesc);
-} : dP;
-
-var wrap = function(tag){
-  var sym = AllSymbols[tag] = _create($Symbol[PROTOTYPE]);
-  sym._k = tag;
-  return sym;
-};
-
-var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function(it){
-  return typeof it == 'symbol';
-} : function(it){
-  return it instanceof $Symbol;
-};
-
-var $defineProperty = function defineProperty(it, key, D){
-  if(it === ObjectProto)$defineProperty(OPSymbols, key, D);
-  anObject(it);
-  key = toPrimitive(key, true);
-  anObject(D);
-  if(has(AllSymbols, key)){
-    if(!D.enumerable){
-      if(!has(it, HIDDEN))dP(it, HIDDEN, createDesc(1, {}));
-      it[HIDDEN][key] = true;
-    } else {
-      if(has(it, HIDDEN) && it[HIDDEN][key])it[HIDDEN][key] = false;
-      D = _create(D, {enumerable: createDesc(0, false)});
-    } return setSymbolDesc(it, key, D);
-  } return dP(it, key, D);
-};
-var $defineProperties = function defineProperties(it, P){
-  anObject(it);
-  var keys = enumKeys(P = toIObject(P))
-    , i    = 0
-    , l = keys.length
-    , key;
-  while(l > i)$defineProperty(it, key = keys[i++], P[key]);
-  return it;
-};
-var $create = function create(it, P){
-  return P === undefined ? _create(it) : $defineProperties(_create(it), P);
-};
-var $propertyIsEnumerable = function propertyIsEnumerable(key){
-  var E = isEnum.call(this, key = toPrimitive(key, true));
-  if(this === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key))return false;
-  return E || !has(this, key) || !has(AllSymbols, key) || has(this, HIDDEN) && this[HIDDEN][key] ? E : true;
-};
-var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key){
-  it  = toIObject(it);
-  key = toPrimitive(key, true);
-  if(it === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key))return;
-  var D = gOPD(it, key);
-  if(D && has(AllSymbols, key) && !(has(it, HIDDEN) && it[HIDDEN][key]))D.enumerable = true;
-  return D;
-};
-var $getOwnPropertyNames = function getOwnPropertyNames(it){
-  var names  = gOPN(toIObject(it))
-    , result = []
-    , i      = 0
-    , key;
-  while(names.length > i){
-    if(!has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META)result.push(key);
-  } return result;
-};
-var $getOwnPropertySymbols = function getOwnPropertySymbols(it){
-  var IS_OP  = it === ObjectProto
-    , names  = gOPN(IS_OP ? OPSymbols : toIObject(it))
-    , result = []
-    , i      = 0
-    , key;
-  while(names.length > i){
-    if(has(AllSymbols, key = names[i++]) && (IS_OP ? has(ObjectProto, key) : true))result.push(AllSymbols[key]);
-  } return result;
-};
-
-// 19.4.1.1 Symbol([description])
-if(!USE_NATIVE){
-  $Symbol = function Symbol(){
-    if(this instanceof $Symbol)throw TypeError('Symbol is not a constructor!');
-    var tag = uid(arguments.length > 0 ? arguments[0] : undefined);
-    var $set = function(value){
-      if(this === ObjectProto)$set.call(OPSymbols, value);
-      if(has(this, HIDDEN) && has(this[HIDDEN], tag))this[HIDDEN][tag] = false;
-      setSymbolDesc(this, tag, createDesc(1, value));
-    };
-    if(DESCRIPTORS && setter)setSymbolDesc(ObjectProto, tag, {configurable: true, set: $set});
-    return wrap(tag);
-  };
-  redefine($Symbol[PROTOTYPE], 'toString', function toString(){
-    return this._k;
-  });
-
-  $GOPD.f = $getOwnPropertyDescriptor;
-  $DP.f   = $defineProperty;
-  __webpack_require__(40).f = gOPNExt.f = $getOwnPropertyNames;
-  __webpack_require__(58).f  = $propertyIsEnumerable;
-  __webpack_require__(70).f = $getOwnPropertySymbols;
-
-  if(DESCRIPTORS && !__webpack_require__(38)){
-    redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true);
-  }
-
-  wksExt.f = function(name){
-    return wrap(wks(name));
-  }
-}
-
-$export($export.G + $export.W + $export.F * !USE_NATIVE, {Symbol: $Symbol});
-
-for(var symbols = (
-  // 19.4.2.2, 19.4.2.3, 19.4.2.4, 19.4.2.6, 19.4.2.8, 19.4.2.9, 19.4.2.10, 19.4.2.11, 19.4.2.12, 19.4.2.13, 19.4.2.14
-  'hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables'
-).split(','), i = 0; symbols.length > i; )wks(symbols[i++]);
-
-for(var symbols = $keys(wks.store), i = 0; symbols.length > i; )wksDefine(symbols[i++]);
-
-$export($export.S + $export.F * !USE_NATIVE, 'Symbol', {
-  // 19.4.2.1 Symbol.for(key)
-  'for': function(key){
-    return has(SymbolRegistry, key += '')
-      ? SymbolRegistry[key]
-      : SymbolRegistry[key] = $Symbol(key);
-  },
-  // 19.4.2.5 Symbol.keyFor(sym)
-  keyFor: function keyFor(key){
-    if(isSymbol(key))return keyOf(SymbolRegistry, key);
-    throw TypeError(key + ' is not a symbol!');
-  },
-  useSetter: function(){ setter = true; },
-  useSimple: function(){ setter = false; }
-});
-
-$export($export.S + $export.F * !USE_NATIVE, 'Object', {
-  // 19.1.2.2 Object.create(O [, Properties])
-  create: $create,
-  // 19.1.2.4 Object.defineProperty(O, P, Attributes)
-  defineProperty: $defineProperty,
-  // 19.1.2.3 Object.defineProperties(O, Properties)
-  defineProperties: $defineProperties,
-  // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
-  getOwnPropertyDescriptor: $getOwnPropertyDescriptor,
-  // 19.1.2.7 Object.getOwnPropertyNames(O)
-  getOwnPropertyNames: $getOwnPropertyNames,
-  // 19.1.2.8 Object.getOwnPropertySymbols(O)
-  getOwnPropertySymbols: $getOwnPropertySymbols
-});
-
-// 24.3.2 JSON.stringify(value [, replacer [, space]])
-$JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function(){
-  var S = $Symbol();
-  // MS Edge converts symbol values to JSON as {}
-  // WebKit converts symbol values to JSON as null
-  // V8 throws on boxed symbols
-  return _stringify([S]) != '[null]' || _stringify({a: S}) != '{}' || _stringify(Object(S)) != '{}';
-})), 'JSON', {
-  stringify: function stringify(it){
-    if(it === undefined || isSymbol(it))return; // IE8 returns string on undefined
-    var args = [it]
-      , i    = 1
-      , replacer, $replacer;
-    while(arguments.length > i)args.push(arguments[i++]);
-    replacer = args[1];
-    if(typeof replacer == 'function')$replacer = replacer;
-    if($replacer || !isArray(replacer))replacer = function(key, value){
-      if($replacer)value = $replacer.call(this, key, value);
-      if(!isSymbol(value))return value;
-    };
-    args[1] = replacer;
-    return _stringify.apply($JSON, args);
-  }
-});
-
-// 19.4.3.4 Symbol.prototype[@@toPrimitive](hint)
-$Symbol[PROTOTYPE][TO_PRIMITIVE] || __webpack_require__(17)($Symbol[PROTOTYPE], TO_PRIMITIVE, $Symbol[PROTOTYPE].valueOf);
-// 19.4.3.5 Symbol.prototype[@@toStringTag]
-setToStringTag($Symbol, 'Symbol');
-// 20.2.1.9 Math[@@toStringTag]
-setToStringTag(Math, 'Math', true);
-// 24.3.3 JSON[@@toStringTag]
-setToStringTag(global.JSON, 'JSON', true);
-
-/***/ }),
-/* 335 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $export      = __webpack_require__(0)
-  , $typed       = __webpack_require__(72)
-  , buffer       = __webpack_require__(105)
-  , anObject     = __webpack_require__(2)
-  , toIndex      = __webpack_require__(44)
-  , toLength     = __webpack_require__(12)
-  , isObject     = __webpack_require__(6)
-  , ArrayBuffer  = __webpack_require__(3).ArrayBuffer
-  , speciesConstructor = __webpack_require__(99)
-  , $ArrayBuffer = buffer.ArrayBuffer
-  , $DataView    = buffer.DataView
-  , $isView      = $typed.ABV && ArrayBuffer.isView
-  , $slice       = $ArrayBuffer.prototype.slice
-  , VIEW         = $typed.VIEW
-  , ARRAY_BUFFER = 'ArrayBuffer';
-
-$export($export.G + $export.W + $export.F * (ArrayBuffer !== $ArrayBuffer), {ArrayBuffer: $ArrayBuffer});
-
-$export($export.S + $export.F * !$typed.CONSTR, ARRAY_BUFFER, {
-  // 24.1.3.1 ArrayBuffer.isView(arg)
-  isView: function isView(it){
-    return $isView && $isView(it) || isObject(it) && VIEW in it;
-  }
-});
-
-$export($export.P + $export.U + $export.F * __webpack_require__(5)(function(){
-  return !new $ArrayBuffer(2).slice(1, undefined).byteLength;
-}), ARRAY_BUFFER, {
-  // 24.1.4.3 ArrayBuffer.prototype.slice(start, end)
-  slice: function slice(start, end){
-    if($slice !== undefined && end === undefined)return $slice.call(anObject(this), start); // FF fix
-    var len    = anObject(this).byteLength
-      , first  = toIndex(start, len)
-      , final  = toIndex(end === undefined ? len : end, len)
-      , result = new (speciesConstructor(this, $ArrayBuffer))(toLength(final - first))
-      , viewS  = new $DataView(this)
-      , viewT  = new $DataView(result)
-      , index  = 0;
-    while(first < final){
-      viewT.setUint8(index++, viewS.getUint8(first++));
-    } return result;
-  }
-});
-
-__webpack_require__(43)(ARRAY_BUFFER);
-
-/***/ }),
-/* 336 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var $export = __webpack_require__(0);
-$export($export.G + $export.W + $export.F * !__webpack_require__(72).ABV, {
-  DataView: __webpack_require__(105).DataView
-});
-
-/***/ }),
-/* 337 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(33)('Float32', 4, function(init){
-  return function Float32Array(data, byteOffset, length){
-    return init(this, data, byteOffset, length);
-  };
-});
-
-/***/ }),
-/* 338 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(33)('Float64', 8, function(init){
-  return function Float64Array(data, byteOffset, length){
-    return init(this, data, byteOffset, length);
-  };
-});
-
-/***/ }),
-/* 339 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(33)('Int16', 2, function(init){
-  return function Int16Array(data, byteOffset, length){
-    return init(this, data, byteOffset, length);
-  };
-});
-
-/***/ }),
-/* 340 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(33)('Int32', 4, function(init){
-  return function Int32Array(data, byteOffset, length){
-    return init(this, data, byteOffset, length);
-  };
-});
-
-/***/ }),
-/* 341 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(33)('Int8', 1, function(init){
-  return function Int8Array(data, byteOffset, length){
-    return init(this, data, byteOffset, length);
-  };
-});
-
-/***/ }),
-/* 342 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(33)('Uint16', 2, function(init){
-  return function Uint16Array(data, byteOffset, length){
-    return init(this, data, byteOffset, length);
-  };
-});
-
-/***/ }),
-/* 343 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(33)('Uint32', 4, function(init){
-  return function Uint32Array(data, byteOffset, length){
-    return init(this, data, byteOffset, length);
-  };
-});
-
-/***/ }),
-/* 344 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(33)('Uint8', 1, function(init){
-  return function Uint8Array(data, byteOffset, length){
-    return init(this, data, byteOffset, length);
-  };
-});
-
-/***/ }),
-/* 345 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(33)('Uint8', 1, function(init){
-  return function Uint8ClampedArray(data, byteOffset, length){
-    return init(this, data, byteOffset, length);
-  };
-}, true);
-
-/***/ }),
-/* 346 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var weak = __webpack_require__(127);
-
-// 23.4 WeakSet Objects
-__webpack_require__(63)('WeakSet', function(get){
-  return function WeakSet(){ return get(this, arguments.length > 0 ? arguments[0] : undefined); };
-}, {
-  // 23.4.3.1 WeakSet.prototype.add(value)
-  add: function add(value){
-    return weak.def(this, value, true);
-  }
-}, weak, false, true);
-
-/***/ }),
-/* 347 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// https://github.com/tc39/Array.prototype.includes
-var $export   = __webpack_require__(0)
-  , $includes = __webpack_require__(62)(true);
-
-$export($export.P, 'Array', {
-  includes: function includes(el /*, fromIndex = 0 */){
-    return $includes(this, el, arguments.length > 1 ? arguments[1] : undefined);
-  }
-});
-
-__webpack_require__(47)('includes');
-
-/***/ }),
-/* 348 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// https://github.com/rwaldron/tc39-notes/blob/master/es6/2014-09/sept-25.md#510-globalasap-for-enqueuing-a-microtask
-var $export   = __webpack_require__(0)
-  , microtask = __webpack_require__(96)()
-  , process   = __webpack_require__(3).process
-  , isNode    = __webpack_require__(23)(process) == 'process';
-
-$export($export.G, {
-  asap: function asap(fn){
-    var domain = isNode && process.domain;
-    microtask(domain ? domain.bind(fn) : fn);
-  }
-});
-
-/***/ }),
-/* 349 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// https://github.com/ljharb/proposal-is-error
-var $export = __webpack_require__(0)
-  , cof     = __webpack_require__(23);
-
-$export($export.S, 'Error', {
-  isError: function isError(it){
-    return cof(it) === 'Error';
-  }
-});
-
-/***/ }),
-/* 350 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// https://github.com/DavidBruant/Map-Set.prototype.toJSON
-var $export  = __webpack_require__(0);
-
-$export($export.P + $export.R, 'Map', {toJSON: __webpack_require__(126)('Map')});
-
-/***/ }),
-/* 351 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// https://gist.github.com/BrendanEich/4294d5c212a6d2254703
-var $export = __webpack_require__(0);
-
-$export($export.S, 'Math', {
-  iaddh: function iaddh(x0, x1, y0, y1){
-    var $x0 = x0 >>> 0
-      , $x1 = x1 >>> 0
-      , $y0 = y0 >>> 0;
-    return $x1 + (y1 >>> 0) + (($x0 & $y0 | ($x0 | $y0) & ~($x0 + $y0 >>> 0)) >>> 31) | 0;
-  }
-});
-
-/***/ }),
-/* 352 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// https://gist.github.com/BrendanEich/4294d5c212a6d2254703
-var $export = __webpack_require__(0);
-
-$export($export.S, 'Math', {
-  imulh: function imulh(u, v){
-    var UINT16 = 0xffff
-      , $u = +u
-      , $v = +v
-      , u0 = $u & UINT16
-      , v0 = $v & UINT16
-      , u1 = $u >> 16
-      , v1 = $v >> 16
-      , t  = (u1 * v0 >>> 0) + (u0 * v0 >>> 16);
-    return u1 * v1 + (t >> 16) + ((u0 * v1 >>> 0) + (t & UINT16) >> 16);
-  }
-});
-
-/***/ }),
-/* 353 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// https://gist.github.com/BrendanEich/4294d5c212a6d2254703
-var $export = __webpack_require__(0);
-
-$export($export.S, 'Math', {
-  isubh: function isubh(x0, x1, y0, y1){
-    var $x0 = x0 >>> 0
-      , $x1 = x1 >>> 0
-      , $y0 = y0 >>> 0;
-    return $x1 - (y1 >>> 0) - ((~$x0 & $y0 | ~($x0 ^ $y0) & $x0 - $y0 >>> 0) >>> 31) | 0;
-  }
-});
-
-/***/ }),
-/* 354 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// https://gist.github.com/BrendanEich/4294d5c212a6d2254703
-var $export = __webpack_require__(0);
-
-$export($export.S, 'Math', {
-  umulh: function umulh(u, v){
-    var UINT16 = 0xffff
-      , $u = +u
-      , $v = +v
-      , u0 = $u & UINT16
-      , v0 = $v & UINT16
-      , u1 = $u >>> 16
-      , v1 = $v >>> 16
-      , t  = (u1 * v0 >>> 0) + (u0 * v0 >>> 16);
-    return u1 * v1 + (t >>> 16) + ((u0 * v1 >>> 0) + (t & UINT16) >>> 16);
-  }
-});
-
-/***/ }),
-/* 355 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $export         = __webpack_require__(0)
-  , toObject        = __webpack_require__(14)
-  , aFunction       = __webpack_require__(16)
-  , $defineProperty = __webpack_require__(11);
-
-// B.2.2.2 Object.prototype.__defineGetter__(P, getter)
-__webpack_require__(10) && $export($export.P + __webpack_require__(69), 'Object', {
-  __defineGetter__: function __defineGetter__(P, getter){
-    $defineProperty.f(toObject(this), P, {get: aFunction(getter), enumerable: true, configurable: true});
-  }
-});
-
-/***/ }),
-/* 356 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $export         = __webpack_require__(0)
-  , toObject        = __webpack_require__(14)
-  , aFunction       = __webpack_require__(16)
-  , $defineProperty = __webpack_require__(11);
-
-// B.2.2.3 Object.prototype.__defineSetter__(P, setter)
-__webpack_require__(10) && $export($export.P + __webpack_require__(69), 'Object', {
-  __defineSetter__: function __defineSetter__(P, setter){
-    $defineProperty.f(toObject(this), P, {set: aFunction(setter), enumerable: true, configurable: true});
-  }
-});
-
-/***/ }),
-/* 357 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// https://github.com/tc39/proposal-object-values-entries
-var $export  = __webpack_require__(0)
-  , $entries = __webpack_require__(137)(true);
-
-$export($export.S, 'Object', {
-  entries: function entries(it){
-    return $entries(it);
-  }
-});
-
-/***/ }),
-/* 358 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// https://github.com/tc39/proposal-object-getownpropertydescriptors
-var $export        = __webpack_require__(0)
-  , ownKeys        = __webpack_require__(138)
-  , toIObject      = __webpack_require__(20)
-  , gOPD           = __webpack_require__(21)
-  , createProperty = __webpack_require__(84);
-
-$export($export.S, 'Object', {
-  getOwnPropertyDescriptors: function getOwnPropertyDescriptors(object){
-    var O       = toIObject(object)
-      , getDesc = gOPD.f
-      , keys    = ownKeys(O)
-      , result  = {}
-      , i       = 0
-      , key;
-    while(keys.length > i)createProperty(result, key = keys[i++], getDesc(O, key));
-    return result;
-  }
-});
-
-/***/ }),
-/* 359 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $export                  = __webpack_require__(0)
-  , toObject                 = __webpack_require__(14)
-  , toPrimitive              = __webpack_require__(29)
-  , getPrototypeOf           = __webpack_require__(22)
-  , getOwnPropertyDescriptor = __webpack_require__(21).f;
-
-// B.2.2.4 Object.prototype.__lookupGetter__(P)
-__webpack_require__(10) && $export($export.P + __webpack_require__(69), 'Object', {
-  __lookupGetter__: function __lookupGetter__(P){
-    var O = toObject(this)
-      , K = toPrimitive(P, true)
-      , D;
-    do {
-      if(D = getOwnPropertyDescriptor(O, K))return D.get;
-    } while(O = getPrototypeOf(O));
-  }
-});
-
-/***/ }),
-/* 360 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $export                  = __webpack_require__(0)
-  , toObject                 = __webpack_require__(14)
-  , toPrimitive              = __webpack_require__(29)
-  , getPrototypeOf           = __webpack_require__(22)
-  , getOwnPropertyDescriptor = __webpack_require__(21).f;
-
-// B.2.2.5 Object.prototype.__lookupSetter__(P)
-__webpack_require__(10) && $export($export.P + __webpack_require__(69), 'Object', {
-  __lookupSetter__: function __lookupSetter__(P){
-    var O = toObject(this)
-      , K = toPrimitive(P, true)
-      , D;
-    do {
-      if(D = getOwnPropertyDescriptor(O, K))return D.set;
-    } while(O = getPrototypeOf(O));
-  }
-});
-
-/***/ }),
-/* 361 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// https://github.com/tc39/proposal-object-values-entries
-var $export = __webpack_require__(0)
-  , $values = __webpack_require__(137)(false);
-
-$export($export.S, 'Object', {
-  values: function values(it){
-    return $values(it);
-  }
-});
-
-/***/ }),
-/* 362 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// https://github.com/zenparsing/es-observable
-var $export     = __webpack_require__(0)
-  , global      = __webpack_require__(3)
-  , core        = __webpack_require__(30)
-  , microtask   = __webpack_require__(96)()
-  , OBSERVABLE  = __webpack_require__(7)('observable')
-  , aFunction   = __webpack_require__(16)
-  , anObject    = __webpack_require__(2)
-  , anInstance  = __webpack_require__(37)
-  , redefineAll = __webpack_require__(42)
-  , hide        = __webpack_require__(17)
-  , forOf       = __webpack_require__(48)
-  , RETURN      = forOf.RETURN;
-
-var getMethod = function(fn){
-  return fn == null ? undefined : aFunction(fn);
-};
-
-var cleanupSubscription = function(subscription){
-  var cleanup = subscription._c;
-  if(cleanup){
-    subscription._c = undefined;
-    cleanup();
-  }
-};
-
-var subscriptionClosed = function(subscription){
-  return subscription._o === undefined;
-};
-
-var closeSubscription = function(subscription){
-  if(!subscriptionClosed(subscription)){
-    subscription._o = undefined;
-    cleanupSubscription(subscription);
-  }
-};
-
-var Subscription = function(observer, subscriber){
-  anObject(observer);
-  this._c = undefined;
-  this._o = observer;
-  observer = new SubscriptionObserver(this);
-  try {
-    var cleanup      = subscriber(observer)
-      , subscription = cleanup;
-    if(cleanup != null){
-      if(typeof cleanup.unsubscribe === 'function')cleanup = function(){ subscription.unsubscribe(); };
-      else aFunction(cleanup);
-      this._c = cleanup;
-    }
-  } catch(e){
-    observer.error(e);
-    return;
-  } if(subscriptionClosed(this))cleanupSubscription(this);
-};
-
-Subscription.prototype = redefineAll({}, {
-  unsubscribe: function unsubscribe(){ closeSubscription(this); }
-});
-
-var SubscriptionObserver = function(subscription){
-  this._s = subscription;
-};
-
-SubscriptionObserver.prototype = redefineAll({}, {
-  next: function next(value){
-    var subscription = this._s;
-    if(!subscriptionClosed(subscription)){
-      var observer = subscription._o;
-      try {
-        var m = getMethod(observer.next);
-        if(m)return m.call(observer, value);
-      } catch(e){
-        try {
-          closeSubscription(subscription);
-        } finally {
-          throw e;
-        }
-      }
-    }
-  },
-  error: function error(value){
-    var subscription = this._s;
-    if(subscriptionClosed(subscription))throw value;
-    var observer = subscription._o;
-    subscription._o = undefined;
-    try {
-      var m = getMethod(observer.error);
-      if(!m)throw value;
-      value = m.call(observer, value);
-    } catch(e){
-      try {
-        cleanupSubscription(subscription);
-      } finally {
-        throw e;
-      }
-    } cleanupSubscription(subscription);
-    return value;
-  },
-  complete: function complete(value){
-    var subscription = this._s;
-    if(!subscriptionClosed(subscription)){
-      var observer = subscription._o;
-      subscription._o = undefined;
-      try {
-        var m = getMethod(observer.complete);
-        value = m ? m.call(observer, value) : undefined;
-      } catch(e){
-        try {
-          cleanupSubscription(subscription);
-        } finally {
-          throw e;
-        }
-      } cleanupSubscription(subscription);
-      return value;
-    }
-  }
-});
-
-var $Observable = function Observable(subscriber){
-  anInstance(this, $Observable, 'Observable', '_f')._f = aFunction(subscriber);
-};
-
-redefineAll($Observable.prototype, {
-  subscribe: function subscribe(observer){
-    return new Subscription(observer, this._f);
-  },
-  forEach: function forEach(fn){
-    var that = this;
-    return new (core.Promise || global.Promise)(function(resolve, reject){
-      aFunction(fn);
-      var subscription = that.subscribe({
-        next : function(value){
-          try {
-            return fn(value);
-          } catch(e){
-            reject(e);
-            subscription.unsubscribe();
-          }
-        },
-        error: reject,
-        complete: resolve
-      });
-    });
-  }
-});
-
-redefineAll($Observable, {
-  from: function from(x){
-    var C = typeof this === 'function' ? this : $Observable;
-    var method = getMethod(anObject(x)[OBSERVABLE]);
-    if(method){
-      var observable = anObject(method.call(x));
-      return observable.constructor === C ? observable : new C(function(observer){
-        return observable.subscribe(observer);
-      });
-    }
-    return new C(function(observer){
-      var done = false;
-      microtask(function(){
-        if(!done){
-          try {
-            if(forOf(x, false, function(it){
-              observer.next(it);
-              if(done)return RETURN;
-            }) === RETURN)return;
-          } catch(e){
-            if(done)throw e;
-            observer.error(e);
-            return;
-          } observer.complete();
-        }
-      });
-      return function(){ done = true; };
-    });
-  },
-  of: function of(){
-    for(var i = 0, l = arguments.length, items = Array(l); i < l;)items[i] = arguments[i++];
-    return new (typeof this === 'function' ? this : $Observable)(function(observer){
-      var done = false;
-      microtask(function(){
-        if(!done){
-          for(var i = 0; i < items.length; ++i){
-            observer.next(items[i]);
-            if(done)return;
-          } observer.complete();
-        }
-      });
-      return function(){ done = true; };
-    });
-  }
-});
-
-hide($Observable.prototype, OBSERVABLE, function(){ return this; });
-
-$export($export.G, {Observable: $Observable});
-
-__webpack_require__(43)('Observable');
-
-/***/ }),
-/* 363 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var metadata                  = __webpack_require__(32)
-  , anObject                  = __webpack_require__(2)
-  , toMetaKey                 = metadata.key
-  , ordinaryDefineOwnMetadata = metadata.set;
-
-metadata.exp({defineMetadata: function defineMetadata(metadataKey, metadataValue, target, targetKey){
-  ordinaryDefineOwnMetadata(metadataKey, metadataValue, anObject(target), toMetaKey(targetKey));
-}});
-
-/***/ }),
-/* 364 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var metadata               = __webpack_require__(32)
-  , anObject               = __webpack_require__(2)
-  , toMetaKey              = metadata.key
-  , getOrCreateMetadataMap = metadata.map
-  , store                  = metadata.store;
-
-metadata.exp({deleteMetadata: function deleteMetadata(metadataKey, target /*, targetKey */){
-  var targetKey   = arguments.length < 3 ? undefined : toMetaKey(arguments[2])
-    , metadataMap = getOrCreateMetadataMap(anObject(target), targetKey, false);
-  if(metadataMap === undefined || !metadataMap['delete'](metadataKey))return false;
-  if(metadataMap.size)return true;
-  var targetMetadata = store.get(target);
-  targetMetadata['delete'](targetKey);
-  return !!targetMetadata.size || store['delete'](target);
-}});
-
-/***/ }),
-/* 365 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Set                     = __webpack_require__(146)
-  , from                    = __webpack_require__(122)
-  , metadata                = __webpack_require__(32)
-  , anObject                = __webpack_require__(2)
-  , getPrototypeOf          = __webpack_require__(22)
-  , ordinaryOwnMetadataKeys = metadata.keys
-  , toMetaKey               = metadata.key;
-
-var ordinaryMetadataKeys = function(O, P){
-  var oKeys  = ordinaryOwnMetadataKeys(O, P)
-    , parent = getPrototypeOf(O);
-  if(parent === null)return oKeys;
-  var pKeys  = ordinaryMetadataKeys(parent, P);
-  return pKeys.length ? oKeys.length ? from(new Set(oKeys.concat(pKeys))) : pKeys : oKeys;
-};
-
-metadata.exp({getMetadataKeys: function getMetadataKeys(target /*, targetKey */){
-  return ordinaryMetadataKeys(anObject(target), arguments.length < 2 ? undefined : toMetaKey(arguments[1]));
-}});
-
-/***/ }),
-/* 366 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var metadata               = __webpack_require__(32)
-  , anObject               = __webpack_require__(2)
-  , getPrototypeOf         = __webpack_require__(22)
-  , ordinaryHasOwnMetadata = metadata.has
-  , ordinaryGetOwnMetadata = metadata.get
-  , toMetaKey              = metadata.key;
-
-var ordinaryGetMetadata = function(MetadataKey, O, P){
-  var hasOwn = ordinaryHasOwnMetadata(MetadataKey, O, P);
-  if(hasOwn)return ordinaryGetOwnMetadata(MetadataKey, O, P);
-  var parent = getPrototypeOf(O);
-  return parent !== null ? ordinaryGetMetadata(MetadataKey, parent, P) : undefined;
-};
-
-metadata.exp({getMetadata: function getMetadata(metadataKey, target /*, targetKey */){
-  return ordinaryGetMetadata(metadataKey, anObject(target), arguments.length < 3 ? undefined : toMetaKey(arguments[2]));
-}});
-
-/***/ }),
-/* 367 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var metadata                = __webpack_require__(32)
-  , anObject                = __webpack_require__(2)
-  , ordinaryOwnMetadataKeys = metadata.keys
-  , toMetaKey               = metadata.key;
-
-metadata.exp({getOwnMetadataKeys: function getOwnMetadataKeys(target /*, targetKey */){
-  return ordinaryOwnMetadataKeys(anObject(target), arguments.length < 2 ? undefined : toMetaKey(arguments[1]));
-}});
-
-/***/ }),
-/* 368 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var metadata               = __webpack_require__(32)
-  , anObject               = __webpack_require__(2)
-  , ordinaryGetOwnMetadata = metadata.get
-  , toMetaKey              = metadata.key;
-
-metadata.exp({getOwnMetadata: function getOwnMetadata(metadataKey, target /*, targetKey */){
-  return ordinaryGetOwnMetadata(metadataKey, anObject(target)
-    , arguments.length < 3 ? undefined : toMetaKey(arguments[2]));
-}});
-
-/***/ }),
-/* 369 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var metadata               = __webpack_require__(32)
-  , anObject               = __webpack_require__(2)
-  , getPrototypeOf         = __webpack_require__(22)
-  , ordinaryHasOwnMetadata = metadata.has
-  , toMetaKey              = metadata.key;
-
-var ordinaryHasMetadata = function(MetadataKey, O, P){
-  var hasOwn = ordinaryHasOwnMetadata(MetadataKey, O, P);
-  if(hasOwn)return true;
-  var parent = getPrototypeOf(O);
-  return parent !== null ? ordinaryHasMetadata(MetadataKey, parent, P) : false;
-};
-
-metadata.exp({hasMetadata: function hasMetadata(metadataKey, target /*, targetKey */){
-  return ordinaryHasMetadata(metadataKey, anObject(target), arguments.length < 3 ? undefined : toMetaKey(arguments[2]));
-}});
-
-/***/ }),
-/* 370 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var metadata               = __webpack_require__(32)
-  , anObject               = __webpack_require__(2)
-  , ordinaryHasOwnMetadata = metadata.has
-  , toMetaKey              = metadata.key;
-
-metadata.exp({hasOwnMetadata: function hasOwnMetadata(metadataKey, target /*, targetKey */){
-  return ordinaryHasOwnMetadata(metadataKey, anObject(target)
-    , arguments.length < 3 ? undefined : toMetaKey(arguments[2]));
-}});
-
-/***/ }),
-/* 371 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var metadata                  = __webpack_require__(32)
-  , anObject                  = __webpack_require__(2)
-  , aFunction                 = __webpack_require__(16)
-  , toMetaKey                 = metadata.key
-  , ordinaryDefineOwnMetadata = metadata.set;
-
-metadata.exp({metadata: function metadata(metadataKey, metadataValue){
-  return function decorator(target, targetKey){
-    ordinaryDefineOwnMetadata(
-      metadataKey, metadataValue,
-      (targetKey !== undefined ? anObject : aFunction)(target),
-      toMetaKey(targetKey)
-    );
-  };
-}});
-
-/***/ }),
-/* 372 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// https://github.com/DavidBruant/Map-Set.prototype.toJSON
-var $export  = __webpack_require__(0);
-
-$export($export.P + $export.R, 'Set', {toJSON: __webpack_require__(126)('Set')});
-
-/***/ }),
-/* 373 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// https://github.com/mathiasbynens/String.prototype.at
-var $export = __webpack_require__(0)
-  , $at     = __webpack_require__(100)(true);
-
-$export($export.P, 'String', {
-  at: function at(pos){
-    return $at(this, pos);
-  }
-});
-
-/***/ }),
-/* 374 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// https://tc39.github.io/String.prototype.matchAll/
-var $export     = __webpack_require__(0)
-  , defined     = __webpack_require__(24)
-  , toLength    = __webpack_require__(12)
-  , isRegExp    = __webpack_require__(67)
-  , getFlags    = __webpack_require__(65)
-  , RegExpProto = RegExp.prototype;
-
-var $RegExpStringIterator = function(regexp, string){
-  this._r = regexp;
-  this._s = string;
-};
-
-__webpack_require__(92)($RegExpStringIterator, 'RegExp String', function next(){
-  var match = this._r.exec(this._s);
-  return {value: match, done: match === null};
-});
-
-$export($export.P, 'String', {
-  matchAll: function matchAll(regexp){
-    defined(this);
-    if(!isRegExp(regexp))throw TypeError(regexp + ' is not a regexp!');
-    var S     = String(this)
-      , flags = 'flags' in RegExpProto ? String(regexp.flags) : getFlags.call(regexp)
-      , rx    = new RegExp(regexp.source, ~flags.indexOf('g') ? flags : 'g' + flags);
-    rx.lastIndex = toLength(regexp.lastIndex);
-    return new $RegExpStringIterator(rx, S);
-  }
-});
-
-/***/ }),
-/* 375 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// https://github.com/tc39/proposal-string-pad-start-end
-var $export = __webpack_require__(0)
-  , $pad    = __webpack_require__(142);
-
-$export($export.P, 'String', {
-  padEnd: function padEnd(maxLength /*, fillString = ' ' */){
-    return $pad(this, maxLength, arguments.length > 1 ? arguments[1] : undefined, false);
-  }
-});
-
-/***/ }),
-/* 376 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// https://github.com/tc39/proposal-string-pad-start-end
-var $export = __webpack_require__(0)
-  , $pad    = __webpack_require__(142);
-
-$export($export.P, 'String', {
-  padStart: function padStart(maxLength /*, fillString = ' ' */){
-    return $pad(this, maxLength, arguments.length > 1 ? arguments[1] : undefined, true);
-  }
-});
-
-/***/ }),
-/* 377 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// https://github.com/sebmarkbage/ecmascript-string-left-right-trim
-__webpack_require__(51)('trimLeft', function($trim){
-  return function trimLeft(){
-    return $trim(this, 1);
-  };
-}, 'trimStart');
-
-/***/ }),
-/* 378 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// https://github.com/sebmarkbage/ecmascript-string-left-right-trim
-__webpack_require__(51)('trimRight', function($trim){
-  return function trimRight(){
-    return $trim(this, 2);
-  };
-}, 'trimEnd');
-
-/***/ }),
-/* 379 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(106)('asyncIterator');
-
-/***/ }),
-/* 380 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(106)('observable');
-
-/***/ }),
-/* 381 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// https://github.com/ljharb/proposal-global
-var $export = __webpack_require__(0);
-
-$export($export.S, 'System', {global: __webpack_require__(3)});
-
-/***/ }),
-/* 382 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var $iterators    = __webpack_require__(108)
-  , redefine      = __webpack_require__(18)
-  , global        = __webpack_require__(3)
-  , hide          = __webpack_require__(17)
-  , Iterators     = __webpack_require__(49)
-  , wks           = __webpack_require__(7)
-  , ITERATOR      = wks('iterator')
-  , TO_STRING_TAG = wks('toStringTag')
-  , ArrayValues   = Iterators.Array;
-
-for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList', 'CSSRuleList'], i = 0; i < 5; i++){
-  var NAME       = collections[i]
-    , Collection = global[NAME]
-    , proto      = Collection && Collection.prototype
-    , key;
-  if(proto){
-    if(!proto[ITERATOR])hide(proto, ITERATOR, ArrayValues);
-    if(!proto[TO_STRING_TAG])hide(proto, TO_STRING_TAG, NAME);
-    Iterators[NAME] = ArrayValues;
-    for(key in $iterators)if(!proto[key])redefine(proto, key, $iterators[key], true);
-  }
-}
-
-/***/ }),
-/* 383 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var $export = __webpack_require__(0)
-  , $task   = __webpack_require__(104);
-$export($export.G + $export.B, {
-  setImmediate:   $task.set,
-  clearImmediate: $task.clear
-});
-
-/***/ }),
-/* 384 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// ie9- setTimeout & setInterval additional parameters fix
-var global     = __webpack_require__(3)
-  , $export    = __webpack_require__(0)
-  , invoke     = __webpack_require__(66)
-  , partial    = __webpack_require__(211)
-  , navigator  = global.navigator
-  , MSIE       = !!navigator && /MSIE .\./.test(navigator.userAgent); // <- dirty ie9- check
-var wrap = function(set){
-  return MSIE ? function(fn, time /*, ...args */){
-    return set(invoke(
-      partial,
-      [].slice.call(arguments, 2),
-      typeof fn == 'function' ? fn : Function(fn)
-    ), time);
-  } : set;
-};
-$export($export.G + $export.B + $export.F * MSIE, {
-  setTimeout:  wrap(global.setTimeout),
-  setInterval: wrap(global.setInterval)
-});
-
-/***/ }),
-/* 385 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(334);
-__webpack_require__(273);
-__webpack_require__(275);
-__webpack_require__(274);
-__webpack_require__(277);
-__webpack_require__(279);
-__webpack_require__(284);
-__webpack_require__(278);
-__webpack_require__(276);
-__webpack_require__(286);
-__webpack_require__(285);
-__webpack_require__(281);
-__webpack_require__(282);
-__webpack_require__(280);
-__webpack_require__(272);
-__webpack_require__(283);
-__webpack_require__(287);
-__webpack_require__(288);
-__webpack_require__(240);
-__webpack_require__(242);
-__webpack_require__(241);
-__webpack_require__(290);
-__webpack_require__(289);
-__webpack_require__(260);
-__webpack_require__(270);
-__webpack_require__(271);
-__webpack_require__(261);
-__webpack_require__(262);
-__webpack_require__(263);
-__webpack_require__(264);
-__webpack_require__(265);
-__webpack_require__(266);
-__webpack_require__(267);
-__webpack_require__(268);
-__webpack_require__(269);
-__webpack_require__(243);
-__webpack_require__(244);
-__webpack_require__(245);
-__webpack_require__(246);
-__webpack_require__(247);
-__webpack_require__(248);
-__webpack_require__(249);
-__webpack_require__(250);
-__webpack_require__(251);
-__webpack_require__(252);
-__webpack_require__(253);
-__webpack_require__(254);
-__webpack_require__(255);
-__webpack_require__(256);
-__webpack_require__(257);
-__webpack_require__(258);
-__webpack_require__(259);
-__webpack_require__(321);
-__webpack_require__(326);
-__webpack_require__(333);
-__webpack_require__(324);
-__webpack_require__(316);
-__webpack_require__(317);
-__webpack_require__(322);
-__webpack_require__(327);
-__webpack_require__(329);
-__webpack_require__(312);
-__webpack_require__(313);
-__webpack_require__(314);
-__webpack_require__(315);
-__webpack_require__(318);
-__webpack_require__(319);
-__webpack_require__(320);
-__webpack_require__(323);
-__webpack_require__(325);
-__webpack_require__(328);
-__webpack_require__(330);
-__webpack_require__(331);
-__webpack_require__(332);
-__webpack_require__(235);
-__webpack_require__(237);
-__webpack_require__(236);
-__webpack_require__(239);
-__webpack_require__(238);
-__webpack_require__(224);
-__webpack_require__(222);
-__webpack_require__(228);
-__webpack_require__(225);
-__webpack_require__(231);
-__webpack_require__(233);
-__webpack_require__(221);
-__webpack_require__(227);
-__webpack_require__(218);
-__webpack_require__(232);
-__webpack_require__(216);
-__webpack_require__(230);
-__webpack_require__(229);
-__webpack_require__(223);
-__webpack_require__(226);
-__webpack_require__(215);
-__webpack_require__(217);
-__webpack_require__(220);
-__webpack_require__(219);
-__webpack_require__(234);
-__webpack_require__(108);
-__webpack_require__(306);
-__webpack_require__(311);
-__webpack_require__(145);
-__webpack_require__(307);
-__webpack_require__(308);
-__webpack_require__(309);
-__webpack_require__(310);
-__webpack_require__(291);
-__webpack_require__(144);
-__webpack_require__(146);
-__webpack_require__(147);
-__webpack_require__(346);
-__webpack_require__(335);
-__webpack_require__(336);
-__webpack_require__(341);
-__webpack_require__(344);
-__webpack_require__(345);
-__webpack_require__(339);
-__webpack_require__(342);
-__webpack_require__(340);
-__webpack_require__(343);
-__webpack_require__(337);
-__webpack_require__(338);
-__webpack_require__(292);
-__webpack_require__(293);
-__webpack_require__(294);
-__webpack_require__(295);
-__webpack_require__(296);
-__webpack_require__(299);
-__webpack_require__(297);
-__webpack_require__(298);
-__webpack_require__(300);
-__webpack_require__(301);
-__webpack_require__(302);
-__webpack_require__(303);
-__webpack_require__(305);
-__webpack_require__(304);
-__webpack_require__(347);
-__webpack_require__(373);
-__webpack_require__(376);
-__webpack_require__(375);
-__webpack_require__(377);
-__webpack_require__(378);
-__webpack_require__(374);
-__webpack_require__(379);
-__webpack_require__(380);
-__webpack_require__(358);
-__webpack_require__(361);
-__webpack_require__(357);
-__webpack_require__(355);
-__webpack_require__(356);
-__webpack_require__(359);
-__webpack_require__(360);
-__webpack_require__(350);
-__webpack_require__(372);
-__webpack_require__(381);
-__webpack_require__(349);
-__webpack_require__(351);
-__webpack_require__(353);
-__webpack_require__(352);
-__webpack_require__(354);
-__webpack_require__(363);
-__webpack_require__(364);
-__webpack_require__(366);
-__webpack_require__(365);
-__webpack_require__(368);
-__webpack_require__(367);
-__webpack_require__(369);
-__webpack_require__(370);
-__webpack_require__(371);
-__webpack_require__(348);
-__webpack_require__(362);
-__webpack_require__(384);
-__webpack_require__(383);
-__webpack_require__(382);
-module.exports = __webpack_require__(30);
-
-/***/ }),
-/* 386 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var require;var require;var require;var require;var require;var require;var require;var require;// OpenLayers. See https://openlayers.org/
@@ -19154,6 +8047,10882 @@ Qk.prototype.changed=Qk.prototype.s;Qk.prototype.dispatchEvent=Qk.prototype.b;Qk
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(115)))
 
 /***/ }),
+/* 150 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = (function(x, y) {
+  x = Math.abs(x);
+  y = Math.abs(y);
+  var a = Math.max(x, y);
+  var b = Math.min(x, y) / (a ? a : 1);
+
+  return a * Math.sqrt(1 + Math.pow(b, 2));
+});
+
+
+/***/ }),
+/* 151 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var C00 = 1;
+var C02 = 0.25;
+var C04 = 0.046875;
+var C06 = 0.01953125;
+var C08 = 0.01068115234375;
+var C22 = 0.75;
+var C44 = 0.46875;
+var C46 = 0.01302083333333333333;
+var C48 = 0.00712076822916666666;
+var C66 = 0.36458333333333333333;
+var C68 = 0.00569661458333333333;
+var C88 = 0.3076171875;
+
+/* harmony default export */ __webpack_exports__["a"] = (function(es) {
+  var en = [];
+  en[0] = C00 - es * (C02 + es * (C04 + es * (C06 + es * C08)));
+  en[1] = es * (C22 - es * (C04 + es * (C06 + es * C08)));
+  var t = es * es;
+  en[2] = t * (C44 - es * (C46 + es * C48));
+  t *= es;
+  en[3] = t * (C66 - es * C68);
+  en[4] = t * es * C88;
+  return en;
+});
+
+/***/ }),
+/* 152 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pj_mlfn__ = __webpack_require__(112);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(4);
+
+
+
+var MAX_ITER = 20;
+
+/* harmony default export */ __webpack_exports__["a"] = (function(arg, es, en) {
+  var k = 1 / (1 - es);
+  var phi = arg;
+  for (var i = MAX_ITER; i; --i) { /* rarely goes over 2 iterations */
+    var s = Math.sin(phi);
+    var t = 1 - es * s * s;
+    //t = this.pj_mlfn(phi, s, Math.cos(phi), en) - arg;
+    //phi -= t * (t * Math.sqrt(t)) * k;
+    t = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__pj_mlfn__["a" /* default */])(phi, s, Math.cos(phi), en) - arg) * (t * Math.sqrt(t)) * k;
+    phi -= t;
+    if (Math.abs(t) < __WEBPACK_IMPORTED_MODULE_1__constants_values__["a" /* EPSLN */]) {
+      return phi;
+    }
+  }
+  //..reportError("cass:pj_inv_mlfn: Convergence error");
+  return phi;
+});
+
+
+/***/ }),
+/* 153 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = (function(x) {
+  var r = Math.exp(x);
+  r = (r - 1 / r) / 2;
+  return r;
+});
+
+/***/ }),
+/* 154 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = (function (array){
+  var out = {
+    x: array[0],
+    y: array[1]
+  };
+  if (array.length>2) {
+    out.z = array[2];
+  }
+  if (array.length>3) {
+    out.m = array[3];
+  }
+  return out;
+});
+
+/***/ }),
+/* 155 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__global__ = __webpack_require__(408);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projString__ = __webpack_require__(156);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_wkt_parser__ = __webpack_require__(159);
+
+
+
+
+function defs(name) {
+  /*global console*/
+  var that = this;
+  if (arguments.length === 2) {
+    var def = arguments[1];
+    if (typeof def === 'string') {
+      if (def.charAt(0) === '+') {
+        defs[name] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__projString__["a" /* default */])(arguments[1]);
+      }
+      else {
+        defs[name] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_wkt_parser__["a" /* default */])(arguments[1]);
+      }
+    } else {
+      defs[name] = def;
+    }
+  }
+  else if (arguments.length === 1) {
+    if (Array.isArray(name)) {
+      return name.map(function(v) {
+        if (Array.isArray(v)) {
+          defs.apply(that, v);
+        }
+        else {
+          defs(v);
+        }
+      });
+    }
+    else if (typeof name === 'string') {
+      if (name in defs) {
+        return defs[name];
+      }
+    }
+    else if ('EPSG' in name) {
+      defs['EPSG:' + name.EPSG] = name;
+    }
+    else if ('ESRI' in name) {
+      defs['ESRI:' + name.ESRI] = name;
+    }
+    else if ('IAU2000' in name) {
+      defs['IAU2000:' + name.IAU2000] = name;
+    }
+    else {
+      console.log(name);
+    }
+    return;
+  }
+
+
+}
+__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__global__["a" /* default */])(defs);
+/* harmony default export */ __webpack_exports__["a"] = (defs);
+
+
+/***/ }),
+/* 156 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_PrimeMeridian__ = __webpack_require__(400);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_units__ = __webpack_require__(401);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__match__ = __webpack_require__(114);
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = (function(defData) {
+  var self = {};
+  var paramObj = defData.split('+').map(function(v) {
+    return v.trim();
+  }).filter(function(a) {
+    return a;
+  }).reduce(function(p, a) {
+    var split = a.split('=');
+    split.push(true);
+    p[split[0].toLowerCase()] = split[1];
+    return p;
+  }, {});
+  var paramName, paramVal, paramOutname;
+  var params = {
+    proj: 'projName',
+    datum: 'datumCode',
+    rf: function(v) {
+      self.rf = parseFloat(v);
+    },
+    lat_0: function(v) {
+      self.lat0 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    lat_1: function(v) {
+      self.lat1 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    lat_2: function(v) {
+      self.lat2 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    lat_ts: function(v) {
+      self.lat_ts = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    lon_0: function(v) {
+      self.long0 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    lon_1: function(v) {
+      self.long1 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    lon_2: function(v) {
+      self.long2 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    alpha: function(v) {
+      self.alpha = parseFloat(v) * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    lonc: function(v) {
+      self.longc = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    x_0: function(v) {
+      self.x0 = parseFloat(v);
+    },
+    y_0: function(v) {
+      self.y0 = parseFloat(v);
+    },
+    k_0: function(v) {
+      self.k0 = parseFloat(v);
+    },
+    k: function(v) {
+      self.k0 = parseFloat(v);
+    },
+    a: function(v) {
+      self.a = parseFloat(v);
+    },
+    b: function(v) {
+      self.b = parseFloat(v);
+    },
+    r_a: function() {
+      self.R_A = true;
+    },
+    zone: function(v) {
+      self.zone = parseInt(v, 10);
+    },
+    south: function() {
+      self.utmSouth = true;
+    },
+    towgs84: function(v) {
+      self.datum_params = v.split(",").map(function(a) {
+        return parseFloat(a);
+      });
+    },
+    to_meter: function(v) {
+      self.to_meter = parseFloat(v);
+    },
+    units: function(v) {
+      self.units = v;
+      var unit = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__match__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_2__constants_units__["a" /* default */], v);
+      if (unit) {
+        self.to_meter = unit.to_meter;
+      }
+    },
+    from_greenwich: function(v) {
+      self.from_greenwich = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    pm: function(v) {
+      var pm = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__match__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_1__constants_PrimeMeridian__["a" /* default */], v);
+      self.from_greenwich = (pm ? pm : parseFloat(v)) * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    nadgrids: function(v) {
+      if (v === '@null') {
+        self.datumCode = 'none';
+      }
+      else {
+        self.nadgrids = v;
+      }
+    },
+    axis: function(v) {
+      var legalAxis = "ewnsud";
+      if (v.length === 3 && legalAxis.indexOf(v.substr(0, 1)) !== -1 && legalAxis.indexOf(v.substr(1, 1)) !== -1 && legalAxis.indexOf(v.substr(2, 1)) !== -1) {
+        self.axis = v;
+      }
+    }
+  };
+  for (paramName in paramObj) {
+    paramVal = paramObj[paramName];
+    if (paramName in params) {
+      paramOutname = params[paramName];
+      if (typeof paramOutname === 'function') {
+        paramOutname(paramVal);
+      }
+      else {
+        self[paramOutname] = paramVal;
+      }
+    }
+    else {
+      self[paramName] = paramVal;
+    }
+  }
+  if(typeof self.datumCode === 'string' && self.datumCode !== "WGS84"){
+    self.datumCode = self.datumCode.toLowerCase();
+  }
+  return self;
+});
+
+
+/***/ }),
+/* 157 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_sinh__ = __webpack_require__(153);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_hypot__ = __webpack_require__(150);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_asinhy__ = __webpack_require__(390);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_gatg__ = __webpack_require__(394);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_clens__ = __webpack_require__(391);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_clens_cmplx__ = __webpack_require__(392);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__ = __webpack_require__(8);
+/* unused harmony export init */
+/* unused harmony export forward */
+/* unused harmony export inverse */
+/* unused harmony export names */
+// Heavily based on this etmerc projection implementation
+// https://github.com/mbloch/mapshaper-proj/blob/master/src/projections/etmerc.js
+
+
+
+
+
+
+
+
+
+function init() {
+  if (this.es === undefined || this.es <= 0) {
+    throw new Error('incorrect elliptical usage');
+  }
+
+  this.x0 = this.x0 !== undefined ? this.x0 : 0;
+  this.y0 = this.y0 !== undefined ? this.y0 : 0;
+  this.long0 = this.long0 !== undefined ? this.long0 : 0;
+  this.lat0 = this.lat0 !== undefined ? this.lat0 : 0;
+
+  this.cgb = [];
+  this.cbg = [];
+  this.utg = [];
+  this.gtu = [];
+
+  var f = this.es / (1 + Math.sqrt(1 - this.es));
+  var n = f / (2 - f);
+  var np = n;
+
+  this.cgb[0] = n * (2 + n * (-2 / 3 + n * (-2 + n * (116 / 45 + n * (26 / 45 + n * (-2854 / 675 ))))));
+  this.cbg[0] = n * (-2 + n * ( 2 / 3 + n * ( 4 / 3 + n * (-82 / 45 + n * (32 / 45 + n * (4642 / 4725))))));
+
+  np = np * n;
+  this.cgb[1] = np * (7 / 3 + n * (-8 / 5 + n * (-227 / 45 + n * (2704 / 315 + n * (2323 / 945)))));
+  this.cbg[1] = np * (5 / 3 + n * (-16 / 15 + n * ( -13 / 9 + n * (904 / 315 + n * (-1522 / 945)))));
+
+  np = np * n;
+  this.cgb[2] = np * (56 / 15 + n * (-136 / 35 + n * (-1262 / 105 + n * (73814 / 2835))));
+  this.cbg[2] = np * (-26 / 15 + n * (34 / 21 + n * (8 / 5 + n * (-12686 / 2835))));
+
+  np = np * n;
+  this.cgb[3] = np * (4279 / 630 + n * (-332 / 35 + n * (-399572 / 14175)));
+  this.cbg[3] = np * (1237 / 630 + n * (-12 / 5 + n * ( -24832 / 14175)));
+
+  np = np * n;
+  this.cgb[4] = np * (4174 / 315 + n * (-144838 / 6237));
+  this.cbg[4] = np * (-734 / 315 + n * (109598 / 31185));
+
+  np = np * n;
+  this.cgb[5] = np * (601676 / 22275);
+  this.cbg[5] = np * (444337 / 155925);
+
+  np = Math.pow(n, 2);
+  this.Qn = this.k0 / (1 + n) * (1 + np * (1 / 4 + np * (1 / 64 + np / 256)));
+
+  this.utg[0] = n * (-0.5 + n * ( 2 / 3 + n * (-37 / 96 + n * ( 1 / 360 + n * (81 / 512 + n * (-96199 / 604800))))));
+  this.gtu[0] = n * (0.5 + n * (-2 / 3 + n * (5 / 16 + n * (41 / 180 + n * (-127 / 288 + n * (7891 / 37800))))));
+
+  this.utg[1] = np * (-1 / 48 + n * (-1 / 15 + n * (437 / 1440 + n * (-46 / 105 + n * (1118711 / 3870720)))));
+  this.gtu[1] = np * (13 / 48 + n * (-3 / 5 + n * (557 / 1440 + n * (281 / 630 + n * (-1983433 / 1935360)))));
+
+  np = np * n;
+  this.utg[2] = np * (-17 / 480 + n * (37 / 840 + n * (209 / 4480 + n * (-5569 / 90720 ))));
+  this.gtu[2] = np * (61 / 240 + n * (-103 / 140 + n * (15061 / 26880 + n * (167603 / 181440))));
+
+  np = np * n;
+  this.utg[3] = np * (-4397 / 161280 + n * (11 / 504 + n * (830251 / 7257600)));
+  this.gtu[3] = np * (49561 / 161280 + n * (-179 / 168 + n * (6601661 / 7257600)));
+
+  np = np * n;
+  this.utg[4] = np * (-4583 / 161280 + n * (108847 / 3991680));
+  this.gtu[4] = np * (34729 / 80640 + n * (-3418889 / 1995840));
+
+  np = np * n;
+  this.utg[5] = np * (-20648693 / 638668800);
+  this.gtu[5] = np * (212378941 / 319334400);
+
+  var Z = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_gatg__["a" /* default */])(this.cbg, this.lat0);
+  this.Zb = -this.Qn * (Z + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_clens__["a" /* default */])(this.gtu, 2 * Z));
+}
+
+function forward(p) {
+  var Ce = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__["a" /* default */])(p.x - this.long0);
+  var Cn = p.y;
+
+  Cn = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_gatg__["a" /* default */])(this.cbg, Cn);
+  var sin_Cn = Math.sin(Cn);
+  var cos_Cn = Math.cos(Cn);
+  var sin_Ce = Math.sin(Ce);
+  var cos_Ce = Math.cos(Ce);
+
+  Cn = Math.atan2(sin_Cn, cos_Ce * cos_Cn);
+  Ce = Math.atan2(sin_Ce * cos_Cn, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_hypot__["a" /* default */])(sin_Cn, cos_Cn * cos_Ce));
+  Ce = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_asinhy__["a" /* default */])(Math.tan(Ce));
+
+  var tmp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_clens_cmplx__["a" /* default */])(this.gtu, 2 * Cn, 2 * Ce);
+
+  Cn = Cn + tmp[0];
+  Ce = Ce + tmp[1];
+
+  var x;
+  var y;
+
+  if (Math.abs(Ce) <= 2.623395162778) {
+    x = this.a * (this.Qn * Ce) + this.x0;
+    y = this.a * (this.Qn * Cn + this.Zb) + this.y0;
+  }
+  else {
+    x = Infinity;
+    y = Infinity;
+  }
+
+  p.x = x;
+  p.y = y;
+
+  return p;
+}
+
+function inverse(p) {
+  var Ce = (p.x - this.x0) * (1 / this.a);
+  var Cn = (p.y - this.y0) * (1 / this.a);
+
+  Cn = (Cn - this.Zb) / this.Qn;
+  Ce = Ce / this.Qn;
+
+  var lon;
+  var lat;
+
+  if (Math.abs(Ce) <= 2.623395162778) {
+    var tmp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_clens_cmplx__["a" /* default */])(this.utg, 2 * Cn, 2 * Ce);
+
+    Cn = Cn + tmp[0];
+    Ce = Ce + tmp[1];
+    Ce = Math.atan(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_sinh__["a" /* default */])(Ce));
+
+    var sin_Cn = Math.sin(Cn);
+    var cos_Cn = Math.cos(Cn);
+    var sin_Ce = Math.sin(Ce);
+    var cos_Ce = Math.cos(Ce);
+
+    Cn = Math.atan2(sin_Cn * cos_Ce, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_hypot__["a" /* default */])(sin_Ce, cos_Ce * cos_Cn));
+    Ce = Math.atan2(sin_Ce, cos_Ce * cos_Cn);
+
+    lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__["a" /* default */])(Ce + this.long0);
+    lat = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_gatg__["a" /* default */])(this.cgb, Cn);
+  }
+  else {
+    lon = Infinity;
+    lat = Infinity;
+  }
+
+  p.x = lon;
+  p.y = lat;
+
+  return p;
+}
+
+var names = ["Extended_Transverse_Mercator", "Extended Transverse Mercator", "etmerc"];
+/* harmony default export */ __webpack_exports__["a"] = ({
+  init: init,
+  forward: forward,
+  inverse: inverse,
+  names: names
+});
+
+
+/***/ }),
+/* 158 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__datum_transform__ = __webpack_require__(405);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__adjust_axis__ = __webpack_require__(388);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Proj__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_toPoint__ = __webpack_require__(154);
+/* harmony export (immutable) */ __webpack_exports__["a"] = transform;
+
+
+
+
+
+function checkNotWGS(source, dest) {
+  return ((source.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["h" /* PJD_3PARAM */] || source.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["i" /* PJD_7PARAM */]) && dest.datumCode !== 'WGS84') || ((dest.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["h" /* PJD_3PARAM */] || dest.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["i" /* PJD_7PARAM */]) && source.datumCode !== 'WGS84');
+}
+
+function transform(source, dest, point) {
+  var wgs84;
+  if (Array.isArray(point)) {
+    point = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_toPoint__["a" /* default */])(point);
+  }
+
+  // Workaround for datum shifts towgs84, if either source or destination projection is not wgs84
+  if (source.datum && dest.datum && checkNotWGS(source, dest)) {
+    wgs84 = new __WEBPACK_IMPORTED_MODULE_3__Proj__["a" /* default */]('WGS84');
+    point = transform(source, wgs84, point);
+    source = wgs84;
+  }
+  // DGR, 2010/11/12
+  if (source.axis !== 'enu') {
+    point = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__adjust_axis__["a" /* default */])(source, false, point);
+  }
+  // Transform source points to long/lat, if they aren't already.
+  if (source.projName === 'longlat') {
+    point = {
+      x: point.x * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */],
+      y: point.y * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */]
+    };
+  }
+  else {
+    if (source.to_meter) {
+      point = {
+        x: point.x * source.to_meter,
+        y: point.y * source.to_meter
+      };
+    }
+    point = source.inverse(point); // Convert Cartesian to longlat
+  }
+  // Adjust for the prime meridian if necessary
+  if (source.from_greenwich) {
+    point.x += source.from_greenwich;
+  }
+
+  // Convert datums if needed, and if possible.
+  point = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__datum_transform__["a" /* default */])(source.datum, dest.datum, point);
+
+  // Adjust for the prime meridian if necessary
+  if (dest.from_greenwich) {
+    point = {
+      x: point.x - dest.from_greenwich,
+      y: point.y
+    };
+  }
+
+  if (dest.projName === 'longlat') {
+    // convert radians to decimal degrees
+    point = {
+      x: point.x * __WEBPACK_IMPORTED_MODULE_0__constants_values__["j" /* R2D */],
+      y: point.y * __WEBPACK_IMPORTED_MODULE_0__constants_values__["j" /* R2D */]
+    };
+  } else { // else project
+    point = dest.forward(point);
+    if (dest.to_meter) {
+      point = {
+        x: point.x / dest.to_meter,
+        y: point.y / dest.to_meter
+      };
+    }
+  }
+
+  // DGR, 2010/11/12
+  if (dest.axis !== 'enu') {
+    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__adjust_axis__["a" /* default */])(dest, true, point);
+  }
+
+  return point;
+}
+
+
+/***/ }),
+/* 159 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parser__ = __webpack_require__(442);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__process__ = __webpack_require__(443);
+var D2R = 0.01745329251994329577;
+
+
+
+
+
+function rename(obj, params) {
+  var outName = params[0];
+  var inName = params[1];
+  if (!(outName in obj) && (inName in obj)) {
+    obj[outName] = obj[inName];
+    if (params.length === 3) {
+      obj[outName] = params[2](obj[outName]);
+    }
+  }
+}
+
+function d2r(input) {
+  return input * D2R;
+}
+
+function cleanWKT(wkt) {
+  if (wkt.type === 'GEOGCS') {
+    wkt.projName = 'longlat';
+  } else if (wkt.type === 'LOCAL_CS') {
+    wkt.projName = 'identity';
+    wkt.local = true;
+  } else {
+    if (typeof wkt.PROJECTION === 'object') {
+      wkt.projName = Object.keys(wkt.PROJECTION)[0];
+    } else {
+      wkt.projName = wkt.PROJECTION;
+    }
+  }
+  if (wkt.UNIT) {
+    wkt.units = wkt.UNIT.name.toLowerCase();
+    if (wkt.units === 'metre') {
+      wkt.units = 'meter';
+    }
+    if (wkt.UNIT.convert) {
+      if (wkt.type === 'GEOGCS') {
+        if (wkt.DATUM && wkt.DATUM.SPHEROID) {
+          wkt.to_meter = wkt.UNIT.convert*wkt.DATUM.SPHEROID.a;
+        }
+      } else {
+        wkt.to_meter = wkt.UNIT.convert, 10;
+      }
+    }
+  }
+  var geogcs = wkt.GEOGCS;
+  if (wkt.type === 'GEOGCS') {
+    geogcs = wkt;
+  }
+  if (geogcs) {
+    //if(wkt.GEOGCS.PRIMEM&&wkt.GEOGCS.PRIMEM.convert){
+    //  wkt.from_greenwich=wkt.GEOGCS.PRIMEM.convert*D2R;
+    //}
+    if (geogcs.DATUM) {
+      wkt.datumCode = geogcs.DATUM.name.toLowerCase();
+    } else {
+      wkt.datumCode = geogcs.name.toLowerCase();
+    }
+    if (wkt.datumCode.slice(0, 2) === 'd_') {
+      wkt.datumCode = wkt.datumCode.slice(2);
+    }
+    if (wkt.datumCode === 'new_zealand_geodetic_datum_1949' || wkt.datumCode === 'new_zealand_1949') {
+      wkt.datumCode = 'nzgd49';
+    }
+    if (wkt.datumCode === 'wgs_1984') {
+      if (wkt.PROJECTION === 'Mercator_Auxiliary_Sphere') {
+        wkt.sphere = true;
+      }
+      wkt.datumCode = 'wgs84';
+    }
+    if (wkt.datumCode.slice(-6) === '_ferro') {
+      wkt.datumCode = wkt.datumCode.slice(0, - 6);
+    }
+    if (wkt.datumCode.slice(-8) === '_jakarta') {
+      wkt.datumCode = wkt.datumCode.slice(0, - 8);
+    }
+    if (~wkt.datumCode.indexOf('belge')) {
+      wkt.datumCode = 'rnb72';
+    }
+    if (geogcs.DATUM && geogcs.DATUM.SPHEROID) {
+      wkt.ellps = geogcs.DATUM.SPHEROID.name.replace('_19', '').replace(/[Cc]larke\_18/, 'clrk');
+      if (wkt.ellps.toLowerCase().slice(0, 13) === 'international') {
+        wkt.ellps = 'intl';
+      }
+
+      wkt.a = geogcs.DATUM.SPHEROID.a;
+      wkt.rf = parseFloat(geogcs.DATUM.SPHEROID.rf, 10);
+    }
+    if (~wkt.datumCode.indexOf('osgb_1936')) {
+      wkt.datumCode = 'osgb36';
+    }
+    if (~wkt.datumCode.indexOf('osni_1952')) {
+      wkt.datumCode = 'osni52';
+    }
+    if (~wkt.datumCode.indexOf('tm65')
+      || ~wkt.datumCode.indexOf('geodetic_datum_of_1965')) {
+      wkt.datumCode = 'ire65';
+    }
+  }
+  if (wkt.b && !isFinite(wkt.b)) {
+    wkt.b = wkt.a;
+  }
+
+  function toMeter(input) {
+    var ratio = wkt.to_meter || 1;
+    return input * ratio;
+  }
+  var renamer = function(a) {
+    return rename(wkt, a);
+  };
+  var list = [
+    ['standard_parallel_1', 'Standard_Parallel_1'],
+    ['standard_parallel_2', 'Standard_Parallel_2'],
+    ['false_easting', 'False_Easting'],
+    ['false_northing', 'False_Northing'],
+    ['central_meridian', 'Central_Meridian'],
+    ['latitude_of_origin', 'Latitude_Of_Origin'],
+    ['latitude_of_origin', 'Central_Parallel'],
+    ['scale_factor', 'Scale_Factor'],
+    ['k0', 'scale_factor'],
+    ['latitude_of_center', 'Latitude_of_center'],
+    ['lat0', 'latitude_of_center', d2r],
+    ['longitude_of_center', 'Longitude_Of_Center'],
+    ['longc', 'longitude_of_center', d2r],
+    ['x0', 'false_easting', toMeter],
+    ['y0', 'false_northing', toMeter],
+    ['long0', 'central_meridian', d2r],
+    ['lat0', 'latitude_of_origin', d2r],
+    ['lat0', 'standard_parallel_1', d2r],
+    ['lat1', 'standard_parallel_1', d2r],
+    ['lat2', 'standard_parallel_2', d2r],
+    ['alpha', 'azimuth', d2r],
+    ['srsCode', 'name']
+  ];
+  list.forEach(renamer);
+  if (!wkt.long0 && wkt.longc && (wkt.projName === 'Albers_Conic_Equal_Area' || wkt.projName === 'Lambert_Azimuthal_Equal_Area')) {
+    wkt.long0 = wkt.longc;
+  }
+  if (!wkt.lat_ts && wkt.lat1 && (wkt.projName === 'Stereographic_South_Pole' || wkt.projName === 'Polar Stereographic (variant B)')) {
+    wkt.lat0 = d2r(wkt.lat1 > 0 ? 90 : -90);
+    wkt.lat_ts = wkt.lat1;
+  }
+}
+/* harmony default export */ __webpack_exports__["a"] = (function(wkt) {
+  var lisp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__parser__["a" /* default */])(wkt);
+  var type = lisp.shift();
+  var name = lisp.shift();
+  lisp.unshift(['name', name]);
+  lisp.unshift(['type', type]);
+  var obj = {};
+  __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__process__["a" /* sExpr */])(lisp, obj);
+  cleanWKT(obj);
+  return obj;
+});
+
+
+/***/ }),
+/* 160 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _constants = __webpack_require__(1);
+
+var _Map = __webpack_require__(175);
+
+var _Map2 = _interopRequireDefault(_Map);
+
+var _Layer = __webpack_require__(55);
+
+var _Layer2 = _interopRequireDefault(_Layer);
+
+var _feature = __webpack_require__(80);
+
+var _feature2 = _interopRequireDefault(_feature);
+
+var _CoordsTransform = __webpack_require__(202);
+
+var _CoordsTransform2 = _interopRequireDefault(_CoordsTransform);
+
+var _LayerSwitcher = __webpack_require__(204);
+
+var _LayerSwitcher2 = _interopRequireDefault(_LayerSwitcher);
+
+var _MeasureTool = __webpack_require__(205);
+
+var _MeasureTool2 = _interopRequireDefault(_MeasureTool);
+
+var _LayerSpyglass = __webpack_require__(171);
+
+var _LayerSpyglass2 = _interopRequireDefault(_LayerSpyglass);
+
+var _MisplacesGlass = __webpack_require__(172);
+
+var _MisplacesGlass2 = _interopRequireDefault(_MisplacesGlass);
+
+var _GeomCoder = __webpack_require__(203);
+
+var _GeomCoder2 = _interopRequireDefault(_GeomCoder);
+
+var _PlotDraw = __webpack_require__(179);
+
+var _PlotDraw2 = _interopRequireDefault(_PlotDraw);
+
+var _PlotEdit = __webpack_require__(180);
+
+var _PlotEdit2 = _interopRequireDefault(_PlotEdit);
+
+var _utils = __webpack_require__(82);
+
+var utils = _interopRequireWildcard(_utils);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var HMap = {};
+HMap.version = __webpack_require__(444).version;
+
+
+HMap.ol = _constants.ol;
+HMap.proj4 = _constants.proj4;
+HMap.Map = _Map2.default;
+HMap.Utils = utils;
+HMap.PlotDraw = _PlotDraw2.default;
+HMap.PlotEdit = _PlotEdit2.default;
+HMap.Layer = _Layer2.default;
+HMap.Feature = _feature2.default;
+HMap.CoordsTransform = _CoordsTransform2.default;
+HMap.LayerSwitcher = _LayerSwitcher2.default;
+HMap.MeasureTool = _MeasureTool2.default;
+HMap.LayerSpyglass = _LayerSpyglass2.default;
+HMap.MisplacesGlass = _MisplacesGlass2.default;
+HMap.GeomCoder = _GeomCoder2.default;
+
+HMap.inherits = function (childCtor, parentCtor) {
+  childCtor.prototype = Object.create(parentCtor.prototype);
+  childCtor.prototype.constructor = childCtor;
+};
+
+HMap.nullFunction = function () {};
+
+exports.default = HMap;
+module.exports = exports['default'];
+
+/***/ }),
+/* 161 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {
+
+__webpack_require__(386);
+
+__webpack_require__(441);
+
+__webpack_require__(206);
+
+if (global._babelPolyfill) {
+  throw new Error("only one instance of babel-polyfill is allowed");
+}
+global._babelPolyfill = true;
+
+var DEFINE_PROPERTY = "defineProperty";
+function define(O, key, value) {
+  O[key] || Object[DEFINE_PROPERTY](O, key, {
+    writable: true,
+    configurable: true,
+    value: value
+  });
+}
+
+define(String.prototype, "padLeft", "".padStart);
+define(String.prototype, "padRight", "".padEnd);
+
+"pop,reverse,shift,keys,values,entries,indexOf,every,some,forEach,map,filter,find,findIndex,includes,join,slice,concat,push,splice,unshift,sort,lastIndexOf,reduce,reduceRight,copyWithin,fill".split(",").forEach(function (key) {
+  [][key] && define(Array, key, Function.call.bind([][key]));
+});
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(115)))
+
+/***/ }),
+/* 162 */,
+/* 163 */,
+/* 164 */,
+/* 165 */,
+/* 166 */,
+/* 167 */,
+/* 168 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var config = {
+  interactions: {
+    altShiftDragRotate: true,
+    doubleClickZoom: true,
+    keyboard: true,
+    mouseWheelZoom: true,
+    shiftDragZoom: true,
+    dragPan: true,
+    pinchRotate: true,
+    pinchZoom: true,
+    zoomDelta: 5,
+    zoomDuration: 5 },
+  controls: {
+    attribution: true,
+    attributionOptions: {
+      className: 'ol-attribution',
+      target: 'attributionTarget'
+    },
+    rotate: true,
+    rotateOptions: {
+      className: 'ol-rotate',
+      target: 'rotateTarget'
+    },
+    zoom: true,
+    zoomOptions: {
+      className: 'ol-zoom',
+      target: 'zoomTarget'
+    },
+    overViewMapVisible: false,
+    scaleLineVisible: true
+  },
+  view: {
+    center: [0, 0],
+
+    enableRotation: true,
+    extent: [],
+
+    projection: 'EPSG:3857',
+    resolutions: [],
+    rotation: 0,
+    resolution: '',
+    zoom: 0,
+    zoomFactor: 2 },
+  logo: {}
+};
+
+exports.default = config;
+module.exports = exports['default'];
+
+/***/ }),
+/* 169 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.removeListener = exports.addListener = exports.getDomEventKey = exports.createHidden = exports.setClass = exports.removeClass = exports.addClass = exports.hasClass = exports.toBack = exports.toFront = exports.empty = exports.remove = exports.create = exports.getStyle = exports.getClass = exports.getElementsByClassName = exports.getChildByTagName = exports.get = undefined;
+
+var _utils = __webpack_require__(82);
+
+var get = exports.get = function get(id) {
+  return typeof id === 'string' ? document.getElementById(id) : id;
+};
+
+var getChildByTagName = exports.getChildByTagName = function getChildByTagName(str, container) {
+  return container.getElementsByTagName(str);
+};
+
+var getElementsByClassName = exports.getElementsByClassName = function getElementsByClassName(str, container, root) {
+  var _root = root || window;
+  var $ = _root.document.querySelector.bind(_root.document);
+
+  var target = $(str);
+  return target;
+};
+
+var getClass = exports.getClass = function getClass(elem) {
+  return elem.getAttribute && elem.getAttribute('class') || '';
+};
+
+var getStyle = exports.getStyle = function getStyle(el, style) {
+  var value = el.style[style] || el.currentStyle && el.currentStyle[style];
+  if ((!value || value === 'auto') && document.defaultView) {
+    var css = document.defaultView.getComputedStyle(el, null);
+    value = css ? css[style] : null;
+  }
+  return value === 'auto' ? null : value;
+};
+
+var create = exports.create = function create(tagName, className, container, id) {
+  var el = document.createElement(tagName);
+  el.className = className || '';
+  if (id) {
+    el.id = id;
+  }
+  if (container) {
+    container.appendChild(el);
+  }
+  return el;
+};
+
+var remove = exports.remove = function remove(el) {
+  var parent = el.parentNode;
+  if (parent) {
+    parent.removeChild(el);
+  }
+};
+
+var empty = exports.empty = function empty(el) {
+  while (el.firstChild) {
+    el.removeChild(el.firstChild);
+  }
+};
+
+var toFront = exports.toFront = function toFront(el) {
+  el.parentNode.appendChild(el);
+};
+
+var toBack = exports.toBack = function toBack(el) {
+  var parent = el.parentNode;
+  parent.insertBefore(el, parent.firstChild);
+};
+
+var hasClass = exports.hasClass = function hasClass(el, name) {
+  if (el.classList !== undefined) {
+    return el.classList.contains(name);
+  }
+  var className = getClass(el);
+  return className.length > 0 && new RegExp('(^|\\s)' + name + '(\\s|$)').test(className);
+};
+
+var addClass = exports.addClass = function addClass(el, name) {
+  if (el.classList !== undefined) {
+    var classes = (0, _utils.splitWords)(name);
+    for (var i = 0, len = classes.length; i < len; i++) {
+      el.classList.add(classes[i]);
+    }
+  } else if (!hasClass(el, name)) {
+    var className = getClass(el);
+    setClass(el, (className ? className + ' ' : '') + name);
+  }
+};
+
+var removeClass = exports.removeClass = function removeClass(el, name) {
+  if (el.classList !== undefined) {
+    el.classList.remove(name);
+  } else {
+    setClass(el, String.trim((' ' + getClass(el) + ' ').replace(' ' + name + ' ', ' ')));
+  }
+};
+
+var setClass = exports.setClass = function setClass(el, name) {
+  if (el.className.baseVal === undefined) {
+    el.className = name;
+  } else {
+    el.className.baseVal = name;
+  }
+};
+
+var createHidden = exports.createHidden = function createHidden(tagName, parent, id) {
+  var element = document.createElement(tagName);
+  element.style.display = 'none';
+  if (id) {
+    element.id = id;
+  }
+  if (parent) {
+    parent.appendChild(element);
+  }
+  return element;
+};
+
+var getDomEventKey = exports.getDomEventKey = function getDomEventKey(type, fn, context) {
+  return '_p_dom_event_' + type + '_' + (0, _utils.stamp)(fn) + (context ? '_' + (0, _utils.stamp)(context) : '');
+};
+
+var addListener = exports.addListener = function addListener(element, type, fn, context) {
+  var eventKey = getDomEventKey(type, fn, context);
+  var handler = element[eventKey];
+  if (handler) {
+    return this;
+  }
+  handler = function handler(e) {
+    return fn.call(context || element, e);
+  };
+  if ('addEventListener' in element) {
+    element.addEventListener(type, handler, false);
+  } else if ('attachEvent' in element) {
+    element.attachEvent('on' + type, handler);
+  }
+  element[eventKey] = handler;
+  return this;
+};
+
+var removeListener = exports.removeListener = function removeListener(element, type, fn, context) {
+  var eventKey = getDomEventKey(type, fn, context);
+  var handler = element[eventKey];
+  if (!handler) {
+    return this;
+  }
+  if ('removeEventListener' in element) {
+    element.removeEventListener(type, handler, false);
+  } else if ('detachEvent' in element) {
+    element.detachEvent('on' + type, handler);
+  }
+  element[eventKey] = null;
+  return this;
+};
+
+/***/ }),
+/* 170 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _constants = __webpack_require__(1);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var appDrag = function (_ol$interaction$Point) {
+  _inherits(appDrag, _ol$interaction$Point);
+
+  function appDrag() {
+    _classCallCheck(this, appDrag);
+
+    var _this = _possibleConstructorReturn(this, (appDrag.__proto__ || Object.getPrototypeOf(appDrag)).call(this));
+
+    _constants.ol.interaction.Pointer.call(_this, {
+      handleDownEvent: _this.handleDownEvent,
+      handleDragEvent: _this.handleDragEvent,
+      handleMoveEvent: _this.handleMoveEvent,
+      handleUpEvent: _this.handleUpEvent
+    });
+
+    _this.customType = 'appDrag';
+
+    _this.coordinate_ = null;
+
+    _this.cursor_ = 'pointer';
+
+    _this.feature_ = null;
+
+    _this.previousCursor_ = undefined;
+    return _this;
+  }
+
+  _createClass(appDrag, [{
+    key: 'handleDownEvent',
+    value: function handleDownEvent(evt) {
+      if (evt.originalEvent.button === 0) {
+        var map = evt.map;
+        var feature = map.forEachFeatureAtPixel(evt.pixel, function (feature) {
+          return feature;
+        });
+        if (feature && feature.get('params') && feature.get('params').moveable) {
+          this.coordinate_ = evt.coordinate;
+          this.feature_ = feature;
+        }
+        map.dispatchEvent({
+          type: 'mouseDownEvent',
+          originEvent: evt,
+          value: feature
+        });
+        return !!feature;
+      }
+    }
+  }, {
+    key: 'handleDragEvent',
+    value: function handleDragEvent(evt) {
+      if (!this.coordinate_) {
+        return;
+      }
+      var deltaX = evt.coordinate[0] - this.coordinate_[0];
+      var deltaY = evt.coordinate[1] - this.coordinate_[1];
+      var geometry = this.feature_.getGeometry();
+      geometry.translate(deltaX, deltaY);
+      this.coordinate_[0] = evt.coordinate[0];
+      this.coordinate_[1] = evt.coordinate[1];
+      this.feature_.dispatchEvent('featureMove');
+    }
+  }, {
+    key: 'handleMoveEvent',
+    value: function handleMoveEvent(evt) {
+      if (this.cursor_) {
+        var map = evt.map;
+        var feature = null;
+        if (this.feature_) {
+          feature = this.feature_;
+        } else {
+          feature = map.forEachFeatureAtPixel(evt.pixel, function (feature) {
+            return feature;
+          });
+        }
+        var element = evt.map.getTargetElement();
+        if (feature) {
+          if (element.style.cursor !== this.cursor_) {
+            this.previousCursor_ = element.style.cursor;
+            element.style.cursor = this.cursor_;
+          }
+        } else if (this.previousCursor_ !== undefined) {
+          element.style.cursor = this.previousCursor_;
+          this.previousCursor_ = undefined;
+        }
+      }
+    }
+  }, {
+    key: 'handleUpEvent',
+    value: function handleUpEvent() {
+      this.coordinate_ = null;
+      this.feature_ = null;
+      return false;
+    }
+  }]);
+
+  return appDrag;
+}(_constants.ol.interaction.Pointer);
+
+exports.default = appDrag;
+module.exports = exports['default'];
+
+/***/ }),
+/* 171 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _constants = __webpack_require__(1);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var LayerSpyglass = function () {
+  function LayerSpyglass(params) {
+    _classCallCheck(this, LayerSpyglass);
+
+    this.options = params || {};
+
+    if (this.options.map && this.options.map instanceof _constants.ol.Map) {
+      this.map = this.options.map;
+    } else {
+      throw new Error('缺少地图对象！');
+    }
+
+    this.container = this.map.getTargetElement();
+
+    this.imagery = this.options['imagery'];
+
+    this.mousePosition = null;
+
+    this.radius = 0;
+
+    this.activate();
+  }
+
+  _createClass(LayerSpyglass, [{
+    key: 'activate',
+    value: function activate() {
+      var _this = this;
+
+      this.container.addEventListener('mousemove', function (event) {
+        _this.mousePosition = _this.map.getEventPixel(event);
+        _this.map.render();
+      });
+
+      this.container.addEventListener('mouseout', function () {
+        _this.map.render();
+      });
+
+      document.addEventListener('keydown', function (evt) {
+        if (evt.which === 38) {
+          _this.radius = Math.min(_this.radius + 5, 150);
+          _this.map.render();
+          evt.preventDefault();
+        } else if (evt.which === 40) {
+          _this.radius = Math.max(_this.radius - 5, 25);
+          _this.map.render();
+          evt.preventDefault();
+        }
+      });
+
+      this.renderTool();
+    }
+  }, {
+    key: 'renderTool',
+    value: function renderTool() {
+      var _this2 = this;
+
+      this.imagery.on('precompose', function (event) {
+        var _ref = [event.context, event.frameState.pixelRatio],
+            ctx = _ref[0],
+            pixelRatio = _ref[1];
+
+        ctx.save();
+        ctx.beginPath();
+        if (_this2.mousePosition) {
+          ctx.arc(_this2.mousePosition[0] * pixelRatio, _this2.mousePosition[1] * pixelRatio, _this2.radius * pixelRatio, 0, 2 * Math.PI);
+          ctx.lineWidth = 5 * pixelRatio;
+          ctx.strokeStyle = 'rgba(0,0,0,0.5)';
+          ctx.stroke();
+        }
+        ctx.clip();
+      });
+
+      this.imagery.on('postcompose', function (event) {
+        var ctx = event.context;
+        ctx.restore();
+      });
+    }
+  }, {
+    key: 'destroy',
+    value: function destroy() {
+      console.log('destroying');
+    }
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      if (map && map instanceof _constants.ol.Map) {
+        this.map = map;
+      }
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }]);
+
+  return LayerSpyglass;
+}();
+
+exports.default = LayerSpyglass;
+module.exports = exports['default'];
+
+/***/ }),
+/* 172 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _constants = __webpack_require__(1);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var MisplacesGlass = function () {
+  function MisplacesGlass(params) {
+    _classCallCheck(this, MisplacesGlass);
+
+    this.options = params || {};
+
+    if (this.options.map && this.options.map instanceof _constants.ol.Map) {
+      this.map = this.options.map;
+    } else {
+      throw new Error('缺少地图对象！');
+    }
+
+    this.container = this.map.getTargetElement();
+
+    this.imagery = this.options['imagery'];
+
+    this.mousePosition = null;
+
+    this.radius = 0;
+
+    this.activate();
+  }
+
+  _createClass(MisplacesGlass, [{
+    key: 'activate',
+    value: function activate() {
+      var _this = this;
+
+      this.container.addEventListener('mousemove', function (event) {
+        _this.mousePosition = _this.map.getEventPixel(event);
+        _this.map.render();
+      });
+
+      this.container.addEventListener('mouseout', function () {
+        _this.map.render();
+      });
+
+      document.addEventListener('keydown', function (evt) {
+        if (evt.which === 38) {
+          _this.radius = Math.min(_this.radius + 5, 150);
+          _this.map.render();
+          evt.preventDefault();
+        } else if (evt.which === 40) {
+          _this.radius = Math.max(_this.radius - 5, 25);
+          _this.map.render();
+          evt.preventDefault();
+        }
+      });
+
+      this.renderTool();
+    }
+  }, {
+    key: 'renderTool',
+    value: function renderTool() {
+      var _this2 = this;
+
+      this.imagery.on('postcompose', function (event) {
+        if (_this2.mousePosition) {
+          var context = event.context;
+          var pixelRatio = event.frameState.pixelRatio;
+          var half = _this2.radius * pixelRatio;
+          var centerX = _this2.mousePosition[0] * pixelRatio;
+          var centerY = _this2.mousePosition[1] * pixelRatio;
+          var originX = centerX - half;
+          var originY = centerY - half;
+          var size = 2 * half + 1;
+          var sourceData = context.getImageData(originX, originY, size, size).data;
+          var dest = context.createImageData(size, size);
+          var destData = dest.data;
+          for (var j = 0; j < size; ++j) {
+            for (var i = 0; i < size; ++i) {
+              var dI = i - half;
+              var dJ = j - half;
+              var dist = Math.sqrt(dI * dI + dJ * dJ);
+              var sourceI = i;
+              var sourceJ = j;
+              if (dist < half) {
+                sourceI = Math.round(half + dI / 2);
+                sourceJ = Math.round(half + dJ / 2);
+              }
+              var destOffset = (j * size + i) * 4;
+              var sourceOffset = (sourceJ * size + sourceI) * 4;
+              destData[destOffset] = sourceData[sourceOffset];
+              destData[destOffset + 1] = sourceData[sourceOffset + 1];
+              destData[destOffset + 2] = sourceData[sourceOffset + 2];
+              destData[destOffset + 3] = sourceData[sourceOffset + 3];
+            }
+          }
+          context.beginPath();
+          context.arc(centerX, centerY, half, 0, 2 * Math.PI);
+          context.lineWidth = 3 * pixelRatio;
+          context.strokeStyle = 'rgba(255,255,255,0.5)';
+          context.putImageData(dest, originX, originY);
+          context.stroke();
+          context.restore();
+        }
+      });
+    }
+  }, {
+    key: 'destroy',
+    value: function destroy() {
+      console.log('destroying');
+    }
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      if (map && map instanceof _constants.ol.Map) {
+        this.map = map;
+      }
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }]);
+
+  return MisplacesGlass;
+}();
+
+exports.default = MisplacesGlass;
+module.exports = exports['default'];
+
+/***/ }),
+/* 173 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _constants = __webpack_require__(1);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Controls = function () {
+  function Controls() {
+    _classCallCheck(this, Controls);
+  }
+
+  _createClass(Controls, [{
+    key: '_addControls',
+    value: function _addControls(params) {
+      var options = params || {};
+
+      return new _constants.ol.control.defaults({
+        attribution: options['attribution'] === false ? options['attribution'] : true,
+        rotate: options['rotate'] === false ? options['rotate'] : true,
+        zoom: options['zoom'] === false ? options['zoom'] : true
+      });
+    }
+  }, {
+    key: '_addScaleLine',
+    value: function _addScaleLine() {
+      var control = this.map.getControls();
+      control.extend([new _constants.ol.control.ScaleLine()]);
+    }
+  }]);
+
+  return Controls;
+}();
+
+exports.default = Controls;
+module.exports = exports['default'];
+
+/***/ }),
+/* 174 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _constants = __webpack_require__(1);
+
+var _appDrag = __webpack_require__(170);
+
+var _appDrag2 = _interopRequireDefault(_appDrag);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Interactions = function () {
+  function Interactions() {
+    _classCallCheck(this, Interactions);
+  }
+
+  _createClass(Interactions, [{
+    key: '_addInteractions',
+    value: function _addInteractions(params) {
+      var options = params || {};
+
+      return new _constants.ol.interaction.defaults({
+        altShiftDragRotate: options['altShiftDragRotate'] === false ? options['altShiftDragRotate'] : true,
+        doubleClickZoom: options['doubleClickZoom'] === false ? options['doubleClickZoom'] : true,
+        keyboard: options['keyboard'] === false ? options['keyboard'] : true,
+        mouseWheelZoom: options['mouseWheelZoom'] === false ? options['mouseWheelZoom'] : true,
+        shiftDragZoom: options['shiftDragZoom'] === false ? options['shiftDragZoom'] : true,
+        dragPan: options['dragPan'] === false ? options['dragPan'] : true,
+        pinchRotate: options['pinchRotate'] === false ? options['pinchRotate'] : true,
+        pinchZoom: options['pinchZoom'] === false ? options['pinchZoom'] : true,
+        zoomDelta: options['zoomDelta'] && typeof options['zoomDelta'] === 'number' ? options['zoomDelta'] : 1,
+        zoomDuration: options['zoomDuration'] && typeof options['zoomDelta'] === 'number' ? options['zoomDuration'] : 300 }).extend([new _appDrag2.default()]);
+    }
+  }]);
+
+  return Interactions;
+}();
+
+exports.default = Interactions;
+module.exports = exports['default'];
+
+/***/ }),
+/* 175 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _mixin = __webpack_require__(46);
+
+var _mixin2 = _interopRequireDefault(_mixin);
+
+var _constants = __webpack_require__(1);
+
+var _baseLayer = __webpack_require__(177);
+
+var _baseLayer2 = _interopRequireDefault(_baseLayer);
+
+var _Controls = __webpack_require__(173);
+
+var _Controls2 = _interopRequireDefault(_Controls);
+
+var _Interactions = __webpack_require__(174);
+
+var _Interactions2 = _interopRequireDefault(_Interactions);
+
+var _View = __webpack_require__(176);
+
+var _View2 = _interopRequireDefault(_View);
+
+var _Layer = __webpack_require__(55);
+
+var _Layer2 = _interopRequireDefault(_Layer);
+
+var _feature = __webpack_require__(80);
+
+var _feature2 = _interopRequireDefault(_feature);
+
+var _Style = __webpack_require__(81);
+
+var _Style2 = _interopRequireDefault(_Style);
+
+var _Overlay = __webpack_require__(178);
+
+var _Overlay2 = _interopRequireDefault(_Overlay);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Map = function (_mix) {
+  _inherits(Map, _mix);
+
+  function Map() {
+    _classCallCheck(this, Map);
+
+    var _this = _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).call(this));
+
+    _this.addPointHandlerClick = null;
+    _this.plotDraw = null;
+    _this.plotEdit = null;
+    _this._lastDrawInteractionGeometry = null;
+    window.ObservableObj = new _constants.ol.Object();
+    _constants.proj4.defs('EPSG:4490', '+proj=longlat +ellps=GRS80 +no_defs');
+    _constants.ol.proj.setProj4(_constants.proj4);
+
+    _this.currentMapLines = [];
+
+    _this.currentMapPoints = [];
+
+    _this.currentMapPolygon = [];
+
+    _this.lineLayers = new Set();
+
+    _this.pointLayers = new Set();
+
+    _this.polygonLayers = new Set();
+
+    _this.circleSerachFeat = null;
+
+    _this.popupOverlay = null;
+    return _this;
+  }
+
+  _createClass(Map, [{
+    key: 'initMap',
+    value: function initMap(mapDiv, params) {
+      var options = params || {};
+
+      this.map = new _constants.ol.Map({
+        target: mapDiv,
+        loadTilesWhileAnimating: false,
+        loadTilesWhileInteracting: false,
+        logo: this._addCopyRight(options['logo'] || {}),
+        layers: this.addBaseLayers(options['baseLayers'], options['view']),
+        view: this._addView(options['view']),
+        interactions: this._addInteractions(options['interactions']),
+        controls: this._addControls(options['controls'])
+      });
+
+      this.map.on('click', function (event) {
+        console.log(event.coordinate);
+      });
+    }
+  }, {
+    key: '_addCopyRight',
+    value: function _addCopyRight(params) {
+      var logo = {
+        href: 'https://aurorafe.github.io',
+        src: 'data:image/png;base64,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'
+      };
+      if (params['href']) {
+        logo.href = params['href'];
+      }
+      if (params['src']) {
+        logo.src = params['src'];
+      }
+      return logo;
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      if (map && map instanceof _constants.ol.Map) {
+        this.map = map;
+      }
+    }
+  }, {
+    key: 'updateSize',
+    value: function updateSize() {
+      this.map.updateSize();
+    }
+  }]);
+
+  return Map;
+}((0, _mixin2.default)(_baseLayer2.default, _Controls2.default, _Interactions2.default, _View2.default, _Style2.default, _Layer2.default, _feature2.default, _Overlay2.default));
+
+exports.default = Map;
+module.exports = exports['default'];
+
+/***/ }),
+/* 176 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _constants = __webpack_require__(1);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var View = function () {
+  function View() {
+    _classCallCheck(this, View);
+  }
+
+  _createClass(View, [{
+    key: '_addView',
+    value: function _addView(params) {
+      var option = params || {};
+      return new _constants.ol.View({
+        center: option['center'] && Array.isArray(option['center']) ? option['center'] : [0, 0],
+        zoom: option['zoom'] && typeof option['zoom'] === 'number' ? option['zoom'] : 0,
+        zoomFactor: option['zoomFactor'] && typeof option['zoomFactor'] === 'number' ? option['zoomFactor'] : 2,
+        rotation: option['rotation'] && typeof option['rotation'] === 'number' ? option['rotation'] : 0,
+        enableRotation: option['enableRotation'] === false ? option['enableRotation'] : true,
+        projection: option['projection'] ? option['projection'] : 'EPSG:3857',
+        extent: option['extent'] && Array.isArray(option['extent']) && option['extent'].length === 4 ? option['extent'] : undefined,
+        resolutions: option['resolutions'] && Array.isArray(option['resolutions']) && option['resolutions'].length > 0 ? option['resolutions'] : undefined
+      });
+    }
+  }]);
+
+  return View;
+}();
+
+exports.default = View;
+module.exports = exports['default'];
+
+/***/ }),
+/* 177 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _constants = __webpack_require__(1);
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var BaseLayers = function () {
+  function BaseLayers() {
+    _classCallCheck(this, BaseLayers);
+  }
+
+  _createClass(BaseLayers, [{
+    key: 'addBaseLayers',
+    value: function addBaseLayers(params, view) {
+      var options = params || [];
+      var _view = view || {};
+      if (_view) {
+        this.projection = _constants.ol.proj.get(_view['projection'] ? _view.projection : 'EPSG:3857');
+
+        this.fullExtent = _view['fullExtent'] ? _view.fullExtent : [-180, -90, 180, 90];
+
+        this.projection.setExtent(this.fullExtent);
+
+        this.origin = _view.origin;
+
+        this.tileSize = _view.tileSize;
+
+        this.resolutions = _view['resolutions'];
+      }
+
+      if (!options || !Array.isArray(options) || options.length <= 0) {
+        return [new _constants.ol.layer.Group({
+          layers: [new _constants.ol.layer.Tile({
+            source: new _constants.ol.source.OSM()
+          })],
+          isBaseLayer: true
+        })];
+      } else {
+        return [new _constants.ol.layer.Group({
+          layers: this._getBaseLayerGroup(params),
+          isBaseLayer: true
+        })];
+      }
+    }
+  }, {
+    key: '_getBaseLayerGroup',
+    value: function _getBaseLayerGroup(layerConfig) {
+      var _this = this;
+
+      var layers = [],
+          labelLayers = [],
+          _layers = [],
+          labelLayersConfig = [];
+
+      if (layerConfig && Array.isArray(layerConfig) && layerConfig.length > 0) {
+        layerConfig.forEach(function (config) {
+          if (config['layerName'] && config['layerUrl'] && config['layerType']) {
+            var layer = null;
+            switch (config['layerType']) {
+              case 'TileXYZ':
+                layer = _this._getXYZLayer(config);
+                break;
+              case 'TitleWMTS':
+                layer = _this._getWMTSLayer(config);
+                break;
+              case 'OSM':
+                layer = _this._getOSMLayer(config);
+                break;
+              case 'ImageWMS':
+                layer = _this._getImageWMSLayer(config);
+                break;
+              case 'TileWMS':
+                layer = _this._getTileWMSLayer(config);
+                break;
+            }
+            if (layer) layers.push(layer);
+            if (config['label']) {
+              labelLayersConfig.push(config['label']);
+            }
+          }
+        });
+      }
+      labelLayers = this._getBaseLayerLabel(labelLayersConfig);
+      _layers = layers.concat(labelLayers);
+      return _layers;
+    }
+  }, {
+    key: '_getBaseLayerLabel',
+    value: function _getBaseLayerLabel(labelLayersConfig) {
+      var _this2 = this;
+
+      var labelLayers = [],
+          _labelLayersLayerNames = new Set();
+
+      if (labelLayersConfig && Array.isArray(labelLayersConfig) && labelLayersConfig.length > 0) {
+        labelLayersConfig.forEach(function (config) {
+          if (config['layerName'] && config['layerUrl'] && config['layerType']) {
+            _labelLayersLayerNames.add(config['layerName']);
+          }
+        });
+        [].concat(_toConsumableArray(_labelLayersLayerNames)).forEach(function (layerName) {
+          labelLayersConfig.every(function (configM) {
+            if (configM && configM['layerName'] === layerName) {
+              var labelLayer = null;
+              switch (configM['layerType']) {
+                case 'TileXYZ':
+                  labelLayer = _this2._getXYZLayer(configM);
+                  break;
+                case 'TitleWMTS':
+                  labelLayer = _this2._getWMTSLayer(configM);
+                  break;
+                case 'ImageWMS':
+                  labelLayer = _this2._getImageWMSLayer(configM);
+                  break;
+                case 'TileWMS':
+                  labelLayer = _this2._getTileWMSLayer(configM);
+                  break;
+              }
+              if (labelLayer) labelLayers.push(labelLayer);
+              return false;
+            }
+            return true;
+          });
+        });
+      }
+      return labelLayers;
+    }
+  }, {
+    key: '_getXYZLayer',
+    value: function _getXYZLayer(config) {
+      var tileUrl = config['layerUrl'];
+      var tileGrid = new _constants.ol.tilegrid.TileGrid({
+        tileSize: this.tileSize,
+        origin: this.origin,
+        extent: this.fullExtent,
+        resolutions: this.resolutions
+      });
+      var tileArcGISXYZ = new _constants.ol.source.XYZ({
+        wrapX: false,
+        tileGrid: tileGrid,
+        attributions: this._getAttribution(config['attribution']),
+        tileSize: this.tileSize,
+        opaque: config['opaque'] === true ? config['opaque'] : false,
+        tilePixelRatio: 1,
+        projection: this.projection,
+
+        tileUrlFunction: function tileUrlFunction(tileCoord) {
+          var url = (tileUrl + '/tile/{z}/{y}/{x}').replace('{z}', tileCoord[0].toString()).replace('{x}', tileCoord[1].toString()).replace('{y}', (-tileCoord[2] - 1).toString());
+          return url;
+        }
+      });
+      var baseLayer = new _constants.ol.layer.Tile({
+        isBaseLayer: true,
+        alias: config['alias'] ? config['alias'] : '',
+        isDefault: config['isDefault'] === true ? config['isDefault'] : false,
+        visible: config['isDefault'] === true ? config['isDefault'] : false,
+        layerName: config['layerName'] ? config.layerName : '',
+        source: tileArcGISXYZ
+      });
+      return baseLayer;
+    }
+  }, {
+    key: '_getOSMLayer',
+    value: function _getOSMLayer(config) {
+      var baseLayer = new _constants.ol.layer.Tile({
+        isBaseLayer: true,
+        alias: config['alias'] ? config['alias'] : '',
+        isDefault: config['isDefault'] === true ? config['isDefault'] : false,
+        visible: config['isDefault'] === true ? config['isDefault'] : false,
+        layerName: config['layerName'] ? config.layerName : '',
+        source: new _constants.ol.source.OSM({
+          attributions: this._getAttribution(config['attribution']),
+          wrapX: false,
+          opaque: config['opaque'] === true ? config['opaque'] : false,
+          url: config['layerUrl'] ? config['layerUrl'] : 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          crossOrigin: 'Anonymous'
+        })
+      });
+      return baseLayer;
+    }
+  }, {
+    key: '_getWMTSLayer',
+    value: function _getWMTSLayer(config) {
+      var projection = _constants.ol.proj.get('EPSG:4326');
+      var size = _constants.ol.extent.getWidth(projection.getExtent()) / 256;
+      var resolutions = new Array(19);
+      var matrixIds = new Array(19);
+      for (var z = 0; z < 19; ++z) {
+        resolutions[z] = size / Math.pow(2, z);
+        matrixIds[z] = z;
+      }
+      var layer = new _constants.ol.layer.Tile({
+        isBaseLayer: true,
+        alias: config['alias'] ? config['alias'] : '',
+        isDefault: config['isDefault'] === true ? config['isDefault'] : false,
+        layerName: config['layerName'] ? config.layerName : '',
+        visible: config['isDefault'] === true ? config['isDefault'] : false,
+        source: new _constants.ol.source.WMTS({
+          url: config['layerUrl'],
+          layer: config['layer'],
+          matrixSet: 'c',
+          format: 'tiles',
+          crossOrigin: 'Anonymous',
+          attributions: this._getAttribution(config['attribution']),
+          projection: projection,
+          tileGrid: new _constants.ol.tilegrid.WMTS({
+            origin: _constants.ol.extent.getTopLeft(projection.getExtent()),
+            resolutions: resolutions,
+            matrixIds: matrixIds
+          }),
+          style: 'default',
+          wrapX: false
+        })
+      });
+      return layer;
+    }
+  }, {
+    key: '_getImageWMSLayer',
+    value: function _getImageWMSLayer(config) {
+      var proj = this.projection.getCode();
+      var layer = new _constants.ol.layer.Image({
+        isBaseLayer: true,
+        alias: config['alias'] ? config['alias'] : '',
+        isDefault: config['isDefault'] === true ? config['isDefault'] : false,
+        layerName: config['layerName'] ? config.layerName : '',
+        visible: config['isDefault'] === true ? config['isDefault'] : false,
+        opacity: config['opacity'] && typeof config['opacity'] === 'number' ? config['opacity'] : 1,
+        source: new _constants.ol.source.ImageWMS({
+          url: config['layerUrl'],
+          attributions: this._getAttribution(config['attribution']),
+          params: {
+            LAYERS: config['layers'],
+            STYLES: config['style'] ? config['style'] : '',
+            VERSION: config['version'] ? config['version'] : '1.1.1',
+            WIDTH: config['width'] ? config['width'] : 256,
+            HEIGHT: config['height'] ? config['height'] : 256,
+            BBOX: config['bbox'],
+            SRS: !proj ? 'EPSG:4326' : proj,
+            CRS: !proj ? 'EPSG:4326' : proj,
+            REQUEST: 'GetMap',
+            TRANSPARENT: true,
+            TILED: config['tiled'] === false ? config['tiled'] : true,
+            TILESORIGIN: config['tiledsorrigin'] ? config['tiledsorrigin'] : undefined,
+            SERVICE: 'WMS',
+            FORMAT: config['format'] ? config['format'] : 'image/png'
+          },
+          wrapX: false
+        })
+      });
+      return layer;
+    }
+  }, {
+    key: '_getTileWMSLayer',
+    value: function _getTileWMSLayer(config) {
+      var proj = this.projection.getCode();
+      var layer = new _constants.ol.layer.Tile({
+        isBaseLayer: true,
+        alias: config['alias'] ? config['alias'] : '',
+        isDefault: config['isDefault'] === true ? config['isDefault'] : false,
+        layerName: config['layerName'] ? config.layerName : '',
+        visible: config['isDefault'] === true ? config['isDefault'] : false,
+        opacity: config['opacity'] && typeof config['opacity'] === 'number' ? config['opacity'] : 1,
+        source: new _constants.ol.source.TileWMS({
+          url: config['layerUrl'],
+          attributions: this._getAttribution(config['attribution']),
+          params: {
+            LAYERS: config['layers'],
+            STYLES: config['style'] ? config['style'] : '',
+            VERSION: config['version'] ? config['version'] : '1.1.1',
+            WIDTH: config['width'] ? config['width'] : 256,
+            HEIGHT: config['height'] ? config['height'] : 256,
+            BBOX: config['bbox'],
+            SRS: !proj ? 'EPSG:4326' : proj,
+            CRS: !proj ? 'EPSG:4326' : proj,
+            REQUEST: 'GetMap',
+            TRANSPARENT: true,
+            TILED: config['tiled'] === false ? config['tiled'] : true,
+            TILESORIGIN: config['tiledsorrigin'] ? config['tiledsorrigin'] : undefined,
+            SERVICE: 'WMS',
+            FORMAT: config['format'] ? config['format'] : 'image/png'
+          },
+          wrapX: false
+        })
+      });
+      return layer;
+    }
+  }, {
+    key: '_getAttribution',
+    value: function _getAttribution(params) {
+      if (!params) {
+        params = {};
+        params['url'] = 'https://aurorafe.github.io';
+        params['messages'] = 'contributors.';
+        params['title'] = 'HMap';
+      }
+      var attribution = new _constants.ol.Attribution({
+        html: '&copy; ' + '<a href="' + params['url'] + '">' + params['title'] + '</a> ' + params['messages']
+      });
+      return attribution;
+    }
+  }]);
+
+  return BaseLayers;
+}();
+
+exports.default = BaseLayers;
+module.exports = exports['default'];
+
+/***/ }),
+/* 178 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _constants = __webpack_require__(1);
+
+var _dom = __webpack_require__(116);
+
+var _utils = __webpack_require__(82);
+
+var _feature = __webpack_require__(80);
+
+var _feature2 = _interopRequireDefault(_feature);
+
+var _mixin = __webpack_require__(46);
+
+var _mixin2 = _interopRequireDefault(_mixin);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Overlay = function (_mix) {
+  _inherits(Overlay, _mix);
+
+  function Overlay(map) {
+    _classCallCheck(this, Overlay);
+
+    var _this = _possibleConstructorReturn(this, (Overlay.__proto__ || Object.getPrototypeOf(Overlay)).call(this));
+
+    if (map && map instanceof _constants.ol.Map) {
+      _this.map = map;
+    } else {
+      throw new Error('传入的不是地图对象或者地图对象为空！');
+    }
+    return _this;
+  }
+
+  _createClass(Overlay, [{
+    key: '_getCoordinatesFromGeom',
+    value: function _getCoordinatesFromGeom(point) {
+      var geometry = null;
+
+      if (point instanceof _constants.ol.geom.Geometry) {
+        geometry = point;
+      } else if (Array.isArray(point.geometry)) {
+        geometry = new _constants.ol.geom.Point(point.geometry);
+      } else {
+        geometry = new _constants.ol.format.WKT().readGeometry(point.geometry);
+      }
+      return geometry.getCoordinates();
+    }
+  }, {
+    key: 'addOverlayPoint',
+    value: function addOverlayPoint(point, params, index) {
+      try {
+        if (point && point['geometry']) {
+          var coordinate = this._getCoordinatesFromGeom(point);
+          if (point['attributes'] && (point['attributes']['id'] || point['attributes']['ID'])) {
+            var id = point['attributes']['id'] || point['attributes']['ID'] || params['id'];
+            var overlay = this.map.getOverlayById(id);
+            var creatEle = this.getElementForOverlay(point, params, index);
+            var _ref = [creatEle['marker'], creatEle['ele']],
+                marker = _ref[0],
+                ele = _ref[1];
+
+            if (!overlay) {
+              var iconOverlay = new _constants.ol.Overlay({
+                element: marker,
+                positioning: 'center-center',
+                id: id,
+                offset: [0, 0],
+                stopEvent: true
+              });
+              iconOverlay.setPosition(coordinate);
+              iconOverlay.setProperties(point['attributes']);
+              if (params) {
+                iconOverlay.set('params', params);
+                if (params['layerName']) {
+                  iconOverlay.set('layerName', params.layerName);
+                }
+              }
+              this._addOverLayEvent(marker, ele, iconOverlay);
+              this.map.addOverlay(iconOverlay);
+            } else {
+              this._addOverLayEvent(marker, ele, overlay);
+              overlay.setElement(marker);
+            }
+          }
+          if (params['zoomToExtent']) {
+            var extent = new _constants.ol.geom.Point(coordinate).getExtent();
+            var _extent = this.adjustExtent(extent);
+            this.zoomToExtent(_extent, true);
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, {
+    key: '_addOverLayEvent',
+    value: function _addOverLayEvent(marker, ele, OverLay) {
+      marker.onmousedown = function (event) {
+        if (event.button === 2) {
+          window.ObservableObj.dispatchEvent({
+            type: 'rightMenuEvt',
+            originEvent: event,
+            value: OverLay
+          });
+        } else if (event.button === 0) {
+          window.ObservableObj.dispatchEvent({
+            type: 'overlayEvent',
+            originEvent: event,
+            value: OverLay
+          });
+        }
+      };
+      marker.onmouseover = function (event) {
+        ele.style.color = ele.selectColor;
+        window.ObservableObj.dispatchEvent({
+          type: 'onMouseoverOverlay',
+          originEvent: event,
+          value: OverLay
+        });
+      };
+      marker.onmouseout = function (event) {
+        ele.style.color = ele.normalColor;
+        window.ObservableObj.dispatchEvent({
+          type: 'onMouseOutOverlay',
+          originEvent: event,
+          value: OverLay
+        });
+      };
+    }
+  }, {
+    key: 'getElementForOverlay',
+    value: function getElementForOverlay(point, params, index) {
+      var marker = document.createElement('div');
+      marker.className = 'overlay-point-content';
+      var style = point['attributes']['style'] || params['style'];
+      var ele = '',
+          spanEle = '';
+
+      if (style['element']) {
+        ele = document.createElement('div');
+        var eleClass = style['element']['className'] ? style['element']['className'] : 'maker-point';
+        _dom.DomUtil.addClass(ele, 'iconfont');
+        _dom.DomUtil.addClass(ele, eleClass);
+        ele.style.top = style['element']['top'] ? style['element']['top'] : '-100%';
+        ele.style.left = style['element']['left'] ? style['element']['left'] : '100%';
+        ele.style.fontSize = style['element']['fontSize'] ? style['element']['fontSize'] : '16px';
+        ele.style.borderColor = style['element']['borderColor'] ? style['element']['borderColor'] : '#2A2A2A';
+        ele.style.borderWidth = style['element']['borderWidth'] ? style['element']['borderWidth'] : '1px';
+        ele.style.opacity = style['element']['opacity'] ? style['element']['opacity'] : 1;
+        ele.style.width = style['element']['width'] ? style['element']['width'] : '100%';
+        ele.style.height = style['element']['height'] ? style['element']['height'] : '100%';
+        ele.style.borderRadius = style['element']['borderRadius'] ? style['element']['borderRadius'] : '0px';
+        ele.normalColor = ele.style.color = style['element']['color'] ? style['element']['color'] : '#1b9de8';
+        ele.selectColor = style['element']['selectColor'] ? style['element']['selectColor'] : '#F61717';
+        ele.innerHTML = style['element']['text'] ? style['element']['text'] : '';
+        if (params['orderBy']) {
+          spanEle = document.createElement('span');
+          spanEle.innerHTML = Number(index) + 1;
+        } else if (params['orderByNum'] && point['attributes']['number'] !== undefined && point['attributes']['number'] !== '' && point['attributes']['number'] !== null) {
+          spanEle = document.createElement('span');
+          spanEle.innerHTML = Number(point['attributes']['number']) + 1;
+        }
+        if (spanEle) {
+          ele.appendChild(spanEle);
+        }
+        marker.appendChild(ele);
+      }
+      return {
+        marker: marker,
+        ele: ele
+      };
+    }
+  }, {
+    key: 'addOverlayPoints',
+    value: function addOverlayPoints(points, params) {
+      var _this2 = this;
+
+      try {
+        if (points && Array.isArray(points)) {
+          var multiPoint = new _constants.ol.geom.MultiPoint([]);
+          var change = false;
+          points.forEach(function (item, index) {
+            if (item && item['geometry']) {
+              var _geom = _this2._getGeometryFromPoint(item);
+              if (_geom) {
+                _this2.addOverlayPoint(item, params, index);
+                multiPoint.appendPoint(_geom);
+              }
+            }
+          });
+          if (params['zoomToExtent']) {
+            params['zoomToExtent'] = !params['zoomToExtent'];
+            change = true;
+          }
+          if (change) {
+            this._getExtent(multiPoint);
+          }
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'removeOverLay',
+    value: function removeOverLay(overlay) {
+      try {
+        if (overlay && overlay instanceof _constants.ol.Overlay && this.map) {
+          this.map.removeOverlay(overlay);
+          return overlay;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, {
+    key: 'removeOverlayById',
+    value: function removeOverlayById(id) {
+      try {
+        if (this.map && id) {
+          var _id = (0, _utils.trim)(id);
+          var overLay = this.map.getOverlayById(_id);
+          if (overLay && overLay instanceof _constants.ol.Overlay) {
+            this.map.removeOverlay(overLay);
+          }
+          return overLay;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'removeOverlayByLayerName',
+    value: function removeOverlayByLayerName(layerName) {
+      var _overlays = [];
+      if (this.map && layerName) {
+        var overlays = this.map.getOverlays().getArray();
+        var len = overlays.length;
+        for (var i = 0; i < len; i++) {
+          if (overlays[i] && overlays[i].get('layerName') === layerName) {
+            _overlays.push(overlays[i]);
+            this.map.removeOverlay(overlays[i]);
+            i--;
+          }
+        }
+      }
+      return _overlays;
+    }
+  }, {
+    key: 'removeOverlayByIds',
+    value: function removeOverlayByIds(ids) {
+      var _this3 = this;
+
+      try {
+        var overlays = [];
+        if (ids && Array.isArray(ids) && ids.length > 0) {
+          ids.forEach(function (id) {
+            if (id) {
+              var overlay = _this3.removeOverlayById(id);
+              overlays.push(overlay);
+            }
+          });
+        }
+        return overlays;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, {
+    key: 'removeOverlayByLayerNames',
+    value: function removeOverlayByLayerNames(layerNames) {
+      var _this4 = this;
+
+      try {
+        var overlays = [];
+        if (layerNames && Array.isArray(layerNames) && layerNames.length > 0) {
+          layerNames.forEach(function (layerName) {
+            if (layerName) {
+              var rOverlays = _this4.removeOverlayByLayerName(layerName);
+              if (rOverlays && rOverlays.length > 0) {
+                overlays = overlays.concat(rOverlays);
+              }
+            }
+          });
+        }
+        return overlays;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'highLightOverLay',
+    value: function highLightOverLay(id, overlay) {
+      if (!this.map) return;
+      if (overlay && overlay instanceof _constants.ol.Overlay) {
+        var overlayElement = overlay.getElement();
+        var iconElement = overlayElement.getElementsByTagName('div')[0];
+        iconElement.style.color = iconElement.selectColor;
+        _dom.DomUtil.addClass(overlayElement, 'overlay-point-marker-raise');
+        return overlay;
+      } else if (id && (0, _utils.trim)(id) !== "''") {
+        var _overlay = this.map.getOverlayById(id);
+        var _overlayElement = _overlay.getElement();
+        var _iconElement = _overlayElement.getElementsByTagName('div')[0];
+        _iconElement.style.color = _iconElement.selectColor;
+        _dom.DomUtil.addClass(_overlayElement, 'overlay-point-marker-raise');
+        return _overlay;
+      }
+    }
+  }, {
+    key: 'unHighLightOverLay',
+    value: function unHighLightOverLay(id, overlay) {
+      if (!this.map) return;
+      if (overlay && overlay instanceof _constants.ol.Overlay) {
+        var overlayElement = overlay.getElement();
+        var iconElement = overlayElement.getElementsByTagName('div')[0];
+        iconElement.style.color = iconElement.normalColor;
+        _dom.DomUtil.removeClass(overlayElement, 'overlay-point-marker-raise');
+        return overlay;
+      } else if (id && (0, _utils.trim)(id) !== "''") {
+        var _overlay = this.map.getOverlayById(id);
+        var _overlayElement = _overlay.getElement();
+        var _iconElement = _overlayElement.getElementsByTagName('div')[0];
+        _iconElement.style.color = _iconElement.normalColor;
+        _dom.DomUtil.removeClass(_overlayElement, 'overlay-point-marker-raise');
+        return _overlay;
+      }
+    }
+  }, {
+    key: 'getOverLayById',
+    value: function getOverLayById(id) {
+      var _id = (0, _utils.trim)(id);
+      var overLay = this.map.getOverlayById(_id);
+      return overLay;
+    }
+  }, {
+    key: 'getOverLaysByLayerNames',
+    value: function getOverLaysByLayerNames(layerNames) {
+      var _this5 = this;
+
+      try {
+        var overlays = [];
+        if (layerNames && Array.isArray(layerNames) && layerNames.length > 0) {
+          layerNames.forEach(function (layerName) {
+            if (layerName) {
+              var rOverlays = _this5.getOverlayByLayerName(layerName);
+              if (rOverlays && rOverlays.length > 0) {
+                overlays = overlays.concat(rOverlays);
+              }
+            }
+          });
+        }
+        return overlays;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'getOverlayByLayerName',
+    value: function getOverlayByLayerName(layerName) {
+      var _overlays = [];
+      if (this.map && layerName) {
+        var overlays = this.map.getOverlays().getArray();
+        overlays.forEach(function (overlay) {
+          if (overlay && overlay.get('layerName') === layerName) {
+            _overlays.push(overlay);
+          }
+        });
+      }
+      return _overlays;
+    }
+  }]);
+
+  return Overlay;
+}((0, _mixin2.default)(_feature2.default));
+
+exports.default = Overlay;
+module.exports = exports['default'];
+
+/***/ }),
+/* 179 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _constants = __webpack_require__(1);
+
+var _utils = __webpack_require__(13);
+
+var _EventType = __webpack_require__(118);
+
+var _EventType2 = _interopRequireDefault(_EventType);
+
+var _Events = __webpack_require__(117);
+
+var Events = _interopRequireWildcard(_Events);
+
+var _mixin = __webpack_require__(46);
+
+var _mixin2 = _interopRequireDefault(_mixin);
+
+var _Layer = __webpack_require__(55);
+
+var _Layer2 = _interopRequireDefault(_Layer);
+
+var _index = __webpack_require__(201);
+
+var _index2 = _interopRequireDefault(_index);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Observable = _constants.ol.Observable;
+
+var PlotDraw = function (_mix) {
+  _inherits(PlotDraw, _mix);
+
+  function PlotDraw(map, params) {
+    _classCallCheck(this, PlotDraw);
+
+    var _this = _possibleConstructorReturn(this, (PlotDraw.__proto__ || Object.getPrototypeOf(PlotDraw)).call(this));
+
+    _constants.ol.Observable.call(_this, []);
+    if (map && map instanceof _constants.ol.Map) {
+      _this.map = map;
+    } else {
+      throw new Error('传入的不是地图对象！');
+    }
+    _this.options = params || {};
+
+    _this.points = null;
+
+    _this.plot = null;
+
+    _this.feature = null;
+
+    _this.plotType = null;
+
+    _this.plotParams = null;
+
+    _this.mapViewport = _this.map.getViewport();
+
+    _this.dblClickZoomInteraction = null;
+
+    _this.drawOverlay = null;
+
+    _this.Observable = new _constants.ol.Object();
+
+    _this.layerName = 'GISPLOTLAYER';
+
+    _this.drawLayer = _this.creatVectorLayer(_this.layerName, {
+      create: true
+    });
+    return _this;
+  }
+
+  _createClass(PlotDraw, [{
+    key: 'active',
+    value: function active(type, params) {
+      this.disActive();
+      this.deactiveMapTools();
+      this.map.on('click', this.mapFirstClickHandler, this);
+      this.plotType = type;
+      this.plotParams = params;
+    }
+  }, {
+    key: 'disActive',
+    value: function disActive() {
+      this.removeEventHandlers();
+      this.map.removeLayer(this.drawOverlay);
+      this.points = [];
+      this.plot = null;
+      this.feature = null;
+      this.plotType = null;
+      this.plotParams = null;
+      this.activateMapTools();
+    }
+  }, {
+    key: 'isDrawing',
+    value: function isDrawing() {
+      return this.plotType !== null;
+    }
+  }, {
+    key: 'mapFirstClickHandler',
+    value: function mapFirstClickHandler(event) {
+      this.points.push(event.coordinate);
+      this.plot = this.createPlot(this.plotType, this.points, this.plotParams);
+      this.plot.setMap(this.map);
+      this.feature = new _constants.ol.Feature(this.plot);
+      this.drawLayer.getSource().addFeature(this.feature);
+      this.map.un('click', this.mapFirstClickHandler, this);
+      this.map.on('click', this.mapNextClickHandler, this);
+      if (!this.plot.freehand) {
+        this.map.on('dblclick', this.mapDoubleClickHandler, this);
+      }
+      Events.listen(this.mapViewport, _EventType2.default.MOUSEMOVE, this.mapMouseMoveHandler, this, false);
+    }
+  }, {
+    key: 'mapNextClickHandler',
+    value: function mapNextClickHandler(event) {
+      if (!this.plot.freehand) {
+        if ((0, _utils.MathDistance)(event.coordinate, this.points[this.points.length - 1]) < 0.0001) {
+          return false;
+        }
+      }
+      this.points.push(event.coordinate);
+      this.plot.setPoints(this.points);
+      if (this.plot.fixPointCount === this.plot.getPointCount()) {
+        this.mapDoubleClickHandler(event);
+      }
+      if (this.plot && this.plot.freehand) {
+        this.mapDoubleClickHandler(event);
+      }
+    }
+  }, {
+    key: 'mapDoubleClickHandler',
+    value: function mapDoubleClickHandler(event) {
+      event.preventDefault();
+      this.plot.finishDrawing();
+      this.drawEnd(event);
+    }
+  }, {
+    key: 'mapMouseMoveHandler',
+    value: function mapMouseMoveHandler(event) {
+      var coordinate = this.map.getCoordinateFromPixel([event.offsetX, event.offsetY]);
+      if ((0, _utils.MathDistance)(coordinate, this.points[this.points.length - 1]) < 0.0001) {
+        return false;
+      }
+      if (!this.plot.freehand) {
+        var pnts = this.points.concat([coordinate]);
+        this.plot.setPoints(pnts);
+      } else {
+        this.points.push(coordinate);
+        this.plot.setPoints(this.points);
+      }
+    }
+  }, {
+    key: 'removeEventHandlers',
+    value: function removeEventHandlers() {
+      this.map.un('click', this.mapFirstClickHandler, this);
+      this.map.un('click', this.mapNextClickHandler, this);
+      Events.unlisten(this.mapViewport, _EventType2.default.MOUSEMOVE, this.mapMouseMoveHandler, this);
+      this.map.un('dblclick', this.mapDoubleClickHandler, this);
+    }
+  }, {
+    key: 'drawEnd',
+    value: function drawEnd(event) {
+      this.Observable.dispatchEvent({
+        type: 'drawEnd',
+        event: event,
+        feature: this.feature
+      });
+      if (this.feature && this.options['isClear']) {
+        this.drawLayer.getSource().removeFeature(this.feature);
+      }
+      this.activateMapTools();
+      this.removeEventHandlers();
+      this.map.removeOverlay(this.drawOverlay);
+      this.points = [];
+      this.plot = null;
+      this.plotType = null;
+      this.plotParams = null;
+      this.feature = null;
+    }
+  }, {
+    key: 'addFeature',
+    value: function addFeature() {
+      this.feature = new _constants.ol.Feature(this.plot);
+      if (this.feature && this.drawLayer) {
+        this.drawLayer.getSource().addFeature(this.feature);
+      }
+    }
+  }, {
+    key: 'deactiveMapTools',
+    value: function deactiveMapTools() {
+      var _this2 = this;
+
+      var interactions = this.map.getInteractions().getArray();
+      interactions.every(function (item) {
+        if (item instanceof _constants.ol.interaction.DoubleClickZoom) {
+          _this2.dblClickZoomInteraction = item;
+          _this2.map.removeInteraction(item);
+          return false;
+        } else {
+          return true;
+        }
+      });
+    }
+  }, {
+    key: 'activateMapTools',
+    value: function activateMapTools() {
+      if (this.dblClickZoomInteraction && this.dblClickZoomInteraction instanceof _constants.ol.interaction.DoubleClickZoom) {
+        this.map.addInteraction(this.dblClickZoomInteraction);
+        this.dblClickZoomInteraction = null;
+      }
+    }
+  }]);
+
+  return PlotDraw;
+}((0, _mixin2.default)(Observable, _index2.default, _Layer2.default));
+
+exports.default = PlotDraw;
+module.exports = exports['default'];
+
+/***/ }),
+/* 180 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _constants = __webpack_require__(1);
+
+var _EventType = __webpack_require__(118);
+
+var _EventType2 = _interopRequireDefault(_EventType);
+
+var _dom = __webpack_require__(116);
+
+var _Events = __webpack_require__(117);
+
+var Events = _interopRequireWildcard(_Events);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Observable = _constants.ol.Observable;
+
+var PlotEdit = function (_Observable) {
+  _inherits(PlotEdit, _Observable);
+
+  function PlotEdit(map) {
+    _classCallCheck(this, PlotEdit);
+
+    var _this = _possibleConstructorReturn(this, (PlotEdit.__proto__ || Object.getPrototypeOf(PlotEdit)).call(this));
+
+    if (map && map instanceof _constants.ol.Map) {
+      _this.map = map;
+    } else {
+      throw new Error('传入的不是地图对象！');
+    }
+
+    _this.mapViewport = _this.map.getViewport();
+
+    _this.activePlot = null;
+
+    _this.startPoint = null;
+
+    _this.ghostControlPoints = null;
+
+    _this.controlPoints = null;
+
+    _this.mouseOver = false;
+
+    _this.elementTable = {};
+
+    _this.activeControlPointId = null;
+
+    _this.mapDragPan = null;
+    return _this;
+  }
+
+  _createClass(PlotEdit, [{
+    key: 'initHelperDom',
+    value: function initHelperDom() {
+      var _this2 = this;
+
+      if (!this.map || !this.activePlot) {
+        return false;
+      }
+      var parent = this.getMapParentElement();
+      if (!parent) {
+        return false;
+      } else {
+        var hiddenDiv = _dom.DomUtil.createHidden('div', parent, 'plot-helper-hidden-div');
+        var cPnts = this.getControlPoints();
+        if (cPnts && Array.isArray(cPnts) && cPnts.length > 0) {
+          cPnts.forEach(function (item, index) {
+            var id = 'plot-helper-control-point-div' + '-' + index;
+            _dom.DomUtil.create('div', 'plot-helper-control-point-div', hiddenDiv, id);
+            _this2.elementTable[id] = index;
+          });
+        }
+      }
+    }
+  }, {
+    key: 'getMapParentElement',
+    value: function getMapParentElement() {
+      var mapElement = this.map.getTargetElement();
+      if (!mapElement) {
+        return false;
+      } else {
+        return mapElement.parentNode;
+      }
+    }
+  }, {
+    key: 'destroyHelperDom',
+    value: function destroyHelperDom() {
+      var _this3 = this;
+
+      if (this.controlPoints && Array.isArray(this.controlPoints) && this.controlPoints.length > 0) {
+        this.controlPoints.forEach(function (item, index) {
+          if (item && item instanceof _constants.ol.Overlay) {
+            _this3.map.removeOverlay(item);
+          }
+          var element = _dom.DomUtil.get('plot-helper-control-point-div' + '-' + index);
+          if (element) {
+            _dom.DomUtil.removeListener(element, 'mousedown', _this3.controlPointMouseDownHandler, _this3);
+            _dom.DomUtil.removeListener(element, 'mousemove', _this3.controlPointMouseMoveHandler2, _this3);
+          }
+        });
+        this.controlPoints = [];
+      }
+      var parent = this.getMapParentElement();
+      var hiddenDiv = _dom.DomUtil.get('plot-helper-hidden-div');
+      if (hiddenDiv && parent) {
+        _dom.DomUtil.remove(hiddenDiv, parent);
+      }
+    }
+  }, {
+    key: 'initControlPoints',
+    value: function initControlPoints() {
+      var _this4 = this;
+
+      this.controlPoints = [];
+      var cPnts = this.getControlPoints();
+      if (cPnts && Array.isArray(cPnts) && cPnts.length > 0) {
+        cPnts.forEach(function (item, index) {
+          var id = 'plot-helper-control-point-div' + '-' + index;
+          _this4.elementTable[id] = index;
+          var element = _dom.DomUtil.get(id);
+          var pnt = new _constants.ol.Overlay({
+            id: id,
+            position: cPnts[index],
+            positioning: 'center-center',
+            element: element
+          });
+          _this4.controlPoints.push(pnt);
+          _this4.map.addOverlay(pnt);
+          _this4.map.render();
+          _dom.DomUtil.addListener(element, 'mousedown', _this4.controlPointMouseDownHandler, _this4);
+          _dom.DomUtil.addListener(element, 'mousemove', _this4.controlPointMouseMoveHandler2, _this4);
+        });
+      }
+    }
+  }, {
+    key: 'controlPointMouseMoveHandler2',
+    value: function controlPointMouseMoveHandler2(e) {
+      e.stopImmediatePropagation();
+    }
+  }, {
+    key: 'controlPointMouseDownHandler',
+    value: function controlPointMouseDownHandler(e) {
+      var id = e.target.id;
+      this.activeControlPointId = id;
+      Events.listen(this.mapViewport, _EventType2.default.MOUSEMOVE, this.controlPointMouseMoveHandler, this, false);
+      Events.listen(this.mapViewport, _EventType2.default.MOUSEUP, this.controlPointMouseUpHandler, this, false);
+    }
+  }, {
+    key: 'controlPointMouseMoveHandler',
+    value: function controlPointMouseMoveHandler(e) {
+      var coordinate = this.map.getCoordinateFromPixel([e.offsetX, e.offsetY]);
+      if (this.activeControlPointId) {
+        var plot = this.activePlot.getGeometry();
+        var index = this.elementTable[this.activeControlPointId];
+        plot.updatePoint(coordinate, index);
+        var overlay = this.map.getOverlayById(this.activeControlPointId);
+        overlay.setPosition(coordinate);
+      }
+    }
+  }, {
+    key: 'controlPointMouseUpHandler',
+    value: function controlPointMouseUpHandler(e) {
+      Events.unlisten(this.mapViewport, _EventType2.default.MOUSEMOVE, this.controlPointMouseMoveHandler, this);
+      Events.unlisten(this.mapViewport, _EventType2.default.MOUSEUP, this.controlPointMouseUpHandler, this);
+    }
+  }, {
+    key: 'activate',
+    value: function activate(plot) {
+      try {
+        if (!plot || !(plot instanceof _constants.ol.Feature) || plot === this.activePlot) {
+          return false;
+        } else {
+          var geom = plot.getGeometry();
+          if (!geom.isPlot()) {
+            return false;
+          } else {
+            this.deactivate();
+            this.activePlot = plot;
+            window.setTimeout(function () {}, 500);
+            this.map.on('pointermove', this.plotMouseOverOutHandler, this);
+            this.initHelperDom();
+            this.initControlPoints();
+          }
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'getControlPoints',
+    value: function getControlPoints() {
+      var points = [];
+      if (this.activePlot) {
+        var geom = this.activePlot.getGeometry();
+        if (geom) {
+          points = geom.getPoints();
+        }
+      }
+      return points;
+    }
+  }, {
+    key: 'plotMouseOverOutHandler',
+    value: function plotMouseOverOutHandler(e) {
+      try {
+        var feature = this.map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
+          return feature;
+        });
+        if (feature && feature === this.activePlot) {
+          if (!this.mouseOver) {
+            this.mouseOver = true;
+            this.map.getViewport().style.cursor = 'move';
+            this.map.on('pointerdown', this.plotMouseDownHandler, this);
+          }
+        } else {
+          if (this.mouseOver) {
+            this.mouseOver = false;
+            this.map.getViewport().style.cursor = 'default';
+            this.map.un('pointerdown', this.plotMouseDownHandler, this);
+          }
+        }
+        return feature;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'plotMouseDownHandler',
+    value: function plotMouseDownHandler(e) {
+      this.ghostControlPoints = this.getControlPoints();
+      this.startPoint = e.coordinate;
+      this.disableMapDragPan();
+      this.map.on('pointerup', this.plotMouseUpHandler, this);
+      this.map.on('pointerdrag', this.plotMouseMoveHandler, this);
+    }
+  }, {
+    key: 'plotMouseMoveHandler',
+    value: function plotMouseMoveHandler(e) {
+      var _this5 = this;
+
+      try {
+        var point = e.coordinate;
+        var dx = point[0] - this.startPoint[0],
+            dy = point[1] - this.startPoint[1],
+            newPoints = [];
+
+        if (this.ghostControlPoints && Array.isArray(this.ghostControlPoints) && this.ghostControlPoints.length > 0) {
+          this.ghostControlPoints.forEach(function (item, index) {
+            var p = _this5.ghostControlPoints[index];
+            var coordinate = [p[0] + dx, p[1] + dy];
+            newPoints.push(coordinate);
+            var id = 'plot-helper-control-point-div' + '-' + index;
+            var overlay = _this5.map.getOverlayById(id);
+            overlay.setPosition(coordinate);
+            overlay.setPositioning('center-center');
+          });
+        }
+        var plot = this.activePlot.getGeometry();
+        plot.setPoints(newPoints);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'plotMouseUpHandler',
+    value: function plotMouseUpHandler(e) {
+      this.enableMapDragPan();
+      this.map.un('pointerup', this.plotMouseUpHandler, this);
+      this.map.un('pointerdrag', this.plotMouseMoveHandler, this);
+    }
+  }, {
+    key: 'disconnectEventHandlers',
+    value: function disconnectEventHandlers() {
+      this.map.un('pointermove', this.plotMouseOverOutHandler, this);
+      Events.unlisten(this.mapViewport, _EventType2.default.MOUSEMOVE, this.controlPointMouseMoveHandler, this);
+      Events.unlisten(this.mapViewport, _EventType2.default.MOUSEUP, this.controlPointMouseUpHandler, this);
+      this.map.un('pointerdown', this.plotMouseDownHandler, this);
+      this.map.un('pointerup', this.plotMouseUpHandler, this);
+      this.map.un('pointerdrag', this.plotMouseMoveHandler, this);
+    }
+  }, {
+    key: 'deactivate',
+    value: function deactivate() {
+      this.activePlot = null;
+      this.mouseOver = false;
+      this.destroyHelperDom();
+      this.disconnectEventHandlers();
+      this.elementTable = {};
+      this.activeControlPointId = null;
+      this.startPoint = null;
+    }
+  }, {
+    key: 'disableMapDragPan',
+    value: function disableMapDragPan() {
+      var _this6 = this;
+
+      var interactions = this.map.getInteractions().getArray();
+      interactions.every(function (item) {
+        if (item instanceof _constants.ol.interaction.DragPan) {
+          _this6.mapDragPan = item;
+          item.setActive(false);
+          _this6.map.removeInteraction(item);
+          return false;
+        } else {
+          return true;
+        }
+      });
+    }
+  }, {
+    key: 'enableMapDragPan',
+    value: function enableMapDragPan() {
+      if (this.mapDragPan && this.mapDragPan instanceof _constants.ol.interaction.DragPan) {
+        this.mapDragPan.setActive(true);
+        this.map.addInteraction(this.mapDragPan);
+        this.mapDragPan = null;
+      }
+    }
+  }]);
+
+  return PlotEdit;
+}(Observable);
+
+exports.default = PlotEdit;
+module.exports = exports['default'];
+
+/***/ }),
+/* 181 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _PlotTypes = __webpack_require__(9);
+
+var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
+
+var _constants = __webpack_require__(1);
+
+var _utils = __webpack_require__(13);
+
+var PlotUtils = _interopRequireWildcard(_utils);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Arc = function (_ol$geom$LineString) {
+  _inherits(Arc, _ol$geom$LineString);
+
+  function Arc(points, params) {
+    _classCallCheck(this, Arc);
+
+    var _this = _possibleConstructorReturn(this, (Arc.__proto__ || Object.getPrototypeOf(Arc)).call(this));
+
+    _constants.ol.geom.LineString.call(_this, []);
+    _this.type = _PlotTypes2.default.ARC;
+    _this.fixPointCount = 3;
+    _this.set('params', params);
+    _this.setPoints(points);
+    return _this;
+  }
+
+  _createClass(Arc, [{
+    key: 'generate',
+    value: function generate() {
+      var count = this.getPointCount();
+      if (count < 2) return;
+      if (count === 2) {
+        this.setCoordinates(this.points);
+      } else {
+        var _ref = [this.points[0], this.points[1], this.points[2], null, null],
+            pnt1 = _ref[0],
+            pnt2 = _ref[1],
+            pnt3 = _ref[2],
+            startAngle = _ref[3],
+            endAngle = _ref[4];
+
+        var center = PlotUtils.getCircleCenterOfThreePoints(pnt1, pnt2, pnt3);
+        var radius = PlotUtils.MathDistance(pnt1, center);
+        var angle1 = PlotUtils.getAzimuth(pnt1, center);
+        var angle2 = PlotUtils.getAzimuth(pnt2, center);
+        if (PlotUtils.isClockWise(pnt1, pnt2, pnt3)) {
+          startAngle = angle2;
+          endAngle = angle1;
+        } else {
+          startAngle = angle1;
+          endAngle = angle2;
+        }
+        this.setCoordinates(PlotUtils.getArcPoints(center, radius, startAngle, endAngle));
+      }
+    }
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      if (map && map instanceof _constants.ol.Map) {
+        this.map = map;
+      } else {
+        throw new Error('传入的不是地图对象！');
+      }
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }, {
+    key: 'isPlot',
+    value: function isPlot() {
+      return true;
+    }
+  }, {
+    key: 'setPoints',
+    value: function setPoints(value) {
+      this.points = !value ? [] : value;
+      if (this.points.length >= 2) {
+        this.generate();
+      }
+    }
+  }, {
+    key: 'getPoints',
+    value: function getPoints() {
+      return this.points.slice(0);
+    }
+  }, {
+    key: 'getPointCount',
+    value: function getPointCount() {
+      return this.points.length;
+    }
+  }, {
+    key: 'updatePoint',
+    value: function updatePoint(point, index) {
+      if (index >= 0 && index < this.points.length) {
+        this.points[index] = point;
+        this.generate();
+      }
+    }
+  }, {
+    key: 'updateLastPoint',
+    value: function updateLastPoint(point) {
+      this.updatePoint(point, this.points.length - 1);
+    }
+  }, {
+    key: 'finishDrawing',
+    value: function finishDrawing() {}
+  }]);
+
+  return Arc;
+}(_constants.ol.geom.LineString);
+
+exports.default = Arc;
+module.exports = exports['default'];
+
+/***/ }),
+/* 182 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _FineArrow2 = __webpack_require__(119);
+
+var _FineArrow3 = _interopRequireDefault(_FineArrow2);
+
+var _PlotTypes = __webpack_require__(9);
+
+var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var AssaultDirection = function (_FineArrow) {
+  _inherits(AssaultDirection, _FineArrow);
+
+  function AssaultDirection(points, params) {
+    _classCallCheck(this, AssaultDirection);
+
+    var _this = _possibleConstructorReturn(this, (AssaultDirection.__proto__ || Object.getPrototypeOf(AssaultDirection)).call(this));
+
+    _FineArrow3.default.call(_this, points, params);
+    _this.tailWidthFactor = 0.05;
+    _this.neckWidthFactor = 0.1;
+    _this.headWidthFactor = 0.15;
+    _this.type = _PlotTypes2.default.ASSAULT_DIRECTION;
+    _this.headAngle = Math.PI / 4;
+    _this.neckAngle = Math.PI * 0.17741;
+    _this.setPoints(points);
+    _this.set('params', params);
+    return _this;
+  }
+
+  return AssaultDirection;
+}(_FineArrow3.default);
+
+exports.default = AssaultDirection;
+module.exports = exports['default'];
+
+/***/ }),
+/* 183 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _PlotTypes = __webpack_require__(9);
+
+var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
+
+var _constants = __webpack_require__(1);
+
+var _Constants = __webpack_require__(26);
+
+var Constants = _interopRequireWildcard(_Constants);
+
+var _utils = __webpack_require__(13);
+
+var PlotUtils = _interopRequireWildcard(_utils);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var DoubleArrow = function (_ol$geom$Polygon) {
+  _inherits(DoubleArrow, _ol$geom$Polygon);
+
+  function DoubleArrow(points, params) {
+    _classCallCheck(this, DoubleArrow);
+
+    var _this = _possibleConstructorReturn(this, (DoubleArrow.__proto__ || Object.getPrototypeOf(DoubleArrow)).call(this));
+
+    _constants.ol.geom.Polygon.call(_this, []);
+    _this.type = _PlotTypes2.default.DOUBLE_ARROW;
+    _this.headHeightFactor = 0.25;
+    _this.headWidthFactor = 0.3;
+    _this.neckHeightFactor = 0.85;
+    _this.neckWidthFactor = 0.15;
+    _this.connPoint = null;
+    _this.tempPoint4 = null;
+    _this.fixPointCount = 4;
+    _this.set('params', params);
+    _this.setPoints(points);
+    return _this;
+  }
+
+  _createClass(DoubleArrow, [{
+    key: 'generate',
+    value: function generate() {
+      try {
+        var count = this.getPointCount();
+        var _ref = [this.points[0], this.points[1], this.points[2]],
+            pnt1 = _ref[0],
+            pnt2 = _ref[1],
+            pnt3 = _ref[2];
+
+        if (count === 2) {
+          this.setCoordinates([this.points]);
+          return false;
+        } else if (count === 3) {
+          this.tempPoint4 = this.getTempPoint4(pnt1, pnt2, pnt3);
+          this.connPoint = PlotUtils.Mid(pnt1, pnt2);
+        } else if (count === 4) {
+          this.tempPoint4 = this.points[3];
+          this.connPoint = PlotUtils.Mid(pnt1, pnt2);
+        } else {
+          this.tempPoint4 = this.points[3];
+          this.connPoint = this.points[4];
+        }
+        var leftArrowPnts = undefined,
+            rightArrowPnts = undefined;
+
+        if (PlotUtils.isClockWise(pnt1, pnt2, pnt3)) {
+          leftArrowPnts = this.getArrowPoints(pnt1, this.connPoint, this.tempPoint4, false);
+          rightArrowPnts = this.getArrowPoints(this.connPoint, pnt2, pnt3, true);
+        } else {
+          leftArrowPnts = this.getArrowPoints(pnt2, this.connPoint, pnt3, false);
+          rightArrowPnts = this.getArrowPoints(this.connPoint, pnt1, this.tempPoint4, true);
+        }
+        var m = leftArrowPnts.length;
+        var t = (m - 5) / 2;
+        var llBodyPnts = leftArrowPnts.slice(0, t);
+        var lArrowPnts = leftArrowPnts.slice(t, t + 5);
+        var lrBodyPnts = leftArrowPnts.slice(t + 5, m);
+        var rlBodyPnts = rightArrowPnts.slice(0, t);
+        var rArrowPnts = rightArrowPnts.slice(t, t + 5);
+        var rrBodyPnts = rightArrowPnts.slice(t + 5, m);
+        rlBodyPnts = PlotUtils.getBezierPoints(rlBodyPnts);
+        var bodyPnts = PlotUtils.getBezierPoints(rrBodyPnts.concat(llBodyPnts.slice(1)));
+        lrBodyPnts = PlotUtils.getBezierPoints(lrBodyPnts);
+        var pnts = rlBodyPnts.concat(rArrowPnts, bodyPnts, lArrowPnts, lrBodyPnts);
+        this.setCoordinates([pnts]);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'getArrowPoints',
+    value: function getArrowPoints(pnt1, pnt2, pnt3, clockWise) {
+      var midPnt = PlotUtils.Mid(pnt1, pnt2);
+      var len = PlotUtils.MathDistance(midPnt, pnt3);
+      var midPnt1 = PlotUtils.getThirdPoint(pnt3, midPnt, 0, len * 0.3, true);
+      var midPnt2 = PlotUtils.getThirdPoint(pnt3, midPnt, 0, len * 0.5, true);
+      midPnt1 = PlotUtils.getThirdPoint(midPnt, midPnt1, Constants.HALF_PI, len / 5, clockWise);
+      midPnt2 = PlotUtils.getThirdPoint(midPnt, midPnt2, Constants.HALF_PI, len / 4, clockWise);
+      var points = [midPnt, midPnt1, midPnt2, pnt3];
+      var arrowPnts = this.getArrowHeadPoints(points);
+      if (arrowPnts && Array.isArray(arrowPnts) && arrowPnts.length > 0) {
+        var _ref2 = [arrowPnts[0], arrowPnts[4]],
+            neckLeftPoint = _ref2[0],
+            neckRightPoint = _ref2[1];
+
+        var tailWidthFactor = PlotUtils.MathDistance(pnt1, pnt2) / PlotUtils.getBaseLength(points) / 2;
+        var bodyPnts = this.getArrowBodyPoints(points, neckLeftPoint, neckRightPoint, tailWidthFactor);
+        if (bodyPnts) {
+          var n = bodyPnts.length;
+          var lPoints = bodyPnts.slice(0, n / 2);
+          var rPoints = bodyPnts.slice(n / 2, n);
+          lPoints.push(neckLeftPoint);
+          rPoints.push(neckRightPoint);
+          lPoints = lPoints.reverse();
+          lPoints.push(pnt2);
+          rPoints = rPoints.reverse();
+          rPoints.push(pnt1);
+          return lPoints.reverse().concat(arrowPnts, rPoints);
+        }
+      } else {
+        throw new Error('插值出错');
+      }
+    }
+  }, {
+    key: 'getArrowHeadPoints',
+    value: function getArrowHeadPoints(points) {
+      try {
+        var len = PlotUtils.getBaseLength(points);
+        var headHeight = len * this.headHeightFactor;
+        var headPnt = points[points.length - 1];
+        var headWidth = headHeight * this.headWidthFactor;
+        var neckWidth = headHeight * this.neckWidthFactor;
+        var neckHeight = headHeight * this.neckHeightFactor;
+        var headEndPnt = PlotUtils.getThirdPoint(points[points.length - 2], headPnt, 0, headHeight, true);
+        var neckEndPnt = PlotUtils.getThirdPoint(points[points.length - 2], headPnt, 0, neckHeight, true);
+        var headLeft = PlotUtils.getThirdPoint(headPnt, headEndPnt, Constants.HALF_PI, headWidth, false);
+        var headRight = PlotUtils.getThirdPoint(headPnt, headEndPnt, Constants.HALF_PI, headWidth, true);
+        var neckLeft = PlotUtils.getThirdPoint(headPnt, neckEndPnt, Constants.HALF_PI, neckWidth, false);
+        var neckRight = PlotUtils.getThirdPoint(headPnt, neckEndPnt, Constants.HALF_PI, neckWidth, true);
+        return [neckLeft, headLeft, headPnt, headRight, neckRight];
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'getArrowBodyPoints',
+    value: function getArrowBodyPoints(points, neckLeft, neckRight, tailWidthFactor) {
+      var allLen = PlotUtils.wholeDistance(points);
+      var len = PlotUtils.getBaseLength(points);
+      var tailWidth = len * tailWidthFactor;
+      var neckWidth = PlotUtils.MathDistance(neckLeft, neckRight);
+      var widthDif = (tailWidth - neckWidth) / 2;
+      var tempLen = 0,
+          leftBodyPnts = [],
+          rightBodyPnts = [];
+
+      for (var i = 1; i < points.length - 1; i++) {
+        var angle = PlotUtils.getAngleOfThreePoints(points[i - 1], points[i], points[i + 1]) / 2;
+        tempLen += PlotUtils.MathDistance(points[i - 1], points[i]);
+        var w = (tailWidth / 2 - tempLen / allLen * widthDif) / Math.sin(angle);
+        var left = PlotUtils.getThirdPoint(points[i - 1], points[i], Math.PI - angle, w, true);
+        var right = PlotUtils.getThirdPoint(points[i - 1], points[i], angle, w, false);
+        leftBodyPnts.push(left);
+        rightBodyPnts.push(right);
+      }
+      return leftBodyPnts.concat(rightBodyPnts);
+    }
+  }, {
+    key: 'getTempPoint4',
+    value: function getTempPoint4(linePnt1, linePnt2, point) {
+      try {
+        var midPnt = PlotUtils.Mid(linePnt1, linePnt2);
+        var len = PlotUtils.MathDistance(midPnt, point);
+        var angle = PlotUtils.getAngleOfThreePoints(linePnt1, midPnt, point);
+        var symPnt = undefined,
+            distance1 = undefined,
+            distance2 = undefined,
+            mid = undefined;
+
+        if (angle < Constants.HALF_PI) {
+          distance1 = len * Math.sin(angle);
+          distance2 = len * Math.cos(angle);
+          mid = PlotUtils.getThirdPoint(linePnt1, midPnt, Constants.HALF_PI, distance1, false);
+          symPnt = PlotUtils.getThirdPoint(midPnt, mid, Constants.HALF_PI, distance2, true);
+        } else if (angle >= Constants.HALF_PI && angle < Math.PI) {
+          distance1 = len * Math.sin(Math.PI - angle);
+          distance2 = len * Math.cos(Math.PI - angle);
+          mid = PlotUtils.getThirdPoint(linePnt1, midPnt, Constants.HALF_PI, distance1, false);
+          symPnt = PlotUtils.getThirdPoint(midPnt, mid, Constants.HALF_PI, distance2, false);
+        } else if (angle >= Math.PI && angle < Math.PI * 1.5) {
+          distance1 = len * Math.sin(angle - Math.PI);
+          distance2 = len * Math.cos(angle - Math.PI);
+          mid = PlotUtils.getThirdPoint(linePnt1, midPnt, Constants.HALF_PI, distance1, true);
+          symPnt = PlotUtils.getThirdPoint(midPnt, mid, Constants.HALF_PI, distance2, true);
+        } else {
+          distance1 = len * Math.sin(Math.PI * 2 - angle);
+          distance2 = len * Math.cos(Math.PI * 2 - angle);
+          mid = PlotUtils.getThirdPoint(linePnt1, midPnt, Constants.HALF_PI, distance1, true);
+          symPnt = PlotUtils.getThirdPoint(midPnt, mid, Constants.HALF_PI, distance2, false);
+        }
+        return symPnt;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      if (map && map instanceof _constants.ol.Map) {
+        this.map = map;
+      } else {
+        throw new Error('传入的不是地图对象！');
+      }
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }, {
+    key: 'isPlot',
+    value: function isPlot() {
+      return true;
+    }
+  }, {
+    key: 'setPoints',
+    value: function setPoints(value) {
+      this.points = !value ? [] : value;
+      if (this.points.length >= 2) {
+        this.generate();
+      }
+    }
+  }, {
+    key: 'getPoints',
+    value: function getPoints() {
+      return this.points.slice(0);
+    }
+  }, {
+    key: 'getPointCount',
+    value: function getPointCount() {
+      return this.points.length;
+    }
+  }, {
+    key: 'updatePoint',
+    value: function updatePoint(point, index) {
+      if (index >= 0 && index < this.points.length) {
+        this.points[index] = point;
+        this.generate();
+      }
+    }
+  }, {
+    key: 'updateLastPoint',
+    value: function updateLastPoint(point) {
+      this.updatePoint(point, this.points.length - 1);
+    }
+  }, {
+    key: 'finishDrawing',
+    value: function finishDrawing() {
+      if (this.getPointCount() === 3 && this.tempPoint4 !== null) {
+        this.points.push(this.tempPoint4);
+      }
+      if (this.connPoint !== null) {
+        this.points.push(this.connPoint);
+      }
+    }
+  }]);
+
+  return DoubleArrow;
+}(_constants.ol.geom.Polygon);
+
+exports.default = DoubleArrow;
+module.exports = exports['default'];
+
+/***/ }),
+/* 184 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _PlotTypes = __webpack_require__(9);
+
+var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
+
+var _AttackArrow2 = __webpack_require__(61);
+
+var _AttackArrow3 = _interopRequireDefault(_AttackArrow2);
+
+var _utils = __webpack_require__(13);
+
+var PlotUtils = _interopRequireWildcard(_utils);
+
+var _Constants = __webpack_require__(26);
+
+var Constants = _interopRequireWildcard(_Constants);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SquadCombat = function (_AttackArrow) {
+  _inherits(SquadCombat, _AttackArrow);
+
+  function SquadCombat(points, params) {
+    _classCallCheck(this, SquadCombat);
+
+    var _this = _possibleConstructorReturn(this, (SquadCombat.__proto__ || Object.getPrototypeOf(SquadCombat)).call(this));
+
+    _AttackArrow3.default.call(_this, points, params);
+    _this.type = _PlotTypes2.default.SQUAD_COMBAT;
+    _this.headHeightFactor = 0.18;
+    _this.headWidthFactor = 0.3;
+    _this.neckHeightFactor = 0.85;
+    _this.neckWidthFactor = 0.15;
+    _this.tailWidthFactor = 0.1;
+    _this.set('params', params);
+    _this.setPoints(points);
+    return _this;
+  }
+
+  _createClass(SquadCombat, [{
+    key: 'generate',
+    value: function generate() {
+      try {
+        var pnts = this.getPoints();
+        var tailPnts = this.getTailPoints(pnts);
+        var headPnts = this.getArrowHeadPoints(pnts, tailPnts[0], tailPnts[1]);
+        var neckLeft = headPnts[0];
+        var neckRight = headPnts[4];
+        var bodyPnts = this.getArrowBodyPoints(pnts, neckLeft, neckRight, this.tailWidthFactor);
+        var count = bodyPnts.length;
+        var leftPnts = [tailPnts[0]].concat(bodyPnts.slice(0, count / 2));
+        leftPnts.push(neckLeft);
+        var rightPnts = [tailPnts[1]].concat(bodyPnts.slice(count / 2, count));
+        rightPnts.push(neckRight);
+        leftPnts = PlotUtils.getQBSplinePoints(leftPnts);
+        rightPnts = PlotUtils.getQBSplinePoints(rightPnts);
+        this.setCoordinates([leftPnts.concat(headPnts, rightPnts.reverse())]);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'getTailPoints',
+    value: function getTailPoints(points) {
+      var allLen = PlotUtils.getBaseLength(points);
+      var tailWidth = allLen * this.tailWidthFactor;
+      var tailLeft = PlotUtils.getThirdPoint(points[1], points[0], Constants.HALF_PI, tailWidth, false);
+      var tailRight = PlotUtils.getThirdPoint(points[1], points[0], Constants.HALF_PI, tailWidth, true);
+      return [tailLeft, tailRight];
+    }
+  }]);
+
+  return SquadCombat;
+}(_AttackArrow3.default);
+
+exports.default = SquadCombat;
+module.exports = exports['default'];
+
+/***/ }),
+/* 185 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _PlotTypes = __webpack_require__(9);
+
+var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
+
+var _constants = __webpack_require__(1);
+
+var _utils = __webpack_require__(13);
+
+var PlotUtils = _interopRequireWildcard(_utils);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var StraightArrow = function (_ol$geom$LineString) {
+  _inherits(StraightArrow, _ol$geom$LineString);
+
+  function StraightArrow(points, params) {
+    _classCallCheck(this, StraightArrow);
+
+    var _this = _possibleConstructorReturn(this, (StraightArrow.__proto__ || Object.getPrototypeOf(StraightArrow)).call(this));
+
+    _constants.ol.geom.LineString.call(_this, []);
+    _this.type = _PlotTypes2.default.STRAIGHT_ARROW;
+    _this.fixPointCount = 2;
+    _this.maxArrowLength = 3000000;
+    _this.arrowLengthScale = 5;
+    _this.set('params', params);
+    _this.setPoints(points);
+    return _this;
+  }
+
+  _createClass(StraightArrow, [{
+    key: 'generate',
+    value: function generate() {
+      try {
+        var count = this.getPointCount();
+        if (count < 2) {
+          return false;
+        } else {
+          var pnts = this.getPoints();
+          var _ref = [pnts[0], pnts[1]],
+              pnt1 = _ref[0],
+              pnt2 = _ref[1];
+
+          var distance = PlotUtils.MathDistance(pnt1, pnt2);
+          var len = distance / this.arrowLengthScale;
+          len = len > this.maxArrowLength ? this.maxArrowLength : len;
+          var leftPnt = PlotUtils.getThirdPoint(pnt1, pnt2, Math.PI / 6, len, false);
+          var rightPnt = PlotUtils.getThirdPoint(pnt1, pnt2, Math.PI / 6, len, true);
+          this.setCoordinates([pnt1, pnt2, leftPnt, pnt2, rightPnt]);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      if (map && map instanceof _constants.ol.Map) {
+        this.map = map;
+      } else {
+        throw new Error('传入的不是地图对象！');
+      }
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }, {
+    key: 'isPlot',
+    value: function isPlot() {
+      return true;
+    }
+  }, {
+    key: 'setPoints',
+    value: function setPoints(value) {
+      this.points = !value ? [] : value;
+      if (this.points.length >= 2) {
+        this.generate();
+      }
+    }
+  }, {
+    key: 'getPoints',
+    value: function getPoints() {
+      return this.points.slice(0);
+    }
+  }, {
+    key: 'getPointCount',
+    value: function getPointCount() {
+      return this.points.length;
+    }
+  }, {
+    key: 'updatePoint',
+    value: function updatePoint(point, index) {
+      if (index >= 0 && index < this.points.length) {
+        this.points[index] = point;
+        this.generate();
+      }
+    }
+  }, {
+    key: 'updateLastPoint',
+    value: function updateLastPoint(point) {
+      this.updatePoint(point, this.points.length - 1);
+    }
+  }, {
+    key: 'finishDrawing',
+    value: function finishDrawing() {}
+  }]);
+
+  return StraightArrow;
+}(_constants.ol.geom.LineString);
+
+exports.default = StraightArrow;
+module.exports = exports['default'];
+
+/***/ }),
+/* 186 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _PlotTypes = __webpack_require__(9);
+
+var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
+
+var _AttackArrow2 = __webpack_require__(61);
+
+var _AttackArrow3 = _interopRequireDefault(_AttackArrow2);
+
+var _utils = __webpack_require__(13);
+
+var PlotUtils = _interopRequireWildcard(_utils);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var TailedAttackArrow = function (_AttackArrow) {
+  _inherits(TailedAttackArrow, _AttackArrow);
+
+  function TailedAttackArrow(points, params) {
+    _classCallCheck(this, TailedAttackArrow);
+
+    var _this = _possibleConstructorReturn(this, (TailedAttackArrow.__proto__ || Object.getPrototypeOf(TailedAttackArrow)).call(this));
+
+    _AttackArrow3.default.call(_this, points, params);
+    _this.type = _PlotTypes2.default.TAILED_ATTACK_ARROW;
+    _this.headHeightFactor = 0.18;
+    _this.headWidthFactor = 0.3;
+    _this.neckHeightFactor = 0.85;
+    _this.neckWidthFactor = 0.15;
+    _this.tailWidthFactor = 0.1;
+    _this.headTailFactor = 0.8;
+    _this.swallowTailFactor = 1;
+    _this.swallowTailPnt = null;
+    _this.set('params', params);
+    _this.setPoints(points);
+    return _this;
+  }
+
+  _createClass(TailedAttackArrow, [{
+    key: 'generate',
+    value: function generate() {
+      try {
+        var points = this.getPointCount();
+        if (points === 2) {
+          this.setCoordinates([this.points]);
+          return false;
+        } else {
+          var pnts = this.getPoints();
+          var _ref = [pnts[0], pnts[1]],
+              tailLeft = _ref[0],
+              tailRight = _ref[1];
+
+          if (PlotUtils.isClockWise(pnts[0], pnts[1], pnts[2])) {
+            tailLeft = pnts[1];
+            tailRight = pnts[0];
+          }
+          var midTail = PlotUtils.Mid(tailLeft, tailRight);
+          var bonePnts = [midTail].concat(pnts.slice(2));
+          var headPnts = this.getArrowHeadPoints(bonePnts, tailLeft, tailRight);
+          var _ref2 = [headPnts[0], headPnts[4]],
+              neckLeft = _ref2[0],
+              neckRight = _ref2[1];
+
+          var tailWidth = PlotUtils.MathDistance(tailLeft, tailRight);
+          var allLen = PlotUtils.getBaseLength(bonePnts);
+          var len = allLen * this.tailWidthFactor * this.swallowTailFactor;
+          this.swallowTailPnt = PlotUtils.getThirdPoint(bonePnts[1], bonePnts[0], 0, len, true);
+          var factor = tailWidth / allLen;
+          var bodyPnts = this.getArrowBodyPoints(bonePnts, neckLeft, neckRight, factor);
+          var count = bodyPnts.length;
+          var leftPnts = [tailLeft].concat(bodyPnts.slice(0, count / 2));
+          leftPnts.push(neckLeft);
+          var rightPnts = [tailRight].concat(bodyPnts.slice(count / 2, count));
+          rightPnts.push(neckRight);
+          leftPnts = PlotUtils.getQBSplinePoints(leftPnts);
+          rightPnts = PlotUtils.getQBSplinePoints(rightPnts);
+          this.setCoordinates([leftPnts.concat(headPnts, rightPnts.reverse(), [this.swallowTailPnt, leftPnts[0]])]);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }]);
+
+  return TailedAttackArrow;
+}(_AttackArrow3.default);
+
+exports.default = TailedAttackArrow;
+module.exports = exports['default'];
+
+/***/ }),
+/* 187 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _PlotTypes = __webpack_require__(9);
+
+var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
+
+var _AttackArrow2 = __webpack_require__(61);
+
+var _AttackArrow3 = _interopRequireDefault(_AttackArrow2);
+
+var _utils = __webpack_require__(13);
+
+var PlotUtils = _interopRequireWildcard(_utils);
+
+var _Constants = __webpack_require__(26);
+
+var Constants = _interopRequireWildcard(_Constants);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var TailedSquadCombat = function (_AttackArrow) {
+  _inherits(TailedSquadCombat, _AttackArrow);
+
+  function TailedSquadCombat(points, params) {
+    _classCallCheck(this, TailedSquadCombat);
+
+    var _this = _possibleConstructorReturn(this, (TailedSquadCombat.__proto__ || Object.getPrototypeOf(TailedSquadCombat)).call(this));
+
+    _AttackArrow3.default.call(_this, points, params);
+    _this.type = _PlotTypes2.default.TAILED_SQUAD_COMBAT;
+    _this.headHeightFactor = 0.18;
+    _this.headWidthFactor = 0.3;
+    _this.neckHeightFactor = 0.85;
+    _this.neckWidthFactor = 0.15;
+    _this.tailWidthFactor = 0.1;
+    _this.swallowTailFactor = 1;
+    _this.swallowTailPnt = null;
+    _this.fixPointCount = 2;
+    _this.set('params', params);
+    _this.setPoints(points);
+    return _this;
+  }
+
+  _createClass(TailedSquadCombat, [{
+    key: 'generate',
+    value: function generate() {
+      try {
+        var pnts = this.getPoints();
+        var tailPnts = this.getTailPoints(pnts);
+        var headPnts = this.getArrowHeadPoints(pnts, tailPnts[0], tailPnts[2]);
+        var neckLeft = headPnts[0];
+        var neckRight = headPnts[4];
+        var bodyPnts = this.getArrowBodyPoints(pnts, neckLeft, neckRight, this.tailWidthFactor);
+        var count = bodyPnts.length;
+        var leftPnts = [tailPnts[0]].concat(bodyPnts.slice(0, count / 2));
+        leftPnts.push(neckLeft);
+        var rightPnts = [tailPnts[2]].concat(bodyPnts.slice(count / 2, count));
+        rightPnts.push(neckRight);
+        leftPnts = PlotUtils.getQBSplinePoints(leftPnts);
+        rightPnts = PlotUtils.getQBSplinePoints(rightPnts);
+        this.setCoordinates([leftPnts.concat(headPnts, rightPnts.reverse(), [tailPnts[1], leftPnts[0]])]);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'getTailPoints',
+    value: function getTailPoints(points) {
+      var allLen = PlotUtils.getBaseLength(points);
+      var tailWidth = allLen * this.tailWidthFactor;
+      var tailLeft = PlotUtils.getThirdPoint(points[1], points[0], Constants.HALF_PI, tailWidth, false);
+      var tailRight = PlotUtils.getThirdPoint(points[1], points[0], Constants.HALF_PI, tailWidth, true);
+      var len = tailWidth * this.swallowTailFactor;
+      var swallowTailPnt = PlotUtils.getThirdPoint(points[1], points[0], 0, len, true);
+      return [tailLeft, swallowTailPnt, tailRight];
+    }
+  }]);
+
+  return TailedSquadCombat;
+}(_AttackArrow3.default);
+
+exports.default = TailedSquadCombat;
+module.exports = exports['default'];
+
+/***/ }),
+/* 188 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _PlotTypes = __webpack_require__(9);
+
+var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
+
+var _constants = __webpack_require__(1);
+
+var _utils = __webpack_require__(13);
+
+var PlotUtils = _interopRequireWildcard(_utils);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Circle = function (_ol$geom$Polygon) {
+  _inherits(Circle, _ol$geom$Polygon);
+
+  function Circle(points, params) {
+    _classCallCheck(this, Circle);
+
+    var _this = _possibleConstructorReturn(this, (Circle.__proto__ || Object.getPrototypeOf(Circle)).call(this));
+
+    _constants.ol.geom.Polygon.call(_this, []);
+    _this.type = _PlotTypes2.default.CIRCLE;
+    _this.fixPointCount = 2;
+    _this.set('params', params);
+    _this.setPoints(points);
+    return _this;
+  }
+
+  _createClass(Circle, [{
+    key: 'generate',
+    value: function generate() {
+      var center = this.points[0];
+      var radius = PlotUtils.MathDistance(center, this.points[1]);
+      this.setCoordinates([this.generatePoints(center, radius)]);
+    }
+  }, {
+    key: 'generatePoints',
+    value: function generatePoints(center, radius) {
+      var x = null,
+          y = null,
+          angle = null,
+          points = [];
+
+      for (var i = 0; i <= 100; i++) {
+        angle = Math.PI * 2 * i / 100;
+        x = center[0] + radius * Math.cos(angle);
+        y = center[1] + radius * Math.sin(angle);
+        points.push([x, y]);
+      }
+      return points;
+    }
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      if (map && map instanceof _constants.ol.Map) {
+        this.map = map;
+      } else {
+        throw new Error('传入的不是地图对象！');
+      }
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }, {
+    key: 'isPlot',
+    value: function isPlot() {
+      return true;
+    }
+  }, {
+    key: 'setPoints',
+    value: function setPoints(value) {
+      this.points = !value ? [] : value;
+      if (this.points.length >= 2) {
+        this.generate();
+      }
+    }
+  }, {
+    key: 'getPoints',
+    value: function getPoints() {
+      return this.points.slice(0);
+    }
+  }, {
+    key: 'getPointCount',
+    value: function getPointCount() {
+      return this.points.length;
+    }
+  }, {
+    key: 'updatePoint',
+    value: function updatePoint(point, index) {
+      if (index >= 0 && index < this.points.length) {
+        this.points[index] = point;
+        this.generate();
+      }
+    }
+  }, {
+    key: 'updateLastPoint',
+    value: function updateLastPoint(point) {
+      this.updatePoint(point, this.points.length - 1);
+    }
+  }, {
+    key: 'finishDrawing',
+    value: function finishDrawing() {}
+  }]);
+
+  return Circle;
+}(_constants.ol.geom.Polygon);
+
+exports.default = Circle;
+module.exports = exports['default'];
+
+/***/ }),
+/* 189 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _PlotTypes = __webpack_require__(9);
+
+var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
+
+var _constants = __webpack_require__(1);
+
+var _Constants = __webpack_require__(26);
+
+var Constants = _interopRequireWildcard(_Constants);
+
+var _utils = __webpack_require__(13);
+
+var PlotUtils = _interopRequireWildcard(_utils);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Ellipse = function (_ol$geom$Polygon) {
+  _inherits(Ellipse, _ol$geom$Polygon);
+
+  function Ellipse(points, params) {
+    _classCallCheck(this, Ellipse);
+
+    var _this = _possibleConstructorReturn(this, (Ellipse.__proto__ || Object.getPrototypeOf(Ellipse)).call(this));
+
+    _constants.ol.geom.Polygon.call(_this, []);
+    _this.type = _PlotTypes2.default.ELLIPSE;
+    _this.fixPointCount = 2;
+    _this.set('params', params);
+    _this.setPoints(points);
+    return _this;
+  }
+
+  _createClass(Ellipse, [{
+    key: 'generate',
+    value: function generate() {
+      if (this.getPointCount() < 2) {
+        return false;
+      } else {
+        var _ref = [this.points[0], this.points[1]],
+            pnt1 = _ref[0],
+            pnt2 = _ref[1];
+
+        var center = PlotUtils.Mid(pnt1, pnt2);
+        var majorRadius = Math.abs((pnt1[0] - pnt2[0]) / 2);
+        var minorRadius = Math.abs((pnt1[1] - pnt2[1]) / 2);
+        var res = this.generatePoints(center, majorRadius, minorRadius);
+        this.setCoordinates([res]);
+      }
+    }
+  }, {
+    key: 'generatePoints',
+    value: function generatePoints(center, majorRadius, minorRadius) {
+      var x = null,
+          y = null,
+          angle = null,
+          points = [];
+
+      for (var i = 0; i <= Constants.FITTING_COUNT; i++) {
+        angle = Math.PI * 2 * i / Constants.FITTING_COUNT;
+        x = center[0] + majorRadius * Math.cos(angle);
+        y = center[1] + minorRadius * Math.sin(angle);
+        points.push([x, y]);
+      }
+      return points;
+    }
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      if (map && map instanceof _constants.ol.Map) {
+        this.map = map;
+      } else {
+        throw new Error('传入的不是地图对象！');
+      }
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }, {
+    key: 'isPlot',
+    value: function isPlot() {
+      return true;
+    }
+  }, {
+    key: 'setPoints',
+    value: function setPoints(value) {
+      this.points = !value ? [] : value;
+      if (this.points.length >= 2) {
+        this.generate();
+      }
+    }
+  }, {
+    key: 'getPoints',
+    value: function getPoints() {
+      return this.points.slice(0);
+    }
+  }, {
+    key: 'getPointCount',
+    value: function getPointCount() {
+      return this.points.length;
+    }
+  }, {
+    key: 'updatePoint',
+    value: function updatePoint(point, index) {
+      if (index >= 0 && index < this.points.length) {
+        this.points[index] = point;
+        this.generate();
+      }
+    }
+  }, {
+    key: 'updateLastPoint',
+    value: function updateLastPoint(point) {
+      this.updatePoint(point, this.points.length - 1);
+    }
+  }, {
+    key: 'finishDrawing',
+    value: function finishDrawing() {}
+  }]);
+
+  return Ellipse;
+}(_constants.ol.geom.Polygon);
+
+exports.default = Ellipse;
+module.exports = exports['default'];
+
+/***/ }),
+/* 190 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _PlotTypes = __webpack_require__(9);
+
+var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
+
+var _constants = __webpack_require__(1);
+
+var _utils = __webpack_require__(13);
+
+var PlotUtils = _interopRequireWildcard(_utils);
+
+var _Constants = __webpack_require__(26);
+
+var Constants = _interopRequireWildcard(_Constants);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ClosedCurve = function (_ol$geom$Polygon) {
+  _inherits(ClosedCurve, _ol$geom$Polygon);
+
+  function ClosedCurve(points, params) {
+    _classCallCheck(this, ClosedCurve);
+
+    var _this = _possibleConstructorReturn(this, (ClosedCurve.__proto__ || Object.getPrototypeOf(ClosedCurve)).call(this));
+
+    _constants.ol.geom.Polygon.call(_this, []);
+    _this.type = _PlotTypes2.default.CLOSED_CURVE;
+    _this.t = 0.3;
+    _this.set('params', params);
+    _this.setPoints(points);
+    return _this;
+  }
+
+  _createClass(ClosedCurve, [{
+    key: 'generate',
+    value: function generate() {
+      var points = this.getPointCount();
+      if (points === 2) {
+        this.setCoordinates([this.points]);
+      } else {
+        var pnts = this.getPoints();
+        pnts.push(pnts[0], pnts[1]);
+        var normals = [],
+            pList = [];
+
+        for (var i = 0; i < pnts.length - 2; i++) {
+          var normalPoints = PlotUtils.getBisectorNormals(this.t, pnts[i], pnts[i + 1], pnts[i + 2]);
+          normals = normals.concat(normalPoints);
+        }
+        var count = normals.length;
+        normals = [normals[count - 1]].concat(normals.slice(0, count - 1));
+        for (var _i = 0; _i < pnts.length - 2; _i++) {
+          var pnt1 = pnts[_i];
+          var pnt2 = pnts[_i + 1];
+          pList.push(pnt1);
+          for (var t = 0; t <= Constants.FITTING_COUNT; t++) {
+            var pnt = PlotUtils.getCubicValue(t / Constants.FITTING_COUNT, pnt1, normals[_i * 2], normals[_i * 2 + 1], pnt2);
+            pList.push(pnt);
+          }
+          pList.push(pnt2);
+        }
+        this.setCoordinates([pList]);
+      }
+    }
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      if (map && map instanceof _constants.ol.Map) {
+        this.map = map;
+      } else {
+        throw new Error('传入的不是地图对象！');
+      }
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }, {
+    key: 'isPlot',
+    value: function isPlot() {
+      return true;
+    }
+  }, {
+    key: 'setPoints',
+    value: function setPoints(value) {
+      this.points = !value ? [] : value;
+      if (this.points.length >= 2) {
+        this.generate();
+      }
+    }
+  }, {
+    key: 'getPoints',
+    value: function getPoints() {
+      return this.points.slice(0);
+    }
+  }, {
+    key: 'getPointCount',
+    value: function getPointCount() {
+      return this.points.length;
+    }
+  }, {
+    key: 'updatePoint',
+    value: function updatePoint(point, index) {
+      if (index >= 0 && index < this.points.length) {
+        this.points[index] = point;
+        this.generate();
+      }
+    }
+  }, {
+    key: 'updateLastPoint',
+    value: function updateLastPoint(point) {
+      this.updatePoint(point, this.points.length - 1);
+    }
+  }, {
+    key: 'finishDrawing',
+    value: function finishDrawing() {}
+  }]);
+
+  return ClosedCurve;
+}(_constants.ol.geom.Polygon);
+
+exports.default = ClosedCurve;
+module.exports = exports['default'];
+
+/***/ }),
+/* 191 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _PlotTypes = __webpack_require__(9);
+
+var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
+
+var _constants = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var FreePolygon = function (_ol$geom$Polygon) {
+  _inherits(FreePolygon, _ol$geom$Polygon);
+
+  function FreePolygon(points, params) {
+    _classCallCheck(this, FreePolygon);
+
+    var _this = _possibleConstructorReturn(this, (FreePolygon.__proto__ || Object.getPrototypeOf(FreePolygon)).call(this));
+
+    _constants.ol.geom.Polygon.call(_this, []);
+    _this.type = _PlotTypes2.default.FREEHAND_POLYGON;
+    _this.freehand = true;
+    _this.set('params', params);
+    _this.setPoints(points);
+    return _this;
+  }
+
+  _createClass(FreePolygon, [{
+    key: 'generate',
+    value: function generate() {
+      this.setCoordinates([this.points]);
+    }
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      if (map && map instanceof _constants.ol.Map) {
+        this.map = map;
+      } else {
+        throw new Error('传入的不是地图对象！');
+      }
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }, {
+    key: 'isPlot',
+    value: function isPlot() {
+      return true;
+    }
+  }, {
+    key: 'setPoints',
+    value: function setPoints(value) {
+      this.points = !value ? [] : value;
+      if (this.points.length >= 2) {
+        this.generate();
+      }
+    }
+  }, {
+    key: 'getPoints',
+    value: function getPoints() {
+      return this.points.slice(0);
+    }
+  }, {
+    key: 'getPointCount',
+    value: function getPointCount() {
+      return this.points.length;
+    }
+  }, {
+    key: 'updatePoint',
+    value: function updatePoint(point, index) {
+      if (index >= 0 && index < this.points.length) {
+        this.points[index] = point;
+        this.generate();
+      }
+    }
+  }, {
+    key: 'updateLastPoint',
+    value: function updateLastPoint(point) {
+      this.updatePoint(point, this.points.length - 1);
+    }
+  }, {
+    key: 'finishDrawing',
+    value: function finishDrawing() {}
+  }]);
+
+  return FreePolygon;
+}(_constants.ol.geom.Polygon);
+
+exports.default = FreePolygon;
+module.exports = exports['default'];
+
+/***/ }),
+/* 192 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _PlotTypes = __webpack_require__(9);
+
+var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
+
+var _constants = __webpack_require__(1);
+
+var _utils = __webpack_require__(13);
+
+var PlotUtils = _interopRequireWildcard(_utils);
+
+var _Constants = __webpack_require__(26);
+
+var Constants = _interopRequireWildcard(_Constants);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var GatheringPlace = function (_ol$geom$Polygon) {
+  _inherits(GatheringPlace, _ol$geom$Polygon);
+
+  function GatheringPlace(points, params) {
+    _classCallCheck(this, GatheringPlace);
+
+    var _this = _possibleConstructorReturn(this, (GatheringPlace.__proto__ || Object.getPrototypeOf(GatheringPlace)).call(this));
+
+    _constants.ol.geom.Polygon.call(_this, []);
+    _this.type = _PlotTypes2.default.GATHERING_PLACE;
+    _this.t = 0.4;
+    _this.fixPointCount = 3;
+    _this.set('params', params);
+    _this.setPoints(points);
+    return _this;
+  }
+
+  _createClass(GatheringPlace, [{
+    key: 'generate',
+    value: function generate() {
+      var pnts = this.getPoints();
+      var points = this.getPointCount();
+      if (pnts.length < 2) {
+        return false;
+      } else {
+        if (points === 2) {
+          var _mid = PlotUtils.Mid(pnts[0], pnts[1]);
+          var d = PlotUtils.MathDistance(pnts[0], _mid) / 0.9;
+          var pnt = PlotUtils.getThirdPoint(pnts[0], _mid, Constants.HALF_PI, d, true);
+          pnts = [pnts[0], pnt, pnts[1]];
+        }
+        var mid = PlotUtils.Mid(pnts[0], pnts[2]);
+        pnts.push(mid, pnts[0], pnts[1]);
+        var normals = [],
+            pnt1 = undefined,
+            pnt2 = undefined,
+            pnt3 = undefined,
+            pList = [];
+
+        for (var i = 0; i < pnts.length - 2; i++) {
+          pnt1 = pnts[i];
+          pnt2 = pnts[i + 1];
+          pnt3 = pnts[i + 2];
+          var normalPoints = PlotUtils.getBisectorNormals(this.t, pnt1, pnt2, pnt3);
+          normals = normals.concat(normalPoints);
+        }
+        var count = normals.length;
+        normals = [normals[count - 1]].concat(normals.slice(0, count - 1));
+        for (var _i = 0; _i < pnts.length - 2; _i++) {
+          pnt1 = pnts[_i];
+          pnt2 = pnts[_i + 1];
+          pList.push(pnt1);
+          for (var t = 0; t <= Constants.FITTING_COUNT; t++) {
+            var _pnt = PlotUtils.getCubicValue(t / Constants.FITTING_COUNT, pnt1, normals[_i * 2], normals[_i * 2 + 1], pnt2);
+            pList.push(_pnt);
+          }
+          pList.push(pnt2);
+        }
+        this.setCoordinates([pList]);
+      }
+    }
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      if (map && map instanceof _constants.ol.Map) {
+        this.map = map;
+      } else {
+        throw new Error('传入的不是地图对象！');
+      }
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }, {
+    key: 'isPlot',
+    value: function isPlot() {
+      return true;
+    }
+  }, {
+    key: 'setPoints',
+    value: function setPoints(value) {
+      this.points = !value ? [] : value;
+      if (this.points.length >= 2) {
+        this.generate();
+      }
+    }
+  }, {
+    key: 'getPoints',
+    value: function getPoints() {
+      return this.points.slice(0);
+    }
+  }, {
+    key: 'getPointCount',
+    value: function getPointCount() {
+      return this.points.length;
+    }
+  }, {
+    key: 'updatePoint',
+    value: function updatePoint(point, index) {
+      if (index >= 0 && index < this.points.length) {
+        this.points[index] = point;
+        this.generate();
+      }
+    }
+  }, {
+    key: 'updateLastPoint',
+    value: function updateLastPoint(point) {
+      this.updatePoint(point, this.points.length - 1);
+    }
+  }, {
+    key: 'finishDrawing',
+    value: function finishDrawing() {}
+  }]);
+
+  return GatheringPlace;
+}(_constants.ol.geom.Polygon);
+
+exports.default = GatheringPlace;
+module.exports = exports['default'];
+
+/***/ }),
+/* 193 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _PlotTypes = __webpack_require__(9);
+
+var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
+
+var _constants = __webpack_require__(1);
+
+var _Constants = __webpack_require__(26);
+
+var Constants = _interopRequireWildcard(_Constants);
+
+var _utils = __webpack_require__(13);
+
+var PlotUtils = _interopRequireWildcard(_utils);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Lune = function (_ol$geom$Polygon) {
+  _inherits(Lune, _ol$geom$Polygon);
+
+  function Lune(points, params) {
+    _classCallCheck(this, Lune);
+
+    var _this = _possibleConstructorReturn(this, (Lune.__proto__ || Object.getPrototypeOf(Lune)).call(this));
+
+    _constants.ol.geom.Polygon.call(_this, []);
+    _this.type = _PlotTypes2.default.LUNE;
+    _this.fixPointCount = 3;
+    _this.set('params', params);
+    _this.setPoints(points);
+    return _this;
+  }
+
+  _createClass(Lune, [{
+    key: 'generate',
+    value: function generate() {
+      if (this.getPointCount() < 2) {
+        return false;
+      } else {
+        var pnts = this.getPoints();
+        if (this.getPointCount() === 2) {
+          var mid = PlotUtils.Mid(pnts[0], pnts[1]);
+          var d = PlotUtils.MathDistance(pnts[0], mid);
+          var pnt = PlotUtils.getThirdPoint(pnts[0], mid, Constants.HALF_PI, d);
+          pnts.push(pnt);
+        }
+        var _ref = [pnts[0], pnts[1], pnts[2], undefined, undefined],
+            pnt1 = _ref[0],
+            pnt2 = _ref[1],
+            pnt3 = _ref[2],
+            startAngle = _ref[3],
+            endAngle = _ref[4];
+
+        var center = PlotUtils.getCircleCenterOfThreePoints(pnt1, pnt2, pnt3);
+        var radius = PlotUtils.MathDistance(pnt1, center);
+        var angle1 = PlotUtils.getAzimuth(pnt1, center);
+        var angle2 = PlotUtils.getAzimuth(pnt2, center);
+        if (PlotUtils.isClockWise(pnt1, pnt2, pnt3)) {
+          startAngle = angle2;
+          endAngle = angle1;
+        } else {
+          startAngle = angle1;
+          endAngle = angle2;
+        }
+        pnts = PlotUtils.getArcPoints(center, radius, startAngle, endAngle);
+        pnts.push(pnts[0]);
+        this.setCoordinates([pnts]);
+      }
+    }
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      if (map && map instanceof _constants.ol.Map) {
+        this.map = map;
+      } else {
+        throw new Error('传入的不是地图对象！');
+      }
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }, {
+    key: 'isPlot',
+    value: function isPlot() {
+      return true;
+    }
+  }, {
+    key: 'setPoints',
+    value: function setPoints(value) {
+      this.points = !value ? [] : value;
+      if (this.points.length >= 2) {
+        this.generate();
+      }
+    }
+  }, {
+    key: 'getPoints',
+    value: function getPoints() {
+      return this.points.slice(0);
+    }
+  }, {
+    key: 'getPointCount',
+    value: function getPointCount() {
+      return this.points.length;
+    }
+  }, {
+    key: 'updatePoint',
+    value: function updatePoint(point, index) {
+      if (index >= 0 && index < this.points.length) {
+        this.points[index] = point;
+        this.generate();
+      }
+    }
+  }, {
+    key: 'updateLastPoint',
+    value: function updateLastPoint(point) {
+      this.updatePoint(point, this.points.length - 1);
+    }
+  }, {
+    key: 'finishDrawing',
+    value: function finishDrawing() {}
+  }]);
+
+  return Lune;
+}(_constants.ol.geom.Polygon);
+
+exports.default = Lune;
+module.exports = exports['default'];
+
+/***/ }),
+/* 194 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _PlotTypes = __webpack_require__(9);
+
+var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
+
+var _constants = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Polygon = function (_ol$geom$Polygon) {
+  _inherits(Polygon, _ol$geom$Polygon);
+
+  function Polygon(points, params) {
+    _classCallCheck(this, Polygon);
+
+    var _this = _possibleConstructorReturn(this, (Polygon.__proto__ || Object.getPrototypeOf(Polygon)).call(this));
+
+    _constants.ol.geom.Polygon.call(_this, []);
+    _this.type = _PlotTypes2.default.POLYGON;
+    _this.set('params', params);
+    _this.setPoints(points);
+    return _this;
+  }
+
+  _createClass(Polygon, [{
+    key: 'generate',
+    value: function generate() {
+      this.setCoordinates([this.points]);
+    }
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      if (map && map instanceof _constants.ol.Map) {
+        this.map = map;
+      } else {
+        throw new Error('传入的不是地图对象！');
+      }
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }, {
+    key: 'isPlot',
+    value: function isPlot() {
+      return true;
+    }
+  }, {
+    key: 'setPoints',
+    value: function setPoints(value) {
+      this.points = !value ? [] : value;
+      if (this.points.length >= 2) {
+        this.generate();
+      }
+    }
+  }, {
+    key: 'getPoints',
+    value: function getPoints() {
+      return this.points.slice(0);
+    }
+  }, {
+    key: 'getPointCount',
+    value: function getPointCount() {
+      return this.points.length;
+    }
+  }, {
+    key: 'updatePoint',
+    value: function updatePoint(point, index) {
+      if (index >= 0 && index < this.points.length) {
+        this.points[index] = point;
+        this.generate();
+      }
+    }
+  }, {
+    key: 'updateLastPoint',
+    value: function updateLastPoint(point) {
+      this.updatePoint(point, this.points.length - 1);
+    }
+  }, {
+    key: 'finishDrawing',
+    value: function finishDrawing() {}
+  }]);
+
+  return Polygon;
+}(_constants.ol.geom.Polygon);
+
+exports.default = Polygon;
+module.exports = exports['default'];
+
+/***/ }),
+/* 195 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _PlotTypes = __webpack_require__(9);
+
+var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
+
+var _constants = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var RectAngle = function (_ol$geom$Polygon) {
+  _inherits(RectAngle, _ol$geom$Polygon);
+
+  function RectAngle(points, params) {
+    _classCallCheck(this, RectAngle);
+
+    var _this = _possibleConstructorReturn(this, (RectAngle.__proto__ || Object.getPrototypeOf(RectAngle)).call(this));
+
+    _constants.ol.geom.Polygon.call(_this, []);
+    _this.type = _PlotTypes2.default.RECTANGLE;
+    _this.fixPointCount = 2;
+    _this.set('params', params);
+    _this.setPoints(points);
+    _this.isFill = params['isFill'] === false ? params['isFill'] : true;
+    return _this;
+  }
+
+  _createClass(RectAngle, [{
+    key: 'generate',
+    value: function generate() {
+      if (this.points.length === 2) {
+        var coordinates = [];
+        if (this.isFill) {
+          var extent = _constants.ol.extent.boundingExtent(this.points);
+          var polygon = _constants.ol.geom.Polygon.fromExtent(extent);
+          coordinates = polygon.getCoordinates();
+        } else {
+          var start = this.points[0];
+          var end = this.points[1];
+          coordinates = [start, [start[0], end[1]], end, [end[0], start[1]], start];
+        }
+        this.setCoordinates(coordinates);
+      }
+    }
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      if (map && map instanceof _constants.ol.Map) {
+        this.map = map;
+      } else {
+        throw new Error('传入的不是地图对象！');
+      }
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }, {
+    key: 'isPlot',
+    value: function isPlot() {
+      return true;
+    }
+  }, {
+    key: 'setPoints',
+    value: function setPoints(value) {
+      this.points = !value ? [] : value;
+      if (this.points.length >= 2) {
+        this.generate();
+      }
+    }
+  }, {
+    key: 'getPoints',
+    value: function getPoints() {
+      return this.points.slice(0);
+    }
+  }, {
+    key: 'getPointCount',
+    value: function getPointCount() {
+      return this.points.length;
+    }
+  }, {
+    key: 'updatePoint',
+    value: function updatePoint(point, index) {
+      if (index >= 0 && index < this.points.length) {
+        this.points[index] = point;
+        this.generate();
+      }
+    }
+  }, {
+    key: 'updateLastPoint',
+    value: function updateLastPoint(point) {
+      this.updatePoint(point, this.points.length - 1);
+    }
+  }, {
+    key: 'finishDrawing',
+    value: function finishDrawing() {}
+  }]);
+
+  return RectAngle;
+}(_constants.ol.geom.Polygon);
+
+exports.default = RectAngle;
+module.exports = exports['default'];
+
+/***/ }),
+/* 196 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _PlotTypes = __webpack_require__(9);
+
+var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
+
+var _constants = __webpack_require__(1);
+
+var _utils = __webpack_require__(13);
+
+var PlotUtils = _interopRequireWildcard(_utils);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Sector = function (_ol$geom$Polygon) {
+  _inherits(Sector, _ol$geom$Polygon);
+
+  function Sector(points, params) {
+    _classCallCheck(this, Sector);
+
+    var _this = _possibleConstructorReturn(this, (Sector.__proto__ || Object.getPrototypeOf(Sector)).call(this));
+
+    _constants.ol.geom.Polygon.call(_this, []);
+    _this.type = _PlotTypes2.default.SECTOR;
+    _this.fixPointCount = 3;
+    _this.set('params', params);
+    _this.setPoints(points);
+    return _this;
+  }
+
+  _createClass(Sector, [{
+    key: 'generate',
+    value: function generate() {
+      var points = this.getPointCount();
+      if (points < 2) {
+        return false;
+      } else if (points === 2) {
+        this.setCoordinates([this.points]);
+      } else {
+        var pnts = this.getPoints();
+        var _ref = [pnts[0], pnts[1], pnts[2]],
+            center = _ref[0],
+            pnt2 = _ref[1],
+            pnt3 = _ref[2];
+
+        var radius = PlotUtils.MathDistance(pnt2, center);
+        var startAngle = PlotUtils.getAzimuth(pnt2, center);
+        var endAngle = PlotUtils.getAzimuth(pnt3, center);
+        var pList = PlotUtils.getArcPoints(center, radius, startAngle, endAngle);
+        pList.push(center, pList[0]);
+        this.setCoordinates([pList]);
+      }
+    }
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      if (map && map instanceof _constants.ol.Map) {
+        this.map = map;
+      } else {
+        throw new Error('传入的不是地图对象！');
+      }
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }, {
+    key: 'isPlot',
+    value: function isPlot() {
+      return true;
+    }
+  }, {
+    key: 'setPoints',
+    value: function setPoints(value) {
+      this.points = !value ? [] : value;
+      if (this.points.length >= 2) {
+        this.generate();
+      }
+    }
+  }, {
+    key: 'getPoints',
+    value: function getPoints() {
+      return this.points.slice(0);
+    }
+  }, {
+    key: 'getPointCount',
+    value: function getPointCount() {
+      return this.points.length;
+    }
+  }, {
+    key: 'updatePoint',
+    value: function updatePoint(point, index) {
+      if (index >= 0 && index < this.points.length) {
+        this.points[index] = point;
+        this.generate();
+      }
+    }
+  }, {
+    key: 'updateLastPoint',
+    value: function updateLastPoint(point) {
+      this.updatePoint(point, this.points.length - 1);
+    }
+  }, {
+    key: 'finishDrawing',
+    value: function finishDrawing() {}
+  }]);
+
+  return Sector;
+}(_constants.ol.geom.Polygon);
+
+exports.default = Sector;
+module.exports = exports['default'];
+
+/***/ }),
+/* 197 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _PlotTypes = __webpack_require__(9);
+
+var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
+
+var _constants = __webpack_require__(1);
+
+var _utils = __webpack_require__(13);
+
+var PlotUtils = _interopRequireWildcard(_utils);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Curve = function (_ol$geom$LineString) {
+  _inherits(Curve, _ol$geom$LineString);
+
+  function Curve(points, params) {
+    _classCallCheck(this, Curve);
+
+    var _this = _possibleConstructorReturn(this, (Curve.__proto__ || Object.getPrototypeOf(Curve)).call(this));
+
+    _constants.ol.geom.LineString.call(_this, []);
+    _this.type = _PlotTypes2.default.CURVE;
+    _this.t = 0.3;
+    _this.set('params', params);
+    _this.setPoints(points);
+    return _this;
+  }
+
+  _createClass(Curve, [{
+    key: 'generate',
+    value: function generate() {
+      if (this.getPointCount() === 2) {
+        this.setCoordinates(this.points);
+      } else {
+        var points = PlotUtils.getCurvePoints(this.t, this.points);
+        this.setCoordinates(points);
+      }
+    }
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      if (map && map instanceof _constants.ol.Map) {
+        this.map = map;
+      } else {
+        throw new Error('传入的不是地图对象！');
+      }
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }, {
+    key: 'isPlot',
+    value: function isPlot() {
+      return true;
+    }
+  }, {
+    key: 'setPoints',
+    value: function setPoints(value) {
+      this.points = !value ? [] : value;
+      if (this.points.length >= 2) {
+        this.generate();
+      }
+    }
+  }, {
+    key: 'getPoints',
+    value: function getPoints() {
+      return this.points.slice(0);
+    }
+  }, {
+    key: 'getPointCount',
+    value: function getPointCount() {
+      return this.points.length;
+    }
+  }, {
+    key: 'updatePoint',
+    value: function updatePoint(point, index) {
+      if (index >= 0 && index < this.points.length) {
+        this.points[index] = point;
+        this.generate();
+      }
+    }
+  }, {
+    key: 'updateLastPoint',
+    value: function updateLastPoint(point) {
+      this.updatePoint(point, this.points.length - 1);
+    }
+  }, {
+    key: 'finishDrawing',
+    value: function finishDrawing() {}
+  }]);
+
+  return Curve;
+}(_constants.ol.geom.LineString);
+
+exports.default = Curve;
+module.exports = exports['default'];
+
+/***/ }),
+/* 198 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _PlotTypes = __webpack_require__(9);
+
+var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
+
+var _constants = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var FreeHandLine = function (_ol$geom$LineString) {
+  _inherits(FreeHandLine, _ol$geom$LineString);
+
+  function FreeHandLine(points, params) {
+    _classCallCheck(this, FreeHandLine);
+
+    var _this = _possibleConstructorReturn(this, (FreeHandLine.__proto__ || Object.getPrototypeOf(FreeHandLine)).call(this));
+
+    _constants.ol.geom.LineString.call(_this, []);
+    _this.type = _PlotTypes2.default.FREEHAND_LINE;
+    _this.freehand = true;
+    _this.set('params', params);
+    _this.setPoints(points);
+    return _this;
+  }
+
+  _createClass(FreeHandLine, [{
+    key: 'generate',
+    value: function generate() {
+      this.setCoordinates(this.points);
+    }
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      if (map && map instanceof _constants.ol.Map) {
+        this.map = map;
+      } else {
+        throw new Error('传入的不是地图对象！');
+      }
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }, {
+    key: 'isPlot',
+    value: function isPlot() {
+      return true;
+    }
+  }, {
+    key: 'setPoints',
+    value: function setPoints(value) {
+      this.points = !value ? [] : value;
+      if (this.points.length >= 2) {
+        this.generate();
+      }
+    }
+  }, {
+    key: 'getPoints',
+    value: function getPoints() {
+      return this.points.slice(0);
+    }
+  }, {
+    key: 'getPointCount',
+    value: function getPointCount() {
+      return this.points.length;
+    }
+  }, {
+    key: 'updatePoint',
+    value: function updatePoint(point, index) {
+      if (index >= 0 && index < this.points.length) {
+        this.points[index] = point;
+        this.generate();
+      }
+    }
+  }, {
+    key: 'updateLastPoint',
+    value: function updateLastPoint(point) {
+      this.updatePoint(point, this.points.length - 1);
+    }
+  }, {
+    key: 'finishDrawing',
+    value: function finishDrawing() {}
+  }]);
+
+  return FreeHandLine;
+}(_constants.ol.geom.LineString);
+
+exports.default = FreeHandLine;
+module.exports = exports['default'];
+
+/***/ }),
+/* 199 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _PlotTypes = __webpack_require__(9);
+
+var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
+
+var _constants = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Polyline = function (_ol$geom$LineString) {
+  _inherits(Polyline, _ol$geom$LineString);
+
+  function Polyline(points, params) {
+    _classCallCheck(this, Polyline);
+
+    var _this = _possibleConstructorReturn(this, (Polyline.__proto__ || Object.getPrototypeOf(Polyline)).call(this));
+
+    _constants.ol.geom.LineString.call(_this, []);
+    _this.type = _PlotTypes2.default.POLYLINE;
+    _this.set('params', params);
+    _this.setPoints(points);
+    return _this;
+  }
+
+  _createClass(Polyline, [{
+    key: 'generate',
+    value: function generate() {
+      this.setCoordinates(this.points);
+    }
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      if (map && map instanceof _constants.ol.Map) {
+        this.map = map;
+      } else {
+        throw new Error('传入的不是地图对象！');
+      }
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }, {
+    key: 'isPlot',
+    value: function isPlot() {
+      return true;
+    }
+  }, {
+    key: 'setPoints',
+    value: function setPoints(value) {
+      this.points = !value ? [] : value;
+      if (this.points.length >= 2) {
+        this.generate();
+      }
+    }
+  }, {
+    key: 'getPoints',
+    value: function getPoints() {
+      return this.points.slice(0);
+    }
+  }, {
+    key: 'getPointCount',
+    value: function getPointCount() {
+      return this.points.length;
+    }
+  }, {
+    key: 'updatePoint',
+    value: function updatePoint(point, index) {
+      if (index >= 0 && index < this.points.length) {
+        this.points[index] = point;
+        this.generate();
+      }
+    }
+  }, {
+    key: 'updateLastPoint',
+    value: function updateLastPoint(point) {
+      this.updatePoint(point, this.points.length - 1);
+    }
+  }, {
+    key: 'finishDrawing',
+    value: function finishDrawing() {}
+  }]);
+
+  return Polyline;
+}(_constants.ol.geom.LineString);
+
+exports.default = Polyline;
+module.exports = exports['default'];
+
+/***/ }),
+/* 200 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _Polyline = __webpack_require__(199);
+
+var _Polyline2 = _interopRequireDefault(_Polyline);
+
+var _Arc = __webpack_require__(181);
+
+var _Arc2 = _interopRequireDefault(_Arc);
+
+var _Circle = __webpack_require__(188);
+
+var _Circle2 = _interopRequireDefault(_Circle);
+
+var _Curve = __webpack_require__(197);
+
+var _Curve2 = _interopRequireDefault(_Curve);
+
+var _FreeHandLine = __webpack_require__(198);
+
+var _FreeHandLine2 = _interopRequireDefault(_FreeHandLine);
+
+var _RectAngle = __webpack_require__(195);
+
+var _RectAngle2 = _interopRequireDefault(_RectAngle);
+
+var _Ellipse = __webpack_require__(189);
+
+var _Ellipse2 = _interopRequireDefault(_Ellipse);
+
+var _Lune = __webpack_require__(193);
+
+var _Lune2 = _interopRequireDefault(_Lune);
+
+var _Sector = __webpack_require__(196);
+
+var _Sector2 = _interopRequireDefault(_Sector);
+
+var _ClosedCurve = __webpack_require__(190);
+
+var _ClosedCurve2 = _interopRequireDefault(_ClosedCurve);
+
+var _Polygon = __webpack_require__(194);
+
+var _Polygon2 = _interopRequireDefault(_Polygon);
+
+var _FreePolygon = __webpack_require__(191);
+
+var _FreePolygon2 = _interopRequireDefault(_FreePolygon);
+
+var _AttackArrow = __webpack_require__(61);
+
+var _AttackArrow2 = _interopRequireDefault(_AttackArrow);
+
+var _DoubleArrow = __webpack_require__(183);
+
+var _DoubleArrow2 = _interopRequireDefault(_DoubleArrow);
+
+var _StraightArrow = __webpack_require__(185);
+
+var _StraightArrow2 = _interopRequireDefault(_StraightArrow);
+
+var _FineArrow = __webpack_require__(119);
+
+var _FineArrow2 = _interopRequireDefault(_FineArrow);
+
+var _AssaultDirection = __webpack_require__(182);
+
+var _AssaultDirection2 = _interopRequireDefault(_AssaultDirection);
+
+var _TailedAttackArrow = __webpack_require__(186);
+
+var _TailedAttackArrow2 = _interopRequireDefault(_TailedAttackArrow);
+
+var _SquadCombat = __webpack_require__(184);
+
+var _SquadCombat2 = _interopRequireDefault(_SquadCombat);
+
+var _TailedSquadCombat = __webpack_require__(187);
+
+var _TailedSquadCombat2 = _interopRequireDefault(_TailedSquadCombat);
+
+var _GatheringPlace = __webpack_require__(192);
+
+var _GatheringPlace2 = _interopRequireDefault(_GatheringPlace);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+  Polyline: _Polyline2.default,
+  Arc: _Arc2.default,
+  Circle: _Circle2.default,
+  Curve: _Curve2.default,
+  FreeHandLine: _FreeHandLine2.default,
+  RectAngle: _RectAngle2.default,
+  Ellipse: _Ellipse2.default,
+  Lune: _Lune2.default,
+  Sector: _Sector2.default,
+  ClosedCurve: _ClosedCurve2.default,
+  Polygon: _Polygon2.default,
+  FreePolygon: _FreePolygon2.default,
+  AttackArrow: _AttackArrow2.default,
+  DoubleArrow: _DoubleArrow2.default,
+  StraightArrow: _StraightArrow2.default,
+  FineArrow: _FineArrow2.default,
+  AssaultDirection: _AssaultDirection2.default,
+  TailedAttackArrow: _TailedAttackArrow2.default,
+  SquadCombat: _SquadCombat2.default,
+  TailedSquadCombat: _TailedSquadCombat2.default,
+  GatheringPlace: _GatheringPlace2.default
+};
+module.exports = exports['default'];
+
+/***/ }),
+/* 201 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _constants = __webpack_require__(1);
+
+var _index = __webpack_require__(200);
+
+var _index2 = _interopRequireDefault(_index);
+
+var _PlotTypes = __webpack_require__(9);
+
+var _PlotTypes2 = _interopRequireDefault(_PlotTypes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Plot = function () {
+  function Plot(map) {
+    _classCallCheck(this, Plot);
+
+    this.version = '1.0.0';
+    if (map && map instanceof _constants.ol.Map) {
+      this.map = map;
+    } else {
+      throw new Error('缺少地图对象！');
+    }
+  }
+
+  _createClass(Plot, [{
+    key: 'createPlot',
+    value: function createPlot(type, points, _params) {
+      var params = _params || {};
+      switch (type) {
+        case _PlotTypes2.default.POLYLINE:
+          return new _index2.default.Polyline(points, params);
+        case _PlotTypes2.default.ARC:
+          return new _index2.default.Arc(points, params);
+        case _PlotTypes2.default.CIRCLE:
+          return new _index2.default.Circle(points, params);
+        case _PlotTypes2.default.CURVE:
+          return new _index2.default.Curve(points, params);
+        case _PlotTypes2.default.FREE_LINE:
+          return new _index2.default.FreeHandLine(points, params);
+        case _PlotTypes2.default.RECTANGLE:
+          return new _index2.default.RectAngle(points, params);
+        case _PlotTypes2.default.ELLIPSE:
+          return new _index2.default.Ellipse(points, params);
+        case _PlotTypes2.default.LUNE:
+          return new _index2.default.Lune(points, params);
+        case _PlotTypes2.default.SECTOR:
+          return new _index2.default.Sector(points, params);
+        case _PlotTypes2.default.CLOSED_CURVE:
+          return new _index2.default.ClosedCurve(points, params);
+        case _PlotTypes2.default.POLYGON:
+          return new _index2.default.Polygon(points, params);
+        case _PlotTypes2.default.ATTACK_ARROW:
+          return new _index2.default.AttackArrow(points, params);
+        case _PlotTypes2.default.FREE_POLYGON:
+          return new _index2.default.FreePolygon(points, params);
+        case _PlotTypes2.default.DOUBLE_ARROW:
+          return new _index2.default.DoubleArrow(points, params);
+        case _PlotTypes2.default.STRAIGHT_ARROW:
+          return new _index2.default.StraightArrow(points, params);
+        case _PlotTypes2.default.FINE_ARROW:
+          return new _index2.default.FineArrow(points, params);
+        case _PlotTypes2.default.ASSAULT_DIRECTION:
+          return new _index2.default.AssaultDirection(points, params);
+        case _PlotTypes2.default.TAILED_ATTACK_ARROW:
+          return new _index2.default.TailedAttackArrow(points, params);
+        case _PlotTypes2.default.SQUAD_COMBAT:
+          return new _index2.default.SquadCombat(points, params);
+        case _PlotTypes2.default.TAILED_SQUAD_COMBAT:
+          return new _index2.default.TailedSquadCombat(points, params);
+        case _PlotTypes2.default.GATHERING_PLACE:
+          return new _index2.default.GatheringPlace(points, params);
+      }
+      return null;
+    }
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      if (map && map instanceof _constants.ol.Map) {
+        this.map = map;
+      } else {
+        throw new Error('传入的不是地图对象！');
+      }
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }, {
+    key: 'isPlot',
+    value: function isPlot() {
+      return true;
+    }
+  }, {
+    key: 'setPoints',
+    value: function setPoints(value) {
+      this.points = !value ? [] : value;
+      if (this.points.length >= 2) {
+        this.generate();
+      }
+    }
+  }, {
+    key: 'getPoints',
+    value: function getPoints() {
+      return this.points.slice(0);
+    }
+  }, {
+    key: 'getPointCount',
+    value: function getPointCount() {
+      return this.points.length;
+    }
+  }, {
+    key: 'updatePoint',
+    value: function updatePoint(point, index) {
+      if (index >= 0 && index < this.points.length) {
+        this.points[index] = point;
+        this.generate();
+      }
+    }
+  }, {
+    key: 'updateLastPoint',
+    value: function updateLastPoint(point) {
+      this.updatePoint(point, this.points.length - 1);
+    }
+  }, {
+    key: 'generate',
+    value: function generate() {}
+  }]);
+
+  return Plot;
+}();
+
+exports.default = Plot;
+module.exports = exports['default'];
+
+/***/ }),
+/* 202 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _constants = __webpack_require__(1);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var CoordsTransform = function () {
+  function CoordsTransform() {
+    _classCallCheck(this, CoordsTransform);
+  }
+
+  _createClass(CoordsTransform, [{
+    key: 'transformlat',
+    value: function transformlat(lng, lat) {
+      var ret = -100.0 + 2.0 * lng + 3.0 * lat + 0.2 * lat * lat + 0.1 * lng * lat + 0.2 * Math.sqrt(Math.abs(lng));
+      ret += (20.0 * Math.sin(6.0 * lng * _constants.PI) + 20.0 * Math.sin(2.0 * lng * _constants.PI)) * 2.0 / 3.0;
+      ret += (20.0 * Math.sin(lat * _constants.PI) + 40.0 * Math.sin(lat / 3.0 * _constants.PI)) * 2.0 / 3.0;
+      ret += (160.0 * Math.sin(lat / 12.0 * _constants.PI) + 320 * Math.sin(lat * _constants.PI / 30.0)) * 2.0 / 3.0;
+      return ret;
+    }
+  }, {
+    key: 'transformlng',
+    value: function transformlng(lng, lat) {
+      var ret = 300.0 + lng + 2.0 * lat + 0.1 * lng * lng + 0.1 * lng * lat + 0.1 * Math.sqrt(Math.abs(lng));
+      ret += (20.0 * Math.sin(6.0 * lng * _constants.PI) + 20.0 * Math.sin(2.0 * lng * _constants.PI)) * 2.0 / 3.0;
+      ret += (20.0 * Math.sin(lng * _constants.PI) + 40.0 * Math.sin(lng / 3.0 * _constants.PI)) * 2.0 / 3.0;
+      ret += (150.0 * Math.sin(lng / 12.0 * _constants.PI) + 300.0 * Math.sin(lng / 30.0 * _constants.PI)) * 2.0 / 3.0;
+      return ret;
+    }
+  }, {
+    key: 'outOfChina',
+    value: function outOfChina(lng, lat) {
+      return !(lng > 73.66 && lng < 135.05 && lat > 3.86 && lat < 53.55);
+    }
+  }, {
+    key: 'gcj02towgs84',
+    value: function gcj02towgs84(lng, lat) {
+      if (this.outOfChina(lng, lat)) {
+        return [lng, lat];
+      } else {
+        var dlat = this.transformlat(lng - 105.0, lat - 35.0);
+        var dlng = this.transformlng(lng - 105.0, lat - 35.0);
+        var radlat = lat / 180.0 * _constants.PI;
+        var magic = Math.sin(radlat);
+        magic = 1 - _constants.ee * magic * magic;
+        var sqrtmagic = Math.sqrt(magic);
+        dlat = dlat * 180.0 / (_constants.a * (1 - _constants.ee) / (magic * sqrtmagic) * _constants.PI);
+        dlng = dlng * 180.0 / (_constants.a / sqrtmagic * Math.cos(radlat) * _constants.PI);
+        var mglat = lat + dlat;
+        var mglng = lng + dlng;
+        return [lng * 2 - mglng, lat * 2 - mglat];
+      }
+    }
+  }, {
+    key: 'wgs84togcj02',
+    value: function wgs84togcj02(lng, lat) {
+      if (this.outOfChina(lng, lat)) {
+        return [lng, lat];
+      } else {
+        var dlat = this.transformlat(lng - 105.0, lat - 35.0);
+        var dlng = this.transformlng(lng - 105.0, lat - 35.0);
+        var radlat = lat / 180.0 * _constants.PI;
+        var magic = Math.sin(radlat);
+        magic = 1 - _constants.ee * magic * magic;
+        var sqrtmagic = Math.sqrt(magic);
+        dlat = dlat * 180.0 / (_constants.a * (1 - _constants.ee) / (magic * sqrtmagic) * _constants.PI);
+        dlng = dlng * 180.0 / (_constants.a / sqrtmagic * Math.cos(radlat) * _constants.PI);
+        var mglat = lat + dlat;
+        var mglng = lng + dlng;
+        return [mglng, mglat];
+      }
+    }
+  }, {
+    key: 'gcj02tobd',
+    value: function gcj02tobd(lng, lat) {
+      var z = Math.sqrt(lng * lng + lat * lat) + 0.00002 * Math.sin(lat * _constants.X_PI);
+      var theta = Math.atan2(lat, lng) + 0.000003 * Math.cos(lng * _constants.X_PI);
+      var bdLng = z * Math.cos(theta) + 0.0065;
+      var bdLat = z * Math.sin(theta) + 0.006;
+      return [bdLng, bdLat];
+    }
+  }, {
+    key: 'bdtogcj02',
+    value: function bdtogcj02(lon, lat) {
+      var x = lon - 0.0065;
+      var y = lat - 0.006;
+      var z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * _constants.X_PI);
+      var theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * _constants.X_PI);
+      var ggLng = z * Math.cos(theta);
+      var ggLat = z * Math.sin(theta);
+      return [ggLng, ggLat];
+    }
+  }, {
+    key: 'lonLatToMercator',
+    value: function lonLatToMercator(lontitude, latitude) {
+      var x = lontitude * 20037508.34 / 180;
+      var y = Math.log(Math.tan((90 + latitude) * Math.PI / 360)) / (Math.PI / 180);
+      y = y * 20037508.34 / 180;
+      return [x, y];
+    }
+  }, {
+    key: 'MercatorTolonLat',
+    value: function MercatorTolonLat(x, y) {
+      var longtitude = x / 20037508.34 * 180;
+      var latitude = y / 20037508.34 * 180;
+      latitude = 180 / Math.PI * (2 * Math.atan(Math.exp(latitude * Math.PI / 180)) - Math.PI / 2);
+      return [longtitude, latitude];
+    }
+  }]);
+
+  return CoordsTransform;
+}();
+
+exports.default = CoordsTransform;
+module.exports = exports['default'];
+
+/***/ }),
+/* 203 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var GeomCoder = function () {
+  function GeomCoder(params) {
+    _classCallCheck(this, GeomCoder);
+
+    this.options = !params ? {} : params;
+
+    this.version = '1.0.0';
+
+    this.factor_ = this.options.factor ? this.options.factor : 1e5;
+
+    this.GeometryLayout = {
+      XY: 'XY',
+      XYM: 'XYM',
+      XYZ: 'XYZ',
+      XYZM: 'XYZM'
+    };
+
+    this.geometryLayout_ = this.options.geometryLayout ? this.options.geometryLayout : this.GeometryLayout.XY;
+  }
+
+  _createClass(GeomCoder, [{
+    key: 'readCoordinatesFromText',
+    value: function readCoordinatesFromText(text) {
+      var stride = this.getStrideForLayout(this.geometryLayout_);
+      var flatCoordinates = this.decodeDeltas(text, stride);
+      this.flipXY(flatCoordinates, 0, flatCoordinates.length, stride, flatCoordinates);
+      var coordinates = this.coordinates(flatCoordinates, 0, flatCoordinates.length, stride);
+      return coordinates;
+    }
+  }, {
+    key: 'writeCoordinatesText',
+    value: function writeCoordinatesText(coordinates, stride) {
+      var flatCoordinates = [];
+      if (coordinates && Array.isArray(coordinates) && coordinates.length > 0) {
+        coordinates.forEach(function (item) {
+          if (item && Array.isArray(item) && item.length > 0) {
+            item.forEach(function (_item) {
+              if (_item) {
+                flatCoordinates.push(_item);
+              }
+            });
+          }
+        });
+      }
+      if (!stride) {
+        stride = 2;
+      }
+      this.flipXY(flatCoordinates, 0, flatCoordinates.length, stride, flatCoordinates);
+      return this.encodeDeltas(flatCoordinates, stride);
+    }
+  }, {
+    key: 'getText_',
+    value: function getText_(source) {
+      if (typeof source === 'string') {
+        return source;
+      } else {
+        return '';
+      }
+    }
+  }, {
+    key: 'getStrideForLayout',
+    value: function getStrideForLayout(layout) {
+      var stride = null;
+      if (layout === this.GeometryLayout.XY) {
+        stride = 2;
+      } else if (layout === this.GeometryLayout.XYZ || layout === this.GeometryLayout.XYM) {
+        stride = 3;
+      } else if (layout === this.GeometryLayout.XYZM) {
+        stride = 4;
+      }
+      return stride;
+    }
+  }, {
+    key: 'decodeDeltas',
+    value: function decodeDeltas(encoded, stride) {
+      var lastNumbers = new Array(stride);
+      for (var d = 0; d < stride; ++d) {
+        lastNumbers[d] = 0;
+      }
+      var numbers = this.decodeFloats(encoded, this.factor_);
+      var i = null,
+          ii = null;
+
+      for (i = 0, ii = numbers.length; i < ii;) {
+        for (var _d = 0; _d < stride; ++_d, ++i) {
+          lastNumbers[_d] += numbers[i];
+          numbers[i] = lastNumbers[_d];
+        }
+      }
+      return numbers;
+    }
+  }, {
+    key: 'encodeDeltas',
+    value: function encodeDeltas(numbers, stride) {
+      var d = null,
+          lastNumbers = new Array(stride),
+          i = null,
+          ii = null;
+
+      for (d = 0; d < stride; ++d) {
+        lastNumbers[d] = 0;
+      }
+      for (i = 0, ii = numbers.length; i < ii;) {
+        for (d = 0; d < stride; ++d, ++i) {
+          var num = numbers[i];
+          var delta = num - lastNumbers[d];
+          lastNumbers[d] = num;
+          numbers[i] = delta;
+        }
+      }
+      return this.encodeFloats(numbers);
+    }
+  }, {
+    key: 'decodeFloats',
+    value: function decodeFloats(encoded) {
+      var numbers = this.decodeSignedIntegers(encoded);
+      var i = null,
+          ii = null;
+
+      for (i = 0, ii = numbers.length; i < ii; ++i) {
+        numbers[i] /= this.factor_;
+      }
+      return numbers;
+    }
+  }, {
+    key: 'encodeFloats',
+    value: function encodeFloats(numbers) {
+      var i = null,
+          ii = null;
+
+      for (i = 0, ii = numbers.length; i < ii; ++i) {
+        numbers[i] = Math.round(numbers[i] * this.factor_);
+      }
+      return this.encodeSignedIntegers(numbers);
+    }
+  }, {
+    key: 'decodeSignedIntegers',
+    value: function decodeSignedIntegers(encoded) {
+      var numbers = this.decodeUnsignedIntegers(encoded);
+      var i = null,
+          ii = null;
+
+      for (i = 0, ii = numbers.length; i < ii; ++i) {
+        var num = numbers[i];
+        numbers[i] = num & 1 ? ~(num >> 1) : num >> 1;
+      }
+      return numbers;
+    }
+  }, {
+    key: 'encodeSignedIntegers',
+    value: function encodeSignedIntegers(numbers) {
+      var i = null,
+          ii = null;
+
+      for (i = 0, ii = numbers.length; i < ii; ++i) {
+        var num = numbers[i];
+        numbers[i] = num < 0 ? ~(num << 1) : num << 1;
+      }
+      return this.encodeUnsignedIntegers(numbers);
+    }
+  }, {
+    key: 'decodeUnsignedIntegers',
+    value: function decodeUnsignedIntegers(encoded) {
+      var numbers = [],
+          current = 0,
+          shift = 0,
+          i = null,
+          ii = null;
+
+      for (i = 0, ii = encoded.length; i < ii; ++i) {
+        var b = encoded.charCodeAt(i) - 63;
+        current |= (b & 0x1f) << shift;
+        if (b < 0x20) {
+          numbers.push(current);
+          current = 0;
+          shift = 0;
+        } else {
+          shift += 5;
+        }
+      }
+      return numbers;
+    }
+  }, {
+    key: 'encodeUnsignedIntegers',
+    value: function encodeUnsignedIntegers(numbers) {
+      var encoded = '',
+          i = null,
+          ii = null;
+
+      for (i = 0, ii = numbers.length; i < ii; ++i) {
+        encoded += this.encodeUnsignedInteger(numbers[i]);
+      }
+      return encoded;
+    }
+  }, {
+    key: 'encodeUnsignedInteger',
+    value: function encodeUnsignedInteger(num) {
+      var value = '',
+          encoded = '';
+
+      while (num >= 0x20) {
+        value = (0x20 | num & 0x1f) + 63;
+        encoded += String.fromCharCode(value);
+        num >>= 5;
+      }
+      value = num + 63;
+      encoded += String.fromCharCode(value);
+      return encoded;
+    }
+  }, {
+    key: 'flipXY',
+    value: function flipXY(flatCoordinates, offset, end, stride, optDest, optDestOffset) {
+      var dest = '',
+          destOffset = '';
+
+      if (optDest !== undefined) {
+        dest = optDest;
+        destOffset = optDestOffset !== undefined ? optDestOffset : 0;
+      } else {
+        dest = [];
+        destOffset = 0;
+      }
+      var j = offset;
+      while (j < end) {
+        var x = flatCoordinates[j++];
+        dest[destOffset++] = flatCoordinates[j++];
+        dest[destOffset++] = x;
+        for (var k = 2; k < stride; ++k) {
+          dest[destOffset++] = flatCoordinates[j++];
+        }
+      }
+      dest.length = destOffset;
+      return dest;
+    }
+  }, {
+    key: 'coordinates',
+    value: function coordinates(flatCoordinates, offset, end, stride, optCoordinates) {
+      var coordinates = optCoordinates !== undefined ? optCoordinates : [];
+      var i = 0,
+          j = null;
+
+      for (j = offset; j < end; j += stride) {
+        coordinates[i++] = flatCoordinates.slice(j, j + stride);
+      }
+      coordinates.length = i;
+      return coordinates;
+    }
+  }]);
+
+  return GeomCoder;
+}();
+
+exports.default = GeomCoder;
+module.exports = exports['default'];
+
+/***/ }),
+/* 204 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _constants = __webpack_require__(1);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var LayerSwitcher = function () {
+  function LayerSwitcher(map) {
+    _classCallCheck(this, LayerSwitcher);
+
+    this.map = map || null;
+    if (!this.map) {
+      throw new Error('缺少地图对象！');
+    }
+  }
+
+  _createClass(LayerSwitcher, [{
+    key: '_getBaseLayers',
+    value: function _getBaseLayers() {
+      var _this = this;
+
+      if (this.map) {
+        this.baseLayers = [];
+        this.map.getLayers().getArray().forEach(function (layer) {
+          if (layer && layer instanceof _constants.ol.layer.Group && layer.get('isBaseLayer')) {
+            layer.getLayers().getArray().forEach(function (_layer) {
+              if (_layer && _layer instanceof _constants.ol.layer.Tile && _layer.get('isBaseLayer')) {
+                _this.baseLayers.push(_layer);
+              }
+            });
+          }
+        });
+      }
+    }
+  }, {
+    key: 'getBaseLayerNames',
+    value: function getBaseLayerNames() {
+      this._getBaseLayers();
+      this.baseLayerNames = [];
+      if (this.baseLayers && Array.isArray(this.baseLayers) && this.baseLayers.length > 0) {
+        this.baseLayerNames = this.baseLayers.map(function (layer) {
+          var layerName = '';
+          if (layer.get('layerNames') && !layer.get('alias')) {
+            layerName = layer.get('layerNames');
+          }
+          return layerName;
+        });
+      }
+      return this.baseLayerNames;
+    }
+  }, {
+    key: 'switchLayer',
+    value: function switchLayer(layerName) {
+      this._getBaseLayers();
+      this.baseLayers.forEach(function (layer) {
+        if (layer.get('layerName') === layerName || layer.get('alias') === layerName) {
+          layer.set('isDefault', true);
+          layer.setVisible(true);
+        } else {
+          layer.set('isDefault', false);
+          layer.setVisible(false);
+        }
+      });
+    }
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      if (map && map instanceof _constants.ol.Map) {
+        this.map = map;
+        return this.map;
+      }
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }]);
+
+  return LayerSwitcher;
+}();
+
+exports.default = LayerSwitcher;
+module.exports = exports['default'];
+
+/***/ }),
+/* 205 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _mixin = __webpack_require__(46);
+
+var _mixin2 = _interopRequireDefault(_mixin);
+
+var _Layer = __webpack_require__(55);
+
+var _Layer2 = _interopRequireDefault(_Layer);
+
+var _constants = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MeasureTool = function (_mix) {
+  _inherits(MeasureTool, _mix);
+
+  function MeasureTool(map) {
+    _classCallCheck(this, MeasureTool);
+
+    var _this = _possibleConstructorReturn(this, (MeasureTool.__proto__ || Object.getPrototypeOf(MeasureTool)).call(this));
+
+    if (map && map instanceof _constants.ol.Map) {
+      _this.map = map;
+
+      _this.wgs84Sphere = new _constants.ol.Sphere(6378137);
+
+      _this.measureTypes = {
+        measureLength: 'measureLength',
+        measureArea: 'measureArea'
+      };
+
+      _this.dragPanInteraction = null;
+    } else {
+      throw new Error('传入的不是地图对象或者地图对象为空！');
+    }
+    return _this;
+  }
+
+  _createClass(MeasureTool, [{
+    key: 'setUp',
+    value: function setUp(params) {
+      var _this2 = this;
+
+      this.options = params || {};
+
+      this.layerName = this.options['layerName'] || 'measureTool';
+
+      this.clickCount = 0;
+
+      this.drawSketch = null;
+
+      this.draw = null;
+
+      this.beforeMeasurePointerMoveHandler = null;
+
+      this.listener = null;
+
+      this.drawSketch = null;
+
+      this.measureHelpTooltip = '';
+
+      this.measureAreaTooltip = null;
+
+      this.measureAreaTooltipElement = null;
+
+      if (this.options['measureType'] === this.measureTypes.measureLength) {
+        this.measureLengthClick = this.map.on('singleclick', function (event) {
+          _this2.clickCount += 1;
+          if (_this2.clickCount === 1) {
+            _this2.drawSketch.length = '起点';
+          }
+          _this2.addMeasureOverLay(event.coordinate, _this2.drawSketch.length);
+          _this2.addMeasurecircle(event.coordinate);
+        });
+        this.beforeMeasurePointerMoveHandler = this.map.on('pointermove', this.beforeDrawPointMoveHandler, this);
+      } else if (this.options['measureType'] === this.measureTypes.measureArea) {
+        this.measureAreaClick = this.map.on('singleclick', function (event) {});
+      }
+      this.addDrawInteraction();
+    }
+  }, {
+    key: 'addDrawInteraction',
+    value: function addDrawInteraction() {
+      this.removeDrawInteraion();
+      var type = '';
+      if (this.options['measureType'] === this.measureTypes.measureLength) {
+        type = 'LineString';
+      } else if (this.options['measureType'] === this.measureTypes.measureArea) {
+        type = 'Polygon';
+      }
+      this.options['create'] = true;
+      this.layer = this.creatVectorLayer(this.layerName, this.options);
+      this.layer.setStyle(new _constants.ol.style.Style({
+        fill: new _constants.ol.style.Fill({
+          color: 'rgba(67, 110, 238, 0.4)'
+        }),
+        stroke: new _constants.ol.style.Stroke({
+          color: 'rgba(242,123,57,1)',
+          width: 2
+        }),
+        image: new _constants.ol.style.Circle({
+          radius: 4,
+          stroke: new _constants.ol.style.Stroke({
+            color: 'rgba(255,0,0,1)',
+            width: 1
+          }),
+          fill: new _constants.ol.style.Fill({
+            color: 'rgba(255,255,255,1)'
+          })
+        })
+      }));
+      this.draw = new _constants.ol.interaction.Draw({
+        source: this.layer.getSource(),
+        type: type,
+        style: new _constants.ol.style.Style({
+          fill: new _constants.ol.style.Fill({
+            color: 'rgba(254, 164, 164, 1)'
+          }),
+          stroke: new _constants.ol.style.Stroke({
+            color: 'rgba(252, 129, 129, 1)',
+            width: 3
+          }),
+          image: new _constants.ol.style.Circle({
+            radius: 1,
+            fill: new _constants.ol.style.Fill({
+              color: '#ffcc33'
+            })
+          })
+        })
+      });
+      this.map.addInteraction(this.draw);
+      this.drawListener();
+      this.getDragPanInteraction().setActive(false);
+    }
+  }, {
+    key: 'removeDrawInteraion',
+    value: function removeDrawInteraion() {
+      if (this.draw) {
+        this.map.removeInteraction(this.draw);
+      }
+      this.draw = null;
+    }
+  }, {
+    key: 'beforeDrawPointMoveHandler',
+    value: function beforeDrawPointMoveHandler(event) {
+      if (!this.measureHelpTooltip) {
+        var helpTooltipElement = document.createElement('label');
+        helpTooltipElement.className = 'BMapLabel';
+        helpTooltipElement.style.position = 'absolute';
+        helpTooltipElement.style.display = 'inline';
+        helpTooltipElement.style.cursor = 'inherit';
+        helpTooltipElement.style.border = 'none';
+        helpTooltipElement.style.padding = '0';
+        helpTooltipElement.style.whiteSpace = 'nowrap';
+        helpTooltipElement.style.fontVariant = 'normal';
+        helpTooltipElement.style.fontWeight = 'normal';
+        helpTooltipElement.style.fontStretch = 'normal';
+        helpTooltipElement.style.fontSize = '12px';
+        helpTooltipElement.style.lineHeight = 'normal';
+        helpTooltipElement.style.fontFamily = 'arial,simsun';
+        helpTooltipElement.style.color = 'rgb(51, 51, 51)';
+        helpTooltipElement.style.webkitUserSelect = 'none';
+        helpTooltipElement.innerHTML = "<span class='BMap_diso'><span class='BMap_disi'>单击确定起点</span></span>";
+        this.measureHelpTooltip = new _constants.ol.Overlay({
+          element: helpTooltipElement,
+          offset: [55, 20],
+          positioning: 'center-center'
+        });
+        this.map.addOverlay(this.measureHelpTooltip);
+      }
+      this.measureHelpTooltip.setPosition(event.coordinate);
+    }
+  }, {
+    key: 'drawPointerMoveHandler',
+    value: function drawPointerMoveHandler(event) {
+      if (this.measureTypes.measureLength === this.options['measureType']) {
+        if (event.dragging) {
+          return;
+        }
+        var helpTooltipElement = this.measureHelpTooltip.getElement();
+        helpTooltipElement.className = ' BMapLabel BMap_disLabel';
+        helpTooltipElement.style.position = 'absolute';
+        helpTooltipElement.style.display = 'inline';
+        helpTooltipElement.style.cursor = 'inherit';
+        helpTooltipElement.style.border = '1px solid rgb(255, 1, 3)';
+        helpTooltipElement.style.padding = '3px 5px';
+        helpTooltipElement.style.whiteSpace = 'nowrap';
+        helpTooltipElement.style.fontVariant = 'normal';
+        helpTooltipElement.style.fontWeight = 'normal';
+        helpTooltipElement.style.fontStretch = 'normal';
+        helpTooltipElement.style.fontSize = '12px';
+        helpTooltipElement.style.lineHeight = 'normal';
+        helpTooltipElement.style.fontFamily = 'arial,simsun';
+        helpTooltipElement.style.color = 'rgb(51, 51, 51)';
+        helpTooltipElement.style.backgroundColor = 'rgb(255, 255, 255)';
+        helpTooltipElement.style.webkitUserSelect = 'none';
+        helpTooltipElement.innerHTML = '<span>总长:<span class="BMap_disBoxDis"></span></span><br><span style="color: #7a7a7a">单击确定地点,双击结束</span>';
+        this.measureHelpTooltip.setPosition(event.coordinate);
+      }
+    }
+  }, {
+    key: 'drawListener',
+    value: function drawListener() {
+      var _this3 = this;
+
+      this.draw.on('drawstart', function (event) {
+        _this3.drawSketch = event.feature;
+        _this3.drawSketch.set('uuid', Math.floor(Math.random() * 100000000 + 1));
+        if (_this3.measureTypes.measureLength === _this3.options['measureType']) {
+          _constants.ol.Observable.unByKey(_this3.beforeMeasurePointerMoveHandler);
+          _this3.listener = _this3.drawSketch.getGeometry().on('change', function (evt) {
+            var geom = evt.target;
+            if (geom instanceof _constants.ol.geom.LineString) {
+              var output = _this3.formatData(geom);
+              _this3.drawSketch.length = output;
+              _this3.measureHelpTooltip.getElement().firstElementChild.firstElementChild.innerHTML = output;
+            }
+          });
+          _this3.drawPointermove = _this3.map.on('pointermove', _this3.drawPointerMoveHandler, _this3);
+        } else if (_this3.measureTypes.measureArea === _this3.options['measureType']) {
+          var uuid = Math.floor(Math.random() * 100000000 + 1);
+          _this3.createMeasureAreaTooltip();
+          _this3.drawSketch.set('uuid', uuid);
+          _this3.measureAreaTooltip.set('uuid', uuid);
+          _this3.listener = _this3.drawSketch.getGeometry().on('change', function (evts) {
+            var geom = evts.target;
+            var area = _this3.formatData(geom);
+            if (_this3.measureAreaTooltip) {
+              _this3.measureAreaTooltipElement.innerHTML = '面积' + area;
+              _this3.measureAreaTooltip.setPosition(geom.getInteriorPoint().getCoordinates());
+            }
+          });
+        }
+      });
+      this.draw.on('drawend', function (ev) {
+        _this3.getDragPanInteraction().setActive(true);
+        _this3.map.getTargetElement().style.cursor = 'default';
+        _this3.map.removeOverlay(_this3.measureHelpTooltip);
+        _this3.measureHelpTooltip = null;
+        if (_this3.measureTypes.measureLength === _this3.options['measureType']) {
+          _this3.addMeasureOverLay(ev.feature.getGeometry().getLastCoordinate(), _this3.drawSketch.length, '止点');
+          _this3.addMeasurecircle(ev.feature.getGeometry().getLastCoordinate());
+          _constants.ol.Observable.unByKey(_this3.listener);
+          _constants.ol.Observable.unByKey(_this3.drawPointermove);
+          _constants.ol.Observable.unByKey(_this3.measureLengthClick);
+        } else if (_this3.options['measureType'] === _this3.measureTypes.measureArea) {
+          _constants.ol.Observable.unByKey(_this3.listener);
+          _this3.addMeasureRemoveButton(ev.feature.getGeometry().getCoordinates()[0][0]);
+        }
+        _this3.listener = null;
+        _this3.drawSketch = null;
+        _this3.removeDrawInteraion();
+      });
+    }
+  }, {
+    key: 'formatData',
+    value: function formatData(geom) {
+      var output = 0;
+      if (geom) {
+        if (this.options['measureType'] === this.measureTypes.measureLength) {
+          var _ref = [geom.getCoordinates(), 0],
+              coordinates = _ref[0],
+              length = _ref[1];
+
+          var sourceProj = this.map.getView().getProjection();
+          for (var i = 0, ii = coordinates.length - 1; i < ii; ++i) {
+            var c1 = _constants.ol.proj.transform(coordinates[i], sourceProj, 'EPSG:4326');
+            var c2 = _constants.ol.proj.transform(coordinates[i + 1], sourceProj, 'EPSG:4326');
+            length += this.wgs84Sphere.haversineDistance(c1, c2);
+          }
+          if (length > 100) {
+            output = Math.round(length / 1000 * 100) / 100 + ' ' + '公里';
+          } else {
+            output = Math.round(length * 100) / 100 + ' ' + '米';
+          }
+        } else if (this.options['measureType'] === this.measureTypes.measureArea) {
+          var _sourceProj = this.getMap().getView().getProjection();
+          var geometry = geom.clone().transform(_sourceProj, 'EPSG:4326');
+          var _coordinates = geometry.getLinearRing(0).getCoordinates();
+          var area = Math.abs(this.wgs84Sphere.geodesicArea(_coordinates));
+          if (area > 10000000000) {
+            output = Math.round(area / (1000 * 1000 * 10000) * 100) / 100 + ' ' + '万平方公里';
+          } else if (area > 1000000 || area < 10000000000) {
+            output = Math.round(area / (1000 * 1000) * 100) / 100 + ' ' + '平方公里';
+          } else {
+            output = Math.round(area * 100) / 100 + ' ' + '平方米';
+          }
+        }
+      }
+      return output;
+    }
+  }, {
+    key: 'addMeasurecircle',
+    value: function addMeasurecircle(coordinate) {
+      var feature = new _constants.ol.Feature({
+        uuid: this.drawSketch.get('uuid'),
+        geometry: new _constants.ol.geom.Point(coordinate)
+      });
+      this.layer.getSource().addFeature(feature);
+    }
+  }, {
+    key: 'addMeasureOverLay',
+    value: function addMeasureOverLay(coordinate, length, type) {
+      var helpTooltipElement = document.createElement('label');
+      helpTooltipElement.style.position = 'absolute';
+      helpTooltipElement.style.display = 'inline';
+      helpTooltipElement.style.cursor = 'inherit';
+      helpTooltipElement.style.border = 'none';
+      helpTooltipElement.style.padding = '0';
+      helpTooltipElement.style.whiteSpace = 'nowrap';
+      helpTooltipElement.style.fontVariant = 'normal';
+      helpTooltipElement.style.fontWeight = 'normal';
+      helpTooltipElement.style.fontStretch = 'normal';
+      helpTooltipElement.style.fontSize = '12px';
+      helpTooltipElement.style.lineHeight = 'normal';
+      helpTooltipElement.style.fontFamily = 'arial,simsun';
+      helpTooltipElement.style.color = 'rgb(51, 51, 51)';
+      helpTooltipElement.style.webkitUserSelect = 'none';
+      if (type === '止点') {
+        helpTooltipElement.style.border = '1px solid rgb(255, 1, 3)';
+        helpTooltipElement.style.padding = '3px 5px';
+        helpTooltipElement.className = ' BMapLabel BMap_disLabel';
+        helpTooltipElement.innerHTML = "总长<span class='BMap_disBoxDis'>" + length + '</span>';
+        this.addMeasureRemoveButton(coordinate);
+      } else {
+        helpTooltipElement.className = 'BMapLabel';
+        helpTooltipElement.innerHTML = "<span class='BMap_diso'><span class='BMap_disi'>" + length + '</span></span>';
+      }
+      var tempMeasureTooltip = new _constants.ol.Overlay({
+        element: helpTooltipElement,
+        offset: [10, -10],
+        positioning: 'center-center'
+      });
+      this.map.addOverlay(tempMeasureTooltip);
+      tempMeasureTooltip.setPosition(coordinate);
+      tempMeasureTooltip.set('uuid', this.drawSketch.get('uuid'));
+    }
+  }, {
+    key: 'addMeasureRemoveButton',
+    value: function addMeasureRemoveButton(coordinate) {
+      var _this4 = this;
+
+      var pos = [coordinate[0] - 5 * this.map.getView().getResolution(), coordinate[1]];
+      var btnImg = document.createElement('img');
+      btnImg.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NEYzMzc1RDY3RDU1MTFFNUFDNDJFNjQ4NUUwMzRDRDYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NEYzMzc1RDc3RDU1MTFFNUFDNDJFNjQ4NUUwMzRDRDYiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo0RjMzNzVENDdENTUxMUU1QUM0MkU2NDg1RTAzNENENiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo0RjMzNzVENTdENTUxMUU1QUM0MkU2NDg1RTAzNENENiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsDx84AAAAC3SURBVHjavJIxDoMwDEV/ok5wDCbu0DvAdUBIwMLFSs/AxDXY6tZ2SCGVUikd+ifn20+2k5hHVd0AXJGmGQw+UyWMxY8KQGpbUNcB23aYHIsnuSgIy8dlAQ2DgwWSmD0YE5ReAq5pQOMIrKsDRByjKGC/dsxz2L7XQgU8JB7n4qDoY6SYF4J+p72T7/zeOXqr03SMx8XnsTUX7UgElKVCyDK3s8Tsae6sv/8ceceZ6jr1k99fAgwAsZy0Sa2HgDcAAAAASUVORK5CYII=';
+      btnImg.style.cursor = 'pointer';
+      btnImg.title = '清除测量结果';
+      btnImg.groupId = this.drawSketch.get('uuid');
+      btnImg.pos = coordinate;
+      btnImg.onclick = function (evt) {
+        _this4.RemoveMeasure(btnImg.groupId, coordinate);
+      };
+      var closeBtn = new _constants.ol.Overlay({
+        element: btnImg,
+        offset: [-2, -6],
+        positioning: 'center-center'
+      });
+      this.map.addOverlay(closeBtn);
+      closeBtn.setPosition(pos);
+      closeBtn.set('uuid', this.drawSketch.get('uuid'));
+    }
+  }, {
+    key: 'createMeasureAreaTooltip',
+    value: function createMeasureAreaTooltip() {
+      this.measureAreaTooltipElement = document.createElement('div');
+      this.measureAreaTooltipElement.style.marginLeft = '-6.25em';
+      this.measureAreaTooltipElement.className = 'measureTooltip hidden';
+      this.measureAreaTooltip = new _constants.ol.Overlay({
+        element: this.measureAreaTooltipElement,
+        offset: [15, 0],
+        positioning: 'center-left'
+      });
+      this.map.addOverlay(this.measureAreaTooltip);
+    }
+  }, {
+    key: 'RemoveMeasure',
+    value: function RemoveMeasure(groupId, pos) {
+      var overlays = this.getMap().getOverlays().getArray();
+      if (overlays && Array.isArray(overlays)) {
+        var length = overlays.length;
+
+        for (var j = 0, i = 0; j < length; j++) {
+          i++;
+          if (overlays[length - i] && overlays[length - i] instanceof _constants.ol.Overlay && overlays[length - i].get('uuid') === groupId) {
+            this.map.removeOverlay(overlays[length - i]);
+          }
+        }
+      }
+      if (this.layer && this.layer.getSource()) {
+        var source = this.layer.getSource();
+        var features = source.getFeatures();
+        features.forEach(function (feat) {
+          var lastCoord = feat.getGeometry().getLastCoordinate();
+          if (lastCoord[0] === pos[0] && lastCoord[1] === pos[1] || feat.get('uuid') === groupId) {
+            source.removeFeature(feat);
+          }
+        }, this);
+      }
+    }
+  }, {
+    key: 'getDragPanInteraction',
+    value: function getDragPanInteraction() {
+      var _this5 = this;
+
+      if (!this.dragPanInteraction) {
+        var items = this.getMap().getInteractions().getArray();
+        items.forEach(function (item) {
+          if (item && item instanceof _constants.ol.interaction.DragPan) {
+            _this5.dragPanInteraction = item;
+          }
+        });
+      }
+      return this.dragPanInteraction;
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }]);
+
+  return MeasureTool;
+}((0, _mixin2.default)(_Layer2.default));
+
+exports.default = MeasureTool;
+module.exports = exports['default'];
+
+/***/ }),
+/* 206 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(215);
+module.exports = __webpack_require__(30).RegExp.escape;
+
+/***/ }),
+/* 207 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isObject = __webpack_require__(6)
+  , isArray  = __webpack_require__(91)
+  , SPECIES  = __webpack_require__(7)('species');
+
+module.exports = function(original){
+  var C;
+  if(isArray(original)){
+    C = original.constructor;
+    // cross-realm fallback
+    if(typeof C == 'function' && (C === Array || isArray(C.prototype)))C = undefined;
+    if(isObject(C)){
+      C = C[SPECIES];
+      if(C === null)C = undefined;
+    }
+  } return C === undefined ? Array : C;
+};
+
+/***/ }),
+/* 208 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 9.4.2.3 ArraySpeciesCreate(originalArray, length)
+var speciesConstructor = __webpack_require__(207);
+
+module.exports = function(original, length){
+  return new (speciesConstructor(original))(length);
+};
+
+/***/ }),
+/* 209 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var anObject    = __webpack_require__(2)
+  , toPrimitive = __webpack_require__(29)
+  , NUMBER      = 'number';
+
+module.exports = function(hint){
+  if(hint !== 'string' && hint !== NUMBER && hint !== 'default')throw TypeError('Incorrect hint');
+  return toPrimitive(anObject(this), hint != NUMBER);
+};
+
+/***/ }),
+/* 210 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// all enumerable object keys, includes symbols
+var getKeys = __webpack_require__(41)
+  , gOPS    = __webpack_require__(70)
+  , pIE     = __webpack_require__(58);
+module.exports = function(it){
+  var result     = getKeys(it)
+    , getSymbols = gOPS.f;
+  if(getSymbols){
+    var symbols = getSymbols(it)
+      , isEnum  = pIE.f
+      , i       = 0
+      , key;
+    while(symbols.length > i)if(isEnum.call(it, key = symbols[i++]))result.push(key);
+  } return result;
+};
+
+/***/ }),
+/* 211 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var getKeys   = __webpack_require__(41)
+  , toIObject = __webpack_require__(20);
+module.exports = function(object, el){
+  var O      = toIObject(object)
+    , keys   = getKeys(O)
+    , length = keys.length
+    , index  = 0
+    , key;
+  while(length > index)if(O[key = keys[index++]] === el)return key;
+};
+
+/***/ }),
+/* 212 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var path      = __webpack_require__(213)
+  , invoke    = __webpack_require__(66)
+  , aFunction = __webpack_require__(16);
+module.exports = function(/* ...pargs */){
+  var fn     = aFunction(this)
+    , length = arguments.length
+    , pargs  = Array(length)
+    , i      = 0
+    , _      = path._
+    , holder = false;
+  while(length > i)if((pargs[i] = arguments[i++]) === _)holder = true;
+  return function(/* ...args */){
+    var that = this
+      , aLen = arguments.length
+      , j = 0, k = 0, args;
+    if(!holder && !aLen)return invoke(fn, pargs, that);
+    args = pargs.slice();
+    if(holder)for(;length > j; j++)if(args[j] === _)args[j] = arguments[k++];
+    while(aLen > k)args.push(arguments[k++]);
+    return invoke(fn, args, that);
+  };
+};
+
+/***/ }),
+/* 213 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(3);
+
+/***/ }),
+/* 214 */
+/***/ (function(module, exports) {
+
+module.exports = function(regExp, replace){
+  var replacer = replace === Object(replace) ? function(part){
+    return replace[part];
+  } : replace;
+  return function(it){
+    return String(it).replace(regExp, replacer);
+  };
+};
+
+/***/ }),
+/* 215 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// https://github.com/benjamingr/RexExp.escape
+var $export = __webpack_require__(0)
+  , $re     = __webpack_require__(214)(/[\\^$*+?.()|[\]{}]/g, '\\$&');
+
+$export($export.S, 'RegExp', {escape: function escape(it){ return $re(it); }});
+
+
+/***/ }),
+/* 216 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 22.1.3.3 Array.prototype.copyWithin(target, start, end = this.length)
+var $export = __webpack_require__(0);
+
+$export($export.P, 'Array', {copyWithin: __webpack_require__(121)});
+
+__webpack_require__(47)('copyWithin');
+
+/***/ }),
+/* 217 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $export = __webpack_require__(0)
+  , $every  = __webpack_require__(27)(4);
+
+$export($export.P + $export.F * !__webpack_require__(25)([].every, true), 'Array', {
+  // 22.1.3.5 / 15.4.4.16 Array.prototype.every(callbackfn [, thisArg])
+  every: function every(callbackfn /* , thisArg */){
+    return $every(this, callbackfn, arguments[1]);
+  }
+});
+
+/***/ }),
+/* 218 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 22.1.3.6 Array.prototype.fill(value, start = 0, end = this.length)
+var $export = __webpack_require__(0);
+
+$export($export.P, 'Array', {fill: __webpack_require__(83)});
+
+__webpack_require__(47)('fill');
+
+/***/ }),
+/* 219 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $export = __webpack_require__(0)
+  , $filter = __webpack_require__(27)(2);
+
+$export($export.P + $export.F * !__webpack_require__(25)([].filter, true), 'Array', {
+  // 22.1.3.7 / 15.4.4.20 Array.prototype.filter(callbackfn [, thisArg])
+  filter: function filter(callbackfn /* , thisArg */){
+    return $filter(this, callbackfn, arguments[1]);
+  }
+});
+
+/***/ }),
+/* 220 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// 22.1.3.9 Array.prototype.findIndex(predicate, thisArg = undefined)
+var $export = __webpack_require__(0)
+  , $find   = __webpack_require__(27)(6)
+  , KEY     = 'findIndex'
+  , forced  = true;
+// Shouldn't skip holes
+if(KEY in [])Array(1)[KEY](function(){ forced = false; });
+$export($export.P + $export.F * forced, 'Array', {
+  findIndex: function findIndex(callbackfn/*, that = undefined */){
+    return $find(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+  }
+});
+__webpack_require__(47)(KEY);
+
+/***/ }),
+/* 221 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// 22.1.3.8 Array.prototype.find(predicate, thisArg = undefined)
+var $export = __webpack_require__(0)
+  , $find   = __webpack_require__(27)(5)
+  , KEY     = 'find'
+  , forced  = true;
+// Shouldn't skip holes
+if(KEY in [])Array(1)[KEY](function(){ forced = false; });
+$export($export.P + $export.F * forced, 'Array', {
+  find: function find(callbackfn/*, that = undefined */){
+    return $find(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+  }
+});
+__webpack_require__(47)(KEY);
+
+/***/ }),
+/* 222 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $export  = __webpack_require__(0)
+  , $forEach = __webpack_require__(27)(0)
+  , STRICT   = __webpack_require__(25)([].forEach, true);
+
+$export($export.P + $export.F * !STRICT, 'Array', {
+  // 22.1.3.10 / 15.4.4.18 Array.prototype.forEach(callbackfn [, thisArg])
+  forEach: function forEach(callbackfn /* , thisArg */){
+    return $forEach(this, callbackfn, arguments[1]);
+  }
+});
+
+/***/ }),
+/* 223 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var ctx            = __webpack_require__(31)
+  , $export        = __webpack_require__(0)
+  , toObject       = __webpack_require__(14)
+  , call           = __webpack_require__(130)
+  , isArrayIter    = __webpack_require__(90)
+  , toLength       = __webpack_require__(12)
+  , createProperty = __webpack_require__(84)
+  , getIterFn      = __webpack_require__(107);
+
+$export($export.S + $export.F * !__webpack_require__(68)(function(iter){ Array.from(iter); }), 'Array', {
+  // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
+  from: function from(arrayLike/*, mapfn = undefined, thisArg = undefined*/){
+    var O       = toObject(arrayLike)
+      , C       = typeof this == 'function' ? this : Array
+      , aLen    = arguments.length
+      , mapfn   = aLen > 1 ? arguments[1] : undefined
+      , mapping = mapfn !== undefined
+      , index   = 0
+      , iterFn  = getIterFn(O)
+      , length, result, step, iterator;
+    if(mapping)mapfn = ctx(mapfn, aLen > 2 ? arguments[2] : undefined, 2);
+    // if object isn't iterable or it's array with default iterator - use simple case
+    if(iterFn != undefined && !(C == Array && isArrayIter(iterFn))){
+      for(iterator = iterFn.call(O), result = new C; !(step = iterator.next()).done; index++){
+        createProperty(result, index, mapping ? call(iterator, mapfn, [step.value, index], true) : step.value);
+      }
+    } else {
+      length = toLength(O.length);
+      for(result = new C(length); length > index; index++){
+        createProperty(result, index, mapping ? mapfn(O[index], index) : O[index]);
+      }
+    }
+    result.length = index;
+    return result;
+  }
+});
+
+
+/***/ }),
+/* 224 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $export       = __webpack_require__(0)
+  , $indexOf      = __webpack_require__(62)(false)
+  , $native       = [].indexOf
+  , NEGATIVE_ZERO = !!$native && 1 / [1].indexOf(1, -0) < 0;
+
+$export($export.P + $export.F * (NEGATIVE_ZERO || !__webpack_require__(25)($native)), 'Array', {
+  // 22.1.3.11 / 15.4.4.14 Array.prototype.indexOf(searchElement [, fromIndex])
+  indexOf: function indexOf(searchElement /*, fromIndex = 0 */){
+    return NEGATIVE_ZERO
+      // convert -0 to +0
+      ? $native.apply(this, arguments) || 0
+      : $indexOf(this, searchElement, arguments[1]);
+  }
+});
+
+/***/ }),
+/* 225 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 22.1.2.2 / 15.4.3.2 Array.isArray(arg)
+var $export = __webpack_require__(0);
+
+$export($export.S, 'Array', {isArray: __webpack_require__(91)});
+
+/***/ }),
+/* 226 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// 22.1.3.13 Array.prototype.join(separator)
+var $export   = __webpack_require__(0)
+  , toIObject = __webpack_require__(20)
+  , arrayJoin = [].join;
+
+// fallback for not array-like strings
+$export($export.P + $export.F * (__webpack_require__(57) != Object || !__webpack_require__(25)(arrayJoin)), 'Array', {
+  join: function join(separator){
+    return arrayJoin.call(toIObject(this), separator === undefined ? ',' : separator);
+  }
+});
+
+/***/ }),
+/* 227 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $export       = __webpack_require__(0)
+  , toIObject     = __webpack_require__(20)
+  , toInteger     = __webpack_require__(36)
+  , toLength      = __webpack_require__(12)
+  , $native       = [].lastIndexOf
+  , NEGATIVE_ZERO = !!$native && 1 / [1].lastIndexOf(1, -0) < 0;
+
+$export($export.P + $export.F * (NEGATIVE_ZERO || !__webpack_require__(25)($native)), 'Array', {
+  // 22.1.3.14 / 15.4.4.15 Array.prototype.lastIndexOf(searchElement [, fromIndex])
+  lastIndexOf: function lastIndexOf(searchElement /*, fromIndex = @[*-1] */){
+    // convert -0 to +0
+    if(NEGATIVE_ZERO)return $native.apply(this, arguments) || 0;
+    var O      = toIObject(this)
+      , length = toLength(O.length)
+      , index  = length - 1;
+    if(arguments.length > 1)index = Math.min(index, toInteger(arguments[1]));
+    if(index < 0)index = length + index;
+    for(;index >= 0; index--)if(index in O)if(O[index] === searchElement)return index || 0;
+    return -1;
+  }
+});
+
+/***/ }),
+/* 228 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $export = __webpack_require__(0)
+  , $map    = __webpack_require__(27)(1);
+
+$export($export.P + $export.F * !__webpack_require__(25)([].map, true), 'Array', {
+  // 22.1.3.15 / 15.4.4.19 Array.prototype.map(callbackfn [, thisArg])
+  map: function map(callbackfn /* , thisArg */){
+    return $map(this, callbackfn, arguments[1]);
+  }
+});
+
+/***/ }),
+/* 229 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $export        = __webpack_require__(0)
+  , createProperty = __webpack_require__(84);
+
+// WebKit Array.of isn't generic
+$export($export.S + $export.F * __webpack_require__(5)(function(){
+  function F(){}
+  return !(Array.of.call(F) instanceof F);
+}), 'Array', {
+  // 22.1.2.3 Array.of( ...items)
+  of: function of(/* ...args */){
+    var index  = 0
+      , aLen   = arguments.length
+      , result = new (typeof this == 'function' ? this : Array)(aLen);
+    while(aLen > index)createProperty(result, index, arguments[index++]);
+    result.length = aLen;
+    return result;
+  }
+});
+
+/***/ }),
+/* 230 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $export = __webpack_require__(0)
+  , $reduce = __webpack_require__(123);
+
+$export($export.P + $export.F * !__webpack_require__(25)([].reduceRight, true), 'Array', {
+  // 22.1.3.19 / 15.4.4.22 Array.prototype.reduceRight(callbackfn [, initialValue])
+  reduceRight: function reduceRight(callbackfn /* , initialValue */){
+    return $reduce(this, callbackfn, arguments.length, arguments[1], true);
+  }
+});
+
+/***/ }),
+/* 231 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $export = __webpack_require__(0)
+  , $reduce = __webpack_require__(123);
+
+$export($export.P + $export.F * !__webpack_require__(25)([].reduce, true), 'Array', {
+  // 22.1.3.18 / 15.4.4.21 Array.prototype.reduce(callbackfn [, initialValue])
+  reduce: function reduce(callbackfn /* , initialValue */){
+    return $reduce(this, callbackfn, arguments.length, arguments[1], false);
+  }
+});
+
+/***/ }),
+/* 232 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $export    = __webpack_require__(0)
+  , html       = __webpack_require__(88)
+  , cof        = __webpack_require__(23)
+  , toIndex    = __webpack_require__(44)
+  , toLength   = __webpack_require__(12)
+  , arraySlice = [].slice;
+
+// fallback for not array-like ES3 strings and DOM objects
+$export($export.P + $export.F * __webpack_require__(5)(function(){
+  if(html)arraySlice.call(html);
+}), 'Array', {
+  slice: function slice(begin, end){
+    var len   = toLength(this.length)
+      , klass = cof(this);
+    end = end === undefined ? len : end;
+    if(klass == 'Array')return arraySlice.call(this, begin, end);
+    var start  = toIndex(begin, len)
+      , upTo   = toIndex(end, len)
+      , size   = toLength(upTo - start)
+      , cloned = Array(size)
+      , i      = 0;
+    for(; i < size; i++)cloned[i] = klass == 'String'
+      ? this.charAt(start + i)
+      : this[start + i];
+    return cloned;
+  }
+});
+
+/***/ }),
+/* 233 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $export = __webpack_require__(0)
+  , $some   = __webpack_require__(27)(3);
+
+$export($export.P + $export.F * !__webpack_require__(25)([].some, true), 'Array', {
+  // 22.1.3.23 / 15.4.4.17 Array.prototype.some(callbackfn [, thisArg])
+  some: function some(callbackfn /* , thisArg */){
+    return $some(this, callbackfn, arguments[1]);
+  }
+});
+
+/***/ }),
+/* 234 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $export   = __webpack_require__(0)
+  , aFunction = __webpack_require__(16)
+  , toObject  = __webpack_require__(14)
+  , fails     = __webpack_require__(5)
+  , $sort     = [].sort
+  , test      = [1, 2, 3];
+
+$export($export.P + $export.F * (fails(function(){
+  // IE8-
+  test.sort(undefined);
+}) || !fails(function(){
+  // V8 bug
+  test.sort(null);
+  // Old WebKit
+}) || !__webpack_require__(25)($sort)), 'Array', {
+  // 22.1.3.25 Array.prototype.sort(comparefn)
+  sort: function sort(comparefn){
+    return comparefn === undefined
+      ? $sort.call(toObject(this))
+      : $sort.call(toObject(this), aFunction(comparefn));
+  }
+});
+
+/***/ }),
+/* 235 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(43)('Array');
+
+/***/ }),
+/* 236 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 20.3.3.1 / 15.9.4.4 Date.now()
+var $export = __webpack_require__(0);
+
+$export($export.S, 'Date', {now: function(){ return new Date().getTime(); }});
+
+/***/ }),
+/* 237 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// 20.3.4.36 / 15.9.5.43 Date.prototype.toISOString()
+var $export = __webpack_require__(0)
+  , fails   = __webpack_require__(5)
+  , getTime = Date.prototype.getTime;
+
+var lz = function(num){
+  return num > 9 ? num : '0' + num;
+};
+
+// PhantomJS / old WebKit has a broken implementations
+$export($export.P + $export.F * (fails(function(){
+  return new Date(-5e13 - 1).toISOString() != '0385-07-25T07:06:39.999Z';
+}) || !fails(function(){
+  new Date(NaN).toISOString();
+})), 'Date', {
+  toISOString: function toISOString(){
+    if(!isFinite(getTime.call(this)))throw RangeError('Invalid time value');
+    var d = this
+      , y = d.getUTCFullYear()
+      , m = d.getUTCMilliseconds()
+      , s = y < 0 ? '-' : y > 9999 ? '+' : '';
+    return s + ('00000' + Math.abs(y)).slice(s ? -6 : -4) +
+      '-' + lz(d.getUTCMonth() + 1) + '-' + lz(d.getUTCDate()) +
+      'T' + lz(d.getUTCHours()) + ':' + lz(d.getUTCMinutes()) +
+      ':' + lz(d.getUTCSeconds()) + '.' + (m > 99 ? m : '0' + lz(m)) + 'Z';
+  }
+});
+
+/***/ }),
+/* 238 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $export     = __webpack_require__(0)
+  , toObject    = __webpack_require__(14)
+  , toPrimitive = __webpack_require__(29);
+
+$export($export.P + $export.F * __webpack_require__(5)(function(){
+  return new Date(NaN).toJSON() !== null || Date.prototype.toJSON.call({toISOString: function(){ return 1; }}) !== 1;
+}), 'Date', {
+  toJSON: function toJSON(key){
+    var O  = toObject(this)
+      , pv = toPrimitive(O);
+    return typeof pv == 'number' && !isFinite(pv) ? null : O.toISOString();
+  }
+});
+
+/***/ }),
+/* 239 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var TO_PRIMITIVE = __webpack_require__(7)('toPrimitive')
+  , proto        = Date.prototype;
+
+if(!(TO_PRIMITIVE in proto))__webpack_require__(17)(proto, TO_PRIMITIVE, __webpack_require__(209));
+
+/***/ }),
+/* 240 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var DateProto    = Date.prototype
+  , INVALID_DATE = 'Invalid Date'
+  , TO_STRING    = 'toString'
+  , $toString    = DateProto[TO_STRING]
+  , getTime      = DateProto.getTime;
+if(new Date(NaN) + '' != INVALID_DATE){
+  __webpack_require__(18)(DateProto, TO_STRING, function toString(){
+    var value = getTime.call(this);
+    return value === value ? $toString.call(this) : INVALID_DATE;
+  });
+}
+
+/***/ }),
+/* 241 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.2.3.2 / 15.3.4.5 Function.prototype.bind(thisArg, args...)
+var $export = __webpack_require__(0);
+
+$export($export.P, 'Function', {bind: __webpack_require__(124)});
+
+/***/ }),
+/* 242 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var isObject       = __webpack_require__(6)
+  , getPrototypeOf = __webpack_require__(22)
+  , HAS_INSTANCE   = __webpack_require__(7)('hasInstance')
+  , FunctionProto  = Function.prototype;
+// 19.2.3.6 Function.prototype[@@hasInstance](V)
+if(!(HAS_INSTANCE in FunctionProto))__webpack_require__(11).f(FunctionProto, HAS_INSTANCE, {value: function(O){
+  if(typeof this != 'function' || !isObject(O))return false;
+  if(!isObject(this.prototype))return O instanceof this;
+  // for environment w/o native `@@hasInstance` logic enough `instanceof`, but add this:
+  while(O = getPrototypeOf(O))if(this.prototype === O)return true;
+  return false;
+}});
+
+/***/ }),
+/* 243 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var dP         = __webpack_require__(11).f
+  , createDesc = __webpack_require__(35)
+  , has        = __webpack_require__(15)
+  , FProto     = Function.prototype
+  , nameRE     = /^\s*function ([^ (]*)/
+  , NAME       = 'name';
+
+var isExtensible = Object.isExtensible || function(){
+  return true;
+};
+
+// 19.2.4.2 name
+NAME in FProto || __webpack_require__(10) && dP(FProto, NAME, {
+  configurable: true,
+  get: function(){
+    try {
+      var that = this
+        , name = ('' + that).match(nameRE)[1];
+      has(that, NAME) || !isExtensible(that) || dP(that, NAME, createDesc(5, name));
+      return name;
+    } catch(e){
+      return '';
+    }
+  }
+});
+
+/***/ }),
+/* 244 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 20.2.2.3 Math.acosh(x)
+var $export = __webpack_require__(0)
+  , log1p   = __webpack_require__(132)
+  , sqrt    = Math.sqrt
+  , $acosh  = Math.acosh;
+
+$export($export.S + $export.F * !($acosh
+  // V8 bug: https://code.google.com/p/v8/issues/detail?id=3509
+  && Math.floor($acosh(Number.MAX_VALUE)) == 710
+  // Tor Browser bug: Math.acosh(Infinity) -> NaN 
+  && $acosh(Infinity) == Infinity
+), 'Math', {
+  acosh: function acosh(x){
+    return (x = +x) < 1 ? NaN : x > 94906265.62425156
+      ? Math.log(x) + Math.LN2
+      : log1p(x - 1 + sqrt(x - 1) * sqrt(x + 1));
+  }
+});
+
+/***/ }),
+/* 245 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 20.2.2.5 Math.asinh(x)
+var $export = __webpack_require__(0)
+  , $asinh  = Math.asinh;
+
+function asinh(x){
+  return !isFinite(x = +x) || x == 0 ? x : x < 0 ? -asinh(-x) : Math.log(x + Math.sqrt(x * x + 1));
+}
+
+// Tor Browser bug: Math.asinh(0) -> -0 
+$export($export.S + $export.F * !($asinh && 1 / $asinh(0) > 0), 'Math', {asinh: asinh});
+
+/***/ }),
+/* 246 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 20.2.2.7 Math.atanh(x)
+var $export = __webpack_require__(0)
+  , $atanh  = Math.atanh;
+
+// Tor Browser bug: Math.atanh(-0) -> 0 
+$export($export.S + $export.F * !($atanh && 1 / $atanh(-0) < 0), 'Math', {
+  atanh: function atanh(x){
+    return (x = +x) == 0 ? x : Math.log((1 + x) / (1 - x)) / 2;
+  }
+});
+
+/***/ }),
+/* 247 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 20.2.2.9 Math.cbrt(x)
+var $export = __webpack_require__(0)
+  , sign    = __webpack_require__(95);
+
+$export($export.S, 'Math', {
+  cbrt: function cbrt(x){
+    return sign(x = +x) * Math.pow(Math.abs(x), 1 / 3);
+  }
+});
+
+/***/ }),
+/* 248 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 20.2.2.11 Math.clz32(x)
+var $export = __webpack_require__(0);
+
+$export($export.S, 'Math', {
+  clz32: function clz32(x){
+    return (x >>>= 0) ? 31 - Math.floor(Math.log(x + 0.5) * Math.LOG2E) : 32;
+  }
+});
+
+/***/ }),
+/* 249 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 20.2.2.12 Math.cosh(x)
+var $export = __webpack_require__(0)
+  , exp     = Math.exp;
+
+$export($export.S, 'Math', {
+  cosh: function cosh(x){
+    return (exp(x = +x) + exp(-x)) / 2;
+  }
+});
+
+/***/ }),
+/* 250 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 20.2.2.14 Math.expm1(x)
+var $export = __webpack_require__(0)
+  , $expm1  = __webpack_require__(94);
+
+$export($export.S + $export.F * ($expm1 != Math.expm1), 'Math', {expm1: $expm1});
+
+/***/ }),
+/* 251 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 20.2.2.16 Math.fround(x)
+var $export   = __webpack_require__(0)
+  , sign      = __webpack_require__(95)
+  , pow       = Math.pow
+  , EPSILON   = pow(2, -52)
+  , EPSILON32 = pow(2, -23)
+  , MAX32     = pow(2, 127) * (2 - EPSILON32)
+  , MIN32     = pow(2, -126);
+
+var roundTiesToEven = function(n){
+  return n + 1 / EPSILON - 1 / EPSILON;
+};
+
+
+$export($export.S, 'Math', {
+  fround: function fround(x){
+    var $abs  = Math.abs(x)
+      , $sign = sign(x)
+      , a, result;
+    if($abs < MIN32)return $sign * roundTiesToEven($abs / MIN32 / EPSILON32) * MIN32 * EPSILON32;
+    a = (1 + EPSILON32 / EPSILON) * $abs;
+    result = a - (a - $abs);
+    if(result > MAX32 || result != result)return $sign * Infinity;
+    return $sign * result;
+  }
+});
+
+/***/ }),
+/* 252 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 20.2.2.17 Math.hypot([value1[, value2[, … ]]])
+var $export = __webpack_require__(0)
+  , abs     = Math.abs;
+
+$export($export.S, 'Math', {
+  hypot: function hypot(value1, value2){ // eslint-disable-line no-unused-vars
+    var sum  = 0
+      , i    = 0
+      , aLen = arguments.length
+      , larg = 0
+      , arg, div;
+    while(i < aLen){
+      arg = abs(arguments[i++]);
+      if(larg < arg){
+        div  = larg / arg;
+        sum  = sum * div * div + 1;
+        larg = arg;
+      } else if(arg > 0){
+        div  = arg / larg;
+        sum += div * div;
+      } else sum += arg;
+    }
+    return larg === Infinity ? Infinity : larg * Math.sqrt(sum);
+  }
+});
+
+/***/ }),
+/* 253 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 20.2.2.18 Math.imul(x, y)
+var $export = __webpack_require__(0)
+  , $imul   = Math.imul;
+
+// some WebKit versions fails with big numbers, some has wrong arity
+$export($export.S + $export.F * __webpack_require__(5)(function(){
+  return $imul(0xffffffff, 5) != -5 || $imul.length != 2;
+}), 'Math', {
+  imul: function imul(x, y){
+    var UINT16 = 0xffff
+      , xn = +x
+      , yn = +y
+      , xl = UINT16 & xn
+      , yl = UINT16 & yn;
+    return 0 | xl * yl + ((UINT16 & xn >>> 16) * yl + xl * (UINT16 & yn >>> 16) << 16 >>> 0);
+  }
+});
+
+/***/ }),
+/* 254 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 20.2.2.21 Math.log10(x)
+var $export = __webpack_require__(0);
+
+$export($export.S, 'Math', {
+  log10: function log10(x){
+    return Math.log(x) / Math.LN10;
+  }
+});
+
+/***/ }),
+/* 255 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 20.2.2.20 Math.log1p(x)
+var $export = __webpack_require__(0);
+
+$export($export.S, 'Math', {log1p: __webpack_require__(132)});
+
+/***/ }),
+/* 256 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 20.2.2.22 Math.log2(x)
+var $export = __webpack_require__(0);
+
+$export($export.S, 'Math', {
+  log2: function log2(x){
+    return Math.log(x) / Math.LN2;
+  }
+});
+
+/***/ }),
+/* 257 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 20.2.2.28 Math.sign(x)
+var $export = __webpack_require__(0);
+
+$export($export.S, 'Math', {sign: __webpack_require__(95)});
+
+/***/ }),
+/* 258 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 20.2.2.30 Math.sinh(x)
+var $export = __webpack_require__(0)
+  , expm1   = __webpack_require__(94)
+  , exp     = Math.exp;
+
+// V8 near Chromium 38 has a problem with very small numbers
+$export($export.S + $export.F * __webpack_require__(5)(function(){
+  return !Math.sinh(-2e-17) != -2e-17;
+}), 'Math', {
+  sinh: function sinh(x){
+    return Math.abs(x = +x) < 1
+      ? (expm1(x) - expm1(-x)) / 2
+      : (exp(x - 1) - exp(-x - 1)) * (Math.E / 2);
+  }
+});
+
+/***/ }),
+/* 259 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 20.2.2.33 Math.tanh(x)
+var $export = __webpack_require__(0)
+  , expm1   = __webpack_require__(94)
+  , exp     = Math.exp;
+
+$export($export.S, 'Math', {
+  tanh: function tanh(x){
+    var a = expm1(x = +x)
+      , b = expm1(-x);
+    return a == Infinity ? 1 : b == Infinity ? -1 : (a - b) / (exp(x) + exp(-x));
+  }
+});
+
+/***/ }),
+/* 260 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 20.2.2.34 Math.trunc(x)
+var $export = __webpack_require__(0);
+
+$export($export.S, 'Math', {
+  trunc: function trunc(it){
+    return (it > 0 ? Math.floor : Math.ceil)(it);
+  }
+});
+
+/***/ }),
+/* 261 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var global            = __webpack_require__(3)
+  , has               = __webpack_require__(15)
+  , cof               = __webpack_require__(23)
+  , inheritIfRequired = __webpack_require__(89)
+  , toPrimitive       = __webpack_require__(29)
+  , fails             = __webpack_require__(5)
+  , gOPN              = __webpack_require__(40).f
+  , gOPD              = __webpack_require__(21).f
+  , dP                = __webpack_require__(11).f
+  , $trim             = __webpack_require__(51).trim
+  , NUMBER            = 'Number'
+  , $Number           = global[NUMBER]
+  , Base              = $Number
+  , proto             = $Number.prototype
+  // Opera ~12 has broken Object#toString
+  , BROKEN_COF        = cof(__webpack_require__(39)(proto)) == NUMBER
+  , TRIM              = 'trim' in String.prototype;
+
+// 7.1.3 ToNumber(argument)
+var toNumber = function(argument){
+  var it = toPrimitive(argument, false);
+  if(typeof it == 'string' && it.length > 2){
+    it = TRIM ? it.trim() : $trim(it, 3);
+    var first = it.charCodeAt(0)
+      , third, radix, maxCode;
+    if(first === 43 || first === 45){
+      third = it.charCodeAt(2);
+      if(third === 88 || third === 120)return NaN; // Number('+0x1') should be NaN, old V8 fix
+    } else if(first === 48){
+      switch(it.charCodeAt(1)){
+        case 66 : case 98  : radix = 2; maxCode = 49; break; // fast equal /^0b[01]+$/i
+        case 79 : case 111 : radix = 8; maxCode = 55; break; // fast equal /^0o[0-7]+$/i
+        default : return +it;
+      }
+      for(var digits = it.slice(2), i = 0, l = digits.length, code; i < l; i++){
+        code = digits.charCodeAt(i);
+        // parseInt parses a string to a first unavailable symbol
+        // but ToNumber should return NaN if a string contains unavailable symbols
+        if(code < 48 || code > maxCode)return NaN;
+      } return parseInt(digits, radix);
+    }
+  } return +it;
+};
+
+if(!$Number(' 0o1') || !$Number('0b1') || $Number('+0x1')){
+  $Number = function Number(value){
+    var it = arguments.length < 1 ? 0 : value
+      , that = this;
+    return that instanceof $Number
+      // check on 1..constructor(foo) case
+      && (BROKEN_COF ? fails(function(){ proto.valueOf.call(that); }) : cof(that) != NUMBER)
+        ? inheritIfRequired(new Base(toNumber(it)), that, $Number) : toNumber(it);
+  };
+  for(var keys = __webpack_require__(10) ? gOPN(Base) : (
+    // ES3:
+    'MAX_VALUE,MIN_VALUE,NaN,NEGATIVE_INFINITY,POSITIVE_INFINITY,' +
+    // ES6 (in case, if modules with ES6 Number statics required before):
+    'EPSILON,isFinite,isInteger,isNaN,isSafeInteger,MAX_SAFE_INTEGER,' +
+    'MIN_SAFE_INTEGER,parseFloat,parseInt,isInteger'
+  ).split(','), j = 0, key; keys.length > j; j++){
+    if(has(Base, key = keys[j]) && !has($Number, key)){
+      dP($Number, key, gOPD(Base, key));
+    }
+  }
+  $Number.prototype = proto;
+  proto.constructor = $Number;
+  __webpack_require__(18)(global, NUMBER, $Number);
+}
+
+/***/ }),
+/* 262 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 20.1.2.1 Number.EPSILON
+var $export = __webpack_require__(0);
+
+$export($export.S, 'Number', {EPSILON: Math.pow(2, -52)});
+
+/***/ }),
+/* 263 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 20.1.2.2 Number.isFinite(number)
+var $export   = __webpack_require__(0)
+  , _isFinite = __webpack_require__(3).isFinite;
+
+$export($export.S, 'Number', {
+  isFinite: function isFinite(it){
+    return typeof it == 'number' && _isFinite(it);
+  }
+});
+
+/***/ }),
+/* 264 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 20.1.2.3 Number.isInteger(number)
+var $export = __webpack_require__(0);
+
+$export($export.S, 'Number', {isInteger: __webpack_require__(129)});
+
+/***/ }),
+/* 265 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 20.1.2.4 Number.isNaN(number)
+var $export = __webpack_require__(0);
+
+$export($export.S, 'Number', {
+  isNaN: function isNaN(number){
+    return number != number;
+  }
+});
+
+/***/ }),
+/* 266 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 20.1.2.5 Number.isSafeInteger(number)
+var $export   = __webpack_require__(0)
+  , isInteger = __webpack_require__(129)
+  , abs       = Math.abs;
+
+$export($export.S, 'Number', {
+  isSafeInteger: function isSafeInteger(number){
+    return isInteger(number) && abs(number) <= 0x1fffffffffffff;
+  }
+});
+
+/***/ }),
+/* 267 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 20.1.2.6 Number.MAX_SAFE_INTEGER
+var $export = __webpack_require__(0);
+
+$export($export.S, 'Number', {MAX_SAFE_INTEGER: 0x1fffffffffffff});
+
+/***/ }),
+/* 268 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 20.1.2.10 Number.MIN_SAFE_INTEGER
+var $export = __webpack_require__(0);
+
+$export($export.S, 'Number', {MIN_SAFE_INTEGER: -0x1fffffffffffff});
+
+/***/ }),
+/* 269 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $export     = __webpack_require__(0)
+  , $parseFloat = __webpack_require__(139);
+// 20.1.2.12 Number.parseFloat(string)
+$export($export.S + $export.F * (Number.parseFloat != $parseFloat), 'Number', {parseFloat: $parseFloat});
+
+/***/ }),
+/* 270 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $export   = __webpack_require__(0)
+  , $parseInt = __webpack_require__(140);
+// 20.1.2.13 Number.parseInt(string, radix)
+$export($export.S + $export.F * (Number.parseInt != $parseInt), 'Number', {parseInt: $parseInt});
+
+/***/ }),
+/* 271 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $export      = __webpack_require__(0)
+  , toInteger    = __webpack_require__(36)
+  , aNumberValue = __webpack_require__(120)
+  , repeat       = __webpack_require__(102)
+  , $toFixed     = 1..toFixed
+  , floor        = Math.floor
+  , data         = [0, 0, 0, 0, 0, 0]
+  , ERROR        = 'Number.toFixed: incorrect invocation!'
+  , ZERO         = '0';
+
+var multiply = function(n, c){
+  var i  = -1
+    , c2 = c;
+  while(++i < 6){
+    c2 += n * data[i];
+    data[i] = c2 % 1e7;
+    c2 = floor(c2 / 1e7);
+  }
+};
+var divide = function(n){
+  var i = 6
+    , c = 0;
+  while(--i >= 0){
+    c += data[i];
+    data[i] = floor(c / n);
+    c = (c % n) * 1e7;
+  }
+};
+var numToString = function(){
+  var i = 6
+    , s = '';
+  while(--i >= 0){
+    if(s !== '' || i === 0 || data[i] !== 0){
+      var t = String(data[i]);
+      s = s === '' ? t : s + repeat.call(ZERO, 7 - t.length) + t;
+    }
+  } return s;
+};
+var pow = function(x, n, acc){
+  return n === 0 ? acc : n % 2 === 1 ? pow(x, n - 1, acc * x) : pow(x * x, n / 2, acc);
+};
+var log = function(x){
+  var n  = 0
+    , x2 = x;
+  while(x2 >= 4096){
+    n += 12;
+    x2 /= 4096;
+  }
+  while(x2 >= 2){
+    n  += 1;
+    x2 /= 2;
+  } return n;
+};
+
+$export($export.P + $export.F * (!!$toFixed && (
+  0.00008.toFixed(3) !== '0.000' ||
+  0.9.toFixed(0) !== '1' ||
+  1.255.toFixed(2) !== '1.25' ||
+  1000000000000000128..toFixed(0) !== '1000000000000000128'
+) || !__webpack_require__(5)(function(){
+  // V8 ~ Android 4.3-
+  $toFixed.call({});
+})), 'Number', {
+  toFixed: function toFixed(fractionDigits){
+    var x = aNumberValue(this, ERROR)
+      , f = toInteger(fractionDigits)
+      , s = ''
+      , m = ZERO
+      , e, z, j, k;
+    if(f < 0 || f > 20)throw RangeError(ERROR);
+    if(x != x)return 'NaN';
+    if(x <= -1e21 || x >= 1e21)return String(x);
+    if(x < 0){
+      s = '-';
+      x = -x;
+    }
+    if(x > 1e-21){
+      e = log(x * pow(2, 69, 1)) - 69;
+      z = e < 0 ? x * pow(2, -e, 1) : x / pow(2, e, 1);
+      z *= 0x10000000000000;
+      e = 52 - e;
+      if(e > 0){
+        multiply(0, z);
+        j = f;
+        while(j >= 7){
+          multiply(1e7, 0);
+          j -= 7;
+        }
+        multiply(pow(10, j, 1), 0);
+        j = e - 1;
+        while(j >= 23){
+          divide(1 << 23);
+          j -= 23;
+        }
+        divide(1 << j);
+        multiply(1, 1);
+        divide(2);
+        m = numToString();
+      } else {
+        multiply(0, z);
+        multiply(1 << -e, 0);
+        m = numToString() + repeat.call(ZERO, f);
+      }
+    }
+    if(f > 0){
+      k = m.length;
+      m = s + (k <= f ? '0.' + repeat.call(ZERO, f - k) + m : m.slice(0, k - f) + '.' + m.slice(k - f));
+    } else {
+      m = s + m;
+    } return m;
+  }
+});
+
+/***/ }),
+/* 272 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $export      = __webpack_require__(0)
+  , $fails       = __webpack_require__(5)
+  , aNumberValue = __webpack_require__(120)
+  , $toPrecision = 1..toPrecision;
+
+$export($export.P + $export.F * ($fails(function(){
+  // IE7-
+  return $toPrecision.call(1, undefined) !== '1';
+}) || !$fails(function(){
+  // V8 ~ Android 4.3-
+  $toPrecision.call({});
+})), 'Number', {
+  toPrecision: function toPrecision(precision){
+    var that = aNumberValue(this, 'Number#toPrecision: incorrect invocation!');
+    return precision === undefined ? $toPrecision.call(that) : $toPrecision.call(that, precision); 
+  }
+});
+
+/***/ }),
+/* 273 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.3.1 Object.assign(target, source)
+var $export = __webpack_require__(0);
+
+$export($export.S + $export.F, 'Object', {assign: __webpack_require__(133)});
+
+/***/ }),
+/* 274 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $export = __webpack_require__(0)
+// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
+$export($export.S, 'Object', {create: __webpack_require__(39)});
+
+/***/ }),
+/* 275 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $export = __webpack_require__(0);
+// 19.1.2.3 / 15.2.3.7 Object.defineProperties(O, Properties)
+$export($export.S + $export.F * !__webpack_require__(10), 'Object', {defineProperties: __webpack_require__(134)});
+
+/***/ }),
+/* 276 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $export = __webpack_require__(0);
+// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
+$export($export.S + $export.F * !__webpack_require__(10), 'Object', {defineProperty: __webpack_require__(11).f});
+
+/***/ }),
+/* 277 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.2.5 Object.freeze(O)
+var isObject = __webpack_require__(6)
+  , meta     = __webpack_require__(34).onFreeze;
+
+__webpack_require__(28)('freeze', function($freeze){
+  return function freeze(it){
+    return $freeze && isObject(it) ? $freeze(meta(it)) : it;
+  };
+});
+
+/***/ }),
+/* 278 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
+var toIObject                 = __webpack_require__(20)
+  , $getOwnPropertyDescriptor = __webpack_require__(21).f;
+
+__webpack_require__(28)('getOwnPropertyDescriptor', function(){
+  return function getOwnPropertyDescriptor(it, key){
+    return $getOwnPropertyDescriptor(toIObject(it), key);
+  };
+});
+
+/***/ }),
+/* 279 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.2.7 Object.getOwnPropertyNames(O)
+__webpack_require__(28)('getOwnPropertyNames', function(){
+  return __webpack_require__(135).f;
+});
+
+/***/ }),
+/* 280 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.2.9 Object.getPrototypeOf(O)
+var toObject        = __webpack_require__(14)
+  , $getPrototypeOf = __webpack_require__(22);
+
+__webpack_require__(28)('getPrototypeOf', function(){
+  return function getPrototypeOf(it){
+    return $getPrototypeOf(toObject(it));
+  };
+});
+
+/***/ }),
+/* 281 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.2.11 Object.isExtensible(O)
+var isObject = __webpack_require__(6);
+
+__webpack_require__(28)('isExtensible', function($isExtensible){
+  return function isExtensible(it){
+    return isObject(it) ? $isExtensible ? $isExtensible(it) : true : false;
+  };
+});
+
+/***/ }),
+/* 282 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.2.12 Object.isFrozen(O)
+var isObject = __webpack_require__(6);
+
+__webpack_require__(28)('isFrozen', function($isFrozen){
+  return function isFrozen(it){
+    return isObject(it) ? $isFrozen ? $isFrozen(it) : false : true;
+  };
+});
+
+/***/ }),
+/* 283 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.2.13 Object.isSealed(O)
+var isObject = __webpack_require__(6);
+
+__webpack_require__(28)('isSealed', function($isSealed){
+  return function isSealed(it){
+    return isObject(it) ? $isSealed ? $isSealed(it) : false : true;
+  };
+});
+
+/***/ }),
+/* 284 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.3.10 Object.is(value1, value2)
+var $export = __webpack_require__(0);
+$export($export.S, 'Object', {is: __webpack_require__(141)});
+
+/***/ }),
+/* 285 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.2.14 Object.keys(O)
+var toObject = __webpack_require__(14)
+  , $keys    = __webpack_require__(41);
+
+__webpack_require__(28)('keys', function(){
+  return function keys(it){
+    return $keys(toObject(it));
+  };
+});
+
+/***/ }),
+/* 286 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.2.15 Object.preventExtensions(O)
+var isObject = __webpack_require__(6)
+  , meta     = __webpack_require__(34).onFreeze;
+
+__webpack_require__(28)('preventExtensions', function($preventExtensions){
+  return function preventExtensions(it){
+    return $preventExtensions && isObject(it) ? $preventExtensions(meta(it)) : it;
+  };
+});
+
+/***/ }),
+/* 287 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.2.17 Object.seal(O)
+var isObject = __webpack_require__(6)
+  , meta     = __webpack_require__(34).onFreeze;
+
+__webpack_require__(28)('seal', function($seal){
+  return function seal(it){
+    return $seal && isObject(it) ? $seal(meta(it)) : it;
+  };
+});
+
+/***/ }),
+/* 288 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.3.19 Object.setPrototypeOf(O, proto)
+var $export = __webpack_require__(0);
+$export($export.S, 'Object', {setPrototypeOf: __webpack_require__(97).set});
+
+/***/ }),
+/* 289 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// 19.1.3.6 Object.prototype.toString()
+var classof = __webpack_require__(56)
+  , test    = {};
+test[__webpack_require__(7)('toStringTag')] = 'z';
+if(test + '' != '[object z]'){
+  __webpack_require__(18)(Object.prototype, 'toString', function toString(){
+    return '[object ' + classof(this) + ']';
+  }, true);
+}
+
+/***/ }),
+/* 290 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $export     = __webpack_require__(0)
+  , $parseFloat = __webpack_require__(139);
+// 18.2.4 parseFloat(string)
+$export($export.G + $export.F * (parseFloat != $parseFloat), {parseFloat: $parseFloat});
+
+/***/ }),
+/* 291 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $export   = __webpack_require__(0)
+  , $parseInt = __webpack_require__(140);
+// 18.2.5 parseInt(string, radix)
+$export($export.G + $export.F * (parseInt != $parseInt), {parseInt: $parseInt});
+
+/***/ }),
+/* 292 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var LIBRARY            = __webpack_require__(38)
+  , global             = __webpack_require__(3)
+  , ctx                = __webpack_require__(31)
+  , classof            = __webpack_require__(56)
+  , $export            = __webpack_require__(0)
+  , isObject           = __webpack_require__(6)
+  , aFunction          = __webpack_require__(16)
+  , anInstance         = __webpack_require__(37)
+  , forOf              = __webpack_require__(48)
+  , speciesConstructor = __webpack_require__(99)
+  , task               = __webpack_require__(104).set
+  , microtask          = __webpack_require__(96)()
+  , PROMISE            = 'Promise'
+  , TypeError          = global.TypeError
+  , process            = global.process
+  , $Promise           = global[PROMISE]
+  , process            = global.process
+  , isNode             = classof(process) == 'process'
+  , empty              = function(){ /* empty */ }
+  , Internal, GenericPromiseCapability, Wrapper;
+
+var USE_NATIVE = !!function(){
+  try {
+    // correct subclassing with @@species support
+    var promise     = $Promise.resolve(1)
+      , FakePromise = (promise.constructor = {})[__webpack_require__(7)('species')] = function(exec){ exec(empty, empty); };
+    // unhandled rejections tracking support, NodeJS Promise without it fails @@species test
+    return (isNode || typeof PromiseRejectionEvent == 'function') && promise.then(empty) instanceof FakePromise;
+  } catch(e){ /* empty */ }
+}();
+
+// helpers
+var sameConstructor = function(a, b){
+  // with library wrapper special case
+  return a === b || a === $Promise && b === Wrapper;
+};
+var isThenable = function(it){
+  var then;
+  return isObject(it) && typeof (then = it.then) == 'function' ? then : false;
+};
+var newPromiseCapability = function(C){
+  return sameConstructor($Promise, C)
+    ? new PromiseCapability(C)
+    : new GenericPromiseCapability(C);
+};
+var PromiseCapability = GenericPromiseCapability = function(C){
+  var resolve, reject;
+  this.promise = new C(function($$resolve, $$reject){
+    if(resolve !== undefined || reject !== undefined)throw TypeError('Bad Promise constructor');
+    resolve = $$resolve;
+    reject  = $$reject;
+  });
+  this.resolve = aFunction(resolve);
+  this.reject  = aFunction(reject);
+};
+var perform = function(exec){
+  try {
+    exec();
+  } catch(e){
+    return {error: e};
+  }
+};
+var notify = function(promise, isReject){
+  if(promise._n)return;
+  promise._n = true;
+  var chain = promise._c;
+  microtask(function(){
+    var value = promise._v
+      , ok    = promise._s == 1
+      , i     = 0;
+    var run = function(reaction){
+      var handler = ok ? reaction.ok : reaction.fail
+        , resolve = reaction.resolve
+        , reject  = reaction.reject
+        , domain  = reaction.domain
+        , result, then;
+      try {
+        if(handler){
+          if(!ok){
+            if(promise._h == 2)onHandleUnhandled(promise);
+            promise._h = 1;
+          }
+          if(handler === true)result = value;
+          else {
+            if(domain)domain.enter();
+            result = handler(value);
+            if(domain)domain.exit();
+          }
+          if(result === reaction.promise){
+            reject(TypeError('Promise-chain cycle'));
+          } else if(then = isThenable(result)){
+            then.call(result, resolve, reject);
+          } else resolve(result);
+        } else reject(value);
+      } catch(e){
+        reject(e);
+      }
+    };
+    while(chain.length > i)run(chain[i++]); // variable length - can't use forEach
+    promise._c = [];
+    promise._n = false;
+    if(isReject && !promise._h)onUnhandled(promise);
+  });
+};
+var onUnhandled = function(promise){
+  task.call(global, function(){
+    var value = promise._v
+      , abrupt, handler, console;
+    if(isUnhandled(promise)){
+      abrupt = perform(function(){
+        if(isNode){
+          process.emit('unhandledRejection', value, promise);
+        } else if(handler = global.onunhandledrejection){
+          handler({promise: promise, reason: value});
+        } else if((console = global.console) && console.error){
+          console.error('Unhandled promise rejection', value);
+        }
+      });
+      // Browsers should not trigger `rejectionHandled` event if it was handled here, NodeJS - should
+      promise._h = isNode || isUnhandled(promise) ? 2 : 1;
+    } promise._a = undefined;
+    if(abrupt)throw abrupt.error;
+  });
+};
+var isUnhandled = function(promise){
+  if(promise._h == 1)return false;
+  var chain = promise._a || promise._c
+    , i     = 0
+    , reaction;
+  while(chain.length > i){
+    reaction = chain[i++];
+    if(reaction.fail || !isUnhandled(reaction.promise))return false;
+  } return true;
+};
+var onHandleUnhandled = function(promise){
+  task.call(global, function(){
+    var handler;
+    if(isNode){
+      process.emit('rejectionHandled', promise);
+    } else if(handler = global.onrejectionhandled){
+      handler({promise: promise, reason: promise._v});
+    }
+  });
+};
+var $reject = function(value){
+  var promise = this;
+  if(promise._d)return;
+  promise._d = true;
+  promise = promise._w || promise; // unwrap
+  promise._v = value;
+  promise._s = 2;
+  if(!promise._a)promise._a = promise._c.slice();
+  notify(promise, true);
+};
+var $resolve = function(value){
+  var promise = this
+    , then;
+  if(promise._d)return;
+  promise._d = true;
+  promise = promise._w || promise; // unwrap
+  try {
+    if(promise === value)throw TypeError("Promise can't be resolved itself");
+    if(then = isThenable(value)){
+      microtask(function(){
+        var wrapper = {_w: promise, _d: false}; // wrap
+        try {
+          then.call(value, ctx($resolve, wrapper, 1), ctx($reject, wrapper, 1));
+        } catch(e){
+          $reject.call(wrapper, e);
+        }
+      });
+    } else {
+      promise._v = value;
+      promise._s = 1;
+      notify(promise, false);
+    }
+  } catch(e){
+    $reject.call({_w: promise, _d: false}, e); // wrap
+  }
+};
+
+// constructor polyfill
+if(!USE_NATIVE){
+  // 25.4.3.1 Promise(executor)
+  $Promise = function Promise(executor){
+    anInstance(this, $Promise, PROMISE, '_h');
+    aFunction(executor);
+    Internal.call(this);
+    try {
+      executor(ctx($resolve, this, 1), ctx($reject, this, 1));
+    } catch(err){
+      $reject.call(this, err);
+    }
+  };
+  Internal = function Promise(executor){
+    this._c = [];             // <- awaiting reactions
+    this._a = undefined;      // <- checked in isUnhandled reactions
+    this._s = 0;              // <- state
+    this._d = false;          // <- done
+    this._v = undefined;      // <- value
+    this._h = 0;              // <- rejection state, 0 - default, 1 - handled, 2 - unhandled
+    this._n = false;          // <- notify
+  };
+  Internal.prototype = __webpack_require__(42)($Promise.prototype, {
+    // 25.4.5.3 Promise.prototype.then(onFulfilled, onRejected)
+    then: function then(onFulfilled, onRejected){
+      var reaction    = newPromiseCapability(speciesConstructor(this, $Promise));
+      reaction.ok     = typeof onFulfilled == 'function' ? onFulfilled : true;
+      reaction.fail   = typeof onRejected == 'function' && onRejected;
+      reaction.domain = isNode ? process.domain : undefined;
+      this._c.push(reaction);
+      if(this._a)this._a.push(reaction);
+      if(this._s)notify(this, false);
+      return reaction.promise;
+    },
+    // 25.4.5.1 Promise.prototype.catch(onRejected)
+    'catch': function(onRejected){
+      return this.then(undefined, onRejected);
+    }
+  });
+  PromiseCapability = function(){
+    var promise  = new Internal;
+    this.promise = promise;
+    this.resolve = ctx($resolve, promise, 1);
+    this.reject  = ctx($reject, promise, 1);
+  };
+}
+
+$export($export.G + $export.W + $export.F * !USE_NATIVE, {Promise: $Promise});
+__webpack_require__(50)($Promise, PROMISE);
+__webpack_require__(43)(PROMISE);
+Wrapper = __webpack_require__(30)[PROMISE];
+
+// statics
+$export($export.S + $export.F * !USE_NATIVE, PROMISE, {
+  // 25.4.4.5 Promise.reject(r)
+  reject: function reject(r){
+    var capability = newPromiseCapability(this)
+      , $$reject   = capability.reject;
+    $$reject(r);
+    return capability.promise;
+  }
+});
+$export($export.S + $export.F * (LIBRARY || !USE_NATIVE), PROMISE, {
+  // 25.4.4.6 Promise.resolve(x)
+  resolve: function resolve(x){
+    // instanceof instead of internal slot check because we should fix it without replacement native Promise core
+    if(x instanceof $Promise && sameConstructor(x.constructor, this))return x;
+    var capability = newPromiseCapability(this)
+      , $$resolve  = capability.resolve;
+    $$resolve(x);
+    return capability.promise;
+  }
+});
+$export($export.S + $export.F * !(USE_NATIVE && __webpack_require__(68)(function(iter){
+  $Promise.all(iter)['catch'](empty);
+})), PROMISE, {
+  // 25.4.4.1 Promise.all(iterable)
+  all: function all(iterable){
+    var C          = this
+      , capability = newPromiseCapability(C)
+      , resolve    = capability.resolve
+      , reject     = capability.reject;
+    var abrupt = perform(function(){
+      var values    = []
+        , index     = 0
+        , remaining = 1;
+      forOf(iterable, false, function(promise){
+        var $index        = index++
+          , alreadyCalled = false;
+        values.push(undefined);
+        remaining++;
+        C.resolve(promise).then(function(value){
+          if(alreadyCalled)return;
+          alreadyCalled  = true;
+          values[$index] = value;
+          --remaining || resolve(values);
+        }, reject);
+      });
+      --remaining || resolve(values);
+    });
+    if(abrupt)reject(abrupt.error);
+    return capability.promise;
+  },
+  // 25.4.4.4 Promise.race(iterable)
+  race: function race(iterable){
+    var C          = this
+      , capability = newPromiseCapability(C)
+      , reject     = capability.reject;
+    var abrupt = perform(function(){
+      forOf(iterable, false, function(promise){
+        C.resolve(promise).then(capability.resolve, reject);
+      });
+    });
+    if(abrupt)reject(abrupt.error);
+    return capability.promise;
+  }
+});
+
+/***/ }),
+/* 293 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 26.1.1 Reflect.apply(target, thisArgument, argumentsList)
+var $export   = __webpack_require__(0)
+  , aFunction = __webpack_require__(16)
+  , anObject  = __webpack_require__(2)
+  , rApply    = (__webpack_require__(3).Reflect || {}).apply
+  , fApply    = Function.apply;
+// MS Edge argumentsList argument is optional
+$export($export.S + $export.F * !__webpack_require__(5)(function(){
+  rApply(function(){});
+}), 'Reflect', {
+  apply: function apply(target, thisArgument, argumentsList){
+    var T = aFunction(target)
+      , L = anObject(argumentsList);
+    return rApply ? rApply(T, thisArgument, L) : fApply.call(T, thisArgument, L);
+  }
+});
+
+/***/ }),
+/* 294 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 26.1.2 Reflect.construct(target, argumentsList [, newTarget])
+var $export    = __webpack_require__(0)
+  , create     = __webpack_require__(39)
+  , aFunction  = __webpack_require__(16)
+  , anObject   = __webpack_require__(2)
+  , isObject   = __webpack_require__(6)
+  , fails      = __webpack_require__(5)
+  , bind       = __webpack_require__(124)
+  , rConstruct = (__webpack_require__(3).Reflect || {}).construct;
+
+// MS Edge supports only 2 arguments and argumentsList argument is optional
+// FF Nightly sets third argument as `new.target`, but does not create `this` from it
+var NEW_TARGET_BUG = fails(function(){
+  function F(){}
+  return !(rConstruct(function(){}, [], F) instanceof F);
+});
+var ARGS_BUG = !fails(function(){
+  rConstruct(function(){});
+});
+
+$export($export.S + $export.F * (NEW_TARGET_BUG || ARGS_BUG), 'Reflect', {
+  construct: function construct(Target, args /*, newTarget*/){
+    aFunction(Target);
+    anObject(args);
+    var newTarget = arguments.length < 3 ? Target : aFunction(arguments[2]);
+    if(ARGS_BUG && !NEW_TARGET_BUG)return rConstruct(Target, args, newTarget);
+    if(Target == newTarget){
+      // w/o altered newTarget, optimization for 0-4 arguments
+      switch(args.length){
+        case 0: return new Target;
+        case 1: return new Target(args[0]);
+        case 2: return new Target(args[0], args[1]);
+        case 3: return new Target(args[0], args[1], args[2]);
+        case 4: return new Target(args[0], args[1], args[2], args[3]);
+      }
+      // w/o altered newTarget, lot of arguments case
+      var $args = [null];
+      $args.push.apply($args, args);
+      return new (bind.apply(Target, $args));
+    }
+    // with altered newTarget, not support built-in constructors
+    var proto    = newTarget.prototype
+      , instance = create(isObject(proto) ? proto : Object.prototype)
+      , result   = Function.apply.call(Target, instance, args);
+    return isObject(result) ? result : instance;
+  }
+});
+
+/***/ }),
+/* 295 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 26.1.3 Reflect.defineProperty(target, propertyKey, attributes)
+var dP          = __webpack_require__(11)
+  , $export     = __webpack_require__(0)
+  , anObject    = __webpack_require__(2)
+  , toPrimitive = __webpack_require__(29);
+
+// MS Edge has broken Reflect.defineProperty - throwing instead of returning false
+$export($export.S + $export.F * __webpack_require__(5)(function(){
+  Reflect.defineProperty(dP.f({}, 1, {value: 1}), 1, {value: 2});
+}), 'Reflect', {
+  defineProperty: function defineProperty(target, propertyKey, attributes){
+    anObject(target);
+    propertyKey = toPrimitive(propertyKey, true);
+    anObject(attributes);
+    try {
+      dP.f(target, propertyKey, attributes);
+      return true;
+    } catch(e){
+      return false;
+    }
+  }
+});
+
+/***/ }),
+/* 296 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 26.1.4 Reflect.deleteProperty(target, propertyKey)
+var $export  = __webpack_require__(0)
+  , gOPD     = __webpack_require__(21).f
+  , anObject = __webpack_require__(2);
+
+$export($export.S, 'Reflect', {
+  deleteProperty: function deleteProperty(target, propertyKey){
+    var desc = gOPD(anObject(target), propertyKey);
+    return desc && !desc.configurable ? false : delete target[propertyKey];
+  }
+});
+
+/***/ }),
+/* 297 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// 26.1.5 Reflect.enumerate(target)
+var $export  = __webpack_require__(0)
+  , anObject = __webpack_require__(2);
+var Enumerate = function(iterated){
+  this._t = anObject(iterated); // target
+  this._i = 0;                  // next index
+  var keys = this._k = []       // keys
+    , key;
+  for(key in iterated)keys.push(key);
+};
+__webpack_require__(92)(Enumerate, 'Object', function(){
+  var that = this
+    , keys = that._k
+    , key;
+  do {
+    if(that._i >= keys.length)return {value: undefined, done: true};
+  } while(!((key = keys[that._i++]) in that._t));
+  return {value: key, done: false};
+});
+
+$export($export.S, 'Reflect', {
+  enumerate: function enumerate(target){
+    return new Enumerate(target);
+  }
+});
+
+/***/ }),
+/* 298 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 26.1.7 Reflect.getOwnPropertyDescriptor(target, propertyKey)
+var gOPD     = __webpack_require__(21)
+  , $export  = __webpack_require__(0)
+  , anObject = __webpack_require__(2);
+
+$export($export.S, 'Reflect', {
+  getOwnPropertyDescriptor: function getOwnPropertyDescriptor(target, propertyKey){
+    return gOPD.f(anObject(target), propertyKey);
+  }
+});
+
+/***/ }),
+/* 299 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 26.1.8 Reflect.getPrototypeOf(target)
+var $export  = __webpack_require__(0)
+  , getProto = __webpack_require__(22)
+  , anObject = __webpack_require__(2);
+
+$export($export.S, 'Reflect', {
+  getPrototypeOf: function getPrototypeOf(target){
+    return getProto(anObject(target));
+  }
+});
+
+/***/ }),
+/* 300 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 26.1.6 Reflect.get(target, propertyKey [, receiver])
+var gOPD           = __webpack_require__(21)
+  , getPrototypeOf = __webpack_require__(22)
+  , has            = __webpack_require__(15)
+  , $export        = __webpack_require__(0)
+  , isObject       = __webpack_require__(6)
+  , anObject       = __webpack_require__(2);
+
+function get(target, propertyKey/*, receiver*/){
+  var receiver = arguments.length < 3 ? target : arguments[2]
+    , desc, proto;
+  if(anObject(target) === receiver)return target[propertyKey];
+  if(desc = gOPD.f(target, propertyKey))return has(desc, 'value')
+    ? desc.value
+    : desc.get !== undefined
+      ? desc.get.call(receiver)
+      : undefined;
+  if(isObject(proto = getPrototypeOf(target)))return get(proto, propertyKey, receiver);
+}
+
+$export($export.S, 'Reflect', {get: get});
+
+/***/ }),
+/* 301 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 26.1.9 Reflect.has(target, propertyKey)
+var $export = __webpack_require__(0);
+
+$export($export.S, 'Reflect', {
+  has: function has(target, propertyKey){
+    return propertyKey in target;
+  }
+});
+
+/***/ }),
+/* 302 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 26.1.10 Reflect.isExtensible(target)
+var $export       = __webpack_require__(0)
+  , anObject      = __webpack_require__(2)
+  , $isExtensible = Object.isExtensible;
+
+$export($export.S, 'Reflect', {
+  isExtensible: function isExtensible(target){
+    anObject(target);
+    return $isExtensible ? $isExtensible(target) : true;
+  }
+});
+
+/***/ }),
+/* 303 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 26.1.11 Reflect.ownKeys(target)
+var $export = __webpack_require__(0);
+
+$export($export.S, 'Reflect', {ownKeys: __webpack_require__(138)});
+
+/***/ }),
+/* 304 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 26.1.12 Reflect.preventExtensions(target)
+var $export            = __webpack_require__(0)
+  , anObject           = __webpack_require__(2)
+  , $preventExtensions = Object.preventExtensions;
+
+$export($export.S, 'Reflect', {
+  preventExtensions: function preventExtensions(target){
+    anObject(target);
+    try {
+      if($preventExtensions)$preventExtensions(target);
+      return true;
+    } catch(e){
+      return false;
+    }
+  }
+});
+
+/***/ }),
+/* 305 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 26.1.14 Reflect.setPrototypeOf(target, proto)
+var $export  = __webpack_require__(0)
+  , setProto = __webpack_require__(97);
+
+if(setProto)$export($export.S, 'Reflect', {
+  setPrototypeOf: function setPrototypeOf(target, proto){
+    setProto.check(target, proto);
+    try {
+      setProto.set(target, proto);
+      return true;
+    } catch(e){
+      return false;
+    }
+  }
+});
+
+/***/ }),
+/* 306 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 26.1.13 Reflect.set(target, propertyKey, V [, receiver])
+var dP             = __webpack_require__(11)
+  , gOPD           = __webpack_require__(21)
+  , getPrototypeOf = __webpack_require__(22)
+  , has            = __webpack_require__(15)
+  , $export        = __webpack_require__(0)
+  , createDesc     = __webpack_require__(35)
+  , anObject       = __webpack_require__(2)
+  , isObject       = __webpack_require__(6);
+
+function set(target, propertyKey, V/*, receiver*/){
+  var receiver = arguments.length < 4 ? target : arguments[3]
+    , ownDesc  = gOPD.f(anObject(target), propertyKey)
+    , existingDescriptor, proto;
+  if(!ownDesc){
+    if(isObject(proto = getPrototypeOf(target))){
+      return set(proto, propertyKey, V, receiver);
+    }
+    ownDesc = createDesc(0);
+  }
+  if(has(ownDesc, 'value')){
+    if(ownDesc.writable === false || !isObject(receiver))return false;
+    existingDescriptor = gOPD.f(receiver, propertyKey) || createDesc(0);
+    existingDescriptor.value = V;
+    dP.f(receiver, propertyKey, existingDescriptor);
+    return true;
+  }
+  return ownDesc.set === undefined ? false : (ownDesc.set.call(receiver, V), true);
+}
+
+$export($export.S, 'Reflect', {set: set});
+
+/***/ }),
+/* 307 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var global            = __webpack_require__(3)
+  , inheritIfRequired = __webpack_require__(89)
+  , dP                = __webpack_require__(11).f
+  , gOPN              = __webpack_require__(40).f
+  , isRegExp          = __webpack_require__(67)
+  , $flags            = __webpack_require__(65)
+  , $RegExp           = global.RegExp
+  , Base              = $RegExp
+  , proto             = $RegExp.prototype
+  , re1               = /a/g
+  , re2               = /a/g
+  // "new" creates a new object, old webkit buggy here
+  , CORRECT_NEW       = new $RegExp(re1) !== re1;
+
+if(__webpack_require__(10) && (!CORRECT_NEW || __webpack_require__(5)(function(){
+  re2[__webpack_require__(7)('match')] = false;
+  // RegExp constructor can alter flags and IsRegExp works correct with @@match
+  return $RegExp(re1) != re1 || $RegExp(re2) == re2 || $RegExp(re1, 'i') != '/a/i';
+}))){
+  $RegExp = function RegExp(p, f){
+    var tiRE = this instanceof $RegExp
+      , piRE = isRegExp(p)
+      , fiU  = f === undefined;
+    return !tiRE && piRE && p.constructor === $RegExp && fiU ? p
+      : inheritIfRequired(CORRECT_NEW
+        ? new Base(piRE && !fiU ? p.source : p, f)
+        : Base((piRE = p instanceof $RegExp) ? p.source : p, piRE && fiU ? $flags.call(p) : f)
+      , tiRE ? this : proto, $RegExp);
+  };
+  var proxy = function(key){
+    key in $RegExp || dP($RegExp, key, {
+      configurable: true,
+      get: function(){ return Base[key]; },
+      set: function(it){ Base[key] = it; }
+    });
+  };
+  for(var keys = gOPN(Base), i = 0; keys.length > i; )proxy(keys[i++]);
+  proto.constructor = $RegExp;
+  $RegExp.prototype = proto;
+  __webpack_require__(18)(global, 'RegExp', $RegExp);
+}
+
+__webpack_require__(43)('RegExp');
+
+/***/ }),
+/* 308 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// @@match logic
+__webpack_require__(64)('match', 1, function(defined, MATCH, $match){
+  // 21.1.3.11 String.prototype.match(regexp)
+  return [function match(regexp){
+    'use strict';
+    var O  = defined(this)
+      , fn = regexp == undefined ? undefined : regexp[MATCH];
+    return fn !== undefined ? fn.call(regexp, O) : new RegExp(regexp)[MATCH](String(O));
+  }, $match];
+});
+
+/***/ }),
+/* 309 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// @@replace logic
+__webpack_require__(64)('replace', 2, function(defined, REPLACE, $replace){
+  // 21.1.3.14 String.prototype.replace(searchValue, replaceValue)
+  return [function replace(searchValue, replaceValue){
+    'use strict';
+    var O  = defined(this)
+      , fn = searchValue == undefined ? undefined : searchValue[REPLACE];
+    return fn !== undefined
+      ? fn.call(searchValue, O, replaceValue)
+      : $replace.call(String(O), searchValue, replaceValue);
+  }, $replace];
+});
+
+/***/ }),
+/* 310 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// @@search logic
+__webpack_require__(64)('search', 1, function(defined, SEARCH, $search){
+  // 21.1.3.15 String.prototype.search(regexp)
+  return [function search(regexp){
+    'use strict';
+    var O  = defined(this)
+      , fn = regexp == undefined ? undefined : regexp[SEARCH];
+    return fn !== undefined ? fn.call(regexp, O) : new RegExp(regexp)[SEARCH](String(O));
+  }, $search];
+});
+
+/***/ }),
+/* 311 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// @@split logic
+__webpack_require__(64)('split', 2, function(defined, SPLIT, $split){
+  'use strict';
+  var isRegExp   = __webpack_require__(67)
+    , _split     = $split
+    , $push      = [].push
+    , $SPLIT     = 'split'
+    , LENGTH     = 'length'
+    , LAST_INDEX = 'lastIndex';
+  if(
+    'abbc'[$SPLIT](/(b)*/)[1] == 'c' ||
+    'test'[$SPLIT](/(?:)/, -1)[LENGTH] != 4 ||
+    'ab'[$SPLIT](/(?:ab)*/)[LENGTH] != 2 ||
+    '.'[$SPLIT](/(.?)(.?)/)[LENGTH] != 4 ||
+    '.'[$SPLIT](/()()/)[LENGTH] > 1 ||
+    ''[$SPLIT](/.?/)[LENGTH]
+  ){
+    var NPCG = /()??/.exec('')[1] === undefined; // nonparticipating capturing group
+    // based on es5-shim implementation, need to rework it
+    $split = function(separator, limit){
+      var string = String(this);
+      if(separator === undefined && limit === 0)return [];
+      // If `separator` is not a regex, use native split
+      if(!isRegExp(separator))return _split.call(string, separator, limit);
+      var output = [];
+      var flags = (separator.ignoreCase ? 'i' : '') +
+                  (separator.multiline ? 'm' : '') +
+                  (separator.unicode ? 'u' : '') +
+                  (separator.sticky ? 'y' : '');
+      var lastLastIndex = 0;
+      var splitLimit = limit === undefined ? 4294967295 : limit >>> 0;
+      // Make `global` and avoid `lastIndex` issues by working with a copy
+      var separatorCopy = new RegExp(separator.source, flags + 'g');
+      var separator2, match, lastIndex, lastLength, i;
+      // Doesn't need flags gy, but they don't hurt
+      if(!NPCG)separator2 = new RegExp('^' + separatorCopy.source + '$(?!\\s)', flags);
+      while(match = separatorCopy.exec(string)){
+        // `separatorCopy.lastIndex` is not reliable cross-browser
+        lastIndex = match.index + match[0][LENGTH];
+        if(lastIndex > lastLastIndex){
+          output.push(string.slice(lastLastIndex, match.index));
+          // Fix browsers whose `exec` methods don't consistently return `undefined` for NPCG
+          if(!NPCG && match[LENGTH] > 1)match[0].replace(separator2, function(){
+            for(i = 1; i < arguments[LENGTH] - 2; i++)if(arguments[i] === undefined)match[i] = undefined;
+          });
+          if(match[LENGTH] > 1 && match.index < string[LENGTH])$push.apply(output, match.slice(1));
+          lastLength = match[0][LENGTH];
+          lastLastIndex = lastIndex;
+          if(output[LENGTH] >= splitLimit)break;
+        }
+        if(separatorCopy[LAST_INDEX] === match.index)separatorCopy[LAST_INDEX]++; // Avoid an infinite loop
+      }
+      if(lastLastIndex === string[LENGTH]){
+        if(lastLength || !separatorCopy.test(''))output.push('');
+      } else output.push(string.slice(lastLastIndex));
+      return output[LENGTH] > splitLimit ? output.slice(0, splitLimit) : output;
+    };
+  // Chakra, V8
+  } else if('0'[$SPLIT](undefined, 0)[LENGTH]){
+    $split = function(separator, limit){
+      return separator === undefined && limit === 0 ? [] : _split.call(this, separator, limit);
+    };
+  }
+  // 21.1.3.17 String.prototype.split(separator, limit)
+  return [function split(separator, limit){
+    var O  = defined(this)
+      , fn = separator == undefined ? undefined : separator[SPLIT];
+    return fn !== undefined ? fn.call(separator, O, limit) : $split.call(String(O), separator, limit);
+  }, $split];
+});
+
+/***/ }),
+/* 312 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+__webpack_require__(145);
+var anObject    = __webpack_require__(2)
+  , $flags      = __webpack_require__(65)
+  , DESCRIPTORS = __webpack_require__(10)
+  , TO_STRING   = 'toString'
+  , $toString   = /./[TO_STRING];
+
+var define = function(fn){
+  __webpack_require__(18)(RegExp.prototype, TO_STRING, fn, true);
+};
+
+// 21.2.5.14 RegExp.prototype.toString()
+if(__webpack_require__(5)(function(){ return $toString.call({source: 'a', flags: 'b'}) != '/a/b'; })){
+  define(function toString(){
+    var R = anObject(this);
+    return '/'.concat(R.source, '/',
+      'flags' in R ? R.flags : !DESCRIPTORS && R instanceof RegExp ? $flags.call(R) : undefined);
+  });
+// FF44- RegExp#toString has a wrong name
+} else if($toString.name != TO_STRING){
+  define(function toString(){
+    return $toString.call(this);
+  });
+}
+
+/***/ }),
+/* 313 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// B.2.3.2 String.prototype.anchor(name)
+__webpack_require__(19)('anchor', function(createHTML){
+  return function anchor(name){
+    return createHTML(this, 'a', 'name', name);
+  }
+});
+
+/***/ }),
+/* 314 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// B.2.3.3 String.prototype.big()
+__webpack_require__(19)('big', function(createHTML){
+  return function big(){
+    return createHTML(this, 'big', '', '');
+  }
+});
+
+/***/ }),
+/* 315 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// B.2.3.4 String.prototype.blink()
+__webpack_require__(19)('blink', function(createHTML){
+  return function blink(){
+    return createHTML(this, 'blink', '', '');
+  }
+});
+
+/***/ }),
+/* 316 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// B.2.3.5 String.prototype.bold()
+__webpack_require__(19)('bold', function(createHTML){
+  return function bold(){
+    return createHTML(this, 'b', '', '');
+  }
+});
+
+/***/ }),
+/* 317 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $export = __webpack_require__(0)
+  , $at     = __webpack_require__(100)(false);
+$export($export.P, 'String', {
+  // 21.1.3.3 String.prototype.codePointAt(pos)
+  codePointAt: function codePointAt(pos){
+    return $at(this, pos);
+  }
+});
+
+/***/ }),
+/* 318 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+// 21.1.3.6 String.prototype.endsWith(searchString [, endPosition])
+
+var $export   = __webpack_require__(0)
+  , toLength  = __webpack_require__(12)
+  , context   = __webpack_require__(101)
+  , ENDS_WITH = 'endsWith'
+  , $endsWith = ''[ENDS_WITH];
+
+$export($export.P + $export.F * __webpack_require__(87)(ENDS_WITH), 'String', {
+  endsWith: function endsWith(searchString /*, endPosition = @length */){
+    var that = context(this, searchString, ENDS_WITH)
+      , endPosition = arguments.length > 1 ? arguments[1] : undefined
+      , len    = toLength(that.length)
+      , end    = endPosition === undefined ? len : Math.min(toLength(endPosition), len)
+      , search = String(searchString);
+    return $endsWith
+      ? $endsWith.call(that, search, end)
+      : that.slice(end - search.length, end) === search;
+  }
+});
+
+/***/ }),
+/* 319 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// B.2.3.6 String.prototype.fixed()
+__webpack_require__(19)('fixed', function(createHTML){
+  return function fixed(){
+    return createHTML(this, 'tt', '', '');
+  }
+});
+
+/***/ }),
+/* 320 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// B.2.3.7 String.prototype.fontcolor(color)
+__webpack_require__(19)('fontcolor', function(createHTML){
+  return function fontcolor(color){
+    return createHTML(this, 'font', 'color', color);
+  }
+});
+
+/***/ }),
+/* 321 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// B.2.3.8 String.prototype.fontsize(size)
+__webpack_require__(19)('fontsize', function(createHTML){
+  return function fontsize(size){
+    return createHTML(this, 'font', 'size', size);
+  }
+});
+
+/***/ }),
+/* 322 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $export        = __webpack_require__(0)
+  , toIndex        = __webpack_require__(44)
+  , fromCharCode   = String.fromCharCode
+  , $fromCodePoint = String.fromCodePoint;
+
+// length should be 1, old FF problem
+$export($export.S + $export.F * (!!$fromCodePoint && $fromCodePoint.length != 1), 'String', {
+  // 21.1.2.2 String.fromCodePoint(...codePoints)
+  fromCodePoint: function fromCodePoint(x){ // eslint-disable-line no-unused-vars
+    var res  = []
+      , aLen = arguments.length
+      , i    = 0
+      , code;
+    while(aLen > i){
+      code = +arguments[i++];
+      if(toIndex(code, 0x10ffff) !== code)throw RangeError(code + ' is not a valid code point');
+      res.push(code < 0x10000
+        ? fromCharCode(code)
+        : fromCharCode(((code -= 0x10000) >> 10) + 0xd800, code % 0x400 + 0xdc00)
+      );
+    } return res.join('');
+  }
+});
+
+/***/ }),
+/* 323 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+// 21.1.3.7 String.prototype.includes(searchString, position = 0)
+
+var $export  = __webpack_require__(0)
+  , context  = __webpack_require__(101)
+  , INCLUDES = 'includes';
+
+$export($export.P + $export.F * __webpack_require__(87)(INCLUDES), 'String', {
+  includes: function includes(searchString /*, position = 0 */){
+    return !!~context(this, searchString, INCLUDES)
+      .indexOf(searchString, arguments.length > 1 ? arguments[1] : undefined);
+  }
+});
+
+/***/ }),
+/* 324 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// B.2.3.9 String.prototype.italics()
+__webpack_require__(19)('italics', function(createHTML){
+  return function italics(){
+    return createHTML(this, 'i', '', '');
+  }
+});
+
+/***/ }),
+/* 325 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $at  = __webpack_require__(100)(true);
+
+// 21.1.3.27 String.prototype[@@iterator]()
+__webpack_require__(93)(String, 'String', function(iterated){
+  this._t = String(iterated); // target
+  this._i = 0;                // next index
+// 21.1.5.2.1 %StringIteratorPrototype%.next()
+}, function(){
+  var O     = this._t
+    , index = this._i
+    , point;
+  if(index >= O.length)return {value: undefined, done: true};
+  point = $at(O, index);
+  this._i += point.length;
+  return {value: point, done: false};
+});
+
+/***/ }),
+/* 326 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// B.2.3.10 String.prototype.link(url)
+__webpack_require__(19)('link', function(createHTML){
+  return function link(url){
+    return createHTML(this, 'a', 'href', url);
+  }
+});
+
+/***/ }),
+/* 327 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $export   = __webpack_require__(0)
+  , toIObject = __webpack_require__(20)
+  , toLength  = __webpack_require__(12);
+
+$export($export.S, 'String', {
+  // 21.1.2.4 String.raw(callSite, ...substitutions)
+  raw: function raw(callSite){
+    var tpl  = toIObject(callSite.raw)
+      , len  = toLength(tpl.length)
+      , aLen = arguments.length
+      , res  = []
+      , i    = 0;
+    while(len > i){
+      res.push(String(tpl[i++]));
+      if(i < aLen)res.push(String(arguments[i]));
+    } return res.join('');
+  }
+});
+
+/***/ }),
+/* 328 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $export = __webpack_require__(0);
+
+$export($export.P, 'String', {
+  // 21.1.3.13 String.prototype.repeat(count)
+  repeat: __webpack_require__(102)
+});
+
+/***/ }),
+/* 329 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// B.2.3.11 String.prototype.small()
+__webpack_require__(19)('small', function(createHTML){
+  return function small(){
+    return createHTML(this, 'small', '', '');
+  }
+});
+
+/***/ }),
+/* 330 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+// 21.1.3.18 String.prototype.startsWith(searchString [, position ])
+
+var $export     = __webpack_require__(0)
+  , toLength    = __webpack_require__(12)
+  , context     = __webpack_require__(101)
+  , STARTS_WITH = 'startsWith'
+  , $startsWith = ''[STARTS_WITH];
+
+$export($export.P + $export.F * __webpack_require__(87)(STARTS_WITH), 'String', {
+  startsWith: function startsWith(searchString /*, position = 0 */){
+    var that   = context(this, searchString, STARTS_WITH)
+      , index  = toLength(Math.min(arguments.length > 1 ? arguments[1] : undefined, that.length))
+      , search = String(searchString);
+    return $startsWith
+      ? $startsWith.call(that, search, index)
+      : that.slice(index, index + search.length) === search;
+  }
+});
+
+/***/ }),
+/* 331 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// B.2.3.12 String.prototype.strike()
+__webpack_require__(19)('strike', function(createHTML){
+  return function strike(){
+    return createHTML(this, 'strike', '', '');
+  }
+});
+
+/***/ }),
+/* 332 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// B.2.3.13 String.prototype.sub()
+__webpack_require__(19)('sub', function(createHTML){
+  return function sub(){
+    return createHTML(this, 'sub', '', '');
+  }
+});
+
+/***/ }),
+/* 333 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// B.2.3.14 String.prototype.sup()
+__webpack_require__(19)('sup', function(createHTML){
+  return function sup(){
+    return createHTML(this, 'sup', '', '');
+  }
+});
+
+/***/ }),
+/* 334 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// 21.1.3.25 String.prototype.trim()
+__webpack_require__(51)('trim', function($trim){
+  return function trim(){
+    return $trim(this, 3);
+  };
+});
+
+/***/ }),
+/* 335 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// ECMAScript 6 symbols shim
+var global         = __webpack_require__(3)
+  , has            = __webpack_require__(15)
+  , DESCRIPTORS    = __webpack_require__(10)
+  , $export        = __webpack_require__(0)
+  , redefine       = __webpack_require__(18)
+  , META           = __webpack_require__(34).KEY
+  , $fails         = __webpack_require__(5)
+  , shared         = __webpack_require__(71)
+  , setToStringTag = __webpack_require__(50)
+  , uid            = __webpack_require__(45)
+  , wks            = __webpack_require__(7)
+  , wksExt         = __webpack_require__(143)
+  , wksDefine      = __webpack_require__(106)
+  , keyOf          = __webpack_require__(211)
+  , enumKeys       = __webpack_require__(210)
+  , isArray        = __webpack_require__(91)
+  , anObject       = __webpack_require__(2)
+  , toIObject      = __webpack_require__(20)
+  , toPrimitive    = __webpack_require__(29)
+  , createDesc     = __webpack_require__(35)
+  , _create        = __webpack_require__(39)
+  , gOPNExt        = __webpack_require__(135)
+  , $GOPD          = __webpack_require__(21)
+  , $DP            = __webpack_require__(11)
+  , $keys          = __webpack_require__(41)
+  , gOPD           = $GOPD.f
+  , dP             = $DP.f
+  , gOPN           = gOPNExt.f
+  , $Symbol        = global.Symbol
+  , $JSON          = global.JSON
+  , _stringify     = $JSON && $JSON.stringify
+  , PROTOTYPE      = 'prototype'
+  , HIDDEN         = wks('_hidden')
+  , TO_PRIMITIVE   = wks('toPrimitive')
+  , isEnum         = {}.propertyIsEnumerable
+  , SymbolRegistry = shared('symbol-registry')
+  , AllSymbols     = shared('symbols')
+  , OPSymbols      = shared('op-symbols')
+  , ObjectProto    = Object[PROTOTYPE]
+  , USE_NATIVE     = typeof $Symbol == 'function'
+  , QObject        = global.QObject;
+// Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173
+var setter = !QObject || !QObject[PROTOTYPE] || !QObject[PROTOTYPE].findChild;
+
+// fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687
+var setSymbolDesc = DESCRIPTORS && $fails(function(){
+  return _create(dP({}, 'a', {
+    get: function(){ return dP(this, 'a', {value: 7}).a; }
+  })).a != 7;
+}) ? function(it, key, D){
+  var protoDesc = gOPD(ObjectProto, key);
+  if(protoDesc)delete ObjectProto[key];
+  dP(it, key, D);
+  if(protoDesc && it !== ObjectProto)dP(ObjectProto, key, protoDesc);
+} : dP;
+
+var wrap = function(tag){
+  var sym = AllSymbols[tag] = _create($Symbol[PROTOTYPE]);
+  sym._k = tag;
+  return sym;
+};
+
+var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function(it){
+  return typeof it == 'symbol';
+} : function(it){
+  return it instanceof $Symbol;
+};
+
+var $defineProperty = function defineProperty(it, key, D){
+  if(it === ObjectProto)$defineProperty(OPSymbols, key, D);
+  anObject(it);
+  key = toPrimitive(key, true);
+  anObject(D);
+  if(has(AllSymbols, key)){
+    if(!D.enumerable){
+      if(!has(it, HIDDEN))dP(it, HIDDEN, createDesc(1, {}));
+      it[HIDDEN][key] = true;
+    } else {
+      if(has(it, HIDDEN) && it[HIDDEN][key])it[HIDDEN][key] = false;
+      D = _create(D, {enumerable: createDesc(0, false)});
+    } return setSymbolDesc(it, key, D);
+  } return dP(it, key, D);
+};
+var $defineProperties = function defineProperties(it, P){
+  anObject(it);
+  var keys = enumKeys(P = toIObject(P))
+    , i    = 0
+    , l = keys.length
+    , key;
+  while(l > i)$defineProperty(it, key = keys[i++], P[key]);
+  return it;
+};
+var $create = function create(it, P){
+  return P === undefined ? _create(it) : $defineProperties(_create(it), P);
+};
+var $propertyIsEnumerable = function propertyIsEnumerable(key){
+  var E = isEnum.call(this, key = toPrimitive(key, true));
+  if(this === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key))return false;
+  return E || !has(this, key) || !has(AllSymbols, key) || has(this, HIDDEN) && this[HIDDEN][key] ? E : true;
+};
+var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key){
+  it  = toIObject(it);
+  key = toPrimitive(key, true);
+  if(it === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key))return;
+  var D = gOPD(it, key);
+  if(D && has(AllSymbols, key) && !(has(it, HIDDEN) && it[HIDDEN][key]))D.enumerable = true;
+  return D;
+};
+var $getOwnPropertyNames = function getOwnPropertyNames(it){
+  var names  = gOPN(toIObject(it))
+    , result = []
+    , i      = 0
+    , key;
+  while(names.length > i){
+    if(!has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META)result.push(key);
+  } return result;
+};
+var $getOwnPropertySymbols = function getOwnPropertySymbols(it){
+  var IS_OP  = it === ObjectProto
+    , names  = gOPN(IS_OP ? OPSymbols : toIObject(it))
+    , result = []
+    , i      = 0
+    , key;
+  while(names.length > i){
+    if(has(AllSymbols, key = names[i++]) && (IS_OP ? has(ObjectProto, key) : true))result.push(AllSymbols[key]);
+  } return result;
+};
+
+// 19.4.1.1 Symbol([description])
+if(!USE_NATIVE){
+  $Symbol = function Symbol(){
+    if(this instanceof $Symbol)throw TypeError('Symbol is not a constructor!');
+    var tag = uid(arguments.length > 0 ? arguments[0] : undefined);
+    var $set = function(value){
+      if(this === ObjectProto)$set.call(OPSymbols, value);
+      if(has(this, HIDDEN) && has(this[HIDDEN], tag))this[HIDDEN][tag] = false;
+      setSymbolDesc(this, tag, createDesc(1, value));
+    };
+    if(DESCRIPTORS && setter)setSymbolDesc(ObjectProto, tag, {configurable: true, set: $set});
+    return wrap(tag);
+  };
+  redefine($Symbol[PROTOTYPE], 'toString', function toString(){
+    return this._k;
+  });
+
+  $GOPD.f = $getOwnPropertyDescriptor;
+  $DP.f   = $defineProperty;
+  __webpack_require__(40).f = gOPNExt.f = $getOwnPropertyNames;
+  __webpack_require__(58).f  = $propertyIsEnumerable;
+  __webpack_require__(70).f = $getOwnPropertySymbols;
+
+  if(DESCRIPTORS && !__webpack_require__(38)){
+    redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true);
+  }
+
+  wksExt.f = function(name){
+    return wrap(wks(name));
+  }
+}
+
+$export($export.G + $export.W + $export.F * !USE_NATIVE, {Symbol: $Symbol});
+
+for(var symbols = (
+  // 19.4.2.2, 19.4.2.3, 19.4.2.4, 19.4.2.6, 19.4.2.8, 19.4.2.9, 19.4.2.10, 19.4.2.11, 19.4.2.12, 19.4.2.13, 19.4.2.14
+  'hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables'
+).split(','), i = 0; symbols.length > i; )wks(symbols[i++]);
+
+for(var symbols = $keys(wks.store), i = 0; symbols.length > i; )wksDefine(symbols[i++]);
+
+$export($export.S + $export.F * !USE_NATIVE, 'Symbol', {
+  // 19.4.2.1 Symbol.for(key)
+  'for': function(key){
+    return has(SymbolRegistry, key += '')
+      ? SymbolRegistry[key]
+      : SymbolRegistry[key] = $Symbol(key);
+  },
+  // 19.4.2.5 Symbol.keyFor(sym)
+  keyFor: function keyFor(key){
+    if(isSymbol(key))return keyOf(SymbolRegistry, key);
+    throw TypeError(key + ' is not a symbol!');
+  },
+  useSetter: function(){ setter = true; },
+  useSimple: function(){ setter = false; }
+});
+
+$export($export.S + $export.F * !USE_NATIVE, 'Object', {
+  // 19.1.2.2 Object.create(O [, Properties])
+  create: $create,
+  // 19.1.2.4 Object.defineProperty(O, P, Attributes)
+  defineProperty: $defineProperty,
+  // 19.1.2.3 Object.defineProperties(O, Properties)
+  defineProperties: $defineProperties,
+  // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
+  getOwnPropertyDescriptor: $getOwnPropertyDescriptor,
+  // 19.1.2.7 Object.getOwnPropertyNames(O)
+  getOwnPropertyNames: $getOwnPropertyNames,
+  // 19.1.2.8 Object.getOwnPropertySymbols(O)
+  getOwnPropertySymbols: $getOwnPropertySymbols
+});
+
+// 24.3.2 JSON.stringify(value [, replacer [, space]])
+$JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function(){
+  var S = $Symbol();
+  // MS Edge converts symbol values to JSON as {}
+  // WebKit converts symbol values to JSON as null
+  // V8 throws on boxed symbols
+  return _stringify([S]) != '[null]' || _stringify({a: S}) != '{}' || _stringify(Object(S)) != '{}';
+})), 'JSON', {
+  stringify: function stringify(it){
+    if(it === undefined || isSymbol(it))return; // IE8 returns string on undefined
+    var args = [it]
+      , i    = 1
+      , replacer, $replacer;
+    while(arguments.length > i)args.push(arguments[i++]);
+    replacer = args[1];
+    if(typeof replacer == 'function')$replacer = replacer;
+    if($replacer || !isArray(replacer))replacer = function(key, value){
+      if($replacer)value = $replacer.call(this, key, value);
+      if(!isSymbol(value))return value;
+    };
+    args[1] = replacer;
+    return _stringify.apply($JSON, args);
+  }
+});
+
+// 19.4.3.4 Symbol.prototype[@@toPrimitive](hint)
+$Symbol[PROTOTYPE][TO_PRIMITIVE] || __webpack_require__(17)($Symbol[PROTOTYPE], TO_PRIMITIVE, $Symbol[PROTOTYPE].valueOf);
+// 19.4.3.5 Symbol.prototype[@@toStringTag]
+setToStringTag($Symbol, 'Symbol');
+// 20.2.1.9 Math[@@toStringTag]
+setToStringTag(Math, 'Math', true);
+// 24.3.3 JSON[@@toStringTag]
+setToStringTag(global.JSON, 'JSON', true);
+
+/***/ }),
+/* 336 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $export      = __webpack_require__(0)
+  , $typed       = __webpack_require__(72)
+  , buffer       = __webpack_require__(105)
+  , anObject     = __webpack_require__(2)
+  , toIndex      = __webpack_require__(44)
+  , toLength     = __webpack_require__(12)
+  , isObject     = __webpack_require__(6)
+  , ArrayBuffer  = __webpack_require__(3).ArrayBuffer
+  , speciesConstructor = __webpack_require__(99)
+  , $ArrayBuffer = buffer.ArrayBuffer
+  , $DataView    = buffer.DataView
+  , $isView      = $typed.ABV && ArrayBuffer.isView
+  , $slice       = $ArrayBuffer.prototype.slice
+  , VIEW         = $typed.VIEW
+  , ARRAY_BUFFER = 'ArrayBuffer';
+
+$export($export.G + $export.W + $export.F * (ArrayBuffer !== $ArrayBuffer), {ArrayBuffer: $ArrayBuffer});
+
+$export($export.S + $export.F * !$typed.CONSTR, ARRAY_BUFFER, {
+  // 24.1.3.1 ArrayBuffer.isView(arg)
+  isView: function isView(it){
+    return $isView && $isView(it) || isObject(it) && VIEW in it;
+  }
+});
+
+$export($export.P + $export.U + $export.F * __webpack_require__(5)(function(){
+  return !new $ArrayBuffer(2).slice(1, undefined).byteLength;
+}), ARRAY_BUFFER, {
+  // 24.1.4.3 ArrayBuffer.prototype.slice(start, end)
+  slice: function slice(start, end){
+    if($slice !== undefined && end === undefined)return $slice.call(anObject(this), start); // FF fix
+    var len    = anObject(this).byteLength
+      , first  = toIndex(start, len)
+      , final  = toIndex(end === undefined ? len : end, len)
+      , result = new (speciesConstructor(this, $ArrayBuffer))(toLength(final - first))
+      , viewS  = new $DataView(this)
+      , viewT  = new $DataView(result)
+      , index  = 0;
+    while(first < final){
+      viewT.setUint8(index++, viewS.getUint8(first++));
+    } return result;
+  }
+});
+
+__webpack_require__(43)(ARRAY_BUFFER);
+
+/***/ }),
+/* 337 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $export = __webpack_require__(0);
+$export($export.G + $export.W + $export.F * !__webpack_require__(72).ABV, {
+  DataView: __webpack_require__(105).DataView
+});
+
+/***/ }),
+/* 338 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(33)('Float32', 4, function(init){
+  return function Float32Array(data, byteOffset, length){
+    return init(this, data, byteOffset, length);
+  };
+});
+
+/***/ }),
+/* 339 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(33)('Float64', 8, function(init){
+  return function Float64Array(data, byteOffset, length){
+    return init(this, data, byteOffset, length);
+  };
+});
+
+/***/ }),
+/* 340 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(33)('Int16', 2, function(init){
+  return function Int16Array(data, byteOffset, length){
+    return init(this, data, byteOffset, length);
+  };
+});
+
+/***/ }),
+/* 341 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(33)('Int32', 4, function(init){
+  return function Int32Array(data, byteOffset, length){
+    return init(this, data, byteOffset, length);
+  };
+});
+
+/***/ }),
+/* 342 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(33)('Int8', 1, function(init){
+  return function Int8Array(data, byteOffset, length){
+    return init(this, data, byteOffset, length);
+  };
+});
+
+/***/ }),
+/* 343 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(33)('Uint16', 2, function(init){
+  return function Uint16Array(data, byteOffset, length){
+    return init(this, data, byteOffset, length);
+  };
+});
+
+/***/ }),
+/* 344 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(33)('Uint32', 4, function(init){
+  return function Uint32Array(data, byteOffset, length){
+    return init(this, data, byteOffset, length);
+  };
+});
+
+/***/ }),
+/* 345 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(33)('Uint8', 1, function(init){
+  return function Uint8Array(data, byteOffset, length){
+    return init(this, data, byteOffset, length);
+  };
+});
+
+/***/ }),
+/* 346 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(33)('Uint8', 1, function(init){
+  return function Uint8ClampedArray(data, byteOffset, length){
+    return init(this, data, byteOffset, length);
+  };
+}, true);
+
+/***/ }),
+/* 347 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var weak = __webpack_require__(127);
+
+// 23.4 WeakSet Objects
+__webpack_require__(63)('WeakSet', function(get){
+  return function WeakSet(){ return get(this, arguments.length > 0 ? arguments[0] : undefined); };
+}, {
+  // 23.4.3.1 WeakSet.prototype.add(value)
+  add: function add(value){
+    return weak.def(this, value, true);
+  }
+}, weak, false, true);
+
+/***/ }),
+/* 348 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// https://github.com/tc39/Array.prototype.includes
+var $export   = __webpack_require__(0)
+  , $includes = __webpack_require__(62)(true);
+
+$export($export.P, 'Array', {
+  includes: function includes(el /*, fromIndex = 0 */){
+    return $includes(this, el, arguments.length > 1 ? arguments[1] : undefined);
+  }
+});
+
+__webpack_require__(47)('includes');
+
+/***/ }),
+/* 349 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// https://github.com/rwaldron/tc39-notes/blob/master/es6/2014-09/sept-25.md#510-globalasap-for-enqueuing-a-microtask
+var $export   = __webpack_require__(0)
+  , microtask = __webpack_require__(96)()
+  , process   = __webpack_require__(3).process
+  , isNode    = __webpack_require__(23)(process) == 'process';
+
+$export($export.G, {
+  asap: function asap(fn){
+    var domain = isNode && process.domain;
+    microtask(domain ? domain.bind(fn) : fn);
+  }
+});
+
+/***/ }),
+/* 350 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// https://github.com/ljharb/proposal-is-error
+var $export = __webpack_require__(0)
+  , cof     = __webpack_require__(23);
+
+$export($export.S, 'Error', {
+  isError: function isError(it){
+    return cof(it) === 'Error';
+  }
+});
+
+/***/ }),
+/* 351 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// https://github.com/DavidBruant/Map-Set.prototype.toJSON
+var $export  = __webpack_require__(0);
+
+$export($export.P + $export.R, 'Map', {toJSON: __webpack_require__(126)('Map')});
+
+/***/ }),
+/* 352 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// https://gist.github.com/BrendanEich/4294d5c212a6d2254703
+var $export = __webpack_require__(0);
+
+$export($export.S, 'Math', {
+  iaddh: function iaddh(x0, x1, y0, y1){
+    var $x0 = x0 >>> 0
+      , $x1 = x1 >>> 0
+      , $y0 = y0 >>> 0;
+    return $x1 + (y1 >>> 0) + (($x0 & $y0 | ($x0 | $y0) & ~($x0 + $y0 >>> 0)) >>> 31) | 0;
+  }
+});
+
+/***/ }),
+/* 353 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// https://gist.github.com/BrendanEich/4294d5c212a6d2254703
+var $export = __webpack_require__(0);
+
+$export($export.S, 'Math', {
+  imulh: function imulh(u, v){
+    var UINT16 = 0xffff
+      , $u = +u
+      , $v = +v
+      , u0 = $u & UINT16
+      , v0 = $v & UINT16
+      , u1 = $u >> 16
+      , v1 = $v >> 16
+      , t  = (u1 * v0 >>> 0) + (u0 * v0 >>> 16);
+    return u1 * v1 + (t >> 16) + ((u0 * v1 >>> 0) + (t & UINT16) >> 16);
+  }
+});
+
+/***/ }),
+/* 354 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// https://gist.github.com/BrendanEich/4294d5c212a6d2254703
+var $export = __webpack_require__(0);
+
+$export($export.S, 'Math', {
+  isubh: function isubh(x0, x1, y0, y1){
+    var $x0 = x0 >>> 0
+      , $x1 = x1 >>> 0
+      , $y0 = y0 >>> 0;
+    return $x1 - (y1 >>> 0) - ((~$x0 & $y0 | ~($x0 ^ $y0) & $x0 - $y0 >>> 0) >>> 31) | 0;
+  }
+});
+
+/***/ }),
+/* 355 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// https://gist.github.com/BrendanEich/4294d5c212a6d2254703
+var $export = __webpack_require__(0);
+
+$export($export.S, 'Math', {
+  umulh: function umulh(u, v){
+    var UINT16 = 0xffff
+      , $u = +u
+      , $v = +v
+      , u0 = $u & UINT16
+      , v0 = $v & UINT16
+      , u1 = $u >>> 16
+      , v1 = $v >>> 16
+      , t  = (u1 * v0 >>> 0) + (u0 * v0 >>> 16);
+    return u1 * v1 + (t >>> 16) + ((u0 * v1 >>> 0) + (t & UINT16) >>> 16);
+  }
+});
+
+/***/ }),
+/* 356 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $export         = __webpack_require__(0)
+  , toObject        = __webpack_require__(14)
+  , aFunction       = __webpack_require__(16)
+  , $defineProperty = __webpack_require__(11);
+
+// B.2.2.2 Object.prototype.__defineGetter__(P, getter)
+__webpack_require__(10) && $export($export.P + __webpack_require__(69), 'Object', {
+  __defineGetter__: function __defineGetter__(P, getter){
+    $defineProperty.f(toObject(this), P, {get: aFunction(getter), enumerable: true, configurable: true});
+  }
+});
+
+/***/ }),
+/* 357 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $export         = __webpack_require__(0)
+  , toObject        = __webpack_require__(14)
+  , aFunction       = __webpack_require__(16)
+  , $defineProperty = __webpack_require__(11);
+
+// B.2.2.3 Object.prototype.__defineSetter__(P, setter)
+__webpack_require__(10) && $export($export.P + __webpack_require__(69), 'Object', {
+  __defineSetter__: function __defineSetter__(P, setter){
+    $defineProperty.f(toObject(this), P, {set: aFunction(setter), enumerable: true, configurable: true});
+  }
+});
+
+/***/ }),
+/* 358 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// https://github.com/tc39/proposal-object-values-entries
+var $export  = __webpack_require__(0)
+  , $entries = __webpack_require__(137)(true);
+
+$export($export.S, 'Object', {
+  entries: function entries(it){
+    return $entries(it);
+  }
+});
+
+/***/ }),
+/* 359 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// https://github.com/tc39/proposal-object-getownpropertydescriptors
+var $export        = __webpack_require__(0)
+  , ownKeys        = __webpack_require__(138)
+  , toIObject      = __webpack_require__(20)
+  , gOPD           = __webpack_require__(21)
+  , createProperty = __webpack_require__(84);
+
+$export($export.S, 'Object', {
+  getOwnPropertyDescriptors: function getOwnPropertyDescriptors(object){
+    var O       = toIObject(object)
+      , getDesc = gOPD.f
+      , keys    = ownKeys(O)
+      , result  = {}
+      , i       = 0
+      , key;
+    while(keys.length > i)createProperty(result, key = keys[i++], getDesc(O, key));
+    return result;
+  }
+});
+
+/***/ }),
+/* 360 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $export                  = __webpack_require__(0)
+  , toObject                 = __webpack_require__(14)
+  , toPrimitive              = __webpack_require__(29)
+  , getPrototypeOf           = __webpack_require__(22)
+  , getOwnPropertyDescriptor = __webpack_require__(21).f;
+
+// B.2.2.4 Object.prototype.__lookupGetter__(P)
+__webpack_require__(10) && $export($export.P + __webpack_require__(69), 'Object', {
+  __lookupGetter__: function __lookupGetter__(P){
+    var O = toObject(this)
+      , K = toPrimitive(P, true)
+      , D;
+    do {
+      if(D = getOwnPropertyDescriptor(O, K))return D.get;
+    } while(O = getPrototypeOf(O));
+  }
+});
+
+/***/ }),
+/* 361 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $export                  = __webpack_require__(0)
+  , toObject                 = __webpack_require__(14)
+  , toPrimitive              = __webpack_require__(29)
+  , getPrototypeOf           = __webpack_require__(22)
+  , getOwnPropertyDescriptor = __webpack_require__(21).f;
+
+// B.2.2.5 Object.prototype.__lookupSetter__(P)
+__webpack_require__(10) && $export($export.P + __webpack_require__(69), 'Object', {
+  __lookupSetter__: function __lookupSetter__(P){
+    var O = toObject(this)
+      , K = toPrimitive(P, true)
+      , D;
+    do {
+      if(D = getOwnPropertyDescriptor(O, K))return D.set;
+    } while(O = getPrototypeOf(O));
+  }
+});
+
+/***/ }),
+/* 362 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// https://github.com/tc39/proposal-object-values-entries
+var $export = __webpack_require__(0)
+  , $values = __webpack_require__(137)(false);
+
+$export($export.S, 'Object', {
+  values: function values(it){
+    return $values(it);
+  }
+});
+
+/***/ }),
+/* 363 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// https://github.com/zenparsing/es-observable
+var $export     = __webpack_require__(0)
+  , global      = __webpack_require__(3)
+  , core        = __webpack_require__(30)
+  , microtask   = __webpack_require__(96)()
+  , OBSERVABLE  = __webpack_require__(7)('observable')
+  , aFunction   = __webpack_require__(16)
+  , anObject    = __webpack_require__(2)
+  , anInstance  = __webpack_require__(37)
+  , redefineAll = __webpack_require__(42)
+  , hide        = __webpack_require__(17)
+  , forOf       = __webpack_require__(48)
+  , RETURN      = forOf.RETURN;
+
+var getMethod = function(fn){
+  return fn == null ? undefined : aFunction(fn);
+};
+
+var cleanupSubscription = function(subscription){
+  var cleanup = subscription._c;
+  if(cleanup){
+    subscription._c = undefined;
+    cleanup();
+  }
+};
+
+var subscriptionClosed = function(subscription){
+  return subscription._o === undefined;
+};
+
+var closeSubscription = function(subscription){
+  if(!subscriptionClosed(subscription)){
+    subscription._o = undefined;
+    cleanupSubscription(subscription);
+  }
+};
+
+var Subscription = function(observer, subscriber){
+  anObject(observer);
+  this._c = undefined;
+  this._o = observer;
+  observer = new SubscriptionObserver(this);
+  try {
+    var cleanup      = subscriber(observer)
+      , subscription = cleanup;
+    if(cleanup != null){
+      if(typeof cleanup.unsubscribe === 'function')cleanup = function(){ subscription.unsubscribe(); };
+      else aFunction(cleanup);
+      this._c = cleanup;
+    }
+  } catch(e){
+    observer.error(e);
+    return;
+  } if(subscriptionClosed(this))cleanupSubscription(this);
+};
+
+Subscription.prototype = redefineAll({}, {
+  unsubscribe: function unsubscribe(){ closeSubscription(this); }
+});
+
+var SubscriptionObserver = function(subscription){
+  this._s = subscription;
+};
+
+SubscriptionObserver.prototype = redefineAll({}, {
+  next: function next(value){
+    var subscription = this._s;
+    if(!subscriptionClosed(subscription)){
+      var observer = subscription._o;
+      try {
+        var m = getMethod(observer.next);
+        if(m)return m.call(observer, value);
+      } catch(e){
+        try {
+          closeSubscription(subscription);
+        } finally {
+          throw e;
+        }
+      }
+    }
+  },
+  error: function error(value){
+    var subscription = this._s;
+    if(subscriptionClosed(subscription))throw value;
+    var observer = subscription._o;
+    subscription._o = undefined;
+    try {
+      var m = getMethod(observer.error);
+      if(!m)throw value;
+      value = m.call(observer, value);
+    } catch(e){
+      try {
+        cleanupSubscription(subscription);
+      } finally {
+        throw e;
+      }
+    } cleanupSubscription(subscription);
+    return value;
+  },
+  complete: function complete(value){
+    var subscription = this._s;
+    if(!subscriptionClosed(subscription)){
+      var observer = subscription._o;
+      subscription._o = undefined;
+      try {
+        var m = getMethod(observer.complete);
+        value = m ? m.call(observer, value) : undefined;
+      } catch(e){
+        try {
+          cleanupSubscription(subscription);
+        } finally {
+          throw e;
+        }
+      } cleanupSubscription(subscription);
+      return value;
+    }
+  }
+});
+
+var $Observable = function Observable(subscriber){
+  anInstance(this, $Observable, 'Observable', '_f')._f = aFunction(subscriber);
+};
+
+redefineAll($Observable.prototype, {
+  subscribe: function subscribe(observer){
+    return new Subscription(observer, this._f);
+  },
+  forEach: function forEach(fn){
+    var that = this;
+    return new (core.Promise || global.Promise)(function(resolve, reject){
+      aFunction(fn);
+      var subscription = that.subscribe({
+        next : function(value){
+          try {
+            return fn(value);
+          } catch(e){
+            reject(e);
+            subscription.unsubscribe();
+          }
+        },
+        error: reject,
+        complete: resolve
+      });
+    });
+  }
+});
+
+redefineAll($Observable, {
+  from: function from(x){
+    var C = typeof this === 'function' ? this : $Observable;
+    var method = getMethod(anObject(x)[OBSERVABLE]);
+    if(method){
+      var observable = anObject(method.call(x));
+      return observable.constructor === C ? observable : new C(function(observer){
+        return observable.subscribe(observer);
+      });
+    }
+    return new C(function(observer){
+      var done = false;
+      microtask(function(){
+        if(!done){
+          try {
+            if(forOf(x, false, function(it){
+              observer.next(it);
+              if(done)return RETURN;
+            }) === RETURN)return;
+          } catch(e){
+            if(done)throw e;
+            observer.error(e);
+            return;
+          } observer.complete();
+        }
+      });
+      return function(){ done = true; };
+    });
+  },
+  of: function of(){
+    for(var i = 0, l = arguments.length, items = Array(l); i < l;)items[i] = arguments[i++];
+    return new (typeof this === 'function' ? this : $Observable)(function(observer){
+      var done = false;
+      microtask(function(){
+        if(!done){
+          for(var i = 0; i < items.length; ++i){
+            observer.next(items[i]);
+            if(done)return;
+          } observer.complete();
+        }
+      });
+      return function(){ done = true; };
+    });
+  }
+});
+
+hide($Observable.prototype, OBSERVABLE, function(){ return this; });
+
+$export($export.G, {Observable: $Observable});
+
+__webpack_require__(43)('Observable');
+
+/***/ }),
+/* 364 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var metadata                  = __webpack_require__(32)
+  , anObject                  = __webpack_require__(2)
+  , toMetaKey                 = metadata.key
+  , ordinaryDefineOwnMetadata = metadata.set;
+
+metadata.exp({defineMetadata: function defineMetadata(metadataKey, metadataValue, target, targetKey){
+  ordinaryDefineOwnMetadata(metadataKey, metadataValue, anObject(target), toMetaKey(targetKey));
+}});
+
+/***/ }),
+/* 365 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var metadata               = __webpack_require__(32)
+  , anObject               = __webpack_require__(2)
+  , toMetaKey              = metadata.key
+  , getOrCreateMetadataMap = metadata.map
+  , store                  = metadata.store;
+
+metadata.exp({deleteMetadata: function deleteMetadata(metadataKey, target /*, targetKey */){
+  var targetKey   = arguments.length < 3 ? undefined : toMetaKey(arguments[2])
+    , metadataMap = getOrCreateMetadataMap(anObject(target), targetKey, false);
+  if(metadataMap === undefined || !metadataMap['delete'](metadataKey))return false;
+  if(metadataMap.size)return true;
+  var targetMetadata = store.get(target);
+  targetMetadata['delete'](targetKey);
+  return !!targetMetadata.size || store['delete'](target);
+}});
+
+/***/ }),
+/* 366 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Set                     = __webpack_require__(146)
+  , from                    = __webpack_require__(122)
+  , metadata                = __webpack_require__(32)
+  , anObject                = __webpack_require__(2)
+  , getPrototypeOf          = __webpack_require__(22)
+  , ordinaryOwnMetadataKeys = metadata.keys
+  , toMetaKey               = metadata.key;
+
+var ordinaryMetadataKeys = function(O, P){
+  var oKeys  = ordinaryOwnMetadataKeys(O, P)
+    , parent = getPrototypeOf(O);
+  if(parent === null)return oKeys;
+  var pKeys  = ordinaryMetadataKeys(parent, P);
+  return pKeys.length ? oKeys.length ? from(new Set(oKeys.concat(pKeys))) : pKeys : oKeys;
+};
+
+metadata.exp({getMetadataKeys: function getMetadataKeys(target /*, targetKey */){
+  return ordinaryMetadataKeys(anObject(target), arguments.length < 2 ? undefined : toMetaKey(arguments[1]));
+}});
+
+/***/ }),
+/* 367 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var metadata               = __webpack_require__(32)
+  , anObject               = __webpack_require__(2)
+  , getPrototypeOf         = __webpack_require__(22)
+  , ordinaryHasOwnMetadata = metadata.has
+  , ordinaryGetOwnMetadata = metadata.get
+  , toMetaKey              = metadata.key;
+
+var ordinaryGetMetadata = function(MetadataKey, O, P){
+  var hasOwn = ordinaryHasOwnMetadata(MetadataKey, O, P);
+  if(hasOwn)return ordinaryGetOwnMetadata(MetadataKey, O, P);
+  var parent = getPrototypeOf(O);
+  return parent !== null ? ordinaryGetMetadata(MetadataKey, parent, P) : undefined;
+};
+
+metadata.exp({getMetadata: function getMetadata(metadataKey, target /*, targetKey */){
+  return ordinaryGetMetadata(metadataKey, anObject(target), arguments.length < 3 ? undefined : toMetaKey(arguments[2]));
+}});
+
+/***/ }),
+/* 368 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var metadata                = __webpack_require__(32)
+  , anObject                = __webpack_require__(2)
+  , ordinaryOwnMetadataKeys = metadata.keys
+  , toMetaKey               = metadata.key;
+
+metadata.exp({getOwnMetadataKeys: function getOwnMetadataKeys(target /*, targetKey */){
+  return ordinaryOwnMetadataKeys(anObject(target), arguments.length < 2 ? undefined : toMetaKey(arguments[1]));
+}});
+
+/***/ }),
+/* 369 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var metadata               = __webpack_require__(32)
+  , anObject               = __webpack_require__(2)
+  , ordinaryGetOwnMetadata = metadata.get
+  , toMetaKey              = metadata.key;
+
+metadata.exp({getOwnMetadata: function getOwnMetadata(metadataKey, target /*, targetKey */){
+  return ordinaryGetOwnMetadata(metadataKey, anObject(target)
+    , arguments.length < 3 ? undefined : toMetaKey(arguments[2]));
+}});
+
+/***/ }),
+/* 370 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var metadata               = __webpack_require__(32)
+  , anObject               = __webpack_require__(2)
+  , getPrototypeOf         = __webpack_require__(22)
+  , ordinaryHasOwnMetadata = metadata.has
+  , toMetaKey              = metadata.key;
+
+var ordinaryHasMetadata = function(MetadataKey, O, P){
+  var hasOwn = ordinaryHasOwnMetadata(MetadataKey, O, P);
+  if(hasOwn)return true;
+  var parent = getPrototypeOf(O);
+  return parent !== null ? ordinaryHasMetadata(MetadataKey, parent, P) : false;
+};
+
+metadata.exp({hasMetadata: function hasMetadata(metadataKey, target /*, targetKey */){
+  return ordinaryHasMetadata(metadataKey, anObject(target), arguments.length < 3 ? undefined : toMetaKey(arguments[2]));
+}});
+
+/***/ }),
+/* 371 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var metadata               = __webpack_require__(32)
+  , anObject               = __webpack_require__(2)
+  , ordinaryHasOwnMetadata = metadata.has
+  , toMetaKey              = metadata.key;
+
+metadata.exp({hasOwnMetadata: function hasOwnMetadata(metadataKey, target /*, targetKey */){
+  return ordinaryHasOwnMetadata(metadataKey, anObject(target)
+    , arguments.length < 3 ? undefined : toMetaKey(arguments[2]));
+}});
+
+/***/ }),
+/* 372 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var metadata                  = __webpack_require__(32)
+  , anObject                  = __webpack_require__(2)
+  , aFunction                 = __webpack_require__(16)
+  , toMetaKey                 = metadata.key
+  , ordinaryDefineOwnMetadata = metadata.set;
+
+metadata.exp({metadata: function metadata(metadataKey, metadataValue){
+  return function decorator(target, targetKey){
+    ordinaryDefineOwnMetadata(
+      metadataKey, metadataValue,
+      (targetKey !== undefined ? anObject : aFunction)(target),
+      toMetaKey(targetKey)
+    );
+  };
+}});
+
+/***/ }),
+/* 373 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// https://github.com/DavidBruant/Map-Set.prototype.toJSON
+var $export  = __webpack_require__(0);
+
+$export($export.P + $export.R, 'Set', {toJSON: __webpack_require__(126)('Set')});
+
+/***/ }),
+/* 374 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// https://github.com/mathiasbynens/String.prototype.at
+var $export = __webpack_require__(0)
+  , $at     = __webpack_require__(100)(true);
+
+$export($export.P, 'String', {
+  at: function at(pos){
+    return $at(this, pos);
+  }
+});
+
+/***/ }),
+/* 375 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// https://tc39.github.io/String.prototype.matchAll/
+var $export     = __webpack_require__(0)
+  , defined     = __webpack_require__(24)
+  , toLength    = __webpack_require__(12)
+  , isRegExp    = __webpack_require__(67)
+  , getFlags    = __webpack_require__(65)
+  , RegExpProto = RegExp.prototype;
+
+var $RegExpStringIterator = function(regexp, string){
+  this._r = regexp;
+  this._s = string;
+};
+
+__webpack_require__(92)($RegExpStringIterator, 'RegExp String', function next(){
+  var match = this._r.exec(this._s);
+  return {value: match, done: match === null};
+});
+
+$export($export.P, 'String', {
+  matchAll: function matchAll(regexp){
+    defined(this);
+    if(!isRegExp(regexp))throw TypeError(regexp + ' is not a regexp!');
+    var S     = String(this)
+      , flags = 'flags' in RegExpProto ? String(regexp.flags) : getFlags.call(regexp)
+      , rx    = new RegExp(regexp.source, ~flags.indexOf('g') ? flags : 'g' + flags);
+    rx.lastIndex = toLength(regexp.lastIndex);
+    return new $RegExpStringIterator(rx, S);
+  }
+});
+
+/***/ }),
+/* 376 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// https://github.com/tc39/proposal-string-pad-start-end
+var $export = __webpack_require__(0)
+  , $pad    = __webpack_require__(142);
+
+$export($export.P, 'String', {
+  padEnd: function padEnd(maxLength /*, fillString = ' ' */){
+    return $pad(this, maxLength, arguments.length > 1 ? arguments[1] : undefined, false);
+  }
+});
+
+/***/ }),
+/* 377 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// https://github.com/tc39/proposal-string-pad-start-end
+var $export = __webpack_require__(0)
+  , $pad    = __webpack_require__(142);
+
+$export($export.P, 'String', {
+  padStart: function padStart(maxLength /*, fillString = ' ' */){
+    return $pad(this, maxLength, arguments.length > 1 ? arguments[1] : undefined, true);
+  }
+});
+
+/***/ }),
+/* 378 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// https://github.com/sebmarkbage/ecmascript-string-left-right-trim
+__webpack_require__(51)('trimLeft', function($trim){
+  return function trimLeft(){
+    return $trim(this, 1);
+  };
+}, 'trimStart');
+
+/***/ }),
+/* 379 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// https://github.com/sebmarkbage/ecmascript-string-left-right-trim
+__webpack_require__(51)('trimRight', function($trim){
+  return function trimRight(){
+    return $trim(this, 2);
+  };
+}, 'trimEnd');
+
+/***/ }),
+/* 380 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(106)('asyncIterator');
+
+/***/ }),
+/* 381 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(106)('observable');
+
+/***/ }),
+/* 382 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// https://github.com/ljharb/proposal-global
+var $export = __webpack_require__(0);
+
+$export($export.S, 'System', {global: __webpack_require__(3)});
+
+/***/ }),
+/* 383 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $iterators    = __webpack_require__(108)
+  , redefine      = __webpack_require__(18)
+  , global        = __webpack_require__(3)
+  , hide          = __webpack_require__(17)
+  , Iterators     = __webpack_require__(49)
+  , wks           = __webpack_require__(7)
+  , ITERATOR      = wks('iterator')
+  , TO_STRING_TAG = wks('toStringTag')
+  , ArrayValues   = Iterators.Array;
+
+for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList', 'CSSRuleList'], i = 0; i < 5; i++){
+  var NAME       = collections[i]
+    , Collection = global[NAME]
+    , proto      = Collection && Collection.prototype
+    , key;
+  if(proto){
+    if(!proto[ITERATOR])hide(proto, ITERATOR, ArrayValues);
+    if(!proto[TO_STRING_TAG])hide(proto, TO_STRING_TAG, NAME);
+    Iterators[NAME] = ArrayValues;
+    for(key in $iterators)if(!proto[key])redefine(proto, key, $iterators[key], true);
+  }
+}
+
+/***/ }),
+/* 384 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $export = __webpack_require__(0)
+  , $task   = __webpack_require__(104);
+$export($export.G + $export.B, {
+  setImmediate:   $task.set,
+  clearImmediate: $task.clear
+});
+
+/***/ }),
+/* 385 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// ie9- setTimeout & setInterval additional parameters fix
+var global     = __webpack_require__(3)
+  , $export    = __webpack_require__(0)
+  , invoke     = __webpack_require__(66)
+  , partial    = __webpack_require__(212)
+  , navigator  = global.navigator
+  , MSIE       = !!navigator && /MSIE .\./.test(navigator.userAgent); // <- dirty ie9- check
+var wrap = function(set){
+  return MSIE ? function(fn, time /*, ...args */){
+    return set(invoke(
+      partial,
+      [].slice.call(arguments, 2),
+      typeof fn == 'function' ? fn : Function(fn)
+    ), time);
+  } : set;
+};
+$export($export.G + $export.B + $export.F * MSIE, {
+  setTimeout:  wrap(global.setTimeout),
+  setInterval: wrap(global.setInterval)
+});
+
+/***/ }),
+/* 386 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(335);
+__webpack_require__(274);
+__webpack_require__(276);
+__webpack_require__(275);
+__webpack_require__(278);
+__webpack_require__(280);
+__webpack_require__(285);
+__webpack_require__(279);
+__webpack_require__(277);
+__webpack_require__(287);
+__webpack_require__(286);
+__webpack_require__(282);
+__webpack_require__(283);
+__webpack_require__(281);
+__webpack_require__(273);
+__webpack_require__(284);
+__webpack_require__(288);
+__webpack_require__(289);
+__webpack_require__(241);
+__webpack_require__(243);
+__webpack_require__(242);
+__webpack_require__(291);
+__webpack_require__(290);
+__webpack_require__(261);
+__webpack_require__(271);
+__webpack_require__(272);
+__webpack_require__(262);
+__webpack_require__(263);
+__webpack_require__(264);
+__webpack_require__(265);
+__webpack_require__(266);
+__webpack_require__(267);
+__webpack_require__(268);
+__webpack_require__(269);
+__webpack_require__(270);
+__webpack_require__(244);
+__webpack_require__(245);
+__webpack_require__(246);
+__webpack_require__(247);
+__webpack_require__(248);
+__webpack_require__(249);
+__webpack_require__(250);
+__webpack_require__(251);
+__webpack_require__(252);
+__webpack_require__(253);
+__webpack_require__(254);
+__webpack_require__(255);
+__webpack_require__(256);
+__webpack_require__(257);
+__webpack_require__(258);
+__webpack_require__(259);
+__webpack_require__(260);
+__webpack_require__(322);
+__webpack_require__(327);
+__webpack_require__(334);
+__webpack_require__(325);
+__webpack_require__(317);
+__webpack_require__(318);
+__webpack_require__(323);
+__webpack_require__(328);
+__webpack_require__(330);
+__webpack_require__(313);
+__webpack_require__(314);
+__webpack_require__(315);
+__webpack_require__(316);
+__webpack_require__(319);
+__webpack_require__(320);
+__webpack_require__(321);
+__webpack_require__(324);
+__webpack_require__(326);
+__webpack_require__(329);
+__webpack_require__(331);
+__webpack_require__(332);
+__webpack_require__(333);
+__webpack_require__(236);
+__webpack_require__(238);
+__webpack_require__(237);
+__webpack_require__(240);
+__webpack_require__(239);
+__webpack_require__(225);
+__webpack_require__(223);
+__webpack_require__(229);
+__webpack_require__(226);
+__webpack_require__(232);
+__webpack_require__(234);
+__webpack_require__(222);
+__webpack_require__(228);
+__webpack_require__(219);
+__webpack_require__(233);
+__webpack_require__(217);
+__webpack_require__(231);
+__webpack_require__(230);
+__webpack_require__(224);
+__webpack_require__(227);
+__webpack_require__(216);
+__webpack_require__(218);
+__webpack_require__(221);
+__webpack_require__(220);
+__webpack_require__(235);
+__webpack_require__(108);
+__webpack_require__(307);
+__webpack_require__(312);
+__webpack_require__(145);
+__webpack_require__(308);
+__webpack_require__(309);
+__webpack_require__(310);
+__webpack_require__(311);
+__webpack_require__(292);
+__webpack_require__(144);
+__webpack_require__(146);
+__webpack_require__(147);
+__webpack_require__(347);
+__webpack_require__(336);
+__webpack_require__(337);
+__webpack_require__(342);
+__webpack_require__(345);
+__webpack_require__(346);
+__webpack_require__(340);
+__webpack_require__(343);
+__webpack_require__(341);
+__webpack_require__(344);
+__webpack_require__(338);
+__webpack_require__(339);
+__webpack_require__(293);
+__webpack_require__(294);
+__webpack_require__(295);
+__webpack_require__(296);
+__webpack_require__(297);
+__webpack_require__(300);
+__webpack_require__(298);
+__webpack_require__(299);
+__webpack_require__(301);
+__webpack_require__(302);
+__webpack_require__(303);
+__webpack_require__(304);
+__webpack_require__(306);
+__webpack_require__(305);
+__webpack_require__(348);
+__webpack_require__(374);
+__webpack_require__(377);
+__webpack_require__(376);
+__webpack_require__(378);
+__webpack_require__(379);
+__webpack_require__(375);
+__webpack_require__(380);
+__webpack_require__(381);
+__webpack_require__(359);
+__webpack_require__(362);
+__webpack_require__(358);
+__webpack_require__(356);
+__webpack_require__(357);
+__webpack_require__(360);
+__webpack_require__(361);
+__webpack_require__(351);
+__webpack_require__(373);
+__webpack_require__(382);
+__webpack_require__(350);
+__webpack_require__(352);
+__webpack_require__(354);
+__webpack_require__(353);
+__webpack_require__(355);
+__webpack_require__(364);
+__webpack_require__(365);
+__webpack_require__(367);
+__webpack_require__(366);
+__webpack_require__(369);
+__webpack_require__(368);
+__webpack_require__(370);
+__webpack_require__(371);
+__webpack_require__(372);
+__webpack_require__(349);
+__webpack_require__(363);
+__webpack_require__(385);
+__webpack_require__(384);
+__webpack_require__(383);
+module.exports = __webpack_require__(30);
+
+/***/ }),
 /* 387 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -19281,7 +19050,7 @@ Point.prototype.toMGRS = function(accuracy) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hypot__ = __webpack_require__(149);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hypot__ = __webpack_require__(150);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__log1py__ = __webpack_require__(396);
 
 
@@ -19321,7 +19090,7 @@ Point.prototype.toMGRS = function(accuracy) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sinh__ = __webpack_require__(152);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sinh__ = __webpack_require__(153);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__cosh__ = __webpack_require__(393);
 
 
@@ -19866,7 +19635,7 @@ exports.oslo = 10.722916666667; //"10d43'22.5\"E"
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Proj__ = __webpack_require__(109);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__transform__ = __webpack_require__(157);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__transform__ = __webpack_require__(158);
 
 
 var wgs84 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__Proj__["a" /* default */])('WGS84');
@@ -20386,9 +20155,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core__ = __webpack_require__(402);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Proj__ = __webpack_require__(109);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Point__ = __webpack_require__(387);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_toPoint__ = __webpack_require__(153);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__defs__ = __webpack_require__(154);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__transform__ = __webpack_require__(157);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_toPoint__ = __webpack_require__(154);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__defs__ = __webpack_require__(155);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__transform__ = __webpack_require__(158);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_mgrs__ = __webpack_require__(148);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__version__ = __webpack_require__(438);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__projs__ = __webpack_require__(440);
@@ -20420,9 +20189,9 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8__projs__["a" /* default */])(_
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defs__ = __webpack_require__(154);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_wkt_parser__ = __webpack_require__(158);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__projString__ = __webpack_require__(155);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defs__ = __webpack_require__(155);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_wkt_parser__ = __webpack_require__(159);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__projString__ = __webpack_require__(156);
 
 
 
@@ -23067,9 +22836,9 @@ var names = ["Polyconic", "poly"];
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_adjust_lat__ = __webpack_require__(59);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_pj_enfn__ = __webpack_require__(150);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_pj_enfn__ = __webpack_require__(151);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_pj_mlfn__ = __webpack_require__(112);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_pj_inv_mlfn__ = __webpack_require__(151);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_pj_inv_mlfn__ = __webpack_require__(152);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__constants_values__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_asinz__ = __webpack_require__(52);
 /* unused harmony export init */
@@ -23564,9 +23333,9 @@ var names = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_Stereog
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_pj_enfn__ = __webpack_require__(150);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_pj_enfn__ = __webpack_require__(151);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_pj_mlfn__ = __webpack_require__(112);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_pj_inv_mlfn__ = __webpack_require__(151);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_pj_inv_mlfn__ = __webpack_require__(152);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_adjust_lon__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_values__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_sign__ = __webpack_require__(60);
@@ -23755,7 +23524,7 @@ var names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_zone__ = __webpack_require__(389);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__etmerc__ = __webpack_require__(156);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__etmerc__ = __webpack_require__(157);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_values__ = __webpack_require__(4);
 /* unused harmony export dependsOn */
 /* unused harmony export init */
@@ -23960,7 +23729,7 @@ module.exports = {
 				"spec": ">=2.4.3 <3.0.0",
 				"type": "range"
 			},
-			"E:\\codeRepository\\github\\HMap"
+			"E:\\github\\HMap"
 		]
 	],
 	"_cnpm_publish_time": 1488570791097,
@@ -23992,11 +23761,11 @@ module.exports = {
 	"_requiredBy": [
 		"/"
 	],
-	"_resolved": "http://registry.npmjs.org/proj4/-/proj4-2.4.3.tgz",
+	"_resolved": "https://registry.npm.taobao.org/proj4/download/proj4-2.4.3.tgz",
 	"_shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
 	"_shrinkwrap": null,
 	"_spec": "proj4@^2.4.3",
-	"_where": "E:\\codeRepository\\github\\HMap",
+	"_where": "E:\\github\\HMap",
 	"author": "",
 	"bugs": {
 		"url": "https://github.com/proj4js/proj4js/issues"
@@ -24097,7 +23866,7 @@ module.exports = {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_projections_tmerc__ = __webpack_require__(435);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_projections_etmerc__ = __webpack_require__(156);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_projections_etmerc__ = __webpack_require__(157);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_projections_utm__ = __webpack_require__(436);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_projections_sterea__ = __webpack_require__(434);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_projections_stere__ = __webpack_require__(433);
@@ -25275,8 +25044,8 @@ module.exports = {
 /* 445 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(160);
-module.exports = __webpack_require__(159);
+__webpack_require__(161);
+module.exports = __webpack_require__(160);
 
 
 /***/ })

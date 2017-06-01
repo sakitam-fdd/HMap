@@ -83,6 +83,18 @@ Maps.initMap('map', {
 console.log(Maps)
 ```
 
+## 截图示例
+
+![散点图](https://raw.githubusercontent.com/sakitam-fdd/HMap/master/asset/demo/rr.png)
+
+![迁徙图](https://raw.githubusercontent.com/sakitam-fdd/HMap/master/asset/demo/flay.gif)
+
+![热力图](https://raw.githubusercontent.com/sakitam-fdd/HMap/master/asset/demo/heatMap.png)
+
+![军事标绘](https://raw.githubusercontent.com/sakitam-fdd/HMap/master/asset/demo/plot.png)
+
+其他示例请参看example文件夹
+
 ## 文档生成和查看
 
 > 首先安装gitbook
