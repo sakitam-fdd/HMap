@@ -15,7 +15,9 @@ import PlotEdit from './plot/Event/PlotEdit'
 import * as utils from './utils/utils'
 
 HMap.ol = ol
+window.ol = ol
 HMap.proj4 = proj4
+window.proj4 = proj4
 HMap.Map = Map
 HMap.Utils = utils
 HMap.PlotDraw = PlotDraw

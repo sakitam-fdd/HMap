@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="renderer" content="webkit">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>MapBox矢量图层加载测试</title>
+  <link rel="stylesheet" href="../../dist/HMap.css" type="text/css">
+  <style>
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+<div id="map"></div>
+<script src="../../dist/HMap.js"></script>
+<script type="text/javascript">
+  var Maps = new HMap.Map();
+  Maps.initMap('map', {
+    view: {
+      center: [108.70284725808892, -54.69173110027741],
+      projection: 'EPSG:3857',
+      zoom: 5, // resolution
+    },
+    controls: {
+      addScaleLine: false,
+      addLoading: false
+    },
+    interactions: {
+      doubleClickZoom: true,
+      keyboard: false
+    },
+    logo: {},
+    baseLayers: [
+      {
+        layerName: 'MapboxVectorTile',
+        isDefault: true,
+        layerType: 'MapboxVectorTile',
+        attribution: {
+          url: 'https://aurorafe.github.io',
+          title: '恒达时讯',
+          messages: '版权所有'
+        },
+        layerUrl: 'https://{a-d}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/{z}/{x}/{y}.vector.pbf?access_token=pk.eyJ1Ijoic21pbGVmZGQiLCJhIjoiY2owbDBkb2RwMDJyMTMycWRoeDE4d21sZSJ9.dWlPeAWsgnhUKdv1dCLTnw',
+        tilePixelRatio: 16,
+        tileGrid: {
+          maxZoom: 22
+        }
+      }
+    ]
+  });
+</script>
+</body>
+</html>

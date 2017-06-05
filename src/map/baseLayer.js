@@ -1,5 +1,12 @@
 import {ol} from '../constants'
 class BaseLayers {
+
+  /**
+   * 添加底图
+   * @param params
+   * @param view
+   * @returns {[*]}
+   */
   addBaseLayers (params, view) {
     let options = params || []
     let _view = view || {}
@@ -77,6 +84,9 @@ class BaseLayers {
             case 'TileWMS':
               layer = this._getTileWMSLayer(config)
               break
+            case 'MapboxVectorTile':
+              layer = this._getMapboxVectorTileLayer(config)
+              break
           }
           if (layer) layers.push(layer)
           if (config['label']) {
@@ -112,6 +122,9 @@ class BaseLayers {
               case 'TileXYZ':
                 labelLayer = this._getXYZLayer(configM)
                 break
+              case 'OSM':
+                labelLayer = this._getOSMLayer(configM)
+                break
               case 'TitleWMTS':
                 labelLayer = this._getWMTSLayer(configM)
                 break
@@ -120,6 +133,9 @@ class BaseLayers {
                 break
               case 'TileWMS':
                 labelLayer = this._getTileWMSLayer(configM)
+                break
+              case 'MapboxVectorTile':
+                labelLayer = this._getMapboxVectorTileLayer(configM)
                 break
             }
             if (labelLayer) labelLayers.push(labelLayer)
@@ -139,39 +155,30 @@ class BaseLayers {
    * @private
    */
   _getXYZLayer (config) {
-    let tileUrl = config['layerUrl']
-    let tileGrid = new ol.tilegrid.TileGrid({
-      tileSize: this.tileSize,
-      origin: this.origin,
-      extent: this.fullExtent,
-      resolutions: this.resolutions
-    })
-    let tileArcGISXYZ = new ol.source.XYZ({
-      wrapX: false,
-      tileGrid: tileGrid,
-      attributions: (this._getAttribution(config['attribution'])),
-      tileSize: this.tileSize,
-      opaque: (config['opaque'] === true) ? config['opaque'] : false, // 图层是否不透明（主题相关）
-      tilePixelRatio: 1, // todo 对于高分辨率设备，例如苹果等可能2、3（移动端开发需要注意）
-      projection: this.projection,
-      // crossOrigin: 'Anonymous',
-      tileUrlFunction: function (tileCoord) {
-        let url = (tileUrl + '/tile/{z}/{y}/{x}').replace('{z}',
-          (tileCoord[0]).toString()).replace('{x}',
-          tileCoord[1].toString()).replace('{y}',
-          (-tileCoord[2] - 1).toString())
-        return url
+    try {
+      let baseLayer = null
+      let layerName = config['layerName'] ? config.layerName : ''
+      config['addLayer'] = false
+      config['create'] = true
+      config['tileSize'] = this.tileSize
+      if (!config.hasOwnProperty('tileGrid')) {
+        config['tileGrid'] = {}
+        config['tileGrid']['tileSize'] = this.tileSize
+        config['tileGrid']['origin'] = this.origin
+        config['tileGrid']['extent'] = this.fullExtent
+        config['tileGrid']['resolutions'] = this.resolutions
       }
-    })
-    let baseLayer = new ol.layer.Tile({
-      isBaseLayer: true,
-      alias: config['alias'] ? config['alias'] : '',
-      isDefault: (config['isDefault'] === true) ? config['isDefault'] : false,
-      visible: (config['isDefault'] === true) ? config['isDefault'] : false,
-      layerName: config['layerName'] ? config.layerName : '',
-      source: tileArcGISXYZ
-    })
-    return baseLayer
+      baseLayer = this.creatXYZLayer(layerName, config)
+      if (baseLayer && baseLayer instanceof ol.layer.Tile) {
+        baseLayer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
+        baseLayer.set('isBaseLayer', true)
+        baseLayer.set('alias', (config['alias'] ? config['alias'] : ''))
+        baseLayer.getSource().setAttributions(this._getAttribution(config['attribution']))
+      }
+      return baseLayer
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   /**
@@ -181,21 +188,22 @@ class BaseLayers {
    * @private
    */
   _getOSMLayer (config) {
-    let baseLayer = new ol.layer.Tile({
-      isBaseLayer: true,
-      alias: config['alias'] ? config['alias'] : '',
-      isDefault: (config['isDefault'] === true) ? config['isDefault'] : false,
-      visible: (config['isDefault'] === true) ? config['isDefault'] : false,
-      layerName: config['layerName'] ? config.layerName : '',
-      source: new ol.source.OSM({
-        attributions: (this._getAttribution(config['attribution'])),
-        wrapX: false,
-        opaque: (config['opaque'] === true) ? config['opaque'] : false, // 图层是否不透明（主题相关）
-        url: config['layerUrl'] ? config['layerUrl'] : 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        crossOrigin: 'Anonymous'
-      })
-    })
-    return baseLayer
+    try {
+      let baseLayer = null
+      let layerName = config['layerName'] ? config.layerName : ''
+      config['addLayer'] = false
+      config['create'] = true
+      baseLayer = this.creatOSMLayer(layerName, config)
+      if (baseLayer && baseLayer instanceof ol.layer.Tile) {
+        baseLayer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
+        baseLayer.set('isBaseLayer', true)
+        baseLayer.set('alias', (config['alias'] ? config['alias'] : ''))
+        baseLayer.getSource().setAttributions(this._getAttribution(config['attribution']))
+      }
+      return baseLayer
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   /**
@@ -205,38 +213,22 @@ class BaseLayers {
    * @private
    */
   _getWMTSLayer (config) {
-    let projection = ol.proj.get('EPSG:4326')
-    let size = ol.extent.getWidth(projection.getExtent()) / 256
-    let resolutions = new Array(19)
-    let matrixIds = new Array(19)
-    for (let z = 0; z < 19; ++z) {
-      resolutions[z] = size / Math.pow(2, z)
-      matrixIds[z] = z
+    try {
+      let baseLayer = null
+      let layerName = config['layerName'] ? config.layerName : ''
+      config['addLayer'] = false
+      config['create'] = true
+      baseLayer = this.creatWMTSLayer(layerName, config)
+      if (baseLayer && baseLayer instanceof ol.layer.Tile) {
+        baseLayer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
+        baseLayer.set('isBaseLayer', true)
+        baseLayer.set('alias', (config['alias'] ? config['alias'] : ''))
+        baseLayer.getSource().setAttributions(this._getAttribution(config['attribution']))
+      }
+      return baseLayer
+    } catch (e) {
+      console.log(e)
     }
-    let layer = new ol.layer.Tile({
-      isBaseLayer: true,
-      alias: config['alias'] ? config['alias'] : '',
-      isDefault: (config['isDefault'] === true) ? config['isDefault'] : false,
-      layerName: config['layerName'] ? config.layerName : '',
-      visible: (config['isDefault'] === true) ? config['isDefault'] : false,
-      source: new ol.source.WMTS({
-        url: config['layerUrl'],
-        layer: config['layer'],
-        matrixSet: 'c',
-        format: 'tiles',
-        crossOrigin: 'Anonymous',
-        attributions: (this._getAttribution(config['attribution'])),
-        projection: projection,
-        tileGrid: new ol.tilegrid.WMTS({
-          origin: ol.extent.getTopLeft(projection.getExtent()),
-          resolutions: resolutions,
-          matrixIds: matrixIds
-        }),
-        style: 'default',
-        wrapX: false
-      })
-    })
-    return layer
   }
 
   /**
@@ -245,37 +237,22 @@ class BaseLayers {
    * @private
    */
   _getImageWMSLayer (config) {
-    let proj = this.projection.getCode()
-    let layer = new ol.layer.Image({
-      isBaseLayer: true,
-      alias: config['alias'] ? config['alias'] : '',
-      isDefault: (config['isDefault'] === true) ? config['isDefault'] : false,
-      layerName: config['layerName'] ? config.layerName : '',
-      visible: (config['isDefault'] === true) ? config['isDefault'] : false,
-      opacity: (config['opacity'] && (typeof config['opacity'] === 'number')) ? config['opacity'] : 1,
-      source: new ol.source.ImageWMS({
-        url: config['layerUrl'],
-        attributions: (this._getAttribution(config['attribution'])),
-        params: {
-          LAYERS: config['layers'], // require
-          STYLES: config['style'] ? config['style'] : '',
-          VERSION: config['version'] ? config['version'] : '1.1.1',
-          WIDTH: config['width'] ? config['width'] : 256,
-          HEIGHT: config['height'] ? config['height'] : 256,
-          BBOX: config['bbox'], // require
-          SRS: !proj ? 'EPSG:4326' : proj,
-          CRS: !proj ? 'EPSG:4326' : proj,
-          REQUEST: 'GetMap',
-          TRANSPARENT: true,
-          TILED: (config['tiled'] === false) ? config['tiled'] : true,
-          TILESORIGIN: config['tiledsorrigin'] ? config['tiledsorrigin'] : undefined,
-          SERVICE: 'WMS',
-          FORMAT: config['format'] ? config['format'] : 'image/png'
-        },
-        wrapX: false
-      })
-    })
-    return layer
+    try {
+      let layer = null
+      let layerName = config['layerName'] ? config.layerName : ''
+      config['addLayer'] = false
+      config['create'] = true
+      layer = this.creatImageWMSLayer(layerName, config)
+      if (layer && layer instanceof ol.layer.Image) {
+        layer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
+        layer.set('isBaseLayer', true)
+        layer.set('alias', (config['alias'] ? config['alias'] : ''))
+        layer.getSource().setAttributions(this._getAttribution(config['attribution']))
+      }
+      return layer
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   /**
@@ -285,37 +262,47 @@ class BaseLayers {
    * @private
    */
   _getTileWMSLayer (config) {
-    let proj = this.projection.getCode()
-    let layer = new ol.layer.Tile({
-      isBaseLayer: true,
-      alias: config['alias'] ? config['alias'] : '',
-      isDefault: (config['isDefault'] === true) ? config['isDefault'] : false,
-      layerName: config['layerName'] ? config.layerName : '',
-      visible: (config['isDefault'] === true) ? config['isDefault'] : false,
-      opacity: (config['opacity'] && (typeof config['opacity'] === 'number')) ? config['opacity'] : 1,
-      source: new ol.source.TileWMS({
-        url: config['layerUrl'],
-        attributions: (this._getAttribution(config['attribution'])),
-        params: {
-          LAYERS: config['layers'], // require
-          STYLES: config['style'] ? config['style'] : '',
-          VERSION: config['version'] ? config['version'] : '1.1.1',
-          WIDTH: config['width'] ? config['width'] : 256,
-          HEIGHT: config['height'] ? config['height'] : 256,
-          BBOX: config['bbox'], // require
-          SRS: !proj ? 'EPSG:4326' : proj,
-          CRS: !proj ? 'EPSG:4326' : proj,
-          REQUEST: 'GetMap',
-          TRANSPARENT: true,
-          TILED: (config['tiled'] === false) ? config['tiled'] : true,
-          TILESORIGIN: config['tiledsorrigin'] ? config['tiledsorrigin'] : undefined,
-          SERVICE: 'WMS',
-          FORMAT: config['format'] ? config['format'] : 'image/png'
-        },
-        wrapX: false
-      })
-    })
-    return layer
+    try {
+      let layer = null
+      let layerName = config['layerName'] ? config.layerName : ''
+      config['addLayer'] = false
+      config['create'] = true
+      layer = this.creatTileWMSLayer(layerName, config)
+      if (layer && layer instanceof ol.layer.TileWMS) {
+        layer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
+        layer.set('isBaseLayer', true)
+        layer.set('alias', (config['alias'] ? config['alias'] : ''))
+        layer.getSource().setAttributions(this._getAttribution(config['attribution']))
+      }
+      return layer
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  /**
+   * 添加MapBox的矢量图层
+   * @param config
+   * @returns {*}
+   * @private
+   */
+  _getMapboxVectorTileLayer (config) {
+    try {
+      let layer = null
+      let layerName = config['layerName'] ? config.layerName : ''
+      config['addLayer'] = false
+      config['create'] = true
+      layer = this.creatMapboxVectorTileLayer(layerName, config)
+      if (layer && layer instanceof ol.layer.VectorTile) {
+        layer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
+        layer.set('isBaseLayer', true)
+        layer.set('alias', (config['alias'] ? config['alias'] : ''))
+        layer.getSource().setAttributions(this._getAttribution(config['attribution']))
+      }
+      return layer
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   /**
