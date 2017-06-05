@@ -1,6 +1,7 @@
 import mix from '../utils/mixin'
 import Layer from '../layer/Layer'
 import { ol } from '../constants'
+import * as utils from '../utils/utils'
 class MeasureTool extends mix(Layer) {
   constructor (map) {
     super()
@@ -28,6 +29,12 @@ class MeasureTool extends mix(Layer) {
        * @type {null}
        */
       this.dragPanInteraction = null
+
+      /**
+       * 双击交互
+       * @type {null}
+       */
+      this.DoubleClickZoom = null
     } else {
       throw new Error('传入的不是地图对象或者地图对象为空！')
     }
@@ -52,7 +59,7 @@ class MeasureTool extends mix(Layer) {
      * 点击计数器
      * @type {number}
      */
-    this.clickCount = 0
+    this.clickCount = ''
     /**
      * 测量结果
      * @type {null}
@@ -62,17 +69,26 @@ class MeasureTool extends mix(Layer) {
      * draw对象
      * @type {null}
      */
+    if (this.draw) {
+      this.map.removeInteraction(this.draw)
+    }
     this.draw = null
 
     /**
      * 移动事件处理
      * @type {null}
      */
+    if (this.beforeMeasurePointerMoveHandler) {
+      ol.Observable.unByKey(this.beforeMeasurePointerMoveHandler)
+    }
     this.beforeMeasurePointerMoveHandler = null
     /**
      * 处理机
      * @type {null}
      */
+    if (this.listener) {
+      ol.Observable.unByKey(this.listener)
+    }
     this.listener = null
     /**
      * 当前所画要素
@@ -80,32 +96,55 @@ class MeasureTool extends mix(Layer) {
      */
     this.drawSketch = null
     /**
-     * 测量提示信息
-     * @type {string}
+     * 画点事件处理
+     * @type {null}
      */
-    this.measureHelpTooltip = ''
-
+    if (this.drawPointermove) {
+      ol.Observable.unByKey(this.drawPointermove)
+    }
+    this.drawPointermove = null
     /**
      * 面积测量提示
      * @type {null}
      */
     this.measureAreaTooltip = null
+    /**
+     * 测面的单击事件
+     */
+    if (this.measureAreaClick) {
+      ol.Observable.unByKey(this.measureAreaClick)
+    }
+    this.measureAreaClick = null
 
     this.measureAreaTooltipElement = null
 
+    this.removeDrawInteraion()
+
+    /**
+     * 测量提示信息
+     * @type {string}
+     */
+    if (this.measureHelpTooltip) {
+      this.map.removeOverlay(this.measureHelpTooltip)
+    }
+    this.measureHelpTooltip = ''
     if (this.options['measureType'] === this.measureTypes.measureLength) {
-      this.measureLengthClick = this.map.on('singleclick', event => {
-        this.clickCount += 1
-        if (this.clickCount === 1) {
-          this.drawSketch.length = '起点'
-        }
-        this.addMeasureOverLay(event.coordinate, this.drawSketch.length)
-        this.addMeasurecircle(event.coordinate)
+      this.measureLengthClick = this.map.on('click', eventP => {
+        let ev = this.map.on('singleclick', event => {
+          if (!this.clickCount) {
+            this.clickCount = utils.getuuid()
+            this.drawSketch.length = '起点'
+          }
+          this.addMeasureOverLay(event.coordinate, this.drawSketch.length)
+          this.addMeasurecircle(event.coordinate)
+          ol.Observable.unByKey(ev)
+        })
       })
       this.beforeMeasurePointerMoveHandler = this.map.on('pointermove', this.beforeDrawPointMoveHandler, this)
     } else if (this.options['measureType'] === this.measureTypes.measureArea) {
-      this.measureAreaClick = this.map.on('singleclick', event => {
+      this.measureAreaClick = this.map.on('click', event => {
       })
+      this.beforeMeasurePointerMoveHandler = this.map.on('pointermove', this.beforeDrawPointMoveHandler, this)
     }
     this.addDrawInteraction()
   }
@@ -114,8 +153,7 @@ class MeasureTool extends mix(Layer) {
    * 添加画笔交互
    */
   addDrawInteraction () {
-    this.removeDrawInteraion()
-    let type = ''
+    let [ type ] = [ '' ]
     if (this.options['measureType'] === this.measureTypes.measureLength) {
       type = 'LineString'
     } else if (this.options['measureType'] === this.measureTypes.measureArea) {
@@ -164,6 +202,7 @@ class MeasureTool extends mix(Layer) {
     this.map.addInteraction(this.draw)
     this.drawListener()
     this.getDragPanInteraction().setActive(false)
+    this.getDoubleClickZoomInteraction().setActive(false)
   }
   /**
    * 移除交互工具
@@ -171,8 +210,24 @@ class MeasureTool extends mix(Layer) {
   removeDrawInteraion () {
     if (this.draw) {
       this.map.removeInteraction(this.draw)
+      this.draw = null
     }
-    this.draw = null
+    if (this.listener) {
+      ol.Observable.unByKey(this.listener)
+      this.listener = null
+    }
+    if (this.drawPointermove) {
+      ol.Observable.unByKey(this.drawPointermove)
+      this.drawPointermove = null
+    }
+    if (this.measureLengthClick) {
+      ol.Observable.unByKey(this.measureLengthClick)
+      this.measureLengthClick = null
+    }
+    if (this.beforeMeasurePointerMoveHandler) {
+      ol.Observable.unByKey(this.beforeMeasurePointerMoveHandler)
+      this.beforeMeasurePointerMoveHandler = null
+    }
   }
 
   /**
@@ -182,25 +237,46 @@ class MeasureTool extends mix(Layer) {
   beforeDrawPointMoveHandler (event) {
     if (!this.measureHelpTooltip) {
       let helpTooltipElement = document.createElement('label')
-      helpTooltipElement.className = 'BMapLabel'
-      helpTooltipElement.style.position = 'absolute'
-      helpTooltipElement.style.display = 'inline'
-      helpTooltipElement.style.cursor = 'inherit'
-      helpTooltipElement.style.border = 'none'
-      helpTooltipElement.style.padding = '0'
-      helpTooltipElement.style.whiteSpace = 'nowrap'
-      helpTooltipElement.style.fontVariant = 'normal'
-      helpTooltipElement.style.fontWeight = 'normal'
-      helpTooltipElement.style.fontStretch = 'normal'
-      helpTooltipElement.style.fontSize = '12px'
-      helpTooltipElement.style.lineHeight = 'normal'
-      helpTooltipElement.style.fontFamily = 'arial,simsun'
-      helpTooltipElement.style.color = 'rgb(51, 51, 51)'
-      helpTooltipElement.style.webkitUserSelect = 'none'
-      helpTooltipElement.innerHTML = "<span class='BMap_diso'><span class='BMap_disi'>单击确定起点</span></span>"
+      if (this.measureTypes.measureLength === this.options['measureType']) {
+        helpTooltipElement.className = 'BMapLabel'
+        helpTooltipElement.style.position = 'absolute'
+        helpTooltipElement.style.display = 'inline'
+        helpTooltipElement.style.cursor = 'inherit'
+        helpTooltipElement.style.border = 'none'
+        helpTooltipElement.style.padding = '0'
+        helpTooltipElement.style.whiteSpace = 'nowrap'
+        helpTooltipElement.style.fontVariant = 'normal'
+        helpTooltipElement.style.fontWeight = 'normal'
+        helpTooltipElement.style.fontStretch = 'normal'
+        helpTooltipElement.style.fontSize = '12px'
+        helpTooltipElement.style.lineHeight = 'normal'
+        helpTooltipElement.style.fontFamily = 'arial,simsun'
+        helpTooltipElement.style.color = 'rgb(51, 51, 51)'
+        helpTooltipElement.style.webkitUserSelect = 'none'
+        helpTooltipElement.innerHTML = '<span class="BMap_diso"><span class="BMap_disi">单击开始测量</span></span>'
+      } else {
+        helpTooltipElement.className = 'BMapLabel BMap_disLabel'
+        helpTooltipElement.style.position = 'absolute'
+        helpTooltipElement.style.display = 'inline'
+        helpTooltipElement.style.cursor = 'inherit'
+        helpTooltipElement.style.border = '1px solid rgb(255, 1, 3)'
+        helpTooltipElement.style.padding = '3px 5px'
+        helpTooltipElement.style.whiteSpace = 'nowrap'
+        helpTooltipElement.style.fontVariant = 'normal'
+        helpTooltipElement.style.fontWeight = 'normal'
+        helpTooltipElement.style.fontStretch = 'normal'
+        helpTooltipElement.style.fontSize = '12px'
+        helpTooltipElement.style.fontFamily = 'arial,simsun'
+        helpTooltipElement.style.color = 'rgb(51, 51, 51)'
+        helpTooltipElement.style.backgroundColor = 'rgb(255, 255, 255)'
+        helpTooltipElement.style.webkitUserSelect = 'none'
+        helpTooltipElement.style.height = '20px'
+        helpTooltipElement.style.lineHeight = '20px'
+        helpTooltipElement.innerHTML = '<span style="color: #7a7a7a;">单击开始测面,双击结束</span>'
+      }
       this.measureHelpTooltip = new ol.Overlay({
         element: helpTooltipElement,
-        offset: [55, 20],
+        offset: [15, -10],
         positioning: 'center-center'
       })
       this.map.addOverlay(this.measureHelpTooltip)
@@ -245,9 +321,12 @@ class MeasureTool extends mix(Layer) {
   drawListener () {
     this.draw.on('drawstart', event => {
       this.drawSketch = event.feature
-      this.drawSketch.set('uuid', Math.floor(Math.random() * 100000000 + 1))
+      this.drawSketch.set('uuid', utils.getuuid())
       if (this.measureTypes.measureLength === this.options['measureType']) {
         ol.Observable.unByKey(this.beforeMeasurePointerMoveHandler)
+        ol.Observable.unByKey(this.listener)
+        this.beforeMeasurePointerMoveHandler = null
+        this.listener = null
         this.listener = this.drawSketch.getGeometry().on('change', evt => {
           let geom = evt.target
           if (geom instanceof ol.geom.LineString) {
@@ -258,7 +337,7 @@ class MeasureTool extends mix(Layer) {
         })
         this.drawPointermove = this.map.on('pointermove', this.drawPointerMoveHandler, this)
       } else if (this.measureTypes.measureArea === this.options['measureType']) {
-        let uuid = Math.floor(Math.random() * 100000000 + 1)
+        let uuid = utils.getuuid()
         this.createMeasureAreaTooltip()
         this.drawSketch.set('uuid', uuid)
         this.measureAreaTooltip.set('uuid', uuid)
@@ -273,18 +352,17 @@ class MeasureTool extends mix(Layer) {
       }
     })
     this.draw.on('drawend', ev => {
-      this.getDragPanInteraction().setActive(true)
+      window.setTimeout(() => {
+        this.getDragPanInteraction().setActive(true)
+        this.getDoubleClickZoomInteraction().setActive(true)
+      }, 300)
       this.map.getTargetElement().style.cursor = 'default'
       this.map.removeOverlay(this.measureHelpTooltip)
       this.measureHelpTooltip = null
       if (this.measureTypes.measureLength === this.options['measureType']) {
         this.addMeasureOverLay(ev.feature.getGeometry().getLastCoordinate(), this.drawSketch.length, '止点')
         this.addMeasurecircle(ev.feature.getGeometry().getLastCoordinate())
-        ol.Observable.unByKey(this.listener)
-        ol.Observable.unByKey(this.drawPointermove)
-        ol.Observable.unByKey(this.measureLengthClick)
       } else if (this.options['measureType'] === this.measureTypes.measureArea) {
-        ol.Observable.unByKey(this.listener)
         this.addMeasureRemoveButton(ev.feature.getGeometry().getCoordinates()[0][0])
       }
       this.listener = null
@@ -310,7 +388,7 @@ class MeasureTool extends mix(Layer) {
           length += this.wgs84Sphere.haversineDistance(c1, c2)
         }
         if (length > 100) {
-          output = (Math.round(length / 1000 * 100) / 100) + ' ' + '公里'
+          output = (Math.round(length / 1000 * 100) / 100) + ' ' + '千米'
         } else {
           output = (Math.round(length * 100) / 100) + ' ' + '米'
         }
@@ -322,7 +400,7 @@ class MeasureTool extends mix(Layer) {
         let area = Math.abs(this.wgs84Sphere.geodesicArea(coordinates))
         if (area > 10000000000) {
           output = (Math.round(area / (1000 * 1000 * 10000) * 100) / 100) + ' ' + '万平方公里'
-        } else if (area > 1000000 || area < 10000000000) {
+        } else if (area > 1000000 && area < 10000000000) {
           output = (Math.round(area / (1000 * 1000) * 100) / 100) + ' ' + '平方公里'
         } else {
           output = (Math.round(area * 100) / 100) + ' ' + '平方米'
@@ -463,13 +541,35 @@ class MeasureTool extends mix(Layer) {
   getDragPanInteraction () {
     if (!this.dragPanInteraction) {
       let items = this.getMap().getInteractions().getArray()
-      items.forEach(item => {
+      items.every(item => {
         if (item && item instanceof ol.interaction.DragPan) {
           this.dragPanInteraction = item
+          return false
+        } else {
+          return true
         }
       })
     }
     return this.dragPanInteraction
+  }
+
+  /**
+   * 获取双击放大交互
+   * @returns {ol.interaction.DoubleClickZoom|*|null}
+   */
+  getDoubleClickZoomInteraction () {
+    if (!this.DoubleClickZoom) {
+      let items = this.getMap().getInteractions().getArray()
+      items.every(item => {
+        if (item && item instanceof ol.interaction.DoubleClickZoom) {
+          this.DoubleClickZoom = item
+          return false
+        } else {
+          return true
+        }
+      })
+    }
+    return this.DoubleClickZoom
   }
 
   /**

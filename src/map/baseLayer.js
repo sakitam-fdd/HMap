@@ -19,7 +19,7 @@ class BaseLayers {
       /**
        * 显示范围
        */
-      this.fullExtent = _view['fullExtent'] ? _view.fullExtent : [-180, -90, 180, 90]
+      this.fullExtent = _view['fullExtent'] ? _view.fullExtent : undefined
       /**
        * 投影范围
        */

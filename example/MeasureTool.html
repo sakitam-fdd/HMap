@@ -17,13 +17,15 @@
       padding: 0;
       margin: 0;
     }
+
     .tool {
       position: absolute;
       top: 10px;
       left: calc(50% - 290px);
     }
+
     .ol-viewport {
-      position: inherit!important;
+      position: inherit !important;
     }
   </style>
 </head>
@@ -35,20 +37,29 @@
 <div id="map"></div>
 <script src="../dist/HMap.js"></script>
 <script type="text/javascript">
-  var Maps = new HMap.Map();
-  Maps.initMap('map', {
-    view: {
-      center: [0, 0],
-      enableRotation: true, // 是否允许旋转
-      projection: 'EPSG:3857',
-      rotation: 0,
-      zoom: 5, // resolution
-      zoomFactor: 2 // 用于约束分变率的缩放因子（高分辨率设备需要注意）
-    },
-    logo: {},
-//    baseLayers: [] // 不传时默认加载OSM地图。
-  });
-  var measure =  new HMap.MeasureTool(Maps.getMap());
+    var Maps = new HMap.Map();
+    Maps.initMap('map', {
+      view: {
+        center: [-11000000, 4600000],
+        projection: 'EPSG:3857',
+        zoom: 15
+      },
+      logo: {},
+      baseLayers: [
+        {
+          layerName: 'openstreetmap',
+          isDefault: true,
+          layerType: 'OSM',
+          attribution: {
+            url: 'https://aurorafe.github.io',
+            title: '恒达时讯',
+            messages: '版权所有'
+          },
+          layerUrl: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+        }
+      ]
+    });
+  var measure = new HMap.MeasureTool(Maps.map);
   function measureTool (type) {
     if (type == 'length') {
       measure.setUp({

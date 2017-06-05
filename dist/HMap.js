@@ -8924,16 +8924,21 @@ var Map = function (_mix) {
     key: 'initMap',
     value: function initMap(mapDiv, params) {
       var options = params || {};
+      var logo = this._addCopyRight(options['logo'] || {});
+      var layers = this.addBaseLayers(options['baseLayers'], options['view']);
+      var view = this._addView(options['view']);
+      var interactions = this._addInteractions(options['interactions']);
+      var controls = this._addControls(options['controls']);
 
       this.map = new _constants.ol.Map({
         target: mapDiv,
         loadTilesWhileAnimating: false,
         loadTilesWhileInteracting: false,
-        logo: this._addCopyRight(options['logo'] || {}),
-        layers: this.addBaseLayers(options['baseLayers'], options['view']),
-        view: this._addView(options['view']),
-        interactions: this._addInteractions(options['interactions']),
-        controls: this._addControls(options['controls'])
+        logo: logo,
+        layers: layers,
+        view: view,
+        interactions: interactions,
+        controls: controls
       });
 
       this.map.on('click', function (event) {
@@ -8975,7 +8980,7 @@ var Map = function (_mix) {
   }]);
 
   return Map;
-}((0, _mixin2.default)(_baseLayer2.default, _Controls2.default, _Interactions2.default, _View2.default, _Style2.default, _Layer2.default, _feature2.default, _Overlay2.default));
+}((0, _mixin2.default)(_baseLayer2.default, _Controls2.default, _Interactions2.default, _Style2.default, _Layer2.default, _View2.default, _feature2.default, _Overlay2.default));
 
 exports.default = Map;
 module.exports = exports['default'];
@@ -9057,7 +9062,7 @@ var BaseLayers = function () {
       if (_view) {
         this.projection = _constants.ol.proj.get(_view['projection'] ? _view.projection : 'EPSG:3857');
 
-        this.fullExtent = _view['fullExtent'] ? _view.fullExtent : [-180, -90, 180, 90];
+        this.fullExtent = _view['fullExtent'] ? _view.fullExtent : undefined;
 
         this.projection.setExtent(this.fullExtent);
 
@@ -13566,6 +13571,12 @@ var _Layer2 = _interopRequireDefault(_Layer);
 
 var _constants = __webpack_require__(1);
 
+var _utils = __webpack_require__(81);
+
+var utils = _interopRequireWildcard(_utils);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -13593,6 +13604,8 @@ var MeasureTool = function (_mix) {
       };
 
       _this.dragPanInteraction = null;
+
+      _this.DoubleClickZoom = null;
     } else {
       throw new Error('传入的不是地图对象或者地图对象为空！');
     }
@@ -13608,44 +13621,71 @@ var MeasureTool = function (_mix) {
 
       this.layerName = this.options['layerName'] || 'measureTool';
 
-      this.clickCount = 0;
+      this.clickCount = '';
 
       this.drawSketch = null;
 
+      if (this.draw) {
+        this.map.removeInteraction(this.draw);
+      }
       this.draw = null;
 
+      if (this.beforeMeasurePointerMoveHandler) {
+        _constants.ol.Observable.unByKey(this.beforeMeasurePointerMoveHandler);
+      }
       this.beforeMeasurePointerMoveHandler = null;
 
+      if (this.listener) {
+        _constants.ol.Observable.unByKey(this.listener);
+      }
       this.listener = null;
 
       this.drawSketch = null;
 
-      this.measureHelpTooltip = '';
+      if (this.drawPointermove) {
+        _constants.ol.Observable.unByKey(this.drawPointermove);
+      }
+      this.drawPointermove = null;
 
       this.measureAreaTooltip = null;
 
+      if (this.measureAreaClick) {
+        _constants.ol.Observable.unByKey(this.measureAreaClick);
+      }
+      this.measureAreaClick = null;
+
       this.measureAreaTooltipElement = null;
 
+      this.removeDrawInteraion();
+
+      if (this.measureHelpTooltip) {
+        this.map.removeOverlay(this.measureHelpTooltip);
+      }
+      this.measureHelpTooltip = '';
       if (this.options['measureType'] === this.measureTypes.measureLength) {
-        this.measureLengthClick = this.map.on('singleclick', function (event) {
-          _this2.clickCount += 1;
-          if (_this2.clickCount === 1) {
-            _this2.drawSketch.length = '起点';
-          }
-          _this2.addMeasureOverLay(event.coordinate, _this2.drawSketch.length);
-          _this2.addMeasurecircle(event.coordinate);
+        this.measureLengthClick = this.map.on('click', function (eventP) {
+          var ev = _this2.map.on('singleclick', function (event) {
+            if (!_this2.clickCount) {
+              _this2.clickCount = utils.getuuid();
+              _this2.drawSketch.length = '起点';
+            }
+            _this2.addMeasureOverLay(event.coordinate, _this2.drawSketch.length);
+            _this2.addMeasurecircle(event.coordinate);
+            _constants.ol.Observable.unByKey(ev);
+          });
         });
         this.beforeMeasurePointerMoveHandler = this.map.on('pointermove', this.beforeDrawPointMoveHandler, this);
       } else if (this.options['measureType'] === this.measureTypes.measureArea) {
-        this.measureAreaClick = this.map.on('singleclick', function (event) {});
+        this.measureAreaClick = this.map.on('click', function (event) {});
+        this.beforeMeasurePointerMoveHandler = this.map.on('pointermove', this.beforeDrawPointMoveHandler, this);
       }
       this.addDrawInteraction();
     }
   }, {
     key: 'addDrawInteraction',
     value: function addDrawInteraction() {
-      this.removeDrawInteraion();
       var type = '';
+
       if (this.options['measureType'] === this.measureTypes.measureLength) {
         type = 'LineString';
       } else if (this.options['measureType'] === this.measureTypes.measureArea) {
@@ -13694,39 +13734,77 @@ var MeasureTool = function (_mix) {
       this.map.addInteraction(this.draw);
       this.drawListener();
       this.getDragPanInteraction().setActive(false);
+      this.getDoubleClickZoomInteraction().setActive(false);
     }
   }, {
     key: 'removeDrawInteraion',
     value: function removeDrawInteraion() {
       if (this.draw) {
         this.map.removeInteraction(this.draw);
+        this.draw = null;
       }
-      this.draw = null;
+      if (this.listener) {
+        _constants.ol.Observable.unByKey(this.listener);
+        this.listener = null;
+      }
+      if (this.drawPointermove) {
+        _constants.ol.Observable.unByKey(this.drawPointermove);
+        this.drawPointermove = null;
+      }
+      if (this.measureLengthClick) {
+        _constants.ol.Observable.unByKey(this.measureLengthClick);
+        this.measureLengthClick = null;
+      }
+      if (this.beforeMeasurePointerMoveHandler) {
+        _constants.ol.Observable.unByKey(this.beforeMeasurePointerMoveHandler);
+        this.beforeMeasurePointerMoveHandler = null;
+      }
     }
   }, {
     key: 'beforeDrawPointMoveHandler',
     value: function beforeDrawPointMoveHandler(event) {
       if (!this.measureHelpTooltip) {
         var helpTooltipElement = document.createElement('label');
-        helpTooltipElement.className = 'BMapLabel';
-        helpTooltipElement.style.position = 'absolute';
-        helpTooltipElement.style.display = 'inline';
-        helpTooltipElement.style.cursor = 'inherit';
-        helpTooltipElement.style.border = 'none';
-        helpTooltipElement.style.padding = '0';
-        helpTooltipElement.style.whiteSpace = 'nowrap';
-        helpTooltipElement.style.fontVariant = 'normal';
-        helpTooltipElement.style.fontWeight = 'normal';
-        helpTooltipElement.style.fontStretch = 'normal';
-        helpTooltipElement.style.fontSize = '12px';
-        helpTooltipElement.style.lineHeight = 'normal';
-        helpTooltipElement.style.fontFamily = 'arial,simsun';
-        helpTooltipElement.style.color = 'rgb(51, 51, 51)';
-        helpTooltipElement.style.webkitUserSelect = 'none';
-        helpTooltipElement.innerHTML = "<span class='BMap_diso'><span class='BMap_disi'>单击确定起点</span></span>";
+        if (this.measureTypes.measureLength === this.options['measureType']) {
+          helpTooltipElement.className = 'BMapLabel';
+          helpTooltipElement.style.position = 'absolute';
+          helpTooltipElement.style.display = 'inline';
+          helpTooltipElement.style.cursor = 'inherit';
+          helpTooltipElement.style.border = 'none';
+          helpTooltipElement.style.padding = '0';
+          helpTooltipElement.style.whiteSpace = 'nowrap';
+          helpTooltipElement.style.fontVariant = 'normal';
+          helpTooltipElement.style.fontWeight = 'normal';
+          helpTooltipElement.style.fontStretch = 'normal';
+          helpTooltipElement.style.fontSize = '12px';
+          helpTooltipElement.style.lineHeight = 'normal';
+          helpTooltipElement.style.fontFamily = 'arial,simsun';
+          helpTooltipElement.style.color = 'rgb(51, 51, 51)';
+          helpTooltipElement.style.webkitUserSelect = 'none';
+          helpTooltipElement.innerHTML = '<span class="BMap_diso"><span class="BMap_disi">单击开始测量</span></span>';
+        } else {
+          helpTooltipElement.className = 'BMapLabel BMap_disLabel';
+          helpTooltipElement.style.position = 'absolute';
+          helpTooltipElement.style.display = 'inline';
+          helpTooltipElement.style.cursor = 'inherit';
+          helpTooltipElement.style.border = '1px solid rgb(255, 1, 3)';
+          helpTooltipElement.style.padding = '3px 5px';
+          helpTooltipElement.style.whiteSpace = 'nowrap';
+          helpTooltipElement.style.fontVariant = 'normal';
+          helpTooltipElement.style.fontWeight = 'normal';
+          helpTooltipElement.style.fontStretch = 'normal';
+          helpTooltipElement.style.fontSize = '12px';
+          helpTooltipElement.style.fontFamily = 'arial,simsun';
+          helpTooltipElement.style.color = 'rgb(51, 51, 51)';
+          helpTooltipElement.style.backgroundColor = 'rgb(255, 255, 255)';
+          helpTooltipElement.style.webkitUserSelect = 'none';
+          helpTooltipElement.style.height = '20px';
+          helpTooltipElement.style.lineHeight = '20px';
+          helpTooltipElement.innerHTML = '<span style="color: #7a7a7a;">单击开始测面,双击结束</span>';
+        }
         this.measureHelpTooltip = new _constants.ol.Overlay({
           element: helpTooltipElement,
-          offset: [55, 20],
+          offset: [15, -10],
           positioning: 'center-center'
         });
         this.map.addOverlay(this.measureHelpTooltip);
@@ -13768,9 +13846,12 @@ var MeasureTool = function (_mix) {
 
       this.draw.on('drawstart', function (event) {
         _this3.drawSketch = event.feature;
-        _this3.drawSketch.set('uuid', Math.floor(Math.random() * 100000000 + 1));
+        _this3.drawSketch.set('uuid', utils.getuuid());
         if (_this3.measureTypes.measureLength === _this3.options['measureType']) {
           _constants.ol.Observable.unByKey(_this3.beforeMeasurePointerMoveHandler);
+          _constants.ol.Observable.unByKey(_this3.listener);
+          _this3.beforeMeasurePointerMoveHandler = null;
+          _this3.listener = null;
           _this3.listener = _this3.drawSketch.getGeometry().on('change', function (evt) {
             var geom = evt.target;
             if (geom instanceof _constants.ol.geom.LineString) {
@@ -13781,7 +13862,7 @@ var MeasureTool = function (_mix) {
           });
           _this3.drawPointermove = _this3.map.on('pointermove', _this3.drawPointerMoveHandler, _this3);
         } else if (_this3.measureTypes.measureArea === _this3.options['measureType']) {
-          var uuid = Math.floor(Math.random() * 100000000 + 1);
+          var uuid = utils.getuuid();
           _this3.createMeasureAreaTooltip();
           _this3.drawSketch.set('uuid', uuid);
           _this3.measureAreaTooltip.set('uuid', uuid);
@@ -13796,18 +13877,17 @@ var MeasureTool = function (_mix) {
         }
       });
       this.draw.on('drawend', function (ev) {
-        _this3.getDragPanInteraction().setActive(true);
+        window.setTimeout(function () {
+          _this3.getDragPanInteraction().setActive(true);
+          _this3.getDoubleClickZoomInteraction().setActive(true);
+        }, 300);
         _this3.map.getTargetElement().style.cursor = 'default';
         _this3.map.removeOverlay(_this3.measureHelpTooltip);
         _this3.measureHelpTooltip = null;
         if (_this3.measureTypes.measureLength === _this3.options['measureType']) {
           _this3.addMeasureOverLay(ev.feature.getGeometry().getLastCoordinate(), _this3.drawSketch.length, '止点');
           _this3.addMeasurecircle(ev.feature.getGeometry().getLastCoordinate());
-          _constants.ol.Observable.unByKey(_this3.listener);
-          _constants.ol.Observable.unByKey(_this3.drawPointermove);
-          _constants.ol.Observable.unByKey(_this3.measureLengthClick);
         } else if (_this3.options['measureType'] === _this3.measureTypes.measureArea) {
-          _constants.ol.Observable.unByKey(_this3.listener);
           _this3.addMeasureRemoveButton(ev.feature.getGeometry().getCoordinates()[0][0]);
         }
         _this3.listener = null;
@@ -13832,7 +13912,7 @@ var MeasureTool = function (_mix) {
             length += this.wgs84Sphere.haversineDistance(c1, c2);
           }
           if (length > 100) {
-            output = Math.round(length / 1000 * 100) / 100 + ' ' + '公里';
+            output = Math.round(length / 1000 * 100) / 100 + ' ' + '千米';
           } else {
             output = Math.round(length * 100) / 100 + ' ' + '米';
           }
@@ -13843,7 +13923,7 @@ var MeasureTool = function (_mix) {
           var area = Math.abs(this.wgs84Sphere.geodesicArea(_coordinates));
           if (area > 10000000000) {
             output = Math.round(area / (1000 * 1000 * 10000) * 100) / 100 + ' ' + '万平方公里';
-          } else if (area > 1000000 || area < 10000000000) {
+          } else if (area > 1000000 && area < 10000000000) {
             output = Math.round(area / (1000 * 1000) * 100) / 100 + ' ' + '平方公里';
           } else {
             output = Math.round(area * 100) / 100 + ' ' + '平方米';
@@ -13967,13 +14047,34 @@ var MeasureTool = function (_mix) {
 
       if (!this.dragPanInteraction) {
         var items = this.getMap().getInteractions().getArray();
-        items.forEach(function (item) {
+        items.every(function (item) {
           if (item && item instanceof _constants.ol.interaction.DragPan) {
             _this5.dragPanInteraction = item;
+            return false;
+          } else {
+            return true;
           }
         });
       }
       return this.dragPanInteraction;
+    }
+  }, {
+    key: 'getDoubleClickZoomInteraction',
+    value: function getDoubleClickZoomInteraction() {
+      var _this6 = this;
+
+      if (!this.DoubleClickZoom) {
+        var items = this.getMap().getInteractions().getArray();
+        items.every(function (item) {
+          if (item && item instanceof _constants.ol.interaction.DoubleClickZoom) {
+            _this6.DoubleClickZoom = item;
+            return false;
+          } else {
+            return true;
+          }
+        });
+      }
+      return this.DoubleClickZoom;
     }
   }, {
     key: 'getMap',

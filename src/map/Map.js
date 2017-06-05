@@ -5,13 +5,12 @@ import BaseLayers from './baseLayer'
 import Controls from './Controls'
 import Interactions from './Interactions'
 import View from './View'
-
 import Layer from '../layer/Layer'
 import Feature from '../feature/feature'
 import Style from '../style/Style'
 import Overlay from '../overlay/Overlay'
 
-class Map extends mix(BaseLayers, Controls, Interactions, View, Style, Layer, Feature, Overlay) {
+class Map extends mix(BaseLayers, Controls, Interactions, Style, Layer, View, Feature, Overlay) {
   constructor () {
     super()
     this.addPointHandlerClick = null
@@ -71,6 +70,11 @@ class Map extends mix(BaseLayers, Controls, Interactions, View, Style, Layer, Fe
    */
   initMap (mapDiv, params) {
     let options = params || {}
+    let logo = this._addCopyRight((options['logo'] || {}))
+    let layers = this.addBaseLayers(options['baseLayers'], options['view'])
+    let view = this._addView(options['view'])
+    let interactions = this._addInteractions(options['interactions'])
+    let controls = this._addControls(options['controls'])
     /**
      * 当前地图对象
      * @type {ol.Map}
@@ -79,11 +83,11 @@ class Map extends mix(BaseLayers, Controls, Interactions, View, Style, Layer, Fe
       target: mapDiv,
       loadTilesWhileAnimating: false,
       loadTilesWhileInteracting: false,
-      logo: this._addCopyRight((options['logo'] || {})),
-      layers: this.addBaseLayers(options['baseLayers'], options['view']),
-      view: this._addView(options['view']),
-      interactions: this._addInteractions(options['interactions']),
-      controls: this._addControls(options['controls'])
+      logo: logo,
+      layers: layers,
+      view: view,
+      interactions: interactions,
+      controls: controls
     })
 
     this.map.on('click', event => {
