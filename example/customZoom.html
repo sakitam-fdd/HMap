@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="renderer" content="webkit">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>Title</title>
+  <link rel="stylesheet" href="../dist/HMap.css" type="text/css">
+  <style>
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+    }
+    .tool {
+      position: absolute;
+      top: 10px;
+      left: calc(50% - 290px);
+    }
+    .ol-viewport {
+      position: inherit!important;
+    }
+  </style>
+</head>
+<body>
+<div class="tool">
+  <button onclick="zoom(event, 'zoomOut')">放大</button>
+  <button onclick="zoom(event, 'zoomIn')">缩小</button>
+</div>
+<div id="map"></div>
+<script src="../dist/HMap.js"></script>
+<script type="text/javascript">
+  var Maps = new HMap.Map();
+  Maps.initMap('map', {
+    view: {
+      center: [12118909.300259633, 4086043.1061670054],
+      projection: 'EPSG:3857',
+      zoom: 5 // resolution
+    },
+    logo: {},
+    baseLayers: [
+      {
+        layerName: 'openstreetmap',
+        isDefault: true,
+        layerType: 'OSM',
+        attribution: {
+          url: 'https://aurorafe.github.io',
+          title: '恒达时讯',
+          messages: '版权所有'
+        },
+        opaque: true, //图层是否不透明
+        layerUrl: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+      }
+    ]
+  });
+
+  function zoom (event, type) {
+    event.preventDefault()
+    if (type === 'zoomIn') {
+      Maps.zoomIn()
+    } else {
+      Maps.zoomOut()
+    }
+  }
+</script>
+</body>
+</html>

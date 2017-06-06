@@ -2265,11 +2265,10 @@ var Layer = function (_mix) {
   }, {
     key: 'creatTitleLayer',
     value: function creatTitleLayer(layerName, params) {
-      var ooLayer = null;
-      if (this.map) {
+      try {
         var serviceUrl = params['serviceUrl'];
         if (!serviceUrl) return null;
-        ooLayer = this.getTitleLayerByLayerName(layerName);
+        var ooLayer = this.getTitleLayerByLayerName(layerName);
         if (ooLayer && ooLayer instanceof _constants.ol.layer.Tile && !(params['addLayer'] === false)) {
           this.map.removeLayer(ooLayer);
           ooLayer = null;
@@ -2288,18 +2287,19 @@ var Layer = function (_mix) {
             wrapX: false
           });
         }
-        if (ooLayer && !(params['addLayer'] === false)) {
+        if (this.map && ooLayer && !(params['addLayer'] === false)) {
           this.map.addLayer(ooLayer);
         }
+        return ooLayer;
+      } catch (e) {
+        console.log(e);
       }
-      return ooLayer;
     }
   }, {
     key: 'creatImageWMSLayer',
     value: function creatImageWMSLayer(layerName, params) {
-      var layer = null;
-      if (this.map) {
-        layer = this.getLayerByLayerName(layerName);
+      try {
+        var layer = this.getLayerByLayerName(layerName);
         if (!(layer instanceof _constants.ol.layer.Image)) {
           layer = null;
         } else if (layer instanceof _constants.ol.layer.Image && !(params['addLayer'] === false)) {
@@ -2334,18 +2334,19 @@ var Layer = function (_mix) {
             })
           });
         }
-        if (layer && !(params['addLayer'] === false)) {
+        if (this.map && layer && !(params['addLayer'] === false)) {
           this.map.addLayer(layer);
         }
+        return layer;
+      } catch (e) {
+        console.log(e);
       }
-      return layer;
     }
   }, {
     key: 'creatTileWMSLayer',
     value: function creatTileWMSLayer(layerName, params) {
-      var layer = null;
-      if (this.map) {
-        layer = this.getLayerByLayerName(layerName);
+      try {
+        var layer = this.getLayerByLayerName(layerName);
         if (!(layer instanceof _constants.ol.layer.Image)) {
           layer = null;
         } else if (layer instanceof _constants.ol.layer.Image && !(params['addLayer'] === false)) {
@@ -2353,11 +2354,11 @@ var Layer = function (_mix) {
           layer = null;
         }
         if (!layer && params && params['layerUrl'] && params['create']) {
-          layer = new _constants.ol.layer.TileWMS({
+          layer = new _constants.ol.layer.Tile({
             layerName: layerName,
             visible: params['visible'] === false ? params['visible'] : true,
             opacity: params['opacity'] && typeof params['opacity'] === 'number' ? params['opacity'] : 1,
-            source: new _constants.ol.source.ImageWMS({
+            source: new _constants.ol.source.TileWMS({
               url: params['layerUrl'],
               crossOrigin: params['crossOrigin'] ? params['crossOrigin'] : undefined,
               params: {
@@ -2380,11 +2381,13 @@ var Layer = function (_mix) {
             })
           });
         }
-        if (layer && !(params['addLayer'] === false)) {
+        if (this.map && layer && !(params['addLayer'] === false)) {
           this.map.addLayer(layer);
         }
+        return layer;
+      } catch (e) {
+        console.log(e);
       }
-      return layer;
     }
   }, {
     key: 'creatWfsVectorLayer',
@@ -2439,7 +2442,7 @@ var Layer = function (_mix) {
         var layer = this.getLayerByLayerName(layerName);
         if (!(layer instanceof _constants.ol.layer.Tile)) {
           layer = null;
-        } else if (layer instanceof _constants.ol.layer.Tile && !(params['addLayer'] === false)) {
+        } else if (this.map && layer instanceof _constants.ol.layer.Tile && !(params['addLayer'] === false)) {
           this.map.removeLayer(layer);
           layer = null;
         }
@@ -2477,7 +2480,7 @@ var Layer = function (_mix) {
             })
           });
         }
-        if (layer && !(params['addLayer'] === false)) {
+        if (this.map && layer && !(params['addLayer'] === false)) {
           this.map.addLayer(layer);
         }
         return layer;
@@ -2492,7 +2495,7 @@ var Layer = function (_mix) {
         var layer = this.getLayerByLayerName(layerName);
         if (!(layer instanceof _constants.ol.layer.Tile)) {
           layer = null;
-        } else if (layer instanceof _constants.ol.layer.Tile && !(params['addLayer'] === false)) {
+        } else if (this.map && layer instanceof _constants.ol.layer.Tile && !(params['addLayer'] === false)) {
           this.map.removeLayer(layer);
           layer = null;
         }
@@ -2528,7 +2531,7 @@ var Layer = function (_mix) {
             })
           });
         }
-        if (layer && !(params['addLayer'] === false)) {
+        if (this.map && layer && !(params['addLayer'] === false)) {
           this.map.addLayer(layer);
         }
         return layer;
@@ -2543,7 +2546,7 @@ var Layer = function (_mix) {
         var layer = this.getLayerByLayerName(layerName);
         if (!(layer instanceof _constants.ol.layer.Tile)) {
           layer = null;
-        } else if (layer instanceof _constants.ol.layer.Tile && !(params['addLayer'] === false)) {
+        } else if (this.map && layer instanceof _constants.ol.layer.Tile && !(params['addLayer'] === false)) {
           this.map.removeLayer(layer);
           layer = null;
         }
@@ -2560,7 +2563,7 @@ var Layer = function (_mix) {
             })
           });
         }
-        if (layer && !(params['addLayer'] === false)) {
+        if (this.map && layer && !(params['addLayer'] === false)) {
           this.map.addLayer(layer);
         }
         return layer;
@@ -2575,7 +2578,7 @@ var Layer = function (_mix) {
         var layer = this.getLayerByLayerName(layerName);
         if (!(layer instanceof _constants.ol.layer.Tile)) {
           layer = null;
-        } else if (layer instanceof _constants.ol.layer.Tile && !(params['addLayer'] === false)) {
+        } else if (this.map && layer instanceof _constants.ol.layer.Tile && !(params['addLayer'] === false)) {
           this.map.removeLayer(layer);
           layer = null;
         }
@@ -2611,7 +2614,7 @@ var Layer = function (_mix) {
             style: MapboxStyle.createMapboxStreetsV6Style()
           });
         }
-        if (layer && !(params['addLayer'] === false)) {
+        if (this.map && layer && !(params['addLayer'] === false)) {
           this.map.addLayer(layer);
         }
         return layer;
@@ -8051,6 +8054,10 @@ var _PlotEdit = __webpack_require__(172);
 
 var _PlotEdit2 = _interopRequireDefault(_PlotEdit);
 
+var _Popover = __webpack_require__(440);
+
+var _Popover2 = _interopRequireDefault(_Popover);
+
 var _utils = __webpack_require__(61);
 
 var utils = _interopRequireWildcard(_utils);
@@ -8073,6 +8080,7 @@ HMap.PlotDraw = _PlotDraw2.default;
 HMap.PlotEdit = _PlotEdit2.default;
 HMap.Layer = _Layer2.default;
 HMap.Feature = _feature2.default;
+HMap.Popover = _Popover2.default;
 HMap.CoordsTransform = _CoordsTransform2.default;
 HMap.LayerSwitcher = _LayerSwitcher2.default;
 HMap.MeasureTool = _MeasureTool2.default;
@@ -8766,6 +8774,49 @@ var Controls = function () {
       var control = this.map.getControls();
       control.extend([new _constants.ol.control.ScaleLine()]);
     }
+  }, {
+    key: 'zoomOut',
+    value: function zoomOut(duration) {
+      var zoom = this.map.getView().getZoom();
+      this.map.getView().animate({
+        zoom: zoom + 1,
+        duration: 300
+      });
+    }
+  }, {
+    key: 'zoomIn',
+    value: function zoomIn(duration) {
+      var zoom = this.map.getView().getZoom();
+      this.map.getView().animate({
+        zoom: zoom - 1,
+        duration: 300
+      });
+    }
+  }, {
+    key: 'zoomByDelta',
+    value: function zoomByDelta(delta, duration) {
+      var view = this.map.getView();
+      if (!view || !(view instanceof _constants.ol.View)) {
+        return false;
+      } else {
+        var currentResolution = view.getResolution();
+        if (currentResolution) {
+          var newResolution = view.constrainResolution(currentResolution, delta);
+          if (duration > 0) {
+            if (view.getAnimating()) {
+              view.cancelAnimations();
+            }
+            view.animate({
+              resolution: newResolution,
+              duration: duration,
+              easing: _constants.ol.easing.easeOut
+            });
+          } else {
+            view.setResolution(newResolution);
+          }
+        }
+      }
+    }
   }]);
 
   return Controls;
@@ -9064,7 +9115,9 @@ var BaseLayers = function () {
 
         this.fullExtent = _view['fullExtent'] ? _view.fullExtent : undefined;
 
-        this.projection.setExtent(this.fullExtent);
+        if (this.fullExtent) {
+          this.projection.setExtent(this.fullExtent);
+        }
 
         this.origin = _view.origin;
 
@@ -9183,7 +9236,6 @@ var BaseLayers = function () {
     key: '_getXYZLayer',
     value: function _getXYZLayer(config) {
       try {
-        var baseLayer = null;
         var layerName = config['layerName'] ? config.layerName : '';
         config['addLayer'] = false;
         config['create'] = true;
@@ -9195,7 +9247,7 @@ var BaseLayers = function () {
           config['tileGrid']['extent'] = this.fullExtent;
           config['tileGrid']['resolutions'] = this.resolutions;
         }
-        baseLayer = this.creatXYZLayer(layerName, config);
+        var baseLayer = this.creatXYZLayer(layerName, config);
         if (baseLayer && baseLayer instanceof _constants.ol.layer.Tile) {
           baseLayer.set('isDefault', config['isDefault'] === true ? config['isDefault'] : false);
           baseLayer.set('isBaseLayer', true);
@@ -9211,11 +9263,10 @@ var BaseLayers = function () {
     key: '_getOSMLayer',
     value: function _getOSMLayer(config) {
       try {
-        var baseLayer = null;
         var layerName = config['layerName'] ? config.layerName : '';
         config['addLayer'] = false;
         config['create'] = true;
-        baseLayer = this.creatOSMLayer(layerName, config);
+        var baseLayer = this.creatOSMLayer(layerName, config);
         if (baseLayer && baseLayer instanceof _constants.ol.layer.Tile) {
           baseLayer.set('isDefault', config['isDefault'] === true ? config['isDefault'] : false);
           baseLayer.set('isBaseLayer', true);
@@ -9231,11 +9282,10 @@ var BaseLayers = function () {
     key: '_getWMTSLayer',
     value: function _getWMTSLayer(config) {
       try {
-        var baseLayer = null;
         var layerName = config['layerName'] ? config.layerName : '';
         config['addLayer'] = false;
         config['create'] = true;
-        baseLayer = this.creatWMTSLayer(layerName, config);
+        var baseLayer = this.creatWMTSLayer(layerName, config);
         if (baseLayer && baseLayer instanceof _constants.ol.layer.Tile) {
           baseLayer.set('isDefault', config['isDefault'] === true ? config['isDefault'] : false);
           baseLayer.set('isBaseLayer', true);
@@ -9251,11 +9301,10 @@ var BaseLayers = function () {
     key: '_getImageWMSLayer',
     value: function _getImageWMSLayer(config) {
       try {
-        var layer = null;
         var layerName = config['layerName'] ? config.layerName : '';
         config['addLayer'] = false;
         config['create'] = true;
-        layer = this.creatImageWMSLayer(layerName, config);
+        var layer = this.creatImageWMSLayer(layerName, config);
         if (layer && layer instanceof _constants.ol.layer.Image) {
           layer.set('isDefault', config['isDefault'] === true ? config['isDefault'] : false);
           layer.set('isBaseLayer', true);
@@ -9271,12 +9320,11 @@ var BaseLayers = function () {
     key: '_getTileWMSLayer',
     value: function _getTileWMSLayer(config) {
       try {
-        var layer = null;
         var layerName = config['layerName'] ? config.layerName : '';
         config['addLayer'] = false;
         config['create'] = true;
-        layer = this.creatTileWMSLayer(layerName, config);
-        if (layer && layer instanceof _constants.ol.layer.TileWMS) {
+        var layer = this.creatTileWMSLayer(layerName, config);
+        if (layer && layer instanceof _constants.ol.layer.Tile) {
           layer.set('isDefault', config['isDefault'] === true ? config['isDefault'] : false);
           layer.set('isBaseLayer', true);
           layer.set('alias', config['alias'] ? config['alias'] : '');
@@ -9291,11 +9339,10 @@ var BaseLayers = function () {
     key: '_getMapboxVectorTileLayer',
     value: function _getMapboxVectorTileLayer(config) {
       try {
-        var layer = null;
         var layerName = config['layerName'] ? config.layerName : '';
         config['addLayer'] = false;
         config['create'] = true;
-        layer = this.creatMapboxVectorTileLayer(layerName, config);
+        var layer = this.creatMapboxVectorTileLayer(layerName, config);
         if (layer && layer instanceof _constants.ol.layer.VectorTile) {
           layer.set('isDefault', config['isDefault'] === true ? config['isDefault'] : false);
           layer.set('isBaseLayer', true);
@@ -24315,7 +24362,7 @@ module.exports = {
 				"spec": ">=2.4.3 <3.0.0",
 				"type": "range"
 			},
-			"E:\\codeRepository\\github\\HMap"
+			"E:\\github\\HMap"
 		]
 	],
 	"_cnpm_publish_time": 1488570791097,
@@ -24347,11 +24394,11 @@ module.exports = {
 	"_requiredBy": [
 		"/"
 	],
-	"_resolved": "http://registry.npmjs.org/proj4/-/proj4-2.4.3.tgz",
+	"_resolved": "https://registry.npm.taobao.org/proj4/download/proj4-2.4.3.tgz",
 	"_shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
 	"_shrinkwrap": null,
 	"_spec": "proj4@^2.4.3",
-	"_where": "E:\\codeRepository\\github\\HMap",
+	"_where": "E:\\github\\HMap",
 	"author": "",
 	"bugs": {
 		"url": "https://github.com/proj4js/proj4js/issues"
@@ -25633,6 +25680,132 @@ module.exports = {
 __webpack_require__(159);
 module.exports = __webpack_require__(158);
 
+
+/***/ }),
+/* 440 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _constants = __webpack_require__(1);
+
+var _dom = __webpack_require__(115);
+
+var _utils = __webpack_require__(61);
+
+var Popover = function Popover(map, params) {
+  if (map && map instanceof _constants.ol.Map) {
+    this.map = map;
+  } else {
+    throw new Error('传入的不是地图对象或者地图对象为空！');
+  }
+
+  this.options = params || {};
+
+  if (this.options['autoPan'] === undefined) {
+    this.options['autoPan'] = true;
+  }
+
+  if (!this.options['offset']) {
+    this.options.offset = [0, 0];
+  }
+
+  if (this.options['autoPanAnimation'] === undefined) {
+    this.options['autoPanAnimation'] = {
+      duration: 250
+    };
+  }
+
+  if (!this.options['className']) {
+    this.options['className'] = 'ol-popup';
+  }
+
+  if (this.options['opacity'] === undefined) {
+    this.options['opacity'] = 1;
+  }
+
+  if (this.options['id'] === undefined || this.options['id'] === null) {
+    this.options['id'] = (0, _utils.getuuid)();
+  }
+
+  this.container = _dom.DomUtil.create('div', this.options['className']);
+  this.content = document.createElement('div');
+  this.content.className = 'ol-popup-content';
+  this.container.appendChild(this.content);
+
+  this.enableTouchScroll_(this.content);
+  this.options.element = this.container;
+  _constants.ol.Overlay.call(this, {
+    element: this.container,
+    stopEvent: true,
+    offset: this.options['offset'],
+    id: this.options['id'],
+    insertFirst: this.options.hasOwnProperty('insertFirst') ? this.options.insertFirst : true
+  });
+};
+_constants.ol.inherits(Popover, _constants.ol.Overlay);
+
+Popover.prototype.show = function (coord, html) {
+  if (html instanceof HTMLElement) {
+    this.content.innerHTML = '';
+    this.content.appendChild(html);
+  } else {
+    this.content.innerHTML = html;
+  }
+  this.container.style.display = 'block';
+  this.content.scrollTop = 0;
+  this.setPosition(coord);
+  this.updateSize();
+  return this;
+};
+
+Popover.prototype.hide = function () {
+  this.container.style.display = 'none';
+  return this;
+};
+
+Popover.prototype.updateSize = function () {
+  this.container.style.marginLeft = -this.container.clientWidth / 2 - 1 + 'px';
+  this.container.style.display = 'block';
+  this.container.style.opacity = 1;
+  this.content.scrollTop = 0;
+  return this;
+};
+
+Popover.prototype.isOpened = function () {
+  return this.container.style.display === 'block';
+};
+
+Popover.prototype.isTouchDevice_ = function () {
+  try {
+    document.createEvent('TouchEvent');
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
+Popover.prototype.enableTouchScroll_ = function (elm) {
+  var _this = this;
+
+  if (this.isTouchDevice_()) {
+    var scrollStartPos = 0;
+    elm.addEventListener('touchstart', function (event) {
+      scrollStartPos = _this.scrollTop + event.touches[0].pageY;
+    }, false);
+    elm.addEventListener('touchmove', function (event) {
+      _this.scrollTop = scrollStartPos - event.touches[0].pageY;
+    }, false);
+  }
+};
+
+exports.default = Popover;
+module.exports = exports['default'];
 
 /***/ })
 /******/ ]);

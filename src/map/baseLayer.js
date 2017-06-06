@@ -23,7 +23,9 @@ class BaseLayers {
       /**
        * 投影范围
        */
-      this.projection.setExtent(this.fullExtent)
+      if (this.fullExtent) {
+        this.projection.setExtent(this.fullExtent)
+      }
       /**
        * 瓦片原点
        * @desc 设置瓦片原点的目的是因为部分地图切图原点不是[0,0]
@@ -156,7 +158,6 @@ class BaseLayers {
    */
   _getXYZLayer (config) {
     try {
-      let baseLayer = null
       let layerName = config['layerName'] ? config.layerName : ''
       config['addLayer'] = false
       config['create'] = true
@@ -168,7 +169,7 @@ class BaseLayers {
         config['tileGrid']['extent'] = this.fullExtent
         config['tileGrid']['resolutions'] = this.resolutions
       }
-      baseLayer = this.creatXYZLayer(layerName, config)
+      let baseLayer = this.creatXYZLayer(layerName, config)
       if (baseLayer && baseLayer instanceof ol.layer.Tile) {
         baseLayer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
         baseLayer.set('isBaseLayer', true)
@@ -189,11 +190,10 @@ class BaseLayers {
    */
   _getOSMLayer (config) {
     try {
-      let baseLayer = null
       let layerName = config['layerName'] ? config.layerName : ''
       config['addLayer'] = false
       config['create'] = true
-      baseLayer = this.creatOSMLayer(layerName, config)
+      let baseLayer = this.creatOSMLayer(layerName, config)
       if (baseLayer && baseLayer instanceof ol.layer.Tile) {
         baseLayer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
         baseLayer.set('isBaseLayer', true)
@@ -214,11 +214,10 @@ class BaseLayers {
    */
   _getWMTSLayer (config) {
     try {
-      let baseLayer = null
       let layerName = config['layerName'] ? config.layerName : ''
       config['addLayer'] = false
       config['create'] = true
-      baseLayer = this.creatWMTSLayer(layerName, config)
+      let baseLayer = this.creatWMTSLayer(layerName, config)
       if (baseLayer && baseLayer instanceof ol.layer.Tile) {
         baseLayer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
         baseLayer.set('isBaseLayer', true)
@@ -238,11 +237,10 @@ class BaseLayers {
    */
   _getImageWMSLayer (config) {
     try {
-      let layer = null
       let layerName = config['layerName'] ? config.layerName : ''
       config['addLayer'] = false
       config['create'] = true
-      layer = this.creatImageWMSLayer(layerName, config)
+      let layer = this.creatImageWMSLayer(layerName, config)
       if (layer && layer instanceof ol.layer.Image) {
         layer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
         layer.set('isBaseLayer', true)
@@ -263,12 +261,11 @@ class BaseLayers {
    */
   _getTileWMSLayer (config) {
     try {
-      let layer = null
       let layerName = config['layerName'] ? config.layerName : ''
       config['addLayer'] = false
       config['create'] = true
-      layer = this.creatTileWMSLayer(layerName, config)
-      if (layer && layer instanceof ol.layer.TileWMS) {
+      let layer = this.creatTileWMSLayer(layerName, config)
+      if (layer && layer instanceof ol.layer.Tile) {
         layer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
         layer.set('isBaseLayer', true)
         layer.set('alias', (config['alias'] ? config['alias'] : ''))
@@ -288,11 +285,10 @@ class BaseLayers {
    */
   _getMapboxVectorTileLayer (config) {
     try {
-      let layer = null
       let layerName = config['layerName'] ? config.layerName : ''
       config['addLayer'] = false
       config['create'] = true
-      layer = this.creatMapboxVectorTileLayer(layerName, config)
+      let layer = this.creatMapboxVectorTileLayer(layerName, config)
       if (layer && layer instanceof ol.layer.VectorTile) {
         layer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
         layer.set('isBaseLayer', true)

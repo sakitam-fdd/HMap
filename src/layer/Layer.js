@@ -246,11 +246,10 @@ class Layer extends mix(Style) {
    * @returns {*}
    */
   creatTitleLayer (layerName, params) {
-    let ooLayer = null
-    if (this.map) {
+    try {
       let serviceUrl = params['serviceUrl']
       if (!serviceUrl) return null
-      ooLayer = this.getTitleLayerByLayerName(layerName)
+      let ooLayer = this.getTitleLayerByLayerName(layerName)
       if (ooLayer && ooLayer instanceof ol.layer.Tile && !(params['addLayer'] === false)) {
         this.map.removeLayer(ooLayer)
         ooLayer = null
@@ -269,11 +268,13 @@ class Layer extends mix(Style) {
           wrapX: false
         })
       }
-      if (ooLayer && !(params['addLayer'] === false)) {
+      if (this.map && ooLayer && !(params['addLayer'] === false)) {
         this.map.addLayer(ooLayer)
       }
+      return ooLayer
+    } catch (e) {
+      console.log(e)
     }
-    return ooLayer
   }
 
   /**
@@ -283,9 +284,8 @@ class Layer extends mix(Style) {
    * @returns {string}
    */
   creatImageWMSLayer (layerName, params) {
-    let layer = null
-    if (this.map) {
-      layer = this.getLayerByLayerName(layerName)
+    try {
+      let layer = this.getLayerByLayerName(layerName)
       if (!(layer instanceof ol.layer.Image)) {
         layer = null
       } else if ((layer instanceof ol.layer.Image) && !(params['addLayer'] === false)) {
@@ -320,11 +320,13 @@ class Layer extends mix(Style) {
           })
         })
       }
-      if (layer && !(params['addLayer'] === false)) {
+      if (this.map && layer && !(params['addLayer'] === false)) {
         this.map.addLayer(layer)
       }
+      return layer
+    } catch (e) {
+      console.log(e)
     }
-    return layer
   }
 
   /**
@@ -334,9 +336,8 @@ class Layer extends mix(Style) {
    * @returns {string}
    */
   creatTileWMSLayer (layerName, params) {
-    let layer = null
-    if (this.map) {
-      layer = this.getLayerByLayerName(layerName)
+    try {
+      let layer = this.getLayerByLayerName(layerName)
       if (!(layer instanceof ol.layer.Image)) {
         layer = null
       } else if ((layer instanceof ol.layer.Image) && !(params['addLayer'] === false)) {
@@ -344,11 +345,11 @@ class Layer extends mix(Style) {
         layer = null
       }
       if (!layer && params && params['layerUrl'] && params['create']) {
-        layer = new ol.layer.TileWMS({
+        layer = new ol.layer.Tile({
           layerName: layerName,
           visible: (params['visible'] === false) ? params['visible'] : true,
           opacity: (params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1,
-          source: new ol.source.ImageWMS({
+          source: new ol.source.TileWMS({
             url: params['layerUrl'],
             crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
             params: {
@@ -371,11 +372,13 @@ class Layer extends mix(Style) {
           })
         })
       }
-      if (layer && !(params['addLayer'] === false)) {
+      if (this.map && layer && !(params['addLayer'] === false)) {
         this.map.addLayer(layer)
       }
+      return layer
+    } catch (e) {
+      console.log(e)
     }
-    return layer
   }
 
   /**
@@ -440,7 +443,7 @@ class Layer extends mix(Style) {
       let layer = this.getLayerByLayerName(layerName)
       if (!(layer instanceof ol.layer.Tile)) {
         layer = null
-      } else if ((layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
+      } else if (this.map && (layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
         this.map.removeLayer(layer)
         layer = null
       }
@@ -479,7 +482,7 @@ class Layer extends mix(Style) {
           })
         })
       }
-      if (layer && !(params['addLayer'] === false)) {
+      if (this.map && layer && !(params['addLayer'] === false)) {
         this.map.addLayer(layer)
       }
       return layer
@@ -499,7 +502,7 @@ class Layer extends mix(Style) {
       let layer = this.getLayerByLayerName(layerName)
       if (!(layer instanceof ol.layer.Tile)) {
         layer = null
-      } else if ((layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
+      } else if (this.map && (layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
         this.map.removeLayer(layer)
         layer = null
       }
@@ -538,7 +541,7 @@ class Layer extends mix(Style) {
           })
         })
       }
-      if (layer && !(params['addLayer'] === false)) {
+      if (this.map && layer && !(params['addLayer'] === false)) {
         this.map.addLayer(layer)
       }
       return layer
@@ -558,7 +561,7 @@ class Layer extends mix(Style) {
       let layer = this.getLayerByLayerName(layerName)
       if (!(layer instanceof ol.layer.Tile)) {
         layer = null
-      } else if ((layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
+      } else if (this.map && (layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
         this.map.removeLayer(layer)
         layer = null
       }
@@ -575,7 +578,7 @@ class Layer extends mix(Style) {
           })
         })
       }
-      if (layer && !(params['addLayer'] === false)) {
+      if (this.map && layer && !(params['addLayer'] === false)) {
         this.map.addLayer(layer)
       }
       return layer
@@ -595,7 +598,7 @@ class Layer extends mix(Style) {
       let layer = this.getLayerByLayerName(layerName)
       if (!(layer instanceof ol.layer.Tile)) {
         layer = null
-      } else if ((layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
+      } else if (this.map && (layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
         this.map.removeLayer(layer)
         layer = null
       }
@@ -632,7 +635,7 @@ class Layer extends mix(Style) {
           style: MapboxStyle.createMapboxStreetsV6Style()
         })
       }
-      if (layer && !(params['addLayer'] === false)) {
+      if (this.map && layer && !(params['addLayer'] === false)) {
         this.map.addLayer(layer)
       }
       return layer
