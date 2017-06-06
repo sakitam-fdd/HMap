@@ -79,7 +79,7 @@ class PlotDraw extends mix(Observable, Plot, Layer) {
      * 当前矢量图层
      * @type {*}
      */
-    this.drawLayer = this.creatVectorLayer(this.layerName, {
+    this.drawLayer = this.createVectorLayer(this.layerName, {
       create: true
     })
   }

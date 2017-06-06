@@ -137,7 +137,7 @@ class Layer extends mix(Style) {
    * @param params
    * @returns {*}
    */
-  creatVectorLayer (layerName, params) {
+  createVectorLayer (layerName, params) {
     try {
       if (this.map) {
         let vectorLayer = this.getLayerByLayerName(layerName)
@@ -194,7 +194,7 @@ class Layer extends mix(Style) {
    * @param params
    * @returns {string}
    */
-  creatHeatMapLayer (layerName, params) {
+  createHeatMapLayer (layerName, params) {
     try {
       let currentLayer = null
       if (this.map) {
@@ -245,7 +245,7 @@ class Layer extends mix(Style) {
    * @param params
    * @returns {*}
    */
-  creatTitleLayer (layerName, params) {
+  createTitleLayer (layerName, params) {
     try {
       let serviceUrl = params['serviceUrl']
       if (!serviceUrl) return null
@@ -283,7 +283,7 @@ class Layer extends mix(Style) {
    * @param params
    * @returns {string}
    */
-  creatImageWMSLayer (layerName, params) {
+  createImageWMSLayer (layerName, params) {
     try {
       let layer = this.getLayerByLayerName(layerName)
       if (!(layer instanceof ol.layer.Image)) {
@@ -335,7 +335,7 @@ class Layer extends mix(Style) {
    * @param params
    * @returns {string}
    */
-  creatTileWMSLayer (layerName, params) {
+  createTileWMSLayer (layerName, params) {
     try {
       let layer = this.getLayerByLayerName(layerName)
       if (!(layer instanceof ol.layer.Image)) {
@@ -387,7 +387,7 @@ class Layer extends mix(Style) {
    * @param params
    * @returns {*}
    */
-  creatWfsVectorLayer (layerName, params) {
+  createWfsVectorLayer (layerName, params) {
     try {
       let vectorLayer = this.getLayerByLayerName(layerName)
       if (!(vectorLayer instanceof ol.layer.Vector)) {
@@ -438,7 +438,7 @@ class Layer extends mix(Style) {
    * @param params
    * @returns {*}
    */
-  creatWMTSLayer (layerName, params) {
+  createWMTSLayer (layerName, params) {
     try {
       let layer = this.getLayerByLayerName(layerName)
       if (!(layer instanceof ol.layer.Tile)) {
@@ -497,7 +497,7 @@ class Layer extends mix(Style) {
    * @param params
    * @returns {*}
    */
-  creatXYZLayer (layerName, params) {
+  createXYZLayer (layerName, params) {
     try {
       let layer = this.getLayerByLayerName(layerName)
       if (!(layer instanceof ol.layer.Tile)) {
@@ -556,7 +556,7 @@ class Layer extends mix(Style) {
    * @param params
    * @returns {*}
    */
-  creatOSMLayer (layerName, params) {
+  createOSMLayer (layerName, params) {
     try {
       let layer = this.getLayerByLayerName(layerName)
       if (!(layer instanceof ol.layer.Tile)) {
@@ -593,7 +593,7 @@ class Layer extends mix(Style) {
    * @param params
    * @returns {*}
    */
-  creatMapboxVectorTileLayer (layerName, params) {
+  createMapboxVectorTileLayer (layerName, params) {
     try {
       let layer = this.getLayerByLayerName(layerName)
       if (!(layer instanceof ol.layer.Tile)) {

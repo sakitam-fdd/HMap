@@ -20,21 +20,21 @@ class Controls {
   /**
    * 放大
    */
-  zoomOut (duration) {
+  zoomIn (duration) {
     let zoom = this.map.getView().getZoom()
     this.map.getView().animate({
       zoom: (zoom + 1),
-      duration: 300
+      duration: ((duration && typeof duration === 'number') ? duration : 300)
     })
   }
   /**
    * 缩小
    */
-  zoomIn (duration) {
+  zoomOut (duration) {
     let zoom = this.map.getView().getZoom()
     this.map.getView().animate({
       zoom: (zoom - 1),
-      duration: 300
+      duration: ((duration && typeof duration === 'number') ? duration : 300)
     })
   }
 

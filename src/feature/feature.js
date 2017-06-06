@@ -223,7 +223,7 @@ class Feature extends mix(Style, Layer) {
         this.zoomToExtent(_extent, true)
       }
       if (params['layerName']) {
-        let layer = this.creatVectorLayer(params['layerName'], {
+        let layer = this.createVectorLayer(params['layerName'], {
           create: true
         })
         layer.getSource().addFeature(feature)
@@ -332,7 +332,7 @@ class Feature extends mix(Style, Layer) {
         this.zoomToExtent(extent, true)
       }
       if (params['layerName']) {
-        let layer = this.creatVectorLayer(params['layerName'], {
+        let layer = this.createVectorLayer(params['layerName'], {
           create: true
         })
         layer.getSource().addFeature(linefeature)
@@ -413,7 +413,7 @@ class Feature extends mix(Style, Layer) {
           this.zoomToExtent(extent, true)
         }
         if (params['layerName']) {
-          let layer = this.creatVectorLayer(params['layerName'], {
+          let layer = this.createVectorLayer(params['layerName'], {
             create: true
           })
           layer.getSource().addFeature(polygonFeature)
@@ -505,7 +505,7 @@ class Feature extends mix(Style, Layer) {
             params: params
           })
           params['create'] = true
-          let layer = this.creatHeatMapLayer(params['layerName'], params)
+          let layer = this.createHeatMapLayer(params['layerName'], params)
           if (layer && layer instanceof ol.layer.Heatmap) {
             layer.getSource().addFeature(feature)
           }

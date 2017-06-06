@@ -160,7 +160,7 @@ class MeasureTool extends mix(Layer) {
       type = 'Polygon'
     }
     this.options['create'] = true
-    this.layer = this.creatVectorLayer(this.layerName, this.options)
+    this.layer = this.createVectorLayer(this.layerName, this.options)
     this.layer.setStyle(new ol.style.Style({
       fill: new ol.style.Fill({
         color: 'rgba(67, 110, 238, 0.4)'
