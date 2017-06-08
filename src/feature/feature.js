@@ -521,6 +521,130 @@ class Feature extends mix(Style, Layer) {
   }
 
   /**
+   * 获取线当前范围和中心点
+   * @param line
+   * @returns {{extent: *, center: ol.Coordinate}}
+   */
+  getCenterExtentFromLine (line) {
+    try {
+      let geom = null
+      if (!(line instanceof ol.geom.Geometry)) {
+        geom = (new ol.format.WKT()).readGeometry(line)
+      }
+      let [MultiLine] = [(new ol.geom.MultiLineString([]))]
+      if (geom && geom instanceof ol.geom.LineString) {
+        MultiLine.appendLineString(geom)
+      } else if (geom && geom instanceof ol.geom.MultiLineString) {
+        let multiGeoms = geom.getLineStrings()
+        if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
+          multiGeoms.forEach(_geom => {
+            if (_geom && _geom instanceof ol.geom.LineString) {
+              MultiLine.appendLineString(geom)
+            }
+          })
+        }
+      }
+      let extent = this._getExtent(MultiLine)
+      let center = ol.extent.getCenter(extent)
+      return ({
+        extent: extent,
+        center: center
+      })
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  /**
+   * 获取当前面范围和中心点
+   * @param polygon
+   * @returns {{extent: *, center: ol.Coordinate}}
+   */
+  getCenterExtentFromPolygon (polygon) {
+    try {
+      let geom = null
+      if (!(polygon instanceof ol.geom.Geometry)) {
+        geom = (new ol.format.WKT()).readGeometry(polygon)
+      }
+      let [MultiPolygon] = [(new ol.geom.MultiPolygon([]))]
+      if (geom && geom instanceof ol.geom.Polygon) {
+        MultiPolygon.appendPolygon(geom)
+      } else if (geom && geom instanceof ol.geom.MultiPolygon) {
+        let multiGeoms = geom.getPolygons()
+        if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
+          multiGeoms.forEach(_geom => {
+            if (_geom && _geom instanceof ol.geom.Polygon) {
+              MultiPolygon.appendPolygon(geom)
+            }
+          })
+        }
+      }
+      let extent = this._getExtent(MultiPolygon)
+      let center = ol.extent.getCenter(extent)
+      return ({
+        extent: extent,
+        center: center
+      })
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  /**
+   * 读取空间信息
+   * @param geomData
+   * @param options
+   * @returns {*}
+   */
+  getGeomFromGeomData (geomData, options) {
+    try {
+      let featureGeom = null
+      if (geomData['geomType'] === 'GeoJSON') {
+        featureGeom = (new ol.format.GeoJSON()).readGeometry(geomData['geometry'])
+      } else if (geomData['geomType'] === 'WKT') {
+        featureGeom = (new ol.format.WKT()).readGeometry(geomData['geometry'])
+      } else if (geomData['geomType'] === 'EsriJSON') {
+        featureGeom = (new ol.format.EsriJSON()).readGeometry(geomData['geometry'])
+      } else if (geomData['geomType'] === 'Polyline') {
+        featureGeom = (new ol.format.Polyline()).readGeometry(geomData['geometry'])
+      } else if (Array.isArray(geomData['geometry']) && geomData['geometry'].length === 2) {
+        featureGeom = new ol.geom.Point(geomData['geometry'])
+      }
+      return featureGeom
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  /**
+   * 简单兼容
+   * @param geomData
+   * @param options
+   * @returns {{extent: *, center: ol.Coordinate}}
+   */
+  getCenterExtentFromGeom (geomData, options) {
+    let geom = this.getGeomFromGeomData(geomData, options)
+    let extent = this._getExtent(geom)
+    let center = ol.extent.getCenter(extent)
+    let bExtent = true
+    extent.every(item => {
+      if (item === Infinity || isNaN(item) || item === undefined || item === null) {
+        bExtent = false
+        return false
+      } else {
+        return true
+      }
+    })
+    if (bExtent && options['zoomToExtent']) {
+      this.zoomToExtent(extent, true)
+    }
+    return ({
+      extent: extent,
+      center: center
+    })
+  }
+
+  /**
    * 设置热力图样式
    * @param layerName
    * @param params

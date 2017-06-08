@@ -8,8 +8,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>MapBox矢量图层加载测试</title>
-  <link rel="stylesheet" href="../../dist/HMap.css" type="text/css">
+  <title>测试空间数据解析</title>
+  <link rel="stylesheet" href="../dist/HMap.css" type="text/css">
   <style>
     html, body, #map {
       width: 100%;
@@ -21,7 +21,7 @@
 </head>
 <body>
 <div id="map"></div>
-<script src="../../dist/HMap.js"></script>
+<script src="../dist/HMap.js"></script>
 <script type="text/javascript">
   var Maps = new HMap.Map();
   Maps.initMap('map', {
@@ -30,32 +30,22 @@
       projection: 'EPSG:3857',
       zoom: 5, // resolution
     },
-    logo: {},
     baseLayers: [
       {
-        layerName: 'MapboxVectorTile',
+        layerName: 'openstreetmap',
         isDefault: true,
-        layerType: 'MapboxVectorTile',
-        attribution: {
-          url: 'https://aurorafe.github.io',
-          title: '恒达时讯',
-          messages: '版权所有'
-        },
-        layerUrl: 'https://{a-d}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/{z}/{x}/{y}.vector.pbf?access_token=pk.eyJ1Ijoic21pbGVmZGQiLCJhIjoiY2owbDBkb2RwMDJyMTMycWRoeDE4d21sZSJ9.dWlPeAWsgnhUKdv1dCLTnw',
-        tilePixelRatio: 16,
-        tileGrid: {
-          maxZoom: 22
-        }
+        layerType: 'OSM',
+        opaque: true, //图层是否不透明
+        layerUrl: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
       }
     ]
   });
 
-  Maps.map.on('click', function (event) {
-    var feature = Maps.map.forEachFeatureAtPixel(event.pixel, function (feature) {
-      return feature
-    })
-    console.log(feature)
-  })
+  function mapFirstClickHandler (event) {
+    console.log(event.coordinate)
+  }
+  Maps.map.on('click', mapFirstClickHandler)
+  Maps.map.un('click', mapFirstClickHandler)
 </script>
 </body>
 </html>

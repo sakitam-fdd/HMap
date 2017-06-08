@@ -433,6 +433,51 @@ class Layer extends mix(Style) {
   }
 
   /**
+   * 创建矢量要素图层
+   * @param layerName
+   * @param params
+   * @returns {*}
+   */
+  createVectorFeatureLayer (layerName, params) {
+    try {
+      let layer = this.getLayerByLayerName(layerName)
+      if (!(layer instanceof ol.layer.Vector)) {
+        layer = null
+      } else if (this.map && (layer instanceof ol.layer.Vector) && !(params['addLayer'] === false)) {
+        this.map.removeLayer(layer)
+        layer = null
+      }
+      if (!layer && params && params['layerUrl'] && params['create']) {
+        let proj = params['projection'] ? params['projection'] : 'EPSG:3857'
+        let style = this.getStyleByParams(params['style'])
+        layer = new ol.layer.Vector({
+          layerName: layerName,
+          params: params,
+          layerType: 'vector',
+          visible: (params['visible'] === false) ? params['visible'] : true,
+          opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
+          source: new ol.source.Vector({
+            format: new ol.format.GeoJSON(),
+            crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
+            url: function (extent) {
+              return params['layerUrl'] + extent.join(',') + ',' + proj
+            },
+            wrapX: false,
+            strategy: ol.loadingstrategy.bbox
+          }),
+          style: style
+        })
+      }
+      if (this.map && layer && !(params['addLayer'] === false)) {
+        this.map.addLayer(layer)
+      }
+      return layer
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  /**
    * 创建WMTS图层
    * @param layerName
    * @param params
@@ -651,8 +696,8 @@ class Layer extends mix(Style) {
   removeLayerByLayerName (layerName) {
     if (this.map) {
       let layer = this.getLayerByLayerName(layerName)
-      if (layer && layer instanceof ol.layer.Vector && layer.getSource() && layer.getSource().clear) {
-        layer.getSource().clear()
+      if (layer) {
+        this.map.removeLayer(layer)
       }
     }
   }

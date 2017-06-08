@@ -55,19 +55,20 @@ ol.inherits(CompareLayer, ol.control.Control)
 /**
  * 通过canvas切割视图
  * @param beforeMap
- * @param swipe
+ * @param value
  */
-CompareLayer.prototype.clipLayer = function (beforeMap, swipe) {
-  beforeMap.on('precompose', event => {
+CompareLayer.prototype.clipLayer = function (beforeMap, value) {
+  this.getMap().un('precompose', this.precompose)
+  this.getMap().un('postcompose', this.postcompose)
+  this.precompose = beforeMap.on('precompose', event => {
     let ctx = event.context
-    let width = ctx.canvas.width * (swipe.value / 100)
+    let width = ctx.canvas.width * (value / 100)
     ctx.save()
     ctx.beginPath()
     ctx.rect(width, 0, ctx.canvas.width - width, ctx.canvas.height)
     ctx.clip()
   })
-
-  beforeMap.on('postcompose', event => {
+  this.postcompose = beforeMap.on('postcompose', event => {
     let ctx = event.context
     ctx.restore()
   })

@@ -44,16 +44,22 @@
         layerName: 'openstreetmap',
         isDefault: true,
         layerType: 'OSM',
-        attribution: {
-          url: 'https://aurorafe.github.io',
-          title: '恒达时讯',
-          messages: '版权所有'
-        },
+//        attribution: {
+//          url: 'https://aurorafe.github.io',
+//          title: '恒达时讯',
+//          messages: '版权所有'
+//        },
         opaque: true, //图层是否不透明
         layerUrl: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
       }
     ]
   });
+
+  function mapFirstClickHandler (event) {
+    console.log(event.coordinate)
+  }
+  Maps.map.on('click', mapFirstClickHandler)
+  Maps.map.un('click', mapFirstClickHandler)
 </script>
 </body>
 </html>

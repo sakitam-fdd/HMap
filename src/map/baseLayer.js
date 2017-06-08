@@ -307,16 +307,28 @@ class BaseLayers {
    * @private
    */
   _getAttribution (params) {
-    if (!params) {
-      params = {}
-      params['url'] = 'https://aurorafe.github.io'
-      params['messages'] = 'contributors.'
-      params['title'] = 'HMap'
+    try {
+      let attribution = null
+      if (params && typeof params !== 'object') {
+        params = {}
+        params['url'] = 'https://aurorafe.github.io'
+        params['messages'] = 'contributors.'
+        params['title'] = 'HMap'
+        attribution = new ol.Attribution({
+          html: '&copy; ' + '<a href="' + params['url'] + '">' + params['title'] + '</a> ' + params['messages']
+        })
+      } else if (typeof params === 'object') {
+        attribution = new ol.Attribution({
+          html: '&copy; ' + '<a href="' + params['url'] + '">' + params['title'] + '</a> ' + params['messages']
+        })
+      } else {
+        attribution = undefined
+      }
+      return attribution
+    } catch (e) {
+      console.log(e)
+      return undefined
     }
-    let attribution = new ol.Attribution({
-      html: '&copy; ' + '<a href="' + params['url'] + '">' + params['title'] + '</a> ' + params['messages']
-    })
-    return attribution
   }
 }
 
