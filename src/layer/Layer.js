@@ -448,7 +448,6 @@ class Layer extends mix(Style) {
         layer = null
       }
       if (!layer && params && params['layerUrl'] && params['create']) {
-        let proj = params['projection'] ? params['projection'] : 'EPSG:3857'
         let style = this.getStyleByParams(params['style'])
         layer = new ol.layer.Vector({
           layerName: layerName,
@@ -459,9 +458,7 @@ class Layer extends mix(Style) {
           source: new ol.source.Vector({
             format: new ol.format.GeoJSON(),
             crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
-            url: function (extent) {
-              return params['layerUrl'] + extent.join(',') + ',' + proj
-            },
+            url: params['layerUrl'],
             wrapX: false,
             strategy: ol.loadingstrategy.bbox
           }),
@@ -687,6 +684,135 @@ class Layer extends mix(Style) {
     } catch (e) {
       console.log(e)
     }
+  }
+
+  /**
+   * 创建图片类型图层
+   * @param layerName
+   * @param params
+   * @returns {*}
+   */
+  createImageLayer (layerName, params) {
+    try {
+      let layer = this.getLayerByLayerName(layerName)
+      if (!(layer instanceof ol.layer.Image)) {
+        layer = null
+      } else if (this.map && (layer instanceof ol.layer.Image) && !(params['addLayer'] === false)) {
+        this.map.removeLayer(layer)
+        layer = null
+      }
+      if (!layer && params && params['layerUrl'] && params['create']) {
+        let source = this.getImagesSource(params)
+        layer = new ol.layer.Image({
+          layerName: layerName,
+          extent: (params['extent'] ? params['extent'] : undefined),
+          visible: (params['visible'] === false) ? params['visible'] : true,
+          opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
+          source: source
+        })
+      }
+      if (this.map && layer && !(params['addLayer'] === false)) {
+        this.map.addLayer(layer)
+      }
+      return layer
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  /**
+   * 获取影像图层源
+   * @param params
+   * @returns {*}
+   */
+  getImagesSource (params) {
+    let source = null
+    let projection = new ol.proj.Projection({
+      code: (params['projection'] ? params['projection'] : 'EPSG:3857'),
+      units: 'm',
+      axisOrientation: 'neu'
+    })
+    switch (params['sourceType']) {
+      case 'ImageStatic':
+        source = new ol.source.ImageStatic({
+          crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
+          imageExtent: params['imageExtent'],
+          projection: projection,
+          imageSize: (params['imageSize'] ? params['imageSize'] : undefined),
+          url: params['layerUrl'],
+          wrapX: false
+        })
+        break
+      case 'ImageWMS':
+        source = new ol.source.ImageWMS({
+          url: params['layerUrl'],
+          crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
+          params: {
+            LAYERS: params['layers'], // require
+            STYLES: params['style'] ? params['style'] : '',
+            TYPE: params['type'] ? params['type'] : '',
+            VERSION: params['version'] ? params['version'] : '1.3.0',
+            WIDTH: params['width'] ? params['width'] : 256,
+            HEIGHT: params['height'] ? params['height'] : 256,
+            BBOX: params['bbox'], // require
+            SRS: (params['srs'] ? params['srs'] : 'EPSG:3857'),
+            CRS: (params['srs'] ? params['srs'] : 'EPSG:3857'),
+            REQUEST: 'GetMap',
+            TRANSPARENT: true,
+            TILED: (params['tiled'] === false) ? params['tiled'] : true,
+            TILESORIGIN: (params['tiledsorrigin'] ? params['tiledsorrigin'] : undefined),
+            SERVICE: 'WMS',
+            FORMAT: (params['format'] ? params['format'] : 'image/png')
+          },
+          wrapX: false
+        })
+        break
+      case 'Raster':
+        source = new ol.source.Raster()
+        break
+      case 'ImageMapGuide':
+        source = new ol.source.ImageMapGuide({
+          url: params['layerUrl'],
+          wrapX: false,
+          displayDpi: ((params['displayDpi'] && (typeof params['displayDpi'] === 'number')) ? params['displayDpi'] : 96),
+          metersPerUnit: ((params['metersPerUnit'] && (typeof params['metersPerUnit'] === 'number')) ? params['metersPerUnit'] : 1),
+          hidpi: ((params['hidpi'] && (typeof params['hidpi'] === 'boolean')) ? params['hidpi'] : true),
+          useOverlay: ((params['useOverlay'] && (typeof params['useOverlay'] === 'boolean')) ? params['useOverlay'] : undefined),
+          projection: (params['projection'] ? params['projection'] : 'EPSG:3857'),
+          ratio: ((params['ratio'] && (typeof params['ratio'] === 'number')) ? params['ratio'] : 1),
+          resolutions: ((params['resolutions'] && Array.isArray(params['resolutions'])) ? params['resolutions'] : undefined),
+          imageLoadFunction: ((params['imageLoadFunction'] && (typeof params['imageLoadFunction'] === 'function')) ? params['imageLoadFunction'] : undefined),
+          params: ((params['params'] && (typeof params['params'] === 'object')) ? params['params'] : undefined)
+        })
+        break
+      case 'ImageCanvas':
+        source = new ol.source.ImageCanvas({
+          projection: (params['projection'] ? params['projection'] : 'EPSG:3857'),
+          ratio: ((params['ratio'] && (typeof params['ratio'] === 'number')) ? params['ratio'] : 1),
+          resolutions: ((params['resolutions'] && Array.isArray(params['resolutions'])) ? params['resolutions'] : undefined),
+          canvasFunction: params['canvasFunction'],
+          state: (params['state'] ? params['state'] : undefined),
+          wrapX: false
+        })
+        break
+      case 'ImageArcGISRest':
+        source = new ol.source.ImageArcGISRest({
+          url: params['layerUrl'],
+          hidpi: ((params['hidpi'] && (typeof params['hidpi'] === 'boolean')) ? params['hidpi'] : true),
+          crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
+          projection: (params['projection'] ? params['projection'] : 'EPSG:3857'),
+          ratio: ((params['ratio'] && (typeof params['ratio'] === 'number')) ? params['ratio'] : 1),
+          resolutions: ((params['resolutions'] && Array.isArray(params['resolutions'])) ? params['resolutions'] : undefined),
+          imageLoadFunction: ((params['imageLoadFunction'] && (typeof params['imageLoadFunction'] === 'function')) ? params['imageLoadFunction'] : undefined),
+          params: ((params['params'] && (typeof params['params'] === 'object')) ? params['params'] : undefined),
+          wrapX: false
+        })
+        break
+      default:
+        console.log('sourceType类型未传！')
+        return false
+    }
+    return source
   }
 
   /**

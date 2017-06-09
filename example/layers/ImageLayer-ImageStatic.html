@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>OSMLayer</title>
+  <title>ImageLayer-ImageStatic</title>
   <link rel="stylesheet" href="../../dist/HMap.css" type="text/css">
   <style>
     html, body, #map {
@@ -26,17 +26,9 @@
   var Maps = new HMap.Map();
   Maps.initMap('map', {
     view: {
-      center: [12118909.300259633, 4086043.1061670054],
-      projection: 'EPSG:3857',
+      center: [105.40708997412835, 33.446141314339044],
+      projection: 'EPSG:4326',
       zoom: 5, // resolution
-    },
-    controls: {
-      addScaleLine: false,
-      addLoading: false
-    },
-    interactions: {
-      doubleClickZoom: true,
-      keyboard: false
     },
     baseLayers: [
       {
@@ -53,6 +45,23 @@
       }
     ]
   });
+
+  var bbox = Maps.getExtent()
+  console.log(bbox)
+
+  var layer = Maps.createImageLayer('test', {
+    opacity: 0.5,
+    addLayer: true,
+    create: true,
+    type: 'tiff',
+    sourceType: 'ImageWMS',
+    projection: 'EPSG:4326',
+    srs: 'EPSG:4326',
+    version: '1.1.0',
+    extent: bbox,
+    imageExtent: [73.76646497412835, 16.307469439339044, 137.04771497412835, 50.584813189339044],
+    layerUrl: 'http://211.101.37.253:9997/expdp-transformation-rest/rest/getImage/397EED21A0AB1170C0B14AF2A91826DD'
+  })
 </script>
 </body>
 </html>

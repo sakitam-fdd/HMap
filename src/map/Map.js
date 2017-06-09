@@ -61,6 +61,12 @@ class Map extends mix(BaseLayers, Controls, Interactions, Style, Layer, View, Fe
      * @type {null}
      */
     this.popupOverlay = null
+
+    /**
+     * 当前视图
+     * @type {null}
+     */
+    this.view = null
   }
 
   /**
@@ -70,9 +76,9 @@ class Map extends mix(BaseLayers, Controls, Interactions, Style, Layer, View, Fe
    */
   initMap (mapDiv, params) {
     let options = params || {}
-    let logo = this._addCopyRight((options['logo'] || {}))
+    let logo = this._addCopyRight(options['logo'])
     let layers = this.addBaseLayers(options['baseLayers'], options['view'])
-    let view = this._addView(options['view'])
+    this.view = this._addView(options['view'])
     let interactions = this._addInteractions(options['interactions'])
     let controls = this._addControls(options['controls'])
     /**
@@ -85,7 +91,7 @@ class Map extends mix(BaseLayers, Controls, Interactions, Style, Layer, View, Fe
       loadTilesWhileInteracting: false,
       logo: logo,
       layers: layers,
-      view: view,
+      view: this.view,
       interactions: interactions,
       controls: controls
     })

@@ -2023,6 +2023,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _constants = __webpack_require__(1);
@@ -2447,7 +2449,6 @@ var Layer = function (_mix) {
           layer = null;
         }
         if (!layer && params && params['layerUrl'] && params['create']) {
-          var proj = params['projection'] ? params['projection'] : 'EPSG:3857';
           var style = this.getStyleByParams(params['style']);
           layer = new _constants.ol.layer.Vector({
             layerName: layerName,
@@ -2458,9 +2459,7 @@ var Layer = function (_mix) {
             source: new _constants.ol.source.Vector({
               format: new _constants.ol.format.GeoJSON(),
               crossOrigin: params['crossOrigin'] ? params['crossOrigin'] : undefined,
-              url: function url(extent) {
-                return params['layerUrl'] + extent.join(',') + ',' + proj;
-              },
+              url: params['layerUrl'],
               wrapX: false,
               strategy: _constants.ol.loadingstrategy.bbox
             }),
@@ -2661,6 +2660,126 @@ var Layer = function (_mix) {
       } catch (e) {
         console.log(e);
       }
+    }
+  }, {
+    key: 'createImageLayer',
+    value: function createImageLayer(layerName, params) {
+      try {
+        var layer = this.getLayerByLayerName(layerName);
+        if (!(layer instanceof _constants.ol.layer.Image)) {
+          layer = null;
+        } else if (this.map && layer instanceof _constants.ol.layer.Image && !(params['addLayer'] === false)) {
+          this.map.removeLayer(layer);
+          layer = null;
+        }
+        if (!layer && params && params['layerUrl'] && params['create']) {
+          var source = this.getImagesSource(params);
+          layer = new _constants.ol.layer.Image({
+            layerName: layerName,
+            extent: params['extent'] ? params['extent'] : undefined,
+            visible: params['visible'] === false ? params['visible'] : true,
+            opacity: params['opacity'] && typeof params['opacity'] === 'number' ? params['opacity'] : 1,
+            source: source
+          });
+        }
+        if (this.map && layer && !(params['addLayer'] === false)) {
+          this.map.addLayer(layer);
+        }
+        return layer;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'getImagesSource',
+    value: function getImagesSource(params) {
+      var source = null;
+      var projection = new _constants.ol.proj.Projection({
+        code: params['projection'] ? params['projection'] : 'EPSG:3857',
+        units: 'm',
+        axisOrientation: 'neu'
+      });
+      switch (params['sourceType']) {
+        case 'ImageStatic':
+          source = new _constants.ol.source.ImageStatic({
+            crossOrigin: params['crossOrigin'] ? params['crossOrigin'] : undefined,
+            imageExtent: params['imageExtent'],
+            projection: projection,
+            imageSize: params['imageSize'] ? params['imageSize'] : undefined,
+            url: params['layerUrl'],
+            wrapX: false
+          });
+          break;
+        case 'ImageWMS':
+          source = new _constants.ol.source.ImageWMS({
+            url: params['layerUrl'],
+            crossOrigin: params['crossOrigin'] ? params['crossOrigin'] : undefined,
+            params: {
+              LAYERS: params['layers'],
+              STYLES: params['style'] ? params['style'] : '',
+              TYPE: params['type'] ? params['type'] : '',
+              VERSION: params['version'] ? params['version'] : '1.3.0',
+              WIDTH: params['width'] ? params['width'] : 256,
+              HEIGHT: params['height'] ? params['height'] : 256,
+              BBOX: params['bbox'],
+              SRS: params['srs'] ? params['srs'] : 'EPSG:3857',
+              CRS: params['srs'] ? params['srs'] : 'EPSG:3857',
+              REQUEST: 'GetMap',
+              TRANSPARENT: true,
+              TILED: params['tiled'] === false ? params['tiled'] : true,
+              TILESORIGIN: params['tiledsorrigin'] ? params['tiledsorrigin'] : undefined,
+              SERVICE: 'WMS',
+              FORMAT: params['format'] ? params['format'] : 'image/png'
+            },
+            wrapX: false
+          });
+          break;
+        case 'Raster':
+          source = new _constants.ol.source.Raster();
+          break;
+        case 'ImageMapGuide':
+          source = new _constants.ol.source.ImageMapGuide({
+            url: params['layerUrl'],
+            wrapX: false,
+            displayDpi: params['displayDpi'] && typeof params['displayDpi'] === 'number' ? params['displayDpi'] : 96,
+            metersPerUnit: params['metersPerUnit'] && typeof params['metersPerUnit'] === 'number' ? params['metersPerUnit'] : 1,
+            hidpi: params['hidpi'] && typeof params['hidpi'] === 'boolean' ? params['hidpi'] : true,
+            useOverlay: params['useOverlay'] && typeof params['useOverlay'] === 'boolean' ? params['useOverlay'] : undefined,
+            projection: params['projection'] ? params['projection'] : 'EPSG:3857',
+            ratio: params['ratio'] && typeof params['ratio'] === 'number' ? params['ratio'] : 1,
+            resolutions: params['resolutions'] && Array.isArray(params['resolutions']) ? params['resolutions'] : undefined,
+            imageLoadFunction: params['imageLoadFunction'] && typeof params['imageLoadFunction'] === 'function' ? params['imageLoadFunction'] : undefined,
+            params: params['params'] && _typeof(params['params']) === 'object' ? params['params'] : undefined
+          });
+          break;
+        case 'ImageCanvas':
+          source = new _constants.ol.source.ImageCanvas({
+            projection: params['projection'] ? params['projection'] : 'EPSG:3857',
+            ratio: params['ratio'] && typeof params['ratio'] === 'number' ? params['ratio'] : 1,
+            resolutions: params['resolutions'] && Array.isArray(params['resolutions']) ? params['resolutions'] : undefined,
+            canvasFunction: params['canvasFunction'],
+            state: params['state'] ? params['state'] : undefined,
+            wrapX: false
+          });
+          break;
+        case 'ImageArcGISRest':
+          source = new _constants.ol.source.ImageArcGISRest({
+            url: params['layerUrl'],
+            hidpi: params['hidpi'] && typeof params['hidpi'] === 'boolean' ? params['hidpi'] : true,
+            crossOrigin: params['crossOrigin'] ? params['crossOrigin'] : undefined,
+            projection: params['projection'] ? params['projection'] : 'EPSG:3857',
+            ratio: params['ratio'] && typeof params['ratio'] === 'number' ? params['ratio'] : 1,
+            resolutions: params['resolutions'] && Array.isArray(params['resolutions']) ? params['resolutions'] : undefined,
+            imageLoadFunction: params['imageLoadFunction'] && typeof params['imageLoadFunction'] === 'function' ? params['imageLoadFunction'] : undefined,
+            params: params['params'] && _typeof(params['params']) === 'object' ? params['params'] : undefined,
+            wrapX: false
+          });
+          break;
+        default:
+          console.log('sourceType类型未传！');
+          return false;
+      }
+      return source;
     }
   }, {
     key: 'removeLayerByLayerName',
@@ -9122,6 +9241,8 @@ var Map = function (_mix) {
     _this.circleSerachFeat = null;
 
     _this.popupOverlay = null;
+
+    _this.view = null;
     return _this;
   }
 
@@ -9129,9 +9250,9 @@ var Map = function (_mix) {
     key: 'initMap',
     value: function initMap(mapDiv, params) {
       var options = params || {};
-      var logo = this._addCopyRight(options['logo'] || {});
+      var logo = this._addCopyRight(options['logo']);
       var layers = this.addBaseLayers(options['baseLayers'], options['view']);
-      var view = this._addView(options['view']);
+      this.view = this._addView(options['view']);
       var interactions = this._addInteractions(options['interactions']);
       var controls = this._addControls(options['controls']);
 
@@ -9141,7 +9262,7 @@ var Map = function (_mix) {
         loadTilesWhileInteracting: false,
         logo: logo,
         layers: layers,
-        view: view,
+        view: this.view,
         interactions: interactions,
         controls: controls
       });
@@ -9227,6 +9348,24 @@ var View = function () {
         extent: option['extent'] && Array.isArray(option['extent']) && option['extent'].length === 4 ? option['extent'] : undefined,
         resolutions: option['resolutions'] && Array.isArray(option['resolutions']) && option['resolutions'].length > 0 ? option['resolutions'] : undefined
       });
+    }
+  }, {
+    key: 'getSize',
+    value: function getSize() {
+      if (this.map && this.map instanceof _constants.ol.Map) {
+        return this.map.getSize();
+      } else {
+        console.log('未获取到视图！');
+      }
+    }
+  }, {
+    key: 'getExtent',
+    value: function getExtent(size) {
+      if (size) {
+        return this.view.calculateExtent(size);
+      } else {
+        return this.view.calculateExtent(this.map.getSize());
+      }
     }
   }]);
 
