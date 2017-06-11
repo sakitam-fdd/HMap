@@ -1,2 +1,3 @@
 import * as DomUtil from './domUtil'
-export { DomUtil }
+import * as css from './css'
+export { DomUtil, css }

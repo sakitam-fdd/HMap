@@ -717,6 +717,7 @@
 .hmap-compare {
   background-color: #fff;
   position: absolute;
+  top: 0;
   width: 2px;
   height: 100%;
   z-index: 1;
