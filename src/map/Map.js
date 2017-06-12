@@ -1,5 +1,5 @@
 import mix from '../utils/mixin'
-import { ol, proj4 } from '../constants'
+import {ol, proj4} from '../constants'
 
 import BaseLayers from './baseLayer'
 import Controls from './Controls'
@@ -67,6 +67,13 @@ class Map extends mix(BaseLayers, Controls, Interactions, Style, Layer, View, Fe
      * @type {null}
      */
     this.view = null
+
+    /**
+     * 定时器
+     * @type {null}
+     * @private
+     */
+    this.timer_ = null
   }
 
   /**
@@ -144,6 +151,38 @@ class Map extends mix(BaseLayers, Controls, Interactions, Style, Layer, View, Fe
    */
   updateSize () {
     this.map.updateSize()
+  }
+
+  /**
+   * 地图加载完成事件（超时时间120s）
+   * @returns {Promise}
+   */
+  onMapInit () {
+    let that = this
+    let start = new Date().getTime()
+    return new Promise((resolve) => {
+      if (that.map) {
+        resolve(true)
+      } else {
+        let cc = 0
+        window.clearInterval(that.timer_)
+        that.timer_ = null
+        that.timer_ = window.setInterval(() => {
+          let end = new Date().getTime()
+          cc = ((end - start) / 1000)
+          if (that.map && cc <= 120) {
+            resolve(true)
+            window.clearInterval(that.timer_)
+            that.timer_ = null
+          }
+          if (cc > 120 && !that.map) {
+            resolve(false)
+            window.clearInterval(that.timer_)
+            that.timer_ = null
+          }
+        }, 50)
+      }
+    })
   }
 }
 

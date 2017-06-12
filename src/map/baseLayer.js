@@ -89,6 +89,9 @@ class BaseLayers {
             case 'MapboxVectorTile':
               layer = this._getMapboxVectorTileLayer(config)
               break
+            case 'TileArcGISRest':
+              layer = this._getTileArcGISRestLayer(config)
+              break
           }
           if (layer) layers.push(layer)
           if (config['label']) {
@@ -138,6 +141,9 @@ class BaseLayers {
                 break
               case 'MapboxVectorTile':
                 labelLayer = this._getMapboxVectorTileLayer(configM)
+                break
+              case 'TileArcGISRest':
+                labelLayer = this._getTileArcGISRestLayer(configM)
                 break
             }
             if (labelLayer) labelLayers.push(labelLayer)
@@ -289,6 +295,30 @@ class BaseLayers {
       config['addLayer'] = false
       config['create'] = true
       let layer = this.createMapboxVectorTileLayer(layerName, config)
+      if (layer && layer instanceof ol.layer.VectorTile) {
+        layer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
+        layer.set('isBaseLayer', true)
+        layer.set('alias', (config['alias'] ? config['alias'] : ''))
+        layer.getSource().setAttributions(this._getAttribution(config['attribution']))
+      }
+      return layer
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  /**
+   * 创建arcgis矢量渲染图层
+   * @param config
+   * @returns {*}
+   * @private
+   */
+  _getTileArcGISRestLayer (config) {
+    try {
+      let layerName = config['layerName'] ? config.layerName : ''
+      config['addLayer'] = false
+      config['create'] = true
+      let layer = this.createTitleLayer(layerName, config)
       if (layer && layer instanceof ol.layer.VectorTile) {
         layer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
         layer.set('isBaseLayer', true)

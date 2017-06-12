@@ -2268,7 +2268,7 @@ var Layer = function (_mix) {
     key: 'createTitleLayer',
     value: function createTitleLayer(layerName, params) {
       try {
-        var serviceUrl = params['serviceUrl'];
+        var serviceUrl = params['layerUrl'];
         if (!serviceUrl) return null;
         var ooLayer = this.getTitleLayerByLayerName(layerName);
         if (ooLayer && ooLayer instanceof _constants.ol.layer.Tile && !(params['addLayer'] === false)) {
@@ -2278,12 +2278,12 @@ var Layer = function (_mix) {
         if (!ooLayer && params['create']) {
           ooLayer = new _constants.ol.layer.Tile({
             layerName: layerName,
-            layerType: 'title',
+            layerType: params['notShowLayerType'] === true ? '' : 'title',
             visible: params['visible'] === false ? params['visible'] : true,
             source: new _constants.ol.source.TileArcGISRest({
               url: serviceUrl,
               crossOrigin: params['crossOrigin'] ? params['crossOrigin'] : undefined,
-              params: params,
+              params: params['layerParams'] ? params['layerParams'] : undefined,
               wrapX: false
             }),
             wrapX: false
@@ -2714,6 +2714,9 @@ var Layer = function (_mix) {
           source = new _constants.ol.source.ImageWMS({
             url: params['layerUrl'],
             crossOrigin: params['crossOrigin'] ? params['crossOrigin'] : undefined,
+            imageLoadFunction: function imageLoadFunction(image, src) {
+              image.getImage().src = src;
+            },
             params: {
               LAYERS: params['layers'],
               STYLES: params['style'] ? params['style'] : '',
@@ -9429,6 +9432,8 @@ var Map = function (_mix) {
     _this.popupOverlay = null;
 
     _this.view = null;
+
+    _this.timer_ = null;
     return _this;
   }
 
@@ -9489,6 +9494,35 @@ var Map = function (_mix) {
     key: 'updateSize',
     value: function updateSize() {
       this.map.updateSize();
+    }
+  }, {
+    key: 'onMapInit',
+    value: function onMapInit() {
+      var that = this;
+      var start = new Date().getTime();
+      return new Promise(function (resolve) {
+        if (that.map) {
+          resolve(true);
+        } else {
+          var cc = 0;
+          window.clearInterval(that.timer_);
+          that.timer_ = null;
+          that.timer_ = window.setInterval(function () {
+            var end = new Date().getTime();
+            cc = (end - start) / 1000;
+            if (that.map && cc <= 120) {
+              resolve(true);
+              window.clearInterval(that.timer_);
+              that.timer_ = null;
+            }
+            if (cc > 120 && !that.map) {
+              resolve(false);
+              window.clearInterval(that.timer_);
+              that.timer_ = null;
+            }
+          }, 50);
+        }
+      });
     }
   }]);
 
@@ -9655,6 +9689,9 @@ var BaseLayers = function () {
               case 'MapboxVectorTile':
                 layer = _this._getMapboxVectorTileLayer(config);
                 break;
+              case 'TileArcGISRest':
+                layer = _this._getTileArcGISRestLayer(config);
+                break;
             }
             if (layer) layers.push(layer);
             if (config['label']) {
@@ -9703,6 +9740,9 @@ var BaseLayers = function () {
                   break;
                 case 'MapboxVectorTile':
                   labelLayer = _this2._getMapboxVectorTileLayer(configM);
+                  break;
+                case 'TileArcGISRest':
+                  labelLayer = _this2._getTileArcGISRestLayer(configM);
                   break;
               }
               if (labelLayer) labelLayers.push(labelLayer);
@@ -9825,6 +9865,25 @@ var BaseLayers = function () {
         config['addLayer'] = false;
         config['create'] = true;
         var layer = this.createMapboxVectorTileLayer(layerName, config);
+        if (layer && layer instanceof _constants.ol.layer.VectorTile) {
+          layer.set('isDefault', config['isDefault'] === true ? config['isDefault'] : false);
+          layer.set('isBaseLayer', true);
+          layer.set('alias', config['alias'] ? config['alias'] : '');
+          layer.getSource().setAttributions(this._getAttribution(config['attribution']));
+        }
+        return layer;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: '_getTileArcGISRestLayer',
+    value: function _getTileArcGISRestLayer(config) {
+      try {
+        var layerName = config['layerName'] ? config.layerName : '';
+        config['addLayer'] = false;
+        config['create'] = true;
+        var layer = this.createTitleLayer(layerName, config);
         if (layer && layer instanceof _constants.ol.layer.VectorTile) {
           layer.set('isDefault', config['isDefault'] === true ? config['isDefault'] : false);
           layer.set('isBaseLayer', true);
@@ -24982,7 +25041,7 @@ module.exports = {
 				"spec": ">=2.4.3 <3.0.0",
 				"type": "range"
 			},
-			"E:\\codeRepository\\github\\HMap"
+			"E:\\github\\HMap"
 		]
 	],
 	"_cnpm_publish_time": 1488570791097,
@@ -25014,11 +25073,11 @@ module.exports = {
 	"_requiredBy": [
 		"/"
 	],
-	"_resolved": "http://registry.npmjs.org/proj4/-/proj4-2.4.3.tgz",
+	"_resolved": "https://registry.npm.taobao.org/proj4/download/proj4-2.4.3.tgz",
 	"_shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
 	"_shrinkwrap": null,
 	"_spec": "proj4@^2.4.3",
-	"_where": "E:\\codeRepository\\github\\HMap",
+	"_where": "E:\\github\\HMap",
 	"author": "",
 	"bugs": {
 		"url": "https://github.com/proj4js/proj4js/issues"

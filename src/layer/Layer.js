@@ -247,7 +247,7 @@ class Layer extends mix(Style) {
    */
   createTitleLayer (layerName, params) {
     try {
-      let serviceUrl = params['serviceUrl']
+      let serviceUrl = params['layerUrl']
       if (!serviceUrl) return null
       let ooLayer = this.getTitleLayerByLayerName(layerName)
       if (ooLayer && ooLayer instanceof ol.layer.Tile && !(params['addLayer'] === false)) {
@@ -257,12 +257,12 @@ class Layer extends mix(Style) {
       if (!ooLayer && params['create']) {
         ooLayer = new ol.layer.Tile({
           layerName: layerName,
-          layerType: 'title',
+          layerType: ((params['notShowLayerType'] === true) ? '' : 'title'),
           visible: (params['visible'] === false) ? params['visible'] : true,
           source: new ol.source.TileArcGISRest({
             url: serviceUrl,
             crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
-            params: params,
+            params: (params['layerParams'] ? params['layerParams'] : undefined),
             wrapX: false
           }),
           wrapX: false
@@ -747,6 +747,9 @@ class Layer extends mix(Style) {
         source = new ol.source.ImageWMS({
           url: params['layerUrl'],
           crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
+          imageLoadFunction: function (image, src) {
+            image.getImage().src = src
+          },
           params: {
             LAYERS: params['layers'], // require
             STYLES: params['style'] ? params['style'] : '',
