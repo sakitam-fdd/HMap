@@ -37,6 +37,66 @@ class View {
       return (this.view.calculateExtent(this.map.getSize()))
     }
   }
+
+  /**
+   * 获取当前地图的范围
+   * @returns {ol.Extent}
+   */
+  getMapCurrentExtent () {
+    if (this.map) {
+      return this.view.calculateExtent(this.map.getSize())
+    }
+  }
+
+  /**
+   * 判断点是否在视图内，如果不在地图将自动平移
+   * @param coord
+   */
+  movePointToView (coord) {
+    if (this.map) {
+      let extent = this.getMapCurrentExtent()
+      if (!(ol.extent.containsXY(extent, coord[0], coord[1]))) {
+        this.view.setCenter(coord)
+      }
+    }
+  }
+
+  /**
+   * 调整图层
+   * @constructor
+   */
+  orderLayerZindex () {
+    let layerindex = 10
+    if (this.map) {
+      let pointLayers = [...(this.pointLayers)]
+      let lineLayers = [...(this.lineLayers)]
+      let polygonLayers = [...(this.polygonLayers)]
+      polygonLayers.forEach(layerName => {
+        if (layerName) {
+          let layer = this.getLayerByLayerName(layerName)
+          if (layer) {
+            layer.setZIndex(layerindex++)
+          }
+        }
+      })
+      lineLayers.forEach(layerName => {
+        if (layerName) {
+          let layer = this.getLayerByLayerName(layerName)
+          if (layer) {
+            layer.setZIndex(layerindex++)
+          }
+        }
+      })
+      pointLayers.forEach(layerName => {
+        if (layerName) {
+          let layer = this.getLayerByLayerName(layerName)
+          if (layer) {
+            layer.setZIndex(layerindex++)
+          }
+        }
+      })
+    }
+  }
 }
 
 export default View

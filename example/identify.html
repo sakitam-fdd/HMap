@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="renderer" content="webkit">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>Title</title>
+  <link rel="stylesheet" href="../dist/HMap.css" type="text/css">
+  <style>
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+<div id="map"></div>
+<script src="../dist/HMap.js"></script>
+<script src="./lib/jquery/jquery.js"></script>
+<script type="text/javascript">
+  var Maps = new HMap.Map();
+  Maps.initMap('map', {
+    view: {
+      center: [115.88854282965237, 28.677336901307406],
+      projection: 'EPSG:4326',
+      zoom: 10 // resolution
+    },
+    baseLayers: [
+      {
+        layerName: 'openstreetmap',
+        isDefault: true,
+        layerType: 'OSM',
+        layerUrl: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+      }
+    ]
+  });
+
+  /**
+   * 获取i查询参数
+   * @param layerArr
+   * @param evt
+   * @returns {*}
+   */
+  function getparams (layerArr, evt) {
+    try {
+      var mapZoom = Maps.map.getView().getZoom();
+      var resolution = Maps.map.getView().getResolution();
+      var coordinate = evt.coordinate;
+      var point = new ol.geom.Point(coordinate);
+      var extent = point.getExtent();
+      var buf = ol.extent.buffer(extent, resolution * mapZoom);
+      var minx = buf[0], miny = buf[1], maxx = buf[2], maxy = buf[3];
+      var wkt = "POLYGON((" + minx + " " + miny + "," + minx + " " + maxy + "," + maxx + " " + maxy + "," + maxx + " " + miny + "," + minx + " " + miny + "))";
+      var params = null;
+      if (layerArr.length > 0) {
+        params = {
+          resolution: Maps.map.getView().getResolution(),
+          geometry: wkt,
+          identityType: "all",
+          layers: JSON.stringify(layerArr)//this.getQueryLayers()
+        };
+      }
+      return params;
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  function mapFirstClickHandler (event) {
+    var params = getparams(['GIS_QL'], event)
+    $.ajax({
+      type: 'POST',
+      url: "http://36.2.6.21:7001/mapserver/rest/mapserver/mapQuery",
+      dataType: 'json',
+      data: params,
+      success: function (res) {
+        console.log(res)
+      }
+    });
+  }
+
+  Maps.map.on('click', mapFirstClickHandler)
+</script>
+</body>
+</html>

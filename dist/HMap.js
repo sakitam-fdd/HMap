@@ -3851,7 +3851,9 @@ var Feature = function (_mix) {
             create: true
           });
           layer.getSource().addFeature(feature);
+          this.pointLayers.add(params['layerName']);
         }
+        this.orderLayerZindex();
         return feature;
       } catch (e) {
         console.error(e);
@@ -3951,7 +3953,9 @@ var Feature = function (_mix) {
             create: true
           });
           layer.getSource().addFeature(linefeature);
+          this.lineLayers.add(params['layerName']);
         }
+        this.orderLayerZindex();
         return linefeature;
       } catch (e) {
         console.error(e);
@@ -4027,7 +4031,9 @@ var Feature = function (_mix) {
               create: true
             });
             layer.getSource().addFeature(polygonFeature);
+            this.polygonLayers.add(params['layerName']);
           }
+          this.orderLayerZindex();
           return polygonFeature;
         } else {
           console.info('传入的数据不标准！');
@@ -4118,11 +4124,13 @@ var Feature = function (_mix) {
             if (layer && layer instanceof _constants.ol.layer.Heatmap) {
               layer.getSource().addFeature(feature);
             }
+            this.pointLayers.add(params['layerName']);
           }
           if (change) {
             this._getExtent(multiPoint);
           }
         }
+        this.orderLayerZindex();
         return feature;
       } catch (e) {
         console.log(e);
@@ -8873,12 +8881,12 @@ var appDrag = function (_ol$interaction$Point) {
         if (feature && feature.get('params') && feature.get('params').moveable) {
           this.coordinate_ = evt.coordinate;
           this.feature_ = feature;
+          this.feature_.dispatchEvent({
+            type: 'mouseDownEvent',
+            originEvent: evt,
+            value: feature
+          });
         }
-        map.dispatchEvent({
-          type: 'mouseDownEvent',
-          originEvent: evt,
-          value: feature
-        });
         return !!feature;
       }
     }
@@ -8923,7 +8931,14 @@ var appDrag = function (_ol$interaction$Point) {
     }
   }, {
     key: 'handleUpEvent',
-    value: function handleUpEvent() {
+    value: function handleUpEvent(evt) {
+      if (this.feature_ && this.feature_.get('params') && this.feature_.get('params').moveable) {
+        this.feature_.dispatchEvent({
+          type: 'mouseUpEvent',
+          originEvent: evt,
+          value: this.feature_
+        });
+      }
       this.coordinate_ = null;
       this.feature_ = null;
       return false;
@@ -9547,6 +9562,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _constants = __webpack_require__(1);
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var View = function () {
@@ -9585,6 +9602,59 @@ var View = function () {
         return this.view.calculateExtent(size);
       } else {
         return this.view.calculateExtent(this.map.getSize());
+      }
+    }
+  }, {
+    key: 'getMapCurrentExtent',
+    value: function getMapCurrentExtent() {
+      if (this.map) {
+        return this.view.calculateExtent(this.map.getSize());
+      }
+    }
+  }, {
+    key: 'movePointToView',
+    value: function movePointToView(coord) {
+      if (this.map) {
+        var extent = this.getMapCurrentExtent();
+        if (!_constants.ol.extent.containsXY(extent, coord[0], coord[1])) {
+          this.view.setCenter(coord);
+        }
+      }
+    }
+  }, {
+    key: 'orderLayerZindex',
+    value: function orderLayerZindex() {
+      var _this = this;
+
+      var layerindex = 10;
+      if (this.map) {
+        var pointLayers = [].concat(_toConsumableArray(this.pointLayers));
+        var lineLayers = [].concat(_toConsumableArray(this.lineLayers));
+        var polygonLayers = [].concat(_toConsumableArray(this.polygonLayers));
+        polygonLayers.forEach(function (layerName) {
+          if (layerName) {
+            var layer = _this.getLayerByLayerName(layerName);
+            if (layer) {
+              layer.setZIndex(layerindex++);
+            }
+          }
+        });
+        lineLayers.forEach(function (layerName) {
+          if (layerName) {
+            var layer = _this.getLayerByLayerName(layerName);
+            if (layer) {
+              layer.setZIndex(layerindex++);
+            }
+          }
+        });
+        pointLayers.forEach(function (layerName) {
+          if (layerName) {
+            var layer = _this.getLayerByLayerName(layerName);
+            if (layer) {
+              layer.setZIndex(layerindex++);
+            }
+          }
+        });
       }
     }
   }]);

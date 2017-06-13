@@ -227,7 +227,9 @@ class Feature extends mix(Style, Layer) {
           create: true
         })
         layer.getSource().addFeature(feature)
+        this.pointLayers.add(params['layerName'])
       }
+      this.orderLayerZindex()
       return feature
     } catch (e) {
       console.error(e)
@@ -336,7 +338,9 @@ class Feature extends mix(Style, Layer) {
           create: true
         })
         layer.getSource().addFeature(linefeature)
+        this.lineLayers.add(params['layerName'])
       }
+      this.orderLayerZindex()
       return linefeature
     } catch (e) {
       console.error(e)
@@ -417,7 +421,9 @@ class Feature extends mix(Style, Layer) {
             create: true
           })
           layer.getSource().addFeature(polygonFeature)
+          this.polygonLayers.add(params['layerName'])
         }
+        this.orderLayerZindex()
         return polygonFeature
       } else {
         console.info('传入的数据不标准！')
@@ -509,11 +515,13 @@ class Feature extends mix(Style, Layer) {
           if (layer && layer instanceof ol.layer.Heatmap) {
             layer.getSource().addFeature(feature)
           }
+          this.pointLayers.add(params['layerName'])
         }
         if (change) {
           this._getExtent(multiPoint)
         }
       }
+      this.orderLayerZindex()
       return feature
     } catch (e) {
       console.log(e)

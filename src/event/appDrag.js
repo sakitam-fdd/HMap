@@ -48,12 +48,12 @@ class appDrag extends (ol.interaction.Pointer) {
       if (feature && feature.get('params') && feature.get('params').moveable) {
         this.coordinate_ = evt.coordinate
         this.feature_ = feature
+        this.feature_.dispatchEvent({
+          type: 'mouseDownEvent',
+          originEvent: evt,
+          value: feature
+        })
       }
-      map.dispatchEvent({
-        type: 'mouseDownEvent',
-        originEvent: evt,
-        value: feature
-      })
       return !!feature
     }
   }
@@ -105,7 +105,14 @@ class appDrag extends (ol.interaction.Pointer) {
   /**
    * @return {boolean} `false` to stop the drag sequence.
    */
-  handleUpEvent () {
+  handleUpEvent (evt) {
+    if (this.feature_ && this.feature_.get('params') && this.feature_.get('params').moveable) {
+      this.feature_.dispatchEvent({
+        type: 'mouseUpEvent',
+        originEvent: evt,
+        value: this.feature_
+      })
+    }
     this.coordinate_ = null
     this.feature_ = null
     return false
