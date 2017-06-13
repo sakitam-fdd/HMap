@@ -14,6 +14,7 @@ import PlotDraw from './plot/Event/PlotDraw'
 import PlotEdit from './plot/Event/PlotEdit'
 import Popover from './overlay/Popover'
 import CompareLayer from './controls/CompareLayer'
+import Geolocation from './controls/Geolocation'
 import * as utils from './utils/utils'
 
 HMap.ol = ol
@@ -34,6 +35,7 @@ HMap.LayerSpyglass = LayerSpyglass
 HMap.MisplacesGlass = MisplacesGlass
 HMap.GeomCoder = GeomCoder
 HMap.CompareLayer = CompareLayer
+HMap.Geolocation = Geolocation
 
 /**
  * Inherit the prototype methods from one constructor into another.

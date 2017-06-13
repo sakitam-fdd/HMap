@@ -24,6 +24,7 @@ const Geolocation = function (params) {
    */
   this.innerElement_ = DomUtil.create('div', className + '-inner', this.element_)
   this.element_.addEventListener('click', this.clickHandle)
+  this.initControl()
   ol.control.Control.call(this, {
     element: this.element_,
     target: this.options['target']
@@ -32,20 +33,28 @@ const Geolocation = function (params) {
 
 ol.inherits(Geolocation, ol.control.Control)
 
+/**
+ * 设置当前地图对象
+ * @param map
+ */
 Geolocation.prototype.setMap = function (map) {
   if (map && map instanceof ol.Map) {
     this.map = map
   }
 }
 
+/**
+ * 获取当前地图对象
+ * @returns {*|ol.Map}
+ */
 Geolocation.prototype.getMap = function () {
   return this.map
 }
 
 /**
- * 处理事件
+ * 初始化
  */
-Geolocation.prototype.clickHandle = function () {
+Geolocation.prototype.initControl = function () {
   /**
    * 定位
    * @type {ol.Geolocation}
@@ -77,6 +86,14 @@ Geolocation.prototype.clickHandle = function () {
     let coordinates = this.geolocation.getPosition()
     console.log(coordinates)
   })
+}
+
+/**
+ * 处理事件
+ */
+Geolocation.prototype.clickHandle = function () {
+  let coordinates = this.geolocation.getPosition()
+  console.log(coordinates)
 }
 
 export default Geolocation
