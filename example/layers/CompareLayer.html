@@ -62,7 +62,7 @@
   var beforeMap = Maps.getBaseLayerByLayerName('openstreetmap2')
   var afterMap = Maps.getBaseLayerByLayerName('openstreetmap')
   var control = Maps.map.getControls()
-  var com = new HMap.CompareLayer(beforeMap, afterMap, {
+  var com = new HMap.Controls.CompareLayer(beforeMap, afterMap, {
     map: Maps.map
   })
   function addCompare () {

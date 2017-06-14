@@ -30,7 +30,6 @@
       projection: 'EPSG:3857',
       zoom: 5, // resolution
     },
-    logo: {},
     baseLayers: [
       {
         layerName: 'openstreetmap',
@@ -46,7 +45,7 @@
       }
     ]
   });
-  Maps.creatWMTSLayer('WMTSLayer', {
+  Maps.createWMTSLayer('WMTSLayer', {
     layerName: 'TitleWMTS',
     isDefault: true,
     layerType: 'TitleWMTS',

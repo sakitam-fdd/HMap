@@ -13,8 +13,7 @@ import GeomCoder from './plugins/GeomCoder'
 import PlotDraw from './plot/Event/PlotDraw'
 import PlotEdit from './plot/Event/PlotEdit'
 import Popover from './overlay/Popover'
-import CompareLayer from './controls/CompareLayer'
-import Geolocation from './controls/Geolocation'
+import Controls from './controls/index'
 import * as utils from './utils/utils'
 
 HMap.ol = ol
@@ -34,8 +33,7 @@ HMap.MeasureTool = MeasureTool
 HMap.LayerSpyglass = LayerSpyglass
 HMap.MisplacesGlass = MisplacesGlass
 HMap.GeomCoder = GeomCoder
-HMap.CompareLayer = CompareLayer
-HMap.Geolocation = Geolocation
+HMap.Controls = Controls
 
 /**
  * Inherit the prototype methods from one constructor into another.

@@ -83,6 +83,7 @@ class Map extends mix(BaseLayers, Controls, Interactions, Style, Layer, View, Fe
    */
   initMap (mapDiv, params) {
     let options = params || {}
+    let options_ = JSON.stringify(options)
     let logo = this._addCopyRight(options['logo'])
     let layers = this.addBaseLayers(options['baseLayers'], options['view'])
     this.view = this._addView(options['view'])
@@ -102,6 +103,11 @@ class Map extends mix(BaseLayers, Controls, Interactions, Style, Layer, View, Fe
       interactions: interactions,
       controls: controls
     })
+
+    /**
+     * 保存当前参数
+     */
+    this.map.setProperties(options_, false)
 
     this.map.on('click', event => {
       console.log(event.coordinate)
