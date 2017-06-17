@@ -85,8 +85,8 @@ class Map extends mix(BaseLayers, Controls, Interactions, Style, Layer, View, Fe
     let options = params || {}
     let options_ = JSON.stringify(options)
     let logo = this._addCopyRight(options['logo'])
-    let layers = this.addBaseLayers(options['baseLayers'], options['view'])
     this.view = this._addView(options['view'])
+    let layers = this.addBaseLayers(options['baseLayers'], options['view'])
     let interactions = this._addInteractions(options['interactions'])
     let controls = this._addControls(options['controls'])
     /**

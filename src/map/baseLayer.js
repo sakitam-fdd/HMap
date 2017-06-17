@@ -19,7 +19,7 @@ class BaseLayers {
       /**
        * 显示范围
        */
-      this.fullExtent = _view['fullExtent'] ? _view.fullExtent : undefined
+      this.fullExtent = _view['extent'] ? _view.extent : undefined
       /**
        * 投影范围
        */
@@ -167,7 +167,6 @@ class BaseLayers {
       let layerName = config['layerName'] ? config.layerName : ''
       config['addLayer'] = false
       config['create'] = true
-      config['tileSize'] = this.tileSize
       if (!config.hasOwnProperty('tileGrid')) {
         config['tileGrid'] = {}
         config['tileGrid']['tileSize'] = this.tileSize

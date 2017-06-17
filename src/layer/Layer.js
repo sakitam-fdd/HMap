@@ -550,9 +550,21 @@ class Layer extends mix(Style) {
       }
       if (!layer && params && params['layerUrl'] && params['create']) {
         let tileGrid = null
+        let tileSize = 256
+        if (params['tileSize'] && typeof params['tileSize'] === 'number') {
+          tileSize = params['tileSize']
+        } else if (params['tileGrid'] && params['tileGrid']['tileSize'] && typeof params['tileGrid']['tileSize'] === 'number') {
+          tileSize = params['tileGrid']['tileSize']
+        }
+        let projection = 'EPSG:3857'
+        if (params['projection']) {
+          projection = params['projection']
+        } else if (this.view && this.view instanceof ol.View) {
+          projection = this.view.getProjection().getCode()
+        }
         if (params['tileGrid'] && params['tileGrid']['resolutions']) {
           tileGrid = new ol.tilegrid.TileGrid({
-            tileSize: (params['tileGrid']['tileSize'] ? params['tileGrid']['tileSize'] : 256),
+            tileSize: tileSize,
             origin: (params['tileGrid']['origin'] ? params['tileGrid']['origin'] : undefined),
             extent: (params['tileGrid']['extent'] ? params['tileGrid']['extent'] : undefined),
             resolutions: params['tileGrid']['resolutions'],
@@ -565,11 +577,11 @@ class Layer extends mix(Style) {
           opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
           source: new ol.source.XYZ({
             wrapX: false,
-            tileGrid: ((tileGrid && tileGrid instanceof ol.tilegrid.TileGrid) ? tileGrid : undefined),
-            tileSize: (params['tileSize'] ? params['tileSize'] : 256),
+            tileGrid: (tileGrid !== null ? tileGrid : undefined),
+            tileSize: tileSize,
             opaque: (params['opaque'] === true) ? params['opaque'] : false, // 图层是否不透明（主题相关）
             tilePixelRatio: (params['tilePixelRatio'] ? params['tilePixelRatio'] : 1), // todo 对于高分辨率设备，例如苹果等可能2、3（移动端开发需要注意）
-            projection: (params['projection'] ? params['projection'] : 'EPSG:3857'),
+            projection: projection,
             maxZoom: (params['maxZoom'] ? params['maxZoom'] : 18),
             minZoom: (params['minZoom'] ? params['minZoom'] : 0),
             crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
@@ -646,10 +658,22 @@ class Layer extends mix(Style) {
       }
       if (!layer && params && params['layerUrl'] && params['create']) {
         let tileGrid = null
+        let tileSize = 256
+        if (params['tileSize'] && typeof params['tileSize'] === 'number') {
+          tileSize = params['tileSize']
+        } else if (params['tileGrid'] && params['tileGrid']['tileSize'] && typeof params['tileGrid']['tileSize'] === 'number') {
+          tileSize = params['tileGrid']['tileSize']
+        }
+        let projection = 'EPSG:3857'
+        if (params['projection']) {
+          projection = params['projection']
+        } else if (this.view && this.view instanceof ol.View) {
+          projection = this.view.getProjection().getCode()
+        }
         if (params['tileGrid']) {
           /* eslint new-cap: ["error", { "newIsCap": false }] */
           tileGrid = new ol.tilegrid.createXYZ({
-            tileSize: (params['tileGrid']['tileSize'] ? params['tileGrid']['tileSize'] : 256),
+            tileSize: tileSize,
             extent: (params['tileGrid']['extent'] ? params['tileGrid']['extent'] : undefined),
             minZoom: ((params['tileGrid']['minZoom'] && typeof params['tileGrid']['minZoom'] === 'number') ? params['tileGrid']['minZoom'] : 0),
             maxZoom: ((params['tileGrid']['maxZoom'] && typeof params['tileGrid']['maxZoom'] === 'number') ? params['tileGrid']['maxZoom'] : 22)
@@ -667,7 +691,7 @@ class Layer extends mix(Style) {
           source: new ol.source.VectorTile({
             format: new ol.format.MVT(),
             crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
-            projection: (params['projection'] ? params['projection'] : 'EPSG:3857'),
+            projection: projection,
             overlaps: (params['overlaps'] ? params['overlaps'] : true),
             tileGrid: ((tileGrid && tileGrid instanceof ol.tilegrid.TileGrid) ? tileGrid : undefined),
             tilePixelRatio: ((params['tilePixelRatio'] && typeof params['tilePixelRatio'] === 'number') ? params['tilePixelRatio'] : 1),
