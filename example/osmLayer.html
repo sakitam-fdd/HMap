@@ -26,8 +26,10 @@
   var Maps = new HMap.Map();
   Maps.initMap('map', {
     view: {
-      center: [12118909.300259633, 4086043.1061670054],
-      projection: 'EPSG:3857',
+//      center: [12118909.300259633, 4086043.1061670054],
+      center: [115.92466595234826, 27.428038204473552],
+//      projection: 'EPSG:3857',
+      projection: 'EPSG:4326',
       zoom: 5, // resolution
     },
     baseLayers: [
@@ -35,11 +37,6 @@
         layerName: 'openstreetmap',
         isDefault: true,
         layerType: 'OSM',
-//        attribution: {
-//          url: 'https://aurorafe.github.io',
-//          title: '恒达时讯',
-//          messages: '版权所有'
-//        },
         opaque: true, //图层是否不透明
         layerUrl: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
       }

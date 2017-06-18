@@ -2,6 +2,9 @@ import { ol } from '../constants'
 import mix from '../utils/mixin'
 import * as MapboxStyle from '../style/MapboxStyle'
 import Style from '../style/Style'
+import './source/GaoDe'
+import './source/BaiDu'
+import './source/Google'
 
 class Layer extends mix(Style) {
   constructor (map) {
