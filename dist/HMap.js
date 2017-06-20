@@ -2756,6 +2756,52 @@ var Layer = function (_mix) {
         });
       }
     }
+  }, {
+    key: 'adjustExtent',
+    value: function adjustExtent(extent) {
+      if (this.map) {
+        var width = _constants.ol.extent.getWidth(extent);
+        var adjust = 0.2;
+        if (width < 0.05) {
+          var bleft = _constants.ol.extent.getBottomLeft(extent);
+          var tright = _constants.ol.extent.getTopRight(extent);
+          var xmin = bleft[0] - adjust;
+          var ymin = bleft[1] - adjust;
+          var xmax = tright[0] + adjust;
+          var ymax = tright[1] + adjust;
+          extent = _constants.ol.extent.buffer([xmin, ymin, xmax, ymax], adjust);
+        }
+        return extent;
+      }
+    }
+  }, {
+    key: 'zoomToExtent',
+    value: function zoomToExtent(extent, isanimation, duration) {
+      if (this.map) {
+        var view = this.map.getView();
+        var size = this.map.getSize();
+
+        var center = _constants.ol.extent.getCenter(extent);
+        if (!isanimation) {
+          view.fit(extent, size, {
+            padding: [350, 200, 200, 350]
+          });
+          view.setCenter(center);
+        } else {
+          if (!duration) {
+            duration = 800;
+            view.animate({
+              center: center,
+              duration: duration
+            });
+            view.fit(extent, {
+              size: size,
+              duration: duration
+            });
+          }
+        }
+      }
+    }
   }]);
 
   return Layer;
@@ -4023,52 +4069,6 @@ var Feature = function (_mix) {
         this.zoomToExtent(extent, true);
       }
       return extent;
-    }
-  }, {
-    key: 'adjustExtent',
-    value: function adjustExtent(extent) {
-      if (this.map) {
-        var width = _constants.ol.extent.getWidth(extent);
-        var adjust = 0.2;
-        if (width < 0.05) {
-          var bleft = _constants.ol.extent.getBottomLeft(extent);
-          var tright = _constants.ol.extent.getTopRight(extent);
-          var xmin = bleft[0] - adjust;
-          var ymin = bleft[1] - adjust;
-          var xmax = tright[0] + adjust;
-          var ymax = tright[1] + adjust;
-          extent = _constants.ol.extent.buffer([xmin, ymin, xmax, ymax], adjust);
-        }
-        return extent;
-      }
-    }
-  }, {
-    key: 'zoomToExtent',
-    value: function zoomToExtent(extent, isanimation, duration) {
-      if (this.map) {
-        var view = this.map.getView();
-        var size = this.map.getSize();
-
-        var center = _constants.ol.extent.getCenter(extent);
-        if (!isanimation) {
-          view.fit(extent, size, {
-            padding: [350, 200, 200, 350]
-          });
-          view.setCenter(center);
-        } else {
-          if (!duration) {
-            duration = 800;
-            view.animate({
-              center: center,
-              duration: duration
-            });
-            view.fit(extent, {
-              size: size,
-              duration: duration
-            });
-          }
-        }
-      }
     }
   }, {
     key: 'movePointToView',
@@ -14546,6 +14546,7 @@ var CustomCircle = function (_mix) {
       layerName: 'perimeterSerachLayer',
       showPolygonFeature: true,
       showCenterFeature: true,
+      zoomToExtent: true,
       style: {
         stroke: {
           strokeColor: 'rgba(71, 129, 217, 1)',
@@ -14589,6 +14590,10 @@ var CustomCircle = function (_mix) {
         this.center = center;
         this.centerCopy = _constants.ol.proj.transform(center, this._getProjectionCode(), 'EPSG:4326');
         this.geom = this._getCircleGeom();
+        if (this.geom && this.options['zoomToExtent']) {
+          var extent = this.geom.getExtent();
+          this.zoomToExtent(extent, true);
+        }
         this.circleFeature = new _constants.ol.Feature({
           geometry: this.geom
         });
@@ -14607,6 +14612,20 @@ var CustomCircle = function (_mix) {
         this.dispachChange();
       } catch (e) {
         console.log(e);
+      }
+    }
+  }, {
+    key: 'destroyCircle',
+    value: function destroyCircle() {
+      if (this.options['layerName']) {
+        this.removeLayerByLayerName(this.options['layerName']);
+        this.isMouseDown = false;
+        this.isMoving = false;
+        this.handleLabel = null;
+      }
+      if (this.overlay && this.overlay instanceof _constants.ol.Overlay) {
+        this.map.removeOverlay(this.overlay);
+        this.overlay = null;
       }
     }
   }, {

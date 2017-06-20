@@ -94,63 +94,6 @@ class Feature extends mix(Style, Layer) {
   }
 
   /**
-   * 调整当前要素范围
-   * @param extent
-   * @returns {*}
-   */
-  adjustExtent (extent) {
-    if (this.map) {
-      let width = ol.extent.getWidth(extent)
-      let adjust = 0.2
-      if (width < 0.05) {
-        let bleft = ol.extent.getBottomLeft(extent) // 获取xmin,ymin
-        let tright = ol.extent.getTopRight(extent) // 获取xmax,ymax
-        let xmin = bleft[0] - adjust
-        let ymin = bleft[1] - adjust
-        let xmax = tright[0] + adjust
-        let ymax = tright[1] + adjust
-        extent = ol.extent.buffer([xmin, ymin, xmax, ymax], adjust)
-      }
-      return extent
-    }
-  }
-
-  /**
-   * 缩放到当前范围
-   * @param extent
-   * @param isanimation
-   * @param duration
-   */
-  zoomToExtent (extent, isanimation, duration) {
-    if (this.map) {
-      let view = this.map.getView()
-      let size = this.map.getSize()
-      /**
-       *  @type {ol.Coordinate} center The center of the view.
-       */
-      let center = ol.extent.getCenter(extent)
-      if (!isanimation) {
-        view.fit(extent, size, {
-          padding: [350, 200, 200, 350]
-        })
-        view.setCenter(center)
-      } else {
-        if (!duration) {
-          duration = 800
-          view.animate({
-            center: center,
-            duration: duration
-          })
-          view.fit(extent, {
-            size: size,
-            duration: duration
-          })
-        }
-      }
-    }
-  }
-
-  /**
    * 判断点是否在视图内，如果不在地图将自动平移
    * @param coordinate (当前点坐标)
    */

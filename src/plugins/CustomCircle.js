@@ -35,6 +35,7 @@ class CustomCircle extends mix(Layer, Style) {
       layerName: 'perimeterSerachLayer',
       showPolygonFeature: true,
       showCenterFeature: true,
+      zoomToExtent: true,
       style: {
         stroke: {
           strokeColor: 'rgba(71, 129, 217, 1)',
@@ -100,6 +101,10 @@ class CustomCircle extends mix(Layer, Style) {
       this.center = center
       this.centerCopy = ol.proj.transform(center, this._getProjectionCode(), 'EPSG:4326')
       this.geom = this._getCircleGeom()
+      if (this.geom && this.options['zoomToExtent']) {
+        let extent = this.geom.getExtent()
+        this.zoomToExtent(extent, true)
+      }
       this.circleFeature = new ol.Feature({
         geometry: this.geom
       })
@@ -124,6 +129,22 @@ class CustomCircle extends mix(Layer, Style) {
       this.dispachChange()
     } catch (e) {
       console.log(e)
+    }
+  }
+
+  /**
+   * 销毁要素
+   */
+  destroyCircle () {
+    if (this.options['layerName']) {
+      this.removeLayerByLayerName(this.options['layerName'])
+      this.isMouseDown = false
+      this.isMoving = false
+      this.handleLabel = null
+    }
+    if (this.overlay && this.overlay instanceof ol.Overlay) {
+      this.map.removeOverlay(this.overlay)
+      this.overlay = null
     }
   }
 
