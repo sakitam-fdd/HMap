@@ -26,10 +26,10 @@
   var Maps = new HMap.Map();
   Maps.initMap('map', {
     view: {
-//      center: [12118909.300259633, 4086043.1061670054],
-      center: [115.92466595234826, 27.428038204473552],
-//      projection: 'EPSG:3857',
-      projection: 'EPSG:4326',
+      center: [12118909.300259633, 4086043.1061670054],
+//      center: [115.92466595234826, 27.428038204473552],
+      projection: 'EPSG:3857',
+//      projection: 'EPSG:4326',
       zoom: 5, // resolution
     },
     baseLayers: [
@@ -42,12 +42,14 @@
       }
     ]
   });
-
+  var CoordsTransform = new HMap.CoordsTransform()
   function mapFirstClickHandler (event) {
-    console.log(event.coordinate)
+    var coordinate = event.coordinate
+    var coords = CoordsTransform.MercatorTolonLat(coordinate[0], coordinate[1])
+    console.log(coords)
   }
   Maps.map.on('click', mapFirstClickHandler)
-  Maps.map.un('click', mapFirstClickHandler)
+//  Maps.map.un('click', mapFirstClickHandler)
 </script>
 </body>
 </html>

@@ -66,6 +66,11 @@ class MeasureTool extends mix(Layer) {
      */
     this.drawSketch = null
     /**
+     * 是否使用地理测量方式
+     * @type {boolean}
+     */
+    this.isGeodesic = (this.options['isGeodesic'] === false ? this.options['isGeodesic'] : true)
+    /**
      * draw对象
      * @type {null}
      */
@@ -238,7 +243,7 @@ class MeasureTool extends mix(Layer) {
     if (!this.measureHelpTooltip) {
       let helpTooltipElement = document.createElement('label')
       if (this.measureTypes.measureLength === this.options['measureType']) {
-        helpTooltipElement.className = 'BMapLabel'
+        helpTooltipElement.className = 'HMapLabel'
         helpTooltipElement.style.position = 'absolute'
         helpTooltipElement.style.display = 'inline'
         helpTooltipElement.style.cursor = 'inherit'
@@ -253,9 +258,9 @@ class MeasureTool extends mix(Layer) {
         helpTooltipElement.style.fontFamily = 'arial,simsun'
         helpTooltipElement.style.color = 'rgb(51, 51, 51)'
         helpTooltipElement.style.webkitUserSelect = 'none'
-        helpTooltipElement.innerHTML = '<span class="BMap_diso"><span class="BMap_disi">单击开始测量</span></span>'
+        helpTooltipElement.innerHTML = '<span class="HMap_diso"><span class="HMap_disi">单击开始测量</span></span>'
       } else {
-        helpTooltipElement.className = 'BMapLabel BMap_disLabel'
+        helpTooltipElement.className = 'HMapLabel HMap_disLabel'
         helpTooltipElement.style.position = 'absolute'
         helpTooltipElement.style.display = 'inline'
         helpTooltipElement.style.cursor = 'inherit'
@@ -294,7 +299,7 @@ class MeasureTool extends mix(Layer) {
         return
       }
       let helpTooltipElement = this.measureHelpTooltip.getElement()
-      helpTooltipElement.className = ' BMapLabel BMap_disLabel'
+      helpTooltipElement.className = ' HMapLabel HMap_disLabel'
       helpTooltipElement.style.position = 'absolute'
       helpTooltipElement.style.display = 'inline'
       helpTooltipElement.style.cursor = 'inherit'
@@ -310,7 +315,7 @@ class MeasureTool extends mix(Layer) {
       helpTooltipElement.style.color = 'rgb(51, 51, 51)'
       helpTooltipElement.style.backgroundColor = 'rgb(255, 255, 255)'
       helpTooltipElement.style.webkitUserSelect = 'none'
-      helpTooltipElement.innerHTML = '<span>总长:<span class="BMap_disBoxDis"></span></span><br><span style="color: #7a7a7a">单击确定地点,双击结束</span>'
+      helpTooltipElement.innerHTML = '<span>总长:<span class="HMap_disBoxDis"></span></span><br><span style="color: #7a7a7a">单击确定地点,双击结束</span>'
       this.measureHelpTooltip.setPosition(event.coordinate)
     }
   }
@@ -380,30 +385,38 @@ class MeasureTool extends mix(Layer) {
     let output = 0
     if (geom) {
       if (this.options['measureType'] === this.measureTypes.measureLength) {
-        let [coordinates, length] = [geom.getCoordinates(), 0]
-        let sourceProj = this.map.getView().getProjection()
-        for (let i = 0, ii = coordinates.length - 1; i < ii; ++i) {
-          let c1 = ol.proj.transform(coordinates[i], sourceProj, 'EPSG:4326')
-          let c2 = ol.proj.transform(coordinates[i + 1], sourceProj, 'EPSG:4326')
-          length += this.wgs84Sphere.haversineDistance(c1, c2)
-        }
-        if (length > 100) {
-          output = (Math.round(length / 1000 * 100) / 100) + ' ' + '千米'
+        if (this.isGeodesic) {
+          let [coordinates, length] = [geom.getCoordinates(), 0]
+          let sourceProj = this.map.getView().getProjection()
+          for (let i = 0, ii = coordinates.length - 1; i < ii; ++i) {
+            let c1 = ol.proj.transform(coordinates[i], sourceProj, 'EPSG:4326')
+            let c2 = ol.proj.transform(coordinates[i + 1], sourceProj, 'EPSG:4326')
+            length += this.wgs84Sphere.haversineDistance(c1, c2)
+          }
+          if (length > 100) {
+            output = (Math.round(length / 1000 * 100) / 100) + ' ' + '千米'
+          } else {
+            output = (Math.round(length * 100) / 100) + ' ' + '米'
+          }
         } else {
-          output = (Math.round(length * 100) / 100) + ' ' + '米'
+          output = Math.round(geom.getLength() * 100) / 100
         }
       } else if (this.options['measureType'] === this.measureTypes.measureArea) {
-        let sourceProj = this.getMap().getView().getProjection()
-        let geometry = /** @type {ol.geom.Polygon} */(geom.clone().transform(
-          sourceProj, 'EPSG:4326'))
-        let coordinates = geometry.getLinearRing(0).getCoordinates()
-        let area = Math.abs(this.wgs84Sphere.geodesicArea(coordinates))
-        if (area > 10000000000) {
-          output = (Math.round(area / (1000 * 1000 * 10000) * 100) / 100) + ' ' + '万平方公里'
-        } else if (area > 1000000 && area < 10000000000) {
-          output = (Math.round(area / (1000 * 1000) * 100) / 100) + ' ' + '平方公里'
+        if (this.isGeodesic) {
+          let sourceProj = this.getMap().getView().getProjection()
+          let geometry = /** @type {ol.geom.Polygon} */(geom.clone().transform(
+            sourceProj, 'EPSG:4326'))
+          let coordinates = geometry.getLinearRing(0).getCoordinates()
+          let area = Math.abs(this.wgs84Sphere.geodesicArea(coordinates))
+          if (area > 10000000000) {
+            output = (Math.round(area / (1000 * 1000 * 10000) * 100) / 100) + ' ' + '万平方公里'
+          } else if (area > 1000000 && area < 10000000000) {
+            output = (Math.round(area / (1000 * 1000) * 100) / 100) + ' ' + '平方公里'
+          } else {
+            output = (Math.round(area * 100) / 100) + ' ' + '平方米'
+          }
         } else {
-          output = (Math.round(area * 100) / 100) + ' ' + '平方米'
+          output = geom.getArea()
         }
       }
     }
@@ -446,13 +459,14 @@ class MeasureTool extends mix(Layer) {
     helpTooltipElement.style.webkitUserSelect = 'none'
     if (type === '止点') {
       helpTooltipElement.style.border = '1px solid rgb(255, 1, 3)'
+      helpTooltipElement.style.backgroundColor = 'rgb(255, 255, 255)'
       helpTooltipElement.style.padding = '3px 5px'
-      helpTooltipElement.className = ' BMapLabel BMap_disLabel'
-      helpTooltipElement.innerHTML = "总长<span class='BMap_disBoxDis'>" + length + '</span>'
+      helpTooltipElement.className = ' HMapLabel HMap_disLabel'
+      helpTooltipElement.innerHTML = "总长<span class='HMap_disBoxDis'>" + length + '</span>'
       this.addMeasureRemoveButton(coordinate)
     } else {
-      helpTooltipElement.className = 'BMapLabel'
-      helpTooltipElement.innerHTML = "<span class='BMap_diso'><span class='BMap_disi'>" + length + '</span></span>'
+      helpTooltipElement.className = 'HMapLabel'
+      helpTooltipElement.innerHTML = "<span class='HMap_diso'><span class='HMap_disi'>" + length + '</span></span>'
     }
     let tempMeasureTooltip = new ol.Overlay({
       element: helpTooltipElement,

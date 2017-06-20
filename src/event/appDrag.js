@@ -54,7 +54,7 @@ class appDrag extends (ol.interaction.Pointer) {
           value: feature
         })
       }
-      return !!feature
+      return !!this.feature_
     }
   }
 
@@ -90,7 +90,7 @@ class appDrag extends (ol.interaction.Pointer) {
         })
       }
       let element = evt.map.getTargetElement()
-      if (feature) {
+      if (feature && feature.get('params')) {
         if (element.style.cursor !== this.cursor_) {
           this.previousCursor_ = element.style.cursor
           element.style.cursor = this.cursor_

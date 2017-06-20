@@ -102,14 +102,24 @@
         "name": "Dinagat Islands"
       }
     }
+
+    var lineGeoJSON = {
+      'type': 'Feature',
+      'geometry': {
+        'type': 'MultiLineString',
+        'coordinates': [
+          [[116.65963672, 27.54180288, 20], [116.34874083051552, 26.789207622857685, 30], [118.08572813122063, 24.57082287379564, 40]]
+        ]
+      }
+    }
     var lineGeom = 'MULTILINESTRING M ((116.65963672 27.54180288 20, 116.34874083051552 26.789207622857685 30, 118.08572813122063 24.57082287379564 40))'
     var linefeatures = new ol.Feature({
       geometry: (new ol.format.WKT().readGeometry(lineGeom))
     })
     console.log(linefeatures.getGeometry().getClosestPoint([105.40708997412835, 33.446141314339044]))
-    var point = (new ol.format.GeoJSON()).readFeature(pointGeoJSON)
+    var point = (new ol.format.GeoJSON()).readFeature(lineGeoJSON)
     vectorLayer.getSource().addFeature(point)
-    vectorLayer.getSource().addFeature(linefeatures)
+//    vectorLayer.getSource().addFeature(linefeatures)
   }
 
   function removeLine () {

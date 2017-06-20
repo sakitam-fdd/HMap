@@ -12,6 +12,7 @@ import MisplacesGlass from './interaction/MisplacesGlass'
 import GeomCoder from './plugins/GeomCoder'
 import PlotDraw from './plot/Event/PlotDraw'
 import PlotEdit from './plot/Event/PlotEdit'
+import CustomCircle from './plugins/CustomCircle'
 import Popover from './overlay/Popover'
 import Controls from './controls/index'
 import * as utils from './utils/utils'
@@ -28,6 +29,7 @@ HMap.Layer = Layer
 HMap.Feature = Feature
 HMap.Popover = Popover
 HMap.CoordsTransform = CoordsTransform
+HMap.CustomCircle = CustomCircle
 HMap.LayerSwitcher = LayerSwitcher
 HMap.MeasureTool = MeasureTool
 HMap.LayerSpyglass = LayerSpyglass

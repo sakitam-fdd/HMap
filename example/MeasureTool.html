@@ -40,8 +40,9 @@
     var Maps = new HMap.Map();
     Maps.initMap('map', {
       view: {
-        center: [12114395.835416898, 4067904.6990727796],
-        projection: 'EPSG:3857',
+//        center: [12114395.835416898, 4067904.6990727796],
+        center: [115.92466595234826, 27.428038204473552],
+        projection: 'EPSG:4326',
         zoom: 15
       },
       baseLayers: [
@@ -58,6 +59,7 @@
         }
       ]
     });
+    Maps._addScaleLine()
   var measure = new HMap.MeasureTool(Maps.map);
   function measureTool (type) {
     if (type == 'length') {
