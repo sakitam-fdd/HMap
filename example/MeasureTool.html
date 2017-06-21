@@ -64,11 +64,15 @@
   function measureTool (type) {
     if (type == 'length') {
       measure.setUp({
-        measureType: 'measureLength'
+        measureType: 'measureLength',
+        measureLengthCursor: '../asset/cur/measureLength.cur',
+        measureAreaCursor: '../asset/cur/measureArea.cur'
       });
     } else {
       measure.setUp({
-        measureType: 'measureArea'
+        measureType: 'measureArea',
+        measureLengthCursor: 'url(../asset/cur/ruler.cur), default',
+        measureAreaCursor: 'url(../asset/cur/ruler.cur), default'
       });
     }
   }

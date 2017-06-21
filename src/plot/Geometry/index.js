@@ -2,6 +2,8 @@
  * Created by FDD on 2017/5/20.
  * @desc 标绘图形构造类
  */
+import Point from './point/Point'
+import Pennant from './point/Pennant'
 import Polyline from './Polyline/Polyline'
 import Arc from './Arc/Arc'
 import Circle from './Circle/Circle'
@@ -24,6 +26,8 @@ import SquadCombat from './Arrow/SquadCombat'
 import TailedSquadCombat from './Arrow/TailedSquadCombat'
 import GatheringPlace from './Polygon/GatheringPlace'
 export default {
+  Point: Point,
+  Pennant: Pennant,
   Polyline: Polyline,
   Arc: Arc,
   Circle: Circle,

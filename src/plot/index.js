@@ -25,6 +25,10 @@ class Plot {
   createPlot (type, points, _params) {
     let params = _params || {}
     switch (type) {
+      case PlotTypes.POINT:
+        return new Plots.Point(points, params)
+      case PlotTypes.PENNANT:
+        return new Plots.Pennant(points, params)
       case PlotTypes.POLYLINE:
         return new Plots.Polyline(points, params)
       case PlotTypes.ARC:

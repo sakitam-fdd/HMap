@@ -51,6 +51,10 @@ class MeasureTool extends mix(Layer) {
      */
     this.options = params || {}
     /**
+     * 默认鼠标样式
+     */
+    this.previousCursor_ = this.map.getTargetElement().style.cursor
+    /**
      * 测量工具所处图层
      * @type {*}
      */
@@ -152,6 +156,7 @@ class MeasureTool extends mix(Layer) {
       this.beforeMeasurePointerMoveHandler = this.map.on('pointermove', this.beforeDrawPointMoveHandler, this)
     }
     this.addDrawInteraction()
+    this.changeCur(this.options['measureType'])
   }
 
   /**
@@ -290,6 +295,21 @@ class MeasureTool extends mix(Layer) {
   }
 
   /**
+   * 改变当前鼠标形状
+   * @param type
+   */
+  changeCur (type) {
+    console.log(type)
+    if (type === this.measureTypes.measureLength) {
+      this.map.getTargetElement().style.cursor = this.options['measureLengthCursor']
+    } else if (type === this.measureTypes.measureArea) {
+      this.map.getTargetElement().style.cursor = this.options['measureAreaCursor']
+    } else {
+      this.map.getTargetElement().style.cursor = this.previousCursor_
+    }
+  }
+
+  /**
    * 点击之后的事件处理
    * @param event
    */
@@ -373,6 +393,7 @@ class MeasureTool extends mix(Layer) {
       this.listener = null
       this.drawSketch = null
       this.removeDrawInteraion()
+      this.changeCur()
     })
   }
 

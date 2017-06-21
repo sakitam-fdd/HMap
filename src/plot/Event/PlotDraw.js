@@ -10,8 +10,10 @@ import * as Events from '../../event/Events'
 import mix from '../../utils/mixin'
 import Layer from '../../layer/Layer'
 import Plot from '../index'
+import Style from '../../style/Style'
+import PlotTypes from '../Utils/PlotTypes'
 const Observable = ol.Observable
-class PlotDraw extends mix(Observable, Plot, Layer) {
+class PlotDraw extends mix(Observable, Plot, Layer, Style) {
   constructor (map, params) {
     super()
     ol.Observable.call(this, [])
@@ -73,7 +75,7 @@ class PlotDraw extends mix(Observable, Plot, Layer) {
      * 创建图层名称
      * @type {string}
      */
-    this.layerName = 'GISPLOTLAYER'
+    this.layerName = ((this.options && this.options['layerName']) ? this.options['layerName'] : 'GISPLOTLAYER')
 
     /**
      * 当前矢量图层
@@ -94,7 +96,7 @@ class PlotDraw extends mix(Observable, Plot, Layer) {
     this.deactiveMapTools()
     this.map.on('click', this.mapFirstClickHandler, this)
     this.plotType = type
-    this.plotParams = params
+    this.plotParams = params || {}
   }
 
   /**
@@ -131,11 +133,31 @@ class PlotDraw extends mix(Observable, Plot, Layer) {
     this.feature = new ol.Feature(this.plot)
     this.drawLayer.getSource().addFeature(this.feature)
     this.map.un('click', this.mapFirstClickHandler, this)
-    this.map.on('click', this.mapNextClickHandler, this)
-    if (!this.plot.freehand) {
-      this.map.on('dblclick', this.mapDoubleClickHandler, this)
+    if (this.plotType === PlotTypes.POINT || this.plotType === PlotTypes.PENNANT) {
+      this.addPointStyle(this.feature, this.plotParams)
+      this.plot.finishDrawing()
+      this.drawEnd(event)
+    } else {
+      this.map.on('click', this.mapNextClickHandler, this)
+      if (!this.plot.freehand) {
+        this.map.on('dblclick', this.mapDoubleClickHandler, this)
+      }
+      Events.listen(this.mapViewport, EventType.MOUSEMOVE, this.mapMouseMoveHandler, this, false)
     }
-    Events.listen(this.mapViewport, EventType.MOUSEMOVE, this.mapMouseMoveHandler, this, false)
+    if (this.plotType && this.feature) {
+      this.plotParams['plotType'] = this.plotType
+      this.feature.setProperties(this.plotParams)
+    }
+  }
+
+  /**
+   * 添加点的样式
+   * @param feature
+   * @param params
+   */
+  addPointStyle (feature, params) {
+    let style = this.getStyleByPoint(params)
+    feature.setStyle(style)
   }
 
   /**

@@ -6,11 +6,11 @@
 import { ol } from '../../../constants'
 import PlotTypes from '../../Utils/PlotTypes'
 const GeomPoint = ol.geom.Point
-class Point extends GeomPoint {
+class Pennant extends GeomPoint {
   constructor (point, params) {
     super()
     ol.geom.Point.call(this, [])
-    this.type = PlotTypes.POINT
+    this.type = PlotTypes.PENNANT
     this.options = params || {}
     this.set('params', this.options)
     this.setPoints(point)
@@ -54,7 +54,6 @@ class Point extends GeomPoint {
    */
   setPoints (value) {
     this.points = !value ? [] : value
-    console.log(this.points)
     if (this.points.length >= 2) {
       this.generate()
     }
@@ -103,4 +102,4 @@ class Point extends GeomPoint {
   }
 }
 
-export default Point
+export default Pennant
