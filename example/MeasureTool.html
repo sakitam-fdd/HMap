@@ -60,13 +60,35 @@
       ]
     });
     Maps._addScaleLine()
-  var measure = new HMap.MeasureTool(Maps.map);
+  var measure = new HMap.MeasureTool(Maps.map, {
+    measureLengthCursor: 'url(../asset/cur/ruler.cur), default',
+    measureAreaCursor: 'url(../asset/cur/ruler.cur), default',
+    style: {
+      fill: {
+        fillColor: 'rgba(67, 110, 238, 0.4)'
+      },
+      stroke: {
+        strokeColor: '#de8d33',
+        strokeWidth: 4
+      },
+      circle: {
+        circleRadius: 6,
+        stroke: {
+          strokeColor: '#de8d33',
+          strokeWidth: 4
+        },
+        fill: {
+          fillColor: '#151532'
+        }
+      }
+    }
+  });
   function measureTool (type) {
     if (type == 'length') {
       measure.setUp({
         measureType: 'measureLength',
-        measureLengthCursor: '../asset/cur/measureLength.cur',
-        measureAreaCursor: '../asset/cur/measureArea.cur'
+        measureLengthCursor: 'default',
+        measureAreaCursor: 'default'
       });
     } else {
       measure.setUp({

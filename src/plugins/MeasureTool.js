@@ -1,11 +1,40 @@
 import mix from '../utils/mixin'
 import Layer from '../layer/Layer'
+import Style from '../style/Style'
 import { ol } from '../constants'
 import * as utils from '../utils/utils'
-class MeasureTool extends mix(Layer) {
-  constructor (map) {
+class MeasureTool extends mix(Layer, Style) {
+  constructor (map, params) {
     super()
     if (map && map instanceof ol.Map) {
+      this.defaultParams = {
+        measureLengthCursor: 'url(../asset/cur/ruler.cur), default',
+        measureAreaCursor: 'url(../asset/cur/ruler.cur), default',
+        style: {
+          fill: {
+            fillColor: 'rgba(67, 110, 238, 0.4)'
+          },
+          stroke: {
+            strokeColor: 'rgba(242,123,57,1)',
+            strokeWidth: 2
+          },
+          circle: {
+            circleRadius: 4,
+            stroke: {
+              strokeColor: 'rgba(255,0,0,1)',
+              strokeWidth: 1
+            },
+            fill: {
+              fillColor: 'rgba(255,255,255,1)'
+            }
+          }
+        }
+      }
+      if (params && typeof params === 'object') {
+        for (let key in params) {
+          this.defaultParams[key] = params[key]
+        }
+      }
       /**
        * 地图对象
        * @type {ol.Map}
@@ -35,6 +64,16 @@ class MeasureTool extends mix(Layer) {
        * @type {null}
        */
       this.DoubleClickZoom = null
+      /**
+       * 是否使用地理测量方式
+       * @type {boolean}
+       */
+      this.isGeodesic = (this.defaultParams['isGeodesic'] === false ? this.defaultParams['isGeodesic'] : true)
+      /**
+       * 测量工具所处图层
+       * @type {*}
+       */
+      this.layerName = this.defaultParams['layerName'] || 'measureTool'
     } else {
       throw new Error('传入的不是地图对象或者地图对象为空！')
     }
@@ -55,11 +94,6 @@ class MeasureTool extends mix(Layer) {
      */
     this.previousCursor_ = this.map.getTargetElement().style.cursor
     /**
-     * 测量工具所处图层
-     * @type {*}
-     */
-    this.layerName = this.options['layerName'] || 'measureTool'
-    /**
      * 点击计数器
      * @type {number}
      */
@@ -69,11 +103,6 @@ class MeasureTool extends mix(Layer) {
      * @type {null}
      */
     this.drawSketch = null
-    /**
-     * 是否使用地理测量方式
-     * @type {boolean}
-     */
-    this.isGeodesic = (this.options['isGeodesic'] === false ? this.options['isGeodesic'] : true)
     /**
      * draw对象
      * @type {null}
@@ -117,13 +146,6 @@ class MeasureTool extends mix(Layer) {
      * @type {null}
      */
     this.measureAreaTooltip = null
-    /**
-     * 测面的单击事件
-     */
-    if (this.measureAreaClick) {
-      ol.Observable.unByKey(this.measureAreaClick)
-    }
-    this.measureAreaClick = null
 
     this.measureAreaTooltipElement = null
 
@@ -139,20 +161,18 @@ class MeasureTool extends mix(Layer) {
     this.measureHelpTooltip = ''
     if (this.options['measureType'] === this.measureTypes.measureLength) {
       this.measureLengthClick = this.map.on('click', eventP => {
-        let ev = this.map.on('singleclick', event => {
+        this.measureLengthSingleClick = this.map.on('singleclick', event => {
           if (!this.clickCount) {
             this.clickCount = utils.getuuid()
             this.drawSketch.length = '起点'
           }
           this.addMeasureOverLay(event.coordinate, this.drawSketch.length)
           this.addMeasurecircle(event.coordinate)
-          ol.Observable.unByKey(ev)
+          ol.Observable.unByKey(this.measureLengthSingleClick)
         })
       })
       this.beforeMeasurePointerMoveHandler = this.map.on('pointermove', this.beforeDrawPointMoveHandler, this)
     } else if (this.options['measureType'] === this.measureTypes.measureArea) {
-      this.measureAreaClick = this.map.on('click', event => {
-      })
       this.beforeMeasurePointerMoveHandler = this.map.on('pointermove', this.beforeDrawPointMoveHandler, this)
     }
     this.addDrawInteraction()
@@ -171,25 +191,8 @@ class MeasureTool extends mix(Layer) {
     }
     this.options['create'] = true
     this.layer = this.createVectorLayer(this.layerName, this.options)
-    this.layer.setStyle(new ol.style.Style({
-      fill: new ol.style.Fill({
-        color: 'rgba(67, 110, 238, 0.4)'
-      }),
-      stroke: new ol.style.Stroke({
-        color: 'rgba(242,123,57,1)',
-        width: 2
-      }),
-      image: new ol.style.Circle({
-        radius: 4,
-        stroke: new ol.style.Stroke({
-          color: 'rgba(255,0,0,1)',
-          width: 1
-        }),
-        fill: new ol.style.Fill({
-          color: 'rgba(255,255,255,1)'
-        })
-      })
-    }))
+    let style = this.getStyleForMeasure(this.defaultParams['style'])
+    this.layer.setStyle(style)
     this.draw = new ol.interaction.Draw({
       source: this.layer.getSource(),
       type: type,
@@ -238,6 +241,11 @@ class MeasureTool extends mix(Layer) {
       ol.Observable.unByKey(this.beforeMeasurePointerMoveHandler)
       this.beforeMeasurePointerMoveHandler = null
     }
+    if (this.measureLengthSingleClick) {
+      ol.Observable.unByKey(this.measureLengthSingleClick)
+      this.measureLengthSingleClick = null
+    }
+    this.clickCount = ''
   }
 
   /**
@@ -280,8 +288,8 @@ class MeasureTool extends mix(Layer) {
         helpTooltipElement.style.color = 'rgb(51, 51, 51)'
         helpTooltipElement.style.backgroundColor = 'rgb(255, 255, 255)'
         helpTooltipElement.style.webkitUserSelect = 'none'
-        helpTooltipElement.style.height = '20px'
-        helpTooltipElement.style.lineHeight = '20px'
+        helpTooltipElement.style.height = '24px'
+        helpTooltipElement.style.lineHeight = '19px'
         helpTooltipElement.innerHTML = '<span style="color: #7a7a7a;">单击开始测面,双击结束</span>'
       }
       this.measureHelpTooltip = new ol.Overlay({
@@ -299,11 +307,10 @@ class MeasureTool extends mix(Layer) {
    * @param type
    */
   changeCur (type) {
-    console.log(type)
     if (type === this.measureTypes.measureLength) {
-      this.map.getTargetElement().style.cursor = this.options['measureLengthCursor']
+      this.map.getTargetElement().style.cursor = this.defaultParams['measureLengthCursor']
     } else if (type === this.measureTypes.measureArea) {
-      this.map.getTargetElement().style.cursor = this.options['measureAreaCursor']
+      this.map.getTargetElement().style.cursor = this.defaultParams['measureAreaCursor']
     } else {
       this.map.getTargetElement().style.cursor = this.previousCursor_
     }
@@ -319,22 +326,7 @@ class MeasureTool extends mix(Layer) {
         return
       }
       let helpTooltipElement = this.measureHelpTooltip.getElement()
-      helpTooltipElement.className = ' HMapLabel HMap_disLabel'
-      helpTooltipElement.style.position = 'absolute'
-      helpTooltipElement.style.display = 'inline'
-      helpTooltipElement.style.cursor = 'inherit'
-      helpTooltipElement.style.border = '1px solid rgb(255, 1, 3)'
-      helpTooltipElement.style.padding = '3px 5px'
-      helpTooltipElement.style.whiteSpace = 'nowrap'
-      helpTooltipElement.style.fontVariant = 'normal'
-      helpTooltipElement.style.fontWeight = 'normal'
-      helpTooltipElement.style.fontStretch = 'normal'
-      helpTooltipElement.style.fontSize = '12px'
-      helpTooltipElement.style.lineHeight = 'normal'
-      helpTooltipElement.style.fontFamily = 'arial,simsun'
-      helpTooltipElement.style.color = 'rgb(51, 51, 51)'
-      helpTooltipElement.style.backgroundColor = 'rgb(255, 255, 255)'
-      helpTooltipElement.style.webkitUserSelect = 'none'
+      helpTooltipElement.className = ' HMapLabel HMap_disLabel move-label'
       helpTooltipElement.innerHTML = '<span>总长:<span class="HMap_disBoxDis"></span></span><br><span style="color: #7a7a7a">单击确定地点,双击结束</span>'
       this.measureHelpTooltip.setPosition(event.coordinate)
     }
@@ -390,10 +382,10 @@ class MeasureTool extends mix(Layer) {
       } else if (this.options['measureType'] === this.measureTypes.measureArea) {
         this.addMeasureRemoveButton(ev.feature.getGeometry().getCoordinates()[0][0])
       }
-      this.listener = null
-      this.drawSketch = null
       this.removeDrawInteraion()
       this.changeCur()
+      this.listener = null
+      this.drawSketch = null
     })
   }
 
@@ -415,7 +407,7 @@ class MeasureTool extends mix(Layer) {
             length += this.wgs84Sphere.haversineDistance(c1, c2)
           }
           if (length > 100) {
-            output = (Math.round(length / 1000 * 100) / 100) + ' ' + '千米'
+            output = (Math.round(length / 1000 * 100) / 100) + ' ' + '公里'
           } else {
             output = (Math.round(length * 100) / 100) + ' ' + '米'
           }
@@ -464,29 +456,12 @@ class MeasureTool extends mix(Layer) {
    */
   addMeasureOverLay (coordinate, length, type) {
     let helpTooltipElement = document.createElement('label')
-    helpTooltipElement.style.position = 'absolute'
-    helpTooltipElement.style.display = 'inline'
-    helpTooltipElement.style.cursor = 'inherit'
-    helpTooltipElement.style.border = 'none'
-    helpTooltipElement.style.padding = '0'
-    helpTooltipElement.style.whiteSpace = 'nowrap'
-    helpTooltipElement.style.fontVariant = 'normal'
-    helpTooltipElement.style.fontWeight = 'normal'
-    helpTooltipElement.style.fontStretch = 'normal'
-    helpTooltipElement.style.fontSize = '12px'
-    helpTooltipElement.style.lineHeight = 'normal'
-    helpTooltipElement.style.fontFamily = 'arial,simsun'
-    helpTooltipElement.style.color = 'rgb(51, 51, 51)'
-    helpTooltipElement.style.webkitUserSelect = 'none'
     if (type === '止点') {
-      helpTooltipElement.style.border = '1px solid rgb(255, 1, 3)'
-      helpTooltipElement.style.backgroundColor = 'rgb(255, 255, 255)'
-      helpTooltipElement.style.padding = '3px 5px'
-      helpTooltipElement.className = ' HMapLabel HMap_disLabel'
+      helpTooltipElement.className = 'hmap-measure-overLay HMap_disLabel'
       helpTooltipElement.innerHTML = "总长<span class='HMap_disBoxDis'>" + length + '</span>'
       this.addMeasureRemoveButton(coordinate)
     } else {
-      helpTooltipElement.className = 'HMapLabel'
+      helpTooltipElement.className = 'hmap-measure-overLay HMapLabel'
       helpTooltipElement.innerHTML = "<span class='HMap_diso'><span class='HMap_disi'>" + length + '</span></span>'
     }
     let tempMeasureTooltip = new ol.Overlay({
@@ -506,7 +481,7 @@ class MeasureTool extends mix(Layer) {
   addMeasureRemoveButton (coordinate) {
     let pos = [coordinate[0] - 5 * this.map.getView().getResolution(), coordinate[1]]
     let btnImg = document.createElement('img')
-    btnImg.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NEYzMzc1RDY3RDU1MTFFNUFDNDJFNjQ4NUUwMzRDRDYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NEYzMzc1RDc3RDU1MTFFNUFDNDJFNjQ4NUUwMzRDRDYiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo0RjMzNzVENDdENTUxMUU1QUM0MkU2NDg1RTAzNENENiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo0RjMzNzVENTdENTUxMUU1QUM0MkU2NDg1RTAzNENENiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsDx84AAAAC3SURBVHjavJIxDoMwDEV/ok5wDCbu0DvAdUBIwMLFSs/AxDXY6tZ2SCGVUikd+ifn20+2k5hHVd0AXJGmGQw+UyWMxY8KQGpbUNcB23aYHIsnuSgIy8dlAQ2DgwWSmD0YE5ReAq5pQOMIrKsDRByjKGC/dsxz2L7XQgU8JB7n4qDoY6SYF4J+p72T7/zeOXqr03SMx8XnsTUX7UgElKVCyDK3s8Tsae6sv/8ceceZ6jr1k99fAgwAsZy0Sa2HgDcAAAAASUVORK5CYII='
+    btnImg.src = (this.defaultParams['removeButtonSrc'] ? this.defaultParams['removeButtonSrc'] : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NEYzMzc1RDY3RDU1MTFFNUFDNDJFNjQ4NUUwMzRDRDYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NEYzMzc1RDc3RDU1MTFFNUFDNDJFNjQ4NUUwMzRDRDYiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo0RjMzNzVENDdENTUxMUU1QUM0MkU2NDg1RTAzNENENiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo0RjMzNzVENTdENTUxMUU1QUM0MkU2NDg1RTAzNENENiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsDx84AAAAC3SURBVHjavJIxDoMwDEV/ok5wDCbu0DvAdUBIwMLFSs/AxDXY6tZ2SCGVUikd+ifn20+2k5hHVd0AXJGmGQw+UyWMxY8KQGpbUNcB23aYHIsnuSgIy8dlAQ2DgwWSmD0YE5ReAq5pQOMIrKsDRByjKGC/dsxz2L7XQgU8JB7n4qDoY6SYF4J+p72T7/zeOXqr03SMx8XnsTUX7UgElKVCyDK3s8Tsae6sv/8ceceZ6jr1k99fAgwAsZy0Sa2HgDcAAAAASUVORK5CYII=')
     btnImg.style.cursor = 'pointer'
     btnImg.title = '清除测量结果'
     btnImg.groupId = this.drawSketch.get('uuid')
@@ -516,10 +491,11 @@ class MeasureTool extends mix(Layer) {
     }
     let closeBtn = new ol.Overlay({
       element: btnImg,
-      offset: [-2, -6],
-      positioning: 'center-center'
+      offset: [0, 10],
+      positioning: 'center-bottom'
     })
     this.map.addOverlay(closeBtn)
+    this.map.render()
     closeBtn.setPosition(pos)
     closeBtn.set('uuid', this.drawSketch.get('uuid'))
   }

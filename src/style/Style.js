@@ -1,4 +1,4 @@
-import { ol } from '../constants'
+import {ol} from '../constants'
 class Style {
   /**
    * 获取点样式
@@ -148,6 +148,118 @@ class Style {
       return style
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  /**
+   * 测量工具样式定义
+   * @param options
+   * @returns {*}
+   */
+  getStyleForMeasure (options) {
+    try {
+      let style = null
+      if (typeof options === 'function') {
+        style = options
+      } else {
+        if (!options) {
+          style = new ol.style.Style({
+            fill: new ol.style.Fill({
+              color: 'rgba(67, 110, 238, 0.4)'
+            }),
+            stroke: new ol.style.Stroke({
+              color: 'rgba(242,123,57,1)',
+              width: 2
+            }),
+            image: new ol.style.Circle({
+              radius: 4,
+              stroke: new ol.style.Stroke({
+                color: 'rgba(255,0,0,1)',
+                width: 1
+              }),
+              fill: new ol.style.Fill({
+                color: 'rgba(255,255,255,1)'
+              })
+            })
+          })
+        } else {
+          style = new ol.style.Style({})
+          if (options['stroke'] && this._getStroke(options['stroke'])) {
+            style.setStroke(this._getStroke(options['stroke']))
+          }
+          if (options['text'] && this._getText(options['text'])) {
+            style.setText(this._getText(options['text']))
+          }
+          if (options['fill'] && this._getFill(options['fill'])) {
+            style.setFill(this._getFill(options['fill']))
+          }
+          if (options['regularShape']) {
+            style.setImage(this._getRegularShape(options['regularShape']))
+          }
+          if (options['circle']) {
+            style.setImage(this._getRegularCircle(options['circle']))
+          }
+        }
+      }
+      return style
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  /**
+   * 获取规则样式图形
+   * @param options
+   * @private
+   */
+  _getRegularShape (options) {
+    try {
+      let regularShape = new ol.style.RegularShape({
+        fill: (this._getFill(options['fill']) || undefined),
+        points: ((options['points'] && typeof options['points'] === 'number') ? options['points'] : 1),
+        radius: ((options['radius'] && typeof options['radius'] === 'number') ? options['radius'] : undefined),
+        radius1: ((options['radius1'] && typeof options['radius1'] === 'number') ? options['radius1'] : undefined),
+        radius2: ((options['radius2'] && typeof options['radius2'] === 'number') ? options['radius2'] : undefined),
+        angle: ((options['angle'] && typeof options['angle'] === 'number') ? options['angle'] : 0),
+        snapToPixel: ((options['snapToPixel'] && typeof options['snapToPixel'] === 'boolean') ? options['snapToPixel'] : true),
+        stroke: (this._getStroke(options['stroke']) || undefined),
+        rotation: ((options['rotation'] && typeof options['rotation'] === 'number') ? options['rotation'] : 0),
+        rotateWithView: ((options['rotateWithView'] && typeof options['rotateWithView'] === 'boolean') ? options['rotateWithView'] : false)
+      })
+      if (regularShape && regularShape instanceof ol.style.RegularShape) {
+        return regularShape
+      } else {
+        return false
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  /**
+   * 获取○样式
+   * @param options
+   * @private
+   */
+  _getRegularCircle (options) {
+    try {
+      let circle = new ol.style.Circle({
+        fill: new ol.style.Fill({
+          color: (options['fill'] && options['fill']['fillColor'] ? options['fill']['fillColor'] : 'rgba(255,255,255,1)')
+        }),
+        radius: ((options['circleRadius'] && typeof options['circleRadius'] === 'number') ? options['circleRadius'] : 0),
+        stroke: new ol.style.Stroke({
+          color: (options['stroke'] && options['stroke']['strokeColor'] ? options['stroke']['strokeColor'] : 'rgba(255,0,0,1)'),
+          width: (options['stroke'] && options['stroke']['strokeWidth'] ? options['stroke']['strokeWidth'] : 1)
+        })
+      })
+      if (circle && circle instanceof ol.style.Circle) {
+        return circle
+      } else {
+        return false
+      }
+    } catch (e) {
+      console.log(e)
     }
   }
 
