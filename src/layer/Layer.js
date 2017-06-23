@@ -116,15 +116,23 @@ class Layer extends mix(Style) {
     if (this.map) {
       if (feature instanceof ol.Feature) {
         let layers = this.map.getLayers().getArray()
-        layers.forEach(layer => {
-          let source = layer.getSource()
-          if (source.getFeatures) {
-            let features = source.getFeatures()
-            features.forEach(feat => {
-              if (feat === feature) {
-                tragetLayer = layer
-              }
-            })
+        layers.every(layer => {
+          if (layer && layer instanceof ol.layer.Vector && layer.getSource) {
+            let source = layer.getSource()
+            if (source.getFeatures) {
+              let features = source.getFeatures()
+              features.every(feat => {
+                if (feat === feature) {
+                  tragetLayer = layer
+                  return false
+                } else {
+                  return true
+                }
+              })
+            }
+            return false
+          } else {
+            return true
           }
         })
       } else {

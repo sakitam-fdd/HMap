@@ -2064,15 +2064,23 @@ var Layer = function (_mix) {
       if (this.map) {
         if (feature instanceof _constants.ol.Feature) {
           var layers = this.map.getLayers().getArray();
-          layers.forEach(function (layer) {
-            var source = layer.getSource();
-            if (source.getFeatures) {
-              var features = source.getFeatures();
-              features.forEach(function (feat) {
-                if (feat === feature) {
-                  tragetLayer = layer;
-                }
-              });
+          layers.every(function (layer) {
+            if (layer && layer instanceof _constants.ol.layer.Vector && layer.getSource) {
+              var source = layer.getSource();
+              if (source.getFeatures) {
+                var features = source.getFeatures();
+                features.every(function (feat) {
+                  if (feat === feature) {
+                    tragetLayer = layer;
+                    return false;
+                  } else {
+                    return true;
+                  }
+                });
+              }
+              return false;
+            } else {
+              return true;
             }
           });
         } else {
