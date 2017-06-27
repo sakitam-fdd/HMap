@@ -325,7 +325,8 @@ class Layer extends mix(Style) {
               TILED: (params['tiled'] === false) ? params['tiled'] : true,
               TILESORIGIN: (params['tiledsorrigin'] ? params['tiledsorrigin'] : undefined),
               SERVICE: 'WMS',
-              FORMAT: (params['format'] ? params['format'] : 'image/png')
+              FORMAT: (params['format'] ? params['format'] : 'image/png'),
+              VIEWPARAMS: (params['viewparams'] ? params['viewparams'] : '')
             },
             wrapX: false
           })
@@ -377,7 +378,8 @@ class Layer extends mix(Style) {
               TILED: ((params['tiled'] === false) ? params['tiled'] : true),
               TILESORIGIN: (params['tiledsorrigin'] ? params['tiledsorrigin'] : undefined),
               SERVICE: 'WMS',
-              FORMAT: (params['format'] ? params['format'] : 'image/png')
+              FORMAT: (params['format'] ? params['format'] : 'image/png'),
+              VIEWPARAMS: (params['viewparams'] ? params['viewparams'] : '')
             },
             wrapX: false
           })
@@ -800,7 +802,8 @@ class Layer extends mix(Style) {
             TILED: (params['tiled'] === false) ? params['tiled'] : true,
             TILESORIGIN: (params['tiledsorrigin'] ? params['tiledsorrigin'] : undefined),
             SERVICE: 'WMS',
-            FORMAT: (params['format'] ? params['format'] : 'image/png')
+            FORMAT: (params['format'] ? params['format'] : 'image/png'),
+            VIEWPARAMS: (params['viewparams'] ? params['viewparams'] : '')
           },
           wrapX: false
         })
@@ -860,7 +863,7 @@ class Layer extends mix(Style) {
   removeLayerByLayerName (layerName) {
     if (this.map) {
       let layer = this.getLayerByLayerName(layerName)
-      if (layer) {
+      if (layer && !layer.get('isBaseLayer')) {
         this.map.removeLayer(layer)
       }
     }

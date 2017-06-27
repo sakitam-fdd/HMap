@@ -1,7 +1,7 @@
 const HMap = {}
-require('../style/index.scss')
 HMap.version = require('../package.json').version
 import {ol, proj4} from './constants'
+import './scss/index'
 import Map from './map/Map'
 import Layer from './layer/Layer'
 import Feature from './feature/feature'

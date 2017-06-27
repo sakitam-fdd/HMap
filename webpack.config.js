@@ -8,7 +8,12 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const autoprefixer = require('autoprefixer')
 const env = require('yargs').argv.env // use --env with webpack 2
-
+const assetsPath = function (_path) {
+  let assetsSubDirectory = process.env.NODE_ENV === 'production'
+    ? 'dist'
+    : 'dist'
+  return path.posix.join(assetsSubDirectory, _path)
+}
 let libraryName = 'HMap'
 
 const resolve = (dir) => {
@@ -44,7 +49,7 @@ if (env === 'build') {
       sourceMap: true
     }),
     new ExtractTextPlugin({
-      filename: __dirname + '/dist/css/index.css',
+      filename: assetsPath('../HMap.min.css'),
       allChunks: true
     }),
     new BundleAnalyzerPlugin()
@@ -55,7 +60,8 @@ if (env === 'build') {
   // extract css into its own file
   let __plugins = [
     new ExtractTextPlugin({
-      filename: __dirname + '/dist/css/index.css'
+      filename: assetsPath('../HMap.css'),
+      allChunks: true
     })
   ]
   plugins = plugins.concat(__plugins)
@@ -67,7 +73,7 @@ const config = {
     path.join(__dirname, 'node_modules/babel-polyfill'),
     path.resolve(__dirname + '/src/index.js')
   ],
-  devtool: 'source-map',
+  devtool: '#cheap-module-eval-source-map',
   output: {
     path: __dirname + '/dist',
     filename: outputFile,
@@ -89,25 +95,17 @@ const config = {
       },
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract({
+        use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: 'css-loader'
         })
       },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract({
+        use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           // resolve-url-loader may be chained before sass-loader if necessary
           use: ['css-loader', 'sass-loader']
-        })
-      },
-      {
-        test: /\.less$/,
-        loader: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          // resolve-url-loader may be chained before sass-loader if necessary
-          use: ['css-loader', 'less-loader']
         })
       }
     ]
