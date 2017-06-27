@@ -1,7 +1,7 @@
 /*! This file is created by FDD */
 @charset "UTF-8";
 /*气泡*/
-.ol-popup {
+.hmap-js-popup {
   display: none;
   position: absolute;
   background-color: white;
@@ -9,57 +9,42 @@
   border: 1px solid #cccccc;
   bottom: 12px;
   left: -50%; }
-
-.ol-popup:after, .ol-popup:before {
-  top: 100%;
-  border: solid transparent;
-  content: " ";
-  height: 0;
-  width: 0;
-  position: absolute;
-  pointer-events: none; }
-
-.ol-popup:after {
-  border-top-color: white;
-  border-width: 10px;
-  left: calc(50% - 5px);
-  margin-left: -10px; }
-
-.ol-popup:before {
-  border-top-color: #cccccc;
-  border-width: 11px;
-  left: calc(50% - 5px);
-  margin-left: -11px; }
-
-.ol-popup-content {
-  min-width: 170px;
-  max-height: 200px;
-  overflow-x: auto; }
-
-.ol-popup-closer {
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  font-size: 150%;
-  padding: 0 4px;
-  color: gray;
-  text-decoration: none; }
-
-.ol-popup-closer:after {
-  content: "\2716"; }
-
-.ol-popup div.infoResult {
-  min-width: 130px; }
-
-.ol-popup div.infoResult p {
-  padding: 0.1em;
-  margin: 0; }
-
-.ol-popup-content h3 {
-  margin: 0.25em 0; }
-
-.ol-popup.marker {
-  margin-bottom: 30px; }
+  .hmap-js-popup:before {
+    position: absolute;
+    bottom: -16px;
+    left: 50%;
+    content: '';
+    display: inline-block;
+    border-left: 11px solid transparent;
+    border-right: 11px solid transparent;
+    border-top: 15px solid #c2c2c2;
+    transform: translate(-50%, 0); }
+  .hmap-js-popup:after {
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    content: '';
+    display: inline-block;
+    border-left: 11px solid transparent;
+    border-right: 11px solid transparent;
+    border-top: 15px solid #ffffff;
+    transform: translate(-50%, 0); }
+  .hmap-js-popup .hmap-js-popup-content {
+    min-width: 170px;
+    max-height: 200px;
+    overflow-x: auto; }
+  .hmap-js-popup .hmap-js-popup-closer {
+    position: absolute;
+    top: 3px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    color: #000000;
+    font-size: 30px;
+    transform: rotate(45deg); }
+    .hmap-js-popup .hmap-js-popup-closer:hover {
+      color: #00ccff;
+      cursor: pointer; }
 @charset "UTF-8";
 /*标绘*/
 .plot-helper-control-point-div {
