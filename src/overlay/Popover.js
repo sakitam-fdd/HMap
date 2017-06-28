@@ -2,9 +2,9 @@
  * Created by FDD on 2017/5/14.
  * @desc 用于地图弹出气泡
  */
-import { ol } from '../constants'
-import { DomUtil } from '../dom'
-import { getuuid } from '../utils/utils'
+import {ol} from '../constants'
+import {DomUtil} from '../dom'
+import {getuuid} from '../utils/utils'
 let Popover = function (mapInstence, params) {
   if (mapInstence && mapInstence['map'] instanceof ol.Map) {
     /**
@@ -80,9 +80,11 @@ let Popover = function (mapInstence, params) {
     this.options['layerName'] = 'PopoverFeatureLayer'
   }
 
+  let size = this.map.getSize()
   this.container = DomUtil.create('div', this.options['className'])
   this.content = DomUtil.create('div', 'hmap-js-popup-content', this.container)
-  if (this.options['showClose'] !== false) {
+  this.content.style.maxHeight = size[1] - 20 + 'px'
+  if (this.options['showCloser'] !== false) {
     this.closer = DomUtil.create('div', 'hmap-js-popup-closer', this.container)
     this.closer.innerHTML = '+'
     this.closer.addEventListener('click', (event) => {
@@ -93,8 +95,24 @@ let Popover = function (mapInstence, params) {
       }
     })
   }
+  if (this.options['showMinimize'] !== false) {
+    this.minimize = DomUtil.create('div', 'hmap-js-popup-minimize', this.container)
+    this.minimize.innerHTML = '_'
+    this.minimize.addEventListener('click', (event) => {
+      let e = !event ? window.event : event
+      e.stopPropagation()
+      if (this) {
+        this.showMinimize()
+      }
+    })
+  }
   this.enableTouchScroll_(this.content)
   this.options.element = this.container
+  /**
+   * 最小化的label
+   * @type {null}
+   */
+  this.miniOverLay = null
   ol.Overlay.call(this, {
     element: this.container,
     stopEvent: true,
@@ -112,6 +130,7 @@ ol.inherits(Popover, ol.Overlay)
  * @returns {Popover}
  */
 Popover.prototype.show = function (coord, html) {
+  this.coords = coord
   if (html instanceof HTMLElement) {
     this.content.innerHTML = ''
     this.content.appendChild(html)
@@ -157,13 +176,60 @@ Popover.prototype.showMarkFeature = function (coord) {
   this.markFeature.setStyle(style)
   this.markFeature.on('featureMove', event => {
     let coords = this.markFeature.getGeometry().getCoordinates()
+    this.coords = coords
     this.setPosition(coords)
+    if (this.miniOverLay) {
+      this.miniOverLay.setPosition(this.coords)
+    }
   })
   let layer = this.mapInstence.createVectorLayer(this.options['layerName'], {
     create: true
   })
   if (layer && layer instanceof ol.layer.Vector) {
     layer.getSource().addFeature(this.markFeature)
+  }
+}
+/**
+ * 对气泡最小化
+ */
+Popover.prototype.showMinimize = function () {
+  let that = this
+  if (this.options['showMarkFeature']) {
+    if (!this.miniOverLay) {
+      let element = DomUtil.create('span', 'hmap-marker-minimize-panel')
+      element.setAttribute('data-state', 'block')
+      that.container.style.display = 'none'
+      let eventListener = (event) => {
+        let e = !event ? window.event : event
+        e.stopPropagation()
+        that.container.style.display = 'block'
+        that.miniOverLay.getElement().style.display = 'none'
+        this.miniOverLay.getElement().setAttribute('data-state', 'none')
+      }
+      element.removeEventListener('click', eventListener)
+      element.addEventListener('click', eventListener)
+      let label = DomUtil.create('label', 'hmap-marker-minimize-label', element)
+      if (this.options['minimizeText']) {
+        label.innerText = this.options['minimizeText']
+        label.setAttribute('title', this.options['minimizeText'])
+      } else {
+        label.innerText = '我的标记'
+        label.setAttribute('title', '我的标记')
+      }
+      this.miniOverLay = new ol.Overlay({
+        element: element,
+        stopEvent: true,
+        offset: [0, 0],
+        id: this.options['id'] + '_minimize',
+        position: this.coords
+      })
+      this.map.addOverlay(this.miniOverLay)
+    } else {
+      this.miniOverLay.getElement().style.display = 'block'
+      that.container.style.display = 'none'
+      this.miniOverLay.getElement().setAttribute('data-state', 'block')
+      this.miniOverLay.setPosition(this.coords)
+    }
   }
 }
 

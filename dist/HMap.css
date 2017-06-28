@@ -8,7 +8,9 @@
   padding: 15px 25px 15px 15px;
   border: 1px solid #cccccc;
   bottom: 12px;
-  left: -50%; }
+  left: -50%;
+  min-width: 100px;
+  max-width: 400px; }
   .hmap-js-popup:before {
     position: absolute;
     bottom: -16px;
@@ -30,9 +32,9 @@
     border-top: 15px solid #ffffff;
     transform: translate(-50%, 0); }
   .hmap-js-popup .hmap-js-popup-content {
-    min-width: 170px;
-    max-height: 200px;
-    overflow-x: auto; }
+    min-width: 100px;
+    word-wrap: break-word;
+    overflow-y: auto; }
   .hmap-js-popup .hmap-js-popup-closer {
     position: absolute;
     top: 3px;
@@ -44,6 +46,48 @@
     transform: rotate(45deg); }
     .hmap-js-popup .hmap-js-popup-closer:hover {
       color: #00ccff;
+      cursor: pointer; }
+  .hmap-js-popup .hmap-js-popup-minimize {
+    position: absolute;
+    top: 0px;
+    right: 40px;
+    text-align: center;
+    line-height: 20px;
+    width: 20px;
+    height: 20px;
+    color: #000000;
+    font-size: 30px; }
+    .hmap-js-popup .hmap-js-popup-minimize:hover {
+      color: #00ccff;
+      cursor: pointer; }
+
+.hmap-marker-minimize-panel {
+  display: inline-block;
+  width: 55px;
+  height: 16px;
+  text-align: center;
+  line-height: 16px;
+  position: absolute;
+  cursor: pointer;
+  border: 1px solid gray;
+  padding: 1px 2px;
+  white-space: nowrap;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  font-stretch: normal;
+  font-size: 12px;
+  font-family: arial, simsun;
+  color: #333333;
+  -webkit-user-select: none;
+  max-width: 106px;
+  overflow: hidden;
+  left: 10px;
+  top: -35px;
+  background-color: white; }
+  .hmap-marker-minimize-panel:hover {
+    cursor: pointer; }
+    .hmap-marker-minimize-panel:hover label {
       cursor: pointer; }
 @charset "UTF-8";
 /*标绘*/
