@@ -33,6 +33,7 @@
 <div class="tool">
   <button onclick="measureTool('length')">测距</button>
   <button onclick="measureTool('area')">测面</button>
+  <button onclick="des()">销毁</button>
 </div>
 <div id="map"></div>
 <script src="../dist/HMap.js"></script>
@@ -60,7 +61,7 @@
       ]
     });
     Maps._addScaleLine()
-  var measure = new HMap.MeasureTool(Maps.map, {
+  var measure = new HMap.MeasureTool(Maps, {
     measureLengthCursor: 'url(../asset/cur/ruler.cur), default',
     measureAreaCursor: 'url(../asset/cur/ruler.cur), default',
     style: {
@@ -97,6 +98,10 @@
         measureAreaCursor: 'url(../asset/cur/ruler.cur), default'
       });
     }
+  }
+
+  function des () {
+    measure.destroy()
   }
 </script>
 </body>

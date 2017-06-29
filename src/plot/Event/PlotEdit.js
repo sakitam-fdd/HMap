@@ -327,6 +327,7 @@ class PlotEdit extends Observable {
   deactivate () {
     this.activePlot = null
     this.mouseOver = false
+    this.map.getViewport().style.cursor = 'default'
     this.destroyHelperDom()
     this.disconnectEventHandlers()
     this.elementTable = {}

@@ -49,6 +49,20 @@ class View {
   }
 
   /**
+   * 缩放到全图
+   */
+  zoomMaxExtent () {
+    let view = this.map.getView()
+    if (this.map && view) {
+      let center = view.getCenter()
+      if (center) {
+        this.view.setCenter(center)
+        this.view.setZoom(2)
+      }
+    }
+  }
+
+  /**
    * 判断点是否在视图内，如果不在地图将自动平移
    * @param coord
    */
