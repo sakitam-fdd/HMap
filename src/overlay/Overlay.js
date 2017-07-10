@@ -207,7 +207,7 @@ class Overlay extends mix(Feature) {
     try {
       if (overlay && overlay instanceof ol.Overlay && this.map) {
         this.map.removeOverlay(overlay)
-        if (overlay['markFeature'] && overlay['markFeature'] instanceof ol.Feature) {
+        if (overlay.hasOwnProperty('markFeature') && overlay['markFeature'] && overlay['markFeature'] instanceof ol.Feature) {
           this.removeFeature(overlay['markFeature'])
         }
         return overlay
@@ -229,7 +229,7 @@ class Overlay extends mix(Feature) {
         let overLay = this.map.getOverlayById(_id)
         if (overLay && overLay instanceof ol.Overlay) {
           this.map.removeOverlay(overLay)
-          if (overLay['markFeature'] && overLay['markFeature'] instanceof ol.Feature) {
+          if (overLay.hasOwnProperty('markFeature') && overLay['markFeature'] && overLay['markFeature'] instanceof ol.Feature) {
             this.removeFeature(overLay['markFeature'])
           }
         }
@@ -254,7 +254,7 @@ class Overlay extends mix(Feature) {
         if (overlays[i] && overlays[i].get('layerName') === layerName) {
           _overlays.push(overlays[i])
           this.map.removeOverlay(overlays[i])
-          if (overlays[i]['markFeature'] && overlays[i]['markFeature'] instanceof ol.Feature) {
+          if (overlays[i].hasOwnProperty('markFeature') && overlays[i]['markFeature'] && overlays[i]['markFeature'] instanceof ol.Feature) {
             this.removeFeature(overlays[i]['markFeature'])
           }
           i--

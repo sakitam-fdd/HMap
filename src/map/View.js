@@ -51,13 +51,14 @@ class View {
   /**
    * 缩放到全图
    */
-  zoomMaxExtent () {
+  zoomMaxExtent (zoom) {
     let view = this.map.getView()
+    zoom = (typeof zoom === 'number') ? zoom : 2
     if (this.map && view) {
       let center = view.getCenter()
       if (center) {
         this.view.setCenter(center)
-        this.view.setZoom(2)
+        this.view.setZoom(zoom)
       }
     }
   }
