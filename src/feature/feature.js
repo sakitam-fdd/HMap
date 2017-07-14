@@ -145,8 +145,8 @@ class Feature extends mix(Style, Layer) {
         geometry: geometry,
         params: params
       })
-      let style = this.getStyleByPoint(point['attributes']['style'])
-      let selectStyle = this.getStyleByPoint(point['attributes']['selectStyle'])
+      let style = this.getStyleByPoint(point['attributes']['style'] || params['style'])
+      let selectStyle = this.getStyleByPoint(point['attributes']['selectStyle'] || params['selectStyle'])
       if (style && feature) {
         feature.setStyle(style)
         feature.set('style', style)
@@ -258,8 +258,8 @@ class Feature extends mix(Style, Layer) {
           geometry: new ol.format.WKT().readGeometry(line.geometry)
         })
       }
-      let style = this.getStyleByLine(line['attributes']['style'])
-      let selectStyle = this.getStyleByLine(line['attributes']['selectStyle'])
+      let style = this.getStyleByLine(line['attributes']['style'] || params['style'])
+      let selectStyle = this.getStyleByLine(line['attributes']['selectStyle'] || params['selectStyle'])
       let extent = linefeature.getGeometry().getExtent()
       if (style && linefeature) {
         linefeature.setStyle(style)
@@ -342,8 +342,8 @@ class Feature extends mix(Style, Layer) {
         let polygonFeature = new ol.Feature({
           geometry: new ol.format.WKT().readGeometry(polygon.geometry)
         })
-        let style = this.getStyleByPolygon(polygon['attributes']['style'])
-        let selectStyle = this.getStyleByPolygon(polygon['attributes']['selectStyle'])
+        let style = this.getStyleByPolygon(polygon['attributes']['style'] || params['style'])
+        let selectStyle = this.getStyleByPolygon(polygon['attributes']['selectStyle'] || params['selectStyle'])
         let extent = polygonFeature.getGeometry().getExtent()
         if (style && polygonFeature) {
           polygonFeature.setStyle(style)
