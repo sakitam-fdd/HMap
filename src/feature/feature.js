@@ -193,19 +193,21 @@ class Feature extends mix(Style, Layer) {
           change = true
         }
         points.forEach(point => {
-          let pointFeat = this.addPoint(point, params)
-          if (pointFeat && pointFeat instanceof ol.Feature) {
-            let geom = pointFeat.getGeometry()
-            if (geom && geom instanceof ol.geom.Point) {
-              multiPoint.appendPoint(geom)
-            } else if (geom && geom instanceof ol.geom.MultiPoint) {
-              let multiGeoms = geom.getPoints()
-              if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
-                multiGeoms.forEach(_geom => {
-                  if (_geom && _geom instanceof ol.geom.Point) {
-                    multiPoint.appendPoint(_geom)
-                  }
-                })
+          if (point && point['geometry']) {
+            let pointFeat = this.addPoint(point, params)
+            if (pointFeat && pointFeat instanceof ol.Feature) {
+              let geom = pointFeat.getGeometry()
+              if (geom && geom instanceof ol.geom.Point) {
+                multiPoint.appendPoint(geom)
+              } else if (geom && geom instanceof ol.geom.MultiPoint) {
+                let multiGeoms = geom.getPoints()
+                if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
+                  multiGeoms.forEach(_geom => {
+                    if (_geom && _geom instanceof ol.geom.Point) {
+                      multiPoint.appendPoint(_geom)
+                    }
+                  })
+                }
               }
             }
           }

@@ -163,6 +163,7 @@ Popover.prototype.showMarkFeature = function (coord) {
     },
     geometry: new ol.geom.Point(coord)
   })
+  this.set('markFeature', this.markFeature)
   let style = new ol.style.Style({
     image: new ol.style.Icon({
       anchor: [0.5, 1],
