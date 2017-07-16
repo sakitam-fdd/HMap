@@ -3,6 +3,7 @@ require('../style/index.scss')
 HMap.version = require('../package.json').version
 import {ol, proj4} from './constants'
 import Map from './map/Map'
+import Observable from './event/Observable'
 import Layer from './layer/Layer'
 import Feature from './feature/feature'
 import CoordsTransform from './plugins/CoordsTransform'
@@ -23,6 +24,7 @@ window.ol = ol
 HMap.proj4 = proj4
 window.proj4 = proj4
 HMap.Map = Map
+HMap.Observable = Observable
 HMap.Utils = utils
 HMap.PlotDraw = PlotDraw
 HMap.PlotEdit = PlotEdit
