@@ -103,7 +103,9 @@ const config = {
     path.join(__dirname, 'node_modules/babel-polyfill'),
     path.resolve(__dirname + '/src/index.js')
   ],
-  devtool: '#cheap-module-eval-source-map',
+  // devtool: '#cheap-module-eval-source-map',
+  // devtool: '#eval-source-map',
+  devtool: '#source-map',
   output: {
     path: __dirname + '/dist',
     filename: outputFile,

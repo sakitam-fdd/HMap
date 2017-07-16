@@ -1,6 +1,5 @@
 import mix from '../utils/mixin'
 import {ol, proj4} from '../constants'
-
 import BaseLayers from './baseLayer'
 import Controls from './Controls'
 import Interactions from './Interactions'
@@ -9,6 +8,7 @@ import Layer from '../layer/Layer'
 import Feature from '../feature/feature'
 import Style from '../style/Style'
 import Overlay from '../overlay/Overlay'
+import Observable from '../event/Observable'
 
 class Map extends mix(BaseLayers, Controls, Interactions, Style, Layer, View, Feature, Overlay) {
   constructor () {
@@ -17,7 +17,7 @@ class Map extends mix(BaseLayers, Controls, Interactions, Style, Layer, View, Fe
     this.plotDraw = null // 标绘工具
     this.plotEdit = null
     this._lastDrawInteractionGeometry = null
-    window.ObservableObj = new ol.Object()
+    this.EverntCenter = new Observable()
     proj4.defs('EPSG:4490', '+proj=longlat +ellps=GRS80 +no_defs')
     ol.proj.setProj4(proj4)
 
@@ -82,36 +82,45 @@ class Map extends mix(BaseLayers, Controls, Interactions, Style, Layer, View, Fe
    * @param params
    */
   initMap (mapDiv, params) {
-    let options = params || {}
-    let options_ = JSON.stringify(options)
-    let logo = this._addCopyRight(options['logo'])
-    this.view = this._addView(options['view'])
-    let layers = this.addBaseLayers(options['baseLayers'], options['view'])
-    let interactions = this._addInteractions(options['interactions'])
-    let controls = this._addControls(options['controls'])
-    /**
-     * 当前地图对象
-     * @type {ol.Map}
-     */
-    this.map = new ol.Map({
-      target: mapDiv,
-      loadTilesWhileAnimating: false,
-      loadTilesWhileInteracting: false,
-      logo: logo,
-      layers: layers,
-      view: this.view,
-      interactions: interactions,
-      controls: controls
-    })
+    try {
+      let options = params || {}
+      let options_ = JSON.stringify(options)
+      let logo = this._addCopyRight(options['logo'])
+      this.view = this._addView(options['view'])
+      let layers = this.addBaseLayers(options['baseLayers'], options['view'])
+      let interactions = this._addInteractions(options['interactions'])
+      let controls = this._addControls(options['controls'])
+      /**
+       * 当前地图对象
+       * @type {ol.Map}
+       */
+      this.map = new ol.Map({
+        target: mapDiv,
+        loadTilesWhileAnimating: false,
+        loadTilesWhileInteracting: false,
+        logo: logo,
+        layers: layers,
+        view: this.view,
+        interactions: interactions,
+        controls: controls
+      })
 
-    /**
-     * 保存当前参数
-     */
-    this.map.setProperties(options_, false)
+      /**
+       * 保存当前参数
+       */
+      this.map.setProperties(options_, false)
 
-    this.map.on('click', event => {
-      console.log(event.coordinate)
-    })
+      this.map.on('click', event => {
+        console.log(event.coordinate)
+      })
+
+      /**
+       * 加载成功事件
+       */
+      this.EverntCenter.dispatch('loadMapSuccess', true)
+    } catch (error) {
+      this.EverntCenter.dispatch('loadMapSuccess', error)
+    }
   }
 
   /**

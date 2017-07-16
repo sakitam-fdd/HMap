@@ -22,7 +22,7 @@ class Observable {
   un (event) {
     let [eventName, key, r, type, that] = ['', '', false, (typeof event), this]
     if (type === 'string') {
-      if (EventListener.hasOwnKey(this.Events, event)) {
+      if (Observable.hasOwnKey(this.Events, event)) {
         delete this.Events[event]
         return true
       }
@@ -30,7 +30,7 @@ class Observable {
     } else if (type === 'object') {
       eventName = event[0]
       key = event[1]
-      if (EventListener.hasOwnKey(this.Events, eventName) && EventListener.hasOwnKey(this.Events[eventName], key)) {
+      if (Observable.hasOwnKey(this.Events, eventName) && Observable.hasOwnKey(this.Events[eventName], key)) {
         delete this.Events[eventName][key]
         return true
       }
@@ -66,7 +66,7 @@ class Observable {
    * @param args
    */
   action (eventName, args) {
-    if (EventListener.hasOwnKey(this.Events, eventName)) {
+    if (Observable.hasOwnKey(this.Events, eventName)) {
       this.eachEvent(this.Events[eventName], (key, item) => {
         item[0].apply(item[2], args)
         if (item[1]) {
@@ -82,7 +82,7 @@ class Observable {
    */
   dispatch (eventName) {
     let that = this
-    let args = EventListener.slice(arguments, 1)
+    let args = Observable.slice(arguments, 1)
     setTimeout(function () {
       that.action(eventName, args)
     })
@@ -93,7 +93,7 @@ class Observable {
    * @param eventName
    */
   dispatchSync (eventName) {
-    this.action(eventName, EventListener.slice(arguments, 1))
+    this.action(eventName, Observable.slice(arguments, 1))
   }
 
   /**
@@ -115,7 +115,7 @@ class Observable {
     if (typeof eventName !== 'string' || typeof callback !== 'function') {
       throw new Error('传入的事件名称和回调函数有误！')
     }
-    if (!EventListener.hasOwnKey(this.Events, eventName)) {
+    if (!Observable.hasOwnKey(this.Events, eventName)) {
       this.Events[eventName] = {}
     }
     this.Events[eventName][++this.__cnt] = [callback, isOne, context]
@@ -129,7 +129,7 @@ class Observable {
    */
   eachEvent (obj, callback) {
     for (let key in obj) {
-      if (EventListener.hasOwnKey(obj, key)) {
+      if (Observable.hasOwnKey(obj, key)) {
         callback(key, obj[key])
       }
     }
