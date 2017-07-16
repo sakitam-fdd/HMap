@@ -4,9 +4,9 @@ import Style from '../style/Style'
 import { ol } from '../constants'
 import * as utils from '../utils/utils'
 class MeasureTool extends mix(Layer, Style) {
-  constructor (map, params) {
+  constructor (mapInstence, params) {
     super()
-    if (map && map instanceof ol.Map) {
+    if (mapInstence && mapInstence['map'] instanceof ol.Map) {
       this.defaultParams = {
         measureLengthCursor: 'url(../asset/cur/ruler.cur), default',
         measureAreaCursor: 'url(../asset/cur/ruler.cur), default',
@@ -36,10 +36,14 @@ class MeasureTool extends mix(Layer, Style) {
         }
       }
       /**
+       * 地图实例
+       */
+      this.mapInstence = mapInstence
+      /**
        * 地图对象
        * @type {ol.Map}
        */
-      this.map = map
+      this.map = mapInstence['map']
       /**
        * 计算工具
        * @type {ol.Sphere}
@@ -180,6 +184,31 @@ class MeasureTool extends mix(Layer, Style) {
   }
 
   /**
+   * 销毁实例
+   */
+  destroy () {
+    try {
+      window.setTimeout(() => {
+        this.getDragPanInteraction().setActive(true)
+        this.getDoubleClickZoomInteraction().setActive(true)
+      }, 300)
+      this.map.getTargetElement().style.cursor = 'default'
+      this.map.removeOverlay(this.measureHelpTooltip)
+      this.measureHelpTooltip = null
+      this.removeDrawInteraion()
+      this.changeCur()
+      this.listener = null
+      this.drawSketch = null
+      if (this.layer && this.layer instanceof ol.layer.Vector) {
+        this.map.removeLayer(this.layer)
+      }
+      this.mapInstence.removeOverlayByLayerName(this.layerName)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  /**
    * 添加画笔交互
    */
   addDrawInteraction () {
@@ -191,6 +220,8 @@ class MeasureTool extends mix(Layer, Style) {
     }
     this.options['create'] = true
     this.layer = this.createVectorLayer(this.layerName, this.options)
+    this.mapInstence.polygonLayers.add(this.layerName)
+    this.mapInstence.orderLayerZindex()
     let style = this.getStyleForMeasure(this.defaultParams['style'])
     this.layer.setStyle(style)
     this.draw = new ol.interaction.Draw({
@@ -297,6 +328,7 @@ class MeasureTool extends mix(Layer, Style) {
         offset: [15, -10],
         positioning: 'center-center'
       })
+      this.measureHelpTooltip.set('layerName', this.layerName)
       this.map.addOverlay(this.measureHelpTooltip)
     }
     this.measureHelpTooltip.setPosition(event.coordinate)
@@ -469,6 +501,7 @@ class MeasureTool extends mix(Layer, Style) {
       offset: [10, -10],
       positioning: 'center-center'
     })
+    tempMeasureTooltip.set('layerName', this.layerName)
     this.map.addOverlay(tempMeasureTooltip)
     tempMeasureTooltip.setPosition(coordinate)
     tempMeasureTooltip.set('uuid', this.drawSketch.get('uuid'))
@@ -494,6 +527,7 @@ class MeasureTool extends mix(Layer, Style) {
       offset: [0, 10],
       positioning: 'center-bottom'
     })
+    closeBtn.set('layerName', this.layerName)
     this.map.addOverlay(closeBtn)
     this.map.render()
     closeBtn.setPosition(pos)
@@ -512,6 +546,7 @@ class MeasureTool extends mix(Layer, Style) {
       offset: [15, 0],
       positioning: 'center-left'
     })
+    this.measureAreaTooltip.set('layerName', this.layerName)
     this.map.addOverlay(this.measureAreaTooltip)
   }
 

@@ -26,9 +26,10 @@ npm run build
 ### CDN引用
 
 ```bash
-https://unpkg.com/hmap-js@1.3.4/dist/HMap.js
-https://unpkg.com/hmap-js@1.3.4/dist/HMap.min.js
-https://unpkg.com/hmap-js@1.3.4/dist/HMap.css
+https://unpkg.com/hmap-js@1.3.5/dist/HMap.js
+https://unpkg.com/hmap-js@1.3.5/dist/HMap.min.js
+https://unpkg.com/hmap-js@1.3.5/dist/HMap.css
+https://unpkg.com/hmap-js@1.3.5/dist/HMap.min.css
 ```
 
 ### NPM包管理

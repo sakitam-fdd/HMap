@@ -145,8 +145,8 @@ class Feature extends mix(Style, Layer) {
         geometry: geometry,
         params: params
       })
-      let style = this.getStyleByPoint(point['attributes']['style'])
-      let selectStyle = this.getStyleByPoint(point['attributes']['selectStyle'])
+      let style = this.getStyleByPoint(point['attributes']['style'] || params['style'])
+      let selectStyle = this.getStyleByPoint(point['attributes']['selectStyle'] || params['selectStyle'])
       if (style && feature) {
         feature.setStyle(style)
         feature.set('style', style)
@@ -193,19 +193,21 @@ class Feature extends mix(Style, Layer) {
           change = true
         }
         points.forEach(point => {
-          let pointFeat = this.addPoint(point, params)
-          if (pointFeat && pointFeat instanceof ol.Feature) {
-            let geom = pointFeat.getGeometry()
-            if (geom && geom instanceof ol.geom.Point) {
-              multiPoint.appendPoint(geom)
-            } else if (geom && geom instanceof ol.geom.MultiPoint) {
-              let multiGeoms = geom.getPoints()
-              if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
-                multiGeoms.forEach(_geom => {
-                  if (_geom && _geom instanceof ol.geom.Point) {
-                    multiPoint.appendPoint(_geom)
-                  }
-                })
+          if (point && point['geometry']) {
+            let pointFeat = this.addPoint(point, params)
+            if (pointFeat && pointFeat instanceof ol.Feature) {
+              let geom = pointFeat.getGeometry()
+              if (geom && geom instanceof ol.geom.Point) {
+                multiPoint.appendPoint(geom)
+              } else if (geom && geom instanceof ol.geom.MultiPoint) {
+                let multiGeoms = geom.getPoints()
+                if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
+                  multiGeoms.forEach(_geom => {
+                    if (_geom && _geom instanceof ol.geom.Point) {
+                      multiPoint.appendPoint(_geom)
+                    }
+                  })
+                }
               }
             }
           }
@@ -258,8 +260,8 @@ class Feature extends mix(Style, Layer) {
           geometry: new ol.format.WKT().readGeometry(line.geometry)
         })
       }
-      let style = this.getStyleByLine(line['attributes']['style'])
-      let selectStyle = this.getStyleByLine(line['attributes']['selectStyle'])
+      let style = this.getStyleByLine(line['attributes']['style'] || params['style'])
+      let selectStyle = this.getStyleByLine(line['attributes']['selectStyle'] || params['selectStyle'])
       let extent = linefeature.getGeometry().getExtent()
       if (style && linefeature) {
         linefeature.setStyle(style)
@@ -342,8 +344,8 @@ class Feature extends mix(Style, Layer) {
         let polygonFeature = new ol.Feature({
           geometry: new ol.format.WKT().readGeometry(polygon.geometry)
         })
-        let style = this.getStyleByPolygon(polygon['attributes']['style'])
-        let selectStyle = this.getStyleByPolygon(polygon['attributes']['selectStyle'])
+        let style = this.getStyleByPolygon(polygon['attributes']['style'] || params['style'])
+        let selectStyle = this.getStyleByPolygon(polygon['attributes']['selectStyle'] || params['selectStyle'])
         let extent = polygonFeature.getGeometry().getExtent()
         if (style && polygonFeature) {
           polygonFeature.setStyle(style)

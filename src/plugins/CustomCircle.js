@@ -19,10 +19,11 @@ class CustomCircle extends mix(Layer, Style) {
      */
     this.options = params || {}
 
-    if (!this.options['map'] || !(this.options['map'] instanceof ol.Map)) {
+    if (!this.options['mapInstence'] || !this.options['mapInstence']['map'] || !(this.options['mapInstence']['map'] instanceof ol.Map)) {
       throw new Error('缺少底图对象！')
     } else {
-      this.map = this.options['map']
+      this.mapInstence = this.options['mapInstence']
+      this.map = this.options['mapInstence']['map']
     }
     /**
      * 默认配置
@@ -115,6 +116,8 @@ class CustomCircle extends mix(Layer, Style) {
       let layer = this.createVectorLayer(this.options['layerName'], {
         create: true
       })
+      this.mapInstence.polygonLayers.add(this.options['layerName'])
+      this.mapInstence.orderLayerZindex()
       /**
        * 当前要素样式
        * @type {ol.style.Style}

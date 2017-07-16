@@ -325,7 +325,8 @@ class Layer extends mix(Style) {
               TILED: (params['tiled'] === false) ? params['tiled'] : true,
               TILESORIGIN: (params['tiledsorrigin'] ? params['tiledsorrigin'] : undefined),
               SERVICE: 'WMS',
-              FORMAT: (params['format'] ? params['format'] : 'image/png')
+              FORMAT: (params['format'] ? params['format'] : 'image/png'),
+              VIEWPARAMS: (params['viewparams'] ? params['viewparams'] : '')
             },
             wrapX: false
           })
@@ -377,7 +378,8 @@ class Layer extends mix(Style) {
               TILED: ((params['tiled'] === false) ? params['tiled'] : true),
               TILESORIGIN: (params['tiledsorrigin'] ? params['tiledsorrigin'] : undefined),
               SERVICE: 'WMS',
-              FORMAT: (params['format'] ? params['format'] : 'image/png')
+              FORMAT: (params['format'] ? params['format'] : 'image/png'),
+              VIEWPARAMS: (params['viewparams'] ? params['viewparams'] : '')
             },
             wrapX: false
           })
@@ -782,9 +784,6 @@ class Layer extends mix(Style) {
         source = new ol.source.ImageWMS({
           url: params['layerUrl'],
           crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
-          imageLoadFunction: function (image, src) {
-            image.getImage().src = src
-          },
           params: {
             LAYERS: params['layers'], // require
             STYLES: params['style'] ? params['style'] : '',
@@ -792,7 +791,6 @@ class Layer extends mix(Style) {
             VERSION: params['version'] ? params['version'] : '1.3.0',
             WIDTH: params['width'] ? params['width'] : 256,
             HEIGHT: params['height'] ? params['height'] : 256,
-            BBOX: params['bbox'], // require
             SRS: (params['srs'] ? params['srs'] : 'EPSG:3857'),
             CRS: (params['srs'] ? params['srs'] : 'EPSG:3857'),
             REQUEST: 'GetMap',
@@ -800,7 +798,8 @@ class Layer extends mix(Style) {
             TILED: (params['tiled'] === false) ? params['tiled'] : true,
             TILESORIGIN: (params['tiledsorrigin'] ? params['tiledsorrigin'] : undefined),
             SERVICE: 'WMS',
-            FORMAT: (params['format'] ? params['format'] : 'image/png')
+            FORMAT: (params['format'] ? params['format'] : 'image/png'),
+            VIEWPARAMS: (params['viewparams'] ? params['viewparams'] : '')
           },
           wrapX: false
         })
@@ -860,7 +859,7 @@ class Layer extends mix(Style) {
   removeLayerByLayerName (layerName) {
     if (this.map) {
       let layer = this.getLayerByLayerName(layerName)
-      if (layer) {
+      if (layer && !layer.get('isBaseLayer')) {
         this.map.removeLayer(layer)
       }
     }

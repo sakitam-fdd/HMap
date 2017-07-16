@@ -275,7 +275,18 @@ class Style {
         anchor: (options['imageAnchor'] ? options['imageAnchor'] : [0.5, 0.5]),
         anchorXUnits: (options['imageAnchorXUnits'] ? options['imageAnchorXUnits'] : 'fraction'),
         anchorYUnits: (options['imageAnchorYUnits'] ? options['imageAnchorYUnits'] : 'fraction'),
+        anchorOrigin: (options['imageAnchorOrigin'] ? options['imageAnchorYUnits'] : 'top-left'),
+        color: (options['imageColor'] ? options['imageColor'] : undefined),
+        crossOrigin: (options['crossOrigin'] ? options['crossOrigin'] : undefined),
+        img: (options['img'] ? options['img'] : undefined),
+        offset: (options['offset'] && Array.isArray(options['offset']) && options['offset'].length === 2 ? options['offset'] : [0, 0]),
+        offsetOrigin: (options['offsetOrigin'] ? options['offsetOrigin'] : 'top-left'),
+        scale: ((options['scale'] && typeof options['scale'] === 'number') ? options['scale'] : 1),
+        rotateWithView: (options['rotateWithView'] === true ? options['rotateWithView'] : false),
         opacity: (options['imageOpacity'] ? options['imageOpacity'] : 1),
+        rotation: (options['rotation'] && typeof options['rotation'] === 'number' ? options['rotation'] : 0),
+        size: (options['size'] && Array.isArray(options['size']) && options['size'].length === 2 ? options['size'] : undefined),
+        imgSize: (options['imgSize'] && Array.isArray(options['imgSize']) && options['imgSize'].length === 2 ? options['imgSize'] : undefined),
         src: (options['imageSrc'] ? options['imageSrc'] : 1)
       })
       if (icon && icon instanceof ol.style.Icon) {
