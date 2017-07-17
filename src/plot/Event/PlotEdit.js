@@ -56,6 +56,12 @@ class PlotEdit extends Observable {
      * @type {null}
      */
     this.mapDragPan = null
+    /**
+     * 未激活之前鼠标样式
+     * @type {null}
+     * @private
+     */
+    this.previousCursor_ = null
   }
 
   /**
@@ -195,14 +201,15 @@ class PlotEdit extends Observable {
    */
   activate (plot) {
     try {
-      if (!plot || !(plot instanceof ol.Feature) || plot === this.activePlot) {
+      if (!plot || !(plot instanceof ol.Feature) || plot === this.activePlot || plot.get('notInstancePlot')) {
         return false
       } else {
         let geom = plot.getGeometry()
-        if (!geom.isPlot()) {
+        if (!geom.isPlot || !geom.isPlot()) {
           return false
         } else {
           this.deactivate()
+          this.previousCursor_ = this.map.getTargetElement().style.cursor
           this.activePlot = plot
           window.setTimeout(() => {
             // this.dispatchEvent(new EditEvent(EditEvent.ACTIVE_PLOT_CHANGE, this.activePlot))
@@ -245,13 +252,13 @@ class PlotEdit extends Observable {
       if (feature && feature === this.activePlot) {
         if (!this.mouseOver) {
           this.mouseOver = true
-          this.map.getViewport().style.cursor = 'move'
+          this.map.getTargetElement().style.cursor = 'move'
           this.map.on('pointerdown', this.plotMouseDownHandler, this)
         }
       } else {
         if (this.mouseOver) {
           this.mouseOver = false
-          this.map.getViewport().style.cursor = 'default'
+          this.map.getTargetElement().style.cursor = 'default'
           this.map.un('pointerdown', this.plotMouseDownHandler, this)
         }
       }
@@ -327,9 +334,11 @@ class PlotEdit extends Observable {
   deactivate () {
     this.activePlot = null
     this.mouseOver = false
-    this.map.getViewport().style.cursor = 'default'
+    this.map.getTargetElement().style.cursor = this.previousCursor_
+    this.previousCursor_ = null
     this.destroyHelperDom()
     this.disconnectEventHandlers()
+    this.enableMapDragPan()
     this.elementTable = {}
     this.activeControlPointId = null
     this.startPoint = null
@@ -343,7 +352,6 @@ class PlotEdit extends Observable {
     interactions.every(item => {
       if (item instanceof ol.interaction.DragPan) {
         this.mapDragPan = item
-        item.setActive(false)
         this.map.removeInteraction(item)
         return false
       } else {
@@ -357,7 +365,6 @@ class PlotEdit extends Observable {
    */
   enableMapDragPan () {
     if (this.mapDragPan && this.mapDragPan instanceof ol.interaction.DragPan) {
-      this.mapDragPan.setActive(true)
       this.map.addInteraction(this.mapDragPan)
       this.mapDragPan = null
     }

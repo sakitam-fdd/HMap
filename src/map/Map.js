@@ -20,6 +20,7 @@ class Map extends mix(BaseLayers, Controls, Interactions, Style, Layer, View, Fe
     this.EverntCenter = new Observable()
     proj4.defs('EPSG:4490', '+proj=longlat +ellps=GRS80 +no_defs')
     ol.proj.setProj4(proj4)
+    window.ObservableObj = new ol.Object()
 
     /**
      * 当前地图线要素
