@@ -26,10 +26,10 @@ npm run build
 ### CDN引用
 
 ```bash
-https://unpkg.com/hmap-js@1.3.5/dist/HMap.js
-https://unpkg.com/hmap-js@1.3.5/dist/HMap.min.js
-https://unpkg.com/hmap-js@1.3.5/dist/HMap.css
-https://unpkg.com/hmap-js@1.3.5/dist/HMap.min.css
+https://unpkg.com/hmap-js@1.3.6/dist/HMap.js
+https://unpkg.com/hmap-js@1.3.6/dist/HMap.min.js
+https://unpkg.com/hmap-js@1.3.6/dist/HMap.css
+https://unpkg.com/hmap-js@1.3.6/dist/HMap.min.css
 ```
 
 ### NPM包管理
@@ -63,25 +63,25 @@ import HMap from 'hmap-js'
 > vue和angular2搭配es6使用时可以采用
 
 ```javascript
-import HMap from '../dist/HMap'
-let Maps = new HMap.Map()
-Maps.initMap('map', {
-  view: {
-    center: [0, 0],
-    // constrainRotation: false, // 旋转角度约束
-    enableRotation: true, // 是否允许旋转
-//      extent: [],
-//      maxResolution: 0, // 非必须参数
-//      minResolution: 0, // 非必须参数
-//      maxZoom: 19, // 非必须参数
-//      minZoom: 0, // 非必须参数
-    projection: 'EPSG:3857',
-    rotation: 0,
-    zoom: 0, // resolution
-    zoomFactor: 2 // 用于约束分变率的缩放因子（高分辨率设备需要注意）
-  }
-})
-console.log(Maps)
+var Maps = new HMap.Map();
+  Maps.initMap('map', {
+    view: {
+      center: [12118909.300259633, 4086043.1061670054],
+//      center: [115.92466595234826, 27.428038204473552],
+      projection: 'EPSG:3857',
+//      projection: 'EPSG:4326',
+      zoom: 5, // resolution
+    },
+    baseLayers: [
+      {
+        layerName: 'openstreetmap',
+        isDefault: true,
+        layerType: 'OSM',
+        opaque: true, //图层是否不透明
+        layerUrl: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+      }
+    ]
+  })
 ```
 
 ## 截图示例

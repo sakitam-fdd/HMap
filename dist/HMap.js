@@ -27909,7 +27909,7 @@ function sExpr(v, obj) {
 
 module.exports = {
 	"name": "hmap-js",
-	"version": "1.3.5",
+	"version": "1.3.6",
 	"private": false,
 	"description": "WEBGIS API",
 	"keywords": [
