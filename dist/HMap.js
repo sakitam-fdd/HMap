@@ -11291,6 +11291,7 @@ var Popover = function Popover(mapInstence, params) {
     stopEvent: true,
     offset: this.options['offset'],
     id: this.options['id'],
+    layerName: this.options['layerName'],
     insertFirst: this.options.hasOwnProperty('insertFirst') ? this.options.insertFirst : true
   });
 };
