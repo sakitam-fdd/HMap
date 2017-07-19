@@ -10903,16 +10903,15 @@ var Overlay = function (_mix) {
   }, {
     key: '_addOverLayEvent',
     value: function _addOverLayEvent(marker, ele, OverLay) {
+      var that = this;
       marker.onmousedown = function (event) {
         if (event.button === 2) {
-          window.ObservableObj.dispatchEvent({
-            type: 'rightMenuEvt',
+          that.EverntCenter.dispatch('rightMenuEvent', {
             originEvent: event,
             value: OverLay
           });
         } else if (event.button === 0) {
-          window.ObservableObj.dispatchEvent({
-            type: 'overlayEvent',
+          that.EverntCenter.dispatch('overlayEvent', {
             originEvent: event,
             value: OverLay
           });
@@ -10920,16 +10919,14 @@ var Overlay = function (_mix) {
       };
       marker.onmouseover = function (event) {
         ele.style.color = ele.selectColor;
-        window.ObservableObj.dispatchEvent({
-          type: 'onMouseoverOverlay',
+        that.EverntCenter.dispatch('onMouseoverOverlay', {
           originEvent: event,
           value: OverLay
         });
       };
       marker.onmouseout = function (event) {
         ele.style.color = ele.normalColor;
-        window.ObservableObj.dispatchEvent({
-          type: 'onMouseOutOverlay',
+        that.EverntCenter.dispatch('onMouseOutOverlay', {
           originEvent: event,
           value: OverLay
         });
@@ -15855,7 +15852,7 @@ var MeasureTool = function (_mix) {
       _this.defaultParams = {
         measureLengthCursor: 'url(../asset/cur/ruler.cur), default',
         measureAreaCursor: 'url(../asset/cur/ruler.cur), default',
-        style: {
+        endStyle: {
           fill: {
             fillColor: 'rgba(67, 110, 238, 0.4)'
           },
@@ -15864,7 +15861,7 @@ var MeasureTool = function (_mix) {
             strokeWidth: 2
           },
           circle: {
-            circleRadius: 4,
+            circleRadius: 1,
             stroke: {
               strokeColor: 'rgba(255,0,0,1)',
               strokeWidth: 1
@@ -15872,6 +15869,15 @@ var MeasureTool = function (_mix) {
             fill: {
               fillColor: 'rgba(255,255,255,1)'
             }
+          }
+        },
+        drawStyle: {
+          fill: {
+            fillColor: 'rgba(67, 110, 238, 0.4)'
+          },
+          stroke: {
+            strokeColor: 'rgba(242,123,57,1)',
+            strokeWidth: 2
           }
         }
       };
@@ -15899,6 +15905,8 @@ var MeasureTool = function (_mix) {
       _this.isGeodesic = _this.defaultParams['isGeodesic'] === false ? _this.defaultParams['isGeodesic'] : true;
 
       _this.layerName = _this.defaultParams['layerName'] || 'measureTool';
+
+      _this.previousCursor_ = _this.map.getTargetElement().style.cursor;
     } else {
       throw new Error('传入的不是地图对象或者地图对象为空！');
     }
@@ -15912,7 +15920,7 @@ var MeasureTool = function (_mix) {
 
       this.options = params || {};
 
-      this.previousCursor_ = this.map.getTargetElement().style.cursor;
+      this.map.getTargetElement().style.cursor = this.previousCursor_;
 
       this.clickCount = '';
 
@@ -15979,7 +15987,7 @@ var MeasureTool = function (_mix) {
           _this3.getDragPanInteraction().setActive(true);
           _this3.getDoubleClickZoomInteraction().setActive(true);
         }, 300);
-        this.map.getTargetElement().style.cursor = 'default';
+        this.map.getTargetElement().style.cursor = this.previousCursor_;
         this.map.removeOverlay(this.measureHelpTooltip);
         this.measureHelpTooltip = null;
         this.removeDrawInteraion();
@@ -16008,26 +16016,13 @@ var MeasureTool = function (_mix) {
       this.layer = this.createVectorLayer(this.layerName, this.options);
       this.mapInstence.polygonLayers.add(this.layerName);
       this.mapInstence.orderLayerZindex();
-      var style = this.getStyleForMeasure(this.defaultParams['style']);
-      this.layer.setStyle(style);
+      var endStyle = this.getStyleForMeasure(this.defaultParams['endStyle']);
+      var drawStyle = this.getStyleForMeasure(this.defaultParams['drawStyle']);
+      this.layer.setStyle(endStyle);
       this.draw = new _constants.ol.interaction.Draw({
         source: this.layer.getSource(),
         type: type,
-        style: new _constants.ol.style.Style({
-          fill: new _constants.ol.style.Fill({
-            color: 'rgba(254, 164, 164, 1)'
-          }),
-          stroke: new _constants.ol.style.Stroke({
-            color: 'rgba(252, 129, 129, 1)',
-            width: 3
-          }),
-          image: new _constants.ol.style.Circle({
-            radius: 1,
-            fill: new _constants.ol.style.Fill({
-              color: '#ffcc33'
-            })
-          })
-        })
+        style: drawStyle
       });
       this.map.addInteraction(this.draw);
       this.drawListener();
@@ -16069,41 +16064,11 @@ var MeasureTool = function (_mix) {
       if (!this.measureHelpTooltip) {
         var helpTooltipElement = document.createElement('label');
         if (this.measureTypes.measureLength === this.options['measureType']) {
-          helpTooltipElement.className = 'HMapLabel';
-          helpTooltipElement.style.position = 'absolute';
-          helpTooltipElement.style.display = 'inline';
-          helpTooltipElement.style.cursor = 'inherit';
-          helpTooltipElement.style.border = 'none';
-          helpTooltipElement.style.padding = '0';
-          helpTooltipElement.style.whiteSpace = 'nowrap';
-          helpTooltipElement.style.fontVariant = 'normal';
-          helpTooltipElement.style.fontWeight = 'normal';
-          helpTooltipElement.style.fontStretch = 'normal';
-          helpTooltipElement.style.fontSize = '12px';
-          helpTooltipElement.style.lineHeight = 'normal';
-          helpTooltipElement.style.fontFamily = 'arial,simsun';
-          helpTooltipElement.style.color = 'rgb(51, 51, 51)';
-          helpTooltipElement.style.webkitUserSelect = 'none';
+          helpTooltipElement.className = 'HMapLabel hamp-js-measure-length';
           helpTooltipElement.innerHTML = '<span class="HMap_diso"><span class="HMap_disi">单击开始测量</span></span>';
         } else {
-          helpTooltipElement.className = 'HMapLabel HMap_disLabel';
-          helpTooltipElement.style.position = 'absolute';
-          helpTooltipElement.style.display = 'inline';
-          helpTooltipElement.style.cursor = 'inherit';
-          helpTooltipElement.style.border = '1px solid rgb(255, 1, 3)';
-          helpTooltipElement.style.padding = '3px 5px';
-          helpTooltipElement.style.whiteSpace = 'nowrap';
-          helpTooltipElement.style.fontVariant = 'normal';
-          helpTooltipElement.style.fontWeight = 'normal';
-          helpTooltipElement.style.fontStretch = 'normal';
-          helpTooltipElement.style.fontSize = '12px';
-          helpTooltipElement.style.fontFamily = 'arial,simsun';
-          helpTooltipElement.style.color = 'rgb(51, 51, 51)';
-          helpTooltipElement.style.backgroundColor = 'rgb(255, 255, 255)';
-          helpTooltipElement.style.webkitUserSelect = 'none';
-          helpTooltipElement.style.height = '24px';
-          helpTooltipElement.style.lineHeight = '19px';
-          helpTooltipElement.innerHTML = '<span style="color: #7a7a7a;">单击开始测面,双击结束</span>';
+          helpTooltipElement.className = 'HMapLabel HMap_disLabel hamp-js-measure-area';
+          helpTooltipElement.innerHTML = '<span class="HMap_diso"><span class="HMap_disi">单击开始测面</span></span>';
         }
         this.measureHelpTooltip = new _constants.ol.Overlay({
           element: helpTooltipElement,
@@ -16136,6 +16101,14 @@ var MeasureTool = function (_mix) {
         var helpTooltipElement = this.measureHelpTooltip.getElement();
         helpTooltipElement.className = ' HMapLabel HMap_disLabel move-label';
         helpTooltipElement.innerHTML = '<span>总长:<span class="HMap_disBoxDis"></span></span><br><span style="color: #7a7a7a">单击确定地点,双击结束</span>';
+        this.measureHelpTooltip.setPosition(event.coordinate);
+      } else if (this.measureTypes.measureArea === this.options['measureType']) {
+        if (event.dragging) {
+          return;
+        }
+        var _helpTooltipElement = this.measureHelpTooltip.getElement();
+        _helpTooltipElement.className = ' HMapLabel HMap_disLabel move-label hamp-js-measure-area';
+        _helpTooltipElement.innerHTML = '<span class="HMap_diso"><span class="HMap_disi">单击确定地点,双击结束</span></span>';
         this.measureHelpTooltip.setPosition(event.coordinate);
       }
     }
@@ -16174,6 +16147,7 @@ var MeasureTool = function (_mix) {
               _this4.measureAreaTooltip.setPosition(geom.getInteriorPoint().getCoordinates());
             }
           });
+          _this4.drawPointermove = _this4.map.on('pointermove', _this4.drawPointerMoveHandler, _this4);
         }
       });
       this.draw.on('drawend', function (ev) {

@@ -544,6 +544,36 @@
   background-color: white;
   padding: 3px 5px; }
 
+.hamp-js-measure-area {
+  position: absolute;
+  display: inline;
+  padding: 0;
+  border: none;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  white-space: nowrap;
+  font-size: 12px;
+  font-family: arial,simsun;
+  color: #333333;
+  background-color: white;
+  -webkit-user-select: none; }
+
+.hamp-js-measure-length {
+  position: absolute;
+  display: inline;
+  padding: 0;
+  border: none;
+  line-height: normal;
+  text-align: center;
+  white-space: nowrap;
+  font-size: 12px;
+  font-family: arial,simsun;
+  color: #333333;
+  background-color: white;
+  user-select: none;
+  -webkit-user-select: none; }
+
 .HMap_diso {
   height: 17px;
   width: 5px;

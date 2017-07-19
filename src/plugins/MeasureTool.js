@@ -10,7 +10,7 @@ class MeasureTool extends mix(Layer, Style) {
       this.defaultParams = {
         measureLengthCursor: 'url(../asset/cur/ruler.cur), default',
         measureAreaCursor: 'url(../asset/cur/ruler.cur), default',
-        style: {
+        endStyle: {
           fill: {
             fillColor: 'rgba(67, 110, 238, 0.4)'
           },
@@ -19,7 +19,7 @@ class MeasureTool extends mix(Layer, Style) {
             strokeWidth: 2
           },
           circle: {
-            circleRadius: 4,
+            circleRadius: 1,
             stroke: {
               strokeColor: 'rgba(255,0,0,1)',
               strokeWidth: 1
@@ -27,6 +27,15 @@ class MeasureTool extends mix(Layer, Style) {
             fill: {
               fillColor: 'rgba(255,255,255,1)'
             }
+          }
+        },
+        drawStyle: {
+          fill: {
+            fillColor: 'rgba(67, 110, 238, 0.4)'
+          },
+          stroke: {
+            strokeColor: 'rgba(242,123,57,1)',
+            strokeWidth: 2
           }
         }
       }
@@ -78,6 +87,11 @@ class MeasureTool extends mix(Layer, Style) {
        * @type {*}
        */
       this.layerName = this.defaultParams['layerName'] || 'measureTool'
+
+      /**
+       * 默认鼠标样式
+       */
+      this.previousCursor_ = this.map.getTargetElement().style.cursor
     } else {
       throw new Error('传入的不是地图对象或者地图对象为空！')
     }
@@ -94,9 +108,9 @@ class MeasureTool extends mix(Layer, Style) {
      */
     this.options = params || {}
     /**
-     * 默认鼠标样式
+     * 恢复默认鼠标样式
      */
-    this.previousCursor_ = this.map.getTargetElement().style.cursor
+    this.map.getTargetElement().style.cursor = this.previousCursor_
     /**
      * 点击计数器
      * @type {number}
@@ -192,7 +206,7 @@ class MeasureTool extends mix(Layer, Style) {
         this.getDragPanInteraction().setActive(true)
         this.getDoubleClickZoomInteraction().setActive(true)
       }, 300)
-      this.map.getTargetElement().style.cursor = 'default'
+      this.map.getTargetElement().style.cursor = this.previousCursor_
       this.map.removeOverlay(this.measureHelpTooltip)
       this.measureHelpTooltip = null
       this.removeDrawInteraion()
@@ -222,26 +236,13 @@ class MeasureTool extends mix(Layer, Style) {
     this.layer = this.createVectorLayer(this.layerName, this.options)
     this.mapInstence.polygonLayers.add(this.layerName)
     this.mapInstence.orderLayerZindex()
-    let style = this.getStyleForMeasure(this.defaultParams['style'])
-    this.layer.setStyle(style)
+    let endStyle = this.getStyleForMeasure(this.defaultParams['endStyle'])
+    let drawStyle = this.getStyleForMeasure(this.defaultParams['drawStyle'])
+    this.layer.setStyle(endStyle)
     this.draw = new ol.interaction.Draw({
       source: this.layer.getSource(),
       type: type,
-      style: new ol.style.Style({
-        fill: new ol.style.Fill({
-          color: 'rgba(254, 164, 164, 1)'
-        }),
-        stroke: new ol.style.Stroke({
-          color: 'rgba(252, 129, 129, 1)',
-          width: 3
-        }),
-        image: new ol.style.Circle({
-          radius: 1,
-          fill: new ol.style.Fill({
-            color: '#ffcc33'
-          })
-        })
-      })
+      style: drawStyle
     })
     this.map.addInteraction(this.draw)
     this.drawListener()
@@ -287,41 +288,11 @@ class MeasureTool extends mix(Layer, Style) {
     if (!this.measureHelpTooltip) {
       let helpTooltipElement = document.createElement('label')
       if (this.measureTypes.measureLength === this.options['measureType']) {
-        helpTooltipElement.className = 'HMapLabel'
-        helpTooltipElement.style.position = 'absolute'
-        helpTooltipElement.style.display = 'inline'
-        helpTooltipElement.style.cursor = 'inherit'
-        helpTooltipElement.style.border = 'none'
-        helpTooltipElement.style.padding = '0'
-        helpTooltipElement.style.whiteSpace = 'nowrap'
-        helpTooltipElement.style.fontVariant = 'normal'
-        helpTooltipElement.style.fontWeight = 'normal'
-        helpTooltipElement.style.fontStretch = 'normal'
-        helpTooltipElement.style.fontSize = '12px'
-        helpTooltipElement.style.lineHeight = 'normal'
-        helpTooltipElement.style.fontFamily = 'arial,simsun'
-        helpTooltipElement.style.color = 'rgb(51, 51, 51)'
-        helpTooltipElement.style.webkitUserSelect = 'none'
+        helpTooltipElement.className = 'HMapLabel hamp-js-measure-length'
         helpTooltipElement.innerHTML = '<span class="HMap_diso"><span class="HMap_disi">单击开始测量</span></span>'
       } else {
-        helpTooltipElement.className = 'HMapLabel HMap_disLabel'
-        helpTooltipElement.style.position = 'absolute'
-        helpTooltipElement.style.display = 'inline'
-        helpTooltipElement.style.cursor = 'inherit'
-        helpTooltipElement.style.border = '1px solid rgb(255, 1, 3)'
-        helpTooltipElement.style.padding = '3px 5px'
-        helpTooltipElement.style.whiteSpace = 'nowrap'
-        helpTooltipElement.style.fontVariant = 'normal'
-        helpTooltipElement.style.fontWeight = 'normal'
-        helpTooltipElement.style.fontStretch = 'normal'
-        helpTooltipElement.style.fontSize = '12px'
-        helpTooltipElement.style.fontFamily = 'arial,simsun'
-        helpTooltipElement.style.color = 'rgb(51, 51, 51)'
-        helpTooltipElement.style.backgroundColor = 'rgb(255, 255, 255)'
-        helpTooltipElement.style.webkitUserSelect = 'none'
-        helpTooltipElement.style.height = '24px'
-        helpTooltipElement.style.lineHeight = '19px'
-        helpTooltipElement.innerHTML = '<span style="color: #7a7a7a;">单击开始测面,双击结束</span>'
+        helpTooltipElement.className = 'HMapLabel HMap_disLabel hamp-js-measure-area'
+        helpTooltipElement.innerHTML = '<span class="HMap_diso"><span class="HMap_disi">单击开始测面</span></span>'
       }
       this.measureHelpTooltip = new ol.Overlay({
         element: helpTooltipElement,
@@ -361,6 +332,14 @@ class MeasureTool extends mix(Layer, Style) {
       helpTooltipElement.className = ' HMapLabel HMap_disLabel move-label'
       helpTooltipElement.innerHTML = '<span>总长:<span class="HMap_disBoxDis"></span></span><br><span style="color: #7a7a7a">单击确定地点,双击结束</span>'
       this.measureHelpTooltip.setPosition(event.coordinate)
+    } else if (this.measureTypes.measureArea === this.options['measureType']) {
+      if (event.dragging) {
+        return
+      }
+      let helpTooltipElement = this.measureHelpTooltip.getElement()
+      helpTooltipElement.className = ' HMapLabel HMap_disLabel move-label hamp-js-measure-area'
+      helpTooltipElement.innerHTML = '<span class="HMap_diso"><span class="HMap_disi">单击确定地点,双击结束</span></span>'
+      this.measureHelpTooltip.setPosition(event.coordinate)
     }
   }
 
@@ -398,6 +377,7 @@ class MeasureTool extends mix(Layer, Style) {
             this.measureAreaTooltip.setPosition(geom.getInteriorPoint().getCoordinates())
           }
         })
+        this.drawPointermove = this.map.on('pointermove', this.drawPointerMoveHandler, this)
       }
     })
     this.draw.on('drawend', ev => {

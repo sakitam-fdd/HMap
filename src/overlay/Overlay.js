@@ -87,16 +87,15 @@ class Overlay extends mix(Feature) {
    * @private
    */
   _addOverLayEvent (marker, ele, OverLay) {
+    let that = this
     marker.onmousedown = function (event) {
       if (event.button === 2) {
-        window.ObservableObj.dispatchEvent({
-          type: 'rightMenuEvt',
+        that.EverntCenter.dispatch('rightMenuEvent', {
           originEvent: event,
           value: OverLay
         })
       } else if (event.button === 0) {
-        window.ObservableObj.dispatchEvent({
-          type: 'overlayEvent',
+        that.EverntCenter.dispatch('overlayEvent', {
           originEvent: event,
           value: OverLay
         })
@@ -104,16 +103,14 @@ class Overlay extends mix(Feature) {
     }
     marker.onmouseover = function (event) {
       ele.style.color = ele.selectColor
-      window.ObservableObj.dispatchEvent({
-        type: 'onMouseoverOverlay',
+      that.EverntCenter.dispatch('onMouseoverOverlay', {
         originEvent: event,
         value: OverLay
       })
     }
     marker.onmouseout = function (event) {
       ele.style.color = ele.normalColor
-      window.ObservableObj.dispatchEvent({
-        type: 'onMouseOutOverlay',
+      that.EverntCenter.dispatch('onMouseOutOverlay', {
         originEvent: event,
         value: OverLay
       })
