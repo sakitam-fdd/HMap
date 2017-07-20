@@ -5,6 +5,8 @@ class View {
     return new ol.View({
       center: ((option['center'] && Array.isArray(option['center'])) ? option['center'] : [0, 0]),
       zoom: ((option['zoom'] && (typeof option['zoom'] === 'number')) ? option['zoom'] : 0),
+      minZoom: ((option['minZoom'] && (typeof option['minZoom'] === 'number')) ? option['minZoom'] : undefined),
+      maxZoom: ((option['maxZoom'] && (typeof option['maxZoom'] === 'number')) ? option['maxZoom'] : undefined),
       zoomFactor: ((option['zoomFactor'] && (typeof option['zoomFactor'] === 'number')) ? option['zoomFactor'] : 2),
       rotation: ((option['rotation'] && (typeof option['rotation'] === 'number')) ? option['rotation'] : 0),
       enableRotation: (option['enableRotation'] === false ? option['enableRotation'] : true),
