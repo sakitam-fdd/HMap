@@ -3,17 +3,36 @@ class Controls {
   _addControls (params) {
     let options = params || {}
     /* eslint new-cap: ["error", { "newIsCap": false }] */
-    return new ol.control.defaults({
+    let control = new ol.control.defaults({
       attribution: (options['attribution'] === false ? options['attribution'] : true),
       rotate: (options['rotate'] === false ? options['rotate'] : true),
       zoom: (options['zoom'] === false ? options['zoom'] : true)
     })
+    // 添加比例尺
+    if (options['scaleLine']) {
+      this._addScaleLine(options['scaleLine'], control)
+    }
+    return control
   }
 
-  _addScaleLine () {
-    let control = this.map.getControls()
+  /**
+   * 添加比例尺
+   * @param options
+   * @param control
+   * @private
+   */
+  _addScaleLine (options, control) {
+    if (!control) {
+      control = this.map.getControls()
+    }
     control.extend([
-      new ol.control.ScaleLine() // 比例尺控件
+      new ol.control.ScaleLine({
+        className: (options['className'] ? options['className'] : 'ol-scale-line'),
+        minWidth: (options['minWidth'] && typeof options['minWidth'] === 'number' ? options['minWidth'] : 64),
+        render: (options['render'] && typeof options['render'] === 'function' ? options['render'] : undefined),
+        target: (options['target'] ? options['target'] : undefined),
+        units: (options['units'] ? options['units'] : 'metric')
+      }) // 比例尺控件
     ])
   }
 

@@ -10000,17 +10000,30 @@ var Controls = function () {
     value: function _addControls(params) {
       var options = params || {};
 
-      return new _constants.ol.control.defaults({
+      var control = new _constants.ol.control.defaults({
         attribution: options['attribution'] === false ? options['attribution'] : true,
         rotate: options['rotate'] === false ? options['rotate'] : true,
         zoom: options['zoom'] === false ? options['zoom'] : true
       });
+
+      if (options['scaleLine']) {
+        this._addScaleLine(options['scaleLine'], control);
+      }
+      return control;
     }
   }, {
     key: '_addScaleLine',
-    value: function _addScaleLine() {
-      var control = this.map.getControls();
-      control.extend([new _constants.ol.control.ScaleLine()]);
+    value: function _addScaleLine(options, control) {
+      if (!control) {
+        control = this.map.getControls();
+      }
+      control.extend([new _constants.ol.control.ScaleLine({
+        className: options['className'] ? options['className'] : 'ol-scale-line',
+        minWidth: options['minWidth'] && typeof options['minWidth'] === 'number' ? options['minWidth'] : 64,
+        render: options['render'] && typeof options['render'] === 'function' ? options['render'] : undefined,
+        target: options['target'] ? options['target'] : undefined,
+        units: options['units'] ? options['units'] : 'metric'
+      })]);
     }
   }, {
     key: 'zoomIn',
@@ -11182,6 +11195,78 @@ var Overlay = function (_mix) {
       }
       return _overlays;
     }
+  }, {
+    key: 'getOverlayByPropertiesKey',
+    value: function getOverlayByPropertiesKey(key, value) {
+      var _overlays = [];
+      if (this.map && key && value) {
+        var overlays = this.map.getOverlays().getArray();
+        overlays.forEach(function (overlay) {
+          if (overlay) {
+            var properties = overlay.getProperties();
+            if (properties && properties[key] && properties[key] === value) {
+              _overlays.push(overlay);
+            }
+          }
+        });
+      }
+      return _overlays;
+    }
+  }, {
+    key: 'getOverlayByPropertiesKeys',
+    value: function getOverlayByPropertiesKeys(keys, values) {
+      var _this6 = this;
+
+      var _overlays = [];
+      if (this.map && keys && values && Array.isArray(keys) && Array.isArray(values) && keys.length === values.length) {
+        keys.forEach(function (key, index) {
+          var overlays = _this6.getOverlayByPropertiesKey(key, values[index]);
+          if (overlays && overlays.length > 0) {
+            _overlays = _overlays.concat(overlays);
+          }
+        });
+      }
+      return _overlays;
+    }
+  }, {
+    key: 'removeOverlayByPropertiesKey',
+    value: function removeOverlayByPropertiesKey(key, value) {
+      var _overlays = [];
+      if (this.map && key && value) {
+        var overlays = this.map.getOverlays().getArray();
+        var len = overlays.length;
+        for (var i = 0; i < len; i++) {
+          if (overlays[i]) {
+            var properties = overlays[i].getProperties();
+            if (properties && properties[key] && properties[key] === value) {
+              _overlays.push(overlays[i]);
+              if (overlays[i].get('markFeature') && overlays[i].get('markFeature') instanceof _constants.ol.Feature) {
+                this.removeFeature(overlays[i].get('markFeature'));
+              }
+              this.map.removeOverlay(overlays[i]);
+              i--;
+            }
+          }
+        }
+      }
+      return _overlays;
+    }
+  }, {
+    key: 'removeOverlayByPropertiesKeys',
+    value: function removeOverlayByPropertiesKeys(keys, values) {
+      var _this7 = this;
+
+      var _overlays = [];
+      if (this.map && keys && values && Array.isArray(keys) && Array.isArray(values) && keys.length === values.length) {
+        keys.forEach(function (key, index) {
+          var overlays = _this7.removeOverlayByPropertiesKey(key, values[index]);
+          if (overlays && overlays.length > 0) {
+            _overlays = _overlays.concat(overlays);
+          }
+        });
+      }
+      return _overlays;
+    }
   }]);
 
   return Overlay;
@@ -11312,6 +11397,9 @@ Popover.prototype.show = function (coord, html) {
     if (size && this.options['offset']) {
       this.options['offset'] = [this.options['offset'][0], this.options['offset'][1] - size[1]];
     }
+  }
+  if (this.options['properties']) {
+    this.setProperties(this.options['properties']);
   }
   this.setOffset(this.options['offset']);
   this.setPosition(coord);

@@ -407,6 +407,94 @@ class Overlay extends mix(Feature) {
     }
     return _overlays
   }
+
+  /**
+   * 通过属性键值获取Overlay
+   * @param key
+   * @param value
+   * @returns {Array}
+   */
+  getOverlayByPropertiesKey (key, value) {
+    let _overlays = []
+    if (this.map && key && value) {
+      let overlays = this.map.getOverlays().getArray()
+      overlays.forEach(overlay => {
+        if (overlay) {
+          let properties = overlay.getProperties()
+          if (properties && properties[key] && properties[key] === value) {
+            _overlays.push(overlay)
+          }
+        }
+      })
+    }
+    return _overlays
+  }
+
+  /**
+   * 获取键值组的多类Overlay，注意键名和键值的长度必须相同和一一对应
+   * @param keys
+   * @param values
+   * @returns {Array}
+   */
+  getOverlayByPropertiesKeys (keys, values) {
+    let _overlays = []
+    if (this.map && keys && values && Array.isArray(keys) && Array.isArray(values) && keys.length === values.length) {
+      keys.forEach((key, index) => {
+        let overlays = this.getOverlayByPropertiesKey(key, values[index])
+        if (overlays && overlays.length > 0) {
+          _overlays = _overlays.concat(overlays)
+        }
+      })
+    }
+    return _overlays
+  }
+
+  /**
+   * 通过键名键值移除要素
+   * @param key
+   * @param value
+   * @returns {Array}
+   */
+  removeOverlayByPropertiesKey (key, value) {
+    let _overlays = []
+    if (this.map && key && value) {
+      let overlays = this.map.getOverlays().getArray()
+      let len = overlays.length
+      for (let i = 0; i < len; i++) {
+        if (overlays[i]) {
+          let properties = overlays[i].getProperties()
+          if (properties && properties[key] && properties[key] === value) {
+            _overlays.push(overlays[i])
+            if (overlays[i].get('markFeature') && overlays[i].get('markFeature') instanceof ol.Feature) {
+              this.removeFeature(overlays[i].get('markFeature'))
+            }
+            this.map.removeOverlay(overlays[i])
+            i--
+          }
+        }
+      }
+    }
+    return _overlays
+  }
+
+  /**
+   * 通过键值组移除多类Overlay，注意键名和键值的长度必须相同和一一对应
+   * @param keys
+   * @param values
+   * @returns {Array}
+   */
+  removeOverlayByPropertiesKeys (keys, values) {
+    let _overlays = []
+    if (this.map && keys && values && Array.isArray(keys) && Array.isArray(values) && keys.length === values.length) {
+      keys.forEach((key, index) => {
+        let overlays = this.removeOverlayByPropertiesKey(key, values[index])
+        if (overlays && overlays.length > 0) {
+          _overlays = _overlays.concat(overlays)
+        }
+      })
+    }
+    return _overlays
+  }
 }
 
 export default Overlay

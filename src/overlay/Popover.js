@@ -149,6 +149,9 @@ Popover.prototype.show = function (coord, html) {
       this.options['offset'] = [this.options['offset'][0], this.options['offset'][1] - size[1]]
     }
   }
+  if (this.options['properties']) {
+    this.setProperties(this.options['properties'])
+  }
   this.setOffset(this.options['offset'])
   this.setPosition(coord)
   this.updateSize()
