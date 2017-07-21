@@ -1,6 +1,6 @@
 import { ol } from '../constants'
 import appDrag from '../event/appDrag'
-class Interactions {
+class _Interactions {
   _addInteractions (params) {
     let options = params || {}
     /* eslint new-cap: ["error", { "newIsCap": false }] */
@@ -19,4 +19,4 @@ class Interactions {
   }
 }
 
-export default Interactions
+export default _Interactions

@@ -1,5 +1,5 @@
 import { ol } from '../constants'
-class View {
+class _View {
   _addView (params) {
     let option = params || {}
     return new ol.View({
@@ -116,4 +116,4 @@ class View {
   }
 }
 
-export default View
+export default _View

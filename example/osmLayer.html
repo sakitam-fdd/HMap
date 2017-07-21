@@ -25,6 +25,15 @@
 <script type="text/javascript">
   var Maps = new HMap.Map();
   Maps.initMap('map', {
+    controls: {
+      loading: true,
+      geolocation: true,
+      scaleLine: true,
+      fullScreen: true,
+      mousePosition: true,
+      zoomSlider: true,
+      zoomToExtent: true
+    },
     view: {
       center: [12118909.300259633, 4086043.1061670054],
 //      center: [115.92466595234826, 27.428038204473552],
@@ -42,13 +51,13 @@
       }
     ]
   });
-  var CoordsTransform = new HMap.CoordsTransform()
-  function mapFirstClickHandler (event) {
-    var coordinate = event.coordinate
-    var coords = CoordsTransform.MercatorTolonLat(coordinate[0], coordinate[1])
-    console.log(coords)
-  }
-  Maps.map.on('click', mapFirstClickHandler)
+//  var CoordsTransform = new HMap.CoordsTransform()
+//  function mapFirstClickHandler (event) {
+//    var coordinate = event.coordinate
+//    var coords = CoordsTransform.MercatorTolonLat(coordinate[0], coordinate[1])
+//    console.log(coords)
+//  }
+//  Maps.map.on('click', mapFirstClickHandler)
 //  Maps.map.un('click', mapFirstClickHandler)
 </script>
 </body>

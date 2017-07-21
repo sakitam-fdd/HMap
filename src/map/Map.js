@@ -1,16 +1,16 @@
 import mix from '../utils/mixin'
 import {ol, proj4} from '../constants'
 import BaseLayers from './baseLayer'
-import Controls from './Controls'
-import Interactions from './Interactions'
-import View from './View'
+import _Controls from './Controls'
+import _Interactions from './Interactions'
+import _View from './View'
 import Layer from '../layer/Layer'
 import Feature from '../feature/feature'
 import Style from '../style/Style'
 import Overlay from '../overlay/Overlay'
 import Observable from '../event/Observable'
 
-class Map extends mix(BaseLayers, Controls, Interactions, Style, Layer, View, Feature, Overlay) {
+class Map extends mix(BaseLayers, _Controls, _Interactions, Style, Layer, _View, Feature, Overlay) {
   constructor () {
     super()
     this.addPointHandlerClick = null
@@ -75,6 +75,12 @@ class Map extends mix(BaseLayers, Controls, Interactions, Style, Layer, View, Fe
      * @private
      */
     this.timer_ = null
+
+    /**
+     * map
+     * @type {null}
+     */
+    this.map = null
   }
 
   /**

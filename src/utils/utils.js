@@ -64,3 +64,19 @@ export const trim = (str) => {
 export const splitWords = (str) => {
   return trim(str).split(/\s+/)
 }
+
+/**
+ * 首字母大写(其他小写)
+ * @param str
+ * @returns {string}
+ */
+export const firstUpperToCase = (str) => {
+  return (str.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase()))
+}
+/**
+ * 只转换第一个字母
+ * @param str
+ */
+export const upperFirstChart = str => {
+  return (str.replace(/( |^)[a-z]/g, (L) => L.toUpperCase()))
+}

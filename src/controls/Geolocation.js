@@ -4,14 +4,9 @@
  */
 import {ol} from '../constants'
 import {DomUtil, css} from '../dom'
-const Geolocation = function (params) {
+ol.control.Geolocation = function (params) {
   this.options = params || {}
   let className = (this.options.className !== undefined ? this.options.className : 'hmap-geolocation')
-  if (!this.options['map'] || !(this.options['map'] instanceof ol.Map)) {
-    throw new Error('缺少底图对象！')
-  } else {
-    this.map = this.options['map']
-  }
   /**
    * @private
    * @type {Element}
@@ -23,38 +18,22 @@ const Geolocation = function (params) {
    * @type {Element}
    */
   this.innerElement_ = DomUtil.create('div', className + '-inner', this.element_)
-  this.element_.addEventListener('click', this.clickHandle)
-  this.initControl()
+  this.element_.addEventListener('click', event => {
+    this.clickHandle(event)
+  })
+  // this.initControl()
   ol.control.Control.call(this, {
     element: this.element_,
     target: this.options['target']
   })
 }
 
-ol.inherits(Geolocation, ol.control.Control)
-
-/**
- * 设置当前地图对象
- * @param map
- */
-Geolocation.prototype.setMap = function (map) {
-  if (map && map instanceof ol.Map) {
-    this.map = map
-  }
-}
-
-/**
- * 获取当前地图对象
- * @returns {*|ol.Map}
- */
-Geolocation.prototype.getMap = function () {
-  return this.map
-}
+ol.inherits(ol.control.Geolocation, ol.control.Control)
 
 /**
  * 初始化
  */
-Geolocation.prototype.initControl = function () {
+ol.control.Geolocation.prototype.initControl = function () {
   /**
    * 定位
    * @type {ol.Geolocation}
@@ -91,9 +70,8 @@ Geolocation.prototype.initControl = function () {
 /**
  * 处理事件
  */
-Geolocation.prototype.clickHandle = function () {
-  let coordinates = this.geolocation.getPosition()
-  console.log(coordinates)
+ol.control.Geolocation.prototype.clickHandle = function () {
+  // let coordinates = this.geolocation.getPosition()
+  let map = this.getMap()
+  console.log(map)
 }
-
-export default Geolocation
