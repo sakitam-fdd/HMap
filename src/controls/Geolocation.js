@@ -21,7 +21,6 @@ ol.control.Geolocation = function (params) {
   this.element_.addEventListener('click', event => {
     this.clickHandle(event)
   })
-  // this.initControl()
   ol.control.Control.call(this, {
     element: this.element_,
     target: this.options['target']
@@ -39,7 +38,8 @@ ol.control.Geolocation.prototype.initControl = function () {
    * @type {ol.Geolocation}
    */
   this.geolocation = new ol.Geolocation({
-    projection: this.map.getView().getProjection()
+    projection: this.getMap().getView().getProjection(),
+    tracking: (this.options['tracking'] === true ? this.options['tracking'] : false)
   })
   /**
    * 是否开启跟踪模式
@@ -71,7 +71,22 @@ ol.control.Geolocation.prototype.initControl = function () {
  * 处理事件
  */
 ol.control.Geolocation.prototype.clickHandle = function () {
-  // let coordinates = this.geolocation.getPosition()
-  let map = this.getMap()
-  console.log(map)
+  let coordinates = this.geolocation.getPosition()
+  let accuracy = this.geolocation.getAccuracy()
+  let altitude = this.geolocation.getAltitude()
+  let altitudeAccuracy = this.geolocation.getAltitudeAccuracy()
+  let heading = this.geolocation.getHeading()
+  let speed = this.geolocation.getSpeed()
+  console.log(coordinates, altitudeAccuracy, altitude, accuracy, heading, speed)
+}
+
+/**
+ * 设置地图
+ * @param map
+ */
+ol.control.Geolocation.prototype.setMap = function (map) {
+  ol.control.Control.prototype.setMap.call(this, map)
+  if (map) {
+    this.initControl()
+  }
 }

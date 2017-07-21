@@ -9,7 +9,7 @@ export const a = 6378245.0 // 北京54坐标系长半轴a=6378245m
 export const ee = 0.00669342162296594323
 
 import _proj4 from 'proj4'
-import _ol from 'openlayers/dist/ol-debug'
+import _ol from 'openlayers'
 // import _mathjs from '../node_modules/mathjs'
 // import _olx from '../node_modules/openlayers/externs'
 
