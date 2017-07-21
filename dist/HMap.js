@@ -9058,19 +9058,9 @@ module.exports = exports['default'];
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _constants = __webpack_require__(1);
 
 var _dom = __webpack_require__(38);
-
-var _mixin = __webpack_require__(30);
-
-var _mixin2 = _interopRequireDefault(_mixin);
 
 var _LayerSwitcher = __webpack_require__(120);
 
@@ -9078,104 +9068,75 @@ var _LayerSwitcher2 = _interopRequireDefault(_LayerSwitcher);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+_constants.ol.control.BaseLayerSwitcher = function (params) {
+  var _this = this;
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var BaseLayerSwitcher = function (_mix) {
-  _inherits(BaseLayerSwitcher, _mix);
-
-  function BaseLayerSwitcher(params) {
-    _classCallCheck(this, BaseLayerSwitcher);
-
-    var _this = _possibleConstructorReturn(this, (BaseLayerSwitcher.__proto__ || Object.getPrototypeOf(BaseLayerSwitcher)).call(this));
-
-    _this.options = params || {};
-    var className = _this.options.className !== undefined ? _this.options.className : 'hmap-baseLayer-switch';
-    if (!_this.map) {
-      if (!_this.options['map'] || !(_this.options['map'] instanceof _constants.ol.Map)) {
-        throw new Error('缺少底图对象！');
-      } else {
-        _this.map = _this.options['map'];
-      }
-    } else if (_this.map && !(_this.map instanceof _constants.ol.Map)) {
-      throw Error('不是地图对象！');
-    }
-    var mapConfigStr = _this.map.getProperties();
-    if (mapConfigStr) {
-      var mapConfig = JSON.parse(mapConfigStr);
-      _this.baseLayerConfig = mapConfig['baseLayers'];
-    }
-
-    _this.element_ = _dom.DomUtil.create('div', className + ' ' + _dom.css.CLASS_UNSELECTABLE);
-
-    _this.innerElement_ = _dom.DomUtil.create('ul', className + '-inner', _this.element_, className + '-inner');
-    _this.LayerSwitcher = new _LayerSwitcher2.default(_this.map);
-    _this.innerElement_.addEventListener('click', function (event) {
-      var ev = event || window.event;
-      var target = ev.target || ev.srcElement;
-      if (target.nodeName.toLowerCase() === 'li') {
-        var layerName = 'vector';
-        _this.LayerSwitcher.switchLayer(layerName);
-      }
-    });
-    _constants.ol.control.Control.call(_this, {
-      element: _this.element_,
-      target: _this.options['target']
-    });
-    return _this;
+  this.options = params || {};
+  var className = this.options.className !== undefined ? this.options.className : 'hmap-baseLayer-switch';
+  var mapConfigStr = this.map.getProperties();
+  if (mapConfigStr) {
+    var mapConfig = JSON.parse(mapConfigStr);
+    this.baseLayerConfig = mapConfig['baseLayers'];
   }
 
-  _createClass(BaseLayerSwitcher, [{
-    key: 'initDom',
-    value: function initDom() {
-      var _this2 = this;
+  this.element_ = _dom.DomUtil.create('div', className + ' ' + _dom.css.CLASS_UNSELECTABLE);
 
-      if (this.baseLayerConfig && Array.isArray(this.baseLayerConfig) && this.baseLayerConfig.length > 0) {
-        this.baseLayerConfig.forEach(function (item) {
-          if (item && item['layerName']) {
-            _this2.liDom = _this2.creatDom(['li', 'span'], ['mapTypeCard' + item['layerName'], 'title'], _this2.innerElement_);
-            _this2.liDom.setAttribute('data-name', item['layerName']);
-          }
-        });
-      }
+  this.innerElement_ = _dom.DomUtil.create('ul', className + '-inner', this.element_, className + '-inner');
+  this.LayerSwitcher = new _LayerSwitcher2.default(this.map);
+  this.innerElement_.addEventListener('click', function (event) {
+    var ev = event || window.event;
+    var target = ev.target || ev.srcElement;
+    if (target.nodeName.toLowerCase() === 'li') {
+      var layerName = 'vector';
+      _this.LayerSwitcher.switchLayer(layerName);
     }
-  }, {
-    key: 'creatDom',
-    value: function creatDom(tagNames, classNames, container, ids) {
-      var templates = '';
-      if (Array.isArray(tagNames) && Array.isArray(classNames) && Array.isArray(ids) && tagNames.length === classNames.length === ids.length) {
-        var els = tagNames.map(function (tagName, index) {
-          var el = document.createElement(tagName);
-          el.className = classNames[index] || '';
-          if (ids[index]) {
-            el.id = ids[index];
-          }
-          return el;
-        });
-        if (els && els.length > 0) {
-          els.forEach(function (item, index) {
-            if (index > 0) {
-              els[index - 1].appendChild(item);
-            }
-            templates = els[0];
-          });
+  });
+  _constants.ol.control.Control.call(this, {
+    element: this.element_,
+    target: this.options['target']
+  });
+};
+
+_constants.ol.inherits(_constants.ol.control.BaseLayerSwitcher, _constants.ol.control.Control);
+
+_constants.ol.control.BaseLayerSwitcher.prototype.initDom = function () {
+  var _this2 = this;
+
+  if (this.baseLayerConfig && Array.isArray(this.baseLayerConfig) && this.baseLayerConfig.length > 0) {
+    this.baseLayerConfig.forEach(function (item) {
+      if (item && item['layerName']) {
+        _this2.liDom = _this2.creatDom(['li', 'span'], ['mapTypeCard' + item['layerName'], 'title'], _this2.innerElement_);
+        _this2.liDom.setAttribute('data-name', item['layerName']);
+      }
+    });
+  }
+};
+
+_constants.ol.control.BaseLayerSwitcher.prototype.creatDom = function (tagNames, classNames, container, ids) {
+  var templates = '';
+  if (Array.isArray(tagNames) && Array.isArray(classNames) && Array.isArray(ids) && tagNames.length === classNames.length === ids.length) {
+    var els = tagNames.map(function (tagName, index) {
+      var el = document.createElement(tagName);
+      el.className = classNames[index] || '';
+      if (ids[index]) {
+        el.id = ids[index];
+      }
+      return el;
+    });
+    if (els && els.length > 0) {
+      els.forEach(function (item, index) {
+        if (index > 0) {
+          els[index - 1].appendChild(item);
         }
-      }
-      if (container) {
-        container.appendChild(templates);
-      }
-      return templates;
+        templates = els[0];
+      });
     }
-  }]);
-
-  return BaseLayerSwitcher;
-}((0, _mixin2.default)(_constants.ol.control.Control));
-
-exports.default = BaseLayerSwitcher;
-module.exports = exports['default'];
+  }
+  if (container) {
+    container.appendChild(templates);
+  }
+  return templates;
+};
 
 /***/ }),
 /* 165 */
@@ -9216,36 +9177,12 @@ var CompareLayer = function (_mix) {
 
     _this.options = params || {};
     var className = _this.options.className !== undefined ? _this.options.className : 'hmap-compare';
-
-    if (!_this.map) {
-      if (!_this.options['map'] || !(_this.options['map'] instanceof _constants.ol.Map)) {
-        throw new Error('缺少底图对象！');
-      } else {
-        _this.map = _this.options['map'];
-      }
-    } else if (_this.map && !(_this.map instanceof _constants.ol.Map)) {
-      throw Error('不是地图对象！');
-    }
     _this.beforeMap = beforeMap;
     _this.afterMap = afterMap;
 
     _this.element_ = _dom.DomUtil.create('div', className + ' ' + _dom.css.CLASS_UNSELECTABLE);
 
     _this.innerElement_ = _dom.DomUtil.create('div', className + '-inner', _this.element_);
-
-    _this._onDown = _this._onDown.bind(_this);
-    _this._onMove = _this._onMove.bind(_this);
-    _this._onMouseUp = _this._onMouseUp.bind(_this);
-
-    _this._bounds = _this.getMap().getTargetElement().getBoundingClientRect();
-    _this.percent = 0.5;
-    _this._setPosition(_this._bounds.width, _this._bounds.width / 2);
-
-    if (_this.options && _this.options.mousemove) {
-      _this.getMap().getTargetElement().addEventListener('mousemove', _this._onMove);
-    }
-    _this.addEvent();
-    _this.resize();
     _constants.ol.control.Control.call(_this, {
       element: _this.element_,
       target: _this.options['target']
@@ -9254,9 +9191,29 @@ var CompareLayer = function (_mix) {
   }
 
   _createClass(CompareLayer, [{
-    key: 'getMap',
-    value: function getMap() {
-      return this.map;
+    key: 'initControl',
+    value: function initControl() {
+      this._onDown = this._onDown.bind(this);
+      this._onMove = this._onMove.bind(this);
+      this._onMouseUp = this._onMouseUp.bind(this);
+
+      this._bounds = this.getMap().getTargetElement().getBoundingClientRect();
+      this.percent = 0.5;
+      this._setPosition(this._bounds.width, this._bounds.width / 2);
+
+      if (this.options && this.options.mousemove) {
+        this.getMap().getTargetElement().addEventListener('mousemove', this._onMove);
+      }
+      this.addEvent();
+      this.resize();
+    }
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      _constants.ol.control.Control.prototype.setMap.call(this, map);
+      if (map) {
+        this.initControl();
+      }
     }
   }, {
     key: 'clipLayer',
@@ -9735,23 +9692,25 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _constants = __webpack_require__(1);
+
 __webpack_require__(166);
 
 __webpack_require__(167);
+
+__webpack_require__(164);
 
 var _CompareLayer = __webpack_require__(165);
 
 var _CompareLayer2 = _interopRequireDefault(_CompareLayer);
 
-var _BaseLayerSwitcher = __webpack_require__(164);
-
-var _BaseLayerSwitcher2 = _interopRequireDefault(_BaseLayerSwitcher);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Controls = {
   CompareLayer: _CompareLayer2.default,
-  BaseLayerSwitcher: _BaseLayerSwitcher2.default
+  Loading: _constants.ol.control.Loading,
+  Geolocation: _constants.ol.control.Geolocation,
+  BaseLayerSwitcher: _constants.ol.control.BaseLayerSwitcher
 };
 
 exports.default = Controls;

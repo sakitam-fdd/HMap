@@ -11,16 +11,6 @@ class CompareLayer extends mix(ol.control.Control) {
     super()
     this.options = params || {}
     let className = (this.options.className !== undefined ? this.options.className : 'hmap-compare')
-
-    if (!this.map) {
-      if (!this.options['map'] || !(this.options['map'] instanceof ol.Map)) {
-        throw new Error('缺少底图对象！')
-      } else {
-        this.map = this.options['map']
-      }
-    } else if (this.map && !(this.map instanceof ol.Map)) {
-      throw Error('不是地图对象！')
-    }
     this.beforeMap = beforeMap
     this.afterMap = afterMap
 
@@ -35,7 +25,16 @@ class CompareLayer extends mix(ol.control.Control) {
      * @type {Element}
      */
     this.innerElement_ = DomUtil.create('div', className + '-inner', this.element_)
+    ol.control.Control.call(this, {
+      element: this.element_,
+      target: this.options['target']
+    })
+  }
 
+  /**
+   * setup
+   */
+  initControl () {
     this._onDown = this._onDown.bind(this)
     this._onMove = this._onMove.bind(this)
     this._onMouseUp = this._onMouseUp.bind(this)
@@ -53,18 +52,17 @@ class CompareLayer extends mix(ol.control.Control) {
     }
     this.addEvent()
     this.resize()
-    ol.control.Control.call(this, {
-      element: this.element_,
-      target: this.options['target']
-    })
   }
 
   /**
-   * 获取当前地图对象
-   * @returns {*}
+   * 设置地图
+   * @param map
    */
-  getMap () {
-    return this.map
+  setMap (map) {
+    ol.control.Control.prototype.setMap.call(this, map)
+    if (map) {
+      this.initControl()
+    }
   }
 
   /**
