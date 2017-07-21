@@ -215,6 +215,7 @@ class _Controls {
     }
     controls.push(new ol.control.Loading({
       className: (options['className'] ? options['className'] : 'hmap-loading-panel'),
+      widget: (options['widget'] ? options['widget'] : 'animatedGif'),
       target: (options['target'] ? options['target'] : undefined)
     }))
   }
