@@ -27,6 +27,11 @@ ol.control.Loading = function (params) {
    */
   this.loadStatus_ = false
   /**
+   * 是否第一次渲染
+   * @type {boolean}
+   */
+  this.isFirstRander = true
+  /**
    * 加载进度
    * @type {[*]}
    * @private
@@ -73,22 +78,23 @@ ol.inherits(ol.control.Loading, ol.control.Control)
  * 设置
  */
 ol.control.Loading.prototype.setup = function () {
-  let size = this.getMap().getSize()
-  this.element.style.left = String(Math.round(size[0] / 2)) + 'px'
-  this.element.style.bottom = String(Math.round(size[1] / 2)) + 'px'
+  this.setDomPosition()
+  this.resize()
   let pointerDown = this.getMap().on('pointerdown', () => {
     this.hide()
   })
-  let beforeRander = this.getMap().beforeRender((map, framestate) => {
-    this.registerLayersLoadEvents_()
-    this.show()
-    if (this.onCustomStart) {
-      let args = []
-      this.onCustomStart.apply(this, args)
+  let beforeRander = this.getMap().on('precompose', () => {
+    if (this.isFirstRander) {
+      this.isFirstRander = false
+      this.registerLayersLoadEvents_()
+      this.show()
+      if (this.onCustomStart) {
+        let args = []
+        this.onCustomStart.apply(this, args)
+      }
     }
-    return false
   })
-  let afterRander = this.getMap().on('postrender', event => {
+  let afterRander = this.getMap().on('postrender', () => {
     this.updateLoadStatus_()
     if (this.loadStatus_) {
       if (this.onCustomEnd) {
@@ -101,6 +107,48 @@ ol.control.Loading.prototype.setup = function () {
   this.mapListeners.push(pointerDown)
   this.mapListeners.push(beforeRander)
   this.mapListeners.push(afterRander)
+}
+
+/**
+ * 设置dom位置
+ */
+ol.control.Loading.prototype.setDomPosition = function () {
+  let size = this.getMap().getSize()
+  let domSize = [this.element.clientWidth, this.element.clientHeight]
+  this.element.style.left = String(Math.round((size[0] - domSize[0]) / 2)) + 'px'
+  this.element.style.bottom = String(Math.round((size[1] - domSize[1]) / 2)) + 'px'
+}
+
+/**
+ * 窗口变化事件
+ */
+ol.control.Loading.prototype.resize = function () {
+  let resizeEvt = (('orientationchange' in window) ? 'orientationchange' : 'resize')
+  let doc = window.document
+  let that = this
+  window.addEventListener(resizeEvt, function () {
+    setTimeout(function () {
+      that.setDomPosition()
+    }, 50)
+  }, false)
+  window.addEventListener('pageshow', function (e) {
+    if (e.persisted) {
+      setTimeout(function () {
+        that.setDomPosition()
+      }, 50)
+    }
+  }, false)
+  if (doc.readyState === 'complete') {
+    setTimeout(function () {
+      that.setDomPosition()
+    }, 50)
+  } else {
+    doc.addEventListener('DOMContentLoaded', function (e) {
+      setTimeout(function () {
+        that.setDomPosition()
+      }, 50)
+    }, false)
+  }
 }
 
 /**
@@ -130,7 +178,6 @@ ol.control.Loading.prototype.registerLayerLoadEvents_ = function (layer) {
       }
       that.show()
       if (that.onCustomStart) {
-        /* eslint no-useless-call: "error" */
         let args = []
         that.onCustomStart.apply(that, args)
       }
@@ -237,14 +284,18 @@ ol.control.Loading.prototype.updateLoadStatus_ = function () {
  * show
  */
 ol.control.Loading.prototype.show = function () {
-  if (this.showPanel) this.element.style.display = 'block'
+  if (this.showPanel) {
+    this.element.style.display = 'block'
+  }
 }
 
 /**
  * hide
  */
 ol.control.Loading.prototype.hide = function () {
-  if (this.showPanel) this.element.style.display = 'none'
+  if (this.showPanel) {
+    this.element.style.display = 'none'
+  }
 }
 
 /**
