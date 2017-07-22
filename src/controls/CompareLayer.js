@@ -13,6 +13,11 @@ class CompareLayer extends mix(ol.control.Control) {
     let className = (this.options.className !== undefined ? this.options.className : 'hmap-compare')
     this.beforeMap = beforeMap
     this.afterMap = afterMap
+    /**
+     * 当前截取位置占整个视图宽度的比例
+     * @type {number}
+     */
+    this.value = 0.5
 
     /**
      * @private
@@ -48,10 +53,13 @@ class CompareLayer extends mix(ol.control.Control) {
     this._setPosition(this._bounds.width, this._bounds.width / 2)
 
     if (this.options && this.options.mousemove) {
-      this.getMap().getTargetElement().addEventListener('mousemove', this._onMove)
+      this.getMap().getTargetElement().addEventListener('mousemove', event => {
+        this._onMove(event)
+      })
     }
     this.addEvent()
     this.resize()
+    this.clipLayer()
   }
 
   /**
@@ -70,20 +78,23 @@ class CompareLayer extends mix(ol.control.Control) {
    * @param beforeMap
    * @param value
    */
-  clipLayer (beforeMap, value) {
+  clipLayer () {
+    let that = this
     this.getMap().un('precompose', this.precompose)
     this.getMap().un('postcompose', this.postcompose)
-    this.precompose = beforeMap.on('precompose', event => {
+    this.precompose = this.beforeMap.on('precompose', event => {
       let ctx = event.context
-      let width = ctx.canvas.width * (value)
+      let width = ctx.canvas.width * (that.value)
       ctx.save()
       ctx.beginPath()
       ctx.rect(width, 0, ctx.canvas.width - width, ctx.canvas.height)
       ctx.clip()
+      console.log('pre')
     })
-    this.postcompose = beforeMap.on('postcompose', event => {
+    this.postcompose = this.beforeMap.on('postcompose', event => {
       let ctx = event.context
       ctx.restore()
+      console.log('post')
     })
   }
 
@@ -91,8 +102,12 @@ class CompareLayer extends mix(ol.control.Control) {
    * 添加事件监听
    */
   addEvent () {
-    this.innerElement_.addEventListener('mousedown', this._onDown)
-    this.innerElement_.addEventListener('touchstart', this._onDown)
+    this.innerElement_.addEventListener('mousedown', event => {
+      this._onDown(event)
+    })
+    this.innerElement_.addEventListener('touchstart', event => {
+      this._onDown(event)
+    })
   }
 
   /**
@@ -102,11 +117,21 @@ class CompareLayer extends mix(ol.control.Control) {
    */
   _onDown (e) {
     if (e.touches) {
-      document.addEventListener('touchmove', this._onMove)
-      document.addEventListener('touchend', this._onTouchEnd)
+      document.addEventListener('touchmove', event => {
+        this._onMove(event)
+      })
+      document.addEventListener('touchend', event => {
+        this._onTouchEnd(event)
+      })
     } else {
-      document.addEventListener('mousemove', this._onMove)
-      document.addEventListener('mouseup', this._onMouseUp)
+      document.addEventListener('mousemove', event => {
+        console.log('move')
+        this._onMove(event)
+      })
+      document.addEventListener('mouseup', event => {
+        console.log('up')
+        this._onMouseUp(event)
+      })
     }
   }
 
@@ -121,7 +146,9 @@ class CompareLayer extends mix(ol.control.Control) {
     this.element_.style.WebkitTransform = pos
     this._x = value
     this.percent = value / sourceWidth
-    this.clipLayer(this.beforeMap, value / sourceWidth)
+    this.value = value / sourceWidth
+    this.getMap().render()
+    console.log('render')
   }
 
   /**
@@ -167,6 +194,7 @@ class CompareLayer extends mix(ol.control.Control) {
    */
   _onMove (e) {
     this._bounds = this.getMap().getTargetElement().getBoundingClientRect()
+    console.log(e)
     this._setPosition(this._bounds.width, this._getX(e))
   }
 
@@ -175,8 +203,12 @@ class CompareLayer extends mix(ol.control.Control) {
    * @private
    */
   _onMouseUp () {
-    document.removeEventListener('mousemove', this._onMove)
-    document.removeEventListener('mouseup', this._onMouseUp)
+    document.removeEventListener('mousemove', event => {
+      this._onMove(event)
+    })
+    document.removeEventListener('mouseup', event => {
+      this._onMouseUp(event)
+    })
   }
 
   /**
@@ -184,8 +216,12 @@ class CompareLayer extends mix(ol.control.Control) {
    * @private
    */
   _onTouchEnd () {
-    document.removeEventListener('touchmove', this._onMove)
-    document.removeEventListener('touchend', this._onTouchEnd)
+    document.removeEventListener('touchmove', event => {
+      this._onMove(event)
+    })
+    document.removeEventListener('touchend', event => {
+      this._onTouchEnd(event)
+    })
   }
 
   /**
