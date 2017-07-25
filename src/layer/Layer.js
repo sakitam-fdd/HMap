@@ -504,7 +504,7 @@ class Layer extends mix(Style) {
       }
       if (!layer && params && params['layerUrl'] && params['create'] && params['levels']) {
         let projection = ol.proj.get((params['projection'] ? params['projection'] : 'EPSG:3857'))
-        let projectionExtent = projection.getExtent()
+        let projectionExtent = (params['extent'] ? params['extent'] : projection.getExtent())
         let size = ol.extent.getWidth(projectionExtent) / 256
         let levels = params['levels']
         let resolutions = new Array(levels)
@@ -536,6 +536,8 @@ class Layer extends mix(Style) {
             wrapX: false
           })
         })
+      } else {
+        throw new Error('传入参数不正确！')
       }
       if (this.map && layer && !(params['addLayer'] === false)) {
         this.map.addLayer(layer)
