@@ -352,7 +352,7 @@ class Layer extends mix(Style) {
       let layer = this.getLayerByLayerName(layerName)
       if (!(layer instanceof ol.layer.Image)) {
         layer = null
-      } else if ((layer instanceof ol.layer.Image) && !(params['addLayer'] === false)) {
+      } else if ((layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
         this.map.removeLayer(layer)
         layer = null
       }
@@ -665,9 +665,9 @@ class Layer extends mix(Style) {
   createMapboxVectorTileLayer (layerName, params) {
     try {
       let layer = this.getLayerByLayerName(layerName)
-      if (!(layer instanceof ol.layer.Tile)) {
+      if (!(layer instanceof ol.layer.VectorTile)) {
         layer = null
-      } else if (this.map && (layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
+      } else if (this.map && (layer instanceof ol.layer.VectorTile) && !(params['addLayer'] === false)) {
         this.map.removeLayer(layer)
         layer = null
       }
@@ -714,6 +714,184 @@ class Layer extends mix(Style) {
             wrapX: false
           }),
           style: MapboxStyle.createMapboxStreetsV6Style()
+        })
+      }
+      if (this.map && layer && !(params['addLayer'] === false)) {
+        this.map.addLayer(layer)
+      }
+      return layer
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  /**
+   * 获取矢量数据格式化类型
+   * @param params
+   * @returns {*}
+   * @private
+   */
+  _getFormatType (params) {
+    try {
+      let type
+      if (params['format']) {
+        switch (params['format']) {
+          case 'MVT':
+            type = new ol.format.MVT()
+            break
+          case 'GeoJSON':
+            type = new ol.format.GeoJSON()
+            break
+          case 'EsriJSON':
+            type = new ol.format.EsriJSON()
+            break
+          case 'TopoJSON':
+            type = new ol.format.TopoJSON()
+            break
+          case 'IGC':
+            type = new ol.format.IGC()
+            break
+          case 'Polyline':
+            type = new ol.format.Polyline()
+            break
+          case 'WKT':
+            type = new ol.format.WKT()
+            break
+          case 'GMLBase':
+            type = new ol.format.GMLBase()
+            break
+          case 'GPX':
+            type = new ol.format.GPX()
+            break
+          case 'KML':
+            type = new ol.format.KML()
+            break
+          case 'OSMXML':
+            type = new ol.format.OSMXML()
+            break
+          case 'WFS':
+            type = new ol.format.WFS()
+            break
+          case 'WMSGetFeatureInfo':
+            type = new ol.format.WMSGetFeatureInfo()
+            break
+        }
+      }
+      return type
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  /**
+   * 获取切片规则
+   * @param params
+   * @returns {*}
+   * @private
+   */
+  _getTileGrid (params) {
+    try {
+      let tileGrid
+      if (params['tileGrid']) {
+        let [tileSize, tileSizes] = [256]
+        if (params['tileSize'] && typeof params['tileSize'] === 'number') {
+          tileSize = params['tileSize']
+        } else if (params['tileGrid'] && params['tileGrid']['tileSize'] && typeof params['tileGrid']['tileSize'] === 'number') {
+          tileSize = params['tileGrid']['tileSize']
+        }
+        if (params['tileGrid']['tileSizes'] && params['tileGrid']['tileSizes'].length === params['tileGrid']['resolutions']) {
+          tileSizes = params['tileGrid']['tileSizes']
+        }
+        if (params['tileGrid']['gridType'] === 'XYZ') {
+          /* eslint new-cap: ["error", { "newIsCap": false }] */
+          tileGrid = new ol.tilegrid.createXYZ({
+            tileSize: tileSize,
+            extent: (params['tileGrid']['extent'] ? params['tileGrid']['extent'] : undefined),
+            minZoom: ((params['tileGrid']['minZoom'] && typeof params['tileGrid']['minZoom'] === 'number') ? params['tileGrid']['minZoom'] : 0),
+            maxZoom: ((params['tileGrid']['maxZoom'] && typeof params['tileGrid']['maxZoom'] === 'number') ? params['tileGrid']['maxZoom'] : 22)
+          })
+        } else if (params['tileGrid']['gridType'] === 'WMTS') {
+          tileGrid = new ol.tilegrid.WMTS({
+            sizes: ((params['tileGrid']['sizes'] && Array.isArray(params['tileGrid']['sizes'])) ? params['tileGrid']['sizes'] : undefined),
+            widths: ((params['tileGrid']['widths'] && Array.isArray(params['tileGrid']['widths'])) ? params['tileGrid']['widths'] : undefined),
+            tileSize: tileSize,
+            tileSizes: tileSizes, //  If given, the array length should match the length of the resolutions array
+            resolutions: params['tileGrid']['resolutions'],
+            origin: (params['tileGrid']['origin'] ? params['tileGrid']['origin'] : undefined),
+            origins: (params['tileGrid']['origins'] ? params['tileGrid']['origins'] : undefined),
+            extent: (params['tileGrid']['extent'] ? params['tileGrid']['extent'] : undefined),
+            minZoom: ((params['tileGrid']['minZoom'] && typeof params['tileGrid']['minZoom'] === 'number') ? params['tileGrid']['minZoom'] : 0),
+            matrixIds: params['tileGrid']['matrixIds']
+          })
+        } else {
+          tileGrid = new ol.tilegrid.TileGrid({
+            sizes: ((params['tileGrid']['sizes'] && Array.isArray(params['tileGrid']['sizes'])) ? params['tileGrid']['sizes'] : undefined),
+            widths: ((params['tileGrid']['widths'] && Array.isArray(params['tileGrid']['widths'])) ? params['tileGrid']['widths'] : undefined),
+            tileSize: tileSize,
+            tileSizes: tileSizes, //  If given, the array length should match the length of the resolutions array
+            resolutions: params['tileGrid']['resolutions'],
+            matrixIds: params['tileGrid']['matrixIds'],
+            origin: (params['origin'] ? params['origin'] : undefined),
+            origins: (params['origins'] ? params['origins'] : undefined),
+            extent: (params['tileGrid']['extent'] ? params['tileGrid']['extent'] : undefined),
+            minZoom: ((params['tileGrid']['minZoom'] && typeof params['tileGrid']['minZoom'] === 'number') ? params['tileGrid']['minZoom'] : 0)
+          })
+        }
+      }
+      return tileGrid
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  /**
+   * 创建矢量切片图层
+   * @param layerName
+   * @param params
+   * @returns {*}
+   */
+  createVectorTileLayer (layerName, params) {
+    try {
+      let layer = this.getLayerByLayerName(layerName)
+      if (!(layer instanceof ol.layer.VectorTile)) {
+        layer = null
+      } else if (this.map && (layer instanceof ol.layer.VectorTile) && !(params['addLayer'] === false)) {
+        this.map.removeLayer(layer)
+        layer = null
+      }
+      if (!layer && params && (params['layerUrl'] || params['layerUrls']) && params['create']) {
+        let projection = 'EPSG:3857'
+        if (params['projection']) {
+          projection = params['projection']
+        } else if (this.view && this.view instanceof ol.View) {
+          projection = this.view.getProjection().getCode()
+        }
+        layer = new ol.layer.VectorTile({
+          visible: (params['visible'] === false) ? params['visible'] : true,
+          renderBuffer: ((params['renderBuffer'] && (typeof params['renderBuffer'] === 'number')) ? params['renderBuffer'] : 100),
+          renderMode: (params['renderMode'] ? params['renderMode'] : 'hybrid'), // 渲染方式image，hybrid，vector，性能由高到低
+          extent: (params['extent'] ? params['extent'] : undefined),
+          opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
+          minResolution: ((params['minResolution'] && typeof params['minResolution'] === 'number') ? params['minResolution'] : undefined),
+          maxResolution: ((params['maxResolution'] && typeof params['maxResolution'] === 'number') ? params['maxResolution'] : undefined),
+          preload: ((params['preload'] && typeof params['preload'] === 'number') ? params['preload'] : 0),
+          source: new ol.source.VectorTile({
+            format: this._getFormatType(params),
+            cacheSize: ((params['cacheSize'] && typeof params['cacheSize'] === 'number') ? params['cacheSize'] : 128),
+            crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
+            projection: projection,
+            state: (params['state'] ? params['state'] : undefined), // State of the source, one of 'undefined', 'loading', 'ready' or 'error'.
+            overlaps: (params['overlaps'] ? params['overlaps'] : true),
+            tileClass: ((params['tileClass'] && typeof params['tileClass'] === 'function') ? params['tileClass'] : ol.VectorTile),
+            tileGrid: this._getTileGrid(params),
+            tilePixelRatio: ((params['tilePixelRatio'] && typeof params['tilePixelRatio'] === 'number') ? params['tilePixelRatio'] : 1),
+            url: (params['layerUrl'] ? params['layerUrl'] : undefined),
+            urls: ((params['layerUrls'] && Array.isArray(params['layerUrls']) && params['layerUrls'].length > 0) ? params['layerUrls'] : undefined),
+            tileUrlFunction: ((params['tileUrlFunction'] && typeof params['tileUrlFunction'] === 'function') ? params['tileUrlFunction'] : undefined),
+            tileLoadFunction: ((params['tileLoadFunction'] && typeof params['tileLoadFunction'] === 'function') ? params['tileLoadFunction'] : undefined),
+            wrapX: false
+          }),
+          style: (params['style'] ? params['style'] : undefined)
         })
       }
       if (this.map && layer && !(params['addLayer'] === false)) {
