@@ -314,20 +314,26 @@ class Overlay extends mix(Feature) {
    * @returns {ol.Overlay}
    */
   highLightOverLay (id, overlay) {
-    if (!this.map) return
-    if (overlay && overlay instanceof ol.Overlay) {
-      let overlayElement = overlay.getElement()
-      let iconElement = overlayElement.getElementsByTagName('div')[0]
-      iconElement.style.color = iconElement.selectColor
-      DomUtil.addClass(overlayElement, 'overlay-point-marker-raise')
-      return overlay
-    } else if (id && trim(id) !== "''") {
-      let _overlay = this.map.getOverlayById(id)
-      let _overlayElement = _overlay.getElement()
-      let _iconElement = _overlayElement.getElementsByTagName('div')[0]
-      _iconElement.style.color = _iconElement.selectColor
-      DomUtil.addClass(_overlayElement, 'overlay-point-marker-raise')
-      return _overlay
+    try {
+      if (!this.map) return
+      if (overlay && overlay instanceof ol.Overlay) {
+        let overlayElement = overlay.getElement()
+        let iconElement = overlayElement.getElementsByTagName('div')[0]
+        iconElement.style.color = iconElement.selectColor
+        DomUtil.addClass(overlayElement, 'overlay-point-marker-raise')
+        return overlay
+      } else if (id && trim(id) !== "''") {
+        let _overlay = this.map.getOverlayById(id)
+        if (_overlay && _overlay instanceof ol.Overlay) {
+          let _overlayElement = _overlay.getElement()
+          let _iconElement = _overlayElement.getElementsByTagName('div')[0]
+          _iconElement.style.color = _iconElement.selectColor
+          DomUtil.addClass(_overlayElement, 'overlay-point-marker-raise')
+          return _overlay
+        }
+      }
+    } catch (error) {
+      console.info(error)
     }
   }
 
@@ -347,11 +353,13 @@ class Overlay extends mix(Feature) {
       return overlay
     } else if (id && trim(id) !== "''") {
       let _overlay = this.map.getOverlayById(id)
-      let _overlayElement = _overlay.getElement()
-      let _iconElement = _overlayElement.getElementsByTagName('div')[0]
-      _iconElement.style.color = _iconElement.normalColor
-      DomUtil.removeClass(_overlayElement, 'overlay-point-marker-raise')
-      return _overlay
+      if (_overlay && _overlay instanceof ol.Overlay) {
+        let _overlayElement = _overlay.getElement()
+        let _iconElement = _overlayElement.getElementsByTagName('div')[0]
+        _iconElement.style.color = _iconElement.normalColor
+        DomUtil.removeClass(_overlayElement, 'overlay-point-marker-raise')
+        return _overlay
+      }
     }
   }
 
