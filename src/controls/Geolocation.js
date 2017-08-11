@@ -30,47 +30,43 @@ ol.control.Geolocation = function (params) {
 ol.inherits(ol.control.Geolocation, ol.control.Control)
 
 /**
- * 初始化
- */
-ol.control.Geolocation.prototype.initControl = function () {
-  /**
-   * 定位
-   * @type {ol.Geolocation}
-   */
-  this.geolocation = new ol.Geolocation({
-    projection: this.getMap().getView().getProjection(),
-    tracking: (this.options['tracking'] === true ? this.options['tracking'] : false)
-  })
-  /**
-   * 是否开启跟踪模式
-   */
-  this.geolocation.setTracking((typeof this.options['track'] === 'boolean') ? this.options['track'] : false)
-  this.geolocation.on('change', () => {
-    let accuracy = this.geolocation.getAccuracy()
-    let altitude = this.geolocation.getAltitude()
-    let altitudeAccuracy = this.geolocation.getAltitudeAccuracy()
-    let heading = this.geolocation.getHeading()
-    let speed = this.geolocation.getSpeed()
-    console.log(accuracy, altitude, altitudeAccuracy, heading, speed)
-  })
-  this.geolocation.on('error', (error) => {
-    let info = document.getElementById('info')
-    info.innerHTML = error.message
-    info.style.display = ''
-  })
-  this.geolocation.on('change:accuracyGeometry', () => {
-    console.log(this.geolocation.getAccuracyGeometry())
-  })
-  this.geolocation.on('change:position', () => {
-    let coordinates = this.geolocation.getPosition()
-    console.log(coordinates)
-  })
-}
-
-/**
  * 处理事件
  */
 ol.control.Geolocation.prototype.clickHandle = function () {
+  if (!this.geolocation) {
+    /**
+     * 定位
+     * @type {ol.Geolocation}
+     */
+    this.geolocation = new ol.Geolocation({
+      projection: this.getMap().getView().getProjection(),
+      tracking: ((typeof this.options['tracking'] === 'boolean') ? this.options['tracking'] : false)
+    })
+    /**
+     * 是否开启跟踪模式
+     */
+    this.geolocation.on('change', () => {
+      let accuracy = this.geolocation.getAccuracy()
+      let altitude = this.geolocation.getAltitude()
+      let altitudeAccuracy = this.geolocation.getAltitudeAccuracy()
+      let heading = this.geolocation.getHeading()
+      let speed = this.geolocation.getSpeed()
+      console.log(accuracy, altitude, altitudeAccuracy, heading, speed)
+    })
+    this.geolocation.on('error', (error) => {
+      let info = document.getElementById('info')
+      info.innerHTML = error.message
+      info.style.display = ''
+    })
+    this.geolocation.on('change:accuracyGeometry', () => {
+      console.log(this.geolocation.getAccuracyGeometry())
+    })
+    this.geolocation.on('change:position', () => {
+      let coordinates = this.geolocation.getPosition()
+      console.log(coordinates)
+      window.alert(coordinates)
+    })
+  }
   let coordinates = this.geolocation.getPosition()
   let accuracy = this.geolocation.getAccuracy()
   let altitude = this.geolocation.getAltitude()
@@ -85,8 +81,7 @@ ol.control.Geolocation.prototype.clickHandle = function () {
  * @param map
  */
 ol.control.Geolocation.prototype.setMap = function (map) {
-  ol.control.Control.prototype.setMap.call(this, map)
-  if (map) {
-    this.initControl()
+  if (map && map instanceof ol.Map) {
+    ol.control.Control.prototype.setMap.call(this, map)
   }
 }
