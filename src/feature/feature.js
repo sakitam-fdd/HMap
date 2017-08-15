@@ -2,7 +2,22 @@
  * Created by FDD on 2017/2/22.
  * @desc 要素相关处理
  */
-import { ol } from '../constants'
+import LayerVector from 'ol/layer/vector'
+import Feature_ from 'ol/feature'
+import Styles from 'ol/style/style'
+import LayerHeatmap from 'ol/layer/heatmap'
+import WKTFormat from 'ol/format/wkt'
+import PolylineFormat from 'ol/format/polyline'
+import GeoJSONFormat from 'ol/format/geojson'
+import EsriJSONFormat from 'ol/format/esrijson'
+import Geom from 'ol/geom/geometry'
+import PointGeom from 'ol/geom/point'
+import MultiPointGeom from 'ol/geom/multipoint'
+import LineStringGeom from 'ol/geom/linestring'
+import MultiLineStringGeom from 'ol/geom/multilinestring'
+import PolygonGeom from 'ol/geom/polygon'
+import MultiPolygonGeom from 'ol/geom/multipolygon'
+import Extent_ from 'ol/extent'
 import mix from '../utils/mixin'
 import Style from '../style/Style'
 import Layer from '../layer/Layer'
@@ -25,7 +40,7 @@ class Feature extends mix(Style, Layer) {
     let layers = this.map.getLayers()
     let feature = null
     layers.forEach(layer => {
-      if (layer && layer instanceof ol.layer.Vector && layer.getSource() && layer.getSource().getFeatureById) {
+      if (layer && layer instanceof LayerVector && layer.getSource() && layer.getSource().getFeatureById) {
         feature = layer.getSource().getFeatureById(id)
       }
     })
@@ -43,11 +58,11 @@ class Feature extends mix(Style, Layer) {
     let feature = null
     if (layerName) {
       let layer = this.getLayerByName(layerName)
-      if (layer && layer instanceof ol.layer.Vector) {
+      if (layer && layer instanceof LayerVector) {
         feature = layer.getSource().getFeatureById(id)
       }
     }
-    if (!feature || !(feature instanceof ol.Feature)) {
+    if (!feature || !(feature instanceof Feature_)) {
       feature = this.getFeatureById(id)
     }
     return feature
@@ -61,12 +76,12 @@ class Feature extends mix(Style, Layer) {
    */
   _getGeometryFromPoint (point) {
     let geometry = null
-    if (point instanceof ol.geom.Geometry) {
+    if (point instanceof Geom) {
       geometry = point
     } else if (Array.isArray(point.geometry)) {
-      geometry = new ol.geom.Point(point.geometry)
+      geometry = new PointGeom(point.geometry)
     } else {
-      geometry = new ol.format.WKT().readGeometry(point.geometry)
+      geometry = new WKTFormat().readGeometry(point.geometry)
     }
     return geometry
   }
@@ -100,7 +115,7 @@ class Feature extends mix(Style, Layer) {
   movePointToView (coordinate) {
     if (this.map) {
       let extent = this.getMapCurrentExtent()
-      if (!(ol.extent.containsXY(extent, coordinate[0], coordinate[1]))) {
+      if (!(Extent_.containsXY(extent, coordinate[0], coordinate[1]))) {
         this.map.getView().animate({
           center: [coordinate[0], coordinate[1]],
           duration: 400
@@ -124,7 +139,7 @@ class Feature extends mix(Style, Layer) {
 
   /**
    * 获取当前地图的范围
-   * @returns {ol.Extent}
+   * @returns {Extent_}
    */
   getMapCurrentExtent () {
     if (this.map) {
@@ -136,12 +151,12 @@ class Feature extends mix(Style, Layer) {
    * 添加单点
    * @param point
    * @param params
-   * @returns {ol.Feature|ol.format.Feature|*|ol.render.Feature|Feature}
+   * @returns {Feature_|ol.format.Feature|*|ol.render.Feature|Feature}
    */
   addPoint (point, params) {
     try {
       let geometry = this._getGeometryFromPoint(point)
-      let feature = new ol.Feature({
+      let feature = new Feature_({
         geometry: geometry,
         params: params
       })
@@ -187,7 +202,7 @@ class Feature extends mix(Style, Layer) {
   addPoints (points, params) {
     try {
       if (points && Array.isArray(points)) {
-        let [multiPoint, change] = [(new ol.geom.MultiPoint([])), false]
+        let [multiPoint, change] = [(new MultiPointGeom([])), false]
         if (params['zoomToExtent']) {
           params['zoomToExtent'] = false
           change = true
@@ -195,15 +210,15 @@ class Feature extends mix(Style, Layer) {
         points.forEach(point => {
           if (point && point['geometry']) {
             let pointFeat = this.addPoint(point, params)
-            if (pointFeat && pointFeat instanceof ol.Feature) {
+            if (pointFeat && pointFeat instanceof Feature_) {
               let geom = pointFeat.getGeometry()
-              if (geom && geom instanceof ol.geom.Point) {
+              if (geom && geom instanceof PointGeom) {
                 multiPoint.appendPoint(geom)
-              } else if (geom && geom instanceof ol.geom.MultiPoint) {
+              } else if (geom && geom instanceof MultiPointGeom) {
                 let multiGeoms = geom.getPoints()
                 if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
                   multiGeoms.forEach(_geom => {
-                    if (_geom && _geom instanceof ol.geom.Point) {
+                    if (_geom && _geom instanceof PointGeom) {
                       multiPoint.appendPoint(_geom)
                     }
                   })
@@ -227,7 +242,7 @@ class Feature extends mix(Style, Layer) {
    * @param geometry
    */
   setPointGeometry (point, geometry) {
-    if (point && geometry && point instanceof ol.Feature) {
+    if (point && geometry && point instanceof Feature_) {
       let _geometry = this._getGeometryFromPoint({
         geometry: geometry
       })
@@ -254,10 +269,10 @@ class Feature extends mix(Style, Layer) {
             'coordinates': line.geometry.paths
           }
         }
-        linefeature = (new ol.format.GeoJSON()).readFeature(feat)
+        linefeature = (new GeoJSONFormat()).readFeature(feat)
       } else {
-        linefeature = new ol.Feature({
-          geometry: new ol.format.WKT().readGeometry(line.geometry)
+        linefeature = new Feature_({
+          geometry: new WKTFormat().readGeometry(line.geometry)
         })
       }
       let style = this.getStyleByLine(line['attributes']['style'] || params['style'])
@@ -300,22 +315,22 @@ class Feature extends mix(Style, Layer) {
   addPolylines (lines, params) {
     try {
       if (lines && Array.isArray(lines)) {
-        let [MultiLine, change] = [(new ol.geom.MultiLineString([])), false]
+        let [MultiLine, change] = [(new MultiLineStringGeom([])), false]
         if (params['zoomToExtent']) {
           params['zoomToExtent'] = false
           change = true
         }
         lines.forEach(line => {
           let polyLine = this.addPolyline(line, params)
-          if (polyLine && polyLine instanceof ol.Feature) {
+          if (polyLine && polyLine instanceof Feature_) {
             let geom = polyLine.getGeometry()
-            if (geom && geom instanceof ol.geom.LineString) {
+            if (geom && geom instanceof LineStringGeom) {
               MultiLine.appendLineString(geom)
-            } else if (geom && geom instanceof ol.geom.MultiLineString) {
+            } else if (geom && geom instanceof MultiLineStringGeom) {
               let multiGeoms = geom.getLineStrings()
               if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
                 multiGeoms.forEach(_geom => {
-                  if (_geom && _geom instanceof ol.geom.LineString) {
+                  if (_geom && _geom instanceof LineStringGeom) {
                     MultiLine.appendLineString(geom)
                   }
                 })
@@ -336,13 +351,13 @@ class Feature extends mix(Style, Layer) {
    * 添加面要素
    * @param polygon
    * @param params
-   * @returns {ol.render.Feature|ol.format.Feature|Feature|*|ol.Feature}
+   * @returns {ol.render.Feature|ol.format.Feature|Feature|*|Feature_}
    */
   addPolygon (polygon, params) {
     try {
       if (polygon && polygon['geometry']) {
-        let polygonFeature = new ol.Feature({
-          geometry: new ol.format.WKT().readGeometry(polygon.geometry)
+        let polygonFeature = new Feature_({
+          geometry: new WKTFormat().readGeometry(polygon.geometry)
         })
         let style = this.getStyleByPolygon(polygon['attributes']['style'] || params['style'])
         let selectStyle = this.getStyleByPolygon(polygon['attributes']['selectStyle'] || params['selectStyle'])
@@ -386,22 +401,22 @@ class Feature extends mix(Style, Layer) {
   addPolygons (polygons, params) {
     try {
       if (polygons && Array.isArray(polygons)) {
-        let [MultiPolygon, change] = [(new ol.geom.MultiPolygon([])), false]
+        let [MultiPolygon, change] = [(new MultiPolygonGeom([])), false]
         if (params['zoomToExtent']) {
           params['zoomToExtent'] = false
           change = true
         }
         polygons.forEach(polygon => {
           let polygonFeat = this.addPolygon(polygon, params)
-          if (polygonFeat && polygonFeat instanceof ol.Feature) {
+          if (polygonFeat && polygonFeat instanceof Feature_) {
             let geom = polygonFeat.getGeometry()
-            if (geom && geom instanceof ol.geom.Polygon) {
+            if (geom && geom instanceof PolygonGeom) {
               MultiPolygon.appendPolygon(geom)
-            } else if (geom && geom instanceof ol.geom.MultiPolygon) {
+            } else if (geom && geom instanceof MultiPolygonGeom) {
               let multiGeoms = geom.getPolygons()
               if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
                 multiGeoms.forEach(_geom => {
-                  if (_geom && _geom instanceof ol.geom.Polygon) {
+                  if (_geom && _geom instanceof PolygonGeom) {
                     MultiPolygon.appendPolygon(_geom)
                   }
                 })
@@ -428,7 +443,7 @@ class Feature extends mix(Style, Layer) {
     try {
       let feature = ''
       if (points && Array.isArray(points) && points.length > 0) {
-        let [multiPoint, change] = [(new ol.geom.MultiPoint([])), false]
+        let [multiPoint, change] = [(new MultiPointGeom([])), false]
         if (params['zoomToExtent']) {
           params['zoomToExtent'] = false
           change = true
@@ -436,13 +451,13 @@ class Feature extends mix(Style, Layer) {
         points.forEach(item => {
           if (item && item['geometry']) {
             let geometry = this._getGeometryFromPoint(item)
-            if (geometry && geometry instanceof ol.geom.Point) {
+            if (geometry && geometry instanceof PointGeom) {
               multiPoint.appendPoint(geometry)
-            } else if (geometry && geometry instanceof ol.geom.MultiPoint) {
+            } else if (geometry && geometry instanceof MultiPointGeom) {
               let multiGeoms = geometry.getPoints()
               if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
                 multiGeoms.forEach(_geom => {
-                  if (_geom && _geom instanceof ol.geom.Point) {
+                  if (_geom && _geom instanceof PointGeom) {
                     multiPoint.appendPoint(_geom)
                   }
                 })
@@ -451,13 +466,13 @@ class Feature extends mix(Style, Layer) {
           }
         })
         if (params['layerName']) {
-          feature = new ol.Feature({
+          feature = new Feature_({
             geometry: multiPoint,
             params: params
           })
           params['create'] = true
           let layer = this.createHeatMapLayer(params['layerName'], params)
-          if (layer && layer instanceof ol.layer.Heatmap) {
+          if (layer && layer instanceof LayerHeatmap) {
             layer.getSource().addFeature(feature)
           }
           this.pointLayers.add(params['layerName'])
@@ -481,24 +496,24 @@ class Feature extends mix(Style, Layer) {
   getCenterExtentFromLine (line) {
     try {
       let geom = null
-      if (!(line instanceof ol.geom.Geometry)) {
-        geom = (new ol.format.WKT()).readGeometry(line)
+      if (!(line instanceof Geom)) {
+        geom = (new WKTFormat()).readGeometry(line)
       }
-      let [MultiLine] = [(new ol.geom.MultiLineString([]))]
-      if (geom && geom instanceof ol.geom.LineString) {
+      let [MultiLine] = [(new MultiLineStringGeom([]))]
+      if (geom && geom instanceof LineStringGeom) {
         MultiLine.appendLineString(geom)
-      } else if (geom && geom instanceof ol.geom.MultiLineString) {
+      } else if (geom && geom instanceof MultiLineStringGeom) {
         let multiGeoms = geom.getLineStrings()
         if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
           multiGeoms.forEach(_geom => {
-            if (_geom && _geom instanceof ol.geom.LineString) {
+            if (_geom && _geom instanceof LineStringGeom) {
               MultiLine.appendLineString(geom)
             }
           })
         }
       }
       let extent = this._getExtent(MultiLine)
-      let center = ol.extent.getCenter(extent)
+      let center = Extent_.getCenter(extent)
       return ({
         extent: extent,
         center: center
@@ -516,24 +531,24 @@ class Feature extends mix(Style, Layer) {
   getCenterExtentFromPolygon (polygon) {
     try {
       let geom = null
-      if (!(polygon instanceof ol.geom.Geometry)) {
-        geom = (new ol.format.WKT()).readGeometry(polygon)
+      if (!(polygon instanceof Geom)) {
+        geom = (new WKTFormat()).readGeometry(polygon)
       }
-      let [MultiPolygon] = [(new ol.geom.MultiPolygon([]))]
-      if (geom && geom instanceof ol.geom.Polygon) {
+      let [MultiPolygon] = [(new MultiPolygonGeom([]))]
+      if (geom && geom instanceof PolygonGeom) {
         MultiPolygon.appendPolygon(geom)
-      } else if (geom && geom instanceof ol.geom.MultiPolygon) {
+      } else if (geom && geom instanceof MultiPolygonGeom) {
         let multiGeoms = geom.getPolygons()
         if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
           multiGeoms.forEach(_geom => {
-            if (_geom && _geom instanceof ol.geom.Polygon) {
+            if (_geom && _geom instanceof PolygonGeom) {
               MultiPolygon.appendPolygon(geom)
             }
           })
         }
       }
       let extent = this._getExtent(MultiPolygon)
-      let center = ol.extent.getCenter(extent)
+      let center = Extent_.getCenter(extent)
       return ({
         extent: extent,
         center: center
@@ -553,15 +568,15 @@ class Feature extends mix(Style, Layer) {
     try {
       let featureGeom = null
       if (geomData['geomType'] === 'GeoJSON') {
-        featureGeom = (new ol.format.GeoJSON()).readGeometry(geomData['geometry'])
+        featureGeom = (new GeoJSONFormat()).readGeometry(geomData['geometry'])
       } else if (geomData['geomType'] === 'WKT') {
-        featureGeom = (new ol.format.WKT()).readGeometry(geomData['geometry'])
+        featureGeom = (new WKTFormat()).readGeometry(geomData['geometry'])
       } else if (geomData['geomType'] === 'EsriJSON') {
-        featureGeom = (new ol.format.EsriJSON()).readGeometry(geomData['geometry'])
+        featureGeom = (new EsriJSONFormat()).readGeometry(geomData['geometry'])
       } else if (geomData['geomType'] === 'Polyline') {
-        featureGeom = (new ol.format.Polyline()).readGeometry(geomData['geometry'])
+        featureGeom = (new PolylineFormat()).readGeometry(geomData['geometry'])
       } else if (Array.isArray(geomData['geometry']) && geomData['geometry'].length === 2) {
-        featureGeom = new ol.geom.Point(geomData['geometry'])
+        featureGeom = new PointGeom(geomData['geometry'])
       }
       return featureGeom
     } catch (e) {
@@ -578,7 +593,7 @@ class Feature extends mix(Style, Layer) {
   getCenterExtentFromGeom (geomData, options) {
     let geom = this.getGeomFromGeomData(geomData, options)
     let extent = this._getExtent(geom)
-    let center = ol.extent.getCenter(extent)
+    let center = Extent_.getCenter(extent)
     let bExtent = true
     extent.every(item => {
       if (item === Infinity || isNaN(item) || item === undefined || item === null) {
@@ -609,7 +624,7 @@ class Feature extends mix(Style, Layer) {
       if (layerName) {
         layerName = layerName.trim()
         let _layer = this.getLayerByLayerName(layerName)
-        if (_layer && _layer instanceof ol.layer.Heatmap) {
+        if (_layer && _layer instanceof LayerHeatmap) {
           layer = _layer
           if (params && typeof params === 'object') {
             for (let key in params) {
@@ -647,7 +662,7 @@ class Feature extends mix(Style, Layer) {
   removeFeatureByLayerName (layerName) {
     try {
       let layer = this.getLayerByLayerName(layerName)
-      if (layer && layer instanceof ol.layer.Vector && layer.getSource()) {
+      if (layer && layer instanceof LayerVector && layer.getSource()) {
         layer.getSource().clear()
       }
     } catch (e) {
@@ -674,7 +689,7 @@ class Feature extends mix(Style, Layer) {
    * @param feature
    */
   removeFeature (feature) {
-    if (feature && feature instanceof ol.Feature) {
+    if (feature && feature instanceof Feature_) {
       let tragetLayer = this.getLayerByFeatuer(feature)
       if (tragetLayer) {
         let source = tragetLayer.getSource()
@@ -698,16 +713,16 @@ class Feature extends mix(Style, Layer) {
         let layer = this.getLayerByLayerName(layerName)
         if (layer) {
           let feature = layer.getSource().getFeatureById(id)
-          if (feature && feature instanceof ol.Feature) {
+          if (feature && feature instanceof Feature_) {
             layer.getSource().removeFeature(feature)
           }
         }
       } else {
         let layers = this.map.getLayers().getArray()
         layers.forEach(layer => {
-          if (layer && layer instanceof ol.layer.Vector && layer.getSource()) {
+          if (layer && layer instanceof LayerVector && layer.getSource()) {
             let feature = layer.getSource().getFeatureById(id)
-            if (feature && feature instanceof ol.Feature) {
+            if (feature && feature instanceof Feature_) {
               layer.getSource().removeFeature(feature)
             }
           }
@@ -740,9 +755,9 @@ class Feature extends mix(Style, Layer) {
    */
   highLightFeature (id, feat, layerName) {
     if (!this.map) return
-    if (feat && feat instanceof ol.Feature) {
+    if (feat && feat instanceof Feature_) {
       let selectStyle = feat.get('selectStyle')
-      if (selectStyle && selectStyle instanceof ol.style.Style) {
+      if (selectStyle && selectStyle instanceof Styles) {
         feat.setStyle(selectStyle)
       } else if (selectStyle) {
         let st = this.getStyleByPoint(selectStyle)
@@ -750,10 +765,10 @@ class Feature extends mix(Style, Layer) {
       }
       return feat
     } else if (id && id.trim() !== "''") {
-      let feature = this.getFeatureById(id, layerName)
-      if (feature && feature instanceof ol.Feature) {
+      let feature = this.getFeatureById(id)
+      if (feature && feature instanceof Feature_) {
         let selectStyle = feature.get('selectStyle')
-        if (selectStyle && selectStyle instanceof ol.style.Style) {
+        if (selectStyle && selectStyle instanceof Styles) {
           feature.setStyle(selectStyle)
         } else if (selectStyle) {
           let st = this.getStyleByPoint(selectStyle)
@@ -773,9 +788,9 @@ class Feature extends mix(Style, Layer) {
    */
   unHighLightFeature (id, feat, layerName) {
     if (!this.map) return
-    if (feat && feat instanceof ol.Feature) {
+    if (feat && feat instanceof Feature_) {
       let normalStyle = feat.get('style')
-      if (normalStyle && normalStyle instanceof ol.style.Style) {
+      if (normalStyle && normalStyle instanceof Styles) {
         feat.setStyle(normalStyle)
       } else if (normalStyle) {
         let st = this.getStyleByPoint(normalStyle)
@@ -783,10 +798,10 @@ class Feature extends mix(Style, Layer) {
       }
       return feat
     } else if (id && id.trim() !== "''") {
-      let feature = this.getFeatureById(id, layerName)
-      if (feature && feature instanceof ol.Feature) {
+      let feature = this.getFeatureById(id)
+      if (feature && feature instanceof Feature_) {
         let normalStyle = feature.get('style')
-        if (normalStyle && normalStyle instanceof ol.style.Style) {
+        if (normalStyle && normalStyle instanceof Styles) {
           feature.setStyle(normalStyle)
         } else if (normalStyle) {
           let st = this.getStyleByPoint(normalStyle)

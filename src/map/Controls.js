@@ -1,4 +1,13 @@
-import {ol} from '../constants'
+import ZoomControl from 'ol/control/zoom'
+import RotateControl from 'ol/control/rotate'
+import AttributionControl from 'ol/control/attribution'
+import ScaleLineControl from 'ol/control/scaleline'
+import FullScreenControl from 'ol/control/fullscreen'
+import MousePositionControl from 'ol/control/mouseposition'
+import ZoomSliderControl from 'ol/control/zoomslider'
+import ZoomToExtentControl from 'ol/control/zoomtoextent'
+import Easing from 'ol/easing'
+import View from 'ol/view'
 import * as utils from '../utils/utils'
 class _Controls {
 
@@ -43,7 +52,7 @@ class _Controls {
     if (!controls) {
       controls = this.map.getControls()
     }
-    controls.push(new ol.control.Zoom({
+    controls.push(new ZoomControl({
       className: (options['className'] ? options['className'] : 'ol-zoom'),
       duration: (options['duration'] && typeof options['duration'] === 'number' ? options['duration'] : 250),
       zoomInLabel: (options['zoomInLabel'] ? options['zoomInLabel'] : undefined),
@@ -65,7 +74,7 @@ class _Controls {
     if (!controls) {
       controls = this.map.getControls()
     }
-    controls.push(new ol.control.Rotate({
+    controls.push(new RotateControl({
       className: (options['className'] ? options['className'] : 'ol-rotate'),
       duration: (options['duration'] && typeof options['duration'] === 'number' ? options['duration'] : 250),
       label: (options['label'] ? options['label'] : '⇧'),
@@ -85,7 +94,7 @@ class _Controls {
     if (!controls) {
       controls = this.map.getControls()
     }
-    controls.push(new ol.control.Attribution({
+    controls.push(new AttributionControl({
       className: (options['className'] ? options['className'] : 'ol-attribution'),
       label: (options['label'] ? options['label'] : 'i'),
       tipLabel: (options['tipLabel'] && typeof options['tipLabel'] === 'string' ? options['tipLabel'] : '版权'),
@@ -106,7 +115,7 @@ class _Controls {
     if (!controls) {
       controls = this.map.getControls()
     }
-    controls.push(new ol.control.ScaleLine({
+    controls.push(new ScaleLineControl({
       className: (options['className'] ? options['className'] : 'ol-scale-line'),
       minWidth: (options['minWidth'] && typeof options['minWidth'] === 'number' ? options['minWidth'] : 64),
       render: (options['render'] && typeof options['render'] === 'function' ? options['render'] : undefined),
@@ -124,7 +133,7 @@ class _Controls {
     if (!controls) {
       controls = this.map.getControls()
     }
-    controls.push(new ol.control.FullScreen({
+    controls.push(new FullScreenControl({
       className: (options['className'] ? options['className'] : 'ol-full-screen'),
       label: (options['label'] ? options['label'] : '\u2922'),
       tipLabel: (options['tipLabel'] && typeof options['tipLabel'] === 'string' ? options['tipLabel'] : '切换全屏'),
@@ -144,7 +153,7 @@ class _Controls {
     if (!controls) {
       controls = this.map.getControls()
     }
-    controls.push(new ol.control.MousePosition({
+    controls.push(new MousePositionControl({
       className: (options['className'] ? options['className'] : 'ol-mouse-position'),
       coordinateFormat: (options['coordinateFormat'] ? options['coordinateFormat'] : undefined),
       projection: (options['projection'] ? options['projection'] : this.view.getProjection()),
@@ -162,7 +171,7 @@ class _Controls {
     if (!controls) {
       controls = this.map.getControls()
     }
-    controls.push(new ol.control.ZoomSlider({
+    controls.push(new ZoomSliderControl({
       className: (options['className'] ? options['className'] : 'ol-zoomslider'),
       duration: (options['duration'] && typeof options['duration'] === 'number' ? options['duration'] : 200),
       maxResolution: (options['maxResolution'] && typeof options['maxResolution'] === 'number' ? options['maxResolution'] : undefined),
@@ -179,7 +188,7 @@ class _Controls {
     if (!controls) {
       controls = this.map.getControls()
     }
-    controls.push(new ol.control.ZoomToExtent({
+    controls.push(new ZoomToExtentControl({
       className: (options['className'] ? options['className'] : 'ol-zoom-extent'),
       label: (options['label'] ? options['label'] : 'E'),
       tipLabel: (options['tipLabel'] && typeof options['tipLabel'] === 'string' ? options['tipLabel'] : '缩放到范围'),
@@ -187,38 +196,38 @@ class _Controls {
     }))
   }
 
-  /**
-   * 添加定位控件
-   * @param options
-   * @param controls
-   * @private
-   */
-  addGeolocation (options, controls) {
-    if (!controls) {
-      controls = this.map.getControls()
-    }
-    controls.push(new ol.control.Geolocation({
-      className: (options['className'] ? options['className'] : 'hmap-geolocation'),
-      target: (options['target'] ? options['target'] : undefined)
-    }))
-  }
-
-  /**
-   * 添加loading控件
-   * @param options
-   * @param controls
-   * @private
-   */
-  addLoading (options, controls) {
-    if (!controls) {
-      controls = this.map.getControls()
-    }
-    controls.push(new ol.control.Loading({
-      className: (options['className'] ? options['className'] : 'hmap-loading-panel'),
-      widget: (options['widget'] ? options['widget'] : 'animatedGif'),
-      target: (options['target'] ? options['target'] : undefined)
-    }))
-  }
+  // /**
+  //  * 添加定位控件
+  //  * @param options
+  //  * @param controls
+  //  * @private
+  //  */
+  // addGeolocation (options, controls) {
+  //   if (!controls) {
+  //     controls = this.map.getControls()
+  //   }
+  //   controls.push(new olControl.Geolocation({
+  //     className: (options['className'] ? options['className'] : 'hmap-geolocation'),
+  //     target: (options['target'] ? options['target'] : undefined)
+  //   }))
+  // }
+  //
+  // /**
+  //  * 添加loading控件
+  //  * @param options
+  //  * @param controls
+  //  * @private
+  //  */
+  // addLoading (options, controls) {
+  //   if (!controls) {
+  //     controls = this.map.getControls()
+  //   }
+  //   controls.push(new olControl.Loading({
+  //     className: (options['className'] ? options['className'] : 'hmap-loading-panel'),
+  //     widget: (options['widget'] ? options['widget'] : 'animatedGif'),
+  //     target: (options['target'] ? options['target'] : undefined)
+  //   }))
+  // }
 
   /**
    * 放大
@@ -250,7 +259,7 @@ class _Controls {
    */
   zoomByDelta (delta, duration) {
     let view = this.map.getView()
-    if (!view || !(view instanceof ol.View)) {
+    if (!view || !(view instanceof View)) {
       return false
     } else {
       let currentResolution = view.getResolution()
@@ -263,7 +272,7 @@ class _Controls {
           view.animate({
             resolution: newResolution,
             duration: duration,
-            easing: ol.easing.easeOut
+            easing: Easing.easeOut
           })
         } else {
           view.setResolution(newResolution)

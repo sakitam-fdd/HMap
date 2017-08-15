@@ -1,4 +1,10 @@
-import {ol} from '../constants'
+import LayerGroup from 'ol/layer/group'
+import LayerTitle from 'ol/layer/tile'
+import LayerImage from 'ol/layer/image'
+import OSMSource from 'ol/source/osm'
+import VectorTile from 'ol/layer/vectortile'
+import Attribution from 'ol/attribution'
+import olProj from 'ol/proj'
 class BaseLayers {
 
   /**
@@ -15,7 +21,7 @@ class BaseLayers {
        * 投影
        * @type {ol.proj.Projection}
        */
-      this.projection = ol.proj.get((_view['projection'] ? _view.projection : 'EPSG:3857'))
+      this.projection = olProj.get((_view['projection'] ? _view.projection : 'EPSG:3857'))
       /**
        * 显示范围
        */
@@ -46,14 +52,14 @@ class BaseLayers {
     }
 
     if (!options || !Array.isArray(options) || options.length <= 0) {
-      return [new ol.layer.Group({
-        layers: [new ol.layer.Tile({
-          source: new ol.source.OSM()
+      return [new LayerGroup({
+        layers: [new LayerTitle({
+          source: new OSMSource()
         })],
         isBaseLayer: true
       })]
     } else {
-      return [new ol.layer.Group({
+      return [new LayerGroup({
         layers: this._getBaseLayerGroup(params),
         isBaseLayer: true
       })]
@@ -175,7 +181,7 @@ class BaseLayers {
         config['tileGrid']['resolutions'] = this.resolutions
       }
       let baseLayer = this.createXYZLayer(layerName, config)
-      if (baseLayer && baseLayer instanceof ol.layer.Tile) {
+      if (baseLayer && baseLayer instanceof LayerTitle) {
         baseLayer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
         baseLayer.set('isBaseLayer', true)
         baseLayer.set('alias', (config['alias'] ? config['alias'] : ''))
@@ -199,7 +205,7 @@ class BaseLayers {
       config['addLayer'] = false
       config['create'] = true
       let baseLayer = this.createOSMLayer(layerName, config)
-      if (baseLayer && baseLayer instanceof ol.layer.Tile) {
+      if (baseLayer && baseLayer instanceof LayerTitle) {
         baseLayer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
         baseLayer.set('isBaseLayer', true)
         baseLayer.set('alias', (config['alias'] ? config['alias'] : ''))
@@ -223,7 +229,7 @@ class BaseLayers {
       config['addLayer'] = false
       config['create'] = true
       let baseLayer = this.createWMTSLayer(layerName, config)
-      if (baseLayer && baseLayer instanceof ol.layer.Tile) {
+      if (baseLayer && baseLayer instanceof LayerTitle) {
         baseLayer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
         baseLayer.set('isBaseLayer', true)
         baseLayer.set('alias', (config['alias'] ? config['alias'] : ''))
@@ -246,7 +252,7 @@ class BaseLayers {
       config['addLayer'] = false
       config['create'] = true
       let layer = this.createImageWMSLayer(layerName, config)
-      if (layer && layer instanceof ol.layer.Image) {
+      if (layer && layer instanceof LayerImage) {
         layer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
         layer.set('isBaseLayer', true)
         layer.set('alias', (config['alias'] ? config['alias'] : ''))
@@ -270,7 +276,7 @@ class BaseLayers {
       config['addLayer'] = false
       config['create'] = true
       let layer = this.createTileWMSLayer(layerName, config)
-      if (layer && layer instanceof ol.layer.Tile) {
+      if (layer && layer instanceof LayerTitle) {
         layer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
         layer.set('isBaseLayer', true)
         layer.set('alias', (config['alias'] ? config['alias'] : ''))
@@ -294,7 +300,7 @@ class BaseLayers {
       config['addLayer'] = false
       config['create'] = true
       let layer = this.createMapboxVectorTileLayer(layerName, config)
-      if (layer && layer instanceof ol.layer.VectorTile) {
+      if (layer && layer instanceof VectorTile) {
         layer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
         layer.set('isBaseLayer', true)
         layer.set('alias', (config['alias'] ? config['alias'] : ''))
@@ -318,7 +324,7 @@ class BaseLayers {
       config['addLayer'] = false
       config['create'] = true
       let layer = this.createTitleLayer(layerName, config)
-      if (layer && layer instanceof ol.layer.VectorTile) {
+      if (layer && layer instanceof VectorTile) {
         layer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
         layer.set('isBaseLayer', true)
         layer.set('alias', (config['alias'] ? config['alias'] : ''))
@@ -343,11 +349,11 @@ class BaseLayers {
         params['url'] = 'https://aurorafe.github.io'
         params['messages'] = 'contributors.'
         params['title'] = 'HMap'
-        attribution = new ol.Attribution({
+        attribution = new Attribution({
           html: '&copy; ' + '<a href="' + params['url'] + '">' + params['title'] + '</a> ' + params['messages']
         })
       } else if (typeof params === 'object') {
-        attribution = new ol.Attribution({
+        attribution = new Attribution({
           html: '&copy; ' + '<a href="' + params['url'] + '">' + params['title'] + '</a> ' + params['messages']
         })
       } else {
@@ -360,5 +366,4 @@ class BaseLayers {
     }
   }
 }
-
 export default BaseLayers

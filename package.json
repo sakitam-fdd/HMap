@@ -22,7 +22,8 @@
     "test:watch": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js"
   },
   "dependencies": {
-    "openlayers": "^4.0.1",
+    "ol": "^4.3.1",
+    "ol-control-bzoomslider": "^1.0.0",
     "proj4": "^2.4.3"
   },
   "devDependencies": {

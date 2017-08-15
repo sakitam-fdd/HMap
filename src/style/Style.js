@@ -1,15 +1,15 @@
-import {ol} from '../constants'
+import olStyle from 'ol/style'
 class Style {
   /**
    * 获取点样式
    * @param options
-   * @returns {ol.style.Style}
+   * @returns {olStyle.Style}
    */
   getStyleByPoint (options) {
     let style = null
     if (!options) {
-      style = new ol.style.Style({
-        image: new ol.style.Icon({
+      style = new olStyle.Style({
+        image: new olStyle.Icon({
           anchor: [0.5, 1],
           anchorXUnits: 'fraction',
           anchorYUnits: 'fraction',
@@ -18,7 +18,7 @@ class Style {
         })
       })
     } else {
-      style = new ol.style.Style({})
+      style = new olStyle.Style({})
       if (options['stroke'] && this._getStroke(options['stroke'])) {
         style.setStroke(this._getStroke(options['stroke']))
       }
@@ -38,19 +38,19 @@ class Style {
   /**
    * 获取线样式
    * @param options
-   * @returns {ol.style.Style}
+   * @returns {olStyle.Style}
    */
   getStyleByLine (options) {
     let style = null
     if (!options) {
-      style = new ol.style.Style({
-        stroke: new ol.style.Stroke({
+      style = new olStyle.Style({
+        stroke: new olStyle.Stroke({
           width: 4,
           color: '#0000EE'
         })
       })
     } else {
-      style = new ol.style.Style({})
+      style = new olStyle.Style({})
       if (options['stroke'] && this._getStroke(options['stroke'])) {
         style.setStroke(this._getStroke(options['stroke']))
       }
@@ -67,28 +67,28 @@ class Style {
   /**
    * 获取面样式
    * @param options
-   * @returns {ol.style.Style}
+   * @returns {olStyle.Style}
    */
   getStyleByPolygon (options) {
     let style = null
     if (!options) {
-      style = new ol.style.Style({
-        fill: new ol.style.Fill({
+      style = new olStyle.Style({
+        fill: new olStyle.Fill({
           color: 'rgba(67, 110, 238, 0.4)'
         }),
-        stroke: new ol.style.Stroke({
+        stroke: new olStyle.Stroke({
           color: '#4781d9',
           width: 2
         }),
-        image: new ol.style.Circle({
+        image: new olStyle.Circle({
           radius: 7,
-          fill: new ol.style.Fill({
+          fill: new olStyle.Fill({
             color: '#ffcc33'
           })
         })
       })
     } else {
-      style = new ol.style.Style({})
+      style = new olStyle.Style({})
       if (options['stroke'] && this._getStroke(options['stroke'])) {
         style.setStroke(this._getStroke(options['stroke']))
       }
@@ -114,23 +114,23 @@ class Style {
         style = options
       } else {
         if (!options) {
-          style = new ol.style.Style({
-            fill: new ol.style.Fill({
+          style = new olStyle.Style({
+            fill: new olStyle.Fill({
               color: 'rgba(67, 110, 238, 0.4)'
             }),
-            stroke: new ol.style.Stroke({
+            stroke: new olStyle.Stroke({
               color: '#4781d9',
               width: 2
             }),
-            image: new ol.style.Circle({
+            image: new olStyle.Circle({
               radius: 7,
-              fill: new ol.style.Fill({
+              fill: new olStyle.Fill({
                 color: '#ffcc33'
               })
             })
           })
         } else {
-          style = new ol.style.Style({})
+          style = new olStyle.Style({})
           if (options['stroke'] && this._getStroke(options['stroke'])) {
             style.setStroke(this._getStroke(options['stroke']))
           }
@@ -163,27 +163,27 @@ class Style {
         style = options
       } else {
         if (!options) {
-          style = new ol.style.Style({
-            fill: new ol.style.Fill({
+          style = new olStyle.Style({
+            fill: new olStyle.Fill({
               color: 'rgba(67, 110, 238, 0.4)'
             }),
-            stroke: new ol.style.Stroke({
+            stroke: new olStyle.Stroke({
               color: 'rgba(242,123,57,1)',
               width: 2
             }),
-            image: new ol.style.Circle({
+            image: new olStyle.Circle({
               radius: 4,
-              stroke: new ol.style.Stroke({
+              stroke: new olStyle.Stroke({
                 color: 'rgba(255,0,0,1)',
                 width: 1
               }),
-              fill: new ol.style.Fill({
+              fill: new olStyle.Fill({
                 color: 'rgba(255,255,255,1)'
               })
             })
           })
         } else {
-          style = new ol.style.Style({})
+          style = new olStyle.Style({})
           if (options['stroke'] && this._getStroke(options['stroke'])) {
             style.setStroke(this._getStroke(options['stroke']))
           }
@@ -214,7 +214,7 @@ class Style {
    */
   _getRegularShape (options) {
     try {
-      let regularShape = new ol.style.RegularShape({
+      let regularShape = new olStyle.RegularShape({
         fill: (this._getFill(options['fill']) || undefined),
         points: ((options['points'] && typeof options['points'] === 'number') ? options['points'] : 1),
         radius: ((options['radius'] && typeof options['radius'] === 'number') ? options['radius'] : undefined),
@@ -226,7 +226,7 @@ class Style {
         rotation: ((options['rotation'] && typeof options['rotation'] === 'number') ? options['rotation'] : 0),
         rotateWithView: ((options['rotateWithView'] && typeof options['rotateWithView'] === 'boolean') ? options['rotateWithView'] : false)
       })
-      if (regularShape && regularShape instanceof ol.style.RegularShape) {
+      if (regularShape && regularShape instanceof olStyle.RegularShape) {
         return regularShape
       } else {
         return false
@@ -243,17 +243,17 @@ class Style {
    */
   _getRegularCircle (options) {
     try {
-      let circle = new ol.style.Circle({
-        fill: new ol.style.Fill({
+      let circle = new olStyle.Circle({
+        fill: new olStyle.Fill({
           color: (options['fill'] && options['fill']['fillColor'] ? options['fill']['fillColor'] : 'rgba(255,255,255,1)')
         }),
         radius: ((options['circleRadius'] && typeof options['circleRadius'] === 'number') ? options['circleRadius'] : 0),
-        stroke: new ol.style.Stroke({
+        stroke: new olStyle.Stroke({
           color: (options['stroke'] && options['stroke']['strokeColor'] ? options['stroke']['strokeColor'] : 'rgba(255,0,0,1)'),
           width: (options['stroke'] && options['stroke']['strokeWidth'] ? options['stroke']['strokeWidth'] : 1)
         })
       })
-      if (circle && circle instanceof ol.style.Circle) {
+      if (circle && circle instanceof olStyle.Circle) {
         return circle
       } else {
         return false
@@ -271,7 +271,7 @@ class Style {
    */
   _getImage (options) {
     try {
-      let icon = new ol.style.Icon({
+      let icon = new olStyle.Icon({
         anchor: (options['imageAnchor'] ? options['imageAnchor'] : [0.5, 0.5]),
         anchorXUnits: (options['imageAnchorXUnits'] ? options['imageAnchorXUnits'] : 'fraction'),
         anchorYUnits: (options['imageAnchorYUnits'] ? options['imageAnchorYUnits'] : 'fraction'),
@@ -289,7 +289,7 @@ class Style {
         imgSize: (options['imgSize'] && Array.isArray(options['imgSize']) && options['imgSize'].length === 2 ? options['imgSize'] : undefined),
         src: (options['imageSrc'] ? options['imageSrc'] : 1)
       })
-      if (icon && icon instanceof ol.style.Icon) {
+      if (icon && icon instanceof olStyle.Icon) {
         return icon
       } else {
         return false
@@ -302,12 +302,12 @@ class Style {
   /**
    * 获取线条样式
    * @param options
-   * @returns {ol.style.Stroke}
+   * @returns {olStyle.Stroke}
    * @private
    */
   _getStroke (options) {
     try {
-      let stroke = new ol.style.Stroke({
+      let stroke = new olStyle.Stroke({
         color: (options['strokeColor'] ? options['strokeColor'] : undefined),
         lineCap: (options['strokeLineCap'] ? options['strokeLineCap'] : 'round'),
         lineJoin: (options['strokeLineJoin'] ? options['strokeLineJoin'] : 'round'),
@@ -316,7 +316,7 @@ class Style {
         miterLimit: (options['strokeMiterLimit'] ? options['strokeMiterLimit'] : 10),
         width: (options['strokeWidth'] ? options['strokeWidth'] : undefined)
       })
-      if (stroke && stroke instanceof ol.style.Stroke) {
+      if (stroke && stroke instanceof olStyle.Stroke) {
         return stroke
       } else {
         return false
@@ -329,12 +329,12 @@ class Style {
   /**
    * 获取样式文本
    * @param options
-   * @returns {ol.style.Text}
+   * @returns {olStyle.Text}
    * @private
    */
   _getText (options) {
     try {
-      let text = new ol.style.Text({
+      let text = new olStyle.Text({
         font: (options['textFont'] ? options['textFont'] : '10px sans-serif'),
         offsetX: (options['textOffsetX'] ? options['textOffsetX'] : 0),
         offsetY: (options['textOffsetY'] ? options['textOffsetY'] : 0),
@@ -350,7 +350,7 @@ class Style {
       if (options['textStroke']) {
         text.setStroke(this._getStroke(options['textStroke']))
       }
-      if (text && text instanceof ol.style.Text) {
+      if (text && text instanceof olStyle.Text) {
         return text
       } else {
         return false
@@ -363,15 +363,15 @@ class Style {
   /**
    * 获取填充颜色
    * @param options
-   * @returns {ol.style.Fill}
+   * @returns {olStyle.Fill}
    * @private
    */
   _getFill (options) {
     try {
-      let fill = new ol.style.Fill({
+      let fill = new olStyle.Fill({
         color: (options['fillColor'] ? options['fillColor'] : undefined)
       })
-      if (fill && fill instanceof ol.style.Fill) {
+      if (fill && fill instanceof olStyle.Fill) {
         return fill
       } else {
         return false

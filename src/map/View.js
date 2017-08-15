@@ -1,8 +1,10 @@
-import { ol } from '../constants'
+import OlView from 'ol/view'
+import OlExtent from 'ol/extent'
+import OlMap from 'ol/map'
 class _View {
   _addView (params) {
     let option = params || {}
-    return new ol.View({
+    return new OlView({
       center: ((option['center'] && Array.isArray(option['center'])) ? option['center'] : [0, 0]),
       zoom: ((option['zoom'] && (typeof option['zoom'] === 'number')) ? option['zoom'] : 0),
       minZoom: ((option['minZoom'] && (typeof option['minZoom'] === 'number')) ? option['minZoom'] : undefined),
@@ -20,7 +22,7 @@ class _View {
    * 获取当前地图尺寸
    */
   getSize () {
-    if (this.map && this.map instanceof ol.Map) {
+    if (this.map && this.map instanceof OlMap) {
       return (this.map.getSize())
     } else {
       console.log('未获取到视图！')
@@ -72,7 +74,7 @@ class _View {
   movePointToView (coord) {
     if (this.map) {
       let extent = this.getMapCurrentExtent()
-      if (!(ol.extent.containsXY(extent, coord[0], coord[1]))) {
+      if (!(OlExtent.containsXY(extent, coord[0], coord[1]))) {
         this.view.setCenter(coord)
       }
     }

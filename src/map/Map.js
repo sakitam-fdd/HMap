@@ -1,5 +1,8 @@
 import mix from '../utils/mixin'
-import {ol, proj4} from '../constants'
+import olProj from 'ol/proj'
+import OlObject from 'ol/object'
+import OlMap from 'ol/map'
+import proj4 from 'proj4'
 import BaseLayers from './baseLayer'
 import _Controls from './Controls'
 import _Interactions from './Interactions'
@@ -19,8 +22,8 @@ class Map extends mix(BaseLayers, _Controls, _Interactions, Style, Layer, _View,
     this._lastDrawInteractionGeometry = null
     this.EverntCenter = new Observable()
     proj4.defs('EPSG:4490', '+proj=longlat +ellps=GRS80 +no_defs')
-    ol.proj.setProj4(proj4)
-    window.ObservableObj = new ol.Object()
+    olProj.setProj4(proj4)
+    window.ObservableObj = new OlObject()
 
     /**
      * 当前地图线要素
@@ -101,7 +104,7 @@ class Map extends mix(BaseLayers, _Controls, _Interactions, Style, Layer, _View,
        * 当前地图对象
        * @type {ol.Map}
        */
-      this.map = new ol.Map({
+      this.map = new OlMap({
         target: mapDiv,
         loadTilesWhileAnimating: false,
         loadTilesWhileInteracting: false,
@@ -163,7 +166,7 @@ class Map extends mix(BaseLayers, _Controls, _Interactions, Style, Layer, _View,
    * @param map
    */
   setMap (map) {
-    if (map && map instanceof ol.Map) {
+    if (map && map instanceof OlMap) {
       this.map = map
     }
   }

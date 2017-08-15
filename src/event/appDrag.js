@@ -1,8 +1,8 @@
-import { ol } from '../constants'
-class appDrag extends (ol.interaction.Pointer) {
+import PointerInteraction from 'ol/interaction/pointer'
+class appDrag extends PointerInteraction {
   constructor () {
     super()
-    ol.interaction.Pointer.call(this, {
+    PointerInteraction.call(this, {
       handleDownEvent: this.handleDownEvent,
       handleDragEvent: this.handleDragEvent,
       handleMoveEvent: this.handleMoveEvent,

@@ -1,11 +1,51 @@
-import { ol } from '../constants'
 import mix from '../utils/mixin'
+import View_ from 'ol/view'
+import VectorTile_ from 'ol/vectortile'
+import LayerGroup from 'ol/layer/group'
+import LayerTitle from 'ol/layer/tile'
+import VectorTile from 'ol/layer/vectortile'
+import LayerImage from 'ol/layer/image'
+import LayerHeatmap from 'ol/layer/heatmap'
+import LayerVector from 'ol/layer/vector'
+import Feature_ from 'ol/feature'
+import VectorSource from 'ol/source/vector'
+import TileArcGISRestSource from 'ol/source/tilearcgisrest'
+import ImageWMSSource from 'ol/source/imagewms'
+import TileWMSSource from 'ol/source/tilewms'
+import WMTSSource from 'ol/source/wmts'
+import ImageStaticSource from 'ol/source/imagestatic'
+import XYZSource from 'ol/source/xyz'
+import OSMSource from 'ol/source/osm'
+import RasterSource from 'ol/source/raster'
+import ImageMapGuideSource from 'ol/source/imagemapguide'
+import ImageCanvasSource from 'ol/source/imagecanvas'
+import ImageArcGISRestSource from 'ol/source/imagearcgisrest'
+import WMTSTileGrid from 'ol/tilegrid/wmts'
+import TileGrid from 'ol/tilegrid'
+import TileGridGrid from 'ol/tilegrid/tilegrid'
+import Styles from 'ol/style/style'
+import FillStyle from 'ol/style/fill'
+import StrokeStyle from 'ol/style/stroke'
+import CircleStyle from 'ol/style/circle'
+import GeoJSONFormat from 'ol/format/geojson'
+import MVTFormat from 'ol/format/mvt'
+import EsriJSONFormat from 'ol/format/esrijson'
+import TopoJSONFormat from 'ol/format/topojson'
+import IGCFormat from 'ol/format/igc'
+import PolylineFormat from 'ol/format/polyline'
+import WKTFormat from 'ol/format/wkt'
+import GMLBaseFormat from 'ol/format/gmlbase'
+import GPXFormat from 'ol/format/gpx'
+import KMLFormat from 'ol/format/kml'
+import OSMXMLFormat from 'ol/format/osmxml'
+import WFSFormat from 'ol/format/wfs'
+import WMSGetFeatureInfoFormat from 'ol/format/wmsgetfeatureinfo'
+import Loadingstrategy from 'ol/loadingstrategy'
+import Proj from 'ol/proj'
+import ProjProjection from 'ol/proj/projection'
+import Extent_ from 'ol/extent'
 import * as MapboxStyle from '../style/MapboxStyle'
 import Style from '../style/Style'
-import './source/GaoDe'
-import './source/BaiDu'
-import './source/Google'
-
 class Layer extends mix(Style) {
   constructor (map) {
     super()
@@ -74,9 +114,9 @@ class Layer extends mix(Style) {
     try {
       let currentLayer = null
       this.map.getLayers().getArray().forEach(layer => {
-        if (layer && layer instanceof ol.layer.Group && layer.get('isBaseLayer')) {
+        if (layer && layer instanceof LayerGroup && layer.get('isBaseLayer')) {
           layer.getLayers().getArray().forEach(_layer => {
-            if (_layer && _layer instanceof ol.layer.Tile && _layer.get('isBaseLayer') && _layer.get('layerName') === layerName) {
+            if (_layer && _layer instanceof LayerTitle && _layer.get('isBaseLayer') && _layer.get('layerName') === layerName) {
               currentLayer = _layer
             }
           })
@@ -96,7 +136,7 @@ class Layer extends mix(Style) {
     try {
       let currentLayer = null
       this.map.getLayers().getArray().forEach(layer => {
-        if (layer && layer instanceof ol.layer.Group && layer.get('isBaseLayer')) {
+        if (layer && layer instanceof LayerGroup && layer.get('isBaseLayer')) {
           currentLayer = layer
         }
       })
@@ -114,10 +154,10 @@ class Layer extends mix(Style) {
   getLayerByFeatuer (feature) {
     let tragetLayer = null
     if (this.map) {
-      if (feature instanceof ol.Feature) {
+      if (feature instanceof Feature_) {
         let layers = this.map.getLayers().getArray()
         layers.every(layer => {
-          if (layer && layer instanceof ol.layer.Vector && layer.getSource) {
+          if (layer && layer instanceof LayerVector && layer.getSource) {
             let source = layer.getSource()
             if (source.getFeatures) {
               let features = source.getFeatures()
@@ -152,29 +192,29 @@ class Layer extends mix(Style) {
     try {
       if (this.map) {
         let vectorLayer = this.getLayerByLayerName(layerName)
-        if (!(vectorLayer instanceof ol.layer.Vector)) {
+        if (!(vectorLayer instanceof LayerVector)) {
           vectorLayer = null
         }
         if (!vectorLayer) {
           if (params && params.create) {
-            vectorLayer = new ol.layer.Vector({
+            vectorLayer = new LayerVector({
               layerName: layerName,
               params: params,
               layerType: 'vector',
-              source: new ol.source.Vector({
+              source: new VectorSource({
                 wrapX: false
               }),
-              style: new ol.style.Style({
-                fill: new ol.style.Fill({
+              style: new Styles({
+                fill: new FillStyle({
                   color: 'rgba(67, 110, 238, 0.4)'
                 }),
-                stroke: new ol.style.Stroke({
+                stroke: new StrokeStyle({
                   color: '#4781d9',
                   width: 2
                 }),
-                image: new ol.style.Circle({
+                image: new CircleStyle({
                   radius: 7,
-                  fill: new ol.style.Fill({
+                  fill: new FillStyle({
                     color: '#ffcc33'
                   })
                 })
@@ -188,7 +228,7 @@ class Layer extends mix(Style) {
           }
           // 图层只添加一次
           let _vectorLayer = this.getLayerByLayerName(layerName)
-          if (!_vectorLayer || !(_vectorLayer instanceof ol.layer.Vector)) {
+          if (!_vectorLayer || !(_vectorLayer instanceof LayerVector)) {
             this.map.addLayer(vectorLayer)
           }
         }
@@ -210,17 +250,17 @@ class Layer extends mix(Style) {
       let currentLayer = null
       if (this.map) {
         currentLayer = this.getLayerByLayerName(layerName)
-        if (!(currentLayer instanceof ol.layer.Heatmap)) {
+        if (!(currentLayer instanceof LayerHeatmap)) {
           currentLayer = null
-        } else if ((currentLayer instanceof ol.layer.Heatmap) && !(params['addLayer'] === false)) {
+        } else if ((currentLayer instanceof LayerHeatmap) && !(params['addLayer'] === false)) {
           this.map.removeLayer(currentLayer)
           currentLayer = null
         }
         if (!currentLayer && params && params['create']) {
-          currentLayer = new ol.layer.Heatmap({
+          currentLayer = new LayerHeatmap({
             layerName: layerName,
             gradient: (params['gradient'] ? params['gradient'] : ['#00f', '#0ff', '#0f0', '#ff0', '#f00']),
-            source: new ol.source.Vector({
+            source: new VectorSource({
               wrapX: false,
               crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined)
             }),
@@ -261,16 +301,16 @@ class Layer extends mix(Style) {
       let serviceUrl = params['layerUrl']
       if (!serviceUrl) return null
       let ooLayer = this.getTitleLayerByLayerName(layerName)
-      if (ooLayer && ooLayer instanceof ol.layer.Tile && !(params['addLayer'] === false)) {
+      if (ooLayer && ooLayer instanceof LayerTitle && !(params['addLayer'] === false)) {
         this.map.removeLayer(ooLayer)
         ooLayer = null
       }
       if (!ooLayer && params['create']) {
-        ooLayer = new ol.layer.Tile({
+        ooLayer = new LayerTitle({
           layerName: layerName,
           layerType: ((params['notShowLayerType'] === true) ? '' : 'title'),
           visible: (params['visible'] === false) ? params['visible'] : true,
-          source: new ol.source.TileArcGISRest({
+          source: new TileArcGISRestSource({
             url: serviceUrl,
             crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
             params: (params['layerParams'] ? params['layerParams'] : undefined),
@@ -297,18 +337,18 @@ class Layer extends mix(Style) {
   createImageWMSLayer (layerName, params) {
     try {
       let layer = this.getLayerByLayerName(layerName)
-      if (!(layer instanceof ol.layer.Image)) {
+      if (!(layer instanceof LayerImage)) {
         layer = null
-      } else if ((layer instanceof ol.layer.Image) && !(params['addLayer'] === false)) {
+      } else if ((layer instanceof LayerImage) && !(params['addLayer'] === false)) {
         this.map.removeLayer(layer)
         layer = null
       }
       if (!layer && params && params['layerUrl'] && params['create']) {
-        layer = new ol.layer.Image({
+        layer = new LayerImage({
           layerName: layerName,
           visible: (params['visible'] === false) ? params['visible'] : true,
           opacity: (params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1,
-          source: new ol.source.ImageWMS({
+          source: new ImageWMSSource({
             url: params['layerUrl'],
             crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
             params: {
@@ -350,18 +390,18 @@ class Layer extends mix(Style) {
   createTileWMSLayer (layerName, params) {
     try {
       let layer = this.getLayerByLayerName(layerName)
-      if (!(layer instanceof ol.layer.Image)) {
+      if (!(layer instanceof LayerImage)) {
         layer = null
-      } else if ((layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
+      } else if ((layer instanceof LayerTitle) && !(params['addLayer'] === false)) {
         this.map.removeLayer(layer)
         layer = null
       }
       if (!layer && params && params['layerUrl'] && params['create']) {
-        layer = new ol.layer.Tile({
+        layer = new LayerTitle({
           layerName: layerName,
           visible: (params['visible'] === false) ? params['visible'] : true,
           opacity: (params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1,
-          source: new ol.source.TileWMS({
+          source: new TileWMSSource({
             url: params['layerUrl'],
             crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
             params: {
@@ -403,26 +443,26 @@ class Layer extends mix(Style) {
   createWfsVectorLayer (layerName, params) {
     try {
       let vectorLayer = this.getLayerByLayerName(layerName)
-      if (!(vectorLayer instanceof ol.layer.Vector)) {
+      if (!(vectorLayer instanceof LayerVector)) {
         vectorLayer = null
       }
       if (!vectorLayer) {
         let proj = params['projection'] ? params['projection'] : 'EPSG:3857'
         let style = this.getStyleByParams(params['style'])
-        vectorLayer = new ol.layer.Vector({
+        vectorLayer = new LayerVector({
           layerName: layerName,
           params: params,
           layerType: 'vector',
           visible: (params['visible'] === false) ? params['visible'] : true,
           opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
-          source: new ol.source.Vector({
-            format: new ol.format.GeoJSON(),
+          source: new VectorSource({
+            format: new GeoJSONFormat(),
             crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
             url: function (extent) {
               return params['layerUrl'] + extent.join(',') + ',' + proj
             },
             wrapX: false,
-            strategy: ol.loadingstrategy.bbox
+            strategy: Loadingstrategy.bbox
           }),
           style: style
         })
@@ -433,7 +473,7 @@ class Layer extends mix(Style) {
         }
         // 图层只添加一次
         let _vectorLayer = this.getLayerByLayerName(layerName)
-        if (!_vectorLayer || !(_vectorLayer instanceof ol.layer.Vector)) {
+        if (!_vectorLayer || !(_vectorLayer instanceof LayerVector)) {
           if (!(params['addLayer'] === false)) {
             this.map.addLayer(vectorLayer)
           }
@@ -454,26 +494,26 @@ class Layer extends mix(Style) {
   createVectorFeatureLayer (layerName, params) {
     try {
       let layer = this.getLayerByLayerName(layerName)
-      if (!(layer instanceof ol.layer.Vector)) {
+      if (!(layer instanceof LayerVector)) {
         layer = null
-      } else if (this.map && (layer instanceof ol.layer.Vector) && !(params['addLayer'] === false)) {
+      } else if (this.map && (layer instanceof LayerVector) && !(params['addLayer'] === false)) {
         this.map.removeLayer(layer)
         layer = null
       }
       if (!layer && params && params['layerUrl'] && params['create']) {
         let style = this.getStyleByParams(params['style'])
-        layer = new ol.layer.Vector({
+        layer = new LayerVector({
           layerName: layerName,
           params: params,
           layerType: 'vector',
           visible: (params['visible'] === false) ? params['visible'] : true,
           opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
-          source: new ol.source.Vector({
-            format: new ol.format.GeoJSON(),
+          source: new VectorSource({
+            format: new GeoJSONFormat(),
             crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
             url: params['layerUrl'],
             wrapX: false,
-            strategy: ol.loadingstrategy.bbox
+            strategy: Loadingstrategy.bbox
           }),
           style: style
         })
@@ -496,16 +536,16 @@ class Layer extends mix(Style) {
   createWMTSLayer (layerName, params) {
     try {
       let layer = this.getLayerByLayerName(layerName)
-      if (!(layer instanceof ol.layer.Tile)) {
+      if (!(layer instanceof LayerTitle)) {
         layer = null
-      } else if (this.map && (layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
+      } else if (this.map && (layer instanceof LayerTitle) && !(params['addLayer'] === false)) {
         this.map.removeLayer(layer)
         layer = null
       }
       if (!layer && params && params['layerUrl'] && params['create'] && params['levels']) {
-        let projection = ol.proj.get((params['projection'] ? params['projection'] : 'EPSG:3857'))
+        let projection = Proj.get((params['projection'] ? params['projection'] : 'EPSG:3857'))
         let projectionExtent = (params['extent'] ? params['extent'] : projection.getExtent())
-        let size = ol.extent.getWidth(projectionExtent) / 256
+        let size = Extent_.getWidth(projectionExtent) / 256
         let levels = params['levels']
         let resolutions = new Array(levels)
         let matrixIds = new Array(levels)
@@ -514,19 +554,19 @@ class Layer extends mix(Style) {
           resolutions[z] = size / Math.pow(2, z)
           matrixIds[z] = z
         }
-        layer = new ol.layer.Tile({
+        layer = new LayerTitle({
           layerName: layerName,
           visible: (params['visible'] === false) ? params['visible'] : true,
           opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
-          source: new ol.source.WMTS({
+          source: new WMTSSource({
             url: params['layerUrl'],
             layer: (params['layer'] ? params['layer'] : '0'),
             matrixSet: (params['matrixSet'] ? params['matrixSet'] : 'EPSG:3857'),
             format: (params['format'] ? params['format'] : 'image/png'),
             crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
             projection: projection,
-            tileGrid: new ol.tilegrid.WMTS({
-              origin: ol.extent.getTopLeft(projectionExtent),
+            tileGrid: new WMTSTileGrid({
+              origin: Extent_.getTopLeft(projectionExtent),
               resolutions: resolutions,
               matrixIds: matrixIds,
               version: (params['version'] ? params['version'] : '1.0.0'),
@@ -557,9 +597,9 @@ class Layer extends mix(Style) {
   createXYZLayer (layerName, params) {
     try {
       let layer = this.getLayerByLayerName(layerName)
-      if (!(layer instanceof ol.layer.Tile)) {
+      if (!(layer instanceof LayerTitle)) {
         layer = null
-      } else if (this.map && (layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
+      } else if (this.map && (layer instanceof LayerTitle) && !(params['addLayer'] === false)) {
         this.map.removeLayer(layer)
         layer = null
       }
@@ -574,11 +614,11 @@ class Layer extends mix(Style) {
         let projection = 'EPSG:3857'
         if (params['projection']) {
           projection = params['projection']
-        } else if (this.view && this.view instanceof ol.View) {
+        } else if (this.view && this.view instanceof View_) {
           projection = this.view.getProjection().getCode()
         }
         if (params['tileGrid'] && params['tileGrid']['resolutions']) {
-          tileGrid = new ol.tilegrid.TileGrid({
+          tileGrid = new TileGridGrid({
             tileSize: tileSize,
             origin: (params['tileGrid']['origin'] ? params['tileGrid']['origin'] : undefined),
             extent: (params['tileGrid']['extent'] ? params['tileGrid']['extent'] : undefined),
@@ -586,11 +626,11 @@ class Layer extends mix(Style) {
             minZoom: ((params['tileGrid']['minZoom'] && typeof params['tileGrid']['minZoom'] === 'number') ? params['tileGrid']['minZoom'] : 0)
           })
         }
-        layer = new ol.layer.Tile({
+        layer = new LayerTitle({
           layerName: layerName,
           visible: (params['visible'] === false) ? params['visible'] : true,
           opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
-          source: new ol.source.XYZ({
+          source: new XYZSource({
             wrapX: false,
             tileGrid: (tileGrid !== null ? tileGrid : undefined),
             tileSize: tileSize,
@@ -628,18 +668,18 @@ class Layer extends mix(Style) {
   createOSMLayer (layerName, params) {
     try {
       let layer = this.getLayerByLayerName(layerName)
-      if (!(layer instanceof ol.layer.Tile)) {
+      if (!(layer instanceof LayerTitle)) {
         layer = null
-      } else if (this.map && (layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
+      } else if (this.map && (layer instanceof LayerTitle) && !(params['addLayer'] === false)) {
         this.map.removeLayer(layer)
         layer = null
       }
       if (!layer && params['create']) {
-        layer = new ol.layer.Tile({
+        layer = new LayerTitle({
           layerName: layerName,
           visible: (params['visible'] === false) ? params['visible'] : true,
           opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
-          source: new ol.source.OSM({
+          source: new OSMSource({
             wrapX: false,
             opaque: (params['opaque'] === false) ? params['opaque'] : true, // 图层是否不透明（主题相关）
             url: params['layerUrl'] ? params['layerUrl'] : 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -665,9 +705,9 @@ class Layer extends mix(Style) {
   createMapboxVectorTileLayer (layerName, params) {
     try {
       let layer = this.getLayerByLayerName(layerName)
-      if (!(layer instanceof ol.layer.VectorTile)) {
+      if (!(layer instanceof VectorTile)) {
         layer = null
-      } else if (this.map && (layer instanceof ol.layer.VectorTile) && !(params['addLayer'] === false)) {
+      } else if (this.map && (layer instanceof VectorTile) && !(params['addLayer'] === false)) {
         this.map.removeLayer(layer)
         layer = null
       }
@@ -682,19 +722,19 @@ class Layer extends mix(Style) {
         let projection = 'EPSG:3857'
         if (params['projection']) {
           projection = params['projection']
-        } else if (this.view && this.view instanceof ol.View) {
+        } else if (this.view && this.view instanceof View_) {
           projection = this.view.getProjection().getCode()
         }
         if (params['tileGrid']) {
           /* eslint new-cap: ["error", { "newIsCap": false }] */
-          tileGrid = new ol.tilegrid.createXYZ({
+          tileGrid = new TileGrid.createXYZ({
             tileSize: tileSize,
             extent: (params['tileGrid']['extent'] ? params['tileGrid']['extent'] : undefined),
             minZoom: ((params['tileGrid']['minZoom'] && typeof params['tileGrid']['minZoom'] === 'number') ? params['tileGrid']['minZoom'] : 0),
             maxZoom: ((params['tileGrid']['maxZoom'] && typeof params['tileGrid']['maxZoom'] === 'number') ? params['tileGrid']['maxZoom'] : 22)
           })
         }
-        layer = new ol.layer.VectorTile({
+        layer = new VectorTile({
           visible: (params['visible'] === false) ? params['visible'] : true,
           renderBuffer: ((params['renderBuffer'] && (typeof params['renderBuffer'] === 'number')) ? params['renderBuffer'] : 100),
           renderMode: (params['renderMode'] ? params['renderMode'] : 'hybrid'), // 渲染方式image，hybrid，vector，性能由高到低
@@ -703,12 +743,12 @@ class Layer extends mix(Style) {
           minResolution: ((params['minResolution'] && typeof params['minResolution'] === 'number') ? params['minResolution'] : undefined),
           maxResolution: ((params['maxResolution'] && typeof params['maxResolution'] === 'number') ? params['maxResolution'] : undefined),
           preload: ((params['preload'] && typeof params['preload'] === 'number') ? params['preload'] : 0),
-          source: new ol.source.VectorTile({
-            format: new ol.format.MVT(),
+          source: new VectorSource({
+            format: new MVTFormat(),
             crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
             projection: projection,
             overlaps: (params['overlaps'] ? params['overlaps'] : true),
-            tileGrid: ((tileGrid && tileGrid instanceof ol.tilegrid.TileGrid) ? tileGrid : undefined),
+            tileGrid: ((tileGrid && tileGrid instanceof TileGrid) ? tileGrid : undefined),
             tilePixelRatio: ((params['tilePixelRatio'] && typeof params['tilePixelRatio'] === 'number') ? params['tilePixelRatio'] : 1),
             url: params['layerUrl'],
             wrapX: false
@@ -737,43 +777,43 @@ class Layer extends mix(Style) {
       if (params['format']) {
         switch (params['format']) {
           case 'MVT':
-            type = new ol.format.MVT()
+            type = new MVTFormat()
             break
           case 'GeoJSON':
-            type = new ol.format.GeoJSON()
+            type = new GeoJSONFormat()
             break
           case 'EsriJSON':
-            type = new ol.format.EsriJSON()
+            type = new EsriJSONFormat()
             break
           case 'TopoJSON':
-            type = new ol.format.TopoJSON()
+            type = new TopoJSONFormat()
             break
           case 'IGC':
-            type = new ol.format.IGC()
+            type = new IGCFormat()
             break
           case 'Polyline':
-            type = new ol.format.Polyline()
+            type = new PolylineFormat()
             break
           case 'WKT':
-            type = new ol.format.WKT()
+            type = new WKTFormat()
             break
           case 'GMLBase':
-            type = new ol.format.GMLBase()
+            type = new GMLBaseFormat()
             break
           case 'GPX':
-            type = new ol.format.GPX()
+            type = new GPXFormat()
             break
           case 'KML':
-            type = new ol.format.KML()
+            type = new KMLFormat()
             break
           case 'OSMXML':
-            type = new ol.format.OSMXML()
+            type = new OSMXMLFormat()
             break
           case 'WFS':
-            type = new ol.format.WFS()
+            type = new WFSFormat()
             break
           case 'WMSGetFeatureInfo':
-            type = new ol.format.WMSGetFeatureInfo()
+            type = new WMSGetFeatureInfoFormat()
             break
         }
       }
@@ -804,14 +844,14 @@ class Layer extends mix(Style) {
         }
         if (params['tileGrid']['gridType'] === 'XYZ') {
           /* eslint new-cap: ["error", { "newIsCap": false }] */
-          tileGrid = new ol.tilegrid.createXYZ({
+          tileGrid = new TileGrid.createXYZ({
             tileSize: tileSize,
             extent: (params['tileGrid']['extent'] ? params['tileGrid']['extent'] : undefined),
             minZoom: ((params['tileGrid']['minZoom'] && typeof params['tileGrid']['minZoom'] === 'number') ? params['tileGrid']['minZoom'] : 0),
             maxZoom: ((params['tileGrid']['maxZoom'] && typeof params['tileGrid']['maxZoom'] === 'number') ? params['tileGrid']['maxZoom'] : 22)
           })
         } else if (params['tileGrid']['gridType'] === 'WMTS') {
-          tileGrid = new ol.tilegrid.WMTS({
+          tileGrid = new WMTSTileGrid({
             sizes: ((params['tileGrid']['sizes'] && Array.isArray(params['tileGrid']['sizes'])) ? params['tileGrid']['sizes'] : undefined),
             widths: ((params['tileGrid']['widths'] && Array.isArray(params['tileGrid']['widths'])) ? params['tileGrid']['widths'] : undefined),
             tileSize: tileSize,
@@ -824,7 +864,7 @@ class Layer extends mix(Style) {
             matrixIds: params['tileGrid']['matrixIds']
           })
         } else {
-          tileGrid = new ol.tilegrid.TileGrid({
+          tileGrid = new TileGridGrid({
             sizes: ((params['tileGrid']['sizes'] && Array.isArray(params['tileGrid']['sizes'])) ? params['tileGrid']['sizes'] : undefined),
             widths: ((params['tileGrid']['widths'] && Array.isArray(params['tileGrid']['widths'])) ? params['tileGrid']['widths'] : undefined),
             tileSize: tileSize,
@@ -853,9 +893,9 @@ class Layer extends mix(Style) {
   createVectorTileLayer (layerName, params) {
     try {
       let layer = this.getLayerByLayerName(layerName)
-      if (!(layer instanceof ol.layer.VectorTile)) {
+      if (!(layer instanceof VectorTile)) {
         layer = null
-      } else if (this.map && (layer instanceof ol.layer.VectorTile) && !(params['addLayer'] === false)) {
+      } else if (this.map && (layer instanceof VectorTile) && !(params['addLayer'] === false)) {
         this.map.removeLayer(layer)
         layer = null
       }
@@ -863,10 +903,10 @@ class Layer extends mix(Style) {
         let projection = 'EPSG:3857'
         if (params['projection']) {
           projection = params['projection']
-        } else if (this.view && this.view instanceof ol.View) {
+        } else if (this.view && this.view instanceof View_) {
           projection = this.view.getProjection().getCode()
         }
-        layer = new ol.layer.VectorTile({
+        layer = new VectorTile({
           visible: (params['visible'] === false) ? params['visible'] : true,
           renderBuffer: ((params['renderBuffer'] && (typeof params['renderBuffer'] === 'number')) ? params['renderBuffer'] : 100),
           renderMode: (params['renderMode'] ? params['renderMode'] : 'hybrid'), // 渲染方式image，hybrid，vector，性能由高到低
@@ -875,14 +915,14 @@ class Layer extends mix(Style) {
           minResolution: ((params['minResolution'] && typeof params['minResolution'] === 'number') ? params['minResolution'] : undefined),
           maxResolution: ((params['maxResolution'] && typeof params['maxResolution'] === 'number') ? params['maxResolution'] : undefined),
           preload: ((params['preload'] && typeof params['preload'] === 'number') ? params['preload'] : 0),
-          source: new ol.source.VectorTile({
+          source: new VectorSource({
             format: this._getFormatType(params),
             cacheSize: ((params['cacheSize'] && typeof params['cacheSize'] === 'number') ? params['cacheSize'] : 128),
             crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
             projection: projection,
             state: (params['state'] ? params['state'] : undefined), // State of the source, one of 'undefined', 'loading', 'ready' or 'error'.
             overlaps: (params['overlaps'] ? params['overlaps'] : true),
-            tileClass: ((params['tileClass'] && typeof params['tileClass'] === 'function') ? params['tileClass'] : ol.VectorTile),
+            tileClass: ((params['tileClass'] && typeof params['tileClass'] === 'function') ? params['tileClass'] : VectorTile_),
             tileGrid: this._getTileGrid(params),
             tilePixelRatio: ((params['tilePixelRatio'] && typeof params['tilePixelRatio'] === 'number') ? params['tilePixelRatio'] : 1),
             url: (params['layerUrl'] ? params['layerUrl'] : undefined),
@@ -912,15 +952,15 @@ class Layer extends mix(Style) {
   createImageLayer (layerName, params) {
     try {
       let layer = this.getLayerByLayerName(layerName)
-      if (!(layer instanceof ol.layer.Image)) {
+      if (!(layer instanceof LayerImage)) {
         layer = null
-      } else if (this.map && (layer instanceof ol.layer.Image) && !(params['addLayer'] === false)) {
+      } else if (this.map && (layer instanceof LayerImage) && !(params['addLayer'] === false)) {
         this.map.removeLayer(layer)
         layer = null
       }
       if (!layer && params && params['layerUrl'] && params['create']) {
         let source = this.getImagesSource(params)
-        layer = new ol.layer.Image({
+        layer = new LayerImage({
           layerName: layerName,
           extent: (params['extent'] ? params['extent'] : undefined),
           visible: (params['visible'] === false) ? params['visible'] : true,
@@ -944,14 +984,14 @@ class Layer extends mix(Style) {
    */
   getImagesSource (params) {
     let source = null
-    let projection = new ol.proj.Projection({
+    let projection = new ProjProjection({
       code: (params['projection'] ? params['projection'] : 'EPSG:3857'),
       units: 'm',
       axisOrientation: 'neu'
     })
     switch (params['sourceType']) {
       case 'ImageStatic':
-        source = new ol.source.ImageStatic({
+        source = new ImageStaticSource({
           crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
           imageExtent: params['imageExtent'],
           projection: projection,
@@ -961,7 +1001,7 @@ class Layer extends mix(Style) {
         })
         break
       case 'ImageWMS':
-        source = new ol.source.ImageWMS({
+        source = new ImageWMSSource({
           url: params['layerUrl'],
           crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
           params: {
@@ -985,10 +1025,10 @@ class Layer extends mix(Style) {
         })
         break
       case 'Raster':
-        source = new ol.source.Raster()
+        source = new RasterSource()
         break
       case 'ImageMapGuide':
-        source = new ol.source.ImageMapGuide({
+        source = new ImageMapGuideSource({
           url: params['layerUrl'],
           wrapX: false,
           displayDpi: ((params['displayDpi'] && (typeof params['displayDpi'] === 'number')) ? params['displayDpi'] : 96),
@@ -1003,7 +1043,7 @@ class Layer extends mix(Style) {
         })
         break
       case 'ImageCanvas':
-        source = new ol.source.ImageCanvas({
+        source = new ImageCanvasSource({
           projection: (params['projection'] ? params['projection'] : 'EPSG:3857'),
           ratio: ((params['ratio'] && (typeof params['ratio'] === 'number')) ? params['ratio'] : 1),
           resolutions: ((params['resolutions'] && Array.isArray(params['resolutions'])) ? params['resolutions'] : undefined),
@@ -1013,7 +1053,7 @@ class Layer extends mix(Style) {
         })
         break
       case 'ImageArcGISRest':
-        source = new ol.source.ImageArcGISRest({
+        source = new ImageArcGISRestSource({
           url: params['layerUrl'],
           hidpi: ((params['hidpi'] && (typeof params['hidpi'] === 'boolean')) ? params['hidpi'] : true),
           crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
@@ -1052,7 +1092,7 @@ class Layer extends mix(Style) {
   removeTileLayerByLayerName (layerName) {
     if (this.map) {
       let layer = this.getTitleLayerByLayerName(layerName)
-      if (layer && layer instanceof ol.layer.Tile) {
+      if (layer && layer instanceof LayerTitle) {
         this.map.removeLayer(layer)
       }
     }
@@ -1079,16 +1119,16 @@ class Layer extends mix(Style) {
    */
   adjustExtent (extent) {
     if (this.map) {
-      let width = ol.extent.getWidth(extent)
+      let width = Extent_.getWidth(extent)
       let adjust = 0.2
       if (width < 0.05) {
-        let bleft = ol.extent.getBottomLeft(extent) // 获取xmin,ymin
-        let tright = ol.extent.getTopRight(extent) // 获取xmax,ymax
+        let bleft = Extent_.getBottomLeft(extent) // 获取xmin,ymin
+        let tright = Extent_.getTopRight(extent) // 获取xmax,ymax
         let xmin = bleft[0] - adjust
         let ymin = bleft[1] - adjust
         let xmax = tright[0] + adjust
         let ymax = tright[1] + adjust
-        extent = ol.extent.buffer([xmin, ymin, xmax, ymax], adjust)
+        extent = Extent_.buffer([xmin, ymin, xmax, ymax], adjust)
       }
       return extent
     }
@@ -1107,7 +1147,7 @@ class Layer extends mix(Style) {
       /**
        *  @type {ol.Coordinate} center The center of the view.
        */
-      let center = ol.extent.getCenter(extent)
+      let center = Extent_.getCenter(extent)
       if (!isanimation) {
         view.fit(extent, size, {
           padding: [350, 200, 200, 350]
@@ -1129,5 +1169,4 @@ class Layer extends mix(Style) {
     }
   }
 }
-
 export default Layer

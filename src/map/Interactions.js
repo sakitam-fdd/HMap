@@ -1,10 +1,10 @@
-import { ol } from '../constants'
+import olInteraction from 'ol/interaction'
 import appDrag from '../event/appDrag'
 class _Interactions {
   _addInteractions (params) {
     let options = params || {}
     /* eslint new-cap: ["error", { "newIsCap": false }] */
-    return new ol.interaction.defaults({
+    return new olInteraction.defaults({
       altShiftDragRotate: ((options['altShiftDragRotate'] === false) ? options['altShiftDragRotate'] : true),
       doubleClickZoom: ((options['doubleClickZoom'] === false) ? options['doubleClickZoom'] : true),
       keyboard: ((options['keyboard'] === false) ? options['keyboard'] : true),
