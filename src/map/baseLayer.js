@@ -92,6 +92,9 @@ class BaseLayers {
             case 'TileArcGISRest':
               layer = this._getTileArcGISRestLayer(config)
               break
+            case 'BaiDu':
+              layer = this._getBaiDuLayer(config)
+              break
           }
           if (layer) layers.push(layer)
           if (config['label']) {
@@ -144,6 +147,9 @@ class BaseLayers {
                 break
               case 'TileArcGISRest':
                 labelLayer = this._getTileArcGISRestLayer(configM)
+                break
+              case 'BaiDu':
+                labelLayer = this._getBaiDuLayer(configM)
                 break
             }
             if (labelLayer) labelLayers.push(labelLayer)
@@ -199,6 +205,30 @@ class BaseLayers {
       config['addLayer'] = false
       config['create'] = true
       let baseLayer = this.createOSMLayer(layerName, config)
+      if (baseLayer && baseLayer instanceof ol.layer.Tile) {
+        baseLayer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
+        baseLayer.set('isBaseLayer', true)
+        baseLayer.set('alias', (config['alias'] ? config['alias'] : ''))
+        baseLayer.getSource().setAttributions(this._getAttribution(config['attribution']))
+      }
+      return baseLayer
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  /**
+   * 加载百度图层
+   * @param config
+   * @returns {*}
+   * @private
+   */
+  _getBaiDuLayer (config) {
+    try {
+      let layerName = config['layerName'] ? config.layerName : ''
+      config['addLayer'] = false
+      config['create'] = true
+      let baseLayer = this.createBAIDULayer(layerName, config)
       if (baseLayer && baseLayer instanceof ol.layer.Tile) {
         baseLayer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
         baseLayer.set('isBaseLayer', true)

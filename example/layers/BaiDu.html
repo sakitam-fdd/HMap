@@ -24,17 +24,37 @@
 <script src="../../dist/HMap.js"></script>
 <script type="text/javascript">
   window.onload = function () {
-    var baidu = new ol.layer.Tile({
-      source: new ol.source.BAIDU({})
-    });
-    var map = new ol.Map({
-      layers: [baidu],
-      view: new ol.View({
+    var Maps = new HMap.Map();
+    Maps.initMap('map', {
+      view: {
         center: [108.93, 34.27],
         projection: 'EPSG:4326',
         zoom: 5
-      }),
-      target: 'map'
+      },
+      controls: {
+        addScaleLine: false,
+        addLoading: false
+      },
+      interactions: {
+        doubleClickZoom: true,
+        keyboard: false
+      },
+      baseLayers: [
+        {
+          layerName: 'baidu',
+          isDefault: true,
+          layerType: 'BaiDu',
+          attribution: {
+            url: 'https://aurorafe.github.io',
+            title: '恒达时讯',
+            messages: '版权所有'
+          },
+          projection: 'EPSG:3857',
+          origin: [43.88955327932, 12.590178885765],
+          opaque: true, //图层是否不透明
+          layerUrl: 'http://online{0-3}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&udt=20170607&scaler=1&p=1'
+        }
+      ]
     });
   };
 </script>
