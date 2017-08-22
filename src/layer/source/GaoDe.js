@@ -16,9 +16,9 @@ ol.source.GAODE = function (optOptions) {
   } else {
     attributions = [ol.source.GAODE.ATTRIBUTION]
   }
-  let crossOrigin = options.crossOrigin !== undefined ? options.crossOrigin : 'anonymous'
+  let crossOrigin = options.crossOrigin !== undefined ? options.crossOrigin : undefined
   let url = options.url !== undefined ? options.url : 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=6&x={x}&y={y}&z={z}'
-
+  var tileUrlFunction = options.tileUrlFunction ? options.tileUrlFunction : undefined
   ol.source.XYZ.call(this, {
     attributions: attributions,
     cacheSize: options.cacheSize,
@@ -27,6 +27,7 @@ ol.source.GAODE = function (optOptions) {
     maxZoom: options.maxZoom !== undefined ? options.maxZoom : 19,
     reprojectionErrorThreshold: options.reprojectionErrorThreshold,
     tileLoadFunction: options.tileLoadFunction,
+    tileUrlFunction: tileUrlFunction,
     url: url,
     wrapX: options.wrapX
   })

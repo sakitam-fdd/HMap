@@ -109,17 +109,12 @@
       }
     ]
   });
-//  if (Maps) {
-//    Maps.map.addControl(new ol.control.LoadingPanel())
-//  }
-//  var CoordsTransform = new HMap.CoordsTransform()
-//  function mapFirstClickHandler (event) {
-//    var coordinate = event.coordinate
-//    var coords = CoordsTransform.MercatorTolonLat(coordinate[0], coordinate[1])
-//    console.log(coords)
-//  }
-//  Maps.map.on('click', mapFirstClickHandler)
-//  Maps.map.un('click', mapFirstClickHandler)
+  Maps.on('click', function (event) {
+    console.log(event)
+  })
+  Maps.on('loadMapSuccess', function (event) {
+    console.log(event)
+  })
 </script>
 </body>
 </html>

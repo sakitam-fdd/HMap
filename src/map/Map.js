@@ -8,19 +8,17 @@ import Layer from '../layer/Layer'
 import Feature from '../feature/feature'
 import Style from '../style/Style'
 import Overlay from '../overlay/Overlay'
-import Observable from '../event/Observable'
+import Observable from 'observable-emit'
 
-class Map extends mix(BaseLayers, _Controls, _Interactions, Style, Layer, _View, Feature, Overlay) {
+class Map extends mix(BaseLayers, _Controls, _Interactions, Style, Layer, _View, Feature, Overlay, Observable) {
   constructor () {
     super()
     this.addPointHandlerClick = null
     this.plotDraw = null // 标绘工具
     this.plotEdit = null
     this._lastDrawInteractionGeometry = null
-    this.EverntCenter = new Observable()
     proj4.defs('EPSG:4490', '+proj=longlat +ellps=GRS80 +no_defs')
     ol.proj.setProj4(proj4)
-    window.ObservableObj = new ol.Object()
 
     /**
      * 当前地图线要素
@@ -81,6 +79,7 @@ class Map extends mix(BaseLayers, _Controls, _Interactions, Style, Layer, _View,
      * @type {null}
      */
     this.map = null
+    Observable.call(this)
   }
 
   /**
@@ -117,16 +116,19 @@ class Map extends mix(BaseLayers, _Controls, _Interactions, Style, Layer, _View,
        */
       this.map.setProperties(options_, false)
 
+      /**
+       * 监听点击事件
+       */
       this.map.on('click', event => {
-        console.log(event.coordinate)
+        this.dispatch('click', event)
       })
 
       /**
        * 加载成功事件
        */
-      this.EverntCenter.dispatch('loadMapSuccess', true)
+      this.dispatch('loadMapSuccess', true)
     } catch (error) {
-      this.EverntCenter.dispatch('loadMapSuccess', error)
+      this.dispatch('loadMapSuccess', error)
     }
   }
 

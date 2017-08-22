@@ -95,6 +95,12 @@ class BaseLayers {
             case 'BaiDu':
               layer = this._getBaiDuLayer(config)
               break
+            case 'GaoDe':
+              layer = this._getGaoDeLayer(config)
+              break
+            case 'Google':
+              layer = this._getGaoDeLayer(config)
+              break
           }
           if (layer) layers.push(layer)
           if (config['label']) {
@@ -150,6 +156,12 @@ class BaseLayers {
                 break
               case 'BaiDu':
                 labelLayer = this._getBaiDuLayer(configM)
+                break
+              case 'GaoDe':
+                labelLayer = this._getGaoDeLayer(configM)
+                break
+              case 'Google':
+                labelLayer = this._getGaoDeLayer(configM)
                 break
             }
             if (labelLayer) labelLayers.push(labelLayer)
@@ -228,7 +240,55 @@ class BaseLayers {
       let layerName = config['layerName'] ? config.layerName : ''
       config['addLayer'] = false
       config['create'] = true
-      let baseLayer = this.createBAIDULayer(layerName, config)
+      let baseLayer = this.createBaiDuLayer(layerName, config)
+      if (baseLayer && baseLayer instanceof ol.layer.Tile) {
+        baseLayer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
+        baseLayer.set('isBaseLayer', true)
+        baseLayer.set('alias', (config['alias'] ? config['alias'] : ''))
+        baseLayer.getSource().setAttributions(this._getAttribution(config['attribution']))
+      }
+      return baseLayer
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  /**
+   * 加载高德图层
+   * @param config
+   * @returns {*}
+   * @private
+   */
+  _getGaoDeLayer (config) {
+    try {
+      let layerName = config['layerName'] ? config.layerName : ''
+      config['addLayer'] = false
+      config['create'] = true
+      let baseLayer = this.createGaoDeLayer(layerName, config)
+      if (baseLayer && baseLayer instanceof ol.layer.Tile) {
+        baseLayer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
+        baseLayer.set('isBaseLayer', true)
+        baseLayer.set('alias', (config['alias'] ? config['alias'] : ''))
+        baseLayer.getSource().setAttributions(this._getAttribution(config['attribution']))
+      }
+      return baseLayer
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  /**
+   * 加载高德图层
+   * @param config
+   * @returns {*}
+   * @private
+   */
+  _getGoogleLayer (config) {
+    try {
+      let layerName = config['layerName'] ? config.layerName : ''
+      config['addLayer'] = false
+      config['create'] = true
+      let baseLayer = this.createGoogleLayer(layerName, config)
       if (baseLayer && baseLayer instanceof ol.layer.Tile) {
         baseLayer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
         baseLayer.set('isBaseLayer', true)

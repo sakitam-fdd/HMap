@@ -662,7 +662,7 @@ class Layer extends mix(Style) {
    * @param params
    * @returns {*}
    */
-  createBAIDULayer (layerName, params) {
+  createBaiDuLayer (layerName, params) {
     try {
       let layer = this.getLayerByLayerName(layerName)
       if (!(layer instanceof ol.layer.Tile)) {
@@ -680,6 +680,80 @@ class Layer extends mix(Style) {
             wrapX: false,
             projection: params['projection'] ? params['projection'] : 'EPSG:3857',
             origin: params['origin'] ? params['origin'] : [0, 0],
+            opaque: (params['opaque'] === false) ? params['opaque'] : true, // 图层是否不透明（主题相关）
+            url: params['layerUrl'] ? params['layerUrl'] : 'http://online{0-3}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&udt=20170607&scaler=1&p=1',
+            crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined)
+          })
+        })
+      }
+      if (this.map && layer && !(params['addLayer'] === false)) {
+        this.map.addLayer(layer)
+      }
+      return layer
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  /**
+   * 创建高德图层
+   * @param layerName
+   * @param params
+   * @returns {*}
+   */
+  createGaoDeLayer (layerName, params) {
+    try {
+      let layer = this.getLayerByLayerName(layerName)
+      if (!(layer instanceof ol.layer.Tile)) {
+        layer = null
+      } else if (this.map && (layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
+        this.map.removeLayer(layer)
+        layer = null
+      }
+      if (!layer && params['create']) {
+        layer = new ol.layer.Tile({
+          layerName: layerName,
+          visible: (params['visible'] === false) ? params['visible'] : true,
+          opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
+          source: new ol.source.GAODE({
+            wrapX: false,
+            opaque: (params['opaque'] === false) ? params['opaque'] : true, // 图层是否不透明（主题相关）
+            url: params['layerUrl'] ? params['layerUrl'] : 'http://online{0-3}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&udt=20170607&scaler=1&p=1',
+            crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined)
+          })
+        })
+      }
+      if (this.map && layer && !(params['addLayer'] === false)) {
+        this.map.addLayer(layer)
+      }
+      return layer
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  /**
+   * 创建高德图层
+   * @param layerName
+   * @param params
+   * @returns {*}
+   */
+  createGoogleLayer (layerName, params) {
+    try {
+      let layer = this.getLayerByLayerName(layerName)
+      if (!(layer instanceof ol.layer.Tile)) {
+        layer = null
+      } else if (this.map && (layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
+        this.map.removeLayer(layer)
+        layer = null
+      }
+      if (!layer && params['create']) {
+        layer = new ol.layer.Tile({
+          layerName: layerName,
+          visible: (params['visible'] === false) ? params['visible'] : true,
+          opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
+          source: new ol.source.GOOGLE({
+            wrapX: false,
             opaque: (params['opaque'] === false) ? params['opaque'] : true, // 图层是否不透明（主题相关）
             url: params['layerUrl'] ? params['layerUrl'] : 'http://online{0-3}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&udt=20170607&scaler=1&p=1',
             crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined)
