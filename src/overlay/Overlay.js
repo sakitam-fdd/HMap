@@ -32,47 +32,52 @@ class Overlay extends mix(Feature) {
     }
     return geometry.getCoordinates()
   }
+
   /**
    * 添加字体图标要素
    * @param point
    * @param params
+   * @param index
    */
   addOverlayPoint (point, params, index) {
     try {
       if (point && point['geometry']) {
-        let coordinate = this._getCoordinatesFromGeom(point)
-        if (point['attributes'] && (point['attributes']['id'] || point['attributes']['ID'])) {
-          let id = (point['attributes']['id'] || point['attributes']['ID'] || params['id'])
-          let overlay = this.map.getOverlayById(id)
-          let creatEle = this.getElementForOverlay(point, params, index)
-          let [marker, ele] = [creatEle['marker'], creatEle['ele']]
-          if (!overlay) {
-            let iconOverlay = new ol.Overlay({
-              element: marker,
-              positioning: 'center-center',
-              id: id,
-              offset: [0, 0],
-              stopEvent: true
-            })
-            iconOverlay.setPosition(coordinate)
-            iconOverlay.setProperties(point['attributes'])
-            if (params) {
-              iconOverlay.set('params', params)
-              if (params['layerName']) {
-                iconOverlay.set('layerName', params.layerName)
+        let geom_ = this.getGeomFromGeomData(point)
+        if (geom_ && geom_.getCoordinates) {
+          let coordinate = geom_.getCoordinates()
+          if (point['attributes'] && (point['attributes']['id'] || point['attributes']['ID'])) {
+            let id = (point['attributes']['id'] || point['attributes']['ID'] || params['id'])
+            let overlay = this.map.getOverlayById(id)
+            let creatEle = this.getElementForOverlay(point, params, index)
+            let [marker, ele] = [creatEle['marker'], creatEle['ele']]
+            if (!overlay) {
+              let iconOverlay = new ol.Overlay({
+                element: marker,
+                positioning: 'center-center',
+                id: id,
+                offset: [0, 0],
+                stopEvent: true
+              })
+              iconOverlay.setPosition(coordinate)
+              iconOverlay.setProperties(point['attributes'])
+              if (params) {
+                iconOverlay.set('params', params)
+                if (params['layerName']) {
+                  iconOverlay.set('layerName', params.layerName)
+                }
               }
+              this._addOverLayEvent(marker, ele, iconOverlay)
+              this.map.addOverlay(iconOverlay)
+            } else {
+              this._addOverLayEvent(marker, ele, overlay)
+              overlay.setElement(marker)
             }
-            this._addOverLayEvent(marker, ele, iconOverlay)
-            this.map.addOverlay(iconOverlay)
-          } else {
-            this._addOverLayEvent(marker, ele, overlay)
-            overlay.setElement(marker)
           }
-        }
-        if (params['zoomToExtent']) {
-          let extent = (new ol.geom.Point(coordinate)).getExtent()
-          let _extent = this.adjustExtent(extent)
-          this.zoomToExtent(_extent, true)
+          if (params['zoomToExtent']) {
+            let extent = (new ol.geom.Point(coordinate)).getExtent()
+            let _extent = this.adjustExtent(extent)
+            this.zoomToExtent(_extent, true)
+          }
         }
       }
     } catch (error) {
@@ -87,7 +92,6 @@ class Overlay extends mix(Feature) {
    * @private
    */
   _addOverLayEvent (marker, ele, OverLay) {
-    let that = this
     marker.onmousedown = function (event) {
       if (event.button === 2) {
         this.dispatch('overlay:onmouseright', {
@@ -96,16 +100,17 @@ class Overlay extends mix(Feature) {
           value: OverLay
         })
       } else if (event.button === 0) {
-        that.EverntCenter.dispatch('overlayEvent', {
-          originEvent: event,
-          value: OverLay
-        })
         this.dispatch('overlay:onmouseleft', {
           type: 'overlay:onmouseleft',
           originEvent: event,
           value: OverLay
         })
       }
+      this.dispatch('overlay:click', {
+        type: 'overlay:click',
+        originEvent: event,
+        value: OverLay
+      })
     }
     marker.onmouseover = function (event) {
       ele.style.color = ele.selectColor
@@ -184,7 +189,7 @@ class Overlay extends mix(Feature) {
         let change = false
         points.forEach((item, index) => {
           if (item && item['geometry']) {
-            let _geom = this._getGeometryFromPoint(item)
+            let _geom = this.getGeomFromGeomData(item)
             if (_geom) {
               this.addOverlayPoint(item, params, index)
               multiPoint.appendPoint(_geom)

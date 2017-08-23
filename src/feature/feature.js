@@ -605,6 +605,7 @@ class Feature extends mix(Style, Layer) {
    */
   getGeomFromGeomData (geomData, options) {
     try {
+      options = options || {}
       let featureGeom = null
       if (geomData instanceof ol.geom.Geometry) {
         featureGeom = geomData
