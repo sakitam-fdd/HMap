@@ -90,7 +90,8 @@ class Overlay extends mix(Feature) {
     let that = this
     marker.onmousedown = function (event) {
       if (event.button === 2) {
-        that.EverntCenter.dispatch('rightMenuEvent', {
+        this.dispatch('overlay:onmouseright', {
+          type: 'overlay:onmouseright',
           originEvent: event,
           value: OverLay
         })
@@ -99,18 +100,25 @@ class Overlay extends mix(Feature) {
           originEvent: event,
           value: OverLay
         })
+        this.dispatch('overlay:onmouseleft', {
+          type: 'overlay:onmouseleft',
+          originEvent: event,
+          value: OverLay
+        })
       }
     }
     marker.onmouseover = function (event) {
       ele.style.color = ele.selectColor
-      that.EverntCenter.dispatch('onMouseoverOverlay', {
+      this.dispatch('overlay:onmouseover', {
+        type: 'overlay:onmouseover',
         originEvent: event,
         value: OverLay
       })
     }
     marker.onmouseout = function (event) {
       ele.style.color = ele.normalColor
-      that.EverntCenter.dispatch('onMouseOutOverlay', {
+      this.dispatch('overlay:onmouseout', {
+        type: 'overlay:onmouseout',
         originEvent: event,
         value: OverLay
       })

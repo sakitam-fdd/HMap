@@ -50,11 +50,30 @@ class Map extends mix(BaseLayers, _Controls, _Interactions, Style, Layer, _View,
      * @type {Array}
      */
     this.polygonLayers = new Set()
+
     /**
      * 周边搜索要素
      * @type {null}
      */
     this.circleSerachFeat = null
+
+    /**
+     * 选择交互
+     * @type {null}
+     */
+    this.selectInteraction = null
+
+    /**
+     * 移动交互
+     * @type {null}
+     */
+    this.moveInteraction = null
+
+    /**
+     * 当前选择要素
+     * @type {null}
+     */
+    this.currentSelectFeature = null
     /**
      * 当前地图气泡
      * @type {null}
@@ -115,13 +134,8 @@ class Map extends mix(BaseLayers, _Controls, _Interactions, Style, Layer, _View,
        * 保存当前参数
        */
       this.map.setProperties(options_, false)
-
-      /**
-       * 监听点击事件
-       */
-      this.map.on('click', event => {
-        this.dispatch('click', event)
-      })
+      // 添加事件
+      this._addEvent()
 
       /**
        * 加载成功事件
@@ -129,6 +143,238 @@ class Map extends mix(BaseLayers, _Controls, _Interactions, Style, Layer, _View,
       this.dispatch('loadMapSuccess', true)
     } catch (error) {
       this.dispatch('loadMapSuccess', error)
+    }
+  }
+
+  /**
+   * 添加事件
+   * @private
+   */
+  _addEvent () {
+    /**
+     * 监听点击事件
+     */
+    this.map.on('click', event => {
+      this.dispatch('click', event)
+    })
+
+    /**
+     * 监听双击事件
+     */
+    this.map.on('dbclick', event => {
+      this.dispatch('dbClick', event)
+    })
+
+    /**
+     * 监听单击事件
+     */
+    this.map.on('singleclick', event => {
+      this.dispatch('singleClick', event)
+    })
+
+    /**
+     * 监听单击事件
+     */
+    this.map.on('movestart', event => {
+      this.dispatch('moveStart', event)
+    })
+
+    /**
+     * 监听单击事件
+     */
+    this.map.on('moveend', event => {
+      this.dispatch('moveEnd', event)
+    })
+
+    /**
+     * 监听单击事件
+     */
+    this.map.on('pointerdrag', event => {
+      this.dispatch('pointerDrag', event)
+    })
+
+    /**
+     * 监听单击事件
+     */
+    this.map.on('pointermove', event => {
+      this.dispatch('pointerMove', event)
+    })
+
+    /**
+     * 监听单击事件
+     */
+    this.map.on('postcompose', event => {
+      this.dispatch('postCompose', event)
+    })
+
+    /**
+     * 监听单击事件
+     */
+    this.map.on('postrender', event => {
+      this.dispatch('postRender', event)
+    })
+
+    /**
+     * 监听单击事件
+     */
+    this.map.on('precompose', event => {
+      this.dispatch('preCompose', event)
+    })
+
+    /**
+     * 监听单击事件
+     */
+    this.map.on('propertychange', event => {
+      this.dispatch('propertyChange', event)
+    })
+
+    /**
+     * 监听单击事件
+     */
+    this.map.on('change', event => {
+      this.dispatch('change', event)
+    })
+
+    /**
+     * 监听单击事件
+     */
+    this.map.on('change:layerGroup', event => {
+      this.dispatch('changeLayerGroup', event)
+    })
+
+    /**
+     * 监听单击事件
+     */
+    this.map.on('change:size', event => {
+      this.dispatch('changeSize', event)
+    })
+
+    /**
+     * 监听单击事件
+     */
+    this.map.on('change:target', event => {
+      this.dispatch('changeTarget', event)
+    })
+
+    /**
+     * 监听单击事件
+     */
+    this.map.on('change:view', event => {
+      this.dispatch('changeView', event)
+    })
+  }
+
+  /**
+   * 添加地图交互
+   * @private
+   */
+  _addMapInteraction () {
+    this.selectInteraction = new ol.interaction.Select({
+      condition: ol.events.condition.click,
+      style: function (feature, resolution) {
+        return [
+          new ol.style.Style({
+            stroke: new ol.style.Stroke({
+              color: '#D97363',
+              width: 10
+            })
+          })
+        ]
+      },
+      layers: function (layer) {
+        return (layer.get('selectable') === true)
+      }
+    })
+    // 添加鼠标移动交互
+    this.moveInteraction = new ol.interaction.Select({
+      condition: ol.events.condition.pointerMove,
+      style: function (feature, resolution) {
+        return [
+          new ol.style.Style({
+            stroke: new ol.style.Stroke({
+              color: '#D97363',
+              width: 10
+            })
+          })
+        ]
+      },
+      layers: function (layer) {
+        return (layer.get('selectable') === true)
+      },
+      filter: function (feat, layer) {
+        if (feat.get('features')) {
+          return feat.get('features').length <= 1
+        }
+        return true
+      }
+    })
+    // this.moveInteraction.on('select', event => {
+    //   let [ret, feature] = [event.selected, null]
+    //   if (ret.length === 0) {
+    //     let deselected = event.deselected
+    //     if (deselected.length > 0) {
+    //       feature = deselected[0]
+    //       var layer = feat.get("belongLayer")
+    //       if (layer && (layer.getSource() instanceof ol.source.Cluster)) {
+    //         feat.setStyle(layer.getStyle())
+    //       } else if (feat.get("features")) {
+    //         var feats = feat.get("features")
+    //         if (feats[0]) {
+    //           var _layer = feats[0].get("belongLayer")
+    //           if (feats[0].get("belongLayer")) {
+    //             feat.setStyle(_layer.getStyle())
+    //           }
+    //         }
+    //       } else { // 恢复鼠标滑过之前的样式
+    //         var _style = feat.get("unSelectStyle")
+    //         if (_style) {
+    //           feat.setStyle(_style)
+    //         }
+    //       }
+    //     }
+    //   } else {
+    //     feature = ret[0]
+    //     // 如果两个要素距离太近，会连续选中，而无法得到上一个选中的要素，所以在此保留起来
+    //     let lastSelectFeature = this.moveInteraction.get('lastSelectFeature')
+    //     if (lastSelectFeature && lastSelectFeature.get("unSelectStyle")) {
+    //       lastSelectFeature.setStyle(lastSelectFeature.get("unSelectStyle"))
+    //     }
+    //     this.moveInteraction.set('lastSelectFeature', feature)
+    //     let layer = this.moveInteraction.getLayer(feature)
+    //     let _style = feature.get('selectStyle') || layer.get('selectedStyle')
+    //     if (_style) {
+    //       feature.setStyle(_style)
+    //     }
+    //     if (feature.get('features')) {
+    //       feature = feature.get('features')[0]
+    //     }
+    //     feature.set('belongLayer', layer)
+    //   }
+    //   if (feature && feature instanceof ol.Feature) {
+    //     this.dispatch('feature:onmouseover', {
+    //       type: 'feature:onmouseover',
+    //       originEvent: event,
+    //       value: feature
+    //     })
+    //   }
+    // })
+    // this.selectInteraction.on('select', event => {
+    //   console.log(event)
+    // })
+    this.map.addInteraction(this.moveInteraction)
+    this.map.addInteraction(this.selectInteraction)
+  }
+
+  _addFeatureSelectEvent (event) {
+    let feature = this.map.forEachFeatureAtPixel(event.pixel, function (feature) {
+      return feature
+    })
+    if (feature && feature instanceof ol.Feature) {
+      this.dispatch('feature:onmouseover', {
+        type: 'feature:onmouseover',
+        originEvent: event,
+        value: feature
+      })
     }
   }
 
@@ -175,38 +421,6 @@ class Map extends mix(BaseLayers, _Controls, _Interactions, Style, Layer, _View,
    */
   updateSize () {
     this.map.updateSize()
-  }
-
-  /**
-   * 地图加载完成事件（超时时间120s）
-   * @returns {Promise}
-   */
-  onMapInit () {
-    let that = this
-    let start = new Date().getTime()
-    return new Promise((resolve) => {
-      if (that.map) {
-        resolve(true)
-      } else {
-        let cc = 0
-        window.clearInterval(that.timer_)
-        that.timer_ = null
-        that.timer_ = window.setInterval(() => {
-          let end = new Date().getTime()
-          cc = ((end - start) / 1000)
-          if (that.map && cc <= 120) {
-            resolve(true)
-            window.clearInterval(that.timer_)
-            that.timer_ = null
-          }
-          if (cc > 120 && !that.map) {
-            resolve(false)
-            window.clearInterval(that.timer_)
-            that.timer_ = null
-          }
-        }, 50)
-      }
-    })
   }
 }
 
