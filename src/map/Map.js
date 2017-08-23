@@ -136,6 +136,7 @@ class Map extends mix(BaseLayers, _Controls, _Interactions, Style, Layer, _View,
       this.map.setProperties(options_, false)
       // 添加事件
       this._addEvent()
+      this._addMapInteraction()
 
       /**
        * 加载成功事件
@@ -269,6 +270,7 @@ class Map extends mix(BaseLayers, _Controls, _Interactions, Style, Layer, _View,
    * @private
    */
   _addMapInteraction () {
+    // 添加选中交互
     this.selectInteraction = new ol.interaction.Select({
       condition: ol.events.condition.click,
       style: function (feature, resolution) {
@@ -308,59 +310,32 @@ class Map extends mix(BaseLayers, _Controls, _Interactions, Style, Layer, _View,
         return true
       }
     })
-    // this.moveInteraction.on('select', event => {
-    //   let [ret, feature] = [event.selected, null]
-    //   if (ret.length === 0) {
-    //     let deselected = event.deselected
-    //     if (deselected.length > 0) {
-    //       feature = deselected[0]
-    //       var layer = feat.get("belongLayer")
-    //       if (layer && (layer.getSource() instanceof ol.source.Cluster)) {
-    //         feat.setStyle(layer.getStyle())
-    //       } else if (feat.get("features")) {
-    //         var feats = feat.get("features")
-    //         if (feats[0]) {
-    //           var _layer = feats[0].get("belongLayer")
-    //           if (feats[0].get("belongLayer")) {
-    //             feat.setStyle(_layer.getStyle())
-    //           }
-    //         }
-    //       } else { // 恢复鼠标滑过之前的样式
-    //         var _style = feat.get("unSelectStyle")
-    //         if (_style) {
-    //           feat.setStyle(_style)
-    //         }
-    //       }
-    //     }
-    //   } else {
-    //     feature = ret[0]
-    //     // 如果两个要素距离太近，会连续选中，而无法得到上一个选中的要素，所以在此保留起来
-    //     let lastSelectFeature = this.moveInteraction.get('lastSelectFeature')
-    //     if (lastSelectFeature && lastSelectFeature.get("unSelectStyle")) {
-    //       lastSelectFeature.setStyle(lastSelectFeature.get("unSelectStyle"))
-    //     }
-    //     this.moveInteraction.set('lastSelectFeature', feature)
-    //     let layer = this.moveInteraction.getLayer(feature)
-    //     let _style = feature.get('selectStyle') || layer.get('selectedStyle')
-    //     if (_style) {
-    //       feature.setStyle(_style)
-    //     }
-    //     if (feature.get('features')) {
-    //       feature = feature.get('features')[0]
-    //     }
-    //     feature.set('belongLayer', layer)
-    //   }
-    //   if (feature && feature instanceof ol.Feature) {
-    //     this.dispatch('feature:onmouseover', {
-    //       type: 'feature:onmouseover',
-    //       originEvent: event,
-    //       value: feature
-    //     })
-    //   }
-    // })
-    // this.selectInteraction.on('select', event => {
-    //   console.log(event)
-    // })
+
+    this.moveInteraction.on('select', event => {
+      let [selected, feature] = [event.selected, null]
+      if (selected.length === 0) {
+        let deselected = event.deselected
+        if (deselected.length > 0) {
+          feature = deselected[0]
+          this.unHighLightFeature('', feature, '')
+        }
+      } else {
+        feature = selected[0]
+        this.highLightFeature('', feature, '')
+      }
+      if (feature && feature instanceof ol.Feature) {
+        this.dispatch('feature:onmouseover', {
+          type: 'feature:onmouseover',
+          originEvent: event,
+          value: feature
+        })
+      }
+    })
+
+    this.selectInteraction.on('select', event => {
+      console.log(event)
+    })
+
     this.map.addInteraction(this.moveInteraction)
     this.map.addInteraction(this.selectInteraction)
   }

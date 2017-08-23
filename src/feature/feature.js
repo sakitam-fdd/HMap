@@ -6,7 +6,6 @@ import { ol } from '../constants'
 import mix from '../utils/mixin'
 import Style from '../style/Style'
 import Layer from '../layer/Layer'
-
 class Feature extends mix(Style, Layer) {
   constructor (map) {
     super()
@@ -148,9 +147,8 @@ class Feature extends mix(Style, Layer) {
         this.zoomToExtent(_extent, true)
       }
       if (params['layerName']) {
-        let layer = this.createVectorLayer(params['layerName'], {
-          create: true
-        })
+        params['create'] = true
+        let layer = this.createVectorLayer(params['layerName'], params)
         layer.getSource().addFeature(feature)
         this.pointLayers.add(params['layerName'])
       }
@@ -228,21 +226,9 @@ class Feature extends mix(Style, Layer) {
    */
   addPolyline (line, params) {
     try {
-      let linefeature = null
-      if (line.geometry.hasOwnProperty('paths')) {
-        let feat = {
-          'type': 'Feature',
-          'geometry': {
-            'type': 'MultiLineString',
-            'coordinates': line.geometry.paths
-          }
-        }
-        linefeature = (new ol.format.GeoJSON()).readFeature(feat)
-      } else {
-        linefeature = new ol.Feature({
-          geometry: new ol.format.WKT().readGeometry(line.geometry)
-        })
-      }
+      let linefeature = new ol.Feature({
+        geometry: this.getGeomFromGeomData(line, params)
+      })
       let style = this.getStyleByLine(line['attributes']['style'] || params['style'])
       let selectStyle = this.getStyleByLine(line['attributes']['selectStyle'] || params['selectStyle'])
       let extent = linefeature.getGeometry().getExtent()
@@ -262,9 +248,8 @@ class Feature extends mix(Style, Layer) {
         this.zoomToExtent(extent, true)
       }
       if (params['layerName']) {
-        let layer = this.createVectorLayer(params['layerName'], {
-          create: true
-        })
+        params['create'] = true
+        let layer = this.createVectorLayer(params['layerName'], params)
         layer.getSource().addFeature(linefeature)
         this.lineLayers.add(params['layerName'])
       }
@@ -346,9 +331,8 @@ class Feature extends mix(Style, Layer) {
           this.zoomToExtent(extent, true)
         }
         if (params['layerName']) {
-          let layer = this.createVectorLayer(params['layerName'], {
-            create: true
-          })
+          params['create'] = true
+          let layer = this.createVectorLayer(params['layerName'], params)
           layer.getSource().addFeature(polygonFeature)
           this.polygonLayers.add(params['layerName'])
         }

@@ -18,22 +18,6 @@ class Overlay extends mix(Feature) {
   }
 
   /**
-   * 从空间数据中解析坐标
-   * @param point
-   */
-  _getCoordinatesFromGeom (point) {
-    let [ geometry ] = [ null ]
-    if (point instanceof ol.geom.Geometry) {
-      geometry = point
-    } else if (Array.isArray(point.geometry)) {
-      geometry = new ol.geom.Point(point.geometry)
-    } else {
-      geometry = new ol.format.WKT().readGeometry(point.geometry)
-    }
-    return geometry.getCoordinates()
-  }
-
-  /**
    * 添加字体图标要素
    * @param point
    * @param params
@@ -88,25 +72,27 @@ class Overlay extends mix(Feature) {
   /**
    * 添加要素事件
    * @param marker
+   * @param ele
    * @param OverLay
    * @private
    */
   _addOverLayEvent (marker, ele, OverLay) {
+    let that = this
     marker.onmousedown = function (event) {
       if (event.button === 2) {
-        this.dispatch('overlay:onmouseright', {
+        that.dispatch('overlay:onmouseright', {
           type: 'overlay:onmouseright',
           originEvent: event,
           value: OverLay
         })
       } else if (event.button === 0) {
-        this.dispatch('overlay:onmouseleft', {
+        that.dispatch('overlay:onmouseleft', {
           type: 'overlay:onmouseleft',
           originEvent: event,
           value: OverLay
         })
       }
-      this.dispatch('overlay:click', {
+      that.dispatch('overlay:click', {
         type: 'overlay:click',
         originEvent: event,
         value: OverLay
@@ -114,7 +100,7 @@ class Overlay extends mix(Feature) {
     }
     marker.onmouseover = function (event) {
       ele.style.color = ele.selectColor
-      this.dispatch('overlay:onmouseover', {
+      that.dispatch('overlay:onmouseover', {
         type: 'overlay:onmouseover',
         originEvent: event,
         value: OverLay
@@ -122,7 +108,7 @@ class Overlay extends mix(Feature) {
     }
     marker.onmouseout = function (event) {
       ele.style.color = ele.normalColor
-      this.dispatch('overlay:onmouseout', {
+      that.dispatch('overlay:onmouseout', {
         type: 'overlay:onmouseout',
         originEvent: event,
         value: OverLay
@@ -517,5 +503,4 @@ class Overlay extends mix(Feature) {
     return _overlays
   }
 }
-
 export default Overlay

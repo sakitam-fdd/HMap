@@ -210,6 +210,9 @@
       orderByNum: true,
       zoomToExtent: true
     });
+    Maps.on('overlay:click', function (event) {
+      console.log(event)
+    })
   }
   function removePointById () {
     Maps.removeOverlayById('01')
