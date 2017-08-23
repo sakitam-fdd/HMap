@@ -26,8 +26,9 @@
   var Maps = new HMap.Map();
   Maps.initMap('map', {
     view: {
-      center: [105.40708997412835, 33.446141314339044],
-      projection: 'EPSG:4326',
+      center: [0, 0],
+//      center: [105.40708997412835, 33.446141314339044],
+      projection: 'EPSG:3857',
       zoom: 5, // resolution
     },
     baseLayers: [
@@ -49,18 +50,28 @@
   var bbox = Maps.getExtent()
   console.log(bbox)
 
-  var layer = Maps.createImageLayer('test', {
-    opacity: 0.5,
+  Maps.createImageLayer('test', {
+    opacity: 0.4,
     addLayer: true,
     create: true,
-    type: 'tiff',
-    sourceType: 'ImageWMS',
+    sourceType: 'ImageStatic',
     projection: 'EPSG:4326',
-    srs: 'EPSG:4326',
-    version: '1.1.0',
-    imageExtent: [73.76646497412835, 16.307469439339044, 137.04771497412835, 50.584813189339044],
-    layerUrl: 'http://192.168.0.226:8080/expdp-transformation-rest/rest/getImage/D39DFBA0883506B139A6134237C48091'
+    imageExtent: [50.02, 4.96, 144.97, 59.97],
+    layerUrl: 'http://192.168.0.3:7007/rest/getImage/8423778754A3E288EB0A91DB5F7DC457'
   })
+
+//  var layer = Maps.createImageLayer('test', {
+//    opacity: 0.5,
+//    addLayer: true,
+//    create: true,
+//    type: 'tiff',
+//    sourceType: 'ImageWMS',
+//    projection: 'EPSG:4326',
+//    srs: 'EPSG:4326',
+//    version: '1.1.0',
+//    imageExtent: [73.76646497412835, 16.307469439339044, 137.04771497412835, 50.584813189339044],
+//    layerUrl: 'http://192.168.0.3:7007/rest/getImage/8423778754A3E288EB0A91DB5F7DC457'
+//  })
 </script>
 </body>
 </html>

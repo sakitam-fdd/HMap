@@ -54,24 +54,6 @@ class Feature extends mix(Style, Layer) {
   }
 
   /**
-   * 从属性信息中获取空间信息
-   * @param point
-   * @returns {*}
-   * @private
-   */
-  _getGeometryFromPoint (point) {
-    let geometry = null
-    if (point instanceof ol.geom.Geometry) {
-      geometry = point
-    } else if (Array.isArray(point.geometry)) {
-      geometry = new ol.geom.Point(point.geometry)
-    } else {
-      geometry = new ol.format.WKT().readGeometry(point.geometry)
-    }
-    return geometry
-  }
-
-  /**
    * 获取当前范围
    * @param multiFeatures
    * @private
@@ -140,7 +122,7 @@ class Feature extends mix(Style, Layer) {
    */
   addPoint (point, params) {
     try {
-      let geometry = this._getGeometryFromPoint(point)
+      let geometry = this.getGeomFromGeomData(point, params)
       let feature = new ol.Feature({
         geometry: geometry,
         params: params
@@ -215,6 +197,7 @@ class Feature extends mix(Style, Layer) {
         if (change) {
           this._getExtent(multiPoint)
         }
+        return multiPoint
       }
     } catch (e) {
       console.error(e)
@@ -228,9 +211,9 @@ class Feature extends mix(Style, Layer) {
    */
   setPointGeometry (point, geometry) {
     if (point && geometry && point instanceof ol.Feature) {
-      let _geometry = this._getGeometryFromPoint({
+      let _geometry = this.getGeomFromGeomData({
         geometry: geometry
-      })
+      }, {})
       point.setGeometry(_geometry)
     } else {
       console.info('传入数据有误！')
@@ -316,7 +299,7 @@ class Feature extends mix(Style, Layer) {
               if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
                 multiGeoms.forEach(_geom => {
                   if (_geom && _geom instanceof ol.geom.LineString) {
-                    MultiLine.appendLineString(geom)
+                    MultiLine.appendLineString(_geom)
                   }
                 })
               }
@@ -326,6 +309,7 @@ class Feature extends mix(Style, Layer) {
         if (change) {
           this._getExtent(MultiLine)
         }
+        return MultiLine
       }
     } catch (e) {
       console.error(e)
@@ -342,7 +326,7 @@ class Feature extends mix(Style, Layer) {
     try {
       if (polygon && polygon['geometry']) {
         let polygonFeature = new ol.Feature({
-          geometry: new ol.format.WKT().readGeometry(polygon.geometry)
+          geometry: this.getGeomFromGeomData(polygon, params)
         })
         let style = this.getStyleByPolygon(polygon['attributes']['style'] || params['style'])
         let selectStyle = this.getStyleByPolygon(polygon['attributes']['selectStyle'] || params['selectStyle'])
@@ -412,6 +396,7 @@ class Feature extends mix(Style, Layer) {
         if (change) {
           this._getExtent(MultiPolygon)
         }
+        return MultiPolygon
       }
     } catch (e) {
       console.log(e)
@@ -435,7 +420,7 @@ class Feature extends mix(Style, Layer) {
         }
         points.forEach(item => {
           if (item && item['geometry']) {
-            let geometry = this._getGeometryFromPoint(item)
+            let geometry = this.getGeomFromGeomData(item, params)
             if (geometry && geometry instanceof ol.geom.Point) {
               multiPoint.appendPoint(geometry)
             } else if (geometry && geometry instanceof ol.geom.MultiPoint) {
@@ -482,7 +467,7 @@ class Feature extends mix(Style, Layer) {
     try {
       let geom = null
       if (!(line instanceof ol.geom.Geometry)) {
-        geom = (new ol.format.WKT()).readGeometry(line)
+        geom = this.getGeomFromGeomData(line, {})
       }
       let [MultiLine] = [(new ol.geom.MultiLineString([]))]
       if (geom && geom instanceof ol.geom.LineString) {
@@ -492,7 +477,7 @@ class Feature extends mix(Style, Layer) {
         if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
           multiGeoms.forEach(_geom => {
             if (_geom && _geom instanceof ol.geom.LineString) {
-              MultiLine.appendLineString(geom)
+              MultiLine.appendLineString(_geom)
             }
           })
         }
@@ -517,7 +502,7 @@ class Feature extends mix(Style, Layer) {
     try {
       let geom = null
       if (!(polygon instanceof ol.geom.Geometry)) {
-        geom = (new ol.format.WKT()).readGeometry(polygon)
+        geom = this.getGeomFromGeomData(polygon, {})
       }
       let [MultiPolygon] = [(new ol.geom.MultiPolygon([]))]
       if (geom && geom instanceof ol.geom.Polygon) {
@@ -527,7 +512,7 @@ class Feature extends mix(Style, Layer) {
         if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
           multiGeoms.forEach(_geom => {
             if (_geom && _geom instanceof ol.geom.Polygon) {
-              MultiPolygon.appendPolygon(geom)
+              MultiPolygon.appendPolygon(_geom)
             }
           })
         }
@@ -544,7 +529,76 @@ class Feature extends mix(Style, Layer) {
   }
 
   /**
-   * 读取空间信息
+   * 读取空间数据
+   * @param data
+   * @returns {*}
+   * @private
+   */
+  _getMultiGeomtery (data) {
+    try {
+      let geom = null
+      let multiPolygon = new ol.geom.MultiPolygon([])
+      let multiLine = new ol.geom.MultiLineString([])
+      let multiPoint = new ol.geom.MultiPoint([])
+      if (!(data instanceof ol.geom.Geometry)) {
+        geom = this.getGeomFromGeomData(data, {})
+      } else {
+        geom = data
+      }
+      if (geom) {
+        if (geom instanceof ol.geom.Polygon || geom instanceof ol.geom.MultiPolygon) {
+          if (geom instanceof ol.geom.Polygon) {
+            multiPolygon.appendPolygon(geom)
+          } else {
+            let multiGeoms = geom.getPolygons()
+            if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
+              multiGeoms.forEach(_geom => {
+                if (_geom && _geom instanceof ol.geom.Polygon) {
+                  multiPolygon.appendPolygon(_geom)
+                }
+              })
+            }
+          }
+          return multiPolygon
+        } else if (geom instanceof ol.geom.LineString || geom instanceof ol.geom.MultiLineString) {
+          if (geom instanceof ol.geom.LineString) {
+            multiLine.appendLineString(geom)
+          } else {
+            let multiGeoms = geom.getLineStrings()
+            if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
+              multiGeoms.forEach(_geom => {
+                if (_geom && _geom instanceof ol.geom.LineString) {
+                  multiLine.appendLineString(_geom)
+                }
+              })
+            }
+          }
+          return multiLine
+        } else if (geom instanceof ol.geom.Point || geom instanceof ol.geom.MultiPoint) {
+          if (geom instanceof ol.geom.Point) {
+            multiPoint.appendPoint(geom)
+          } else {
+            let multiGeoms = geom.getPoints()
+            if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
+              multiGeoms.forEach(_geom => {
+                if (_geom && _geom instanceof ol.geom.Point) {
+                  multiPoint.appendPoint(_geom)
+                }
+              })
+            }
+          }
+          return multiPoint
+        }
+      } else {
+        return false
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  /**
+   * 读取空间信息(无类型默认以wkt方式读取)
    * @param geomData
    * @param options
    * @returns {*}
@@ -552,16 +606,38 @@ class Feature extends mix(Style, Layer) {
   getGeomFromGeomData (geomData, options) {
     try {
       let featureGeom = null
-      if (geomData['geomType'] === 'GeoJSON') {
-        featureGeom = (new ol.format.GeoJSON()).readGeometry(geomData['geometry'])
-      } else if (geomData['geomType'] === 'WKT') {
-        featureGeom = (new ol.format.WKT()).readGeometry(geomData['geometry'])
-      } else if (geomData['geomType'] === 'EsriJSON') {
-        featureGeom = (new ol.format.EsriJSON()).readGeometry(geomData['geometry'])
-      } else if (geomData['geomType'] === 'Polyline') {
-        featureGeom = (new ol.format.Polyline()).readGeometry(geomData['geometry'])
+      if (geomData instanceof ol.geom.Geometry) {
+        featureGeom = geomData
+      } else if (geomData.hasOwnProperty('geometry') && geomData['geometry'] instanceof ol.geom.Geometry) {
+        featureGeom = geomData['geometry']
+      } else if (geomData['geomType'] === 'GeoJSON' || options['geomType'] === 'GeoJSON') {
+        featureGeom = (new ol.format.GeoJSON()).readGeometry(geomData)
+      } else if (geomData['geomType'] === 'EsriJSON' || options['geomType'] === 'EsriJSON') {
+        featureGeom = (new ol.format.EsriJSON()).readGeometry(geomData)
+      } else if (geomData['geomType'] === 'Polyline' || options['geomType'] === 'Polyline') {
+        featureGeom = (new ol.format.Polyline()).readGeometry(geomData)
       } else if (Array.isArray(geomData['geometry']) && geomData['geometry'].length === 2) {
         featureGeom = new ol.geom.Point(geomData['geometry'])
+      } else if (geomData['geomType'] === 'MVT' || options['geomType'] === 'MVT') {
+        featureGeom = (new ol.format.MVT()).readGeometry(geomData)
+      } else if (geomData['geomType'] === 'TopoJSON' || options['geomType'] === 'TopoJSON') {
+        featureGeom = (new ol.format.TopoJSON()).readGeometry(geomData)
+      } else if (geomData['geomType'] === 'IGC' || options['geomType'] === 'IGC') {
+        featureGeom = (new ol.format.IGC()).readGeometry(geomData)
+      } else if (geomData['geomType'] === 'GMLBase' || options['geomType'] === 'GMLBase') {
+        featureGeom = (new ol.format.GMLBase()).readGeometry(geomData)
+      } else if (geomData['geomType'] === 'GPX' || options['geomType'] === 'GPX') {
+        featureGeom = (new ol.format.GPX()).readGeometry(geomData)
+      } else if (geomData['geomType'] === 'KML' || options['geomType'] === 'KML') {
+        featureGeom = (new ol.format.KML()).readGeometry(geomData)
+      } else if (geomData['geomType'] === 'OSMXML' || options['geomType'] === 'OSMXML') {
+        featureGeom = (new ol.format.OSMXML()).readGeometry(geomData)
+      } else if (geomData['geomType'] === 'WFS' || options['geomType'] === 'WFS') {
+        featureGeom = (new ol.format.WFS()).readGeometry(geomData)
+      } else if (geomData['geomType'] === 'WMSGetFeatureInfo' || options['geomType'] === 'WMSGetFeatureInfo') {
+        featureGeom = (new ol.format.WMSGetFeatureInfo()).readGeometry(geomData)
+      } else {
+        featureGeom = (new ol.format.WKT()).readGeometry(geomData['geometry'])
       }
       return featureGeom
     } catch (e) {
@@ -595,6 +671,95 @@ class Feature extends mix(Style, Layer) {
       extent: extent,
       center: center
     })
+  }
+
+  /**
+   * 获取范围和中心点
+   * @param multiGeom
+   * @param options
+   * @returns {{extent: *, center: ol.Coordinate}}
+   * @private
+   */
+  _getExtentCenter (multiGeom, options) {
+    let extent = this._getExtent(multiGeom)
+    let center = ol.extent.getCenter(extent)
+    let bExtent = true
+    extent.every(item => {
+      if (item === Infinity || isNaN(item) || item === undefined || item === null) {
+        bExtent = false
+        return false
+      } else {
+        return true
+      }
+    })
+    if (bExtent && options['zoomToExtent']) {
+      this.zoomToExtent(extent, true)
+    }
+    return ({
+      extent: extent,
+      center: center
+    })
+  }
+
+  /**
+   * 从多个geom获取范围和中心点（必须同种类型）
+   * @param geomDatas
+   * @param options
+   * @returns {null}
+   */
+  getCenterExtentFromGeoms (geomDatas, options) {
+    let [res, type] = [null, '']
+    if (geomDatas && Array.isArray(geomDatas) && geomDatas.length > 0) {
+      let multiPolygon = new ol.geom.MultiPolygon([])
+      let multiLine = new ol.geom.MultiLineString([])
+      let multiPoint = new ol.geom.MultiPoint([])
+      geomDatas.forEach(item => {
+        if (item) {
+          let multiGeom = this._getMultiGeomtery(this.getGeomFromGeomData(item, options))
+          if (multiGeom) {
+            if (multiGeom instanceof ol.geom.MultiPolygon) {
+              let _multiGeoms = multiGeom.getPolygons()
+              if (_multiGeoms && Array.isArray(_multiGeoms) && _multiGeoms.length > 0) {
+                _multiGeoms.forEach(_geom => {
+                  if (_geom && _geom instanceof ol.geom.Polygon) {
+                    multiPolygon.appendPolygon(_geom)
+                  }
+                })
+              }
+              type = 'multiPolygon'
+            } else if (multiGeom instanceof ol.geom.MultiLineString) {
+              let _multiGeoms = multiGeom.getLineStrings()
+              if (_multiGeoms && Array.isArray(_multiGeoms) && _multiGeoms.length > 0) {
+                _multiGeoms.forEach(_geom => {
+                  if (_geom && _geom instanceof ol.geom.LineString) {
+                    multiLine.appendLineString(_geom)
+                  }
+                })
+              }
+              type = 'multiLine'
+            } else if (multiGeom instanceof ol.geom.MultiPoint) {
+              let _multiGeoms = multiGeom.getPoints()
+              if (_multiGeoms && Array.isArray(_multiGeoms) && _multiGeoms.length > 0) {
+                _multiGeoms.forEach(_geom => {
+                  if (_geom && _geom instanceof ol.geom.Point) {
+                    multiPoint.appendPoint(_geom)
+                  }
+                })
+              }
+              type = 'multiPoint'
+            }
+          }
+        }
+      })
+      if (type === 'multiPolygon') {
+        res = this._getExtentCenter(multiPolygon, options)
+      } else if (type === 'multiLine') {
+        res = this._getExtentCenter(multiLine, options)
+      } else if (type === 'multiPoint') {
+        res = this._getExtentCenter(multiPoint, options)
+      }
+    }
+    return res
   }
 
   /**
