@@ -442,6 +442,10 @@ class Feature extends mix(Style, Layer) {
     }
   }
 
+  addClusterFeatures () {
+
+  }
+
   /**
    * 获取线当前范围和中心点
    * @param line
@@ -598,10 +602,10 @@ class Feature extends mix(Style, Layer) {
       } else if (geomData['geomType'] === 'GeoJSON' || options['geomType'] === 'GeoJSON') {
         featureGeom = (new ol.format.GeoJSON()).readGeometry(geomData)
       } else if (geomData['geomType'] === 'EsriJSON' || options['geomType'] === 'EsriJSON') {
-        featureGeom = (new ol.format.EsriJSON()).readGeometry(geomData)
+        featureGeom = (new ol.format.EsriJSON()).readGeometry(geomData['geometry'])
       } else if (geomData['geomType'] === 'Polyline' || options['geomType'] === 'Polyline') {
         featureGeom = (new ol.format.Polyline()).readGeometry(geomData)
-      } else if (Array.isArray(geomData['geometry']) && geomData['geometry'].length === 2) {
+      } else if (Array.isArray(geomData['geometry'])) {
         featureGeom = new ol.geom.Point(geomData['geometry'])
       } else if (geomData['geomType'] === 'MVT' || options['geomType'] === 'MVT') {
         featureGeom = (new ol.format.MVT()).readGeometry(geomData)

@@ -1,6 +1,5 @@
 const HMap = {}
 HMap.version = require('../package.json').version
-import 'babel-polyfill'
 import {ol, proj4} from './constants'
 import './scss/index'
 import Map from './map/Map'

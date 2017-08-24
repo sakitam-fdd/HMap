@@ -74,6 +74,12 @@ class Map extends mix(BaseLayers, _Controls, _Interactions, Style, Layer, _View,
      * @type {null}
      */
     this.currentSelectFeature = null
+
+    /**
+     * 上一次选择要素
+     * @type {null}
+     */
+    this.lastSelectFeature = null
     /**
      * 当前地图气泡
      * @type {null}
@@ -310,7 +316,6 @@ class Map extends mix(BaseLayers, _Controls, _Interactions, Style, Layer, _View,
         return true
       }
     })
-
     this.moveInteraction.on('select', event => {
       let [selected, feature] = [event.selected, null]
       if (selected.length === 0) {
@@ -318,24 +323,65 @@ class Map extends mix(BaseLayers, _Controls, _Interactions, Style, Layer, _View,
         if (deselected.length > 0) {
           feature = deselected[0]
           this.unHighLightFeature('', feature, '')
+          if (feature && feature instanceof ol.Feature) {
+            this.dispatch('feature:onmouseout', {
+              type: 'feature:onmouseout',
+              originEvent: event,
+              value: feature
+            })
+          }
         }
       } else {
         feature = selected[0]
+        // 如果两个要素距离太近，会连续选中，而无法得到上一个选中的要素，所以在此保留起来
+        if (this.lastSelectFeature && this.lastSelectFeature instanceof ol.Feature) {
+          this.unHighLightFeature('', this.lastSelectFeature, '')
+          this.lastSelectFeature = null
+        }
+        this.lastSelectFeature = feature
         this.highLightFeature('', feature, '')
-      }
-      if (feature && feature instanceof ol.Feature) {
-        this.dispatch('feature:onmouseover', {
-          type: 'feature:onmouseover',
-          originEvent: event,
-          value: feature
-        })
+        if (feature && feature instanceof ol.Feature) {
+          this.dispatch('feature:onmouseover', {
+            type: 'feature:onmouseover',
+            originEvent: event,
+            value: feature
+          })
+        }
       }
     })
-
     this.selectInteraction.on('select', event => {
-      console.log(event)
+      let [selected, feature] = [event.selected, null]
+      if (selected.length === 0) {
+        let deselected = event.deselected
+        if (deselected.length > 0) {
+          feature = deselected[0]
+          this.unHighLightFeature('', feature, '')
+          if (feature && feature instanceof ol.Feature) {
+            this.dispatch('feature:ondisselect', {
+              type: 'feature:ondisselect',
+              originEvent: event,
+              value: feature
+            })
+          }
+        }
+      } else {
+        feature = selected[0]
+        // 如果两个要素距离太近，会连续选中，而无法得到上一个选中的要素，所以在此保留起来
+        if (this.lastSelectFeature && this.lastSelectFeature instanceof ol.Feature) {
+          this.unHighLightFeature('', this.lastSelectFeature, '')
+          this.lastSelectFeature = null
+        }
+        this.lastSelectFeature = feature
+        this.highLightFeature('', feature, '')
+        if (feature && feature instanceof ol.Feature) {
+          this.dispatch('feature:onselect', {
+            type: 'feature:onselect',
+            originEvent: event,
+            value: feature
+          })
+        }
+      }
     })
-
     this.map.addInteraction(this.moveInteraction)
     this.map.addInteraction(this.selectInteraction)
   }

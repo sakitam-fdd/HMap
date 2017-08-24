@@ -201,11 +201,15 @@
       geometryType: 'Point'
     }
   ]
+  Maps.on('feature:onselect', function (event) {
+    console.log(event)
+  })
   function addPoint () {
     Maps.addPoint(points[0], {
       layerName: 'test',
       zoomToExtent: true,
-      selectable: true
+      selectable: true,
+      moveable: true
     });
   }
   function addPoints () {
