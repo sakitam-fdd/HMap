@@ -597,11 +597,11 @@ class Feature extends mixin(Style, Layer) {
       } else if (geomData.hasOwnProperty('geometry') && geomData['geometry'] instanceof ol.geom.Geometry) {
         featureGeom = geomData['geometry']
       } else if (geomData['geomType'] === 'GeoJSON' || options['geomType'] === 'GeoJSON') {
-        featureGeom = (new ol.format.GeoJSON()).readGeometry(geomData)
+        featureGeom = (new ol.format.GeoJSON()).readGeometry(geomData['geometry'])
       } else if (geomData['geomType'] === 'EsriJSON' || options['geomType'] === 'EsriJSON') {
         featureGeom = (new ol.format.EsriJSON()).readGeometry(geomData['geometry'])
       } else if (geomData['geomType'] === 'Polyline' || options['geomType'] === 'Polyline') {
-        featureGeom = (new ol.format.Polyline()).readGeometry(geomData)
+        featureGeom = (new ol.format.Polyline()).readGeometry(geomData['geometry'])
       } else if (Array.isArray(geomData['geometry'])) {
         featureGeom = new ol.geom.Point(geomData['geometry'])
       } else if (geomData['geomType'] === 'MVT' || options['geomType'] === 'MVT') {
@@ -934,7 +934,7 @@ class Feature extends mixin(Style, Layer) {
       }
       return feat
     } else if (id && id.trim() !== "''") {
-      let feature = this.getFeatureById(id, layerName)
+      let feature = this.getFeatureById(id)
       if (feature && feature instanceof ol.Feature) {
         let normalStyle = feature.get('style')
         if (normalStyle && normalStyle instanceof ol.style.Style) {
