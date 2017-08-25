@@ -3,10 +3,10 @@
  * @desc 用于图层比较
  */
 import {ol} from '../constants'
-import mix from '../utils/mixin'
+import mixin from '../utils/mixins'
 import {DomUtil, css} from '../dom'
 
-class CompareLayer extends mix(ol.control.Control) {
+class CompareLayer extends mixin(ol.control.Control) {
   constructor (beforeMap, afterMap, params) {
     super()
     this.options = params || {}

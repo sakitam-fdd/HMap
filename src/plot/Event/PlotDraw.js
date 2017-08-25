@@ -4,16 +4,16 @@
  */
 
 import { ol } from '../../constants'
+import mixin from '../../utils/mixins'
 import { MathDistance } from '../Utils/utils'
 import EventType from './EventType'
 import * as Events from '../../event/Events'
-import mix from '../../utils/mixin'
 import Layer from '../../layer/Layer'
 import Plot from '../index'
 import Style from '../../style/Style'
 import PlotTypes from '../Utils/PlotTypes'
 const Observable = ol.Observable
-class PlotDraw extends mix(Observable, Plot, Layer, Style) {
+class PlotDraw extends mixin(Observable, Plot, Layer, Style) {
   constructor (map, params) {
     super()
     ol.Observable.call(this, [])

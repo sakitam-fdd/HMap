@@ -3,16 +3,13 @@
  * @desc 要素相关处理
  */
 import { ol } from '../constants'
-import mix from '../utils/mixin'
+import mixin from '../utils/mixins'
 import Style from '../style/Style'
 import Layer from '../layer/Layer'
-class Feature extends mix(Style, Layer) {
-  constructor (map) {
+class Feature extends mixin(Style, Layer) {
+  constructor () {
     super()
-    this.map = map
-    if (!this.map) {
-      throw new Error('缺少地图对象！')
-    }
+    this.desc = ''
   }
 
   /**

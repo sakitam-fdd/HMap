@@ -7,8 +7,7 @@ import FineArrow from './FineArrow'
 import PlotTypes from '../../Utils/PlotTypes'
 class AssaultDirection extends FineArrow {
   constructor (points, params) {
-    super()
-    FineArrow.call(this, points, params)
+    super(points, params)
     this.tailWidthFactor = 0.05
     this.neckWidthFactor = 0.1
     this.headWidthFactor = 0.15

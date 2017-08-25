@@ -1,18 +1,15 @@
 import { ol } from '../constants'
-import mix from '../utils/mixin'
+import mixin from '../utils/mixins'
 import * as MapboxStyle from '../style/MapboxStyle'
 import Style from '../style/Style'
 import './source/GaoDe'
 import './source/BaiDu'
 import './source/Google'
 
-class Layer extends mix(Style) {
-  constructor (map) {
+class Layer extends mixin(Style) {
+  constructor () {
     super()
-    this.map = map || null
-    if (!this.map) {
-      throw new Error('缺少地图对象！')
-    }
+    this.desc = ''
   }
 
   /**

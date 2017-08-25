@@ -4,7 +4,6 @@
  */
 import {ol} from '../constants'
 import {DomUtil, css} from '../dom'
-// import mix from '../utils/mixin'
 import LayerSwitcher from '../plugins/LayerSwitcher'
 ol.control.BaseLayerSwitcher = function (params) {
   this.options = params || {}

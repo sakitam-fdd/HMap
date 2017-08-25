@@ -3,13 +3,13 @@
  * @desc 可拖拽圆创建
  */
 import {ol} from '../constants'
-import mix from '../utils/mixin'
+import mixin from '../utils/mixins'
 import Layer from '../layer/Layer'
 import Style from '../style/Style'
 import {getuuid} from '../utils/utils'
 import * as DomUtils from '../dom/domUtil'
 
-class CustomCircle extends mix(Layer, Style) {
+class CustomCircle extends mixin(Layer, Style) {
   constructor (params) {
     super()
 

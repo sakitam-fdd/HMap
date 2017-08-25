@@ -1,20 +1,12 @@
 import { ol } from '../constants'
+import mixin from '../utils/mixins'
 import { DomUtil } from '../dom'
 import { trim } from '../utils/utils'
 import Feature from '../feature/feature'
-import mix from '../utils/mixin'
-class Overlay extends mix(Feature) {
-  constructor (map) {
+class Overlay extends mixin(Feature) {
+  constructor () {
     super()
-    if (map && map instanceof ol.Map) {
-      /**
-       * 地图对象
-       * @type {ol.Map}
-       */
-      this.map = map
-    } else {
-      throw new Error('传入的不是地图对象或者地图对象为空！')
-    }
+    this.desc = ''
   }
 
   /**

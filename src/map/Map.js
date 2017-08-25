@@ -1,4 +1,4 @@
-import mix from '../utils/mixin'
+import mixin from '../utils/mixins'
 import {ol, proj4} from '../constants'
 import BaseLayers from './baseLayer'
 import _Controls from './Controls'
@@ -9,8 +9,7 @@ import Feature from '../feature/feature'
 import Style from '../style/Style'
 import Overlay from '../overlay/Overlay'
 import Observable from 'observable-emit'
-
-class Map extends mix(BaseLayers, _Controls, _Interactions, Style, Layer, _View, Feature, Overlay, Observable) {
+class Map extends mixin(BaseLayers, _Controls, _Interactions, Style, Layer, _View, Feature, Overlay, Observable) {
   constructor () {
     super()
     this.addPointHandlerClick = null
@@ -444,5 +443,4 @@ class Map extends mix(BaseLayers, _Controls, _Interactions, Style, Layer, _View,
     this.map.updateSize()
   }
 }
-
 export default Map

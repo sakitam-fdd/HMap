@@ -10,8 +10,7 @@ import * as PlotUtils from '../../Utils/utils'
 import * as Constants from '../../Constants'
 class TailedSquadCombat extends AttackArrow {
   constructor (points, params) {
-    super()
-    AttackArrow.call(this, points, params)
+    super(points, params)
     this.type = PlotTypes.TAILED_SQUAD_COMBAT
     this.headHeightFactor = 0.18
     this.headWidthFactor = 0.3

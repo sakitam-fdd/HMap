@@ -74,7 +74,6 @@ if (env === 'build') {
 
 const config = {
   entry: [
-    path.resolve(__dirname, 'node_modules/babel-polyfill'),
     path.resolve(__dirname + '/src/index.js')
   ],
   // devtool: '#cheap-module-eval-source-map',
@@ -102,7 +101,7 @@ const config = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test')]
+        include: [resolve('src'), resolve('node_modules/observable-emit'), resolve('test')]
       },
       {
         test: /\.css$/,

@@ -1,9 +1,9 @@
-import mix from '../utils/mixin'
+import mixin from '../utils/mixins'
 import Layer from '../layer/Layer'
 import Style from '../style/Style'
 import { ol } from '../constants'
 import * as utils from '../utils/utils'
-class MeasureTool extends mix(Layer, Style) {
+class MeasureTool extends mixin(Layer, Style) {
   constructor (mapInstence, params) {
     super()
     if (mapInstence && mapInstence['map'] instanceof ol.Map) {
