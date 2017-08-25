@@ -1,8 +1,15 @@
-const mix = (...mixins) => {
-  class Mix {}
-  // 以编程方式给Mix类添加
+const copyProperties = (target, source) => {
+  for (let key of Reflect.ownKeys(source)) {
+    if (!key.match(/^(?:constructor|prototype|arguments|caller|name|bind|call|apply|toString|length)$/)) {
+      let desc = Object.getOwnPropertyDescriptor(source, key)
+      Object.defineProperty(target, key, desc)
+    }
+  }
+}
 
-  // mixins的所有方法和访问器
+const mixin = (...mixins) => {
+  class Mix {}
+  // 以编程方式给Mix类添加mixin的所有方法和访问器
   for (let key in mixins) {
     let mixin = mixins[key]
     copyProperties(Mix, mixin)
@@ -11,14 +18,5 @@ const mix = (...mixins) => {
   return Mix
 }
 
-const copyProperties = (target, source) => {
-  for (let key of Reflect.ownKeys(source)) {
-    if (key !== 'constructor' && key !== 'prototype' && key !== 'name' && key !== 'length') {
-      let desc = Object.getOwnPropertyDescriptor(source, key)
-      Object.defineProperty(target, key, desc)
-    }
-  }
-}
-
-export default mix
+export default mixin
 

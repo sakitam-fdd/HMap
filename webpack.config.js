@@ -17,7 +17,7 @@ const assetsPath = function (_path) {
 let libraryName = 'HMap'
 
 const resolve = (dir) => {
-  return path.join(__dirname, '..', dir)
+  return path.join(__dirname, './', dir)
 }
 
 let plugins = [
@@ -53,35 +53,9 @@ if (env === 'build') {
       allChunks: true
     }),
     new BundleAnalyzerPlugin({
-      // Can be `server`, `static` or `disabled`.
-      // In `server` mode analyzer will start HTTP server to show bundle report.
-      // In `static` mode single HTML file with bundle report will be generated.
-      // In `disabled` mode you can use this plugin to just generate Webpack Stats JSON file by setting `generateStatsFile` to `true`.
       analyzerMode: 'static',
-      // Host that will be used in `server` mode to start HTTP server.
       analyzerHost: '127.0.0.1',
-      // Port that will be used in `server` mode to start HTTP server.
-      analyzerPort: 8888,
-      // Path to bundle report file that will be generated in `static` mode.
-      // Relative to bundles output directory.
-      reportFilename: 'report.html',
-      // Module sizes to show in report by default.
-      // Should be one of `stat`, `parsed` or `gzip`.
-      // See "Definitions" section for more information.
-      defaultSizes: 'parsed',
-      // Automatically open report in default browser
-      openAnalyzer: true,
-      // If `true`, Webpack Stats JSON file will be generated in bundles output directory
-      generateStatsFile: false,
-      // Name of Webpack Stats JSON file that will be generated if `generateStatsFile` is `true`.
-      // Relative to bundles output directory.
-      statsFilename: 'stats.json',
-      // Options for `stats.toJson()` method.
-      // For example you can exclude sources of your modules from stats file with `source: false` option.
-      // See more options here: https://github.com/webpack/webpack/blob/webpack-1/lib/Stats.js#L21
-      statsOptions: null,
-      // Log level. Can be 'info', 'warn', 'error' or 'silent'.
-      logLevel: 'info'
+      analyzerPort: 8888
     })
   ]
   plugins = plugins.concat(_plugins)
@@ -100,7 +74,6 @@ if (env === 'build') {
 
 const config = {
   entry: [
-    path.join(__dirname, 'node_modules/babel-polyfill'),
     path.resolve(__dirname + '/src/index.js')
   ],
   // devtool: '#cheap-module-eval-source-map',
@@ -118,12 +91,17 @@ const config = {
     rules: [
       {
         test: /(\.jsx|\.js)$/,
-        enforce: 'pre',  // 在babel-loader对源码进行编译前进行lint的检查
-        loaders: [
-          'babel-loader',
-          'eslint-loader'
-        ],
-        exclude: /(node_modules|bower_components)/
+        loader: 'eslint-loader',
+        enforce: 'pre',
+        include: [resolve('src'), resolve('test')],
+        options: {
+          formatter: require('eslint-friendly-formatter')
+        }
+      },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        include: [resolve('src'), resolve('node_modules/ol'), resolve('node_modules/observable-emit'), resolve('test')]
       },
       {
         test: /\.css$/,
@@ -145,7 +123,7 @@ const config = {
   resolve: {
     extensions: ['.json', '.js', '.scss'],
     alias: {
-      '@': resolve('src')
+      '@': './src'
     }
   },
   plugins: plugins

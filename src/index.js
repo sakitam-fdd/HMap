@@ -1,22 +1,16 @@
+import 'core-js/es6/set'
+import 'core-js/es6/symbol'
+import 'core-js/es6/reflect'
 const HMap = {}
 HMap.version = require('../package.json').version
 import proj4 from 'proj4'
-import ol from 'ol'
 import './scss/index'
 import Map from './map/Map'
 import Observable from './event/Observable'
 import Layer from './layer/Layer'
 import Feature from './feature/feature'
 import CoordsTransform from './plugins/CoordsTransform'
-// import LayerSwitcher from './plugins/LayerSwitcher'
-// import MeasureTool from './plugins/MeasureTool'
-// import GeomCoder from './plugins/GeomCoder'
-// import CustomCircle from './plugins/CustomCircle'
-// import Popover from './overlay/Popover'
 import * as utils from './utils/utils'
-
-HMap.ol = ol
-window.ol = ol
 HMap.proj4 = proj4
 window.proj4 = proj4
 HMap.Map = Map
