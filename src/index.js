@@ -1,5 +1,6 @@
 import 'core-js/es6/set'
 import 'core-js/es6/symbol'
+import 'core-js/es6/reflect'
 const HMap = {}
 HMap.version = require('../package.json').version
 import {ol, proj4} from './constants'
