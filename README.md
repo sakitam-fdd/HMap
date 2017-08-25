@@ -1,4 +1,6 @@
-# WEBGIS地图类库(注意：部分控件和扩展正在分离为单独插件，按需自取[aurorafe Organization](https://github.com/aurorafe))，有问题欢迎反馈
+# 此版本使用的核心为olES6版，未向外暴露ol
+# WEBGIS地图类库(注意：部分控件和扩展正在分离为单独插件，
+#  按需自取[aurorafe Organization](https://github.com/aurorafe))，有问题欢迎反馈
 
 [![Build Status](https://www.travis-ci.org/sakitam-fdd/HMap.svg?branch=master)](https://www.travis-ci.org/sakitam-fdd/HMap)
 [![NPM](https://nodei.co/npm/hmap-js.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/hmap-js/)
