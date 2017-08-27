@@ -2,8 +2,9 @@
   "name": "hmap-js",
   "version": "1.4.0",
   "private": false,
-  "description": "WEBGIS API",
-  "main": "src/index.js",
+  "description": "a openlayers extent map library",
+  "main": "dist/hmap-js.js",
+  "style": "dist/hmap-js.css",
   "scripts": {
     "dev": "node build/development.js",
     "travisDev": "node build/development.js --env nowatch",
