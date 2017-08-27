@@ -1,6 +1,4 @@
-# 此版本使用的核心为olES6版，未向外暴露ol
-# WEBGIS地图类库(注意：部分控件和扩展正在分离为单独插件，
-#  按需自取[aurorafe Organization](https://github.com/aurorafe))，有问题欢迎反馈
+# WEBGIS地图类库
 
 [![Build Status](https://www.travis-ci.org/sakitam-fdd/HMap.svg?branch=master)](https://www.travis-ci.org/sakitam-fdd/HMap)
 [![NPM](https://nodei.co/npm/hmap-js.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/hmap-js/)
@@ -12,7 +10,7 @@
 ## 浏览器支持
 
 <p align="center">
-  <img src="https://github.com/sakitam-fdd/HMap/raw/master/asset/brow.png"/> 
+  <img src="https://github.com/sakitam-fdd/HMap/raw/V1.0/asset/brow.png"/> 
 </p>
 
 ---
@@ -89,13 +87,13 @@ var Maps = new HMap.Map();
 
 ## 截图示例
 
-![散点图](https://raw.githubusercontent.com/sakitam-fdd/HMap/master/asset/demo/rr.png)
+![散点图](https://raw.githubusercontent.com/sakitam-fdd/HMap/V1.0/asset/demo/rr.png)
 
-![迁徙图](https://raw.githubusercontent.com/sakitam-fdd/HMap/master/asset/demo/flay.gif)
+![迁徙图](https://raw.githubusercontent.com/sakitam-fdd/HMap/V1.0/asset/demo/flay.gif)
 
-![热力图](https://raw.githubusercontent.com/sakitam-fdd/HMap/master/asset/demo/heatMap.png)
+![热力图](https://raw.githubusercontent.com/sakitam-fdd/HMap/V1.0/asset/demo/heatMap.png)
 
-![军事标绘](https://raw.githubusercontent.com/sakitam-fdd/HMap/master/asset/demo/plot.png)
+![军事标绘](https://raw.githubusercontent.com/sakitam-fdd/HMap/V1.0/asset/demo/plot.png)
 
 其他示例请参看example文件夹
 

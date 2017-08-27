@@ -1,41 +1,29 @@
+// http://eslint.org/docs/user-guide/configuring
+
 module.exports = {
   root: true,
-  parser: 'babel-eslint',   //使用babel-eslint来作为eslint的解析器
-  parserOptions: {      // 设置解析器选项
-    sourceType: 'module'    // 表明自己的代码是ECMAScript模块
+  parser: 'babel-eslint',
+  parserOptions: {
+    sourceType: 'module'
+  },
+  env: {
+    browser: true,
   },
   // https://github.com/feross/standard/blob/master/RULES.md#javascript-standard-style
-  extends: 'standard',  // 继承eslint-config-standard里面提供的lint规则
-  plugins: [    // 使用的插件eslint-plugin-html. 写配置文件的时候，可以省略eslint-plugin-
+  extends: 'standard',
+  // required to lint *.vue files
+  plugins: [
   ],
-  "ecmaFeatures": {
-    "globalReturn": true,
-    "jsx": true,
-    "modules": true
-  },
-  "env": {
-    "browser": true,
-    "es6": true,
-    "node": true
-  },
-  "globals": {
-    "document": true,
-    "Object": true,
-    "escape": false,
-    "navigator": false,
-    "unescape": false,
-    "window": true,
-    "describe": true,
-    "before": true,
-    "it": true,
-    "expect": true,
-    "sinon": true,
-    "define": true
-  },
-  "rules": {
-    "arrow-parens": 0,
-    "generator-star-spacing": 0,
-    "no-prototype-builtins": 0,
+  // add your custom rules here
+  'rules': {
+    // allow paren-less arrow functions
+    'arrow-parens': 0,
+    // allow async-await
+    'generator-star-spacing': 0,
+    // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0
+  },
+  'globals': {
+    "ol": true
   }
 }
