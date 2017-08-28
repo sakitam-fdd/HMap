@@ -51,8 +51,10 @@ class Overlay extends mixin(Feature) {
           }
           if (params['zoomToExtent']) {
             let extent = (new ol.geom.Point(coordinate)).getExtent()
-            let _extent = this.adjustExtent(extent, params['view'])
-            this.zoomToExtent(_extent, true)
+            if (params['view'] && params['view']['adjustExtent']) {
+              extent = this.adjustExtent(extent, params['view'])
+            }
+            this.zoomToExtent(extent, true)
           }
         }
       }
@@ -179,7 +181,7 @@ class Overlay extends mixin(Feature) {
           change = true
         }
         if (change) {
-          this._getExtent(multiPoint)
+          this._getExtent(multiPoint, params)
         }
       }
     } catch (e) {
