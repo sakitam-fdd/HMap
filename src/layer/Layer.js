@@ -1244,13 +1244,17 @@ class Layer extends mixin(Style) {
   /**
    * 调整当前要素范围
    * @param extent
+   * @param params
    * @returns {*}
    */
-  adjustExtent (extent) {
+  adjustExtent (extent, params) {
     if (this.map) {
-      let width = ol.extent.getWidth(extent)
-      let adjust = 0.2
-      if (width < 0.05) {
+      params = params || {}
+      let size = ol.extent.getSize(extent)
+      let adjust = typeof params['adjust'] === 'number' ? params['adjust'] : 0.2
+      let minWidth = typeof params['minWidth'] === 'number' ? params['minWidth'] : 0.05
+      let minHeight = typeof params['minHeight'] === 'number' ? params['minHeight'] : 0.05
+      if (size[0] <= minWidth || size[1] <= minHeight) {
         let bleft = ol.extent.getBottomLeft(extent) // 获取xmin,ymin
         let tright = ol.extent.getTopRight(extent) // 获取xmax,ymax
         let xmin = bleft[0] - adjust

@@ -90,7 +90,13 @@
         var feat = Maps.addPolyline(line, {
           layerName: 'test',
           selectable: true,
-          zoomToExtent: true
+          zoomToExtent: true,
+          view: {
+            adjustExtent: true,
+            adjust: 1,
+            minWidth: 1,
+            minHeight: 1
+          }
         });
         console.log(feat.getGeometry().getCoordinates())
       })
@@ -104,7 +110,13 @@
         var lines = response['data']['data']['features'];
         Maps.addPolylines(lines, {
           layerName: 'test',
-          zoomToExtent: true
+          zoomToExtent: true,
+          view: {
+            adjustExtent: true,
+            adjust: 0.4,
+            minWidth: 0.1,
+            minHeight: 0.1
+          }
         });
       })
       .catch(function (error) {

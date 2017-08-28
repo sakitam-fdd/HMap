@@ -51,7 +51,7 @@ class Overlay extends mixin(Feature) {
           }
           if (params['zoomToExtent']) {
             let extent = (new ol.geom.Point(coordinate)).getExtent()
-            let _extent = this.adjustExtent(extent)
+            let _extent = this.adjustExtent(extent, params['view'])
             this.zoomToExtent(_extent, true)
           }
         }

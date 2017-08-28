@@ -52,9 +52,10 @@ class Feature extends mixin(Style, Layer) {
   /**
    * 获取当前范围
    * @param multiFeatures
+   * @param params
    * @private
    */
-  _getExtent (multiFeatures) {
+  _getExtent (multiFeatures, params) {
     let extent = multiFeatures.getExtent()
     let bExtent = true
     extent.every(item => {
@@ -66,6 +67,9 @@ class Feature extends mixin(Style, Layer) {
       }
     })
     if (bExtent) {
+      if (params['view'] && params['view']['adjustExtent']) {
+        extent = this.adjustExtent(extent, params['view'])
+      }
       this.zoomToExtent(extent, true)
     }
     return extent
@@ -140,7 +144,7 @@ class Feature extends mixin(Style, Layer) {
       }
       if (params['zoomToExtent']) {
         let extent = geometry.getExtent()
-        let _extent = this.adjustExtent(extent)
+        let _extent = this.adjustExtent(extent, params['view'])
         this.zoomToExtent(_extent, true)
       }
       if (params['layerName']) {
@@ -190,7 +194,7 @@ class Feature extends mixin(Style, Layer) {
           }
         })
         if (change) {
-          this._getExtent(multiPoint)
+          this._getExtent(multiPoint, params)
         }
         return multiPoint
       }
@@ -243,6 +247,9 @@ class Feature extends mixin(Style, Layer) {
         linefeature.setProperties(line.attributes)
       }
       if (params['zoomToExtent']) {
+        if (params['view'] && params['view']['adjustExtent']) {
+          extent = this.adjustExtent(extent, params['view'])
+        }
         this.zoomToExtent(extent, true)
       }
       if (params['layerName']) {
@@ -290,7 +297,7 @@ class Feature extends mixin(Style, Layer) {
           }
         })
         if (change) {
-          this._getExtent(MultiLine)
+          this._getExtent(MultiLine, params)
         }
         return MultiLine
       }
@@ -326,6 +333,9 @@ class Feature extends mixin(Style, Layer) {
           polygonFeature.setProperties(polygon.attributes)
         }
         if (params['zoomToExtent']) {
+          if (params['view'] && params['view']['adjustExtent']) {
+            extent = this.adjustExtent(extent, params['view'])
+          }
           this.zoomToExtent(extent, true)
         }
         if (params['layerName']) {
@@ -376,7 +386,7 @@ class Feature extends mixin(Style, Layer) {
           }
         })
         if (change) {
-          this._getExtent(MultiPolygon)
+          this._getExtent(MultiPolygon, params)
         }
         return MultiPolygon
       }
@@ -430,7 +440,7 @@ class Feature extends mixin(Style, Layer) {
           this.pointLayers.add(params['layerName'])
         }
         if (change) {
-          this._getExtent(multiPoint)
+          this._getExtent(multiPoint, params)
         }
       }
       this.orderLayerZindex()
@@ -438,10 +448,6 @@ class Feature extends mixin(Style, Layer) {
     } catch (e) {
       console.log(e)
     }
-  }
-
-  addClusterFeatures () {
-
   }
 
   /**
@@ -469,7 +475,7 @@ class Feature extends mixin(Style, Layer) {
           })
         }
       }
-      let extent = this._getExtent(MultiLine)
+      let extent = this._getExtent(MultiLine, params)
       let center = ol.extent.getCenter(extent)
       return ({
         extent: extent,
@@ -505,7 +511,7 @@ class Feature extends mixin(Style, Layer) {
           })
         }
       }
-      let extent = this._getExtent(MultiPolygon)
+      let extent = this._getExtent(MultiPolygon, params)
       let center = ol.extent.getCenter(extent)
       return ({
         extent: extent,
@@ -668,7 +674,7 @@ class Feature extends mixin(Style, Layer) {
    */
   getCenterExtentFromGeom (geomData, options) {
     let geom = this.getGeomFromGeomData(geomData, options)
-    let extent = this._getExtent(geom)
+    let extent = this._getExtent(geom, options)
     let center = ol.extent.getCenter(extent)
     let bExtent = true
     extent.every(item => {
@@ -680,6 +686,9 @@ class Feature extends mixin(Style, Layer) {
       }
     })
     if (bExtent && options['zoomToExtent']) {
+      if (options['view'] && options['view']['adjustExtent']) {
+        extent = this.adjustExtent(extent, options['view'])
+      }
       this.zoomToExtent(extent, true)
     }
     return ({
@@ -696,7 +705,7 @@ class Feature extends mixin(Style, Layer) {
    * @private
    */
   _getExtentCenter (multiGeom, options) {
-    let extent = this._getExtent(multiGeom)
+    let extent = this._getExtent(multiGeom, options)
     let center = ol.extent.getCenter(extent)
     let bExtent = true
     extent.every(item => {
@@ -708,6 +717,9 @@ class Feature extends mixin(Style, Layer) {
       }
     })
     if (bExtent && options['zoomToExtent']) {
+      if (options['view'] && options['view']['adjustExtent']) {
+        extent = this.adjustExtent(extent, options['view'])
+      }
       this.zoomToExtent(extent, true)
     }
     return ({
