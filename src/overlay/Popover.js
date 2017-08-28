@@ -128,10 +128,16 @@ ol.inherits(Popover, ol.Overlay)
  * 显示当前气泡
  * @param coord
  * @param html
+ * @param options
  * @returns {Popover}
  */
-Popover.prototype.show = function (coord, html) {
-  this.coords = coord
+Popover.prototype.show = function (coord, html, options) {
+  if (options['dataProjection'] && options['featureProjection']) {
+    let geom = new ol.geom.Point(coord)
+    this.coords = geom.transform(options['dataProjection'], options['featureProjection']).getCoordinates()
+  } else {
+    this.coords = coord
+  }
   if (html instanceof HTMLElement) {
     this.content.innerHTML = ''
     this.content.appendChild(html)
@@ -141,7 +147,7 @@ Popover.prototype.show = function (coord, html) {
   this.container.style.display = 'block'
   this.content.scrollTop = 0
   if (this.options['showMarkFeature']) {
-    this.showMarkFeature(coord)
+    this.showMarkFeature(this.coords)
   }
   if (this.markFeature) {
     let size = this.markFeature.getStyle().getImage().getSize()
@@ -153,7 +159,7 @@ Popover.prototype.show = function (coord, html) {
     this.setProperties(this.options['properties'])
   }
   this.setOffset(this.options['offset'])
-  this.setPosition(coord)
+  this.setPosition(this.coords)
   this.updateSize()
   return this
 }

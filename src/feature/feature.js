@@ -203,12 +203,13 @@ class Feature extends mixin(Style, Layer) {
    * 设置点的空间信息
    * @param point
    * @param geometry
+   * @param params
    */
-  setPointGeometry (point, geometry) {
+  setPointGeometry (point, geometry, params) {
     if (point && geometry && point instanceof ol.Feature) {
       let _geometry = this.getGeomFromGeomData({
         geometry: geometry
-      }, {})
+      }, params)
       point.setGeometry(_geometry)
     } else {
       console.info('传入数据有误！')
@@ -446,13 +447,14 @@ class Feature extends mixin(Style, Layer) {
   /**
    * 获取线当前范围和中心点
    * @param line
+   * @param params
    * @returns {{extent: *, center: ol.Coordinate}}
    */
-  getCenterExtentFromLine (line) {
+  getCenterExtentFromLine (line, params) {
     try {
       let geom = null
       if (!(line instanceof ol.geom.Geometry)) {
-        geom = this.getGeomFromGeomData(line, {})
+        geom = this.getGeomFromGeomData(line, params)
       }
       let [MultiLine] = [(new ol.geom.MultiLineString([]))]
       if (geom && geom instanceof ol.geom.LineString) {
@@ -481,13 +483,14 @@ class Feature extends mixin(Style, Layer) {
   /**
    * 获取当前面范围和中心点
    * @param polygon
+   * @param params
    * @returns {{extent: *, center: ol.Coordinate}}
    */
-  getCenterExtentFromPolygon (polygon) {
+  getCenterExtentFromPolygon (polygon, params) {
     try {
       let geom = null
       if (!(polygon instanceof ol.geom.Geometry)) {
-        geom = this.getGeomFromGeomData(polygon, {})
+        geom = this.getGeomFromGeomData(polygon, params)
       }
       let [MultiPolygon] = [(new ol.geom.MultiPolygon([]))]
       if (geom && geom instanceof ol.geom.Polygon) {
@@ -516,17 +519,18 @@ class Feature extends mixin(Style, Layer) {
   /**
    * 读取空间数据
    * @param data
+   * @param params
    * @returns {*}
    * @private
    */
-  _getMultiGeomtery (data) {
+  _getMultiGeomtery (data, params) {
     try {
       let geom = null
       let multiPolygon = new ol.geom.MultiPolygon([])
       let multiLine = new ol.geom.MultiLineString([])
       let multiPoint = new ol.geom.MultiPoint([])
       if (!(data instanceof ol.geom.Geometry)) {
-        geom = this.getGeomFromGeomData(data, {})
+        geom = this.getGeomFromGeomData(data, params)
       } else {
         geom = data
       }
@@ -594,16 +598,37 @@ class Feature extends mixin(Style, Layer) {
       let featureGeom = null
       if (geomData instanceof ol.geom.Geometry) {
         featureGeom = geomData
+        if (options['dataProjection'] && options['featureProjection']) {
+          featureGeom = featureGeom.transform(options['dataProjection'], options['featureProjection'])
+        }
       } else if (geomData.hasOwnProperty('geometry') && geomData['geometry'] instanceof ol.geom.Geometry) {
         featureGeom = geomData['geometry']
+        if (options['dataProjection'] && options['featureProjection']) {
+          featureGeom = featureGeom.transform(options['dataProjection'], options['featureProjection'])
+        }
       } else if (geomData['geomType'] === 'GeoJSON' || options['geomType'] === 'GeoJSON') {
-        featureGeom = (new ol.format.GeoJSON()).readGeometry(geomData['geometry'])
+        let GeoJSONFormat = new ol.format.GeoJSON()
+        featureGeom = GeoJSONFormat.readGeometry(geomData['geometry'], {
+          dataProjection: options['dataProjection'] ? options['dataProjection'] : undefined,
+          featureProjection: options['featureProjection'] ? options['featureProjection'] : undefined
+        })
       } else if (geomData['geomType'] === 'EsriJSON' || options['geomType'] === 'EsriJSON') {
-        featureGeom = (new ol.format.EsriJSON()).readGeometry(geomData['geometry'])
+        let esriJsonFormat = new ol.format.EsriJSON()
+        featureGeom = esriJsonFormat.readGeometry(geomData['geometry'], {
+          dataProjection: options['dataProjection'] ? options['dataProjection'] : undefined,
+          featureProjection: options['featureProjection'] ? options['featureProjection'] : undefined
+        })
       } else if (geomData['geomType'] === 'Polyline' || options['geomType'] === 'Polyline') {
-        featureGeom = (new ol.format.Polyline()).readGeometry(geomData['geometry'])
+        let polylineFormat = new ol.format.Polyline()
+        featureGeom = polylineFormat.readGeometry(geomData['geometry'], {
+          dataProjection: options['dataProjection'] ? options['dataProjection'] : undefined,
+          featureProjection: options['featureProjection'] ? options['featureProjection'] : undefined
+        })
       } else if (Array.isArray(geomData['geometry'])) {
         featureGeom = new ol.geom.Point(geomData['geometry'])
+        if (options['dataProjection'] && options['featureProjection']) {
+          featureGeom = featureGeom.transform(options['dataProjection'], options['featureProjection'])
+        }
       } else if (geomData['geomType'] === 'MVT' || options['geomType'] === 'MVT') {
         featureGeom = (new ol.format.MVT()).readGeometry(geomData)
       } else if (geomData['geomType'] === 'TopoJSON' || options['geomType'] === 'TopoJSON') {
@@ -623,7 +648,11 @@ class Feature extends mixin(Style, Layer) {
       } else if (geomData['geomType'] === 'WMSGetFeatureInfo' || options['geomType'] === 'WMSGetFeatureInfo') {
         featureGeom = (new ol.format.WMSGetFeatureInfo()).readGeometry(geomData)
       } else {
-        featureGeom = (new ol.format.WKT()).readGeometry(geomData['geometry'])
+        let wktFormat = new ol.format.WKT()
+        featureGeom = wktFormat.readGeometry(geomData['geometry'], {
+          dataProjection: options['dataProjection'] ? options['dataProjection'] : undefined,
+          featureProjection: options['featureProjection'] ? options['featureProjection'] : undefined
+        })
       }
       return featureGeom
     } catch (e) {
@@ -901,7 +930,7 @@ class Feature extends mixin(Style, Layer) {
       }
       return feat
     } else if (id && id.trim() !== "''") {
-      let feature = this.getFeatureById(id, layerName)
+      let feature = this.getFeatureById(id)
       if (feature && feature instanceof ol.Feature) {
         let selectStyle = feature.get('selectStyle')
         if (selectStyle && selectStyle instanceof ol.style.Style) {

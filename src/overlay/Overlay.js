@@ -18,7 +18,7 @@ class Overlay extends mixin(Feature) {
   addOverlayPoint (point, params, index) {
     try {
       if (point && point['geometry']) {
-        let geom_ = this.getGeomFromGeomData(point)
+        let geom_ = this.getGeomFromGeomData(point, params)
         if (geom_ && geom_.getCoordinates) {
           let coordinate = geom_.getCoordinates()
           if (point['attributes'] && (point['attributes']['id'] || point['attributes']['ID'])) {
@@ -167,7 +167,7 @@ class Overlay extends mixin(Feature) {
         let change = false
         points.forEach((item, index) => {
           if (item && item['geometry']) {
-            let _geom = this.getGeomFromGeomData(item)
+            let _geom = this.getGeomFromGeomData(item, params)
             if (_geom) {
               this.addOverlayPoint(item, params, index)
               multiPoint.appendPoint(_geom)

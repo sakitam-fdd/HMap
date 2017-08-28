@@ -40,5 +40,25 @@ HMap.LayerSpyglass = LayerSpyglass
 HMap.MisplacesGlass = MisplacesGlass
 HMap.GeomCoder = GeomCoder
 HMap.Controls = Controls
-
+// function hereDoc (f) {
+//   /* eslint no-useless-escape: 0 */
+//   return f.toString().replace(/^[^\/]+\/\*!?\s?/, '').replace(/\*\/[^\/]+$/, '')
+// }
+// let string = hereDoc(function () { /*
+//
+//  | |             | |
+//  | |             | |
+//  | |             | |
+//  | |             | |
+//  | |             | |
+//  | | ——————————— | |
+//  | | ——————————— | |
+//  | |             | |
+//  | |             | |
+//  | |             | |
+//  | |             | |
+//
+//  */
+// })
+// console.log(string)
 export default HMap
