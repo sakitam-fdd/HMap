@@ -132,6 +132,7 @@ ol.inherits(Popover, ol.Overlay)
  * @returns {Popover}
  */
 Popover.prototype.show = function (coord, html, options) {
+  options = options || {}
   if (options['dataProjection'] && options['featureProjection']) {
     let geom = new ol.geom.Point(coord)
     this.coords = geom.transform(options['dataProjection'], options['featureProjection']).getCoordinates()
