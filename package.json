@@ -1,6 +1,6 @@
 {
   "name": "hmap-js",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "private": false,
   "description": "a openlayers extent map library",
   "main": "dist/hmap-js.js",
@@ -23,9 +23,10 @@
     "url": "https://github.com/sakitam-fdd/HMap.git"
   },
   "dependencies": {
-    "nature-dom-util": "^1.0.0",
     "core-js": "^2.5.0",
+    "nature-dom-util": "^1.1.0",
     "observable-emit": "^1.0.1",
+    "ol-extent": "^1.0.0",
     "openlayers": "^4.3.1",
     "proj4": "^2.4.3"
   },

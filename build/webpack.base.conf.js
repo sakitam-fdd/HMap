@@ -4,7 +4,6 @@ const utils = require('./utils')
 const config = require('../config')
 const autoprefixer = require('autoprefixer')
 const webpack = require('webpack')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 const resolve = (dir) => {
   return path.join(__dirname, '..', dir)
 }
@@ -71,14 +70,6 @@ module.exports = {
           ]
         }
       }
-    }),
-    // copy custom static assets
-    new CopyWebpackPlugin([
-      {
-        from: path.resolve(__dirname, '../asset'),
-        to: config.base.assetsSubDirectory,
-        ignore: ['.*']
-      }
-    ])
+    })
   ]
 }
