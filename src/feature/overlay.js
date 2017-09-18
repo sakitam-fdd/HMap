@@ -2,15 +2,11 @@
  * Created by FDD on 2017/9/18.
  * @desc 用于dom标绘（包含自定义dom或者iconfont）
  */
-import { ol } from '../constants'
 import mixin from '../utils/mixins'
-import { DomUtil } from '../dom'
+import * as htmlUtils from 'nature-dom-util/src/utils/domUtils'
 import { trim } from '../utils/utils'
 import Feature from '../feature/feature'
 class Overlay extends mixin(Feature) {
-  constructor () {
-    super()
-  }
 
   /**
    * 添加字体图标要素
@@ -128,8 +124,8 @@ class Overlay extends mixin(Feature) {
     if (style['element']) {
       ele = document.createElement('div')
       let eleClass = (style['element']['className'] ? style['element']['className'] : 'maker-point')
-      DomUtil.addClass(ele, 'iconfont')
-      DomUtil.addClass(ele, eleClass)
+      htmlUtils.addClass(ele, 'iconfont')
+      htmlUtils.addClass(ele, eleClass)
       ele.style.top = style['element']['top'] ? style['element']['top'] : '-100%'
       ele.style.left = style['element']['left'] ? style['element']['left'] : '100%'
       ele.style.fontSize = style['element']['fontSize'] ? style['element']['fontSize'] : '16px'
@@ -316,7 +312,7 @@ class Overlay extends mixin(Feature) {
         let overlayElement = overlay.getElement()
         let iconElement = overlayElement.getElementsByTagName('div')[0]
         iconElement.style.color = iconElement.selectColor
-        DomUtil.addClass(overlayElement, 'overlay-point-marker-raise')
+        htmlUtils.addClass(overlayElement, 'overlay-point-marker-raise')
         return overlay
       } else if (id && trim(id) !== "''") {
         let _overlay = this.map.getOverlayById(id)
@@ -324,7 +320,7 @@ class Overlay extends mixin(Feature) {
           let _overlayElement = _overlay.getElement()
           let _iconElement = _overlayElement.getElementsByTagName('div')[0]
           _iconElement.style.color = _iconElement.selectColor
-          DomUtil.addClass(_overlayElement, 'overlay-point-marker-raise')
+          htmlUtils.addClass(_overlayElement, 'overlay-point-marker-raise')
           return _overlay
         }
       }
@@ -345,7 +341,7 @@ class Overlay extends mixin(Feature) {
       let overlayElement = overlay.getElement()
       let iconElement = overlayElement.getElementsByTagName('div')[0]
       iconElement.style.color = iconElement.normalColor
-      DomUtil.removeClass(overlayElement, 'overlay-point-marker-raise')
+      htmlUtils.removeClass(overlayElement, 'overlay-point-marker-raise')
       return overlay
     } else if (id && trim(id) !== "''") {
       let _overlay = this.map.getOverlayById(id)
@@ -353,7 +349,7 @@ class Overlay extends mixin(Feature) {
         let _overlayElement = _overlay.getElement()
         let _iconElement = _overlayElement.getElementsByTagName('div')[0]
         _iconElement.style.color = _iconElement.normalColor
-        DomUtil.removeClass(_overlayElement, 'overlay-point-marker-raise')
+        htmlUtils.removeClass(_overlayElement, 'overlay-point-marker-raise')
         return _overlay
       }
     }

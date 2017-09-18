@@ -11,7 +11,6 @@ import './scss/index'
 // outer
 import mixin from './utils/mixins'
 import Observable from 'observable-emit'
-import ol from 'openlayers'
 // inter
 import * as supported from './utils/supported'
 import * as config from './utils/config'
@@ -20,11 +19,14 @@ import _View from './map/View'
 import _BaseLayers from './map/BaseLayers'
 import _Controls from './map/Controls'
 import _Interactions from './map/Interactions'
+import Feature from './feature/feature'
+import Overlay from './feature/overlay'
 import { EVENT_TYPE, INTERNAL_KEY } from './constants'
 class HMap extends mixin(
   Observable, _View,
   _BaseLayers, _Controls,
-  _Interactions, Layer
+  _Interactions, Layer,
+  Feature, Overlay
 ) {
   static supported = supported
   static layer = Layer
@@ -122,6 +124,7 @@ class HMap extends mixin(
       this.initMap(mapDiv, params)
     }
     Observable.call(this)
+    this.showMassages_()
   }
 
   /**
@@ -146,19 +149,21 @@ class HMap extends mixin(
        * 当前视图
        * @type ol.View
        */
-      this.view_ = this._addView(this.options['view'])
-      let logo = this._addCopyRight(this.options['logo'])
-      let layers = this.addBaseLayers(this.options['baseLayers'], this.options['view'])
-      let interactions = this._addInteractions(this.options['interactions'])
-      let controls = this._addControls(this.options['controls'])
+      this.view_ = this._addView(this.options_['view'])
+      let logo = this._addCopyRight(this.options_['logo'])
+      let layers = this.addBaseLayers(this.options_['baseLayers'], this.options_['view'])
+      let interactions = this._addInteractions(this.options_['interactions'])
+      let controls = this._addControls(this.options_['controls'])
       /**
        * 当前地图对象
        * @type {ol.Map}
        */
       this.map = new ol.Map({
         target: this.target_,
-        loadTilesWhileAnimating: false,
-        loadTilesWhileInteracting: false,
+        loadTilesWhileAnimating: (typeof this.options_['loadTilesWhileAnimating'] ===
+          'boolean' ? this.options_['loadTilesWhileAnimating'] : false),
+        loadTilesWhileInteracting: (typeof this.options_['loadTilesWhileInteracting'] ===
+          'boolean' ? this.options_['loadTilesWhileInteracting'] : false),
         logo: logo,
         layers: layers,
         view: this.view_,

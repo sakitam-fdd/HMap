@@ -2,7 +2,6 @@
  * Created by FDD on 2017/9/18.
  * @desc 控件相关
  */
-import {ol} from '../constants'
 import * as utils from '../utils/utils'
 class _Controls {
 

@@ -2,11 +2,9 @@
  * Created by FDD on 2017/9/18.
  * @desc 图层相关处理
  */
-import { ol } from '../constants'
 import mixin from '../utils/mixins'
-import * as MapboxStyle from '../style/MapboxStyle'
-import Style from '../style/Style'
-class Layer extends mixin(Style) {
+import olStyleFactory from 'ol-extent/src/style/factory'
+class Layer extends mixin(olStyleFactory) {
   constructor () {
     super()
     this.desc = ''
@@ -881,8 +879,8 @@ class Layer extends mixin(Style) {
             tilePixelRatio: ((params['tilePixelRatio'] && typeof params['tilePixelRatio'] === 'number') ? params['tilePixelRatio'] : 1),
             url: params['layerUrl'],
             wrapX: false
-          }),
-          style: MapboxStyle.createMapboxStreetsV6Style()
+          })
+          // style: MapboxStyle.createMapboxStreetsV6Style()
         })
       }
       if (this.map && layer && !(params['addLayer'] === false)) {

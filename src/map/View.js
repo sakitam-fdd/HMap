@@ -3,6 +3,18 @@
  * @desc 视图相关处理
  */
 class _View {
+  constructor (map) {
+    if (map && map instanceof ol.Map) {
+      this.map = map
+    }
+  }
+
+  /**
+   * 添加视图
+   * @param params
+   * @returns {ol.View}
+   * @private
+   */
   _addView (params) {
     let option = params || {}
     return new ol.View({
@@ -115,6 +127,24 @@ class _View {
           }
         }
       })
+    }
+  }
+
+  /**
+   * 获取当前地图
+   * @returns {ol.Map}
+   */
+  getMap () {
+    return this.map
+  }
+
+  /**
+   * 设置地图实例
+   * @param map
+   */
+  setMap (map) {
+    if (map && map instanceof ol.Map) {
+      this.map = map
     }
   }
 }
