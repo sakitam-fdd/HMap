@@ -2,6 +2,7 @@
  * Created by FDD on 2017/9/18.
  * @desc 矢量要素标绘
  */
+import ol from 'openlayers'
 import mixin from '../utils/mixins'
 import olStyleFactory from 'ol-extent/src/style/factory'
 import Layer from '../layer/Layer'

@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "core-js": "^2.5.0",
+    "expose-loader": "^0.7.3",
     "nature-dom-util": "^1.1.0",
     "observable-emit": "^1.0.1",
     "ol-extent": "^1.0.0",

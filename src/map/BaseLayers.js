@@ -2,6 +2,7 @@
  * Created by FDD on 2017/9/18.
  * @desc 底图相关处理
  */
+import ol from 'openlayers'
 class BaseLayers {
 
   /**

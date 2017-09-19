@@ -2,6 +2,7 @@
  * Created by FDD on 2017/9/18.
  * @desc 用于dom标绘（包含自定义dom或者iconfont）
  */
+import ol from 'openlayers'
 import mixin from '../utils/mixins'
 import * as htmlUtils from 'nature-dom-util/src/utils/domUtils'
 import { trim } from '../utils/utils'

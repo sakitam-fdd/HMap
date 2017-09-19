@@ -2,6 +2,7 @@
  * Created by FDD on 2017/9/18.
  * @desc 鼠标交互事件处理
  */
+import ol from 'openlayers'
 import { EVENT_TYPE, INTERNAL_KEY } from '../constants'
 class PointerEvents extends (ol.interaction.Pointer) {
   constructor () {

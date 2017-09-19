@@ -9,6 +9,7 @@ const author = require('../package.json').author
 // scss
 import './scss/index'
 // outer
+import ol from 'openlayers'
 import mixin from './utils/mixins'
 import Observable from 'observable-emit'
 // inter

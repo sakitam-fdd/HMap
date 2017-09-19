@@ -2,6 +2,7 @@
  * Created by FDD on 2017/9/18.
  * @desc 图层相关处理
  */
+import ol from 'openlayers'
 import mixin from '../utils/mixins'
 import olStyleFactory from 'ol-extent/src/style/factory'
 class Layer extends mixin(olStyleFactory) {

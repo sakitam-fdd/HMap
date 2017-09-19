@@ -2,7 +2,10 @@
  * Created by FDD on 2017/9/18.
  * @desc 控件相关
  */
+import ol from 'openlayers'
 import * as utils from '../utils/utils'
+import 'ol-extent/src/control/BZoomSlider'
+import 'ol-extent/src/control/Loading'
 class _Controls {
 
   /**
@@ -47,7 +50,7 @@ class _Controls {
       controls = this.map.getControls()
     }
     controls.push(new ol.control.Zoom({
-      className: (options['className'] ? options['className'] : 'ol-zoom'),
+      className: (options['className'] ? options['className'] : 'hmap-control-zoom'),
       duration: (options['duration'] && typeof options['duration'] === 'number' ? options['duration'] : 250),
       zoomInLabel: (options['zoomInLabel'] ? options['zoomInLabel'] : undefined),
       zoomOutLabel: (options['zoomOutLabel'] ? options['zoomOutLabel'] : undefined),
@@ -128,7 +131,7 @@ class _Controls {
       controls = this.map.getControls()
     }
     controls.push(new ol.control.FullScreen({
-      className: (options['className'] ? options['className'] : 'ol-full-screen'),
+      className: (options['className'] ? options['className'] : 'hmap-control-full-screen'),
       label: (options['label'] ? options['label'] : '\u2922'),
       tipLabel: (options['tipLabel'] && typeof options['tipLabel'] === 'string' ? options['tipLabel'] : '切换全屏'),
       labelActive: (options['labelActive'] ? options['labelActive'] : '\u00d7'),
@@ -165,12 +168,13 @@ class _Controls {
     if (!controls) {
       controls = this.map.getControls()
     }
-    controls.push(new ol.control.ZoomSlider({
-      className: (options['className'] ? options['className'] : 'ol-zoomslider'),
-      duration: (options['duration'] && typeof options['duration'] === 'number' ? options['duration'] : 200),
-      maxResolution: (options['maxResolution'] && typeof options['maxResolution'] === 'number' ? options['maxResolution'] : undefined),
-      minResolution: (options['minResolution'] && typeof options['minResolution'] === 'number' ? options['minResolution'] : undefined)
-    }))
+    let zoomSlider = new ol.control.BZoomSlider({
+      duration: options['duration'],
+      pixelDelta: options['pixelDelta'],
+      className: options['className'],
+      target: options['target']
+    })
+    controls.push(zoomSlider)
   }
 
   /**
@@ -216,11 +220,12 @@ class _Controls {
     if (!controls) {
       controls = this.map.getControls()
     }
-    controls.push(new ol.control.Loading({
+    let loading_ = new ol.control.Loading({
       className: (options['className'] ? options['className'] : 'hmap-loading-panel'),
       widget: (options['widget'] ? options['widget'] : 'animatedGif'),
       target: (options['target'] ? options['target'] : undefined)
-    }))
+    })
+    controls.push(loading_)
   }
 
   /**

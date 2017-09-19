@@ -13,14 +13,21 @@ module.exports = {
     path: config.base.distDirectory,
     filename: config.base.fileName + (process.env.NODE_ENV === 'production' ? '.min.js' : '.js'),
     library: config.base.libraryName,
+    chunkFilename: '../dist/[name].js',
     libraryTarget: 'umd',
     umdNamedDefine: true
   },
-  externals: {
-    ol: 'openlayers'
-  },
   module: {
     rules: [
+      {
+        test: require.resolve('openlayers'),
+        use: [
+          {
+            loader: 'expose-loader',
+            options: 'ol'
+          }
+        ]
+      },
       {
         test: /(\.jsx|\.js)$/,
         loader: 'eslint-loader',
@@ -33,7 +40,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test')]
+        include: [resolve('src'), resolve('test'), resolve('node_modules/ol-extent/src')]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,

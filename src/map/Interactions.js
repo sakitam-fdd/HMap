@@ -2,6 +2,7 @@
  * Created by FDD on 2017/9/18.
  * @desc 交互工具相关
  */
+import ol from 'openlayers'
 import PointerEvents from '../interaction/PointerEvents'
 class _Interactions {
   _addInteractions (params) {

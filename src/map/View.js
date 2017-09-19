@@ -2,6 +2,7 @@
  * Created by FDD on 2017/9/18.
  * @desc 视图相关处理
  */
+import ol from 'openlayers'
 class _View {
   constructor (map) {
     if (map && map instanceof ol.Map) {

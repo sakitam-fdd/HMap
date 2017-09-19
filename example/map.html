@@ -16,11 +16,13 @@
 </head>
 <body>
 <div id="map"></div>
-<script src="../node_modules/openlayers/dist/ol-debug.js"></script>
 <script src="../dist/hmap-js.js"></script>
 <script type="text/javascript">
   var Map = new HMap('map', {
     controls: {
+      loading: true,
+      zoomSlider: true,
+      fullScreen: true
     },
     view: {
       center: [12118909.300259633, 4086043.1061670054],
