@@ -1,10 +1,14 @@
 # HMap  |  基于openlayers的封装组件
 
+[![Build Status](https://travis-ci.org/sakitam-fdd/HMap.svg?branch=master)](https://www.travis-ci.org/sakitam-fdd/HMap)
+[![NPM downloads](http://img.shields.io/npm/dm/hmap-js.svg)](https://npmjs.org/package/hmap-js)
+![JS gzip size](http://img.badgesize.io/https://unpkg.com/hmap-js/lib/index.js?compression=gzip&label=gzip%20size:%20JS)
+[![Npm package](https://img.shields.io/npm/v/hmap-js.svg)](https://www.npmjs.org/package/hmap-js)
+![Language](https://img.shields.io/badge/language-javascript-yellow.svg)
+![License](https://img.shields.io/badge/license-MIT-000000.svg)
+
 - 采用mapbox配置式创建和管理地图
 - 开发者无需关心地图的具体操作
-
-[![Build Status](https://www.travis-ci.org/sakitam-fdd/HMap.svg?branch=master)](https://www.travis-ci.org/sakitam-fdd/HMap)
-[![NPM](https://nodei.co/npm/hmap-js.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/hmap-js/)
 
 ## 编译
 
@@ -44,5 +48,29 @@ https://unpkg.com/hmap-js@1.5.0/dist/hmap.min.css
 
 #### 示例
 
-<iframe width="100%" height="430" src="//jsfiddle.net/sakitamfdd/pjz8cuxw/1/embedded/result,html,js/?bodyColor=fff" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
-
+```javascript
+var Map = new HMap('map', {
+    controls: {
+      loading: true,
+      zoomSlider: true,
+      fullScreen: true
+    },
+    interactions: {
+      shiftDragZoom: false
+    },
+    view: {
+      center: [12118909.300259633, 4086043.1061670054],
+      projection: 'EPSG:3857',
+      zoom: 5, // resolution
+    },
+    baseLayers: [
+      {
+        layerName: 'openstreetmap',
+        isDefault: true,
+        layerType: 'OSM',
+        opaque: true, //图层是否不透明
+        layerUrl: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+      }
+    ]
+  });
+```
