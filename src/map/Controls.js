@@ -6,6 +6,12 @@ import ol from 'openlayers'
 import * as utils from '../utils/utils'
 import 'ol-extent/src/control/BZoomSlider'
 import 'ol-extent/src/control/Loading'
+import 'ol-extent/src/control/RotateControl'
+import 'ol-extent/src/control/zoom'
+import 'ol-extent/src/control/FullScreen'
+import 'ol-extent/src/control/LayerSwitcher'
+import 'ol-extent/src/control/contextMenu'
+import 'ol-extent/src/control/compareLayer'
 class _Controls {
 
   /**
@@ -45,19 +51,15 @@ class _Controls {
    * @param controls
    * @private
    */
-  addZoom (options, controls) {
+  addZoom (options = {}, controls) {
     if (!controls) {
       controls = this.map.getControls()
     }
-    controls.push(new ol.control.Zoom({
-      className: (options['className'] ? options['className'] : 'hmap-control-zoom'),
-      duration: (options['duration'] && typeof options['duration'] === 'number' ? options['duration'] : 250),
-      zoomInLabel: (options['zoomInLabel'] ? options['zoomInLabel'] : undefined),
-      zoomOutLabel: (options['zoomOutLabel'] ? options['zoomOutLabel'] : undefined),
-      zoomInTipLabel: (options['zoomInTipLabel'] && typeof options['zoomInTipLabel'] === 'string' ? options['zoomInTipLabel'] : '放大'),
-      zoomOutTipLabel: (options['zoomOutTipLabel'] && typeof options['zoomOutTipLabel'] === 'string' ? options['zoomOutTipLabel'] : '缩小'),
-      target: (options['target'] ? options['target'] : undefined),
-      delta: (options['delta'] ? options['delta'] : undefined)
+    controls.push(new ol.control.ZoomMenu({
+      className: options['className'],
+      duration: options['duration'],
+      target: options['target'],
+      delta: options['delta']
     }))
   }
 
@@ -67,17 +69,16 @@ class _Controls {
    * @param controls
    * @private
    */
-  addRotate (options, controls) {
+  addRotate (options = {}, controls) {
     if (!controls) {
       controls = this.map.getControls()
     }
-    controls.push(new ol.control.Rotate({
-      className: (options['className'] ? options['className'] : 'ol-rotate'),
-      duration: (options['duration'] && typeof options['duration'] === 'number' ? options['duration'] : 250),
-      label: (options['label'] ? options['label'] : '⇧'),
-      tipLabel: (options['tipLabel'] && typeof options['tipLabel'] === 'string' ? options['tipLabel'] : '重置旋转方向'),
-      autoHide: (options['autoHide'] === false ? options['autoHide'] : true),
-      target: (options['target'] ? options['target'] : undefined)
+    controls.push(new ol.control.RotateControl({
+      className: options['className'],
+      duration: options['duration'],
+      label: options['resetNorth'],
+      autoHide: options['autoHide'],
+      target: options['target']
     }))
   }
 
@@ -126,18 +127,17 @@ class _Controls {
    * @param options
    * @param controls
    */
-  addFullScreen (options, controls) {
+  addFullScreen (options = {}, controls) {
     if (!controls) {
       controls = this.map.getControls()
     }
-    controls.push(new ol.control.FullScreen({
-      className: (options['className'] ? options['className'] : 'hmap-control-full-screen'),
-      label: (options['label'] ? options['label'] : '\u2922'),
-      tipLabel: (options['tipLabel'] && typeof options['tipLabel'] === 'string' ? options['tipLabel'] : '切换全屏'),
-      labelActive: (options['labelActive'] ? options['labelActive'] : '\u00d7'),
-      keys: (options['keys'] && typeof options['keys'] === 'boolean' ? options['keys'] : undefined),
-      target: (options['target'] ? options['target'] : undefined),
-      source: (options['source'] ? options['source'] : undefined)
+    controls.push(new ol.control.FullScreenMenu({
+      className: options['className'],
+      label: options['label'],
+      labelActive: options['labelActive'],
+      keys: options['keys'],
+      target: options['target'],
+      source: options['source']
     }))
   }
 
@@ -229,56 +229,47 @@ class _Controls {
   }
 
   /**
-   * 放大
+   * 添加CompareLayer控件
+   * @param beforeMap
+   * @param afterMap
+   * @param options
+   * @param controls
+   * @private
    */
-  zoomIn (duration) {
-    let zoom = this.map.getView().getZoom()
-    this.map.getView().animate({
-      zoom: (zoom + 1),
-      duration: ((duration && typeof duration === 'number') ? duration : 300)
-    })
-  }
-
-  /**
-   * 缩小
-   */
-  zoomOut (duration) {
-    let zoom = this.map.getView().getZoom()
-    this.map.getView().animate({
-      zoom: (zoom - 1),
-      duration: ((duration && typeof duration === 'number') ? duration : 300)
-    })
-  }
-
-  /**
-   * zoomByDelta
-   * @param delta
-   * @param duration
-   * @returns {boolean}
-   */
-  zoomByDelta (delta, duration) {
-    let view = this.map.getView()
-    if (!view || !(view instanceof ol.View)) {
-      return false
-    } else {
-      let currentResolution = view.getResolution()
-      if (currentResolution) {
-        let newResolution = view.constrainResolution(currentResolution, delta)
-        if (duration > 0) {
-          if (view.getAnimating()) {
-            view.cancelAnimations()
-          }
-          view.animate({
-            resolution: newResolution,
-            duration: duration,
-            easing: ol.easing.easeOut
-          })
-        } else {
-          view.setResolution(newResolution)
-        }
-      }
+  addCompareLayer (beforeMap, afterMap, options = {}, controls) {
+    if (!controls) {
+      controls = this.map.getControls()
     }
+    let loading_ = new ol.control.CompareLayer(beforeMap, afterMap, options)
+    controls.push(loading_)
+  }
+
+  /**
+   * 添加ContextMenu控件
+   * @param options
+   * @param controls
+   * @private
+   */
+  addContextMenu (options = {}, controls) {
+    if (!controls) {
+      controls = this.map.getControls()
+    }
+    let loading_ = new ol.control.ContextMenu(options)
+    controls.push(loading_)
+  }
+
+  /**
+   * 添加LayerSwitcher控件
+   * @param options
+   * @param controls
+   * @private
+   */
+  addLayerSwitcher (options = {}, controls) {
+    if (!controls) {
+      controls = this.map.getControls()
+    }
+    let loading_ = new ol.control.LayerSwitcher(options)
+    controls.push(loading_)
   }
 }
-
 export default _Controls

@@ -14,7 +14,7 @@ import mixin from './utils/mixins'
 import Observable from 'observable-emit'
 // inter
 import * as supported from './utils/supported'
-import * as config from './utils/config'
+import {config} from './utils/config'
 import Layer from './layer/Layer'
 import _View from './map/View'
 import _BaseLayers from './map/BaseLayers'

@@ -3,23 +3,134 @@
  * @desc 交互工具相关
  */
 import ol from 'openlayers'
+import { config } from '../utils/config'
+import * as utils from '../utils/utils'
 import PointerEvents from '../interaction/PointerEvents'
 class _Interactions {
   _addInteractions (params) {
-    let options = params || {}
-    /* eslint new-cap: ["error", { "newIsCap": false }] */
-    return new ol.interaction.defaults({
-      altShiftDragRotate: ((options['altShiftDragRotate'] === false) ? options['altShiftDragRotate'] : true),
-      doubleClickZoom: ((options['doubleClickZoom'] === false) ? options['doubleClickZoom'] : true),
-      keyboard: ((options['keyboard'] === false) ? options['keyboard'] : true),
-      mouseWheelZoom: ((options['mouseWheelZoom'] === false) ? options['mouseWheelZoom'] : true),
-      shiftDragZoom: ((options['shiftDragZoom'] === false) ? options['shiftDragZoom'] : true),
-      dragPan: ((options['dragPan'] === false) ? options['dragPan'] : true),
-      pinchRotate: ((options['pinchRotate'] === false) ? options['pinchRotate'] : true),
-      pinchZoom: ((options['pinchZoom'] === false) ? options['pinchZoom'] : true),
-      zoomDelta: ((options['zoomDelta'] && (typeof (options['zoomDelta'])) === 'number') ? options['zoomDelta'] : 1), // 缩放增量（默认一级）
-      zoomDuration: (options['zoomDuration'] && (typeof (options['zoomDelta'])) === 'number') ? options['zoomDuration'] : 300 // 缩放持续时间
-    })
+    let options = Object.assign(config.INTERACTIONS, (params || {}))
+    let interactions = []
+    if (options) {
+      for (let key in options) {
+        if (key && options[key]) {
+          this['add' + (utils.upperFirstChart(key))](options[key], interactions)
+        }
+      }
+    }
+    return interactions
+  }
+
+  /**
+   * 双击缩放交互
+   * @param options
+   * @param interactions
+   */
+  addDoubleClickZoom (options = {}, interactions) {
+    if (!interactions) {
+      interactions = this.map.getInteractions()
+    }
+    interactions.push(new ol.interaction.DoubleClickZoom({
+      delta: options.zoomDelta,
+      duration: options.zoomDuration
+    }))
+  }
+
+  /**
+   * 鼠标滚轮交互
+   * @param options
+   * @param interactions
+   */
+  addMouseWheelZoom (options = {}, interactions) {
+    if (!interactions) {
+      interactions = this.map.getInteractions()
+    }
+    interactions.push(new ol.interaction.MouseWheelZoom({
+      constrainResolution: options.constrainResolution,
+      duration: options.zoomDuration
+    }))
+  }
+
+  /**
+   * 键盘交互
+   * @param options
+   * @param interactions
+   */
+  addKeyboard (options = {}, interactions) {
+    if (!interactions) {
+      interactions = this.map.getInteractions()
+    }
+    interactions.push(new ol.interaction.KeyboardPan())
+    interactions.push(new ol.interaction.KeyboardZoom({
+      delta: options.zoomDelta,
+      duration: options.zoomDuration
+    }))
+  }
+
+  /**
+   * 旋转快捷交互
+   * @param options
+   * @param interactions
+   */
+  addAltShiftDragRotate (options = {}, interactions) {
+    if (!interactions) {
+      interactions = this.map.getInteractions()
+    }
+    interactions.push(new ol.interaction.DragRotate())
+  }
+
+  /**
+   * 缩放快捷交互
+   * @param options
+   * @param interactions
+   */
+  addShiftDragZoom (options = {}, interactions) {
+    if (!interactions) {
+      interactions = this.map.getInteractions()
+    }
+    interactions.push(new ol.interaction.DragZoom({
+      duration: options.zoomDuration
+    }))
+  }
+
+  /**
+   * 拖拽漫游
+   * @param options
+   * @param interactions
+   */
+  addDragPan (options = {}, interactions) {
+    if (!interactions) {
+      interactions = this.map.getInteractions()
+    }
+    interactions.push(new ol.interaction.DragPan({
+      kinetic: (new ol.Kinetic(-0.005, 0.05, 100))
+    }))
+  }
+
+  /**
+   * 旋转
+   * @param options
+   * @param interactions
+   */
+  addPinchRotate (options = {}, interactions) {
+    if (!interactions) {
+      interactions = this.map.getInteractions()
+    }
+    interactions.push(new ol.interaction.PinchRotate())
+  }
+
+  /**
+   * 缩放
+   * @param options
+   * @param interactions
+   */
+  addPinchZoom (options = {}, interactions) {
+    if (!interactions) {
+      interactions = this.map.getInteractions()
+    }
+    interactions.push(new ol.interaction.PinchZoom({
+      constrainResolution: options.constrainResolution,
+      duration: options.zoomDuration
+    }))
   }
 
   /**
@@ -34,5 +145,4 @@ class _Interactions {
     interactions.push(new PointerEvents())
   }
 }
-
 export default _Interactions

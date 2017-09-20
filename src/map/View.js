@@ -33,6 +33,58 @@ class _View {
   }
 
   /**
+   * 放大
+   */
+  zoomIn (duration) {
+    let zoom = this.map.getView().getZoom()
+    this.map.getView().animate({
+      zoom: (zoom + 1),
+      duration: ((duration && typeof duration === 'number') ? duration : 300)
+    })
+  }
+
+  /**
+   * 缩小
+   */
+  zoomOut (duration) {
+    let zoom = this.map.getView().getZoom()
+    this.map.getView().animate({
+      zoom: (zoom - 1),
+      duration: ((duration && typeof duration === 'number') ? duration : 300)
+    })
+  }
+
+  /**
+   * zoomByDelta
+   * @param delta
+   * @param duration
+   * @returns {boolean}
+   */
+  zoomByDelta (delta, duration) {
+    let view = this.map.getView()
+    if (!view || !(view instanceof ol.View)) {
+      return false
+    } else {
+      let currentResolution = view.getResolution()
+      if (currentResolution) {
+        let newResolution = view.constrainResolution(currentResolution, delta)
+        if (duration > 0) {
+          if (view.getAnimating()) {
+            view.cancelAnimations()
+          }
+          view.animate({
+            resolution: newResolution,
+            duration: duration,
+            easing: ol.easing.easeOut
+          })
+        } else {
+          view.setResolution(newResolution)
+        }
+      }
+    }
+  }
+
+  /**
    * 获取当前地图尺寸
    */
   getSize () {
