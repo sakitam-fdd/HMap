@@ -1,11 +1,11 @@
 # HMap  |  基于openlayers的封装组件
 
 [![Build Status](https://travis-ci.org/sakitam-fdd/HMap.svg?branch=master)](https://www.travis-ci.org/sakitam-fdd/HMap)
-[![NPM downloads](http://img.shields.io/npm/dm/hmap-js.svg)](https://npmjs.org/package/hmap-js)
-![JS gzip size](http://img.badgesize.io/https://unpkg.com/hmap-js/lib/index.js?compression=gzip&label=gzip%20size:%20JS)
+[![NPM downloads](https://img.shields.io/npm/dm/hmap-js.svg)](https://npmjs.org/package/hmap-js)
+![JS gzip size](https://img.badgesize.io/https://unpkg.com/hmap-js/lib/index.js?compression=gzip&label=gzip%20size:%20JS)
 [![Npm package](https://img.shields.io/npm/v/hmap-js.svg)](https://www.npmjs.org/package/hmap-js)
-![Language](https://img.shields.io/badge/language-javascript-yellow.svg)
-![License](https://img.shields.io/badge/license-MIT-000000.svg)
+[![GitHub stars](https://img.shields.io/github/stars/sakitam-fdd/HMap.svg)](https://github.com/sakitam-fdd/HMap/stargazers)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/sakitam-fdd/HMap/master/LICENSE)
 
 - 采用mapbox配置式创建和管理地图
 - 开发者无需关心地图的具体操作
