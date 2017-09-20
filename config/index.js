@@ -13,7 +13,7 @@ module.exports = {
     cssSourceMap: true
   },
   base: {
-    fileName: 'hmap-js',
+    fileName: 'hmap',
     libraryName: 'HMap',
     distDirectory: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: ''
