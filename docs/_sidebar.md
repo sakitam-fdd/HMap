@@ -1,2 +1,3 @@
 - 介绍
  - [安装](/guide/install.md)
+ - [快速开始](/guide/quickstart.md)
