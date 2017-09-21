@@ -89,7 +89,7 @@ html, body, #map{
 
 * 创建地图
 
-> 默认需要传入两个参数，第一个为上面创建的容器id，第二个参数为地图参数配置，配置详细说明见[配置项](api/props.md)
+> 默认需要传入两个参数，第一个为上面创建的容器id，第二个参数为地图参数配置，配置详细说明见[配置项](api/map-options.md)
 
 ```javascript
 var Map = new HMap('map', {
