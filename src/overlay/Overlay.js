@@ -122,7 +122,14 @@ class Overlay extends mixin(Feature) {
     marker.className = 'overlay-point-content'
     let style = point['attributes']['style'] || params['style']
     let [ele, spanEle] = ['', '']
-    if (style['element']) {
+    if (style['element'] && style['element'] instanceof HTMLDivElement) {
+      ele = document.createElement('div')
+      ele.normalColor = style['color'] ? style['color'] : '#1b9de8'
+      ele.selectColor = style['selectColor'] ? style['selectColor'] : '#F61717'
+      ele.innerHTML = style['text'] ? style['text'] : ''
+      ele.appendChild(style['element'])
+      marker.appendChild(ele)
+    } else if (style['element'] && typeof style['element'] === 'object') {
       ele = document.createElement('div')
       let eleClass = (style['element']['className'] ? style['element']['className'] : 'maker-point')
       DomUtil.addClass(ele, 'iconfont')
@@ -145,6 +152,8 @@ class Overlay extends mixin(Feature) {
       } else if (params['orderByNum'] && point['attributes']['number'] !== undefined && point['attributes']['number'] !== '' && point['attributes']['number'] !== null) {
         spanEle = document.createElement('span')
         spanEle.innerHTML = Number(point['attributes']['number']) + 1
+      } else if (params['innerHtml']) {
+        spanEle.innerHTML = point['attributes']['innerHtml']
       }
       if (spanEle) {
         ele.appendChild(spanEle)
