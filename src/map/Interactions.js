@@ -5,7 +5,7 @@
 import ol from 'openlayers'
 import { config } from '../utils/config'
 import * as utils from '../utils/utils'
-import PointerEvents from '../interaction/PointerEvents'
+import '../interaction/PointerEvents'
 class _Interactions {
   _addInteractions (params) {
     let options = Object.assign(config.INTERACTIONS, (params || {}))
@@ -142,7 +142,7 @@ class _Interactions {
     if (!interactions) {
       interactions = this.map.getInteractions()
     }
-    interactions.push(new PointerEvents())
+    interactions.push(new ol.interaction.PointerEvents())
   }
 }
 export default _Interactions
