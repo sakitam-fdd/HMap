@@ -6,7 +6,7 @@ import ol from 'openlayers'
 import mixin from '../utils/mixins'
 import olStyleFactory from 'ol-extent/src/style/factory'
 import Layer from '../layer/Layer'
-class Feature extends mixin(olStyleFactory, Layer) {
+class Feature extends mixin(Layer) {
   constructor () {
     super()
     this.desc = ''
@@ -127,8 +127,8 @@ class Feature extends mixin(olStyleFactory, Layer) {
         geometry: geometry,
         params: params
       })
-      let style = this.getStyleByPoint(point['attributes']['style'] || params['style'])
-      let selectStyle = this.getStyleByPoint(point['attributes']['selectStyle'] || params['selectStyle'])
+      let style = new olStyleFactory(point['attributes']['style'] || params['style'])
+      let selectStyle = new olStyleFactory(point['attributes']['selectStyle'] || params['selectStyle'])
       if (style && feature) {
         feature.setStyle(style)
         feature.set('style', style)
@@ -231,8 +231,8 @@ class Feature extends mixin(olStyleFactory, Layer) {
       let linefeature = new ol.Feature({
         geometry: this.getGeomFromGeomData(line, params)
       })
-      let style = this.getStyleByLine(line['attributes']['style'] || params['style'])
-      let selectStyle = this.getStyleByLine(line['attributes']['selectStyle'] || params['selectStyle'])
+      let style = new olStyleFactory(line['attributes']['style'] || params['style'])
+      let selectStyle = new olStyleFactory(line['attributes']['selectStyle'] || params['selectStyle'])
       let extent = linefeature.getGeometry().getExtent()
       if (style && linefeature) {
         linefeature.setStyle(style)
@@ -318,8 +318,8 @@ class Feature extends mixin(olStyleFactory, Layer) {
         let polygonFeature = new ol.Feature({
           geometry: this.getGeomFromGeomData(polygon, params)
         })
-        let style = this.getStyleByPolygon(polygon['attributes']['style'] || params['style'])
-        let selectStyle = this.getStyleByPolygon(polygon['attributes']['selectStyle'] || params['selectStyle'])
+        let style = new olStyleFactory(polygon['attributes']['style'] || params['style'])
+        let selectStyle = new olStyleFactory(polygon['attributes']['selectStyle'] || params['selectStyle'])
         let extent = polygonFeature.getGeometry().getExtent()
         if (style && polygonFeature) {
           polygonFeature.setStyle(style)
