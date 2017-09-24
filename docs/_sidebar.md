@@ -1,3 +1,10 @@
 - 介绍
  - [安装](/guide/install.md)
  - [快速开始](/guide/quickstart.md)
+- 如何使用
+ - [创建底图](/guide/creatMap.md)
+ - [控件](/guide/creatControl.md)
+ - [交互](/guide/creatInteraction.md)
+ - [添加图层](/guide/addLayer.md)
+ - [添加要素](/guide/addFeature.md)
+ - [添加气泡弹窗](/guide/addPopver.md)

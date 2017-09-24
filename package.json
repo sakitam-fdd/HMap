@@ -24,7 +24,6 @@
   },
   "dependencies": {
     "core-js": "^2.5.0",
-    "expose-loader": "^0.7.3",
     "nature-dom-util": "^1.1.0",
     "observable-emit": "^1.0.1",
     "ol-extent": "^1.1.1",
@@ -68,6 +67,7 @@
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
     "url-loader": "^0.5.9",
+    "expose-loader": "^0.7.3",
     "webpack": "^2.6.1",
     "webpack-bundle-analyzer": "^2.2.1",
     "webpack-dev-middleware": "^1.10.0",
