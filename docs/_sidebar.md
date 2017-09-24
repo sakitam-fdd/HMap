@@ -5,6 +5,17 @@
  - [创建底图](/guide/creatMap.md)
  - [控件](/guide/creatControl.md)
  - [交互](/guide/creatInteraction.md)
- - [添加图层](/guide/addLayer.md)
+  - 添加图层
+    - [添加XYZ切片图层](/guide/layer/xyz.md)
+    - [添加ArcGIS图层](/guide/layer/arcgis.md)
+    - [添加WMTS图层](/guide/layer/wmts.md)
+    - [添加WMS图层](/guide/layer/wms.md)
+    - [添加Vector矢量图层](/guide/layer/vector.md)
+    - [添加MapBox矢量图层](/guide/layer/mapbox.md)
+    - [添加静态图层](/guide/layer/static.md)
  - [添加要素](/guide/addFeature.md)
+ - [样式](/guide/style.md)
  - [添加气泡弹窗](/guide/addPopver.md)
+- 插件
+ - [Echarts图层叠加]()
+ - [军事标绘]()
