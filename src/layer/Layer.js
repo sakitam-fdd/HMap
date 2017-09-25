@@ -1219,6 +1219,20 @@ class Layer extends mixin(Style) {
   }
 
   /**
+   * 移除多个图层
+   * @param layerNames
+   */
+  removeLayerByLayerNames (layerNames) {
+    if (this.map && layerNames && Array.isArray(layerNames) && layerNames.length > 0) {
+      layerNames.forEach(layerName => {
+        if (layerName) {
+          this.removeLayerByLayerName(layerName)
+        }
+      })
+    }
+  }
+
+  /**
    * 通过layerName移除专题图层
    * @param layerName
    */
