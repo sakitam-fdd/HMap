@@ -127,7 +127,11 @@ class Layer extends mixin(Style) {
                 }
               })
             }
-            return false
+            if (tragetLayer) {
+              return false
+            } else {
+              return true
+            }
           } else {
             return true
           }
