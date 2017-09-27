@@ -26,3 +26,23 @@ export const upperFirstChart = str => {
 export const trim = (str) => {
   return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g, '')
 }
+
+/**
+ * 判断是否为对象
+ * @param value
+ * @returns {boolean}
+ */
+export const isObject = value => {
+  const type = typeof value
+  return value !== null && (type === 'object' || type === 'function')
+}
+
+/**
+ * 判断是否为字符串
+ * @param value
+ * @returns {boolean}
+ */
+export const isString = value => {
+  const type = typeof value
+  return type === 'string'
+}
