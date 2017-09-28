@@ -40,7 +40,13 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test'), resolve('node_modules/ol-extent/src')]
+        include: [
+          resolve('src'),
+          resolve('node_modules/ol-extent/src'),
+          resolve('node_modules/nature-dom-util/src'),
+          resolve('node_modules/observable-emit/src'),
+          resolve('test')
+        ]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,

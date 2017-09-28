@@ -1,4 +1,5 @@
 // polyfill
+import 'core-js/modules/es6.object.assign'
 import 'core-js/es6/set'
 import 'core-js/es6/symbol'
 import 'core-js/es6/reflect'
@@ -32,8 +33,6 @@ class HMap extends mixin(
   _Interactions, Layer,
   Feature, Overlay
 ) {
-  static supported = supported
-  static layer = Layer
   constructor () {
     super()
 
@@ -484,6 +483,8 @@ class HMap extends mixin(
     console.log('%c            ', "font-size:16px; padding:18px 24px;line-height:48px;background:url('" + this.logo_ + "') no-repeat;background-size: 48px;")
     console.log(name, version, '©', author)
   }
+  static supported = supported
+  static layer = Layer
   static get accessToken () {
     return config.ACCESS_TOKEN
   }
