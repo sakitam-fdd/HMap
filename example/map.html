@@ -20,7 +20,9 @@
 <script src="../dist/hmap.js"></script>
 <!--<script src="https://unpkg.com/hmap-js@1.5.0/dist/hmap.min.js"></script>-->
 <script type="text/javascript">
-  var Map = new HMap('map', {
+  HMap.accessToken = '<your access token here>';
+  var Map = new HMap({
+    target: 'map',
     controls: {
       loading: true,
       zoomSlider: true,
@@ -46,6 +48,7 @@
       }
     ]
   });
+  console.log(HMap.accessToken)
 </script>
 </body>
 </html>

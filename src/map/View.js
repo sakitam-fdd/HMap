@@ -85,17 +85,6 @@ class _View {
   }
 
   /**
-   * 获取当前地图尺寸
-   */
-  getSize () {
-    if (this.map && this.map instanceof ol.Map) {
-      return (this.map.getSize())
-    } else {
-      console.log('未获取到视图！')
-    }
-  }
-
-  /**
    * 获取当前视图范围
    * @param size
    * @returns {ol.Extent|*}
@@ -180,24 +169,6 @@ class _View {
           }
         }
       })
-    }
-  }
-
-  /**
-   * 获取当前地图
-   * @returns {ol.Map}
-   */
-  getMap () {
-    return this.map
-  }
-
-  /**
-   * 设置地图实例
-   * @param map
-   */
-  setMap (map) {
-    if (map && map instanceof ol.Map) {
-      this.map = map
     }
   }
 }
