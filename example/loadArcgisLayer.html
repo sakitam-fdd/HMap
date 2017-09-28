@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <link rel="stylesheet" href="../dist/HMap.css" type="text/css">
+  <link rel="stylesheet" href="../dist/hmap.css" type="text/css">
   <style>
     html, body, #map {
       width: 100%;
@@ -21,7 +21,7 @@
 </head>
 <body>
 <div id="map"></div>
-<script src="../dist/HMap.js"></script>
+<script src="../dist/hmap.js"></script>
 <script type="text/javascript">
   var cor = [
     {
@@ -131,99 +131,21 @@
   }
   var Maps = new HMap.Map();
   Maps.initMap('map', {
-    interactions: {
-      altShiftDragRotate: true,
-      doubleClickZoom: true,
-      keyboard: true,
-      mouseWheelZoom: true,
-      shiftDragZoom: true,
-      dragPan: true,
-      pinchRotate: true,
-      pinchZoom: true,
-      zoomDelta: 1, // 缩放增量（默认一级）
-      zoomDuration: 500 // 缩放持续时间
-    },
-    controls: {
-      attribution: true,
-      attributionOptions: {
-        className: 'ol-attribution', // Default
-        target: 'attributionTarget',
-      },
-      rotate: true,
-      rotateOptions: {
-        className: 'ol-rotate', // Default
-        target: 'rotateTarget',
-      },
-      zoom: true,
-      zoomOptions: {
-        className: 'ol-zoom', // Default
-        target: 'zoomTarget',
-      },
-      overViewMapVisible: false,
-      scaleLineVisible: true
-    },
     view: {
-      center: [52734278.282496005, 4131815.988112161],
-      resolutions: resolutions,
-      fullExtent: [-20037507.067161843, -30240971.95838617, 20037507.067161843, 30240971.958386205],
-      tileSize: 256,
-      origin: [-20037508.342787, 20037508.342787],
-      // constrainRotation: false, // 旋转角度约束
-      enableRotation: true, // 是否允许旋转
-//      extent: [],
-//      maxResolution: 0, // 非必须参数
-//      minResolution: 0,
-//      maxZoom: 19,
-//      minZoom: 0,
-      projection: 'EPSG:102100',
+      center: [113.53450137499999, 34.44104525],
+      projection: 'EPSG:4326',
       rotation: 0,
       zoom: 0, // resolution
       zoomFactor: 2 // 用于约束分变率的缩放因子（高分辨率设备需要注意）
     },
     baseLayers: [  // 不传时默认加载OSM地图。
       {
-        layerName: 'vector',
-        isDefault: true,
-        layerType: 'TileXYZ',
-        opaque: false, //图层是否不透明
-        layerUrl: 'http://10.254.123.75:8080/OneMapServer/rest/services/World2ChinaMapBG/MapServer',
-        label: { //地图图层是否对应的有标注层
-          layerName: 'vectorLabel',
-          isDefault: true,
-          alias: 'vector',
-          layerType: 'TileXYZ',
-          layerUrl: 'http://10.254.123.75:8080/OneMapServer/rest/services/World2ChinaMapLabel/MapServer'
-        }
-      },
-      {
         layerName: 'earth',
         layerType: 'TitleWMTS',
         layer: 'img',
-        isDefault: false,
+        isDefault: true,
+        levels: 21,
         layerUrl: 'http://t{0-6}.tianditu.cn/img_c/wmts',
-        label: {
-          layerName: 'TDTLabel',
-          layerType: 'TitleWMTS',
-          layer: 'cia',
-          alias: 'earth',
-          isDefault: false,
-          layerUrl: 'http://t{0-6}.tianditu.cn/cia_c/wmts'
-        }
-      },
-      {
-        layerName: 'panorama',
-        layerType: 'TitleWMTS',
-        layer: 'ter',
-        isDefault: false,
-        layerUrl: 'http://t{0-6}.tianditu.com/ter_c/wmts',
-        label: {
-          layerName: 'TDTLabel',
-          layerType: 'TitleWMTS',
-          layer: 'cia',
-          alias: 'panorama',
-          isDefault: false,
-          layerUrl: 'http://t{0-6}.tianditu.cn/cia_c/wmts'
-        }
       }
     ]
   });
