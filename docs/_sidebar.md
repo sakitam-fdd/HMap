@@ -4,6 +4,8 @@
 - 如何使用
  - [创建底图](/guide/creatMap.md)
  - [控件](/guide/creatControl.md)
+    - [放大缩小控件](/api/control/zoom.md)
+    - [右键菜单控件](/api/control/contextMenu.md)
  - [交互](/guide/creatInteraction.md)
   - 添加图层
     - [添加XYZ切片图层](/guide/layer/xyz.md)
