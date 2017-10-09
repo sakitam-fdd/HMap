@@ -18,6 +18,26 @@ class _View {
    */
   _addView (params) {
     let option = params || {}
+
+    /**
+     * 投影
+     * @type {ol.proj.Projection}
+     */
+    this.projection = ol.proj.get((option['projection'] || 'EPSG:3857'))
+
+    /**
+     * 显示范围
+     * @type {Array}
+     */
+    this.fullExtent = option['extent']
+
+    /**
+     * 投影范围
+     */
+    if (this.fullExtent) {
+      this.projection.setExtent(this.fullExtent)
+    }
+
     return new ol.View({
       center: ((option['center'] && Array.isArray(option['center'])) ? option['center'] : [0, 0]),
       zoom: ((option['zoom'] && (typeof option['zoom'] === 'number')) ? option['zoom'] : 0),
@@ -131,6 +151,67 @@ class _View {
       let extent = this.getMapCurrentExtent()
       if (!(ol.extent.containsXY(extent, coord[0], coord[1]))) {
         this.view.setCenter(coord)
+      }
+    }
+  }
+
+  /**
+   * 调整当前要素范围
+   * @param extent
+   * @param params
+   * @returns {*}
+   */
+  adjustExtent (extent, params) {
+    if (this.map) {
+      params = params || {}
+      let size = ol.extent.getSize(extent)
+      let adjust = typeof params['adjust'] === 'number' ? params['adjust'] : 0.2
+      let minWidth = typeof params['minWidth'] === 'number' ? params['minWidth'] : 0.05
+      let minHeight = typeof params['minHeight'] === 'number' ? params['minHeight'] : 0.05
+      if (size[0] <= minWidth || size[1] <= minHeight) {
+        let bleft = ol.extent.getBottomLeft(extent) // 获取xmin,ymin
+        let tright = ol.extent.getTopRight(extent) // 获取xmax,ymax
+        let xmin = bleft[0] - adjust
+        let ymin = bleft[1] - adjust
+        let xmax = tright[0] + adjust
+        let ymax = tright[1] + adjust
+        extent = ol.extent.buffer([xmin, ymin, xmax, ymax], adjust)
+      }
+      return extent
+    }
+  }
+
+  /**
+   * 缩放到当前范围
+   * @param extent
+   * @param isanimation
+   * @param duration
+   */
+  zoomToExtent (extent, isanimation, duration) {
+    if (this.map) {
+      let view = this.map.getView()
+      let size = this.map.getSize()
+      /**
+       *  @type {ol.Coordinate} center The center of the view.
+       */
+      let center = ol.extent.getCenter(extent)
+      if (!isanimation) {
+        view.fit(extent, size, {
+          padding: [350, 200, 200, 350]
+        })
+        view.setCenter(center)
+      } else {
+        if (!duration) {
+          duration = 800
+          view.animate({
+            center: center,
+            duration: duration
+          })
+          view.fit(extent, {
+            size: size,
+            duration: duration
+          })
+        }
       }
     }
   }

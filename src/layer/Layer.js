@@ -3,14 +3,8 @@
  * @desc 图层相关处理
  */
 import ol from 'openlayers'
-import mixin from '../utils/mixins'
 import olStyleFactory from 'ol-extent/src/style/factory'
-class Layer extends mixin(olStyleFactory) {
-  constructor () {
-    super()
-    this.desc = ''
-  }
-
+class Layer {
   /**
    * 通过layerName获取图层
    * @param layerName
@@ -21,16 +15,100 @@ class Layer extends mixin(olStyleFactory) {
       let targetLayer = null
       if (this.map) {
         let layers = this.map.getLayers().getArray()
-        layers.every(layer => {
-          if (layer.get('layerName') === layerName) {
-            targetLayer = layer
+        targetLayer = this.getLayerInternal(layers, 'layerName', layerName)
+      }
+      return targetLayer
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  /**
+   * 内部处理获取图层方法
+   * @param layers
+   * @param key
+   * @param value
+   * @returns {*}
+   */
+  getLayerInternal (layers, key, value) {
+    let _target = null
+    if (layers.length > 0) {
+      layers.every(layer => {
+        if (layer instanceof ol.layer.Group) {
+          let layers = layer.getLayers().getArray()
+          _target = this.getLayerInternal(layers, key, value)
+          if (_target) {
             return false
           } else {
             return true
           }
-        })
+        } else if (layer.get(key) === value) {
+          _target = layer
+          return false
+        } else {
+          return true
+        }
+      })
+    }
+    return _target
+  }
+
+  /**
+   * 根据相关键值键名获取图层集合
+   * @param layers
+   * @param key
+   * @param value
+   * @returns {Array}
+   */
+  getLayersArrayInternal (layers, key, value) {
+    let _target = []
+    if (layers.length > 0) {
+      layers.forEach(layer => {
+        if (layer instanceof ol.layer.Group) {
+          let layers = layer.getLayers().getArray()
+          let _layer = this.getLayerInternal(layers, key, value)
+          if (_layer) {
+            _target.push(layer)
+          }
+        } else if (layer.get(key) === value) {
+          _target.push(layer)
+        }
+      })
+    }
+    return _target
+  }
+
+  /**
+   * 通过键名键值获取图层（注意键名键值必须是set(key, value)）
+   * @param key
+   * @param value
+   */
+  getLayerByKeyValue (key, value) {
+    try {
+      let targetLayer = null
+      if (this.map) {
+        let layers = this.map.getLayers().getArray()
+        targetLayer = this.getLayerInternal(layers, key, value)
       }
       return targetLayer
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  /**
+   * 通过键名键值获取图层集合（注意键名键值必须是set(key, value)）
+   * @param key
+   * @param value
+   */
+  getLayersArrayByKeyValue (key, value) {
+    try {
+      let targetLayers = []
+      if (this.map) {
+        let layers = this.map.getLayers().getArray()
+        targetLayers = this.getLayersArrayInternal(layers, key, value)
+      }
+      return targetLayers
     } catch (e) {
       console.log(e)
     }
@@ -43,12 +121,12 @@ class Layer extends mixin(olStyleFactory) {
    */
   getTitleLayerByLayerName (layerName) {
     try {
-      let targetLayer = null
-      if (this.map) {
-        let layers = this.map.getLayers().getArray()
-        layers.every(layer => {
-          if (layer.get('layerType') === 'title' && layer.get('layerName') === layerName) {
-            targetLayer = layer
+      let targetLayer
+      let targetLayers = this.getLayersArrayByKeyValue('layerName', layerName)
+      if (targetLayers && targetLayers.length > 0) {
+        targetLayers.every(_layer => {
+          if (_layer.get('layerType') === 'title') {
+            targetLayer = _layer
             return false
           } else {
             return true
@@ -67,21 +145,19 @@ class Layer extends mixin(olStyleFactory) {
    * @returns {*}
    */
   getBaseLayerByLayerName (layerName) {
-    try {
-      let currentLayer = null
-      this.map.getLayers().getArray().forEach(layer => {
-        if (layer && layer instanceof ol.layer.Group && layer.get('isBaseLayer')) {
-          layer.getLayers().getArray().forEach(_layer => {
-            if (_layer && _layer instanceof ol.layer.Tile && _layer.get('isBaseLayer') && _layer.get('layerName') === layerName) {
-              currentLayer = _layer
-            }
-          })
+    let currentLayer = null
+    let layers = this.getLayersArrayByKeyValue('isBaseLayer', true)
+    if (layers && layers.length > 0) {
+      layers.every(layer => {
+        if (layer.get('layerName') === layerName) {
+          currentLayer = layer
+          return false
+        } else {
+          return true
         }
       })
-      return currentLayer
-    } catch (error) {
-      console.log(error)
     }
+    return currentLayer
   }
 
   /**
@@ -89,17 +165,7 @@ class Layer extends mixin(olStyleFactory) {
    * @returns {*}
    */
   getBaseLayers () {
-    try {
-      let currentLayer = null
-      this.map.getLayers().getArray().forEach(layer => {
-        if (layer && layer instanceof ol.layer.Group && layer.get('isBaseLayer')) {
-          currentLayer = layer
-        }
-      })
-      return currentLayer
-    } catch (error) {
-      console.log(error)
-    }
+    return (this.getLayersArrayByKeyValue('isBaseLayer', true))
   }
 
   /**
@@ -107,35 +173,52 @@ class Layer extends mixin(olStyleFactory) {
    * @param feature
    * @returns {*}
    */
-  getLayerByFeatuer (feature) {
-    let tragetLayer = null
-    if (this.map) {
-      if (feature instanceof ol.Feature) {
-        let layers = this.map.getLayers().getArray()
-        layers.every(layer => {
-          if (layer && layer instanceof ol.layer.Vector && layer.getSource) {
-            let source = layer.getSource()
-            if (source.getFeatures) {
-              let features = source.getFeatures()
-              features.every(feat => {
-                if (feat === feature) {
-                  tragetLayer = layer
-                  return false
-                } else {
-                  return true
-                }
-              })
-            }
-            return false
-          } else {
-            return true
-          }
-        })
-      } else {
-        throw new Error('传入的不是要素!')
-      }
+  getLayerByFeature (feature) {
+    let targetLayer
+    if (this.map && feature instanceof ol.Feature) {
+      let layers = this.map.getLayers().getArray()
+      targetLayer = this._getLayerByFeatureInternal(layers, feature)
     }
-    return tragetLayer
+    return targetLayer
+  }
+
+  /**
+   * 处理要素获取图层方法
+   * @param layers
+   * @param feature
+   * @returns {*}
+   * @private
+   */
+  _getLayerByFeatureInternal (layers, feature) {
+    let _target
+    layers.every(layer => {
+      if (layer && layer instanceof ol.layer.Vector && layer.getSource) {
+        let source = layer.getSource()
+        if (source.getFeatures) {
+          let features = source.getFeatures()
+          features.every(feat => {
+            if (feat === feature) {
+              _target = layer
+              return false
+            } else {
+              return true
+            }
+          })
+        }
+        return false
+      } else if (layer instanceof ol.layer.Group) {
+        let layers = layer.getLayers().getArray()
+        _target = this._getLayerByFeatureInternal(layers, feature)
+        if (_target) {
+          return false
+        } else {
+          return true
+        }
+      } else {
+        return true
+      }
+    })
+    return _target
   }
 
   /**
@@ -145,53 +228,49 @@ class Layer extends mixin(olStyleFactory) {
    * @returns {*}
    */
   createVectorLayer (layerName, params) {
-    try {
-      if (this.map) {
-        let vectorLayer = this.getLayerByLayerName(layerName)
-        if (!(vectorLayer instanceof ol.layer.Vector)) {
-          vectorLayer = null
-        }
-        if (!vectorLayer) {
-          if (params && params.create) {
-            vectorLayer = new ol.layer.Vector({
-              layerName: layerName,
-              params: params,
-              layerType: 'vector',
-              source: new ol.source.Vector({
-                wrapX: false
+    if (this.map) {
+      let vectorLayer = this.getLayerByLayerName(layerName)
+      if (!(vectorLayer instanceof ol.layer.Vector)) {
+        vectorLayer = null
+      }
+      if (!vectorLayer) {
+        if (params && params.create) {
+          vectorLayer = new ol.layer.Vector({
+            layerName: layerName,
+            params: params,
+            layerType: 'vector',
+            source: new ol.source.Vector({
+              wrapX: false
+            }),
+            style: new ol.style.Style({
+              fill: new ol.style.Fill({
+                color: 'rgba(67, 110, 238, 0.4)'
               }),
-              style: new ol.style.Style({
+              stroke: new ol.style.Stroke({
+                color: '#4781d9',
+                width: 2
+              }),
+              image: new ol.style.Circle({
+                radius: 7,
                 fill: new ol.style.Fill({
-                  color: 'rgba(67, 110, 238, 0.4)'
-                }),
-                stroke: new ol.style.Stroke({
-                  color: '#4781d9',
-                  width: 2
-                }),
-                image: new ol.style.Circle({
-                  radius: 7,
-                  fill: new ol.style.Fill({
-                    color: '#ffcc33'
-                  })
+                  color: '#ffcc33'
                 })
               })
             })
-          }
+          })
         }
-        if (this.map && vectorLayer) {
-          if (params && params.hasOwnProperty('selectable')) {
-            vectorLayer.set('selectable', params.selectable)
-          }
-          // 图层只添加一次
-          let _vectorLayer = this.getLayerByLayerName(layerName)
-          if (!_vectorLayer || !(_vectorLayer instanceof ol.layer.Vector)) {
-            this.map.addLayer(vectorLayer)
-          }
-        }
-        return vectorLayer
       }
-    } catch (e) {
-      console.log(e)
+      if (this.map && vectorLayer) {
+        if (params && params.hasOwnProperty('selectable')) {
+          vectorLayer.set('selectable', params.selectable)
+        }
+        // 图层只添加一次
+        let _vectorLayer = this.getLayerByLayerName(layerName)
+        if (!_vectorLayer || !(_vectorLayer instanceof ol.layer.Vector)) {
+          this.map.addLayer(vectorLayer)
+        }
+      }
+      return vectorLayer
     }
   }
 
@@ -202,55 +281,51 @@ class Layer extends mixin(olStyleFactory) {
    * @returns {*}
    */
   creatClusterLayer (layerName, params) {
-    try {
-      if (this.map) {
-        let vectorLayer = this.getLayerByLayerName(layerName)
-        if (!(vectorLayer instanceof ol.layer.Vector)) {
-          vectorLayer = null
-        }
-        if (!vectorLayer) {
-          if (params && params.create) {
-            vectorLayer = new ol.layer.Vector({
-              layerName: layerName,
-              params: params,
-              layerType: 'vector',
-              source: new ol.source.Cluster({
-                distance: (typeof params['distance'] === 'number' ? params['distance'] : 20),
-                source: new ol.source.Vector(),
-                wrapX: false
+    if (this.map) {
+      let vectorLayer = this.getLayerByLayerName(layerName)
+      if (!(vectorLayer instanceof ol.layer.Vector)) {
+        vectorLayer = null
+      }
+      if (!vectorLayer) {
+        if (params && params.create) {
+          vectorLayer = new ol.layer.Vector({
+            layerName: layerName,
+            params: params,
+            layerType: 'vector',
+            source: new ol.source.Cluster({
+              distance: (typeof params['distance'] === 'number' ? params['distance'] : 20),
+              source: new ol.source.Vector(),
+              wrapX: false
+            }),
+            style: new ol.style.Style({
+              fill: new ol.style.Fill({
+                color: 'rgba(67, 110, 238, 0.4)'
               }),
-              style: new ol.style.Style({
+              stroke: new ol.style.Stroke({
+                color: '#4781d9',
+                width: 2
+              }),
+              image: new ol.style.Circle({
+                radius: 7,
                 fill: new ol.style.Fill({
-                  color: 'rgba(67, 110, 238, 0.4)'
-                }),
-                stroke: new ol.style.Stroke({
-                  color: '#4781d9',
-                  width: 2
-                }),
-                image: new ol.style.Circle({
-                  radius: 7,
-                  fill: new ol.style.Fill({
-                    color: '#ffcc33'
-                  })
+                  color: '#ffcc33'
                 })
               })
             })
-          }
+          })
         }
-        if (this.map && vectorLayer) {
-          if (params && params.hasOwnProperty('selectable')) {
-            vectorLayer.set('selectable', params.selectable)
-          }
-          // 图层只添加一次
-          let _vectorLayer = this.getLayerByLayerName(layerName)
-          if (!_vectorLayer || !(_vectorLayer instanceof ol.layer.Vector)) {
-            this.map.addLayer(vectorLayer)
-          }
-        }
-        return vectorLayer
       }
-    } catch (e) {
-      console.log(e)
+      if (this.map && vectorLayer) {
+        if (params && params.hasOwnProperty('selectable')) {
+          vectorLayer.set('selectable', params.selectable)
+        }
+        // 图层只添加一次
+        let _vectorLayer = this.getLayerByLayerName(layerName)
+        if (!_vectorLayer || !(_vectorLayer instanceof ol.layer.Vector)) {
+          this.map.addLayer(vectorLayer)
+        }
+      }
+      return vectorLayer
     }
   }
 
@@ -261,47 +336,43 @@ class Layer extends mixin(olStyleFactory) {
    * @returns {string}
    */
   createHeatMapLayer (layerName, params) {
-    try {
-      let currentLayer = null
-      if (this.map) {
-        currentLayer = this.getLayerByLayerName(layerName)
-        if (!(currentLayer instanceof ol.layer.Heatmap)) {
-          currentLayer = null
-        } else if ((currentLayer instanceof ol.layer.Heatmap) && !(params['addLayer'] === false)) {
-          this.map.removeLayer(currentLayer)
-          currentLayer = null
-        }
-        if (!currentLayer && params && params['create']) {
-          currentLayer = new ol.layer.Heatmap({
-            layerName: layerName,
-            gradient: (params['gradient'] ? params['gradient'] : ['#00f', '#0ff', '#0f0', '#ff0', '#f00']),
-            source: new ol.source.Vector({
-              wrapX: false,
-              crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined)
-            }),
-            blur: (params['blur'] ? params['blur'] : 15),
-            radius: (params['radius'] ? params['radius'] : 8),
-            shadow: (params['shadow'] ? params['shadow'] : 250),
-            weight: (params['weight'] ? params['weight'] : 'weight'),
-            extent: (params['extent'] ? params['extent'] : undefined),
-            minResolution: (params['minResolution'] ? params['minResolution'] : undefined),
-            maxResolution: (params['maxResolution'] ? params['maxResolution'] : undefined),
-            opacity: (params['opacity'] ? params['opacity'] : 1),
-            visible: ((params['visible'] === false) ? params['visible'] : true)
-          })
-          if (params && params.hasOwnProperty('selectable')) {
-            currentLayer.set('selectable', params.selectable)
-          }
-        }
-        if (currentLayer && !(params['addLayer'] === false)) {
-          this.map.addLayer(currentLayer)
-        }
-        return currentLayer
-      } else {
-        throw new Error('未创建地图对象！')
+    let currentLayer = null
+    if (this.map) {
+      currentLayer = this.getLayerByLayerName(layerName)
+      if (!(currentLayer instanceof ol.layer.Heatmap)) {
+        currentLayer = null
+      } else if ((currentLayer instanceof ol.layer.Heatmap) && !(params['addLayer'] === false)) {
+        this.map.removeLayer(currentLayer)
+        currentLayer = null
       }
-    } catch (error) {
-      console.log(error)
+      if (!currentLayer && params && params['create']) {
+        currentLayer = new ol.layer.Heatmap({
+          layerName: layerName,
+          gradient: (params['gradient'] ? params['gradient'] : ['#00f', '#0ff', '#0f0', '#ff0', '#f00']),
+          source: new ol.source.Vector({
+            wrapX: false,
+            crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined)
+          }),
+          blur: (params['blur'] ? params['blur'] : 15),
+          radius: (params['radius'] ? params['radius'] : 8),
+          shadow: (params['shadow'] ? params['shadow'] : 250),
+          weight: (params['weight'] ? params['weight'] : 'weight'),
+          extent: (params['extent'] ? params['extent'] : undefined),
+          minResolution: (params['minResolution'] ? params['minResolution'] : undefined),
+          maxResolution: (params['maxResolution'] ? params['maxResolution'] : undefined),
+          opacity: (params['opacity'] ? params['opacity'] : 1),
+          visible: ((params['visible'] === false) ? params['visible'] : true)
+        })
+        if (params && params.hasOwnProperty('selectable')) {
+          currentLayer.set('selectable', params.selectable)
+        }
+      }
+      if (currentLayer && !(params['addLayer'] === false)) {
+        this.map.addLayer(currentLayer)
+      }
+      return currentLayer
+    } else {
+      throw new Error('未创建地图对象！')
     }
   }
 
@@ -312,35 +383,31 @@ class Layer extends mixin(olStyleFactory) {
    * @returns {*}
    */
   createTitleLayer (layerName, params) {
-    try {
-      let serviceUrl = params['layerUrl']
-      if (!serviceUrl) return null
-      let ooLayer = this.getTitleLayerByLayerName(layerName)
-      if (ooLayer && ooLayer instanceof ol.layer.Tile && !(params['addLayer'] === false)) {
-        this.map.removeLayer(ooLayer)
-        ooLayer = null
-      }
-      if (!ooLayer && params['create']) {
-        ooLayer = new ol.layer.Tile({
-          layerName: layerName,
-          layerType: ((params['notShowLayerType'] === true) ? '' : 'title'),
-          visible: (params['visible'] === false) ? params['visible'] : true,
-          source: new ol.source.TileArcGISRest({
-            url: serviceUrl,
-            crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
-            params: (params['layerParams'] ? params['layerParams'] : undefined),
-            wrapX: false
-          }),
-          wrapX: false
-        })
-      }
-      if (this.map && ooLayer && !(params['addLayer'] === false)) {
-        this.map.addLayer(ooLayer)
-      }
-      return ooLayer
-    } catch (e) {
-      console.log(e)
+    let serviceUrl = params['layerUrl']
+    if (!serviceUrl) return null
+    let ooLayer = this.getTitleLayerByLayerName(layerName)
+    if (ooLayer && ooLayer instanceof ol.layer.Tile && !(params['addLayer'] === false)) {
+      this.map.removeLayer(ooLayer)
+      ooLayer = null
     }
+    if (!ooLayer && params['create']) {
+      ooLayer = new ol.layer.Tile({
+        layerName: layerName,
+        layerType: ((params['notShowLayerType'] === true) ? '' : 'title'),
+        visible: (params['visible'] === false) ? params['visible'] : true,
+        source: new ol.source.TileArcGISRest({
+          url: serviceUrl,
+          crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
+          params: (params['layerParams'] ? params['layerParams'] : undefined),
+          wrapX: false
+        }),
+        wrapX: false
+      })
+    }
+    if (this.map && ooLayer && !(params['addLayer'] === false)) {
+      this.map.addLayer(ooLayer)
+    }
+    return ooLayer
   }
 
   /**
@@ -350,50 +417,46 @@ class Layer extends mixin(olStyleFactory) {
    * @returns {string}
    */
   createImageWMSLayer (layerName, params) {
-    try {
-      let layer = this.getLayerByLayerName(layerName)
-      if (!(layer instanceof ol.layer.Image)) {
-        layer = null
-      } else if ((layer instanceof ol.layer.Image) && !(params['addLayer'] === false)) {
-        this.map.removeLayer(layer)
-        layer = null
-      }
-      if (!layer && params && params['layerUrl'] && params['create']) {
-        layer = new ol.layer.Image({
-          layerName: layerName,
-          visible: (params['visible'] === false) ? params['visible'] : true,
-          opacity: (params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1,
-          source: new ol.source.ImageWMS({
-            url: params['layerUrl'],
-            crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
-            params: {
-              LAYERS: params['layers'], // require
-              STYLES: params['style'] ? params['style'] : '',
-              VERSION: params['version'] ? params['version'] : '1.3.0',
-              WIDTH: params['width'] ? params['width'] : 256,
-              HEIGHT: params['height'] ? params['height'] : 256,
-              BBOX: params['bbox'], // require
-              SRS: (params['srs'] ? params['srs'] : 'EPSG:3857'),
-              CRS: (params['srs'] ? params['srs'] : 'EPSG:3857'),
-              REQUEST: 'GetMap',
-              TRANSPARENT: true,
-              TILED: (params['tiled'] === false) ? params['tiled'] : true,
-              TILESORIGIN: (params['tiledsorrigin'] ? params['tiledsorrigin'] : undefined),
-              SERVICE: 'WMS',
-              FORMAT: (params['format'] ? params['format'] : 'image/png'),
-              VIEWPARAMS: (params['viewparams'] ? params['viewparams'] : '')
-            },
-            wrapX: false
-          })
-        })
-      }
-      if (this.map && layer && !(params['addLayer'] === false)) {
-        this.map.addLayer(layer)
-      }
-      return layer
-    } catch (e) {
-      console.log(e)
+    let layer = this.getLayerByLayerName(layerName)
+    if (!(layer instanceof ol.layer.Image)) {
+      layer = null
+    } else if ((layer instanceof ol.layer.Image) && !(params['addLayer'] === false)) {
+      this.map.removeLayer(layer)
+      layer = null
     }
+    if (!layer && params && params['layerUrl'] && params['create']) {
+      layer = new ol.layer.Image({
+        layerName: layerName,
+        visible: (params['visible'] === false) ? params['visible'] : true,
+        opacity: (params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1,
+        source: new ol.source.ImageWMS({
+          url: params['layerUrl'],
+          crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
+          params: {
+            LAYERS: params['layers'], // require
+            STYLES: params['style'] ? params['style'] : '',
+            VERSION: params['version'] ? params['version'] : '1.3.0',
+            WIDTH: params['width'] ? params['width'] : 256,
+            HEIGHT: params['height'] ? params['height'] : 256,
+            BBOX: params['bbox'], // require
+            SRS: (params['srs'] ? params['srs'] : 'EPSG:3857'),
+            CRS: (params['srs'] ? params['srs'] : 'EPSG:3857'),
+            REQUEST: 'GetMap',
+            TRANSPARENT: true,
+            TILED: (params['tiled'] === false) ? params['tiled'] : true,
+            TILESORIGIN: (params['tiledsorrigin'] ? params['tiledsorrigin'] : undefined),
+            SERVICE: 'WMS',
+            FORMAT: (params['format'] ? params['format'] : 'image/png'),
+            VIEWPARAMS: (params['viewparams'] ? params['viewparams'] : '')
+          },
+          wrapX: false
+        })
+      })
+    }
+    if (this.map && layer && !(params['addLayer'] === false)) {
+      this.map.addLayer(layer)
+    }
+    return layer
   }
 
   /**
@@ -403,50 +466,46 @@ class Layer extends mixin(olStyleFactory) {
    * @returns {string}
    */
   createTileWMSLayer (layerName, params) {
-    try {
-      let layer = this.getLayerByLayerName(layerName)
-      if (!(layer instanceof ol.layer.Image)) {
-        layer = null
-      } else if ((layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
-        this.map.removeLayer(layer)
-        layer = null
-      }
-      if (!layer && params && params['layerUrl'] && params['create']) {
-        layer = new ol.layer.Tile({
-          layerName: layerName,
-          visible: (params['visible'] === false) ? params['visible'] : true,
-          opacity: (params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1,
-          source: new ol.source.TileWMS({
-            url: params['layerUrl'],
-            crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
-            params: {
-              LAYERS: params['layers'], // require
-              STYLES: params['style'] ? params['style'] : '',
-              VERSION: params['version'] ? params['version'] : '1.3.0',
-              WIDTH: params['width'] ? params['width'] : 256,
-              HEIGHT: params['height'] ? params['height'] : 256,
-              BBOX: params['bbox'], // require
-              SRS: (params['srs'] ? params['srs'] : 'EPSG:3857'),
-              CRS: (params['srs'] ? params['srs'] : 'EPSG:3857'),
-              REQUEST: 'GetMap',
-              TRANSPARENT: true,
-              TILED: ((params['tiled'] === false) ? params['tiled'] : true),
-              TILESORIGIN: (params['tiledsorrigin'] ? params['tiledsorrigin'] : undefined),
-              SERVICE: 'WMS',
-              FORMAT: (params['format'] ? params['format'] : 'image/png'),
-              VIEWPARAMS: (params['viewparams'] ? params['viewparams'] : '')
-            },
-            wrapX: false
-          })
-        })
-      }
-      if (this.map && layer && !(params['addLayer'] === false)) {
-        this.map.addLayer(layer)
-      }
-      return layer
-    } catch (e) {
-      console.log(e)
+    let layer = this.getLayerByLayerName(layerName)
+    if (!(layer instanceof ol.layer.Image)) {
+      layer = null
+    } else if ((layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
+      this.map.removeLayer(layer)
+      layer = null
     }
+    if (!layer && params && params['layerUrl'] && params['create']) {
+      layer = new ol.layer.Tile({
+        layerName: layerName,
+        visible: (params['visible'] === false) ? params['visible'] : true,
+        opacity: (params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1,
+        source: new ol.source.TileWMS({
+          url: params['layerUrl'],
+          crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
+          params: {
+            LAYERS: params['layers'], // require
+            STYLES: params['style'] ? params['style'] : '',
+            VERSION: params['version'] ? params['version'] : '1.3.0',
+            WIDTH: params['width'] ? params['width'] : 256,
+            HEIGHT: params['height'] ? params['height'] : 256,
+            BBOX: params['bbox'], // require
+            SRS: (params['srs'] ? params['srs'] : 'EPSG:3857'),
+            CRS: (params['srs'] ? params['srs'] : 'EPSG:3857'),
+            REQUEST: 'GetMap',
+            TRANSPARENT: true,
+            TILED: ((params['tiled'] === false) ? params['tiled'] : true),
+            TILESORIGIN: (params['tiledsorrigin'] ? params['tiledsorrigin'] : undefined),
+            SERVICE: 'WMS',
+            FORMAT: (params['format'] ? params['format'] : 'image/png'),
+            VIEWPARAMS: (params['viewparams'] ? params['viewparams'] : '')
+          },
+          wrapX: false
+        })
+      })
+    }
+    if (this.map && layer && !(params['addLayer'] === false)) {
+      this.map.addLayer(layer)
+    }
+    return layer
   }
 
   /**
@@ -456,48 +515,44 @@ class Layer extends mixin(olStyleFactory) {
    * @returns {*}
    */
   createWfsVectorLayer (layerName, params) {
-    try {
-      let vectorLayer = this.getLayerByLayerName(layerName)
-      if (!(vectorLayer instanceof ol.layer.Vector)) {
-        vectorLayer = null
-      }
-      if (!vectorLayer) {
-        let proj = params['projection'] ? params['projection'] : 'EPSG:3857'
-        let style = this.getStyleByParams(params['style'])
-        vectorLayer = new ol.layer.Vector({
-          layerName: layerName,
-          params: params,
-          layerType: 'vector',
-          visible: (params['visible'] === false) ? params['visible'] : true,
-          opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
-          source: new ol.source.Vector({
-            format: new ol.format.GeoJSON(),
-            crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
-            url: function (extent) {
-              return params['layerUrl'] + extent.join(',') + ',' + proj
-            },
-            wrapX: false,
-            strategy: ol.loadingstrategy.bbox
-          }),
-          style: style
-        })
-      }
-      if (this.map && vectorLayer) {
-        if (params && params.hasOwnProperty('selectable')) {
-          vectorLayer.set('selectable', params.selectable)
-        }
-        // 图层只添加一次
-        let _vectorLayer = this.getLayerByLayerName(layerName)
-        if (!_vectorLayer || !(_vectorLayer instanceof ol.layer.Vector)) {
-          if (!(params['addLayer'] === false)) {
-            this.map.addLayer(vectorLayer)
-          }
-        }
-      }
-      return vectorLayer
-    } catch (e) {
-      console.log(e)
+    let vectorLayer = this.getLayerByLayerName(layerName)
+    if (!(vectorLayer instanceof ol.layer.Vector)) {
+      vectorLayer = null
     }
+    if (!vectorLayer) {
+      let proj = params['projection'] ? params['projection'] : 'EPSG:3857'
+      let style = new olStyleFactory(params['style'])
+      vectorLayer = new ol.layer.Vector({
+        layerName: layerName,
+        params: params,
+        layerType: 'vector',
+        visible: (params['visible'] === false) ? params['visible'] : true,
+        opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
+        source: new ol.source.Vector({
+          format: new ol.format.GeoJSON(),
+          crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
+          url: function (extent) {
+            return params['layerUrl'] + extent.join(',') + ',' + proj
+          },
+          wrapX: false,
+          strategy: ol.loadingstrategy.bbox
+        }),
+        style: style
+      })
+    }
+    if (this.map && vectorLayer) {
+      if (params && params.hasOwnProperty('selectable')) {
+        vectorLayer.set('selectable', params.selectable)
+      }
+      // 图层只添加一次
+      let _vectorLayer = this.getLayerByLayerName(layerName)
+      if (!_vectorLayer || !(_vectorLayer instanceof ol.layer.Vector)) {
+        if (!(params['addLayer'] === false)) {
+          this.map.addLayer(vectorLayer)
+        }
+      }
+    }
+    return vectorLayer
   }
 
   /**
@@ -507,39 +562,35 @@ class Layer extends mixin(olStyleFactory) {
    * @returns {*}
    */
   createVectorFeatureLayer (layerName, params) {
-    try {
-      let layer = this.getLayerByLayerName(layerName)
-      if (!(layer instanceof ol.layer.Vector)) {
-        layer = null
-      } else if (this.map && (layer instanceof ol.layer.Vector) && !(params['addLayer'] === false)) {
-        this.map.removeLayer(layer)
-        layer = null
-      }
-      if (!layer && params && params['layerUrl'] && params['create']) {
-        let style = this.getStyleByParams(params['style'])
-        layer = new ol.layer.Vector({
-          layerName: layerName,
-          params: params,
-          layerType: 'vector',
-          visible: (params['visible'] === false) ? params['visible'] : true,
-          opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
-          source: new ol.source.Vector({
-            format: new ol.format.GeoJSON(),
-            crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
-            url: params['layerUrl'],
-            wrapX: false,
-            strategy: ol.loadingstrategy.bbox
-          }),
-          style: style
-        })
-      }
-      if (this.map && layer && !(params['addLayer'] === false)) {
-        this.map.addLayer(layer)
-      }
-      return layer
-    } catch (e) {
-      console.log(e)
+    let layer = this.getLayerByLayerName(layerName)
+    if (!(layer instanceof ol.layer.Vector)) {
+      layer = null
+    } else if (this.map && (layer instanceof ol.layer.Vector) && !(params['addLayer'] === false)) {
+      this.map.removeLayer(layer)
+      layer = null
     }
+    if (!layer && params && params['layerUrl'] && params['create']) {
+      let style = new olStyleFactory(params['style'])
+      layer = new ol.layer.Vector({
+        layerName: layerName,
+        params: params,
+        layerType: 'vector',
+        visible: (params['visible'] === false) ? params['visible'] : true,
+        opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
+        source: new ol.source.Vector({
+          format: new ol.format.GeoJSON(),
+          crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
+          url: params['layerUrl'],
+          wrapX: false,
+          strategy: ol.loadingstrategy.bbox
+        }),
+        style: style
+      })
+    }
+    if (this.map && layer && !(params['addLayer'] === false)) {
+      this.map.addLayer(layer)
+    }
+    return layer
   }
 
   /**
@@ -549,58 +600,54 @@ class Layer extends mixin(olStyleFactory) {
    * @returns {*}
    */
   createWMTSLayer (layerName, params) {
-    try {
-      let layer = this.getLayerByLayerName(layerName)
-      if (!(layer instanceof ol.layer.Tile)) {
-        layer = null
-      } else if (this.map && (layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
-        this.map.removeLayer(layer)
-        layer = null
-      }
-      if (!layer && params && params['layerUrl'] && params['create'] && params['levels']) {
-        let projection = ol.proj.get((params['projection'] ? params['projection'] : 'EPSG:3857'))
-        let projectionExtent = (params['extent'] ? params['extent'] : projection.getExtent())
-        let size = ol.extent.getWidth(projectionExtent) / 256
-        let levels = params['levels']
-        let resolutions = new Array(levels)
-        let matrixIds = new Array(levels)
-        for (let z = 0; z < levels; ++z) {
-          // generate resolutions and matrixIds arrays for this WMTS
-          resolutions[z] = size / Math.pow(2, z)
-          matrixIds[z] = z
-        }
-        layer = new ol.layer.Tile({
-          layerName: layerName,
-          visible: (params['visible'] === false) ? params['visible'] : true,
-          opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
-          source: new ol.source.WMTS({
-            url: params['layerUrl'],
-            layer: (params['layer'] ? params['layer'] : '0'),
-            matrixSet: (params['matrixSet'] ? params['matrixSet'] : 'EPSG:3857'),
-            format: (params['format'] ? params['format'] : 'image/png'),
-            crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
-            projection: projection,
-            tileGrid: new ol.tilegrid.WMTS({
-              origin: ol.extent.getTopLeft(projectionExtent),
-              resolutions: resolutions,
-              matrixIds: matrixIds,
-              version: (params['version'] ? params['version'] : '1.0.0'),
-              dimensions: (params['dimensions'] ? params['dimensions'] : undefined)
-            }),
-            style: (params['style'] ? params['style'] : 'default'),
-            wrapX: false
-          })
-        })
-      } else {
-        throw new Error('传入参数不正确！')
-      }
-      if (this.map && layer && !(params['addLayer'] === false)) {
-        this.map.addLayer(layer)
-      }
-      return layer
-    } catch (e) {
-      console.log(e)
+    let layer = this.getLayerByLayerName(layerName)
+    if (!(layer instanceof ol.layer.Tile)) {
+      layer = null
+    } else if (this.map && (layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
+      this.map.removeLayer(layer)
+      layer = null
     }
+    if (!layer && params && params['layerUrl'] && params['create'] && params['levels']) {
+      let projection = ol.proj.get((params['projection'] ? params['projection'] : 'EPSG:3857'))
+      let projectionExtent = (params['extent'] ? params['extent'] : projection.getExtent())
+      let size = ol.extent.getWidth(projectionExtent) / 256
+      let levels = params['levels']
+      let resolutions = new Array(levels)
+      let matrixIds = new Array(levels)
+      for (let z = 0; z < levels; ++z) {
+        // generate resolutions and matrixIds arrays for this WMTS
+        resolutions[z] = size / Math.pow(2, z)
+        matrixIds[z] = z
+      }
+      layer = new ol.layer.Tile({
+        layerName: layerName,
+        visible: (params['visible'] === false) ? params['visible'] : true,
+        opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
+        source: new ol.source.WMTS({
+          url: params['layerUrl'],
+          layer: (params['layer'] ? params['layer'] : '0'),
+          matrixSet: (params['matrixSet'] ? params['matrixSet'] : 'EPSG:3857'),
+          format: (params['format'] ? params['format'] : 'image/png'),
+          crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
+          projection: projection,
+          tileGrid: new ol.tilegrid.WMTS({
+            origin: ol.extent.getTopLeft(projectionExtent),
+            resolutions: resolutions,
+            matrixIds: matrixIds,
+            version: (params['version'] ? params['version'] : '1.0.0'),
+            dimensions: (params['dimensions'] ? params['dimensions'] : undefined)
+          }),
+          style: (params['style'] ? params['style'] : 'default'),
+          wrapX: false
+        })
+      })
+    } else {
+      throw new Error('传入参数不正确！')
+    }
+    if (this.map && layer && !(params['addLayer'] === false)) {
+      this.map.addLayer(layer)
+    }
+    return layer
   }
 
   /**
@@ -610,68 +657,64 @@ class Layer extends mixin(olStyleFactory) {
    * @returns {*}
    */
   createXYZLayer (layerName, params) {
-    try {
-      let layer = this.getLayerByLayerName(layerName)
-      if (!(layer instanceof ol.layer.Tile)) {
-        layer = null
-      } else if (this.map && (layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
-        this.map.removeLayer(layer)
-        layer = null
+    let layer = this.getLayerByLayerName(layerName)
+    if (!(layer instanceof ol.layer.Tile)) {
+      layer = null
+    } else if (this.map && (layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
+      this.map.removeLayer(layer)
+      layer = null
+    }
+    if (!layer && params && params['layerUrl'] && params['create']) {
+      let tileGrid
+      let tileSize = 256
+      if (params['tileSize'] && typeof params['tileSize'] === 'number') {
+        tileSize = params['tileSize']
+      } else if (params['tileGrid'] && params['tileGrid']['tileSize'] && typeof params['tileGrid']['tileSize'] === 'number') {
+        tileSize = params['tileGrid']['tileSize']
       }
-      if (!layer && params && params['layerUrl'] && params['create']) {
-        let tileGrid = null
-        let tileSize = 256
-        if (params['tileSize'] && typeof params['tileSize'] === 'number') {
-          tileSize = params['tileSize']
-        } else if (params['tileGrid'] && params['tileGrid']['tileSize'] && typeof params['tileGrid']['tileSize'] === 'number') {
-          tileSize = params['tileGrid']['tileSize']
-        }
-        let projection = 'EPSG:3857'
-        if (params['projection']) {
-          projection = params['projection']
-        } else if (this.view && this.view instanceof ol.View) {
-          projection = this.view.getProjection().getCode()
-        }
-        if (params['tileGrid'] && params['tileGrid']['resolutions']) {
-          tileGrid = new ol.tilegrid.TileGrid({
-            tileSize: tileSize,
-            origin: (params['tileGrid']['origin'] ? params['tileGrid']['origin'] : undefined),
-            extent: (params['tileGrid']['extent'] ? params['tileGrid']['extent'] : undefined),
-            resolutions: params['tileGrid']['resolutions'],
-            minZoom: ((params['tileGrid']['minZoom'] && typeof params['tileGrid']['minZoom'] === 'number') ? params['tileGrid']['minZoom'] : 0)
-          })
-        }
-        layer = new ol.layer.Tile({
-          layerName: layerName,
-          visible: (params['visible'] === false) ? params['visible'] : true,
-          opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
-          source: new ol.source.XYZ({
-            wrapX: false,
-            tileGrid: (tileGrid !== null ? tileGrid : undefined),
-            tileSize: tileSize,
-            opaque: (params['opaque'] === true) ? params['opaque'] : false, // 图层是否不透明（主题相关）
-            tilePixelRatio: (params['tilePixelRatio'] ? params['tilePixelRatio'] : 1), // todo 对于高分辨率设备，例如苹果等可能2、3（移动端开发需要注意）
-            projection: projection,
-            maxZoom: (params['maxZoom'] ? params['maxZoom'] : 18),
-            minZoom: (params['minZoom'] ? params['minZoom'] : 0),
-            crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
-            tileUrlFunction: function (tileCoord) {
-              let url = (params['layerUrl']).replace('{z}',
-                (tileCoord[0]).toString()).replace('{x}',
-                tileCoord[1].toString()).replace('{y}',
-                (-tileCoord[2] - 1).toString())
-              return url
-            }
-          })
+      let projection = 'EPSG:3857'
+      if (params['projection']) {
+        projection = params['projection']
+      } else if (this.view && this.view instanceof ol.View) {
+        projection = this.view.getProjection().getCode()
+      }
+      if (params['tileGrid'] && params['tileGrid']['resolutions']) {
+        tileGrid = new ol.tilegrid.TileGrid({
+          tileSize: tileSize,
+          origin: (params['tileGrid']['origin'] ? params['tileGrid']['origin'] : undefined),
+          extent: (params['tileGrid']['extent'] ? params['tileGrid']['extent'] : undefined),
+          resolutions: params['tileGrid']['resolutions'],
+          minZoom: ((params['tileGrid']['minZoom'] && typeof params['tileGrid']['minZoom'] === 'number') ? params['tileGrid']['minZoom'] : 0)
         })
       }
-      if (this.map && layer && !(params['addLayer'] === false)) {
-        this.map.addLayer(layer)
-      }
-      return layer
-    } catch (e) {
-      console.log(e)
+      layer = new ol.layer.Tile({
+        layerName: layerName,
+        visible: (params['visible'] === false) ? params['visible'] : true,
+        opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
+        source: new ol.source.XYZ({
+          wrapX: false,
+          tileGrid: tileGrid,
+          tileSize: tileSize,
+          opaque: (params['opaque'] === true) ? params['opaque'] : false, // 图层是否不透明（主题相关）
+          tilePixelRatio: (params['tilePixelRatio'] ? params['tilePixelRatio'] : 1), // todo 对于高分辨率设备，例如苹果等可能2、3（移动端开发需要注意）
+          projection: projection,
+          maxZoom: (params['maxZoom'] ? params['maxZoom'] : 18),
+          minZoom: (params['minZoom'] ? params['minZoom'] : 0),
+          crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
+          tileUrlFunction: function (tileCoord) {
+            let url = (params['layerUrl']).replace('{z}',
+              (tileCoord[0]).toString()).replace('{x}',
+              tileCoord[1].toString()).replace('{y}',
+              (-tileCoord[2] - 1).toString())
+            return url
+          }
+        })
+      })
     }
+    if (this.map && layer && !(params['addLayer'] === false)) {
+      this.map.addLayer(layer)
+    }
+    return layer
   }
 
   /**
@@ -681,34 +724,30 @@ class Layer extends mixin(olStyleFactory) {
    * @returns {*}
    */
   createOSMLayer (layerName, params) {
-    try {
-      let layer = this.getLayerByLayerName(layerName)
-      if (!(layer instanceof ol.layer.Tile)) {
-        layer = null
-      } else if (this.map && (layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
-        this.map.removeLayer(layer)
-        layer = null
-      }
-      if (!layer && params['create']) {
-        layer = new ol.layer.Tile({
-          layerName: layerName,
-          visible: (params['visible'] === false) ? params['visible'] : true,
-          opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
-          source: new ol.source.OSM({
-            wrapX: false,
-            opaque: (params['opaque'] === false) ? params['opaque'] : true, // 图层是否不透明（主题相关）
-            url: params['layerUrl'] ? params['layerUrl'] : 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined)
-          })
-        })
-      }
-      if (this.map && layer && !(params['addLayer'] === false)) {
-        this.map.addLayer(layer)
-      }
-      return layer
-    } catch (e) {
-      console.log(e)
+    let layer = this.getLayerByLayerName(layerName)
+    if (!(layer instanceof ol.layer.Tile)) {
+      layer = null
+    } else if (this.map && (layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
+      this.map.removeLayer(layer)
+      layer = null
     }
+    if (!layer && params['create']) {
+      layer = new ol.layer.Tile({
+        layerName: layerName,
+        visible: (params['visible'] === false) ? params['visible'] : true,
+        opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
+        source: new ol.source.OSM({
+          wrapX: false,
+          opaque: (params['opaque'] === false) ? params['opaque'] : true, // 图层是否不透明（主题相关）
+          url: params['layerUrl'] ? params['layerUrl'] : 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined)
+        })
+      })
+    }
+    if (this.map && layer && !(params['addLayer'] === false)) {
+      this.map.addLayer(layer)
+    }
+    return layer
   }
 
   /**
@@ -718,36 +757,32 @@ class Layer extends mixin(olStyleFactory) {
    * @returns {*}
    */
   createBaiDuLayer (layerName, params) {
-    try {
-      let layer = this.getLayerByLayerName(layerName)
-      if (!(layer instanceof ol.layer.Tile)) {
-        layer = null
-      } else if (this.map && (layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
-        this.map.removeLayer(layer)
-        layer = null
-      }
-      if (!layer && params['create']) {
-        layer = new ol.layer.Tile({
-          layerName: layerName,
-          visible: (params['visible'] === false) ? params['visible'] : true,
-          opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
-          source: new ol.source.BAIDU({
-            wrapX: false,
-            projection: params['projection'] ? params['projection'] : 'EPSG:3857',
-            origin: params['origin'] ? params['origin'] : [0, 0],
-            opaque: (params['opaque'] === false) ? params['opaque'] : true, // 图层是否不透明（主题相关）
-            url: params['layerUrl'] ? params['layerUrl'] : 'http://online{0-3}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&udt=20170607&scaler=1&p=1',
-            crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined)
-          })
-        })
-      }
-      if (this.map && layer && !(params['addLayer'] === false)) {
-        this.map.addLayer(layer)
-      }
-      return layer
-    } catch (e) {
-      console.log(e)
+    let layer = this.getLayerByLayerName(layerName)
+    if (!(layer instanceof ol.layer.Tile)) {
+      layer = null
+    } else if (this.map && (layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
+      this.map.removeLayer(layer)
+      layer = null
     }
+    if (!layer && params['create']) {
+      layer = new ol.layer.Tile({
+        layerName: layerName,
+        visible: (params['visible'] === false) ? params['visible'] : true,
+        opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
+        source: new ol.source.BAIDU({
+          wrapX: false,
+          projection: params['projection'] ? params['projection'] : 'EPSG:3857',
+          origin: params['origin'] ? params['origin'] : [0, 0],
+          opaque: (params['opaque'] === false) ? params['opaque'] : true, // 图层是否不透明（主题相关）
+          url: params['layerUrl'] ? params['layerUrl'] : 'http://online{0-3}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&udt=20170607&scaler=1&p=1',
+          crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined)
+        })
+      })
+    }
+    if (this.map && layer && !(params['addLayer'] === false)) {
+      this.map.addLayer(layer)
+    }
+    return layer
   }
 
   /**
@@ -757,34 +792,30 @@ class Layer extends mixin(olStyleFactory) {
    * @returns {*}
    */
   createGaoDeLayer (layerName, params) {
-    try {
-      let layer = this.getLayerByLayerName(layerName)
-      if (!(layer instanceof ol.layer.Tile)) {
-        layer = null
-      } else if (this.map && (layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
-        this.map.removeLayer(layer)
-        layer = null
-      }
-      if (!layer && params['create']) {
-        layer = new ol.layer.Tile({
-          layerName: layerName,
-          visible: (params['visible'] === false) ? params['visible'] : true,
-          opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
-          source: new ol.source.GAODE({
-            wrapX: false,
-            opaque: (params['opaque'] === false) ? params['opaque'] : true, // 图层是否不透明（主题相关）
-            url: params['layerUrl'] ? params['layerUrl'] : 'http://online{0-3}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&udt=20170607&scaler=1&p=1',
-            crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined)
-          })
-        })
-      }
-      if (this.map && layer && !(params['addLayer'] === false)) {
-        this.map.addLayer(layer)
-      }
-      return layer
-    } catch (e) {
-      console.log(e)
+    let layer = this.getLayerByLayerName(layerName)
+    if (!(layer instanceof ol.layer.Tile)) {
+      layer = null
+    } else if (this.map && (layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
+      this.map.removeLayer(layer)
+      layer = null
     }
+    if (!layer && params['create']) {
+      layer = new ol.layer.Tile({
+        layerName: layerName,
+        visible: (params['visible'] === false) ? params['visible'] : true,
+        opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
+        source: new ol.source.GAODE({
+          wrapX: false,
+          opaque: (params['opaque'] === false) ? params['opaque'] : true, // 图层是否不透明（主题相关）
+          url: params['layerUrl'] ? params['layerUrl'] : 'http://online{0-3}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&udt=20170607&scaler=1&p=1',
+          crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined)
+        })
+      })
+    }
+    if (this.map && layer && !(params['addLayer'] === false)) {
+      this.map.addLayer(layer)
+    }
+    return layer
   }
 
   /**
@@ -794,34 +825,30 @@ class Layer extends mixin(olStyleFactory) {
    * @returns {*}
    */
   createGoogleLayer (layerName, params) {
-    try {
-      let layer = this.getLayerByLayerName(layerName)
-      if (!(layer instanceof ol.layer.Tile)) {
-        layer = null
-      } else if (this.map && (layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
-        this.map.removeLayer(layer)
-        layer = null
-      }
-      if (!layer && params['create']) {
-        layer = new ol.layer.Tile({
-          layerName: layerName,
-          visible: (params['visible'] === false) ? params['visible'] : true,
-          opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
-          source: new ol.source.GOOGLE({
-            wrapX: false,
-            opaque: (params['opaque'] === false) ? params['opaque'] : true, // 图层是否不透明（主题相关）
-            url: params['layerUrl'] ? params['layerUrl'] : 'http://online{0-3}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&udt=20170607&scaler=1&p=1',
-            crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined)
-          })
-        })
-      }
-      if (this.map && layer && !(params['addLayer'] === false)) {
-        this.map.addLayer(layer)
-      }
-      return layer
-    } catch (e) {
-      console.log(e)
+    let layer = this.getLayerByLayerName(layerName)
+    if (!(layer instanceof ol.layer.Tile)) {
+      layer = null
+    } else if (this.map && (layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
+      this.map.removeLayer(layer)
+      layer = null
     }
+    if (!layer && params['create']) {
+      layer = new ol.layer.Tile({
+        layerName: layerName,
+        visible: (params['visible'] === false) ? params['visible'] : true,
+        opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
+        source: new ol.source.GOOGLE({
+          wrapX: false,
+          opaque: (params['opaque'] === false) ? params['opaque'] : true, // 图层是否不透明（主题相关）
+          url: params['layerUrl'] ? params['layerUrl'] : 'http://online{0-3}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&udt=20170607&scaler=1&p=1',
+          crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined)
+        })
+      })
+    }
+    if (this.map && layer && !(params['addLayer'] === false)) {
+      this.map.addLayer(layer)
+    }
+    return layer
   }
 
   /**
@@ -831,66 +858,62 @@ class Layer extends mixin(olStyleFactory) {
    * @returns {*}
    */
   createMapboxVectorTileLayer (layerName, params) {
-    try {
-      let layer = this.getLayerByLayerName(layerName)
-      if (!(layer instanceof ol.layer.VectorTile)) {
-        layer = null
-      } else if (this.map && (layer instanceof ol.layer.VectorTile) && !(params['addLayer'] === false)) {
-        this.map.removeLayer(layer)
-        layer = null
+    let layer = this.getLayerByLayerName(layerName)
+    if (!(layer instanceof ol.layer.VectorTile)) {
+      layer = null
+    } else if (this.map && (layer instanceof ol.layer.VectorTile) && !(params['addLayer'] === false)) {
+      this.map.removeLayer(layer)
+      layer = null
+    }
+    if (!layer && params && params['layerUrl'] && params['create']) {
+      let tileGrid = null
+      let tileSize = 256
+      if (params['tileSize'] && typeof params['tileSize'] === 'number') {
+        tileSize = params['tileSize']
+      } else if (params['tileGrid'] && params['tileGrid']['tileSize'] && typeof params['tileGrid']['tileSize'] === 'number') {
+        tileSize = params['tileGrid']['tileSize']
       }
-      if (!layer && params && params['layerUrl'] && params['create']) {
-        let tileGrid = null
-        let tileSize = 256
-        if (params['tileSize'] && typeof params['tileSize'] === 'number') {
-          tileSize = params['tileSize']
-        } else if (params['tileGrid'] && params['tileGrid']['tileSize'] && typeof params['tileGrid']['tileSize'] === 'number') {
-          tileSize = params['tileGrid']['tileSize']
-        }
-        let projection = 'EPSG:3857'
-        if (params['projection']) {
-          projection = params['projection']
-        } else if (this.view && this.view instanceof ol.View) {
-          projection = this.view.getProjection().getCode()
-        }
-        if (params['tileGrid']) {
-          /* eslint new-cap: ["error", { "newIsCap": false }] */
-          tileGrid = new ol.tilegrid.createXYZ({
-            tileSize: tileSize,
-            extent: (params['tileGrid']['extent'] ? params['tileGrid']['extent'] : undefined),
-            minZoom: ((params['tileGrid']['minZoom'] && typeof params['tileGrid']['minZoom'] === 'number') ? params['tileGrid']['minZoom'] : 0),
-            maxZoom: ((params['tileGrid']['maxZoom'] && typeof params['tileGrid']['maxZoom'] === 'number') ? params['tileGrid']['maxZoom'] : 22)
-          })
-        }
-        layer = new ol.layer.VectorTile({
-          visible: (params['visible'] === false) ? params['visible'] : true,
-          renderBuffer: ((params['renderBuffer'] && (typeof params['renderBuffer'] === 'number')) ? params['renderBuffer'] : 100),
-          renderMode: (params['renderMode'] ? params['renderMode'] : 'hybrid'), // 渲染方式image，hybrid，vector，性能由高到低
-          extent: (params['extent'] ? params['extent'] : undefined),
-          opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
-          minResolution: ((params['minResolution'] && typeof params['minResolution'] === 'number') ? params['minResolution'] : undefined),
-          maxResolution: ((params['maxResolution'] && typeof params['maxResolution'] === 'number') ? params['maxResolution'] : undefined),
-          preload: ((params['preload'] && typeof params['preload'] === 'number') ? params['preload'] : 0),
-          source: new ol.source.VectorTile({
-            format: new ol.format.MVT(),
-            crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
-            projection: projection,
-            overlaps: (params['overlaps'] ? params['overlaps'] : true),
-            tileGrid: ((tileGrid && tileGrid instanceof ol.tilegrid.TileGrid) ? tileGrid : undefined),
-            tilePixelRatio: ((params['tilePixelRatio'] && typeof params['tilePixelRatio'] === 'number') ? params['tilePixelRatio'] : 1),
-            url: params['layerUrl'],
-            wrapX: false
-          })
-          // style: MapboxStyle.createMapboxStreetsV6Style()
+      let projection = 'EPSG:3857'
+      if (params['projection']) {
+        projection = params['projection']
+      } else if (this.view && this.view instanceof ol.View) {
+        projection = this.view.getProjection().getCode()
+      }
+      if (params['tileGrid']) {
+        /* eslint new-cap: ["error", { "newIsCap": false }] */
+        tileGrid = new ol.tilegrid.createXYZ({
+          tileSize: tileSize,
+          extent: (params['tileGrid']['extent'] ? params['tileGrid']['extent'] : undefined),
+          minZoom: ((params['tileGrid']['minZoom'] && typeof params['tileGrid']['minZoom'] === 'number') ? params['tileGrid']['minZoom'] : 0),
+          maxZoom: ((params['tileGrid']['maxZoom'] && typeof params['tileGrid']['maxZoom'] === 'number') ? params['tileGrid']['maxZoom'] : 22)
         })
       }
-      if (this.map && layer && !(params['addLayer'] === false)) {
-        this.map.addLayer(layer)
-      }
-      return layer
-    } catch (e) {
-      console.log(e)
+      layer = new ol.layer.VectorTile({
+        visible: (params['visible'] === false) ? params['visible'] : true,
+        renderBuffer: ((params['renderBuffer'] && (typeof params['renderBuffer'] === 'number')) ? params['renderBuffer'] : 100),
+        renderMode: (params['renderMode'] ? params['renderMode'] : 'hybrid'), // 渲染方式image，hybrid，vector，性能由高到低
+        extent: (params['extent'] ? params['extent'] : undefined),
+        opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
+        minResolution: ((params['minResolution'] && typeof params['minResolution'] === 'number') ? params['minResolution'] : undefined),
+        maxResolution: ((params['maxResolution'] && typeof params['maxResolution'] === 'number') ? params['maxResolution'] : undefined),
+        preload: ((params['preload'] && typeof params['preload'] === 'number') ? params['preload'] : 0),
+        source: new ol.source.VectorTile({
+          format: new ol.format.MVT(),
+          crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
+          projection: projection,
+          overlaps: (params['overlaps'] ? params['overlaps'] : true),
+          tileGrid: ((tileGrid && tileGrid instanceof ol.tilegrid.TileGrid) ? tileGrid : undefined),
+          tilePixelRatio: ((params['tilePixelRatio'] && typeof params['tilePixelRatio'] === 'number') ? params['tilePixelRatio'] : 1),
+          url: params['layerUrl'],
+          wrapX: false
+        })
+        // style: MapboxStyle.createMapboxStreetsV6Style()
+      })
     }
+    if (this.map && layer && !(params['addLayer'] === false)) {
+      this.map.addLayer(layer)
+    }
+    return layer
   }
 
   /**
@@ -900,55 +923,51 @@ class Layer extends mixin(olStyleFactory) {
    * @private
    */
   _getFormatType (params) {
-    try {
-      let type
-      if (params['format']) {
-        switch (params['format']) {
-          case 'MVT':
-            type = new ol.format.MVT()
-            break
-          case 'GeoJSON':
-            type = new ol.format.GeoJSON()
-            break
-          case 'EsriJSON':
-            type = new ol.format.EsriJSON()
-            break
-          case 'TopoJSON':
-            type = new ol.format.TopoJSON()
-            break
-          case 'IGC':
-            type = new ol.format.IGC()
-            break
-          case 'Polyline':
-            type = new ol.format.Polyline()
-            break
-          case 'WKT':
-            type = new ol.format.WKT()
-            break
-          case 'GMLBase':
-            type = new ol.format.GMLBase()
-            break
-          case 'GPX':
-            type = new ol.format.GPX()
-            break
-          case 'KML':
-            type = new ol.format.KML()
-            break
-          case 'OSMXML':
-            type = new ol.format.OSMXML()
-            break
-          case 'WFS':
-            type = new ol.format.WFS()
-            break
-          case 'WMSGetFeatureInfo':
-            type = new ol.format.WMSGetFeatureInfo()
-            break
-        }
+    let type
+    if (params['format']) {
+      switch (params['format']) {
+        case 'MVT':
+          type = new ol.format.MVT()
+          break
+        case 'GeoJSON':
+          type = new ol.format.GeoJSON()
+          break
+        case 'EsriJSON':
+          type = new ol.format.EsriJSON()
+          break
+        case 'TopoJSON':
+          type = new ol.format.TopoJSON()
+          break
+        case 'IGC':
+          type = new ol.format.IGC()
+          break
+        case 'Polyline':
+          type = new ol.format.Polyline()
+          break
+        case 'WKT':
+          type = new ol.format.WKT()
+          break
+        case 'GMLBase':
+          type = new ol.format.GMLBase()
+          break
+        case 'GPX':
+          type = new ol.format.GPX()
+          break
+        case 'KML':
+          type = new ol.format.KML()
+          break
+        case 'OSMXML':
+          type = new ol.format.OSMXML()
+          break
+        case 'WFS':
+          type = new ol.format.WFS()
+          break
+        case 'WMSGetFeatureInfo':
+          type = new ol.format.WMSGetFeatureInfo()
+          break
       }
-      return type
-    } catch (error) {
-      console.log(error)
     }
+    return type
   }
 
   /**
@@ -958,58 +977,54 @@ class Layer extends mixin(olStyleFactory) {
    * @private
    */
   _getTileGrid (params) {
-    try {
-      let tileGrid
-      if (params['tileGrid']) {
-        let [tileSize, tileSizes] = [256]
-        if (params['tileSize'] && typeof params['tileSize'] === 'number') {
-          tileSize = params['tileSize']
-        } else if (params['tileGrid'] && params['tileGrid']['tileSize'] && typeof params['tileGrid']['tileSize'] === 'number') {
-          tileSize = params['tileGrid']['tileSize']
-        }
-        if (params['tileGrid']['tileSizes'] && params['tileGrid']['tileSizes'].length === params['tileGrid']['resolutions']) {
-          tileSizes = params['tileGrid']['tileSizes']
-        }
-        if (params['tileGrid']['gridType'] === 'XYZ') {
-          /* eslint new-cap: ["error", { "newIsCap": false }] */
-          tileGrid = new ol.tilegrid.createXYZ({
-            tileSize: tileSize,
-            extent: (params['tileGrid']['extent'] ? params['tileGrid']['extent'] : undefined),
-            minZoom: ((params['tileGrid']['minZoom'] && typeof params['tileGrid']['minZoom'] === 'number') ? params['tileGrid']['minZoom'] : 0),
-            maxZoom: ((params['tileGrid']['maxZoom'] && typeof params['tileGrid']['maxZoom'] === 'number') ? params['tileGrid']['maxZoom'] : 22)
-          })
-        } else if (params['tileGrid']['gridType'] === 'WMTS') {
-          tileGrid = new ol.tilegrid.WMTS({
-            sizes: ((params['tileGrid']['sizes'] && Array.isArray(params['tileGrid']['sizes'])) ? params['tileGrid']['sizes'] : undefined),
-            widths: ((params['tileGrid']['widths'] && Array.isArray(params['tileGrid']['widths'])) ? params['tileGrid']['widths'] : undefined),
-            tileSize: tileSize,
-            tileSizes: tileSizes, //  If given, the array length should match the length of the resolutions array
-            resolutions: params['tileGrid']['resolutions'],
-            origin: (params['tileGrid']['origin'] ? params['tileGrid']['origin'] : undefined),
-            origins: (params['tileGrid']['origins'] ? params['tileGrid']['origins'] : undefined),
-            extent: (params['tileGrid']['extent'] ? params['tileGrid']['extent'] : undefined),
-            minZoom: ((params['tileGrid']['minZoom'] && typeof params['tileGrid']['minZoom'] === 'number') ? params['tileGrid']['minZoom'] : 0),
-            matrixIds: params['tileGrid']['matrixIds']
-          })
-        } else {
-          tileGrid = new ol.tilegrid.TileGrid({
-            sizes: ((params['tileGrid']['sizes'] && Array.isArray(params['tileGrid']['sizes'])) ? params['tileGrid']['sizes'] : undefined),
-            widths: ((params['tileGrid']['widths'] && Array.isArray(params['tileGrid']['widths'])) ? params['tileGrid']['widths'] : undefined),
-            tileSize: tileSize,
-            tileSizes: tileSizes, //  If given, the array length should match the length of the resolutions array
-            resolutions: params['tileGrid']['resolutions'],
-            matrixIds: params['tileGrid']['matrixIds'],
-            origin: (params['origin'] ? params['origin'] : undefined),
-            origins: (params['origins'] ? params['origins'] : undefined),
-            extent: (params['tileGrid']['extent'] ? params['tileGrid']['extent'] : undefined),
-            minZoom: ((params['tileGrid']['minZoom'] && typeof params['tileGrid']['minZoom'] === 'number') ? params['tileGrid']['minZoom'] : 0)
-          })
-        }
+    let tileGrid
+    if (params['tileGrid']) {
+      let [tileSize, tileSizes] = [256]
+      if (params['tileSize'] && typeof params['tileSize'] === 'number') {
+        tileSize = params['tileSize']
+      } else if (params['tileGrid'] && params['tileGrid']['tileSize'] && typeof params['tileGrid']['tileSize'] === 'number') {
+        tileSize = params['tileGrid']['tileSize']
       }
-      return tileGrid
-    } catch (error) {
-      console.log(error)
+      if (params['tileGrid']['tileSizes'] && params['tileGrid']['tileSizes'].length === params['tileGrid']['resolutions']) {
+        tileSizes = params['tileGrid']['tileSizes']
+      }
+      if (params['tileGrid']['gridType'] === 'XYZ') {
+        /* eslint new-cap: ["error", { "newIsCap": false }] */
+        tileGrid = new ol.tilegrid.createXYZ({
+          tileSize: tileSize,
+          extent: (params['tileGrid']['extent'] ? params['tileGrid']['extent'] : undefined),
+          minZoom: ((params['tileGrid']['minZoom'] && typeof params['tileGrid']['minZoom'] === 'number') ? params['tileGrid']['minZoom'] : 0),
+          maxZoom: ((params['tileGrid']['maxZoom'] && typeof params['tileGrid']['maxZoom'] === 'number') ? params['tileGrid']['maxZoom'] : 22)
+        })
+      } else if (params['tileGrid']['gridType'] === 'WMTS') {
+        tileGrid = new ol.tilegrid.WMTS({
+          sizes: ((params['tileGrid']['sizes'] && Array.isArray(params['tileGrid']['sizes'])) ? params['tileGrid']['sizes'] : undefined),
+          widths: ((params['tileGrid']['widths'] && Array.isArray(params['tileGrid']['widths'])) ? params['tileGrid']['widths'] : undefined),
+          tileSize: tileSize,
+          tileSizes: tileSizes, //  If given, the array length should match the length of the resolutions array
+          resolutions: params['tileGrid']['resolutions'],
+          origin: (params['tileGrid']['origin'] ? params['tileGrid']['origin'] : undefined),
+          origins: (params['tileGrid']['origins'] ? params['tileGrid']['origins'] : undefined),
+          extent: (params['tileGrid']['extent'] ? params['tileGrid']['extent'] : undefined),
+          minZoom: ((params['tileGrid']['minZoom'] && typeof params['tileGrid']['minZoom'] === 'number') ? params['tileGrid']['minZoom'] : 0),
+          matrixIds: params['tileGrid']['matrixIds']
+        })
+      } else {
+        tileGrid = new ol.tilegrid.TileGrid({
+          sizes: ((params['tileGrid']['sizes'] && Array.isArray(params['tileGrid']['sizes'])) ? params['tileGrid']['sizes'] : undefined),
+          widths: ((params['tileGrid']['widths'] && Array.isArray(params['tileGrid']['widths'])) ? params['tileGrid']['widths'] : undefined),
+          tileSize: tileSize,
+          tileSizes: tileSizes, //  If given, the array length should match the length of the resolutions array
+          resolutions: params['tileGrid']['resolutions'],
+          matrixIds: params['tileGrid']['matrixIds'],
+          origin: (params['origin'] ? params['origin'] : undefined),
+          origins: (params['origins'] ? params['origins'] : undefined),
+          extent: (params['tileGrid']['extent'] ? params['tileGrid']['extent'] : undefined),
+          minZoom: ((params['tileGrid']['minZoom'] && typeof params['tileGrid']['minZoom'] === 'number') ? params['tileGrid']['minZoom'] : 0)
+        })
+      }
     }
+    return tileGrid
   }
 
   /**
@@ -1019,56 +1034,52 @@ class Layer extends mixin(olStyleFactory) {
    * @returns {*}
    */
   createVectorTileLayer (layerName, params) {
-    try {
-      let layer = this.getLayerByLayerName(layerName)
-      if (!(layer instanceof ol.layer.VectorTile)) {
-        layer = null
-      } else if (this.map && (layer instanceof ol.layer.VectorTile) && !(params['addLayer'] === false)) {
-        this.map.removeLayer(layer)
-        layer = null
-      }
-      if (!layer && params && (params['layerUrl'] || params['layerUrls']) && params['create']) {
-        let projection = 'EPSG:3857'
-        if (params['projection']) {
-          projection = params['projection']
-        } else if (this.view && this.view instanceof ol.View) {
-          projection = this.view.getProjection().getCode()
-        }
-        layer = new ol.layer.VectorTile({
-          visible: (params['visible'] === false) ? params['visible'] : true,
-          renderBuffer: ((params['renderBuffer'] && (typeof params['renderBuffer'] === 'number')) ? params['renderBuffer'] : 100),
-          renderMode: (params['renderMode'] ? params['renderMode'] : 'hybrid'), // 渲染方式image，hybrid，vector，性能由高到低
-          extent: (params['extent'] ? params['extent'] : undefined),
-          opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
-          minResolution: ((params['minResolution'] && typeof params['minResolution'] === 'number') ? params['minResolution'] : undefined),
-          maxResolution: ((params['maxResolution'] && typeof params['maxResolution'] === 'number') ? params['maxResolution'] : undefined),
-          preload: ((params['preload'] && typeof params['preload'] === 'number') ? params['preload'] : 0),
-          source: new ol.source.VectorTile({
-            format: this._getFormatType(params),
-            cacheSize: ((params['cacheSize'] && typeof params['cacheSize'] === 'number') ? params['cacheSize'] : 128),
-            crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
-            projection: projection,
-            state: (params['state'] ? params['state'] : undefined), // State of the source, one of 'undefined', 'loading', 'ready' or 'error'.
-            overlaps: (params['overlaps'] ? params['overlaps'] : true),
-            tileClass: ((params['tileClass'] && typeof params['tileClass'] === 'function') ? params['tileClass'] : ol.VectorTile),
-            tileGrid: this._getTileGrid(params),
-            tilePixelRatio: ((params['tilePixelRatio'] && typeof params['tilePixelRatio'] === 'number') ? params['tilePixelRatio'] : 1),
-            url: (params['layerUrl'] ? params['layerUrl'] : undefined),
-            urls: ((params['layerUrls'] && Array.isArray(params['layerUrls']) && params['layerUrls'].length > 0) ? params['layerUrls'] : undefined),
-            tileUrlFunction: ((params['tileUrlFunction'] && typeof params['tileUrlFunction'] === 'function') ? params['tileUrlFunction'] : undefined),
-            tileLoadFunction: ((params['tileLoadFunction'] && typeof params['tileLoadFunction'] === 'function') ? params['tileLoadFunction'] : undefined),
-            wrapX: false
-          }),
-          style: (params['style'] ? params['style'] : undefined)
-        })
-      }
-      if (this.map && layer && !(params['addLayer'] === false)) {
-        this.map.addLayer(layer)
-      }
-      return layer
-    } catch (e) {
-      console.log(e)
+    let layer = this.getLayerByLayerName(layerName)
+    if (!(layer instanceof ol.layer.VectorTile)) {
+      layer = null
+    } else if (this.map && (layer instanceof ol.layer.VectorTile) && !(params['addLayer'] === false)) {
+      this.map.removeLayer(layer)
+      layer = null
     }
+    if (!layer && params && (params['layerUrl'] || params['layerUrls']) && params['create']) {
+      let projection = 'EPSG:3857'
+      if (params['projection']) {
+        projection = params['projection']
+      } else if (this.view && this.view instanceof ol.View) {
+        projection = this.view.getProjection().getCode()
+      }
+      layer = new ol.layer.VectorTile({
+        visible: (params['visible'] === false) ? params['visible'] : true,
+        renderBuffer: ((params['renderBuffer'] && (typeof params['renderBuffer'] === 'number')) ? params['renderBuffer'] : 100),
+        renderMode: (params['renderMode'] ? params['renderMode'] : 'hybrid'), // 渲染方式image，hybrid，vector，性能由高到低
+        extent: (params['extent'] ? params['extent'] : undefined),
+        opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
+        minResolution: ((params['minResolution'] && typeof params['minResolution'] === 'number') ? params['minResolution'] : undefined),
+        maxResolution: ((params['maxResolution'] && typeof params['maxResolution'] === 'number') ? params['maxResolution'] : undefined),
+        preload: ((params['preload'] && typeof params['preload'] === 'number') ? params['preload'] : 0),
+        source: new ol.source.VectorTile({
+          format: this._getFormatType(params),
+          cacheSize: ((params['cacheSize'] && typeof params['cacheSize'] === 'number') ? params['cacheSize'] : 128),
+          crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
+          projection: projection,
+          state: (params['state'] ? params['state'] : undefined), // State of the source, one of 'undefined', 'loading', 'ready' or 'error'.
+          overlaps: (params['overlaps'] ? params['overlaps'] : true),
+          tileClass: ((params['tileClass'] && typeof params['tileClass'] === 'function') ? params['tileClass'] : ol.VectorTile),
+          tileGrid: this._getTileGrid(params),
+          tilePixelRatio: ((params['tilePixelRatio'] && typeof params['tilePixelRatio'] === 'number') ? params['tilePixelRatio'] : 1),
+          url: (params['layerUrl'] ? params['layerUrl'] : undefined),
+          urls: ((params['layerUrls'] && Array.isArray(params['layerUrls']) && params['layerUrls'].length > 0) ? params['layerUrls'] : undefined),
+          tileUrlFunction: ((params['tileUrlFunction'] && typeof params['tileUrlFunction'] === 'function') ? params['tileUrlFunction'] : undefined),
+          tileLoadFunction: ((params['tileLoadFunction'] && typeof params['tileLoadFunction'] === 'function') ? params['tileLoadFunction'] : undefined),
+          wrapX: false
+        }),
+        style: (params['style'] ? params['style'] : undefined)
+      })
+    }
+    if (this.map && layer && !(params['addLayer'] === false)) {
+      this.map.addLayer(layer)
+    }
+    return layer
   }
 
   /**
@@ -1078,31 +1089,27 @@ class Layer extends mixin(olStyleFactory) {
    * @returns {*}
    */
   createImageLayer (layerName, params) {
-    try {
-      let layer = this.getLayerByLayerName(layerName)
-      if (!(layer instanceof ol.layer.Image)) {
-        layer = null
-      } else if (this.map && (layer instanceof ol.layer.Image) && !(params['addLayer'] === false)) {
-        this.map.removeLayer(layer)
-        layer = null
-      }
-      if (!layer && params && params['layerUrl'] && params['create']) {
-        let source = this.getImagesSource(params)
-        layer = new ol.layer.Image({
-          layerName: layerName,
-          extent: (params['extent'] ? params['extent'] : undefined),
-          visible: (params['visible'] === false) ? params['visible'] : true,
-          opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
-          source: source
-        })
-      }
-      if (this.map && layer && !(params['addLayer'] === false)) {
-        this.map.addLayer(layer)
-      }
-      return layer
-    } catch (e) {
-      console.log(e)
+    let layer = this.getLayerByLayerName(layerName)
+    if (!(layer instanceof ol.layer.Image)) {
+      layer = null
+    } else if (this.map && (layer instanceof ol.layer.Image) && !(params['addLayer'] === false)) {
+      this.map.removeLayer(layer)
+      layer = null
     }
+    if (!layer && params && params['layerUrl'] && params['create']) {
+      let source = this.getImagesSource(params)
+      layer = new ol.layer.Image({
+        layerName: layerName,
+        extent: (params['extent'] ? params['extent'] : undefined),
+        visible: (params['visible'] === false) ? params['visible'] : true,
+        opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
+        source: source
+      })
+    }
+    if (this.map && layer && !(params['addLayer'] === false)) {
+      this.map.addLayer(layer)
+    }
+    return layer
   }
 
   /**
@@ -1208,7 +1215,66 @@ class Layer extends mixin(olStyleFactory) {
     if (this.map) {
       let layer = this.getLayerByLayerName(layerName)
       if (layer && !layer.get('isBaseLayer')) {
-        this.map.removeLayer(layer)
+        this.removeLayer(layer)
+      }
+    }
+  }
+
+  /**
+   * 通过图层数组移除图层
+   * @param layerNames
+   */
+  removeLayerByLayerNames (layerNames) {
+    if (this.map && Array.isArray(layerNames) && layerNames.length > 0) {
+      layerNames.forEach(layerName => {
+        this.removeLayerByLayerName(layerName)
+      })
+    }
+  }
+
+  /**
+   * 通过键名键值移除图层
+   * @param key
+   * @param value
+   */
+  removeLayerByKeyValue (key, value) {
+    if (this.map) {
+      let layer = this.getLayerByKeyValue(key, value)
+      if (layer && !layer.get('isBaseLayer')) {
+        this.removeLayer(layer)
+      }
+    }
+  }
+
+  /**
+   * 移除多个键值的图层
+   * @param key
+   * @param values
+   */
+  removeLayerByKeyValues (key, values) {
+    if (this.map && key && Array.isArray(values) && values.length > 0) {
+      values.forEach(value => {
+        if (value) {
+          this.removeLayerByKeyValue(key, value)
+        }
+      })
+    }
+  }
+
+  /**
+   * 通过键名键值移除一类图层
+   * @param key
+   * @param value
+   */
+  removeLayersByKeyValue (key, value) {
+    if (this.map) {
+      let layers = this.getLayersArrayByKeyValue(key, value)
+      if (layers && layers.length > 0) {
+        layers.forEach(layer => {
+          if (layer && !layer.get('isBaseLayer')) {
+            this.removeLayer(layer)
+          }
+        })
       }
     }
   }
@@ -1221,7 +1287,7 @@ class Layer extends mixin(olStyleFactory) {
     if (this.map) {
       let layer = this.getTitleLayerByLayerName(layerName)
       if (layer && layer instanceof ol.layer.Tile) {
-        this.map.removeLayer(layer)
+        this.removeLayer(layer)
       }
     }
   }
@@ -1234,70 +1300,9 @@ class Layer extends mixin(olStyleFactory) {
       let layers = this.map.getLayers().getArray()
       layers.forEach(layer => {
         if (!layer.get('isBaseLayer')) {
-          this.map.removeLayer(layer)
+          this.removeLayer(layer)
         }
       })
-    }
-  }
-
-  /**
-   * 调整当前要素范围
-   * @param extent
-   * @param params
-   * @returns {*}
-   */
-  adjustExtent (extent, params) {
-    if (this.map) {
-      params = params || {}
-      let size = ol.extent.getSize(extent)
-      let adjust = typeof params['adjust'] === 'number' ? params['adjust'] : 0.2
-      let minWidth = typeof params['minWidth'] === 'number' ? params['minWidth'] : 0.05
-      let minHeight = typeof params['minHeight'] === 'number' ? params['minHeight'] : 0.05
-      if (size[0] <= minWidth || size[1] <= minHeight) {
-        let bleft = ol.extent.getBottomLeft(extent) // 获取xmin,ymin
-        let tright = ol.extent.getTopRight(extent) // 获取xmax,ymax
-        let xmin = bleft[0] - adjust
-        let ymin = bleft[1] - adjust
-        let xmax = tright[0] + adjust
-        let ymax = tright[1] + adjust
-        extent = ol.extent.buffer([xmin, ymin, xmax, ymax], adjust)
-      }
-      return extent
-    }
-  }
-
-  /**
-   * 缩放到当前范围
-   * @param extent
-   * @param isanimation
-   * @param duration
-   */
-  zoomToExtent (extent, isanimation, duration) {
-    if (this.map) {
-      let view = this.map.getView()
-      let size = this.map.getSize()
-      /**
-       *  @type {ol.Coordinate} center The center of the view.
-       */
-      let center = ol.extent.getCenter(extent)
-      if (!isanimation) {
-        view.fit(extent, size, {
-          padding: [350, 200, 200, 350]
-        })
-        view.setCenter(center)
-      } else {
-        if (!duration) {
-          duration = 800
-          view.animate({
-            center: center,
-            duration: duration
-          })
-          view.fit(extent, {
-            size: size,
-            duration: duration
-          })
-        }
-      }
     }
   }
 }

@@ -156,3 +156,5 @@ ol.interaction.PointerEvents.prototype.isMoveSupported = function (feature) {
   }
   return re_
 }
+
+export default ol.interaction.PointerEvents

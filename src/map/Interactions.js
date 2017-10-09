@@ -3,9 +3,9 @@
  * @desc 交互工具相关
  */
 import ol from 'openlayers'
-import { config } from '../utils/config'
+import config from '../utils/config'
 import * as utils from '../utils/utils'
-import '../interaction/PointerEvents'
+import PointerEvents from '../interaction/PointerEvents'
 class _Interactions {
   _addInteractions (params) {
     let options = Object.assign(config.INTERACTIONS, (params || {}))
@@ -26,9 +26,7 @@ class _Interactions {
    * @param interactions
    */
   addDoubleClickZoom (options = {}, interactions) {
-    if (!interactions) {
-      interactions = this.map.getInteractions()
-    }
+    interactions = interactions || this.map.getInteractions()
     interactions.push(new ol.interaction.DoubleClickZoom({
       delta: options.zoomDelta,
       duration: options.zoomDuration
@@ -41,9 +39,7 @@ class _Interactions {
    * @param interactions
    */
   addMouseWheelZoom (options = {}, interactions) {
-    if (!interactions) {
-      interactions = this.map.getInteractions()
-    }
+    interactions = interactions || this.map.getInteractions()
     interactions.push(new ol.interaction.MouseWheelZoom({
       constrainResolution: options.constrainResolution,
       duration: options.zoomDuration
@@ -56,9 +52,7 @@ class _Interactions {
    * @param interactions
    */
   addKeyboard (options = {}, interactions) {
-    if (!interactions) {
-      interactions = this.map.getInteractions()
-    }
+    interactions = interactions || this.map.getInteractions()
     interactions.push(new ol.interaction.KeyboardPan())
     interactions.push(new ol.interaction.KeyboardZoom({
       delta: options.zoomDelta,
@@ -72,9 +66,7 @@ class _Interactions {
    * @param interactions
    */
   addAltShiftDragRotate (options = {}, interactions) {
-    if (!interactions) {
-      interactions = this.map.getInteractions()
-    }
+    interactions = interactions || this.map.getInteractions()
     interactions.push(new ol.interaction.DragRotate())
   }
 
@@ -84,9 +76,7 @@ class _Interactions {
    * @param interactions
    */
   addShiftDragZoom (options = {}, interactions) {
-    if (!interactions) {
-      interactions = this.map.getInteractions()
-    }
+    interactions = interactions || this.map.getInteractions()
     interactions.push(new ol.interaction.DragZoom({
       duration: options.zoomDuration
     }))
@@ -98,9 +88,7 @@ class _Interactions {
    * @param interactions
    */
   addDragPan (options = {}, interactions) {
-    if (!interactions) {
-      interactions = this.map.getInteractions()
-    }
+    interactions = interactions || this.map.getInteractions()
     interactions.push(new ol.interaction.DragPan({
       kinetic: (new ol.Kinetic(-0.005, 0.05, 100))
     }))
@@ -112,9 +100,7 @@ class _Interactions {
    * @param interactions
    */
   addPinchRotate (options = {}, interactions) {
-    if (!interactions) {
-      interactions = this.map.getInteractions()
-    }
+    interactions = interactions || this.map.getInteractions()
     interactions.push(new ol.interaction.PinchRotate())
   }
 
@@ -124,9 +110,7 @@ class _Interactions {
    * @param interactions
    */
   addPinchZoom (options = {}, interactions) {
-    if (!interactions) {
-      interactions = this.map.getInteractions()
-    }
+    interactions = interactions || this.map.getInteractions()
     interactions.push(new ol.interaction.PinchZoom({
       constrainResolution: options.constrainResolution,
       duration: options.zoomDuration
@@ -138,11 +122,9 @@ class _Interactions {
    * @param interactions
    * @private
    */
-  addPointEvents (interactions) {
-    if (!interactions) {
-      interactions = this.map.getInteractions()
-    }
-    interactions.push(new ol.interaction.PointerEvents())
+  addPointerEvents (interactions) {
+    interactions = interactions || this.map.getInteractions()
+    interactions.push(new PointerEvents())
   }
 }
 export default _Interactions

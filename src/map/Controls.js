@@ -52,9 +52,7 @@ class _Controls {
    * @private
    */
   addZoom (options = {}, controls) {
-    if (!controls) {
-      controls = this.map.getControls()
-    }
+    controls = controls || this.map.getControls()
     controls.push(new ol.control.ZoomMenu({
       className: options['className'],
       duration: options['duration'],
@@ -70,9 +68,7 @@ class _Controls {
    * @private
    */
   addRotate (options = {}, controls) {
-    if (!controls) {
-      controls = this.map.getControls()
-    }
+    controls = controls || this.map.getControls()
     controls.push(new ol.control.RotateControl({
       className: options['className'],
       duration: options['duration'],
@@ -89,9 +85,7 @@ class _Controls {
    * @private
    */
   addAttribution (options, controls) {
-    if (!controls) {
-      controls = this.map.getControls()
-    }
+    controls = controls || this.map.getControls()
     controls.push(new ol.control.Attribution({
       className: (options['className'] ? options['className'] : 'ol-attribution'),
       label: (options['label'] ? options['label'] : 'i'),
@@ -110,9 +104,7 @@ class _Controls {
    * @private
    */
   addScaleLine (options, controls) {
-    if (!controls) {
-      controls = this.map.getControls()
-    }
+    controls = controls || this.map.getControls()
     controls.push(new ol.control.ScaleLine({
       className: (options['className'] ? options['className'] : 'ol-scale-line'),
       minWidth: (options['minWidth'] && typeof options['minWidth'] === 'number' ? options['minWidth'] : 64),
@@ -128,9 +120,7 @@ class _Controls {
    * @param controls
    */
   addFullScreen (options = {}, controls) {
-    if (!controls) {
-      controls = this.map.getControls()
-    }
+    controls = controls || this.map.getControls()
     controls.push(new ol.control.FullScreenMenu({
       className: options['className'],
       label: options['label'],
@@ -147,9 +137,7 @@ class _Controls {
    * @param controls
    */
   addMousePosition (options, controls) {
-    if (!controls) {
-      controls = this.map.getControls()
-    }
+    controls = controls || this.map.getControls()
     controls.push(new ol.control.MousePosition({
       className: (options['className'] ? options['className'] : 'ol-mouse-position'),
       coordinateFormat: (options['coordinateFormat'] ? options['coordinateFormat'] : undefined),
@@ -165,9 +153,7 @@ class _Controls {
    * @param controls
    */
   addZoomSlider (options, controls) {
-    if (!controls) {
-      controls = this.map.getControls()
-    }
+    controls = controls || this.map.getControls()
     let zoomSlider = new ol.control.BZoomSlider({
       duration: options['duration'],
       pixelDelta: options['pixelDelta'],
@@ -183,9 +169,7 @@ class _Controls {
    * @param controls
    */
   addZoomToExtent (options, controls) {
-    if (!controls) {
-      controls = this.map.getControls()
-    }
+    controls = controls || this.map.getControls()
     controls.push(new ol.control.ZoomToExtent({
       className: (options['className'] ? options['className'] : 'ol-zoom-extent'),
       label: (options['label'] ? options['label'] : 'E'),
@@ -201,9 +185,7 @@ class _Controls {
    * @private
    */
   addGeolocation (options, controls) {
-    if (!controls) {
-      controls = this.map.getControls()
-    }
+    controls = controls || this.map.getControls()
     controls.push(new ol.control.Geolocation({
       className: (options['className'] ? options['className'] : 'hmap-geolocation'),
       target: (options['target'] ? options['target'] : undefined)
@@ -217,9 +199,7 @@ class _Controls {
    * @private
    */
   addLoading (options, controls) {
-    if (!controls) {
-      controls = this.map.getControls()
-    }
+    controls = controls || this.map.getControls()
     let loading_ = new ol.control.Loading({
       className: (options['className'] ? options['className'] : 'hmap-loading-panel'),
       widget: (options['widget'] ? options['widget'] : 'animatedGif'),
@@ -237,11 +217,9 @@ class _Controls {
    * @private
    */
   addCompareLayer (beforeMap, afterMap, options = {}, controls) {
-    if (!controls) {
-      controls = this.map.getControls()
-    }
-    let loading_ = new ol.control.CompareLayer(beforeMap, afterMap, options)
-    controls.push(loading_)
+    controls = controls || this.map.getControls()
+    let _compareLayer = new ol.control.CompareLayer(beforeMap, afterMap, options)
+    controls.push(_compareLayer)
   }
 
   /**
@@ -251,11 +229,9 @@ class _Controls {
    * @private
    */
   addContextMenu (options = {}, controls) {
-    if (!controls) {
-      controls = this.map.getControls()
-    }
-    let loading_ = new ol.control.ContextMenu(options)
-    controls.push(loading_)
+    controls = controls || this.map.getControls()
+    let ContextMenu = new ol.control.ContextMenu(options)
+    controls.push(ContextMenu)
   }
 
   /**
@@ -265,11 +241,9 @@ class _Controls {
    * @private
    */
   addLayerSwitcher (options = {}, controls) {
-    if (!controls) {
-      controls = this.map.getControls()
-    }
-    let loading_ = new ol.control.LayerSwitcher(options)
-    controls.push(loading_)
+    controls = controls || this.map.getControls()
+    let Switcher = new ol.control.LayerSwitcher(options)
+    controls.push(Switcher)
   }
 }
 export default _Controls
