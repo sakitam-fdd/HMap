@@ -16,7 +16,7 @@ import Observable from 'observable-emit'
 // inter
 import * as supported from './utils/supported'
 import { logo } from './assets/index'
-import {config} from './utils/config'
+import config from './utils/config'
 import Layer from './layer/Layer'
 import _Map from './map/Map'
 import _View from './map/View'
@@ -28,9 +28,8 @@ import Overlay from './feature/overlay'
 import { isObject } from './utils/utils'
 import { EVENT_TYPE, INTERNAL_KEY } from './constants'
 class HMap extends mixin(
-  _Map, Observable, _View,
-  _BaseLayers, _Controls,
-  _Interactions, Layer,
+  _Map, Observable, _View, _BaseLayers,
+  _Controls, _Interactions, Layer,
   Feature, Overlay
 ) {
   constructor () {
@@ -171,7 +170,7 @@ class HMap extends mixin(
        */
       this.view_ = this._addView(this.options_['view'])
       let logo = this._addCopyRight(this.options_['logo'])
-      let layers = this.addBaseLayers(this.options_['baseLayers'], this.options_['view'])
+      let layers = this.addBaseLayers(this.options_['baseLayers'])
       let interactions = this._addInteractions(this.options_['interactions'])
       let controls = this._addControls(this.options_['controls'])
       /**
@@ -464,7 +463,7 @@ class HMap extends mixin(
     let logo = false
     if (params && typeof params !== 'object') {
       logo = {
-        href: 'https://sakitam-fdd.github.io/HMap/',
+        href: config.INDEX_URL,
         src: this.logo_
       }
     } else if (typeof params === 'object') {

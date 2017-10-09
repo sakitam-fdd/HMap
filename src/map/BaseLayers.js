@@ -3,53 +3,21 @@
  * @desc 底图相关处理
  */
 import ol from 'openlayers'
-class BaseLayers {
-
+import {isObject} from '../utils/utils'
+import config from '../utils/config'
+import Layer from '../layer/Layer'
+class BaseLayers extends Layer {
+  constructor () {
+    super()
+    this.baseLayres_ = []
+  }
   /**
    * 添加底图
    * @param params
-   * @param view
    * @returns {[*]}
    */
-  addBaseLayers (params, view) {
-    let options = params || []
-    let _view = view || {}
-    if (_view) {
-      /**
-       * 投影
-       * @type {ol.proj.Projection}
-       */
-      this.projection = ol.proj.get((_view['projection'] ? _view.projection : 'EPSG:3857'))
-      /**
-       * 显示范围
-       */
-      this.fullExtent = _view['extent'] ? _view.extent : undefined
-      /**
-       * 投影范围
-       */
-      if (this.fullExtent) {
-        this.projection.setExtent(this.fullExtent)
-      }
-      /**
-       * 瓦片原点
-       * @desc 设置瓦片原点的目的是因为部分地图切图原点不是[0,0]
-       * 为保证正确加载，所以必须设置瓦片原点。
-       */
-      this.origin = _view.origin
-      /**
-       * 瓦片大小
-       * @desc 切片大小，典型值有256， 512.
-       * 默认256
-       */
-      this.tileSize = _view.tileSize
-      /**
-       * 分辨率
-       * @type Array
-       */
-      this.resolutions = _view['resolutions']
-    }
-
-    if (!options || !Array.isArray(options) || options.length <= 0) {
+  addBaseLayers (params = []) {
+    if (!params || !Array.isArray(params) || params.length <= 0) {
       return [new ol.layer.Group({
         layers: [new ol.layer.Tile({
           source: new ol.source.OSM()
@@ -68,47 +36,15 @@ class BaseLayers {
    * 获取图层组
    * @returns {ol.layer.Group}
    */
-  _getBaseLayerGroup (layerConfig) {
+  _getBaseLayerGroup (layerConfigs) {
     let [layers, labelLayers, _layers, labelLayersConfig] = [[], [], [], []]
-    if (layerConfig && Array.isArray(layerConfig) && layerConfig.length > 0) {
-      layerConfig.forEach(config => {
-        if (config['layerName'] && config['layerUrl'] && config['layerType']) {
-          let layer = null
-          switch (config['layerType']) {
-            case 'TileXYZ':
-              layer = this._getXYZLayer(config)
-              break
-            case 'TitleWMTS':
-              layer = this._getWMTSLayer(config)
-              break
-            case 'OSM':
-              layer = this._getOSMLayer(config)
-              break
-            case 'ImageWMS':
-              layer = this._getImageWMSLayer(config)
-              break
-            case 'TileWMS':
-              layer = this._getTileWMSLayer(config)
-              break
-            case 'MapboxVectorTile':
-              layer = this._getMapboxVectorTileLayer(config)
-              break
-            case 'TileArcGISRest':
-              layer = this._getTileArcGISRestLayer(config)
-              break
-            case 'BaiDu':
-              layer = this._getBaiDuLayer(config)
-              break
-            case 'GaoDe':
-              layer = this._getGaoDeLayer(config)
-              break
-            case 'Google':
-              layer = this._getGaoDeLayer(config)
-              break
-          }
+    if (layerConfigs && Array.isArray(layerConfigs) && layerConfigs.length > 0) {
+      layerConfigs.forEach(_config => {
+        if (_config['layerName'] && _config['layerUrl'] && _config['layerType']) {
+          let layer = this._getLayer(_config)
           if (layer) layers.push(layer)
-          if (config['label']) {
-            labelLayersConfig.push(config['label'])
+          if (_config['label']) {
+            labelLayersConfig.push(_config['label'])
           }
         }
       })
@@ -135,39 +71,7 @@ class BaseLayers {
       [...(_labelLayersLayerNames)].forEach(layerName => {
         labelLayersConfig.every(configM => {
           if (configM && configM['layerName'] === layerName) {
-            let labelLayer = null
-            switch (configM['layerType']) {
-              case 'TileXYZ':
-                labelLayer = this._getXYZLayer(configM)
-                break
-              case 'OSM':
-                labelLayer = this._getOSMLayer(configM)
-                break
-              case 'TitleWMTS':
-                labelLayer = this._getWMTSLayer(configM)
-                break
-              case 'ImageWMS':
-                labelLayer = this._getImageWMSLayer(configM)
-                break
-              case 'TileWMS':
-                labelLayer = this._getTileWMSLayer(configM)
-                break
-              case 'MapboxVectorTile':
-                labelLayer = this._getMapboxVectorTileLayer(configM)
-                break
-              case 'TileArcGISRest':
-                labelLayer = this._getTileArcGISRestLayer(configM)
-                break
-              case 'BaiDu':
-                labelLayer = this._getBaiDuLayer(configM)
-                break
-              case 'GaoDe':
-                labelLayer = this._getGaoDeLayer(configM)
-                break
-              case 'Google':
-                labelLayer = this._getGaoDeLayer(configM)
-                break
-            }
+            let labelLayer = this._getLayer(configM)
             if (labelLayer) labelLayers.push(labelLayer)
             return false
           }
@@ -179,249 +83,205 @@ class BaseLayers {
   }
 
   /**
+   * 获取图层
+   * @param layerConfig
+   * @returns {*}
+   * @private
+   */
+  _getLayer (layerConfig) {
+    switch (layerConfig['layerType']) {
+      case 'TileXYZ':
+        return (this._getXYZLayer(layerConfig))
+      case 'TitleWMTS':
+        return (this._getWMTSLayer(layerConfig))
+      case 'OSM':
+        return (this._getOSMLayer(layerConfig))
+      case 'ImageWMS':
+        return (this._getImageWMSLayer(layerConfig))
+      case 'TileWMS':
+        return (this._getTileWMSLayer(layerConfig))
+      case 'MapboxVectorTile':
+        return (this._getMapboxVectorTileLayer(layerConfig))
+      case 'TileArcGISRest':
+        return (this._getTileArcGISRestLayer(layerConfig))
+      case 'BaiDu':
+        return (this._getBaiDuLayer(layerConfig))
+      case 'GaoDe':
+        return (this._getGaoDeLayer(layerConfig))
+      case 'Google':
+        return (this._getGaoDeLayer(layerConfig))
+      default:
+        throw new Error('不支持的图层类型！')
+    }
+  }
+
+  /**
    * 获取标准XYZ图层
-   * @param config
+   * @param layerConfig
    * @returns {ol.layer.Tile}
    * @private
    */
-  _getXYZLayer (config) {
-    try {
-      let layerName = config['layerName'] ? config.layerName : ''
-      config['addLayer'] = false
-      config['create'] = true
-      if (!config.hasOwnProperty('tileGrid')) {
-        config['tileGrid'] = {}
-        config['tileGrid']['tileSize'] = this.tileSize
-        config['tileGrid']['origin'] = this.origin
-        config['tileGrid']['extent'] = this.fullExtent
-        config['tileGrid']['resolutions'] = this.resolutions
-      }
-      let baseLayer = this.createXYZLayer(layerName, config)
-      if (baseLayer && baseLayer instanceof ol.layer.Tile) {
-        baseLayer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
-        baseLayer.set('isBaseLayer', true)
-        baseLayer.set('alias', (config['alias'] ? config['alias'] : ''))
-        baseLayer.getSource().setAttributions(this._getAttribution(config['attribution']))
-      }
-      return baseLayer
-    } catch (e) {
-      console.log(e)
+  _getXYZLayer (layerConfig) {
+    let layerName = layerConfig['layerName'] || ''
+    layerConfig['addLayer'] = false
+    layerConfig['create'] = true
+    if (!layerConfig.hasOwnProperty('tileGrid')) {
+      layerConfig['tileGrid'] = {}
     }
+    let layer = this.createXYZLayer(layerName, config)
+    layer = this._addLayerAlias(layer, layerConfig)
+    return layer
   }
 
   /**
    * 加载开源OSM图层
-   * @param config
+   * @param layerConfig
    * @returns {ol.layer.Tile}
    * @private
    */
-  _getOSMLayer (config) {
-    try {
-      let layerName = config['layerName'] ? config.layerName : ''
-      config['addLayer'] = false
-      config['create'] = true
-      let baseLayer = this.createOSMLayer(layerName, config)
-      if (baseLayer && baseLayer instanceof ol.layer.Tile) {
-        baseLayer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
-        baseLayer.set('isBaseLayer', true)
-        baseLayer.set('alias', (config['alias'] ? config['alias'] : ''))
-        baseLayer.getSource().setAttributions(this._getAttribution(config['attribution']))
-      }
-      return baseLayer
-    } catch (e) {
-      console.log(e)
-    }
+  _getOSMLayer (layerConfig) {
+    let layerName = layerConfig['layerName'] || ''
+    layerConfig['addLayer'] = false
+    layerConfig['create'] = true
+    let layer = this.createOSMLayer(layerName, layerConfig)
+    layer = this._addLayerAlias(layer, layerConfig)
+    return layer
   }
 
   /**
    * 加载百度图层
-   * @param config
+   * @param layerConfig
    * @returns {*}
    * @private
    */
-  _getBaiDuLayer (config) {
-    try {
-      let layerName = config['layerName'] ? config.layerName : ''
-      config['addLayer'] = false
-      config['create'] = true
-      let baseLayer = this.createBaiDuLayer(layerName, config)
-      if (baseLayer && baseLayer instanceof ol.layer.Tile) {
-        baseLayer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
-        baseLayer.set('isBaseLayer', true)
-        baseLayer.set('alias', (config['alias'] ? config['alias'] : ''))
-        baseLayer.getSource().setAttributions(this._getAttribution(config['attribution']))
-      }
-      return baseLayer
-    } catch (e) {
-      console.log(e)
-    }
+  _getBaiDuLayer (layerConfig) {
+    let layerName = layerConfig['layerName'] || ''
+    layerConfig['addLayer'] = false
+    layerConfig['create'] = true
+    let layer = this.createBaiDuLayer(layerName, layerConfig)
+    layer = this._addLayerAlias(layer, layerConfig)
+    return layer
   }
 
   /**
    * 加载高德图层
-   * @param config
+   * @param layerConfig
    * @returns {*}
    * @private
    */
-  _getGaoDeLayer (config) {
-    try {
-      let layerName = config['layerName'] ? config.layerName : ''
-      config['addLayer'] = false
-      config['create'] = true
-      let baseLayer = this.createGaoDeLayer(layerName, config)
-      if (baseLayer && baseLayer instanceof ol.layer.Tile) {
-        baseLayer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
-        baseLayer.set('isBaseLayer', true)
-        baseLayer.set('alias', (config['alias'] ? config['alias'] : ''))
-        baseLayer.getSource().setAttributions(this._getAttribution(config['attribution']))
-      }
-      return baseLayer
-    } catch (e) {
-      console.log(e)
-    }
+  _getGaoDeLayer (layerConfig) {
+    let layerName = layerConfig['layerName'] || ''
+    layerConfig['addLayer'] = false
+    layerConfig['create'] = true
+    let layer = this.createGaoDeLayer(layerName, layerConfig)
+    layer = this._addLayerAlias(layer, layerConfig)
+    return layer
   }
 
   /**
    * 加载高德图层
-   * @param config
+   * @param layerConfig
    * @returns {*}
    * @private
    */
-  _getGoogleLayer (config) {
-    try {
-      let layerName = config['layerName'] ? config.layerName : ''
-      config['addLayer'] = false
-      config['create'] = true
-      let baseLayer = this.createGoogleLayer(layerName, config)
-      if (baseLayer && baseLayer instanceof ol.layer.Tile) {
-        baseLayer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
-        baseLayer.set('isBaseLayer', true)
-        baseLayer.set('alias', (config['alias'] ? config['alias'] : ''))
-        baseLayer.getSource().setAttributions(this._getAttribution(config['attribution']))
-      }
-      return baseLayer
-    } catch (e) {
-      console.log(e)
-    }
+  _getGoogleLayer (layerConfig) {
+    let layerName = layerConfig['layerName'] || ''
+    layerConfig['addLayer'] = false
+    layerConfig['create'] = true
+    let layer = this.createGoogleLayer(layerName, layerConfig)
+    layer = this._addLayerAlias(layer, layerConfig)
+    return layer
   }
 
   /**
    * 获取标准WMTS图层
-   * @param config
+   * @param layerConfig
    * @returns {ol.layer.Tile}
    * @private
    */
-  _getWMTSLayer (config) {
-    try {
-      let layerName = config['layerName'] ? config.layerName : ''
-      config['addLayer'] = false
-      config['create'] = true
-      let baseLayer = this.createWMTSLayer(layerName, config)
-      if (baseLayer && baseLayer instanceof ol.layer.Tile) {
-        baseLayer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
-        baseLayer.set('isBaseLayer', true)
-        baseLayer.set('alias', (config['alias'] ? config['alias'] : ''))
-        baseLayer.getSource().setAttributions(this._getAttribution(config['attribution']))
-      }
-      return baseLayer
-    } catch (e) {
-      console.log(e)
-    }
+  _getWMTSLayer (layerConfig) {
+    let layerName = layerConfig['layerName'] || ''
+    layerConfig['addLayer'] = false
+    layerConfig['create'] = true
+    let layer = this.createWMTSLayer(layerName, layerConfig)
+    layer = this._addLayerAlias(layer, layerConfig)
+    return layer
   }
 
   /**
    * Images WMS 方式加载
-   * @param config
+   * @param layerConfig
    * @private
    */
-  _getImageWMSLayer (config) {
-    try {
-      let layerName = config['layerName'] ? config.layerName : ''
-      config['addLayer'] = false
-      config['create'] = true
-      let layer = this.createImageWMSLayer(layerName, config)
-      if (layer && layer instanceof ol.layer.Image) {
-        layer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
-        layer.set('isBaseLayer', true)
-        layer.set('alias', (config['alias'] ? config['alias'] : ''))
-        layer.getSource().setAttributions(this._getAttribution(config['attribution']))
-      }
-      return layer
-    } catch (e) {
-      console.log(e)
-    }
+  _getImageWMSLayer (layerConfig) {
+    let layerName = layerConfig['layerName'] || ''
+    layerConfig['addLayer'] = false
+    layerConfig['create'] = true
+    let layer = this.createImageWMSLayer(layerName, layerConfig)
+    layer = this._addLayerAlias(layer, layerConfig)
+    return layer
   }
 
   /**
    * Title WMS 方式加载
-   * @param config
+   * @param layerConfig
    * @returns {ol.layer.Tile}
    * @private
    */
-  _getTileWMSLayer (config) {
-    try {
-      let layerName = config['layerName'] ? config.layerName : ''
-      config['addLayer'] = false
-      config['create'] = true
-      let layer = this.createTileWMSLayer(layerName, config)
-      if (layer && layer instanceof ol.layer.Tile) {
-        layer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
-        layer.set('isBaseLayer', true)
-        layer.set('alias', (config['alias'] ? config['alias'] : ''))
-        layer.getSource().setAttributions(this._getAttribution(config['attribution']))
-      }
-      return layer
-    } catch (e) {
-      console.log(e)
-    }
+  _getTileWMSLayer (layerConfig) {
+    let layerName = layerConfig['layerName'] || ''
+    layerConfig['addLayer'] = false
+    layerConfig['create'] = true
+    let layer = this.createTileWMSLayer(layerName, layerConfig)
+    layer = this._addLayerAlias(layer, layerConfig)
+    return layer
   }
 
   /**
    * 添加MapBox的矢量图层
-   * @param config
+   * @param layerConfig
    * @returns {*}
    * @private
    */
-  _getMapboxVectorTileLayer (config) {
-    try {
-      let layerName = config['layerName'] ? config.layerName : ''
-      config['addLayer'] = false
-      config['create'] = true
-      let layer = this.createMapboxVectorTileLayer(layerName, config)
-      if (layer && layer instanceof ol.layer.VectorTile) {
-        layer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
-        layer.set('isBaseLayer', true)
-        layer.set('alias', (config['alias'] ? config['alias'] : ''))
-        layer.getSource().setAttributions(this._getAttribution(config['attribution']))
-      }
-      return layer
-    } catch (e) {
-      console.log(e)
-    }
+  _getMapboxVectorTileLayer (layerConfig) {
+    let layerName = layerConfig['layerName'] || ''
+    layerConfig['addLayer'] = false
+    layerConfig['create'] = true
+    let layer = this.createMapboxVectorTileLayer(layerName, layerConfig)
+    layer = this._addLayerAlias(layer, layerConfig)
+    return layer
   }
 
   /**
    * 创建arcgis矢量渲染图层
-   * @param config
+   * @param layerConfig
    * @returns {*}
    * @private
    */
-  _getTileArcGISRestLayer (config) {
-    try {
-      let layerName = config['layerName'] ? config.layerName : ''
-      config['addLayer'] = false
-      config['create'] = true
-      let layer = this.createTitleLayer(layerName, config)
-      if (layer && layer instanceof ol.layer.VectorTile) {
-        layer.set('isDefault', ((config['isDefault'] === true) ? config['isDefault'] : false))
-        layer.set('isBaseLayer', true)
-        layer.set('alias', (config['alias'] ? config['alias'] : ''))
-        layer.getSource().setAttributions(this._getAttribution(config['attribution']))
-      }
-      return layer
-    } catch (e) {
-      console.log(e)
-    }
+  _getTileArcGISRestLayer (layerConfig) {
+    let layerName = layerConfig['layerName'] || ''
+    layerConfig['addLayer'] = false
+    layerConfig['create'] = true
+    let layer = this.createTitleLayer(layerName, layerConfig)
+    layer = this._addLayerAlias(layer, layerConfig)
+    return layer
+  }
+
+  /**
+   * 添加底图标识
+   * @param layer
+   * @param layerConfig
+   * @returns {*}
+   * @private
+   */
+  _addLayerAlias (layer, layerConfig) {
+    const isDefault = (layerConfig['isDefault'] === true) ? layerConfig['isDefault'] : false
+    layer.set('isDefault', isDefault)
+    layer.set('isBaseLayer', true)
+    layer.setVisible(isDefault)
+    layer.set('alias', (layerConfig['alias'] ? layerConfig['alias'] : ''))
+    layer.getSource().setAttributions(this._getAttribution(layerConfig['attribution']))
+    return layer
   }
 
   /**
@@ -430,28 +290,22 @@ class BaseLayers {
    * @private
    */
   _getAttribution (params) {
-    try {
-      let attribution = null
-      if (params && typeof params !== 'object') {
-        params = {}
-        params['url'] = 'https://aurorafe.github.io'
-        params['messages'] = 'contributors.'
-        params['title'] = 'HMap'
-        attribution = new ol.Attribution({
-          html: '&copy; ' + '<a href="' + params['url'] + '">' + params['title'] + '</a> ' + params['messages']
-        })
-      } else if (typeof params === 'object') {
-        attribution = new ol.Attribution({
-          html: '&copy; ' + '<a href="' + params['url'] + '">' + params['title'] + '</a> ' + params['messages']
-        })
-      } else {
-        attribution = undefined
-      }
-      return attribution
-    } catch (e) {
-      console.log(e)
-      return undefined
+    let attribution
+    if (params === true) {
+      params = {}
+      params['url'] = config.INDEX_URL
+      params['messages'] = 'contributors.'
+      params['title'] = 'HMap'
+      attribution = new ol.Attribution({
+        html: '&copy; ' + '<a href="' + params['url'] + '">' + params['title'] + '</a> ' + params['messages']
+      })
+    } else if (isObject(params)) {
+      attribution = new ol.Attribution({
+        html: '&copy; ' + '<a href="' + params['url'] + '">' + params['title'] + '</a> ' + params['messages']
+      })
     }
+    return attribution
   }
 }
+
 export default BaseLayers

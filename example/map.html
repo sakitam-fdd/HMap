@@ -22,6 +22,14 @@
   HMap.accessToken = '<your access token here>';
   var Map = new HMap({
     target: 'map',
+    controls: {
+      scaleLine: true,
+      loading: true
+    },
+    interactions: {
+      pinchZoom: true,
+      pointerEvents: false
+    },
     view: {
       center: [12118909.300259633, 4086043.1061670054],
 //      center: [115.92466595234826, 27.428038204473552],
@@ -34,7 +42,6 @@
         layerName: 'openstreetmap',
         isDefault: true,
         layerType: 'OSM',
-        opaque: true, //图层是否不透明
         layerUrl: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
       }
     ]

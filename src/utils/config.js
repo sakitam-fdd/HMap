@@ -3,6 +3,7 @@
  * @desc 相关配置文件
  */
 const config = {
+  INDEX_URL: 'https://sakitam-fdd.github.io/HMap/',
   API_URL: '',
   REQUIRE_ACCESS_TOKEN: true,
   ACCESS_TOKEN: null,
@@ -17,6 +18,5 @@ const config = {
     pinchZoom: true
   }
 }
-export {
-  config
-}
+
+export default config
