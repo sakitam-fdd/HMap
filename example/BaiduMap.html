@@ -12,10 +12,42 @@
       padding: 0;
       margin: 0;
     }
+
+    .menu {
+      position: absolute;
+      width: 100%;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .base-button {
+      height: 30px;
+      line-height: 30px;
+      background: #1b9de8;
+      color: #ffffff;
+      border-radius: 6px;
+      border: 1px solid #bfcbd9;
+      padding: 0 10px;
+      box-shadow: 0 4px 10px rgba(73, 127, 255, .42);
+      transition: .3s;
+    }
+
+    .base-button:hover {
+      cursor: pointer;
+      border-color: #1b9de8;
+      color: #ffffff;
+    }
   </style>
 </head>
 <body>
-<div id="map"></div>
+<div id="map">
+  <div class="menu">
+    <button class="base-button" id="hdsx">关闭公司路况</button>
+    <button class="base-button" id="baidu">关闭百度路况</button>
+  </div>
+</div>
 <script src="https://unpkg.com/openlayers@4.3.3/dist/ol.js"></script>
 <script src="https://unpkg.com/jquery@3.2.1/dist/jquery.js"></script>
 <script type="text/javascript">
@@ -108,6 +140,8 @@
   })
 </script>
 <script>
+  var trafficServer = 'http://its.map.baidu.com:8002/traffic/TrafficTileService?time={time}&label=web2D&v=016&level={z}&x={x}&y={y}'
+  var openHDSX = true, openBaidu = true;
   var baiduLayer = new ol.layer.Tile({
     source: new ol.source.BAIDU({
       projection: 'EPSG:3857',
@@ -132,9 +166,67 @@
     console.log(event.coordinate)
   })
 
+  /**
+   * 通过layerName获取图层
+   * @param layerName
+   * @returns {*}
+   */
+  function getLayerByLayerName (layerName) {
+    try {
+      var targetLayer = null
+      var layers = _map.getLayers().getArray()
+      targetLayer = getLayerInternal(layers, 'layerName', layerName)
+      return targetLayer
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  /**
+   * 内部处理获取图层方法
+   * @param layers
+   * @param key
+   * @param value
+   * @returns {*}
+   */
+  function getLayerInternal (layers, key, value) {
+    var _target = null
+    if (layers.length > 0) {
+      layers.every(function (layer) {
+        if (layer instanceof ol.layer.Group) {
+          let layers = layer.getLayers().getArray()
+          _target = getLayerInternal(layers, key, value)
+          if (_target) {
+            return false
+          } else {
+            return true
+          }
+        } else if (layer.get(key) === value) {
+          _target = layer
+          return false
+        } else {
+          return true
+        }
+      })
+    }
+    return _target
+  }
+
+  /**
+   * 移除图层
+   * @param layerName
+   */
+  function removeLayerByLayerName (layerName) {
+    var layer = getLayerByLayerName(layerName)
+    if (layer) {
+      _map.removeLayer(layer)
+    }
+  }
+
   function createTileWMSLayer (params) {
     try {
       var layer = new ol.layer.Tile({
+        layerName: 'HDSX',
         source: new ol.source.TileWMS({
           url: params['layerUrl'],
           params: {
@@ -161,17 +253,74 @@
     }
   }
 
+  function addBaiDuRoadState () {
+    removeLayerByLayerName('BaiDu')
+    var baiDuRoadState = new ol.layer.Tile({
+      layerName: 'BaiDu',
+      source: new ol.source.BAIDU({
+        url: trafficServer.replace('{time}', (new Date().getTime()) + ''),
+        projection: 'EPSG:3857',
+        levels: 19,
+        origin: [0, 0]
+      })
+    })
+    _map.addLayer(baiDuRoadState)
+  }
+
   function creatWMS () {
+    removeLayerByLayerName('HDSX')
     var wms = createTileWMSLayer({
       layerUrl: 'http://192.168.0.226:8089/geoserver/hnway/wms',
-      layers: 'hnway:traffic_network_hn_baidu',
+      layers: 'hnway:roadSituation',
       styles: '',
-      projection: 'EPSG:3857',
+      projection: 'EPSG:4326',
       tiled: true
     })
     _map.addLayer(wms)
   }
-  creatWMS()
+
+  $('#hdsx').on('click', function () {
+    if (openHDSX) {
+      $('#hdsx').text('开闭公司路况')
+      removeLayerByLayerName('HDSX')
+      openHDSX = false
+    } else {
+      $('#hdsx').text('关启公司路况')
+      openHDSX = true
+      creatWMS()
+    }
+  })
+
+  $('#baidu').on('click', function () {
+    if (openBaidu) {
+      $('#baidu').text('开闭百度路况')
+      removeLayerByLayerName('BaiDu')
+      openBaidu = false
+    } else {
+      $('#baidu').text('关启百度路况')
+      openBaidu = true
+      addBaiDuRoadState()
+    }
+  })
+
+  function addLayers () {
+    if (openBaidu) {
+      addBaiDuRoadState()
+    }
+    if (openHDSX) {
+      creatWMS()
+    }
+    window.setInterval(function () {
+      if (openBaidu) {
+        addBaiDuRoadState()
+      }
+      if (openHDSX) {
+        creatWMS()
+      }
+    }, 60 * 1000 * 2)
+  }
+
+  addLayers()
 </script>
 </body>
 </html>
