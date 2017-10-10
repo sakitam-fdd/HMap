@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>最简单地图</title>
+  <title>谷歌地图</title>
   <link rel="stylesheet" href="../../dist/hmap.css">
   <style type="text/css">
-    html, body, #map{
+    html, body, #map {
       width: 100%;
       height: 100%;
       margin: 0;
@@ -21,16 +21,16 @@
   var Map = new HMap({
     target: 'map',
     view: {
-      center: [12118909.300259633, 4086043.1061670054],
-      projection: 'EPSG:3857',
+      center: [113.53450137499999, 34.44104525],
+      projection: 'EPSG:4326',
       zoom: 5, // resolution
     },
     baseLayers: [
       {
-        layerName: 'openstreetmap',
+        layerName: 'Google',
         isDefault: true,
-        layerType: 'OSM',
-        layerUrl: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+        layerType: 'Google',
+        layerUrl: 'http://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}'
       }
     ]
   });

@@ -124,7 +124,7 @@ class BaseLayers extends Layer {
     if (!layerConfig.hasOwnProperty('tileGrid')) {
       layerConfig['tileGrid'] = {}
     }
-    let layer = this.createXYZLayer(layerName, config)
+    let layer = this.createXYZLayer(layerName, layerConfig)
     layer = this._addLayerAlias(layer, layerConfig)
     return layer
   }

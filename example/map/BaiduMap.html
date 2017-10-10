@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>最简单地图</title>
+  <title>baidu地图</title>
   <link rel="stylesheet" href="../../dist/hmap.css">
   <style type="text/css">
     html, body, #map{
@@ -27,10 +27,11 @@
     },
     baseLayers: [
       {
-        layerName: 'openstreetmap',
+        layerName: 'BaiDu',
         isDefault: true,
-        layerType: 'OSM',
-        layerUrl: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+        layerType: 'BaiDu',
+        origin: [43.88955327932, 12.590178885765],
+        layerUrl: 'http://online{0-3}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&udt=20170607&scaler=1&p=1'
       }
     ]
   });
