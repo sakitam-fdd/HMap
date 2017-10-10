@@ -18,12 +18,13 @@ $(document).ready(function () {
   var nav = $('#left-item-nav ul')
   navList.forEach(function (item) {
     nav.append($("<li>").append(
-      '<a class="left-list-nav-link" href="#item-type-"' + item['href'] + '">' +
+      '<a class="left-list-nav-link" id="left-item-nav-' + item['href'] + '" ' +
+      'href="#item-type-' + item['href'] + '">' +
       '<div class="item-icon" style="background-image: url(' + item['icon'] + ');"></div>' +
       '<div class="item-name">' + item['name'] + "</div>" +
       "</a>"));
 
-    $container.append('<h3 class="item-type-head" id="chart-type-'
+    $container.append('<h3 class="item-type-head" id="item-type-'
       + item['href'] + '">' + item['name'] + '</h3>')
       .append('<div class="row" id="item-row-' + item['href'] + '"></div>');
   })
@@ -100,28 +101,26 @@ $(document).ready(function () {
   Ps.initialize(listTarget[0]);
 
   // 示例容器
-  for (var eid = 0, elen = EXAMPLES.length; eid < elen; ++eid) {
-    // show title if exists
-    var title = EXAMPLES[eid].title || '未命名图表';
-    var subtitle = EXAMPLES[eid].subtitle || '点击查看详情';
+  examplesList.forEach(function (item) {
+    if (item['childrens'].length > 0) {
+      item['childrens'].forEach(function (cls) {
+        // show title if exists
+        var title = cls.title || '未命名图表';
+        var subtitle = cls.subtitle || '点击查看详情';
+        // append dom element
+        var $row = $('<div class="col-lg-3 col-md-4 col-sm-6"></div>');
+        var $chart = $('<div class="item-ls"></div>');
+        $('#item-row-' + item['alias']).append($row.append($chart));
 
-    // append dom element
-    var $row = $('<div class="col-lg-3 col-md-4 col-sm-6"></div>');
-    var $chart = $('<div class="chart"></div>');
-    $('#chart-row-' + EXAMPLES[eid].type).append($row.append($chart));
+        var $link = $('<a target="_blank" class="item-link" href="' + cls['url'] + '"></a>');
+        $chart.append($link);
+        $link.append('<h4 class="item-title">' + title + '</h4>')
+        var $chartArea = $('<img class="item-area" data-original="' + cls['icon'] +'" />');
+        $link.append($chartArea);
+      })
+    }
+  })
 
-    $link = $('<a class="chart-link" href="demo.html#'
-      + EXAMPLES[eid].id + '"></a>');
-    $chart.append($link);
-    $link.append('<h4 class="chart-title">' + title + '</h4>')
-
-    // load chart image
-    $chartArea = $('<img class="chart-area" data-original="' + GALLERY_THUMB_PATH
-      + EXAMPLES[eid].id + '.png" />');
-    $link.append($chartArea);
-  }
-
-  // chart nav highlighting as scrolling
   var waypoints = $('.item-type-head').waypoint(function (direction) {
     var names = this.element.id.split('-');
     if (names.length === 3) {
@@ -133,11 +132,7 @@ $(document).ready(function () {
   });
 
   window.addEventListener('hashchange', function () {
-    // move window down at the height of navbar so that title will not
-    // be hidden when goes to hash tag
     scrollBy(0, -80);
-
-    // changes highlighting as hash tag changes
     var names = location.hash.split('-');
     if (names.length === 3) {
       $('#left-item-nav li').removeClass('active');

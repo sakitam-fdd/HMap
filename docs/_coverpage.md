@@ -1,6 +1,6 @@
 <!-- _coverpage.md -->
 
-![logo](./assets/logo.png)
+![logo](assets/logo.png)
 
 ## HMap  |  基于openlayers的封装组件
 
