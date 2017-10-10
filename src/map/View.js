@@ -4,12 +4,6 @@
  */
 import ol from 'openlayers'
 class _View {
-  constructor (map) {
-    if (map && map instanceof ol.Map) {
-      this.map = map
-    }
-  }
-
   /**
    * 添加视图
    * @param params

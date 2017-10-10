@@ -493,14 +493,3 @@ class HMap extends mixin(
 }
 export default HMap
 
-export {
-  _Layer,
-  _Map,
-  _View,
-  _BaseLayers,
-  _Controls,
-  _Interactions,
-  _Feature,
-  _Overlay,
-  Observable
-}

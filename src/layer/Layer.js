@@ -3,6 +3,9 @@
  * @desc 图层相关处理
  */
 import ol from 'openlayers'
+import 'ol-extent/src/source/Baidu'
+import 'ol-extent/src/source/Gaode'
+import 'ol-extent/src/source/Google'
 import olStyleFactory from 'ol-extent/src/style/factory'
 class Layer {
   /**
@@ -66,9 +69,9 @@ class Layer {
       layers.forEach(layer => {
         if (layer instanceof ol.layer.Group) {
           let layers = layer.getLayers().getArray()
-          let _layer = this.getLayerInternal(layers, key, value)
+          let _layer = this.getLayersArrayInternal(layers, key, value)
           if (_layer) {
-            _target.push(layer)
+            _target = _target.concat(_layer)
           }
         } else if (layer.get(key) === value) {
           _target.push(layer)
@@ -807,7 +810,7 @@ class Layer {
         source: new ol.source.GAODE({
           wrapX: false,
           opaque: (params['opaque'] === false) ? params['opaque'] : true, // 图层是否不透明（主题相关）
-          url: params['layerUrl'] ? params['layerUrl'] : 'http://online{0-3}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&udt=20170607&scaler=1&p=1',
+          url: params['layerUrl'] ? params['layerUrl'] : 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}',
           crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined)
         })
       })
@@ -840,7 +843,7 @@ class Layer {
         source: new ol.source.GOOGLE({
           wrapX: false,
           opaque: (params['opaque'] === false) ? params['opaque'] : true, // 图层是否不透明（主题相关）
-          url: params['layerUrl'] ? params['layerUrl'] : 'http://online{0-3}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&udt=20170607&scaler=1&p=1',
+          url: params['layerUrl'],
           crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined)
         })
       })

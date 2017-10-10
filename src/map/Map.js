@@ -2,7 +2,7 @@
  * Created by FDD on 2017/9/28.
  * @ 添加实例化后的方法
  */
-
+import ol from 'openlayers'
 class Map {
   /**
    * 添加控件

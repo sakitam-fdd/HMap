@@ -7,10 +7,6 @@ import {isObject} from '../utils/utils'
 import config from '../utils/config'
 import Layer from '../layer/Layer'
 class BaseLayers extends Layer {
-  constructor () {
-    super()
-    this.baseLayres_ = []
-  }
   /**
    * 添加底图
    * @param params
