@@ -109,7 +109,7 @@ class BaseLayers extends Layer {
       case 'GaoDe':
         return (this._getGaoDeLayer(layerConfig))
       case 'Google':
-        return (this._getGaoDeLayer(layerConfig))
+        return (this._getGoogleLayer(layerConfig))
       default:
         throw new Error('不支持的图层类型！')
     }

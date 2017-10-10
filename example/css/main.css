@@ -1,3 +1,7 @@
+html, body {
+  font-size: 14px;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -32,7 +36,7 @@ a {
 
 .navbar-default {
   border: none;
-  background-color: #293c55;
+  background-color: #1b9de8;
   z-index: 10000;
   -webkit-transition: background-color 0.5s linear;
   transition: background-color 0.5s linear;
@@ -68,19 +72,10 @@ a {
 }
 
 .navbar-collapse.collapse {
-  display: block!important;
-  height: auto!important;
+  display: block;
+  height: auto;
   padding-bottom: 0;
-  overflow: visible!important;
-}
-
-.navbar-default {
-  border: none;
-  background-color: #293c55;
-  z-index: 10000;
-  -webkit-transition: background-color 0.5s linear;
-  transition: background-color 0.5s linear;
-  height: 50px
+  overflow: visible;
 }
 
 .navbar-default .navbar-nav {
@@ -93,19 +88,94 @@ a {
 }
 
 .navbar-default .navbar-nav li a {
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.9);
   background-color: transparent;
   padding: 15px 20px;
   -webkit-transition: 0.5s background-color;
   transition: 0.5s background-color;
-  font-size: 14px
+  font-size: 14px;
+  position: relative;
+  line-height: 20px;
+  display: block;
 }
 
-.navbar-default .navbar-nav {
-
+.navbar-default .navbar-nav li.active>a {
+  padding-top: 11px;
+  border-top: 4px solid rgba(255, 255, 255, 0.9);
+  color: #fff;
+  background-color: #0669a2;
+  -webkit-transition: 0.5s background-color;
+  transition: 0.5s background-color;
 }
 
 .navbar-default .navbar-nav li {
   position: relative;
   float: left;
+}
+
+.navbar-collapse .navbar-left {
+  float: left;
+}
+
+.navbar-collapse .navbar-right {
+  float: right;
+  margin-right: -15px;
+  -webkit-transition: background-color 0.5s linear;
+  transition: background-color 0.5s linear;
+}
+
+#left-item-nav {
+  position: fixed;
+  top: 49px;
+  bottom: 0;
+  left: 0;
+  border-top: 1px solid #0e151f;
+  width: 155px;
+  background-color: #293c55;
+  overflow-y: hidden;
+}
+
+#left-item-nav li {
+  height: 54px;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+  padding: 0;
+}
+
+#left-item-nav li.active {
+  background-color: #1b9de8;
+}
+
+#left-item-nav li:hover {
+  background-color: #162436;
+}
+
+#left-item-nav li a {
+  display: block;
+  padding: 10px 15px;
+  color: #ccc;
+  position: relative;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+#left-item-nav li a .item-icon {
+  content: '';
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background-size: 32px;
+  background-repeat: no-repeat;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  border: 1px solid #999;
+  background-position-x: -1px;
+  background-position-y: -1px;
+}
+
+#left-item-nav li a .item-name {
+  display: inline-block;
+  position: relative;
+  top: -12px;
+  margin-left: 10px;
 }

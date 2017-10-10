@@ -17,20 +17,20 @@ import Observable from 'observable-emit'
 import * as supported from './utils/supported'
 import { logo } from './assets/index'
 import config from './utils/config'
-import Layer from './layer/Layer'
+import _Layer from './layer/Layer'
 import _Map from './map/Map'
 import _View from './map/View'
 import _BaseLayers from './map/BaseLayers'
 import _Controls from './map/Controls'
 import _Interactions from './map/Interactions'
-import Feature from './feature/feature'
-import Overlay from './feature/overlay'
+import _Feature from './feature/feature'
+import _Overlay from './feature/overlay'
 import { isObject } from './utils/utils'
 import { EVENT_TYPE, INTERNAL_KEY } from './constants'
 class HMap extends mixin(
   _Map, Observable, _View, _BaseLayers,
-  _Controls, _Interactions, Layer,
-  Feature, Overlay
+  _Controls, _Interactions, _Layer,
+  _Feature, _Overlay
 ) {
   constructor () {
     super()
@@ -461,12 +461,12 @@ class HMap extends mixin(
    */
   _addCopyRight (params) {
     let logo = false
-    if (params && typeof params !== 'object') {
+    if (params === true) {
       logo = {
         href: config.INDEX_URL,
         src: this.logo_
       }
-    } else if (typeof params === 'object') {
+    } else if (isObject(params)) {
       logo = params
     } else {
       logo = false
@@ -483,7 +483,7 @@ class HMap extends mixin(
     console.log(name, version, '©', author)
   }
   static supported = supported
-  static layer = Layer
+  static layer = _Layer
   static get accessToken () {
     return config.ACCESS_TOKEN
   }
@@ -492,3 +492,15 @@ class HMap extends mixin(
   }
 }
 export default HMap
+
+export {
+  _Layer,
+  _Map,
+  _View,
+  _BaseLayers,
+  _Controls,
+  _Interactions,
+  _Feature,
+  _Overlay,
+  Observable
+}

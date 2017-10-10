@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>HMap | 示例</title>
   <link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="https://unpkg.com/perfect-scrollbar@0.8.1/dist/css/perfect-scrollbar.min.css">
 </head>
 <body>
 <div id="main">
@@ -14,10 +15,10 @@
           <img src="./images/logo.png" alt="hmap logo" class="navbar-logo">
         </a>
       </div>
-      <div id="navbar-collapse" class="collapse navbar-collapse">
+      <div id="navbar-collapse" class="collapse navbar-collapse clearfix">
         <ul class="nav navbar-nav navbar-left clearfix">
           <li id="nav-index">
-            <a href="http://echarts.baidu.com/index.html">首页</a>
+            <a href="#">首页</a>
           </li>
           <li id="nav-doc" class="dropdown">
             <a href="#" data-toggle="dropdown" class="dropdown-toggle">文档</a>
@@ -26,13 +27,24 @@
         <ul class="nav navbar-nav navbar-right">
           <li id="nav-github">
             <a href="https://github.com/sakitam-fdd/HMap" target="_blank">
-              <img src="./images/logo.png" width="18"></a>
+              <img src="./images/github.png" width="18"></a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
+  <div id="left-item-nav">
+    <ul></ul>
+  </div>
+  <div id="explore-container">
+    <div class="item-list-panel"></div>
+  </div>
 </div>
 <script src="https://unpkg.com/jquery@3.2.1/dist/jquery.js"></script>
+<script src="./scripts/jquery.lazyload.min.js"></script>
+<script src="https://unpkg.com/perfect-scrollbar@0.8.1/dist/js/perfect-scrollbar.min.js"></script>
+<script src="./scripts/waypoint.js"></script>
+<script src="./data.js"></script>
+<script src="./scripts/main.js"></script>
 </body>
 </html>
