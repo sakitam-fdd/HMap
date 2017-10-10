@@ -6,6 +6,11 @@
  - [控件](/guide/creatControl.md)
     - [放大缩小控件](/api/control/zoom.md)
     - [右键菜单控件](/api/control/contextMenu.md)
+    - [图层对比控件](/api/control/compareLayer.md)
+    - [旋转控件](/api/control/rotateControl.md)
+    - [图层加载进度控件](/api/control/loading.md)
+    - [图层平移缩放控件](/api/control/bZoomSlider.md)
+    - [全屏控件](/api/control/fullScreen.md)
  - [交互](/guide/creatInteraction.md)
   - 添加图层
     - [添加XYZ切片图层](/guide/layer/xyz.md)

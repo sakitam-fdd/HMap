@@ -80,7 +80,6 @@ Map.addControl(loadingControl)
 | RotateControl | 旋转控件 | [RotateControl](api/control/rotateControl.md) | 支持单独配合openlayers使用 |
 | Loading | 图层加载进度控件 | [Loading](api/control/loading.md) | 支持单独配合openlayers使用 |
 | BZoomSlider | 图层平移缩放控件 | [BZoomSlider](api/control/bZoomSlider.md) | 支持单独配合openlayers使用 |
-| BZoomSlider | 图层平移缩放控件 | [BZoomSlider](api/control/bZoomSlider.md) | 支持单独配合openlayers使用 |
 | FullScreen | 全屏控件 | [FullScreen](api/control/fullScreen.md) | 支持单独配合openlayers使用 |
 | LayerSwitcher | 图层切换控件 | [LayerSwitcher](api/control/layerSwitcher.md) | 支持单独配合openlayers使用 |
 | Attribution | 版权控件 | [Attribution](api/control/attribution.md) | 属于内置控件暂未重写 |

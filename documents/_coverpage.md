@@ -1,6 +1,6 @@
 <!-- _coverpage.md -->
 
-![logo](assets/logo.png)
+![logo](./assets/logo.png)
 
 ## HMap  |  基于openlayers的封装组件
 
@@ -9,6 +9,6 @@
 - 相比原生openlayers更易用，也更符合国内webgis应用场景
 
 [GitHub](https://github.com/sakitam-fdd/HMap)
-[文档](/zh-cn/introduction/install)
+[文档](/guide/install.md)
 
 ![color](#e4fff7)

@@ -10,7 +10,7 @@
 ### 引入API
 
 ```html
-<link rel="stylesheet" href="https://unpkg.com/ol-extent@1.1.1/dist/olControlContextMenu.min.css" type="text/css">
+<link rel="stylesheet" href="https://unpkg.com/ol-extent@1.1.1/dist/css/olControlContextMenu.min.css" type="text/css">
 <script src="https://unpkg.com/ol-extent@1.1.1/dist/olControlContextMenu.min.js"></script>
 ```  
 
@@ -65,6 +65,7 @@ var contextMenu = {
       {
         layerName: 'openstreetmap',
         layerType: 'OSM',
+        isDefault: true,
         layerUrl: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
       }
     ]
@@ -89,6 +90,7 @@ var contextMenu = {
         {
           layerName: 'openstreetmap',
           layerType: 'OSM',
+          isDefault: true,
           layerUrl: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         }
       ]
@@ -107,7 +109,7 @@ var contextMenu = {
 <link rel="stylesheet" href="https://unpkg.com/openlayers@4.3.3/dist/ol.css" type="text/css">
 <script src="https://unpkg.com/openlayers@4.3.3/dist/ol.js"></script>
 
-<link rel="stylesheet" href="https://unpkg.com/ol-extent@1.1.1/dist/olControlContextMenu.min.css" type="text/css">
+<link rel="stylesheet" href="https://unpkg.com/ol-extent@1.1.1/dist/css/olControlContextMenu.min.css" type="text/css">
 <script src="https://unpkg.com/ol-extent@1.1.1/dist/olControlContextMenu.min.js"></script>
 ```
 

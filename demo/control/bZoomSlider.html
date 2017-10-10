@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>bZoomSlider</title>
+  <!--<script src="https://unpkg.com/hmap-js@1.5.0/dist/hmap.min.js"></script>-->
+  <script src="../../dist/hmap.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="../../dist/hmap.css" type="text/css">
+  <!--<link rel="stylesheet" href="https://unpkg.com/hmap-js@1.5.0/dist/hmap.min.css" type="text/css">-->
+  <!--<link rel="stylesheet" href="https://unpkg.com/ol-extent@1.1.1/dist/css/olControlBZoomSlider.min.css" type="text/css">-->
+</head>
+<body>
+<div id="map"></div>
+<!--<script src="https://unpkg.com/ol-extent@1.1.1/dist/olControlBZoomSlider.min.js"></script>-->
+<script type="text/javascript">
+  var Map = new HMap('map', {
+    controls: {
+      zoomSlider: false
+    },
+    view: {
+      center: [12118909.300259633, 4086043.1061670054],
+      zoom: 5,
+    },
+    baseLayers: [
+      {
+        layerName: 'firstLayer',
+        isDefault: true,
+        layerType: 'OSM',
+        layerUrl: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+      }
+    ]
+  });
+
+  var olControlZoomSlider = new ol.control.BZoomSlider()
+  Map.addControl(olControlZoomSlider)
+</script>
+</body>
+</html>

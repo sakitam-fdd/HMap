@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>rotateControl</title>
+  <script src="../../dist/hmap.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="../../dist/hmap.css" type="text/css">
+  <!--<script src="https://unpkg.com/hmap-js@1.5.0/dist/hmap.min.js"></script>-->
+  <!--<link rel="stylesheet" href="https://unpkg.com/ol-extent@1.1.1/dist/css/olControlRotate.min.css" type="text/css">-->
+</head>
+<body>
+<div id="map"></div>
+<!--<script src="https://unpkg.com/ol-extent@1.1.1/dist/olControlRotate.min.js"></script>-->
+<script type="text/javascript">
+  var Map = new HMap('map', {
+    controls: {
+      rotate: false
+    },
+    view: {
+      center: [12118909.300259633, 4086043.1061670054],
+      zoom: 5,
+    },
+    baseLayers: [
+      {
+        layerName: 'firstLayer',
+        layerType: 'OSM',
+        isDefault: true,
+        layerUrl: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+      }
+    ]
+  });
+
+  var olControlRotateControl = new ol.control.RotateControl()
+  Map.map.addControl(olControlRotateControl)
+</script>
+</body>
+</html>
