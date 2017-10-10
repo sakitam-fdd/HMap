@@ -1,9 +1,0 @@
-build/
-example/
-config/
-docs/
-node_modules/
-test/
-package-lock.json
-.editorconfig
-.babelrc
