@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>dragPan</title>
+  <script type="text/javascript" src="../../dist/hmap.js"></script>
+  <link rel="stylesheet" href="../../dist/hmap.css" type="text/css">
+</head>
+<body>
+<div id="map"></div>
+<script type="text/javascript">
+  var Map = new HMap('map', {
+    interactions: {
+      dragPan: false
+    },
+    view: {
+      center: [12118909.300259633, 4086043.1061670054],
+      projection: 'EPSG:3857',
+      zoom: 5, // resolution
+    },
+    baseLayers: [
+      {
+        layerName: 'openstreetmap',
+        isDefault: true,
+        layerType: 'OSM',
+        opaque: true, //图层是否不透明
+        layerUrl: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+      }
+    ]
+  })
+  var interactionDragPan = new ol.interaction.DragPan({})
+  Map.map.addInteraction(interactionDragPan)
+</script>
+</body>
+</html>
