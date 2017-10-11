@@ -12,6 +12,7 @@ import 'ol-extent/src/control/FullScreen'
 import 'ol-extent/src/control/LayerSwitcher'
 import 'ol-extent/src/control/contextMenu'
 import 'ol-extent/src/control/compareLayer'
+import 'ol-extent/src/control/ScaleLineH'
 class _Controls {
 
   /**
@@ -105,12 +106,8 @@ class _Controls {
    */
   addScaleLine (options, controls) {
     controls = controls || this.map.getControls()
-    controls.push(new ol.control.ScaleLine({
-      className: (options['className'] ? options['className'] : 'ol-scale-line'),
-      minWidth: (options['minWidth'] && typeof options['minWidth'] === 'number' ? options['minWidth'] : 64),
-      render: (options['render'] && typeof options['render'] === 'function' ? options['render'] : undefined),
-      target: (options['target'] ? options['target'] : undefined),
-      units: (options['units'] ? options['units'] : 'metric')
+    controls.push(new ol.control.ScaleLineH({
+      units: (options['units'] ? options['units'] : 'metric_cn')
     }))
   }
 

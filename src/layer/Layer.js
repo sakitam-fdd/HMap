@@ -703,7 +703,8 @@ class Layer {
           projection: projection,
           maxZoom: (params['maxZoom'] ? params['maxZoom'] : 18),
           minZoom: (params['minZoom'] ? params['minZoom'] : 0),
-          crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined)
+          crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
+          url: params['layerUrl']
         })
       })
     }

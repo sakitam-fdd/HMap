@@ -26,7 +26,7 @@
     "core-js": "^2.5.0",
     "nature-dom-util": "^1.1.0",
     "observable-emit": "^1.0.1",
-    "ol-extent": "^1.1.1",
+    "ol-extent": "^1.1.2",
     "openlayers": "^4.3.1",
     "proj4": "^2.4.3"
   },
