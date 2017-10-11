@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ScaleLine</title>
+  <script src="../../dist/hmap.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="../../dist/hmap.css">
+</head>
+<body>
+<div id="map"></div>
+<script type="text/javascript">
+  var Map = new HMap('map', {
+    controls: {
+      zoomSlider: false,
+      zoom: false,
+      rotate: false
+    },
+    view: {
+      center: [12118909.300259633, 4086043.1061670054],
+      zoom: 5,
+    },
+    baseLayers: [
+      {
+        layerName: 'openstreetmap',
+        isDefault: true,
+        layerType: 'OSM',
+        layerUrl: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+      }
+    ]
+  });
+
+  var controlScaleLine = new ol.control.ScaleLine({
+    className: 'ol-scale-line',
+    minWidth: 64,
+    units: 'metric'
+  })
+  Map.map.addControl(controlScaleLine)
+</script>
+</body>
+</html>
