@@ -6,13 +6,6 @@
 
 > 右键菜单控件(具体代码实现：[contextMenu](https://github.com/sakitam-fdd/ol-extent/blob/master/src/control/contextMenu.js))。
   此控件以实现并包含在HMap内部。所以你可以按照以下代码添加控件。
-  
-### 引入API
-
-```html
-<link rel="stylesheet" href="https://unpkg.com/ol-extent@1.1.1/dist/css/olControlContextMenu.min.css" type="text/css">
-<script src="https://unpkg.com/ol-extent@1.1.1/dist/olControlContextMenu.min.js"></script>
-```  
 
 > contextMenu控件配置,以下实现均使用此配置示例
 
@@ -102,45 +95,6 @@ var contextMenu = {
 #### 尝试编辑它
 ---
 <iframe width="100%" height="430"></iframe>
-
-* 控件单独使用,配合openlayers 单独使用，通过 ``` new control.ContextMenu() ``` 使用右键菜单控件
-
-```html
-<link rel="stylesheet" href="https://unpkg.com/openlayers@4.3.3/dist/ol.css" type="text/css">
-<script src="https://unpkg.com/openlayers@4.3.3/dist/ol.js"></script>
-
-<link rel="stylesheet" href="https://unpkg.com/ol-extent@1.1.1/dist/css/olControlContextMenu.min.css" type="text/css">
-<script src="https://unpkg.com/ol-extent@1.1.1/dist/olControlContextMenu.min.js"></script>
-```
-
-```javascript
-  var base = new ol.layer.Tile({
-    layerName: 'Google',
-    isBaseLayer: true,
-    source: new ol.source.GOOGLE()
-  })
-  var map = new ol.Map({
-    layers: [
-      base
-    ],
-    target: 'map',
-    view: new ol.View({
-      projection: 'EPSG:3857',
-      center: [12118909.300259633, 4086043.1061670054],
-      zoom: 5
-    })
-  })
-  var menu = new ol.control.ContextMenu(contextMenu)
-  map.addControl(menu)
-  menu.on('item-click', function (event, data) {
-    console.log(event, data)
-  })
-```
-
-#### 尝试编辑它
----
-<iframe width="100%" height="430"></iframe>
-
 
 配置项说明
 

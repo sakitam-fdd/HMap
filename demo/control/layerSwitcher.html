@@ -4,8 +4,14 @@
   <meta charset="UTF-8">
   <title>layerSwitcher</title>
   <link rel="stylesheet" href="../../dist/hmap.css" type="text/css">
-  <link rel="stylesheet" href="https://unpkg.com/ol-extent@1.1.1/dist/css/olControlLayerSwitcher.min.css"
-        type="text/css">
+  <style type="text/css">
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
 </head>
 <body>
 <div id="map"></div>
@@ -47,20 +53,27 @@
         {
           layerName: 'GaoDe',
           name: '高德',
-          icon: './images/maptype_vector.png'
+          icon: '../assets/images/maptype_vector.png'
         },
         {
           layerName: 'OSM',
           name: 'OSM',
-          icon: './images/maptype_pano.png'
+          icon: '../assets/images/maptype_pano.png'
         },
         {
           layerName: 'Google',
           name: '谷歌',
-          icon: './images/maptype_yunran.png'
+          icon: '../assets/images/maptype_yunran.png'
         }
       ]
-      var tt = Map.getLayersArrayByKeyValue('isBaseLayer', true)
+      var LayerSwitcher = new ol.control.LayerSwitcher({
+        itemWidth: 86,
+        itemHeight: 60,
+        layers: config_
+      })
+      Map.addControl(LayerSwitcher)
+      var tt = Map.getLayersArrayByKeyValue('isBaseLayer', true) // polyfill
+      LayerSwitcher.baseLayers_ = tt
       console.log(tt)
     }
   })

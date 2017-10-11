@@ -1,0 +1,616 @@
+{
+  "data": {
+    "allCount": 234,
+    "features": [
+      {
+        "attributes": {
+          "OBJECTID": "45",
+          "ID": "{393C392E-17FE-46EF-B39B-91433EB01AB6}",
+          "QLMC": "苦马塘大桥",
+          "QLDM": "S41360731L0230",
+          "ROADPOS": "50.5830000000",
+          "ROADCODE": "S41",
+          "ROADNAME": "宁定高速",
+          "SXXFX": "2",
+          "JSDJ": "高速",
+          "QIAOLQC": "181.0000000000",
+          "KUAJZC": "175.0000000000",
+          "ZUIDKJ": "0.0000000000",
+          "QIAOKUAZH": "7*25",
+          "QIAOMJK": "21.8000000000",
+          "KJFLDM": " ",
+          "KJFLLX": " ",
+          "NXFLDM": " ",
+          "NXFLLX": " ",
+          "SHANGBJGDM": " ",
+          "SHANGBJGLX": " ",
+          "SHANGBCLDM": " ",
+          "SHANGBCLMC": " ",
+          "QIAODLXDM": "13",
+          "QIAODLX": "13",
+          "SHEJHZDM": "1",
+          "SHEJHZ": "公路I级",
+          "KANGZDJDM": "2",
+          "KANGZDJ": "0.05或6度",
+          "KUAYDWDM": " ",
+          "KUAYDWLX": " ",
+          "KUAYDWMC": " ",
+          "TONGHDJ": "0",
+          "DUNTFZSS": " ",
+          "SHIFHTLJ": " ",
+          "JIANSDW": "江西省高速公路投资集团有限责任公司宁都至安远高速公路建设项目办公室",
+          "SHEJDW": "中交公路规划设计院有限公司",
+          "JIANLDW": "江西交通咨询公司",
+          "XIUJND": " ",
+          "JIANCTCRQ": "2016-12-01",
+          "GUANYDWDM": " ",
+          "GUANYDWMC": "31101360700",
+          "JIANGDWMC": "江西省高速公路投资有限责任公司",
+          "SHOUFXZDM": "2",
+          "SHOUFXZ": "还贷",
+          "PDDJDM": " ",
+          "PDDJMC": " ",
+          "PDRQ": "2016-12-08",
+          "PDDW": "江西省交通质监局",
+          "ZUIJGZND": " ",
+          "ZUIJGZWGRQ": " ",
+          "ZUIJGZBW": " ",
+          "ZUIJGCGCXZ": " ",
+          "ZUIJSGDW": " ",
+          "SHIFBBZXM": " ",
+          "ZHUYBHDM": " ",
+          "ZHUYBH": " ",
+          "JTGZCSDM": " ",
+          "JTGZCS": " ",
+          "XZQHBM": "360731",
+          "BEIZ": " ",
+          "XZQHMC": "于都县"
+        },
+        "geometry": "POINT (115.54225923 26.06633778)",
+        "geometryType": "Point"
+      },
+      {
+        "attributes": {
+          "OBJECTID": "46",
+          "ID": "{2B7BD352-745B-45F4-B20A-808F572A57EB}",
+          "QLMC": "寨背大桥",
+          "QLDM": "S41360731L0240",
+          "ROADPOS": "52.3650000000",
+          "ROADCODE": "S41",
+          "ROADNAME": "宁定高速",
+          "SXXFX": "1",
+          "JSDJ": "高速",
+          "QIAOLQC": "181.0000000000",
+          "KUAJZC": "175.0000000000",
+          "ZUIDKJ": "0.0000000000",
+          "QIAOKUAZH": "7*25",
+          "QIAOMJK": "21.8000000000",
+          "KJFLDM": " ",
+          "KJFLLX": " ",
+          "NXFLDM": " ",
+          "NXFLLX": " ",
+          "SHANGBJGDM": " ",
+          "SHANGBJGLX": " ",
+          "SHANGBCLDM": " ",
+          "SHANGBCLMC": " ",
+          "QIAODLXDM": "13",
+          "QIAODLX": "13",
+          "SHEJHZDM": "1",
+          "SHEJHZ": "公路I级",
+          "KANGZDJDM": "2",
+          "KANGZDJ": "0.05或6度",
+          "KUAYDWDM": " ",
+          "KUAYDWLX": " ",
+          "KUAYDWMC": " ",
+          "TONGHDJ": "0",
+          "DUNTFZSS": " ",
+          "SHIFHTLJ": " ",
+          "JIANSDW": "江西省高速公路投资集团有限责任公司宁都至安远高速公路建设项目办公室",
+          "SHEJDW": "中交公路规划设计院有限公司",
+          "JIANLDW": "江西交通咨询公司",
+          "XIUJND": " ",
+          "JIANCTCRQ": "2016-12-01",
+          "GUANYDWDM": " ",
+          "GUANYDWMC": "31101360700",
+          "JIANGDWMC": "江西省高速公路投资有限责任公司",
+          "SHOUFXZDM": "2",
+          "SHOUFXZ": "还贷",
+          "PDDJDM": " ",
+          "PDDJMC": " ",
+          "PDRQ": "2016-12-08",
+          "PDDW": "江西省交通质监局",
+          "ZUIJGZND": " ",
+          "ZUIJGZWGRQ": " ",
+          "ZUIJGZBW": " ",
+          "ZUIJGCGCXZ": " ",
+          "ZUIJSGDW": " ",
+          "SHIFBBZXM": " ",
+          "ZHUYBHDM": " ",
+          "ZHUYBH": " ",
+          "JTGZCSDM": " ",
+          "JTGZCS": " ",
+          "XZQHBM": "360731",
+          "BEIZ": " ",
+          "XZQHMC": "于都县"
+        },
+        "geometry": "POINT (115.5292768 26.05574306)",
+        "geometryType": "Point"
+      },
+      {
+        "attributes": {
+          "OBJECTID": "48",
+          "ID": "{CF7D9F39-3549-4068-8648-76F5E06C0295}",
+          "QLMC": "车溪梅江特大桥",
+          "QLDM": "S41360731L0250",
+          "ROADPOS": "53.7450000000",
+          "ROADCODE": "S41",
+          "ROADNAME": "宁定高速",
+          "SXXFX": "1",
+          "JSDJ": "高速",
+          "QIAOLQC": "1028.0000000000",
+          "KUAJZC": "1020.0000000000",
+          "ZUIDKJ": "0.0000000000",
+          "QIAOKUAZH": "34*30",
+          "QIAOMJK": "21.8000000000",
+          "KJFLDM": " ",
+          "KJFLLX": " ",
+          "NXFLDM": " ",
+          "NXFLLX": " ",
+          "SHANGBJGDM": " ",
+          "SHANGBJGLX": " ",
+          "SHANGBCLDM": " ",
+          "SHANGBCLMC": " ",
+          "QIAODLXDM": "13",
+          "QIAODLX": "13",
+          "SHEJHZDM": "1",
+          "SHEJHZ": "公路I级",
+          "KANGZDJDM": "2",
+          "KANGZDJ": "0.05或6度",
+          "KUAYDWDM": " ",
+          "KUAYDWLX": " ",
+          "KUAYDWMC": " ",
+          "TONGHDJ": "0",
+          "DUNTFZSS": " ",
+          "SHIFHTLJ": " ",
+          "JIANSDW": "江西省高速公路投资集团有限责任公司宁都至安远高速公路建设项目办公室",
+          "SHEJDW": "中交公路规划设计院有限公司",
+          "JIANLDW": "江西交通咨询公司",
+          "XIUJND": " ",
+          "JIANCTCRQ": "2016-12-01",
+          "GUANYDWDM": " ",
+          "GUANYDWMC": "31101360700",
+          "JIANGDWMC": "江西省高速公路投资有限责任公司",
+          "SHOUFXZDM": "2",
+          "SHOUFXZ": "还贷",
+          "PDDJDM": " ",
+          "PDDJMC": " ",
+          "PDRQ": "2016-12-08",
+          "PDDW": "江西省交通质监局",
+          "ZUIJGZND": " ",
+          "ZUIJGZWGRQ": " ",
+          "ZUIJGZBW": " ",
+          "ZUIJGCGCXZ": " ",
+          "ZUIJSGDW": " ",
+          "SHIFBBZXM": " ",
+          "ZHUYBHDM": " ",
+          "ZHUYBH": " ",
+          "JTGZCSDM": " ",
+          "JTGZCS": " ",
+          "XZQHBM": "360731",
+          "BEIZ": " ",
+          "XZQHMC": "于都县"
+        },
+        "geometry": "POINT (115.52478711 26.04471803)",
+        "geometryType": "Point"
+      },
+      {
+        "attributes": {
+          "OBJECTID": "50",
+          "ID": "{AB024088-DCAF-4314-91C1-B7265A07F58D}",
+          "QLMC": "桃树坑大桥",
+          "QLDM": "S41360731L0260",
+          "ROADPOS": "55.4270000000",
+          "ROADCODE": "S41",
+          "ROADNAME": "宁定高速",
+          "SXXFX": "1",
+          "JSDJ": "高速",
+          "QIAOLQC": "206.0000000000",
+          "KUAJZC": "200.0000000000",
+          "ZUIDKJ": "0.0000000000",
+          "QIAOKUAZH": "4*25+4*25",
+          "QIAOMJK": "21.8000000000",
+          "KJFLDM": " ",
+          "KJFLLX": " ",
+          "NXFLDM": " ",
+          "NXFLLX": " ",
+          "SHANGBJGDM": " ",
+          "SHANGBJGLX": " ",
+          "SHANGBCLDM": " ",
+          "SHANGBCLMC": " ",
+          "QIAODLXDM": "13",
+          "QIAODLX": "13",
+          "SHEJHZDM": "1",
+          "SHEJHZ": "公路I级",
+          "KANGZDJDM": "2",
+          "KANGZDJ": "0.05或6度",
+          "KUAYDWDM": " ",
+          "KUAYDWLX": " ",
+          "KUAYDWMC": " ",
+          "TONGHDJ": "0",
+          "DUNTFZSS": " ",
+          "SHIFHTLJ": " ",
+          "JIANSDW": "江西省高速公路投资集团有限责任公司宁都至安远高速公路建设项目办公室",
+          "SHEJDW": "中交公路规划设计院有限公司",
+          "JIANLDW": "江西交通咨询公司",
+          "XIUJND": " ",
+          "JIANCTCRQ": "2016-12-01",
+          "GUANYDWDM": " ",
+          "GUANYDWMC": "31101360700",
+          "JIANGDWMC": "江西省高速公路投资有限责任公司",
+          "SHOUFXZDM": "2",
+          "SHOUFXZ": "还贷",
+          "PDDJDM": " ",
+          "PDDJMC": " ",
+          "PDRQ": "2016-12-08",
+          "PDDW": "江西省交通质监局",
+          "ZUIJGZND": " ",
+          "ZUIJGZWGRQ": " ",
+          "ZUIJGZBW": " ",
+          "ZUIJGCGCXZ": " ",
+          "ZUIJSGDW": " ",
+          "SHIFBBZXM": " ",
+          "ZHUYBHDM": " ",
+          "ZHUYBH": " ",
+          "JTGZCSDM": " ",
+          "JTGZCS": " ",
+          "XZQHBM": "360731",
+          "BEIZ": " ",
+          "XZQHMC": "于都县"
+        },
+        "geometry": "POINT (115.51328944 26.03288647)",
+        "geometryType": "Point"
+      }
+    ],
+    "fields": [
+      {
+        "label": "",
+        "name": "OBJECTID",
+        "type": "INTEGER"
+      },
+      {
+        "label": "",
+        "name": "ID",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "QLMC",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "QLDM",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "ROADPOS",
+        "type": "NUMBER"
+      },
+      {
+        "label": "",
+        "name": "ROADCODE",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "ROADNAME",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "SXXFX",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "JSDJ",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "QIAOLQC",
+        "type": "NUMBER"
+      },
+      {
+        "label": "",
+        "name": "KUAJZC",
+        "type": "NUMBER"
+      },
+      {
+        "label": "",
+        "name": "ZUIDKJ",
+        "type": "NUMBER"
+      },
+      {
+        "label": "",
+        "name": "QIAOKUAZH",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "QIAOMJK",
+        "type": "NUMBER"
+      },
+      {
+        "label": "",
+        "name": "KJFLDM",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "KJFLLX",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "NXFLDM",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "NXFLLX",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "SHANGBJGDM",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "SHANGBJGLX",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "SHANGBCLDM",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "SHANGBCLMC",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "QIAODLXDM",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "QIAODLX",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "SHEJHZDM",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "SHEJHZ",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "KANGZDJDM",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "KANGZDJ",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "KUAYDWDM",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "KUAYDWLX",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "KUAYDWMC",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "TONGHDJ",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "DUNTFZSS",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "SHIFHTLJ",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "JIANSDW",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "SHEJDW",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "JIANLDW",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "XIUJND",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "JIANCTCRQ",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "GUANYDWDM",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "GUANYDWMC",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "JIANGDWMC",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "SHOUFXZDM",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "SHOUFXZ",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "PDDJDM",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "PDDJMC",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "PDRQ",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "PDDW",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "ZUIJGZND",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "ZUIJGZWGRQ",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "ZUIJGZBW",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "ZUIJGCGCXZ",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "ZUIJSGDW",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "SHIFBBZXM",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "ZHUYBHDM",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "ZHUYBH",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "JTGZCSDM",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "JTGZCS",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "XZQHBM",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "BEIZ",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "XZQHMC",
+        "type": "NVARCHAR2"
+      },
+      {
+        "label": "",
+        "name": "ROADPOS_FACT",
+        "type": "NUMBER"
+      },
+      {
+        "label": "",
+        "name": "SHAPE",
+        "type": "ST_GEOMETRY"
+      },
+      {
+        "label": "",
+        "name": "PTX",
+        "type": "NUMBER"
+      },
+      {
+        "label": "",
+        "name": "PTY",
+        "type": "NUMBER"
+      },
+      {
+        "label": "",
+        "name": "ALT",
+        "type": "NUMBER"
+      },
+      {
+        "label": "",
+        "name": "VISIBLE",
+        "type": "NVARCHAR2"
+      }
+    ],
+    "layerName": "GL_QIAO",
+    "max": false,
+    "maxRecordCount": 1000
+  },
+  "success": true
+}

@@ -7,14 +7,6 @@
 > 放大缩小控件(具体代码实现：[zoom](https://github.com/sakitam-fdd/ol-extent/blob/master/src/control/zoom.js))。
   此控件以实现并包含在HMap内部。所以你可以按照以下代码添加控件。
 
-### 引入API
-
-```html
-<link rel="stylesheet" href="https://unpkg.com/ol-extent@1.1.1/dist/css/olControlZoomMenu.min.css" type="text/css">
-<script src="https://unpkg.com/ol-extent@1.1.1/dist/olControlZoomMenu.min.js"></script>
-```
-  
-
 * 配置中开启, 直接在controls设置zoom 为true。
 * 注：放大缩小控件默认即开启
 
@@ -72,47 +64,7 @@ var Map = new HMap('map', {
 
 * 控件单独使用,配合openlayers 单独使用，通过 ``` new ol.control.ZoomMenu() ``` 开启放大缩小控件
 
-```html
-<link rel="stylesheet" href="https://unpkg.com/openlayers@4.3.3/dist/ol.css" type="text/css">
-<script src="https://unpkg.com/openlayers@4.3.3/dist/ol.js"></script>
-
-<link rel="stylesheet" href="https://unpkg.com/ol-extent@1.1.1/dist/css/olControlZoomMenu.min.css" type="text/css">
-<script src="https://unpkg.com/ol-extent@1.1.1/dist/olControlZoomMenu.min.js"></script>
-```
-
-```javascript
-    var map = new ol.Map({
-        layers: [
-          new ol.layer.Tile({
-            source: new ol.source.OSM()
-          })
-        ],
-        target: 'map',
-        controls: [
-          new ol.control.ZoomMenu()
-        ],
-        view: new ol.View({
-          center: [0, 0],
-          zoom: 2
-        })
-    });
-```
-
-#### 尝试编辑它
----
-<iframe width="100%" height="430"></iframe>
-
 > zoomMenu控件配置
-
-```javascript
-var olControlMenu = new ol.control.ZoomMenu(
-  {
-    className: 'hmap-control-zoom',
-    delta: 1,
-    duration: 250
-  }
-)
-```
 
 配置项说明
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>fullScreenTest</title>
+  <title>zoom</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="../../dist/hmap.css" type="text/css">
   <style type="text/css">
@@ -20,7 +20,7 @@
 <script type="text/javascript">
   var Map = new HMap('map', {
     controls: {
-      fullScreen: false
+      zoom: true
     },
     view: {
       center: [12118909.300259633, 4086043.1061670054],
@@ -35,8 +35,6 @@
       }
     ]
   });
-  var olControlFullScreenMenu = new ol.control.FullScreenMenu()
-  Map.addControl(olControlFullScreenMenu)
 </script>
 </body>
 </html>
