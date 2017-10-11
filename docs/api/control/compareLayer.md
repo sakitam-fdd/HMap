@@ -6,13 +6,6 @@
 
 > 图层对比控件(具体代码实现：[compareLayer](https://github.com/sakitam-fdd/ol-extent/blob/master/src/control/compareLayer.js))。
   此控件以实现并包含在HMap内部。所以你可以按照以下代码添加控件。
-  
-### 引入API
-
-```html
-<link rel="stylesheet" href="https://unpkg.com/ol-extent@1.1.1/dist/css/olControlCompareLayer.min.css" type="text/css">
-<script src="https://unpkg.com/ol-extent@1.1.1/dist/olControlCompareLayer.min.js"></script>
-```    
 
 * 手动添加，在创建地图完成后你可以获取一个地图对象，先实例化
   你的控件，然后调用 ``addControl()`` 方法添加控件。此添加方式也适合用户
@@ -49,47 +42,6 @@
 #### 尝试编辑它
 ---
 <iframe width="100%" height="430"></iframe>  
-
-* 控件单独使用,配合openlayers 单独使用，通过 ``` new ol.control.CompareLayer(beforeMap,afterMap) ``` 开启图层对比控件
-
-```html
-<link rel="stylesheet" href="https://unpkg.com/openlayers@4.3.3/dist/ol.css" type="text/css">
-<script src="https://unpkg.com/openlayers@4.3.3/dist/ol.js"></script>
-
-<link rel="stylesheet" href="https://unpkg.com/ol-extent@1.1.1/dist/css/olControlCompareLayer.min.css" type="text/css">
-<script src="https://unpkg.com/ol-extent@1.1.1/dist/olControlCompareLayer.min.js"></script>
-```
-
-```javascript
-  var firstLayer = new ol.layer.Tile({
-    source: new ol.source.OSM({
-      url: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-    })
-  })
-  var sec = new ol.layer.Tile({
-    source: new ol.source.OSM({
-      url: 'http://tile-{a-c}.openstreetmap.fr/hot/{z}/{x}/{y}.png'
-    })
-  })
-  var map = new ol.Map({
-    layers: [
-      sec,
-      firstLayer
-    ],
-    target: 'map',
-    controls: [
-      new ol.control.CompareLayer(firstLayer, sec)
-    ],
-    view: new ol.View({
-      center: [0, 0],
-      zoom: 2
-    })
-  });
-```
-
-#### 尝试编辑它
----
-<iframe width="100%" height="430"></iframe>
 
 参数项说明
 

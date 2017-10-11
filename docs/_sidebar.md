@@ -11,6 +11,11 @@
     - [图层加载进度控件](/api/control/loading.md)
     - [图层平移缩放控件](/api/control/bZoomSlider.md)
     - [全屏控件](/api/control/fullScreen.md)
+    - [版权控件](/api/control/attribution.md)
+    - [比例尺控件](/api/control/scaleLine.md)
+    - [鼠标位置显示控件](/api/control/mousePosition.md)
+    - [定位控件](/api/control/geolocation.md)
+    - [鹰眼控件](/api/control/overviewMap.md)
  - [交互](/guide/creatInteraction.md)
   - 添加图层
     - [添加XYZ切片图层](/guide/layer/xyz.md)

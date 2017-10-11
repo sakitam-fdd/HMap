@@ -6,13 +6,6 @@
 
 > Loading进度条加载控件(具体代码实现：[Loading](https://github.com/sakitam-fdd/ol-extent/blob/master/src/control/Loading.js))。
   此控件以实现并包含在HMap内部。所以你可以按照以下代码添加控件。
-  
-### 引入API
-
-```html
-<link rel="stylesheet" href="https://unpkg.com/ol-extent@1.1.1/dist/css/olControlLoading.min.css" type="text/css">
-<script src="https://unpkg.com/ol-extent@1.1.1/dist/olControlLoading.min.js"></script>
-```  
 
 * 配置中开启, 直接在controls设置loading 为true。
 
@@ -64,41 +57,6 @@
         widget: 'progressBar',
     })
     Map.map.addControl(olControlLoading)
-```
-
-#### 尝试编辑它
----
-<iframe width="100%" height="430"></iframe>
-
-* 控件单独使用,配合openlayers 单独使用，通过 ``` new ol.control.Loading() ``` 开启Loading进度条加载控件
-
-```html
-<link rel="stylesheet" href="https://unpkg.com/openlayers@4.3.3/dist/ol.css" type="text/css">
-<script src="https://unpkg.com/openlayers@4.3.3/dist/ol.js"></script>
-
-<link rel="stylesheet" href="https://unpkg.com/ol-extent@1.1.1/dist/css/olControlLoading.min.css" type="text/css">
-<script src="https://unpkg.com/ol-extent@1.1.1/dist/olControlLoading.min.js"></script>
-```
-
-```javascript
-    var map = new ol.Map({
-        layers: [
-          new ol.layer.Tile({
-            source: new ol.source.OSM()
-          })
-        ],
-        target: 'map',
-        controls: [
-          new ol.control.Loading({
-            className: 'hmap-loading-panel',
-            widget: 'progressBar',
-          })
-        ],
-        view: new ol.View({
-          center: [0, 0],
-          zoom: 2
-        })
-    });
 ```
 
 #### 尝试编辑它

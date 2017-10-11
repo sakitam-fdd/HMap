@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>attribution</title>
+  <title>MousePosition</title>
   <script src="../../dist/hmap.js" type="text/javascript"></script>
   <link rel="stylesheet" href="../../dist/hmap.css" type="text/css">
 </head>
@@ -24,28 +24,13 @@
         layerName: 'openstreetmap',
         isDefault: true,
         layerType: 'OSM',
-        attribution: {
-          url: 'https://aurorafe.github.io',
-          title: '恒达时讯',
-          messages: '版权所有'
-        },
-        opaque: true, //图层是否不透明
         layerUrl: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
       }
     ]
   });
 
-  var layer = Map.getLayerByLayerName('openstreetmap')
-  let attribution = new ol.Attribution({
-    html: '<a href="https://www.opencyclemap.org/">OpenCycleMap</a>',
-  })
-  layer.getSource().setAttributions(attribution)
-  let controlAttribution = new ol.control.Attribution({
-    collapsible: true,
-    collapsed: true,
-    label: 'ii'
-  })
-  Map.map.addControl(controlAttribution)
+  var controlMousePosition = new ol.control.MousePosition({})
+  Map.map.addControl(controlMousePosition)
 </script>
 </body>
 </html>
