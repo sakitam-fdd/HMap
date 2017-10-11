@@ -47,10 +47,31 @@
 }
 .ol-control {
   position: absolute;
-  background-color: rgba(255,255,255,0.4);
+  background-color: rgba(255,255,255, 0.8);
   border-radius: 4px;
-  padding: 2px;
 }
+
+.ol-control button {
+  display: block;
+  padding: 0;
+  color: #7c8196;
+  font-size: 1.14em;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  height: 1.375em;
+  width: 1.375em;
+  line-height: 1.375em;
+  background-color: rgba(255, 255, 255, 1);
+  border: none;
+  border-radius: 2px;
+}
+
+.ol-control button::-moz-focus-inner {
+  border: none;
+  padding: 0;
+}
+
 .ol-control:hover {
   background-color: rgba(255,255,255,0.6);
 }

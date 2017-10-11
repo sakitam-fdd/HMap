@@ -703,14 +703,7 @@ class Layer {
           projection: projection,
           maxZoom: (params['maxZoom'] ? params['maxZoom'] : 18),
           minZoom: (params['minZoom'] ? params['minZoom'] : 0),
-          crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
-          tileUrlFunction: function (tileCoord) {
-            let url = (params['layerUrl']).replace('{z}',
-              (tileCoord[0]).toString()).replace('{x}',
-              tileCoord[1].toString()).replace('{y}',
-              (-tileCoord[2] - 1).toString())
-            return url
-          }
+          crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined)
         })
       })
     }

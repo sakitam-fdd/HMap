@@ -1,17 +1,19 @@
-.ol-scale-line {
-  background: rgba(0,60,136,0.3);
-  border-radius: 4px;
-  bottom: 8px;
-  left: 8px;
-  padding: 2px;
-  position: absolute;
-}
-.ol-scale-line-inner {
-  border: 1px solid #eee;
-  border-top: none;
-  color: #eee;
-  font-size: 10px;
-  text-align: center;
-  margin: 1px;
-  will-change: contents, width;
+.ol-overlaycontainer-stopevent {
+  .ol-scale-line {
+    background: rgba(0,60,136,0.3);
+    border-radius: 4px;
+    bottom: 8px;
+    left: 8px;
+    padding: 2px;
+    position: absolute;
+  }
+  .ol-scale-line-inner {
+    border: 1px solid #eee;
+    border-top: none;
+    color: #eee;
+    font-size: 10px;
+    text-align: center;
+    margin: 1px;
+    will-change: contents, width;
+  }
 }

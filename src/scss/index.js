@@ -4,3 +4,4 @@
  */
 import './index.scss'
 import './control/scaleLine.scss'
+import './control/attribution.scss'

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>标准切片地图</title>
+  <link rel="stylesheet" href="../../dist/hmap.css">
+  <style type="text/css">
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+<div id="map"></div>
+<script src="../../dist/hmap.js"></script>
+<script type="text/javascript">
+  var Map = new HMap({
+    target: 'map',
+    view: {
+      center: [12118909.300259633, 4086043.1061670054],
+      projection: 'EPSG:3857',
+      zoom: 5, // resolution
+    },
+    baseLayers: [
+      {
+        layerName: 'TileXYZ',
+        isDefault: true,
+        layerType: 'GaoDe',
+        attribution: {
+          url: 'https://aurorafe.github.io',
+          title: '恒达时讯',
+          messages: '版权所有'
+        },
+        layerUrl: 'https://s5.geohey.com/s/mapping/midnight/all?x={x}&y={y}&z={z}&retina=&ak=MGUxMmI2ZTk4YTVhNDEzYmJhZDJkNDM3ZWI5ZDAwOGE'
+      }
+    ]
+  });
+</script>
+</body>
+</html>
