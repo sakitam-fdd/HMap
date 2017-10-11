@@ -118,6 +118,53 @@ class Layer {
   }
 
   /**
+   * 获取所有图层（将图层组里面的图层解析出来）
+   * @returns {Array}
+   */
+  getAllLayers () {
+    let targetLayers = []
+    if (this.map) {
+      let layers = this.map.getLayers().getArray()
+      targetLayers = this.getAllLayersInternal(layers)
+    }
+    return targetLayers
+  }
+
+  /**
+   * 获取所有图层（内部处理）
+   * @param layers
+   * @returns {Array}
+   */
+  getAllLayersInternal (layers) {
+    let _target = []
+    if (layers.length > 0) {
+      layers.forEach(layer => {
+        if (layer instanceof ol.layer.Group) {
+          let layers = layer.getLayers().getArray()
+          let _layer = this.getAllLayersInternal(layers)
+          if (_layer) {
+            _target = _target.concat(_layer)
+          }
+        } else {
+          _target.push(layer)
+        }
+      })
+    }
+    return _target
+  }
+
+  /**
+   * 获取所有矢量图层
+   */
+  getVectorLayers () {
+    let layers = this.getAllLayers()
+    return (layers.filter(layer_ => {
+      const source = layer_.getSource()
+      return (source instanceof ol.source.Vector || source instanceof ol.source.Cluster)
+    }))
+  }
+
+  /**
    * 通过layerName获取专题图层
    * @param layerName
    * @returns {*}
@@ -273,6 +320,7 @@ class Layer {
           this.map.addLayer(vectorLayer)
         }
       }
+      this.orderLayerZindex()
       return vectorLayer
     }
   }

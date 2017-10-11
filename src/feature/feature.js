@@ -6,10 +6,28 @@ import ol from 'openlayers'
 import mixin from '../utils/mixins'
 import olStyleFactory from 'ol-extent/src/style/factory'
 import Layer from '../layer/Layer'
-class Feature extends mixin(Layer) {
+import Geometry from '../geom/Geometry'
+class Feature extends mixin(Layer, Geometry) {
   constructor () {
     super()
-    this.desc = ''
+    this[Symbol()] = Symbol()
+  }
+
+  /**
+   * 在某个图层查找id匹配的要素
+   * @param layer
+   * @param id
+   * @returns {*}
+   */
+  getFeatureFromLayer (layer, id) {
+    let feature
+    if (layer && layer instanceof ol.layer.Vector && id) {
+      const source = layer.getSource()
+      if (source && source.getFeatureById) {
+        feature = source.getFeatureById(id)
+      }
+    }
+    return feature
   }
 
   /**
@@ -18,11 +36,14 @@ class Feature extends mixin(Layer) {
    * @returns {*}
    */
   getFeatureById (id) {
-    let layers = this.map.getLayers()
-    let feature = null
-    layers.forEach(layer => {
-      if (layer && layer instanceof ol.layer.Vector && layer.getSource() && layer.getSource().getFeatureById) {
-        feature = layer.getSource().getFeatureById(id)
+    let layers = this.getVectorLayers()
+    let feature
+    layers.every(layer => {
+      feature = this.getFeatureFromLayer(layer, id)
+      if (feature && feature instanceof ol.Feature) {
+        return false
+      } else {
+        return true
       }
     })
     return feature
@@ -36,12 +57,10 @@ class Feature extends mixin(Layer) {
    * @returns {*}
    */
   getFeatureById2LayerName (id, layerName) {
-    let feature = null
+    let feature
     if (layerName) {
-      let layer = this.getLayerByName(layerName)
-      if (layer && layer instanceof ol.layer.Vector) {
-        feature = layer.getSource().getFeatureById(id)
-      }
+      let layer = this.getLayerByLayerName(layerName)
+      feature = this.getFeatureFromLayer(layer, id)
     }
     if (!feature || !(feature instanceof ol.Feature)) {
       feature = this.getFeatureById(id)
@@ -50,68 +69,65 @@ class Feature extends mixin(Layer) {
   }
 
   /**
-   * 获取当前范围
-   * @param multiFeatures
+   * 添加样式
+   * @param data_
    * @param params
-   * @private
+   * @param feature
+   * @returns {*}
    */
-  _getExtent (multiFeatures, params) {
-    let extent = multiFeatures.getExtent()
-    let bExtent = true
-    extent.every(item => {
-      if (item === Infinity || isNaN(item) || item === undefined || item === null) {
-        bExtent = false
-        return false
-      } else {
-        return true
+  fixStyle (data_, params, feature) {
+    let style = new olStyleFactory(data_['attributes']['style'] || params['style'])
+    let selectStyle = new olStyleFactory(data_['attributes']['selectStyle'] || params['selectStyle'])
+    if (style && feature) {
+      feature.setStyle(style)
+      feature.set('style', style)
+      if (selectStyle) {
+        feature.set('selectStyle', selectStyle)
       }
-    })
-    if (bExtent) {
+    }
+    return feature
+  }
+
+  /**
+   * 添加相关属性信息
+   * @param data_
+   * @param params
+   * @param feature
+   * @returns {*}
+   */
+  fixProperties (data_, params, feature) {
+    if (data_['attributes'] && (data_['attributes']['id'] || data_['attributes']['ID'])) {
+      let id = (data_.attributes['id'] || data_.attributes['ID'] || params['id'])
+      feature.setId(id)
+      feature.setProperties(data_['attributes'])
+    }
+    return feature
+  }
+
+  /**
+   * 调整视图
+   * @param geometry
+   * @param params
+   */
+  fixView (geometry, params) {
+    if (params['zoomToExtent']) {
+      let extent = geometry.getExtent()
       if (params['view'] && params['view']['adjustExtent']) {
         extent = this.adjustExtent(extent, params['view'])
       }
       this.zoomToExtent(extent, true)
     }
-    return extent
   }
 
   /**
-   * 判断点是否在视图内，如果不在地图将自动平移
-   * @param coordinate (当前点坐标)
+   * 向图层添加要素
+   * @param params
+   * @param feature
    */
-  movePointToView (coordinate) {
-    if (this.map) {
-      let extent = this.getMapCurrentExtent()
-      if (!(ol.extent.containsXY(extent, coordinate[0], coordinate[1]))) {
-        this.map.getView().animate({
-          center: [coordinate[0], coordinate[1]],
-          duration: 400
-        })
-      }
-    }
-  }
-
-  /**
-   * 设置视图中心点
-   * @param coordinate （传入坐标）
-   */
-  setViewCenter (coordinate) {
-    if (coordinate && Array.isArray(coordinate) && this.map) {
-      this.map.getView().animate({
-        center: coordinate,
-        duration: 800
-      })
-    }
-  }
-
-  /**
-   * 获取当前地图的范围
-   * @returns {ol.Extent}
-   */
-  getMapCurrentExtent () {
-    if (this.map) {
-      return this.map.getView().calculateExtent(this.map.getSize())
-    }
+  appendFeature (params, feature) {
+    params['create'] = true
+    let layer = this.createVectorLayer(params['layerName'], params)
+    layer.getSource().addFeature(feature)
   }
 
   /**
@@ -121,42 +137,20 @@ class Feature extends mixin(Layer) {
    * @returns {ol.Feature|ol.format.Feature|*|ol.render.Feature|Feature}
    */
   addPoint (point, params) {
-    try {
-      let geometry = this.getGeomFromGeomData(point, params)
+    let geometry = this.getGeomFromGeomData(point, params)
+    if (geometry) {
       let feature = new ol.Feature({
         geometry: geometry,
         params: params
       })
-      let style = new olStyleFactory(point['attributes']['style'] || params['style'])
-      let selectStyle = new olStyleFactory(point['attributes']['selectStyle'] || params['selectStyle'])
-      if (style && feature) {
-        feature.setStyle(style)
-        feature.set('style', style)
-        if (selectStyle) {
-          feature.set('selectStyle', selectStyle)
-        }
-      }
-      if (point['attributes'] && (point['attributes']['id'] || point['attributes']['ID'])) {
-        // let id = (point['attributes']['id'] ? point['attributes']['id'] : (point['attributes']['ID'] ? point['attributes']['ID'] : params['id']))
-        let id = (point.attributes['id'] || point.attributes['ID'] || params['id'])
-        feature.setId(id)
-        feature.setProperties(point['attributes'])
-      }
-      if (params['zoomToExtent']) {
-        let extent = geometry.getExtent()
-        let _extent = this.adjustExtent(extent, params['view'])
-        this.zoomToExtent(_extent, true)
-      }
+      feature = this.fixStyle(point, params, feature)
+      feature = this.fixProperties(point, params, feature)
+      this.fixView(geometry, params)
       if (params['layerName']) {
-        params['create'] = true
-        let layer = this.createVectorLayer(params['layerName'], params)
-        layer.getSource().addFeature(feature)
+        this.appendFeature(params, feature)
         this.pointLayers.add(params['layerName'])
       }
-      this.orderLayerZindex()
       return feature
-    } catch (e) {
-      console.error(e)
     }
   }
 
@@ -168,7 +162,7 @@ class Feature extends mixin(Layer) {
   addPoints (points, params) {
     try {
       if (points && Array.isArray(points)) {
-        let [multiPoint, change] = [(new ol.geom.MultiPoint([])), false]
+        let [features, multiPoint, change] = [[], (new ol.geom.MultiPoint([])), false]
         if (params['zoomToExtent']) {
           params['zoomToExtent'] = false
           change = true
@@ -177,6 +171,7 @@ class Feature extends mixin(Layer) {
           if (point && point['geometry']) {
             let pointFeat = this.addPoint(point, params)
             if (pointFeat && pointFeat instanceof ol.Feature) {
+              features.push(pointFeat)
               let geom = pointFeat.getGeometry()
               if (geom && geom instanceof ol.geom.Point) {
                 multiPoint.appendPoint(geom)
@@ -194,9 +189,10 @@ class Feature extends mixin(Layer) {
           }
         })
         if (change) {
-          this._getExtent(multiPoint, params)
+          params['zoomToExtent'] = true
+          this.fixView(multiPoint, params)
         }
-        return multiPoint
+        return features
       }
     } catch (e) {
       console.error(e)
@@ -227,41 +223,20 @@ class Feature extends mixin(Layer) {
    * @returns {*}
    */
   addPolyline (line, params) {
-    try {
-      let linefeature = new ol.Feature({
-        geometry: this.getGeomFromGeomData(line, params)
+    let geometry = this.getGeomFromGeomData(line, params)
+    if (geometry) {
+      let lineFeature = new ol.Feature({
+        geometry: geometry,
+        params: params
       })
-      let style = new olStyleFactory(line['attributes']['style'] || params['style'])
-      let selectStyle = new olStyleFactory(line['attributes']['selectStyle'] || params['selectStyle'])
-      let extent = linefeature.getGeometry().getExtent()
-      if (style && linefeature) {
-        linefeature.setStyle(style)
-        linefeature.set('style', style)
-        if (selectStyle) {
-          linefeature.set('selectStyle', selectStyle)
-        }
-      }
-      if (line['attributes'] && (line.attributes['ID'] || line.attributes['id'])) {
-        let id = (line.attributes['id'] || line.attributes['ID'] || params['id'])
-        linefeature.setId(id)
-        linefeature.setProperties(line.attributes)
-      }
-      if (params['zoomToExtent']) {
-        if (params['view'] && params['view']['adjustExtent']) {
-          extent = this.adjustExtent(extent, params['view'])
-        }
-        this.zoomToExtent(extent, true)
-      }
+      lineFeature = this.fixStyle(line, params, lineFeature)
+      lineFeature = this.fixProperties(line, params, lineFeature)
+      this.fixView(geometry, params)
       if (params['layerName']) {
-        params['create'] = true
-        let layer = this.createVectorLayer(params['layerName'], params)
-        layer.getSource().addFeature(linefeature)
+        this.appendFeature(params, lineFeature)
         this.lineLayers.add(params['layerName'])
       }
-      this.orderLayerZindex()
-      return linefeature
-    } catch (e) {
-      console.error(e)
+      return lineFeature
     }
   }
 
@@ -273,7 +248,7 @@ class Feature extends mixin(Layer) {
   addPolylines (lines, params) {
     try {
       if (lines && Array.isArray(lines)) {
-        let [MultiLine, change] = [(new ol.geom.MultiLineString([])), false]
+        let [features, MultiLine, change] = [[], (new ol.geom.MultiLineString([])), false]
         if (params['zoomToExtent']) {
           params['zoomToExtent'] = false
           change = true
@@ -281,6 +256,7 @@ class Feature extends mixin(Layer) {
         lines.forEach(line => {
           let polyLine = this.addPolyline(line, params)
           if (polyLine && polyLine instanceof ol.Feature) {
+            features.push(polyLine)
             let geom = polyLine.getGeometry()
             if (geom && geom instanceof ol.geom.LineString) {
               MultiLine.appendLineString(geom)
@@ -297,9 +273,10 @@ class Feature extends mixin(Layer) {
           }
         })
         if (change) {
-          this._getExtent(MultiLine, params)
+          params['zoomToExtent'] = true
+          this.fixView(MultiLine, params)
         }
-        return MultiLine
+        return features
       }
     } catch (e) {
       console.error(e)
@@ -313,44 +290,20 @@ class Feature extends mixin(Layer) {
    * @returns {ol.render.Feature|ol.format.Feature|Feature|*|ol.Feature}
    */
   addPolygon (polygon, params) {
-    try {
-      if (polygon && polygon['geometry']) {
-        let polygonFeature = new ol.Feature({
-          geometry: this.getGeomFromGeomData(polygon, params)
-        })
-        let style = new olStyleFactory(polygon['attributes']['style'] || params['style'])
-        let selectStyle = new olStyleFactory(polygon['attributes']['selectStyle'] || params['selectStyle'])
-        let extent = polygonFeature.getGeometry().getExtent()
-        if (style && polygonFeature) {
-          polygonFeature.setStyle(style)
-          if (selectStyle) {
-            polygonFeature.set('selectStyle', selectStyle)
-          }
-        }
-        if (polygon['attributes'] && (polygon.attributes['ID'] || polygon.attributes['id'])) {
-          let id = (polygon.attributes['id'] || polygon.attributes['ID'] || params['id'])
-          polygonFeature.setId(id)
-          polygonFeature.setProperties(polygon.attributes)
-        }
-        if (params['zoomToExtent']) {
-          if (params['view'] && params['view']['adjustExtent']) {
-            extent = this.adjustExtent(extent, params['view'])
-          }
-          this.zoomToExtent(extent, true)
-        }
-        if (params['layerName']) {
-          params['create'] = true
-          let layer = this.createVectorLayer(params['layerName'], params)
-          layer.getSource().addFeature(polygonFeature)
-          this.polygonLayers.add(params['layerName'])
-        }
-        this.orderLayerZindex()
-        return polygonFeature
-      } else {
-        console.info('传入的数据不标准！')
+    let geometry = this.getGeomFromGeomData(polygon, params)
+    if (geometry) {
+      let polygonFeature = new ol.Feature({
+        geometry: geometry,
+        params: params
+      })
+      polygonFeature = this.fixStyle(polygon, params, polygonFeature)
+      polygonFeature = this.fixProperties(polygon, params, polygonFeature)
+      this.fixView(geometry, params)
+      if (params['layerName']) {
+        this.appendFeature(params, polygonFeature)
+        this.polygonLayers.add(params['layerName'])
       }
-    } catch (e) {
-      console.log(e)
+      return polygonFeature
     }
   }
 
@@ -362,7 +315,7 @@ class Feature extends mixin(Layer) {
   addPolygons (polygons, params) {
     try {
       if (polygons && Array.isArray(polygons)) {
-        let [MultiPolygon, change] = [(new ol.geom.MultiPolygon([])), false]
+        let [features, MultiPolygon, change] = [[], (new ol.geom.MultiPolygon([])), false]
         if (params['zoomToExtent']) {
           params['zoomToExtent'] = false
           change = true
@@ -370,6 +323,7 @@ class Feature extends mixin(Layer) {
         polygons.forEach(polygon => {
           let polygonFeat = this.addPolygon(polygon, params)
           if (polygonFeat && polygonFeat instanceof ol.Feature) {
+            features.push(polygonFeat)
             let geom = polygonFeat.getGeometry()
             if (geom && geom instanceof ol.geom.Polygon) {
               MultiPolygon.appendPolygon(geom)
@@ -386,9 +340,10 @@ class Feature extends mixin(Layer) {
           }
         })
         if (change) {
-          this._getExtent(MultiPolygon, params)
+          params['zoomToExtent'] = true
+          this.fixView(MultiPolygon, params)
         }
-        return MultiPolygon
+        return features
       }
     } catch (e) {
       console.log(e)
@@ -440,353 +395,14 @@ class Feature extends mixin(Layer) {
           this.pointLayers.add(params['layerName'])
         }
         if (change) {
-          this._getExtent(multiPoint, params)
+          params['zoomToExtent'] = true
+          this.fixView(multiPoint, params)
         }
       }
-      this.orderLayerZindex()
       return feature
     } catch (e) {
       console.log(e)
     }
-  }
-
-  /**
-   * 获取线当前范围和中心点
-   * @param line
-   * @param params
-   * @returns {{extent: *, center: ol.Coordinate}}
-   */
-  getCenterExtentFromLine (line, params) {
-    try {
-      let geom = null
-      if (!(line instanceof ol.geom.Geometry)) {
-        geom = this.getGeomFromGeomData(line, params)
-      }
-      let [MultiLine] = [(new ol.geom.MultiLineString([]))]
-      if (geom && geom instanceof ol.geom.LineString) {
-        MultiLine.appendLineString(geom)
-      } else if (geom && geom instanceof ol.geom.MultiLineString) {
-        let multiGeoms = geom.getLineStrings()
-        if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
-          multiGeoms.forEach(_geom => {
-            if (_geom && _geom instanceof ol.geom.LineString) {
-              MultiLine.appendLineString(_geom)
-            }
-          })
-        }
-      }
-      let extent = this._getExtent(MultiLine, params)
-      let center = ol.extent.getCenter(extent)
-      return ({
-        extent: extent,
-        center: center
-      })
-    } catch (e) {
-      console.error(e)
-    }
-  }
-
-  /**
-   * 获取当前面范围和中心点
-   * @param polygon
-   * @param params
-   * @returns {{extent: *, center: ol.Coordinate}}
-   */
-  getCenterExtentFromPolygon (polygon, params) {
-    try {
-      let geom = null
-      if (!(polygon instanceof ol.geom.Geometry)) {
-        geom = this.getGeomFromGeomData(polygon, params)
-      }
-      let [MultiPolygon] = [(new ol.geom.MultiPolygon([]))]
-      if (geom && geom instanceof ol.geom.Polygon) {
-        MultiPolygon.appendPolygon(geom)
-      } else if (geom && geom instanceof ol.geom.MultiPolygon) {
-        let multiGeoms = geom.getPolygons()
-        if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
-          multiGeoms.forEach(_geom => {
-            if (_geom && _geom instanceof ol.geom.Polygon) {
-              MultiPolygon.appendPolygon(_geom)
-            }
-          })
-        }
-      }
-      let extent = this._getExtent(MultiPolygon, params)
-      let center = ol.extent.getCenter(extent)
-      return ({
-        extent: extent,
-        center: center
-      })
-    } catch (e) {
-      console.error(e)
-    }
-  }
-
-  /**
-   * 读取空间数据
-   * @param data
-   * @param params
-   * @returns {*}
-   * @private
-   */
-  _getMultiGeomtery (data, params) {
-    try {
-      let geom = null
-      let multiPolygon = new ol.geom.MultiPolygon([])
-      let multiLine = new ol.geom.MultiLineString([])
-      let multiPoint = new ol.geom.MultiPoint([])
-      if (!(data instanceof ol.geom.Geometry)) {
-        geom = this.getGeomFromGeomData(data, params)
-      } else {
-        geom = data
-      }
-      if (geom) {
-        if (geom instanceof ol.geom.Polygon || geom instanceof ol.geom.MultiPolygon) {
-          if (geom instanceof ol.geom.Polygon) {
-            multiPolygon.appendPolygon(geom)
-          } else {
-            let multiGeoms = geom.getPolygons()
-            if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
-              multiGeoms.forEach(_geom => {
-                if (_geom && _geom instanceof ol.geom.Polygon) {
-                  multiPolygon.appendPolygon(_geom)
-                }
-              })
-            }
-          }
-          return multiPolygon
-        } else if (geom instanceof ol.geom.LineString || geom instanceof ol.geom.MultiLineString) {
-          if (geom instanceof ol.geom.LineString) {
-            multiLine.appendLineString(geom)
-          } else {
-            let multiGeoms = geom.getLineStrings()
-            if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
-              multiGeoms.forEach(_geom => {
-                if (_geom && _geom instanceof ol.geom.LineString) {
-                  multiLine.appendLineString(_geom)
-                }
-              })
-            }
-          }
-          return multiLine
-        } else if (geom instanceof ol.geom.Point || geom instanceof ol.geom.MultiPoint) {
-          if (geom instanceof ol.geom.Point) {
-            multiPoint.appendPoint(geom)
-          } else {
-            let multiGeoms = geom.getPoints()
-            if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
-              multiGeoms.forEach(_geom => {
-                if (_geom && _geom instanceof ol.geom.Point) {
-                  multiPoint.appendPoint(_geom)
-                }
-              })
-            }
-          }
-          return multiPoint
-        }
-      } else {
-        return false
-      }
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
-  /**
-   * 读取空间信息(无类型默认以wkt方式读取)
-   * @param geomData
-   * @param options
-   * @returns {*}
-   */
-  getGeomFromGeomData (geomData, options) {
-    try {
-      options = options || {}
-      let featureGeom = null
-      if (geomData instanceof ol.geom.Geometry) {
-        featureGeom = geomData
-        if (options['dataProjection'] && options['featureProjection']) {
-          featureGeom = featureGeom.transform(options['dataProjection'], options['featureProjection'])
-        }
-      } else if (geomData.hasOwnProperty('geometry') && geomData['geometry'] instanceof ol.geom.Geometry) {
-        featureGeom = geomData['geometry']
-        if (options['dataProjection'] && options['featureProjection']) {
-          featureGeom = featureGeom.transform(options['dataProjection'], options['featureProjection'])
-        }
-      } else if (geomData['geomType'] === 'GeoJSON' || options['geomType'] === 'GeoJSON') {
-        let GeoJSONFormat = new ol.format.GeoJSON()
-        featureGeom = GeoJSONFormat.readGeometry(geomData['geometry'], {
-          dataProjection: options['dataProjection'] ? options['dataProjection'] : undefined,
-          featureProjection: options['featureProjection'] ? options['featureProjection'] : undefined
-        })
-      } else if (geomData['geomType'] === 'EsriJSON' || options['geomType'] === 'EsriJSON') {
-        let esriJsonFormat = new ol.format.EsriJSON()
-        featureGeom = esriJsonFormat.readGeometry(geomData['geometry'], {
-          dataProjection: options['dataProjection'] ? options['dataProjection'] : undefined,
-          featureProjection: options['featureProjection'] ? options['featureProjection'] : undefined
-        })
-      } else if (geomData['geomType'] === 'Polyline' || options['geomType'] === 'Polyline') {
-        let polylineFormat = new ol.format.Polyline()
-        featureGeom = polylineFormat.readGeometry(geomData['geometry'], {
-          dataProjection: options['dataProjection'] ? options['dataProjection'] : undefined,
-          featureProjection: options['featureProjection'] ? options['featureProjection'] : undefined
-        })
-      } else if (Array.isArray(geomData['geometry'])) {
-        featureGeom = new ol.geom.Point(geomData['geometry'])
-        if (options['dataProjection'] && options['featureProjection']) {
-          featureGeom = featureGeom.transform(options['dataProjection'], options['featureProjection'])
-        }
-      } else if (geomData['geomType'] === 'MVT' || options['geomType'] === 'MVT') {
-        featureGeom = (new ol.format.MVT()).readGeometry(geomData)
-      } else if (geomData['geomType'] === 'TopoJSON' || options['geomType'] === 'TopoJSON') {
-        featureGeom = (new ol.format.TopoJSON()).readGeometry(geomData)
-      } else if (geomData['geomType'] === 'IGC' || options['geomType'] === 'IGC') {
-        featureGeom = (new ol.format.IGC()).readGeometry(geomData)
-      } else if (geomData['geomType'] === 'GMLBase' || options['geomType'] === 'GMLBase') {
-        featureGeom = (new ol.format.GMLBase()).readGeometry(geomData)
-      } else if (geomData['geomType'] === 'GPX' || options['geomType'] === 'GPX') {
-        featureGeom = (new ol.format.GPX()).readGeometry(geomData)
-      } else if (geomData['geomType'] === 'KML' || options['geomType'] === 'KML') {
-        featureGeom = (new ol.format.KML()).readGeometry(geomData)
-      } else if (geomData['geomType'] === 'OSMXML' || options['geomType'] === 'OSMXML') {
-        featureGeom = (new ol.format.OSMXML()).readGeometry(geomData)
-      } else if (geomData['geomType'] === 'WFS' || options['geomType'] === 'WFS') {
-        featureGeom = (new ol.format.WFS()).readGeometry(geomData)
-      } else if (geomData['geomType'] === 'WMSGetFeatureInfo' || options['geomType'] === 'WMSGetFeatureInfo') {
-        featureGeom = (new ol.format.WMSGetFeatureInfo()).readGeometry(geomData)
-      } else {
-        let wktFormat = new ol.format.WKT()
-        featureGeom = wktFormat.readGeometry(geomData['geometry'], {
-          dataProjection: options['dataProjection'] ? options['dataProjection'] : undefined,
-          featureProjection: options['featureProjection'] ? options['featureProjection'] : undefined
-        })
-      }
-      return featureGeom
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
-  /**
-   * 简单兼容
-   * @param geomData
-   * @param options
-   * @returns {{extent: *, center: ol.Coordinate}}
-   */
-  getCenterExtentFromGeom (geomData, options) {
-    let geom = this.getGeomFromGeomData(geomData, options)
-    let extent = this._getExtent(geom, options)
-    let center = ol.extent.getCenter(extent)
-    let bExtent = true
-    extent.every(item => {
-      if (item === Infinity || isNaN(item) || item === undefined || item === null) {
-        bExtent = false
-        return false
-      } else {
-        return true
-      }
-    })
-    if (bExtent && options['zoomToExtent']) {
-      if (options['view'] && options['view']['adjustExtent']) {
-        extent = this.adjustExtent(extent, options['view'])
-      }
-      this.zoomToExtent(extent, true)
-    }
-    return ({
-      extent: extent,
-      center: center
-    })
-  }
-
-  /**
-   * 获取范围和中心点
-   * @param multiGeom
-   * @param options
-   * @returns {{extent: *, center: ol.Coordinate}}
-   * @private
-   */
-  _getExtentCenter (multiGeom, options) {
-    let extent = this._getExtent(multiGeom, options)
-    let center = ol.extent.getCenter(extent)
-    let bExtent = true
-    extent.every(item => {
-      if (item === Infinity || isNaN(item) || item === undefined || item === null) {
-        bExtent = false
-        return false
-      } else {
-        return true
-      }
-    })
-    if (bExtent && options['zoomToExtent']) {
-      if (options['view'] && options['view']['adjustExtent']) {
-        extent = this.adjustExtent(extent, options['view'])
-      }
-      this.zoomToExtent(extent, true)
-    }
-    return ({
-      extent: extent,
-      center: center
-    })
-  }
-
-  /**
-   * 从多个geom获取范围和中心点（必须同种类型）
-   * @param geomDatas
-   * @param options
-   * @returns {null}
-   */
-  getCenterExtentFromGeoms (geomDatas, options) {
-    let [res, type] = [null, '']
-    if (geomDatas && Array.isArray(geomDatas) && geomDatas.length > 0) {
-      let multiPolygon = new ol.geom.MultiPolygon([])
-      let multiLine = new ol.geom.MultiLineString([])
-      let multiPoint = new ol.geom.MultiPoint([])
-      geomDatas.forEach(item => {
-        if (item) {
-          let multiGeom = this._getMultiGeomtery(this.getGeomFromGeomData(item, options))
-          if (multiGeom) {
-            if (multiGeom instanceof ol.geom.MultiPolygon) {
-              let _multiGeoms = multiGeom.getPolygons()
-              if (_multiGeoms && Array.isArray(_multiGeoms) && _multiGeoms.length > 0) {
-                _multiGeoms.forEach(_geom => {
-                  if (_geom && _geom instanceof ol.geom.Polygon) {
-                    multiPolygon.appendPolygon(_geom)
-                  }
-                })
-              }
-              type = 'multiPolygon'
-            } else if (multiGeom instanceof ol.geom.MultiLineString) {
-              let _multiGeoms = multiGeom.getLineStrings()
-              if (_multiGeoms && Array.isArray(_multiGeoms) && _multiGeoms.length > 0) {
-                _multiGeoms.forEach(_geom => {
-                  if (_geom && _geom instanceof ol.geom.LineString) {
-                    multiLine.appendLineString(_geom)
-                  }
-                })
-              }
-              type = 'multiLine'
-            } else if (multiGeom instanceof ol.geom.MultiPoint) {
-              let _multiGeoms = multiGeom.getPoints()
-              if (_multiGeoms && Array.isArray(_multiGeoms) && _multiGeoms.length > 0) {
-                _multiGeoms.forEach(_geom => {
-                  if (_geom && _geom instanceof ol.geom.Point) {
-                    multiPoint.appendPoint(_geom)
-                  }
-                })
-              }
-              type = 'multiPoint'
-            }
-          }
-        }
-      })
-      if (type === 'multiPolygon') {
-        res = this._getExtentCenter(multiPolygon, options)
-      } else if (type === 'multiLine') {
-        res = this._getExtentCenter(multiLine, options)
-      } else if (type === 'multiPoint') {
-        res = this._getExtentCenter(multiPoint, options)
-      }
-    }
-    return res
   }
 
   /**
@@ -835,13 +451,23 @@ class Feature extends mixin(Layer) {
   /**
    * 通过图层名移除要素
    * @param layerName
+   * @param fast
+   * @returns {Array}
    */
-  removeFeatureByLayerName (layerName) {
+  removeFeatureByLayerName (layerName, fast) {
     try {
       let layer = this.getLayerByLayerName(layerName)
-      if (layer && layer instanceof ol.layer.Vector && layer.getSource()) {
-        layer.getSource().clear()
+      let features = []
+      if (layer && layer instanceof ol.layer.Vector) {
+        const source = layer.getSource()
+        if (source && source.clear) {
+          if (source.getFeatures) {
+            features = source.getFeatures()
+          }
+          source.clear((fast || false))
+        }
       }
+      return features
     } catch (e) {
       console.log(e)
     }
@@ -849,15 +475,18 @@ class Feature extends mixin(Layer) {
 
   /**
    * 移除多个图层的要素
-   * @param layerNames <Array>
+   * @param layerNames
+   * @returns {Array}
    */
   removeFeatureByLayerNames (layerNames) {
+    let features = []
     if (layerNames && Array.isArray(layerNames) && layerNames.length > 0) {
       layerNames.forEach(item => {
-        this.removeFeatureByLayerName(item)
+        features = features.concat(this.removeFeatureByLayerName(item))
       })
+      return features
     } else {
-      console.info('id为空或者不是数组！')
+      console.info('传入的不是数组！')
     }
   }
 
@@ -867,7 +496,7 @@ class Feature extends mixin(Layer) {
    */
   removeFeature (feature) {
     if (feature && feature instanceof ol.Feature) {
-      let tragetLayer = this.getLayerByFeatuer(feature)
+      let tragetLayer = this.getLayerByFeature(feature)
       if (tragetLayer) {
         let source = tragetLayer.getSource()
         if (source && source.removeFeature) {
@@ -885,27 +514,33 @@ class Feature extends mixin(Layer) {
    * @param layerName
    */
   removeFeatureById (id, layerName) {
+    let feature
     if (this.map && id) {
       if (layerName) {
         let layer = this.getLayerByLayerName(layerName)
-        if (layer) {
-          let feature = layer.getSource().getFeatureById(id)
-          if (feature && feature instanceof ol.Feature) {
-            layer.getSource().removeFeature(feature)
+        if (layer && layer.getSource) {
+          let source = layer.getSource()
+          if (source && source.getFeatureById) {
+            feature = source.getFeatureById(id)
+            if (feature && feature instanceof ol.Feature) {
+              source.removeFeature(feature)
+            }
           }
         }
       } else {
-        let layers = this.map.getLayers().getArray()
-        layers.forEach(layer => {
-          if (layer && layer instanceof ol.layer.Vector && layer.getSource()) {
-            let feature = layer.getSource().getFeatureById(id)
-            if (feature && feature instanceof ol.Feature) {
-              layer.getSource().removeFeature(feature)
-            }
+        let layers = this.getAllLayers()
+        layers.every(layer => {
+          feature = this.getFeatureFromLayer(layer, id)
+          if (feature && feature instanceof ol.Feature) {
+            layer.getSource().removeFeature(feature)
+            return false
+          } else {
+            return true
           }
         })
       }
     }
+    return feature
   }
 
   /**
@@ -914,42 +549,57 @@ class Feature extends mixin(Layer) {
    * @param layerName
    */
   removeFeatureByIds (ids, layerName) {
+    let features = []
     if (ids && Array.isArray(ids) && ids.length > 0) {
       ids.forEach(item => {
-        this.removeFeatureById(item, layerName)
+        features.push(this.removeFeatureById(item, layerName))
       })
     } else {
       console.info('id为空或者不是数组！')
     }
+    return features
   }
 
   /**
    * 高亮要素
-   * @param id (若传feat时其他参数可不传)
-   * @param feat
-   * @param layerName (传入id时layerName可不传)
+   * @param key (若传feat时其他参数可不传)
+   * @param style
    * @returns {*}
    */
-  highLightFeature (id, feat, layerName) {
+  highLightFeature (key, style) {
     if (!this.map) return
-    if (feat && feat instanceof ol.Feature) {
-      let selectStyle = feat.get('selectStyle')
-      if (selectStyle && selectStyle instanceof ol.style.Style) {
-        feat.setStyle(selectStyle)
-      } else if (selectStyle) {
-        let st = this.getStyleByPoint(selectStyle)
-        feat.setStyle(st)
-      }
-      return feat
-    } else if (id && id.trim() !== "''") {
-      let feature = this.getFeatureById(id)
-      if (feature && feature instanceof ol.Feature) {
-        let selectStyle = feature.get('selectStyle')
+    if (key && key instanceof ol.Feature) {
+      if (style && style instanceof ol.style.Style) {
+        key.setStyle(style)
+      } else if (typeof style === 'object') {
+        let st = new olStyleFactory(style)
+        key.setStyle(st)
+      } else {
+        let selectStyle = key.get('selectStyle')
         if (selectStyle && selectStyle instanceof ol.style.Style) {
-          feature.setStyle(selectStyle)
-        } else if (selectStyle) {
-          let st = this.getStyleByPoint(selectStyle)
+          key.setStyle(selectStyle)
+        } else if (typeof selectStyle === 'object') {
+          let st = new olStyleFactory(selectStyle)
+          key.setStyle(st)
+        }
+      }
+      return key
+    } else if (key && (typeof key === 'string') && key.trim() !== "''") {
+      let feature = this.getFeatureById(key)
+      if (feature && feature instanceof ol.Feature) {
+        if (style && style instanceof ol.style.Style) {
+          feature.setStyle(style)
+        } else if (typeof style === 'object') {
+          let st = new olStyleFactory(style)
           feature.setStyle(st)
+        } else {
+          let selectStyle = feature.get('selectStyle')
+          if (selectStyle && selectStyle instanceof ol.style.Style) {
+            feature.setStyle(selectStyle)
+          } else if (typeof selectStyle === 'object') {
+            let st = new olStyleFactory(selectStyle)
+            feature.setStyle(st)
+          }
         }
       }
       return feature
@@ -958,31 +608,44 @@ class Feature extends mixin(Layer) {
 
   /**
    * 取消高亮状态
-   * @param id (若传feat时其他参数可不传)
-   * @param feat
-   * @param layerName (传入id时layerName可不传)
+   * @param key (若传feat时其他参数可不传)
+   * @param style
    * @returns {*}
    */
-  unHighLightFeature (id, feat, layerName) {
+  unHighLightFeature (key, style) {
     if (!this.map) return
-    if (feat && feat instanceof ol.Feature) {
-      let normalStyle = feat.get('style')
-      if (normalStyle && normalStyle instanceof ol.style.Style) {
-        feat.setStyle(normalStyle)
-      } else if (normalStyle) {
-        let st = this.getStyleByPoint(normalStyle)
-        feat.setStyle(st)
-      }
-      return feat
-    } else if (id && id.trim() !== "''") {
-      let feature = this.getFeatureById(id)
-      if (feature && feature instanceof ol.Feature) {
-        let normalStyle = feature.get('style')
+    if (key && key instanceof ol.Feature) {
+      if (style && style instanceof ol.style.Style) {
+        key.setStyle(style)
+      } else if (typeof style === 'object') {
+        let st = new olStyleFactory(style)
+        key.setStyle(st)
+      } else {
+        let normalStyle = key.get('style')
         if (normalStyle && normalStyle instanceof ol.style.Style) {
-          feature.setStyle(normalStyle)
-        } else if (normalStyle) {
-          let st = this.getStyleByPoint(normalStyle)
+          key.setStyle(normalStyle)
+        } else if (typeof normalStyle === 'object') {
+          let st = new olStyleFactory(normalStyle)
+          key.setStyle(st)
+        }
+      }
+      return key
+    } else if (key && (typeof key === 'string') && key.trim() !== "''") {
+      let feature = this.getFeatureById(key)
+      if (feature && feature instanceof ol.Feature) {
+        if (style && style instanceof ol.style.Style) {
+          feature.setStyle(style)
+        } else if (typeof style === 'object') {
+          let st = new olStyleFactory(style)
           feature.setStyle(st)
+        } else {
+          let normalStyle = feature.get('style')
+          if (normalStyle && normalStyle instanceof ol.style.Style) {
+            feature.setStyle(normalStyle)
+          } else if (typeof normalStyle === 'object') {
+            let st = new olStyleFactory(normalStyle)
+            feature.setStyle(st)
+          }
         }
       }
       return feature
