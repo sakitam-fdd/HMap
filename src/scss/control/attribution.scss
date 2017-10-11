@@ -1,0 +1,62 @@
+.ol-overlaycontainer-stopevent {
+  .ol-attribution {
+    text-align: right;
+    bottom: .5em;
+    left: .5em;
+    max-width: calc(100% - 1.3em);
+  }
+  .ol-attribution ul {
+    margin: 0;
+    padding: 0 .5em;
+    font-size: .7rem;
+    line-height: 1.375em;
+    color: #000;
+    text-shadow: 0 0 2px #fff;
+  }
+  .ol-attribution li {
+    display: inline;
+    list-style: none;
+    line-height: inherit;
+  }
+  .ol-attribution li:not(:last-child):after {
+    content: " ";
+  }
+  .ol-attribution img {
+    max-height: 2em;
+    max-width: inherit;
+    vertical-align: middle;
+  }
+  .ol-attribution ul, .ol-attribution button {
+    display: inline-block;
+  }
+  .ol-attribution.ol-collapsed ul {
+    display: none;
+  }
+  .ol-attribution.ol-logo-only ul {
+    display: block;
+  }
+  .ol-attribution:not(.ol-collapsed) {
+    background: rgba(255,255,255,0.8);
+  }
+  .ol-attribution.ol-uncollapsible {
+    bottom: 0;
+    right: 0;
+    border-radius: 4px 0 0;
+    height: 1.1em;
+    line-height: 1em;
+  }
+  .ol-attribution.ol-logo-only {
+    background: transparent;
+    bottom: .4em;
+    height: 1.1em;
+    line-height: 1em;
+  }
+  .ol-attribution.ol-uncollapsible img {
+    margin-top: -.2em;
+    max-height: 1.6em;
+  }
+  .ol-attribution.ol-logo-only button,
+  .ol-attribution.ol-uncollapsible button {
+    display: none;
+  }
+}

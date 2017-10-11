@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>高德地图</title>
+  <title>标准切片地图</title>
   <link rel="stylesheet" href="../../dist/hmap.css">
   <style type="text/css">
     html, body, #map {
@@ -20,20 +20,22 @@
 <script type="text/javascript">
   var Map = new HMap({
     target: 'map',
-    controls: {
-      scaleLine: true
-    },
     view: {
-      center: [113.53450137499999, 34.44104525],
-      projection: 'EPSG:4326',
+      center: [12118909.300259633, 4086043.1061670054],
+      projection: 'EPSG:3857',
       zoom: 5, // resolution
     },
     baseLayers: [
       {
-        layerName: 'Gaode',
+        layerName: 'TileXYZ',
         isDefault: true,
-        layerType: 'GaoDe',
-        layerUrl: 'http://webrd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=8&x={x}&y={y}&z={z}'
+        layerType: 'TileXYZ',
+        attribution: {
+          url: 'https://aurorafe.github.io',
+          title: '恒达时讯',
+          messages: '版权所有'
+        },
+        layerUrl: 'https://s5.geohey.com/s/mapping/midnight/all?x={x}&y={y}&z={z}&retina=&ak=MGUxMmI2ZTk4YTVhNDEzYmJhZDJkNDM3ZWI5ZDAwOGE'
       }
     ]
   });

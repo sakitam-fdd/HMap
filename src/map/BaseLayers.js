@@ -3,7 +3,6 @@
  * @desc 底图相关处理
  */
 import ol from 'openlayers'
-import {isObject} from '../utils/utils'
 import config from '../utils/config'
 import Layer from '../layer/Layer'
 class BaseLayers extends Layer {
@@ -39,7 +38,13 @@ class BaseLayers extends Layer {
         if (_config['layerName'] && _config['layerUrl'] && _config['layerType']) {
           let layer = this._getLayer(_config)
           if (layer) layers.push(layer)
-          if (_config['label']) {
+          if (_config['label'] && Array.isArray(_config['label'])) {
+            _config['label'].forEach(_label => {
+              if (_label['layerName'] && _label['layerUrl'] && _label['layerType']) {
+                labelLayersConfig.push(_label)
+              }
+            })
+          } else if (typeof _config['label'] === 'object') { // 处理多个标注层的情况
             labelLayersConfig.push(_config['label'])
           }
         }
@@ -295,7 +300,7 @@ class BaseLayers extends Layer {
       attribution = new ol.Attribution({
         html: '&copy; ' + '<a href="' + params['url'] + '">' + params['title'] + '</a> ' + params['messages']
       })
-    } else if (isObject(params)) {
+    } else if (typeof params === 'object') {
       attribution = new ol.Attribution({
         html: '&copy; ' + '<a href="' + params['url'] + '">' + params['title'] + '</a> ' + params['messages']
       })
