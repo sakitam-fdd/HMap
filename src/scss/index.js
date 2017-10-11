@@ -3,5 +3,4 @@
  * @desc 样式文件集合
  */
 import './index.scss'
-import './control/scaleLine.scss'
 import './control/attribution.scss'

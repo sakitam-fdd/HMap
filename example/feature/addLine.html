@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>添加线要素</title>
+  <link rel="stylesheet" href="../../dist/hmap.css">
+  <style type="text/css">
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    .menu {
+      position: absolute;
+      width: 100%;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .base-button {
+      height: 30px;
+      line-height: 30px;
+      background: #1b9de8;
+      color: #ffffff;
+      border-radius: 6px;
+      border: 1px solid #bfcbd9;
+      padding: 0 10px;
+      box-shadow: 0 4px 10px rgba(73, 127, 255, .42);
+      transition: .3s;
+    }
+
+    .base-button:hover {
+      cursor: pointer;
+      border-color: #1b9de8;
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+<div id="map">
+  <div class="menu">
+    <button class="base-button" id="addFeature">添加单线</button>
+    <button class="base-button" id="addFeatures">添加多线</button>
+    <button class="base-button" id="removeFeatureByLayerName">通过layerName移除线</button>
+    <button class="base-button" id="removeFeatureById">通过id移除线</button>
+    <button class="base-button" id="highLightFeatureById">通过id高亮线</button>
+    <button class="base-button" id="unHighLightFeatureById">通过id取消高亮线</button>
+  </div>
+</div>
+<script src="../../dist/hmap.js"></script>
+<script src="../assets/lib/JSLite.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    var Map = new HMap({
+      target: 'map',
+      controls: {
+        scaleLine: true
+      },
+      view: {
+        center: [113.53450137499999, 34.44104525],
+        projection: 'EPSG:4326',
+        zoom: 5, // resolution
+      },
+      baseLayers: [
+        {
+          layerName: 'Google',
+          isDefault: true,
+          layerType: 'Google',
+          layerUrl: 'http://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}'
+        }
+      ]
+    });
+    var lines = []
+    Map.on('loadMapSuccess', function (event) {
+      if (event) {
+        $.ajax({
+          url: '../assets/json/lines.json',
+          type: 'GET',
+          dataType: 'json',
+          // 如果请求成功时执行回调
+          success: function (res) {
+            lines = res['data']['features']
+          },
+          // 如果请求失败时执行回调
+          error: function (error) {
+            console.log(error)
+          }
+        })
+      }
+    });
+    $('#addFeature').on('click', function () {
+      Map.addPolyline(lines[0], {
+        layerName: 'line',
+        zoomToExtent: true,
+        style: {
+          stroke: {
+            strokeColor: '#1b9de8',
+            strokeWidth: 3
+          }
+        },
+        selectStyle: {
+          stroke: {
+            strokeColor: '#D81E06',
+            strokeWidth: 3
+          }
+        }
+      })
+    });
+    $('#addFeatures').on('click', function () {
+      Map.addPolylines(lines, {
+        layerName: 'lines',
+        zoomToExtent: true,
+        style: {
+          stroke: {
+            strokeColor: '#1b9de8',
+            strokeWidth: 3
+          }
+        },
+        selectStyle: {
+          stroke: {
+            strokeColor: '#D81E06',
+            strokeWidth: 3
+          }
+        }
+      })
+    });
+    $('#removeFeatureByLayerName').on('click', function () {
+      Map.removeFeatureByLayerName('lines')
+    });
+    $('#removeFeatureById').on('click', function () {
+      Map.removeFeatureById('{344F08BA-61CA-49B8-B949-01FFCAE5153F}')
+    });
+    $('#highLightFeatureById').on('click', function () {
+      Map.highLightFeature('{344F08BA-61CA-49B8-B949-01FFCAE5153F}')
+    });
+    $('#unHighLightFeatureById').on('click', function () {
+      Map.unHighLightFeature('{344F08BA-61CA-49B8-B949-01FFCAE5153F}')
+    });
+  })
+</script>
+</body>
+</html>

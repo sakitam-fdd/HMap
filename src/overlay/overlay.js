@@ -3,11 +3,10 @@
  * @desc 用于dom标绘（包含自定义dom或者iconfont）
  */
 import ol from 'openlayers'
-import mixin from '../utils/mixins'
 import * as htmlUtils from 'nature-dom-util/src/utils/domUtils'
 import { trim } from '../utils/utils'
-import Feature from '../feature/feature'
-class Overlay extends mixin(Feature) {
+import Geometry from '../geom/Geometry'
+class Overlay extends Geometry {
 
   /**
    * 添加字体图标要素
@@ -221,7 +220,7 @@ class Overlay extends mixin(Feature) {
           if (overLay.get('markFeature') && overLay.get('markFeature') instanceof ol.Feature) {
             this.removeFeature(overLay.get('markFeature'))
           }
-          this.map.removeOverlay(overLay)
+          this.removeOverlay(overLay)
         }
         return overLay
       }
@@ -246,7 +245,7 @@ class Overlay extends mixin(Feature) {
           if (overlays[i].get('markFeature') && overlays[i].get('markFeature') instanceof ol.Feature) {
             this.removeFeature(overlays[i].get('markFeature'))
           }
-          this.map.removeOverlay(overlays[i])
+          this.removeOverlay(overlays[i])
           i--
         }
       }

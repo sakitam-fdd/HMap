@@ -24,13 +24,16 @@ import _BaseLayers from './map/BaseLayers'
 import _Controls from './map/Controls'
 import _Interactions from './map/Interactions'
 import _Feature from './feature/feature'
-import _Overlay from './feature/overlay'
+import _Overlay from './overlay/overlay'
+import _Geometry from './geom/Geometry'
+import _ViewUtil from './utils/ViewUtil'
 import { isObject } from './utils/utils'
 import { EVENT_TYPE, INTERNAL_KEY } from './constants'
 class HMap extends mixin(
   _Map, Observable, _View, _BaseLayers,
   _Controls, _Interactions, _Layer,
-  _Feature, _Overlay
+  _ViewUtil, _Geometry, _Feature,
+  _Overlay
 ) {
   constructor () {
     super()
