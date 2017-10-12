@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>pointer</title>
+  <script type="text/javascript" src="../../dist/hmap.js"></script>
+  <link rel="stylesheet" href="../../dist/hmap.css">
+</head>
+<body>
+<div id="map"></div>
+<script type="text/javascript">
+
+  var interactionPointer = new ol.interaction.Pointer({
+    handleDownEvent: handleDownEvent,
+    handleDragEvent: handleDragEvent,
+    handleMoveEvent: handleMoveEvent,
+    handleUpEvent: handleUpEvent
+  })
+  function handleDownEvent(evt) {
+    var map = evt.map;
+
+    var feature = map.forEachFeatureAtPixel(evt.pixel,
+      function (feature) {
+        return feature;
+      });
+
+    if (feature) {
+      this.coordinate_ = evt.coordinate;
+      this.feature_ = feature;
+    }
+
+    return !!feature;
+  }
+
+  function handleDragEvent(evt) {
+    var deltaX = evt.coordinate[0] - this.coordinate_[0];
+    var deltaY = evt.coordinate[1] - this.coordinate_[1];
+
+    var geometry = /** @type {ol.geom.SimpleGeometry} */
+      (this.feature_.getGeometry());
+    geometry.translate(deltaX, deltaY);
+
+    this.coordinate_[0] = evt.coordinate[0];
+    this.coordinate_[1] = evt.coordinate[1];
+  }
+
+  function handleMoveEvent(evt) {
+    if (this.cursor_) {
+      var map = evt.map;
+      var feature = map.forEachFeatureAtPixel(evt.pixel,
+        function (feature) {
+          return feature;
+        });
+      var element = evt.map.getTargetElement();
+      if (feature) {
+        if (element.style.cursor != this.cursor_) {
+          this.previousCursor_ = element.style.cursor;
+          element.style.cursor = this.cursor_;
+        }
+      } else if (this.previousCursor_ !== undefined) {
+        element.style.cursor = this.previousCursor_;
+        this.previousCursor_ = undefined;
+      }
+    }
+  }
+
+  function handleUpEvent(evt) {
+    this.coordinate_ = null;
+    this.feature_ = null;
+    return false;
+  }
+  var pointFeature = new ol.Feature(new ol.geom.Point([0, 0]));
+
+  var lineFeature = new ol.Feature(
+    new ol.geom.LineString([[-1e7, 1e6], [-1e6, 3e6]]));
+
+  var polygonFeature = new ol.Feature(
+    new ol.geom.Polygon([[[-3e6, -1e6], [-3e6, 1e6],
+      [-1e6, 1e6], [-1e6, -1e6], [-3e6, -1e6]]]));
+
+
+  var map = new ol.Map({
+    layers: [
+      new ol.layer.Tile({
+        source: new ol.source.TileJSON({
+          url: 'https://api.tiles.mapbox.com/v3/mapbox.geography-class.json?secure'
+        })
+      }),
+      new ol.layer.Vector({
+        source: new ol.source.Vector({
+          features: [pointFeature, lineFeature, polygonFeature]
+        }),
+        style: new ol.style.Style({
+          image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+            anchor: [0.5, 46],
+            anchorXUnits: 'fraction',
+            anchorYUnits: 'pixels',
+            opacity: 0.95,
+            src: 'https://openlayers.org/en/v4.4.1/examples/data/icon.png'
+          })),
+          stroke: new ol.style.Stroke({
+            width: 3,
+            color: [255, 0, 0, 1]
+          }),
+          fill: new ol.style.Fill({
+            color: [0, 0, 255, 0.6]
+          })
+        })
+      })
+    ],
+    target: 'map',
+    view: new ol.View({
+      center: [0, 0],
+      zoom: 2
+    })
+  });
+
+  map.addInteraction(interactionPointer)
+</script>
+</body>
+</html>

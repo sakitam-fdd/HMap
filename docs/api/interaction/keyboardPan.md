@@ -25,7 +25,7 @@
   })
 
   var interactionKeyboardPan = new ol.interaction.KeyboardPan({})
-  Map.map.addInteraction(interactionKeyboardPan)
+  Map.addInteraction(interactionKeyboardPan)
 ```  
 
 #### 尝试编辑它

@@ -26,7 +26,7 @@
   });
 
   var controlMousePosition = new ol.control.MousePosition({})
-  Map.map.addControl(controlMousePosition)
+  Map.addControl(controlMousePosition)
 ```
 
 #### 尝试编辑它

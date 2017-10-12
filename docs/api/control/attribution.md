@@ -71,7 +71,7 @@ ol.Attribution配置项说明
     collapsed: true,
     label: 'ii'
   })
-  Map.map.addControl(controlAttribution)
+  Map.addControl(controlAttribution)
 ```
 
 #### 尝试编辑它

@@ -53,7 +53,7 @@
     ]
   })
   var interactionDragPan = new ol.interaction.DragPan({})
-  Map.map.addInteraction(interactionDragPan)
+  Map.addInteraction(interactionDragPan)
 ```  
 
 #### 尝试编辑它

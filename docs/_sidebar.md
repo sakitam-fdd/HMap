@@ -27,6 +27,12 @@
     - [键盘控制缩放](/api/interaction/keyboardZoom.md)
     - [鼠标滚轮缩放](/api/interaction/mouseWheelZoom.md)
     - [shift+鼠标拖动缩放](/api/interaction/dragZoom.md)
+    - [通过拖放处理向量数据的输入](/api/interaction/dragAndDrop.md)
+    - [拉框绘制矢量要素](/api/interaction/dragBox.md)
+    - [拖拽旋转缩放](/api/interaction/dragRotateAndZoom.md)
+    - [修改特征几何交互](/api/interaction/modify.md)
+    - [鼠标指针基类](/api/interaction/pointer.md)
+    - [要素选择交互](/api/interaction/select.md)
   - 添加图层
     - [添加XYZ切片图层](/guide/layer/xyz.md)
     - [添加ArcGIS图层](/guide/layer/arcgis.md)

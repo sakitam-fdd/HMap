@@ -24,7 +24,7 @@
     ]
   })
   var interactionPinchRotate = new ol.interaction.PinchRotate({})
-  Map.map.addInteraction(interactionPinchRotate)
+  Map.addInteraction(interactionPinchRotate)
 ```  
 
 #### 尝试编辑它

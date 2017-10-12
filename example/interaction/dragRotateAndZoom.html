@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>pinchRotate</title>
+  <title>dragRotateAndZoom</title>
   <script type="text/javascript" src="../../dist/hmap.js"></script>
-  <link rel="stylesheet" href="../../dist/hmap.css" type="text/css">
+  <link rel="stylesheet" href="../../dist/hmap.js">
 </head>
 <body>
 <div id="map"></div>
@@ -20,13 +20,12 @@
         layerName: 'openstreetmap',
         isDefault: true,
         layerType: 'OSM',
-        opaque: true, //图层是否不透明
         layerUrl: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
       }
     ]
   })
-  var interactionPinchRotate = new ol.interaction.PinchRotate({})
-  Map.addInteraction(interactionPinchRotate)
+  var interactionDragRotateAndZoom = new ol.interaction.DragRotateAndZoom({})
+  Map.addInteraction(interactionDragRotateAndZoom)
 </script>
 </body>
 </html>

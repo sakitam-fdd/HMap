@@ -89,7 +89,7 @@ var contextMenu = {
       ]
     });
     var olControlContextMenu = new ol.control.ContextMenu(contextMenu)
-    Map.map.addControl(olControlContextMenu)
+    Map.addControl(olControlContextMenu)
 ```  
 
 #### 尝试编辑它

@@ -25,7 +25,7 @@
   })
 
   var interactionPinchZoom = new ol.interaction.PinchZoom({})
-  Map.map.addInteraction(interactionPinchZoom)
+  Map.addInteraction(interactionPinchZoom)
 ```  
 
 #### 尝试编辑它

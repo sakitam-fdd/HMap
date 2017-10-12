@@ -26,7 +26,7 @@
   });
 
   var interactionDragRotate = new ol.interaction.DragRotate({})
-  Map.map.addInteraction(interactionDragRotate)
+  Map.addInteraction(interactionDragRotate)
 ```
 
 #### 尝试编辑它

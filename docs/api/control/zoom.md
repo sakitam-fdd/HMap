@@ -55,7 +55,7 @@ var Map = new HMap('map', {
       ]
     });
     var olControlZoomMenu = new ol.control.ZoomMenu()
-    Map.map.addControl(olControlZoomMenu)
+    Map.addControl(olControlZoomMenu)
 ```
 
 #### 尝试编辑它

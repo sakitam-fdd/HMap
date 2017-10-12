@@ -56,7 +56,7 @@
         className: 'hmap-loading-panel',
         widget: 'progressBar',
     })
-    Map.map.addControl(olControlLoading)
+    Map.addControl(olControlLoading)
 ```
 
 #### 尝试编辑它

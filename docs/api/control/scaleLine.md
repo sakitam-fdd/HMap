@@ -30,7 +30,7 @@
     minWidth: 64,
     units: 'metric'
   })
-  Map.map.addControl(controlScaleLine)
+  Map.addControl(controlScaleLine)
 ```
 
 #### 尝试编辑它

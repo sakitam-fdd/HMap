@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script type="text/javascript" src="../../dist/hmap.js"></script>
+  <link rel="stylesheet" href="../../dist/hmap.css">
+</head>
+<body>
+<div id="map"></div>
+<script>
+  var vectorSource = new ol.source.Vector({
+    url: 'https://openlayers.org/en/v4.4.1/examples/data/geojson/countries.geojson',
+    format: new ol.format.GeoJSON()
+  });
+
+  var map = new ol.Map({
+    layers: [
+      new ol.layer.Tile({
+        source: new ol.source.OSM()
+      }),
+      new ol.layer.Vector({
+        source: vectorSource
+      })
+    ],
+    target: 'map',
+    view: new ol.View({
+      center: [0, 0],
+      zoom: 2
+    })
+  });
+  var select = new ol.interaction.Select();
+  map.addInteraction(select);
+</script>
+</body>
+</html>

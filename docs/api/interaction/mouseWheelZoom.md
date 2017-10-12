@@ -53,7 +53,7 @@
     ]
   })
   var interactionMouseWheelZoom = new ol.interaction.MouseWheelZoom({})
-  Map.map.addInteraction(interactionMouseWheelZoom)
+  Map.addInteraction(interactionMouseWheelZoom)
 ```  
 
 #### 尝试编辑它
