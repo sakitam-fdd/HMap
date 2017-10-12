@@ -171,7 +171,7 @@ class HMap extends mixin(
        * 当前视图
        * @type ol.View
        */
-      this.view_ = this._addView(this.options_['view'])
+      this.view = this._addView(this.options_['view'])
       let logo = this._addCopyRight(this.options_['logo'])
       let layers = this.addBaseLayers(this.options_['baseLayers'])
       let interactions = this._addInteractions(this.options_['interactions'])
@@ -188,7 +188,7 @@ class HMap extends mixin(
           'boolean' ? this.options_['loadTilesWhileInteracting'] : false),
         logo: logo,
         layers: layers,
-        view: this.view_,
+        view: this.view,
         interactions: interactions,
         controls: controls
       })
