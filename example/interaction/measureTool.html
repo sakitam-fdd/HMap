@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>measureTool</title>
+  <script src="../../dist/hmap.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="../../dist/hmap.css">
+  <script src="../../node_modules/ol-extent/dist/olInteractionMeasureTool.js"></script>
+</head>
+<body>
+<div id="map"></div>
+<script>
+  var Map = new HMap('map', {
+    view: {
+      center: [0, 0],
+      zoom: 6
+    }
+  })
+  var measureTool = new ol.interaction.MeasureTool()
+  Map.addInteraction(measureTool)
+  measureTool.setTool(true, 'measureCircle', false) // 激活测量圆面积
+  measureTool.setTool(false) // 移除测量
+</script>
+</body>
+</html>

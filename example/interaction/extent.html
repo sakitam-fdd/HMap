@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>extent</title>
+  <script src="../../dist/hmap.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="../../dist/hmap.css">
+</head>
+<body>
+<div id="map"></div>
+<script>
+  var Map = new HMap('map', {
+    view: {
+      center: [0, 0],
+      zoom: 2
+    }
+  })
+  var extent = new ol.interaction.Extent({})
+  Map.addInteraction(extent)
+</script>
+</body>
+</html>

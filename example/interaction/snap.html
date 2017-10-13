@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>snap</title>
+  <script type="text/javascript" src="../../dist/hmap.js"></script>
+  <link rel="stylesheet" href="../../dist/hmap.css">
+</head>
+<body>
+<div id="map"></div>
+<script>
+  var Map = new HMap('map', {
+    view: {
+      center: [0, 0],
+      zoom: 2
+    }
+  })
+  var vector = new ol.layer.Vector({
+    source: new ol.source.Vector()
+  })
+  var feature1 = new ol.Feature({
+    geometry: new ol.geom.Point([100, 100])
+  })
+  var style1 = new ol.style.Style({
+    image: new ol.style.Circle({
+      radius: 10,
+      fill: new ol.style.Fill({
+        color: 'red'
+      })
+    })
+  })
+  feature1.setStyle(style1)
+  vector.getSource().addFeature(feature1)
+  Map.addLayer(vector)
+
+  var draw = new ol.interaction.Draw({
+    source: vector.getSource(),
+    type: 'Point'
+  })
+  Map.addInteraction(draw)
+  var modify = new ol.interaction.Modify({source: vector.getSource()});
+  Map.addInteraction(modify);
+  var snap = new ol.interaction.Snap({
+    source: vector.getSource()
+  })
+  Map.addInteraction(snap)
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>layerMagnify</title>
+  <script src="../../dist/hmap.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="../../dist/hmap.css">
+  <script src="../../node_modules/ol-extent/dist/olInteractionLayerMagnify.js"></script>
+</head>
+<body>
+<div id="map"></div>
+<script type="text/javascript">
+  var Map = new HMap('map', {
+    view: {
+      center: [0, 0],
+      zoom: 6
+    },
+    baseLayers: [
+      {
+        layerType: 'OSM',
+        layerName: 'OSM',
+        isDefault: true,
+        layerUrl: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+      }
+    ]
+  })
+
+  var firstLayer = Map.getLayerByLayerName('OSM')
+  var LayerMagnify = new ol.interaction.LayerMagnify({
+    magnifyLayer: firstLayer
+  });
+  Map.addInteraction(LayerMagnify); // 添加放大镜
+  Map.removeInteraction(LayerMagnify); // 移除放大镜
+</script>
+</body>
+</html>

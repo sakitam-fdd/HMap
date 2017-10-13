@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>layerSpyglass</title>
+  <script src="../../dist/hmap.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="../../dist/hmap.css">
+  <script src="../../node_modules/ol-extent/dist/olInteractionLayerSpyglass.js"></script>
+</head>
+<body>
+<div id="map"></div>
+<script>
+  var key = 'As1HiMj1PvLPlqc_gtM7AqZfBL8ZL3VrjaS3zIb22Uvb9WKhuJObROC-qUpa81U5';
+
+  var firstLayer = new ol.layer.Tile({
+    source: new ol.source.BingMaps({key: key, imagerySet: 'Road'})
+  });
+
+  var sec = new ol.layer.Tile({
+    visible: false,
+    source: new ol.source.BingMaps({key: key, imagerySet: 'Aerial'})
+  });
+  var map = new ol.Map({
+    layers: [firstLayer, sec],
+    target: 'map',
+    view: new ol.View({
+      center: ol.proj.fromLonLat([-109, 46.5]),
+      zoom: 6
+    })
+  });
+
+  var LayerSpyglass = new ol.interaction.LayerSpyglass({
+    spyLayer: sec
+  });
+  map.addInteraction(LayerSpyglass); // 添加滤镜
+  map.removeInteraction(LayerSpyglass); // 移除滤镜
+</script>
+</body>
+</html>

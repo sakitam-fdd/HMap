@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>freeHandCircle</title>
+  <script src="../../dist/hmap.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="../../dist/hmap.css">
+  <script type="text/javascript" src="../../node_modules/ol-extent/dist/olInteractionFreeHandCircle.js"></script>
+</head>
+<body>
+<div id="map"></div>
+<script>
+  var Map = new HMap('map', {
+    view: {
+      center: [0, 0],
+      zoom: 2
+    }
+  })
+  var freeHandCircle = new ol.interaction.FreeHandCircle()
+  Map.addInteraction(freeHandCircle)
+  freeHandCircle.initDrawInteraction()  // 激活工具
+  freeHandCircle.removeLastInteraction_()  // 取消激活
+  Map.removeInteraction(freeHandCircle)  // 移除交互
+</script>
+</body>
+</html>
