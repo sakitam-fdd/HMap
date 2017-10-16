@@ -13,6 +13,8 @@ import 'ol-extent/src/control/LayerSwitcher'
 import 'ol-extent/src/control/contextMenu'
 import 'ol-extent/src/control/compareLayer'
 import 'ol-extent/src/control/ScaleLineH'
+import 'ol-extent/src/control/MousePosition'
+import 'ol-extent/src/control/OverviewMap'
 class _Controls {
 
   /**
@@ -118,14 +120,7 @@ class _Controls {
    */
   addFullScreen (options = {}, controls) {
     controls = controls || this.map.getControls()
-    controls.push(new ol.control.FullScreenMenu({
-      className: options['className'],
-      label: options['label'],
-      labelActive: options['labelActive'],
-      keys: options['keys'],
-      target: options['target'],
-      source: options['source']
-    }))
+    controls.push(new ol.control.FullScreenMenu(options))
   }
 
   /**
@@ -135,13 +130,8 @@ class _Controls {
    */
   addMousePosition (options, controls) {
     controls = controls || this.map.getControls()
-    controls.push(new ol.control.MousePosition({
-      className: (options['className'] ? options['className'] : 'ol-mouse-position'),
-      coordinateFormat: (options['coordinateFormat'] ? options['coordinateFormat'] : undefined),
-      projection: (options['projection'] ? options['projection'] : this.view.getProjection()),
-      undefinedHTML: (options['undefinedHTML'] && typeof options['undefinedHTML'] === 'string' ? options['undefinedHTML'] : '无坐标'),
-      target: (options['target'] ? options['target'] : undefined)
-    }))
+    if (!options['projection']) options['projection'] = this.view.getProjection()
+    controls.push(new ol.control.MousePositionH(options))
   }
 
   /**
@@ -151,28 +141,8 @@ class _Controls {
    */
   addZoomSlider (options, controls) {
     controls = controls || this.map.getControls()
-    let zoomSlider = new ol.control.BZoomSlider({
-      duration: options['duration'],
-      pixelDelta: options['pixelDelta'],
-      className: options['className'],
-      target: options['target']
-    })
+    let zoomSlider = new ol.control.BZoomSlider(options)
     controls.push(zoomSlider)
-  }
-
-  /**
-   * 添加缩放范围控件
-   * @param options
-   * @param controls
-   */
-  addZoomToExtent (options, controls) {
-    controls = controls || this.map.getControls()
-    controls.push(new ol.control.ZoomToExtent({
-      className: (options['className'] ? options['className'] : 'ol-zoom-extent'),
-      label: (options['label'] ? options['label'] : 'E'),
-      tipLabel: (options['tipLabel'] && typeof options['tipLabel'] === 'string' ? options['tipLabel'] : '缩放到范围'),
-      extent: (options['extent'] ? options['extent'] : undefined)
-    }))
   }
 
   /**
@@ -183,10 +153,7 @@ class _Controls {
    */
   addGeolocation (options, controls) {
     controls = controls || this.map.getControls()
-    controls.push(new ol.control.Geolocation({
-      className: (options['className'] ? options['className'] : 'hmap-geolocation'),
-      target: (options['target'] ? options['target'] : undefined)
-    }))
+    controls.push(new ol.control.Geolocation(options))
   }
 
   /**
@@ -240,6 +207,17 @@ class _Controls {
   addLayerSwitcher (options = {}, controls) {
     controls = controls || this.map.getControls()
     let Switcher = new ol.control.LayerSwitcher(options)
+    controls.push(Switcher)
+  }
+
+  /**
+   * 添加鹰眼控件
+   * @param options
+   * @param controls
+   */
+  addOverviewMap (options = {}, controls) {
+    controls = controls || this.map.getControls()
+    let Switcher = new ol.control.OverviewMapH(options)
     controls.push(Switcher)
   }
 }

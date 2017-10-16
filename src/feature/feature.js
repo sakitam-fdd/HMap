@@ -76,6 +76,7 @@ class Feature extends mixin(Layer, Geometry) {
    * @returns {*}
    */
   fixStyle (data_, params, feature) {
+    if (!data_['attributes']) data_['attributes'] = {}
     let style = new olStyleFactory(data_['attributes']['style'] || params['style'])
     let selectStyle = new olStyleFactory(data_['attributes']['selectStyle'] || params['selectStyle'])
     if (style && feature) {

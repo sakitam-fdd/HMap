@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>添加Overlay要素</title>
+  <link rel="stylesheet" href="../../dist/hmap.css">
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_293677_1oq4vbh6yrykfbt9.css">
+  <style type="text/css">
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    .menu {
+      position: absolute;
+      width: 100%;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .base-button {
+      height: 30px;
+      line-height: 30px;
+      background: #1b9de8;
+      color: #ffffff;
+      border-radius: 6px;
+      border: 1px solid #bfcbd9;
+      padding: 0 10px;
+      box-shadow: 0 4px 10px rgba(73, 127, 255, .42);
+      transition: .3s;
+    }
+
+    .base-button:hover {
+      cursor: pointer;
+      border-color: #1b9de8;
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+<div id="map">
+  <div class="menu">
+    <button class="base-button" id="addPoint">添加单点</button>
+    <button class="base-button" id="addPoints">添加多点</button>
+    <button class="base-button" id="removePointByLayerName">通过layerName移除点</button>
+    <button class="base-button" id="removePointById">通过id移除点</button>
+    <button class="base-button" id="highLightPointById">通过id高亮点</button>
+    <button class="base-button" id="unHighLightPointById">通过id取消高亮点</button>
+  </div>
+</div>
+<script src="../../dist/hmap.js"></script>
+<script src="../assets/lib/JSLite.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    var Map = new HMap({
+      target: 'map',
+      controls: {
+        scaleLine: true
+      },
+      view: {
+        center: [113.53450137499999, 34.44104525],
+        projection: 'EPSG:4326',
+        zoom: 5, // resolution
+      },
+      baseLayers: [
+        {
+          layerName: 'Google',
+          isDefault: true,
+          layerType: 'Google',
+          layerUrl: 'http://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}'
+        }
+      ]
+    });
+    var points = []
+    Map.on('loadMapSuccess', function (event) {
+      if (event) {
+        $.ajax({
+          url: '../assets/json/points.json',
+          type: 'GET',
+          dataType: 'json',
+          // 如果请求成功时执行回调
+          success: function (res) {
+            points = res['data']['features']
+          },
+          // 如果请求失败时执行回调
+          error: function (error) {
+            console.log(error)
+          }
+        })
+      }
+    });
+    $('#addPoint').on('click', function () {
+      Map.addOverlayPoint(points[0], {
+        layerName: 'point',
+        zoomToExtent: true,
+        style: {
+          element: {
+            className: 'icon-map4',
+            fontSize: '28px'
+          }
+        }
+      })
+    });
+    $('#addPoints').on('click', function () {
+      Map.addOverlayPoints(points, {
+        layerName: 'point',
+        zoomToExtent: true,
+        orderBy: true,
+        style: {
+          element: {
+            className: 'icon-map4',
+            fontSize: '28px'
+          }
+        }
+      })
+    });
+    $('#removePointByLayerName').on('click', function () {
+      Map.removeOverlayByLayerName('point')
+    });
+    $('#removePointById').on('click', function () {
+      Map.removeOverlayById('{CF7D9F39-3549-4068-8648-76F5E06C0295}')
+    });
+    $('#highLightPointById').on('click', function () {
+      Map.highLightOverLay('{393C392E-17FE-46EF-B39B-91433EB01AB6}')
+    });
+    $('#unHighLightPointById').on('click', function () {
+      Map.unHighLightOverLay('{393C392E-17FE-46EF-B39B-91433EB01AB6}')
+    });
+  })
+</script>
+</body>
+</html>

@@ -26,7 +26,6 @@
   });
 
   var controlScaleLine = new ol.control.ScaleLineH({
-    className: 'ol-scale-line',
     minWidth: 64,
     units: 'metric_cn'
   })

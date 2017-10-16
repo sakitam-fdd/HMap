@@ -5,6 +5,10 @@
 import ol from 'openlayers'
 import config from '../utils/config'
 import * as utils from '../utils/utils'
+import 'ol-extent/src/interaction/freeHandCircle'
+import 'ol-extent/src/interaction/layerSpyglass'
+import 'ol-extent/src/interaction/layerMagnify'
+import 'ol-extent/src/interaction/measureTool'
 import PointerEvents from '../interaction/PointerEvents'
 class _Interactions {
   _addInteractions (params) {
@@ -115,6 +119,56 @@ class _Interactions {
       constrainResolution: options.constrainResolution,
       duration: options.zoomDuration
     }))
+  }
+
+  /**
+   * 添加draw工具
+   * @param options
+   * @param interactions
+   */
+  addDraw (options = {}, interactions) {
+    interactions = interactions || this.map.getInteractions()
+    interactions.push(new ol.interaction.Draw(options))
+  }
+
+  /**
+   * 添加测量交互
+   * @param options
+   * @param interactions
+   */
+  addMeasureTool (options = {}, interactions) {
+    interactions = interactions || this.map.getInteractions()
+    interactions.push(new ol.interaction.MeasureTool(options))
+  }
+
+  /**
+   * 添加周边搜索工具
+   * @param options
+   * @param interactions
+   */
+  addFreeHandCircle (options = {}, interactions) {
+    interactions = interactions || this.map.getInteractions()
+    interactions.push(new ol.interaction.FreeHandCircle(options))
+  }
+
+  /**
+   * 添加图层放大交互
+   * @param options
+   * @param interactions
+   */
+  addLayerMagnify (options = {}, interactions) {
+    interactions = interactions || this.map.getInteractions()
+    interactions.push(new ol.interaction.LayerMagnify(options))
+  }
+
+  /**
+   * 添加图层滤镜交互
+   * @param options
+   * @param interactions
+   */
+  addLayerSpyglass (options = {}, interactions) {
+    interactions = interactions || this.map.getInteractions()
+    interactions.push(new ol.interaction.LayerSpyglass(options))
   }
 
   /**

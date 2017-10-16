@@ -166,6 +166,10 @@ class Overlay extends Geometry {
       if (points && Array.isArray(points)) {
         let multiPoint = new ol.geom.MultiPoint([])
         let change = false
+        if (params['zoomToExtent']) {
+          params['zoomToExtent'] = false
+          change = true
+        }
         points.forEach((item, index) => {
           if (item && item['geometry']) {
             let _geom = this.getGeomFromGeomData(item, params)
@@ -175,12 +179,9 @@ class Overlay extends Geometry {
             }
           }
         })
-        if (params['zoomToExtent']) {
-          params['zoomToExtent'] = !params['zoomToExtent']
-          change = true
-        }
         if (change) {
-          this._getExtent(multiPoint, params)
+          params['zoomToExtent'] = true
+          this.fixView(multiPoint, params)
         }
       }
     } catch (e) {

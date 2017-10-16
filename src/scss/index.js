@@ -4,3 +4,4 @@
  */
 import './index.scss'
 import './control/attribution.scss'
+import './overlay/overlay.scss'

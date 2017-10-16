@@ -13,6 +13,7 @@ import './scss/index'
 import ol from 'openlayers'
 import mixin from './utils/mixins'
 import Observable from 'observable-emit'
+import Popover from 'ol-extent/src/overlay/popover'
 // inter
 import * as supported from './utils/supported'
 import { logo } from './assets/index'
@@ -487,6 +488,7 @@ class HMap extends mixin(
   }
   static supported = supported
   static layer = _Layer
+  static Popover = Popover
   static get accessToken () {
     return config.ACCESS_TOKEN
   }

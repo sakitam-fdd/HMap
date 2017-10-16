@@ -37,11 +37,27 @@ class Map {
   }
 
   /**
+   * 移除图层
+   * @param layer
+   */
+  removeLayer (layer) {
+    this.map.removeLayer(layer)
+  }
+
+  /**
    * 添加overlay
    * @param overlay
    */
   addOverlay (overlay) {
     this.map.addOverlay(overlay)
+  }
+
+  /**
+   * 移除overlay
+   * @param overlay
+   */
+  removeOverlay (overlay) {
+    this.map.removeOverlay(overlay)
   }
 
   /**
