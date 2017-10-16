@@ -25,19 +25,22 @@
     ]
   });
 
-  var controlScaleLine = new ol.control.ScaleLine({
-    className: 'ol-scale-line',
+  var controlScaleLine = new ol.control.ScaleLineH({
     minWidth: 64,
-    units: 'metric'
+    units: 'metric_cn'
   })
-  Map.map.addControl(controlScaleLine)
+  Map.addControl(controlScaleLine)
 ```
 
-ol.control.ScaleLine 配置项说明
+#### 尝试编辑它
+---
+<iframe width="100%" height="430"></iframe>
+
+ol.control.ScaleLineH 配置项说明
 
 | 配置项 | 简介 | 类型 | 备注 |
 | --- | --- |--- | --- |
-| className | CSS类名，可自定义样式 | `String` | 非必传 默认使用封装好的 ```ol-scale-line``` 样式 |
+| className | CSS类名，可自定义样式 | `String` | 非必传 默认使用封装好的 ```hmap-scale-line-control``` 样式 |
 | minWidth | 容器宽度 | `Number` | 非必传 默认64|
 | units	 | 单位 | `String` | 非必传 默认 'metric'|
 | target | 控件的目标对象 | `Element` | 非必传 |

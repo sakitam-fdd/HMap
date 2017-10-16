@@ -54,7 +54,7 @@ var Map = new HMap('map', {
     });
     
     var olControlZoomSlider = new ol.control.BZoomSlider()
-    Map.map.addControl(olControlZoomSlider)
+    Map.addControl(olControlZoomSlider)
 ```
 
 #### 尝试编辑它

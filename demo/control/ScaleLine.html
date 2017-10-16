@@ -5,6 +5,14 @@
   <title>ScaleLine</title>
   <script src="../../dist/hmap.js" type="text/javascript"></script>
   <link rel="stylesheet" href="../../dist/hmap.css">
+  <style type="text/css">
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
 </head>
 <body>
 <div id="map"></div>
@@ -13,10 +21,11 @@
     controls: {
       zoomSlider: false,
       zoom: false,
-      rotate: false,
-      scaleLine: true
+      rotate: false
     },
     view: {
+//      center: [113.53450137499999, 34.44104525],
+      projection: 'EPSG:3857',
       center: [12118909.300259633, 4086043.1061670054],
       zoom: 5,
     },
@@ -29,6 +38,11 @@
       }
     ]
   });
+
+  var controlScaleLine = new ol.control.ScaleLineH({
+    units: 'metric_cn'
+  })
+  Map.addControl(controlScaleLine)
 </script>
 </body>
 </html>

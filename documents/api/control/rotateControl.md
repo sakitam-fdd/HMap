@@ -55,7 +55,7 @@
   });
 
   var olControlRotateControl = new ol.control.RotateControl()
-  Map.map.addControl(olControlRotateControl)
+  Map.addControl(olControlRotateControl)
 ```
 
 #### 尝试编辑它

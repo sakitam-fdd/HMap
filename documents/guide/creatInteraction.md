@@ -75,7 +75,7 @@ Map.addInteraction(DoubleClickZoom)
 
 | 配置项 | 简介 | 文档 | 备注 |
 | --- | --- | --- | --- |
-| interaction | 所有交互的基类，不可添加 | 详细配置见 [dragRotate](api/interaction/interaction.md) | 不可添加 |
+| interaction | 所有交互的基类，不可添加 | 详细配置见 [interaction](api/interaction/interaction.md) | 不可添加 |
 | dragRotate | Alt-Shift拖动旋转视图 | 详细使用见 [dragRotate](api/interaction/dragRotate.md) | 内置 |
 | doubleClickZoom | 双击放大交互 | 详细使用见 [doubleClickZoom](api/interaction/doubleClickZoom.md) | 内置 |
 | dragPan | 地图漫游 | 详细使用见 [dragPan](api/interaction/dragPan.md) | 内置 |

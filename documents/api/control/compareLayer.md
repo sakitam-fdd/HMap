@@ -36,7 +36,7 @@
   var layer1 = Map.createOSMLayer(firstLayer['layerName'], firstLayer)
   var layer2 = Map.createOSMLayer(secLayer['layerName'], secLayer)
   var olControlCompareLayer = new ol.control.CompareLayer(layer1, layer2)
-  Map.map.addControl(olControlCompareLayer)
+  Map.addControl(olControlCompareLayer)
 ```
 
 #### 尝试编辑它

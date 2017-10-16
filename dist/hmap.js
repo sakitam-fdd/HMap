@@ -73,14 +73,21 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 119);
+/******/ 	return __webpack_require__(__webpack_require__.s = 121);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(4);
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["ol"] = __webpack_require__(269);
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(106)))
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isObject = __webpack_require__(6);
 module.exports = function (it) {
   if (!isObject(it)) throw TypeError(it + ' is not an object!');
   return it;
@@ -88,10 +95,10 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var global = __webpack_require__(2);
+var global = __webpack_require__(3);
 var core = __webpack_require__(14);
 var hide = __webpack_require__(15);
 var redefine = __webpack_require__(16);
@@ -137,7 +144,7 @@ module.exports = $export;
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports) {
 
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
@@ -149,12 +156,12 @@ if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var store = __webpack_require__(53)('wks');
-var uid = __webpack_require__(25);
-var Symbol = __webpack_require__(2).Symbol;
+var uid = __webpack_require__(24);
+var Symbol = __webpack_require__(3).Symbol;
 var USE_SYMBOL = typeof Symbol == 'function';
 
 var $exports = module.exports = function (name) {
@@ -166,70 +173,7 @@ $exports.store = store;
 
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-module.exports = function (it) {
-  return typeof it === 'object' ? it !== null : typeof it === 'function';
-};
-
-
-/***/ }),
 /* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["ol"] = __webpack_require__(261);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(105)))
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-var hasOwnProperty = {}.hasOwnProperty;
-module.exports = function (it, key) {
-  return hasOwnProperty.call(it, key);
-};
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var anObject = __webpack_require__(0);
-var IE8_DOM_DEFINE = __webpack_require__(74);
-var toPrimitive = __webpack_require__(34);
-var dP = Object.defineProperty;
-
-exports.f = __webpack_require__(12) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
-  anObject(O);
-  P = toPrimitive(P, true);
-  anObject(Attributes);
-  if (IE8_DOM_DEFINE) try {
-    return dP(O, P, Attributes);
-  } catch (e) { /* empty */ }
-  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
-  if ('value' in Attributes) O[P] = Attributes.value;
-  return O;
-};
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var freeGlobal = __webpack_require__(92);
-
-/** Detect free variable `self`. */
-var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
-
-/** Used as a reference to the global object. */
-var root = freeGlobal || freeSelf || Function('return this')();
-
-module.exports = root;
-
-
-/***/ }),
-/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -240,7 +184,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.createHidden = exports.setClass = exports.removeClass = exports.addClass = exports.hasClass = exports.toBack = exports.toFront = exports.empty = exports.remove = exports.create = exports.getStyle = exports.getClass = exports.getElementsByClassName = exports.getChildByTagName = exports.get = undefined;
 
-var _utils = __webpack_require__(67);
+var _utils = __webpack_require__(68);
 
 var get = exports.get = function get(id) {
   return typeof id === 'string' ? document.getElementById(id) : id;
@@ -354,20 +298,16 @@ var createHidden = exports.createHidden = function createHidden(tagName, parent,
 };
 
 /***/ }),
-/* 10 */
+/* 6 */
 /***/ (function(module, exports) {
 
-module.exports = function (exec) {
-  try {
-    return !!exec();
-  } catch (e) {
-    return true;
-  }
+module.exports = function (it) {
+  return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
 
 
 /***/ }),
-/* 11 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -379,26 +319,38 @@ Object.defineProperty(exports, "__esModule", {
 
 
 var BASE_CLASS_NAME = {
-  CLASS_HIDDEN: 'ol-hidden',
-  CLASS_SELECTABLE: 'ol-selectable',
-  CLASS_UNSELECTABLE: 'ol-unselectable',
-  CLASS_CONTROL: 'ol-control'
+  CLASS_HIDDEN: 'hmap-hidden',
+  CLASS_SELECTABLE: 'hmap-selectable',
+  CLASS_UNSELECTABLE: 'hmap-unselectable',
+  CLASS_CONTROL: 'hmap-control'
+};
+
+var UNITS = {
+  DEGREES: 'degrees',
+  FEET: 'ft',
+  METERS: 'm',
+  PIXELS: 'pixels',
+  TILE_PIXELS: 'tile-pixels',
+  USFEET: 'us-ft',
+  METERS_PER_UNIT: {}
+};
+
+UNITS.METERS_PER_UNIT[UNITS.DEGREES] = 2 * Math.PI * 6370997 / 360;
+UNITS.METERS_PER_UNIT[UNITS.FEET] = 0.3048;
+UNITS.METERS_PER_UNIT[UNITS.METERS] = 1;
+UNITS.METERS_PER_UNIT[UNITS.USFEET] = 1200 / 3937;
+
+var OVERVIEWMAP = {
+  MIN_RATIO: 0.1,
+  MAX_RATIO: 0.75
 };
 
 exports.BASE_CLASS_NAME = BASE_CLASS_NAME;
+exports.UNITS = UNITS;
+exports.OVERVIEWMAP = OVERVIEWMAP;
 
 /***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// Thank's IE8 for his funny defineProperty
-module.exports = !__webpack_require__(10)(function () {
-  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
-});
-
-
-/***/ }),
-/* 13 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -409,7 +361,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.removeListener = exports.addListener = exports.getDomEventKey = exports.unlistenAll = exports.clear = exports.unListenByKey = exports.unListen = exports.listenOnce = exports.listen = exports.removeListeners = exports.getListenerMap = exports.getListeners = exports.findListener = exports.bindListener = undefined;
 
-var _utils = __webpack_require__(67);
+var _utils = __webpack_require__(68);
 
 var bindListener = exports.bindListener = function bindListener(listenerObj) {
   var boundListener = function boundListener(evt) {
@@ -576,6 +528,76 @@ var removeListener = exports.removeListener = function removeListener(element, t
 };
 
 /***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+var hasOwnProperty = {}.hasOwnProperty;
+module.exports = function (it, key) {
+  return hasOwnProperty.call(it, key);
+};
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var anObject = __webpack_require__(1);
+var IE8_DOM_DEFINE = __webpack_require__(75);
+var toPrimitive = __webpack_require__(34);
+var dP = Object.defineProperty;
+
+exports.f = __webpack_require__(13) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+  anObject(O);
+  P = toPrimitive(P, true);
+  anObject(Attributes);
+  if (IE8_DOM_DEFINE) try {
+    return dP(O, P, Attributes);
+  } catch (e) { /* empty */ }
+  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
+  if ('value' in Attributes) O[P] = Attributes.value;
+  return O;
+};
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var freeGlobal = __webpack_require__(93);
+
+/** Detect free variable `self`. */
+var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+
+/** Used as a reference to the global object. */
+var root = freeGlobal || freeSelf || Function('return this')();
+
+module.exports = root;
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
+
+module.exports = function (exec) {
+  try {
+    return !!exec();
+  } catch (e) {
+    return true;
+  }
+};
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// Thank's IE8 for his funny defineProperty
+module.exports = !__webpack_require__(12)(function () {
+  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
+});
+
+
+/***/ }),
 /* 14 */
 /***/ (function(module, exports) {
 
@@ -587,9 +609,9 @@ if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var dP = __webpack_require__(7);
-var createDesc = __webpack_require__(24);
-module.exports = __webpack_require__(12) ? function (object, key, value) {
+var dP = __webpack_require__(10);
+var createDesc = __webpack_require__(23);
+module.exports = __webpack_require__(13) ? function (object, key, value) {
   return dP.f(object, key, createDesc(1, value));
 } : function (object, key, value) {
   object[key] = value;
@@ -601,10 +623,10 @@ module.exports = __webpack_require__(12) ? function (object, key, value) {
 /* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var global = __webpack_require__(2);
+var global = __webpack_require__(3);
 var hide = __webpack_require__(15);
-var has = __webpack_require__(6);
-var SRC = __webpack_require__(25)('src');
+var has = __webpack_require__(9);
+var SRC = __webpack_require__(24)('src');
 var TO_STRING = 'toString';
 var $toString = Function[TO_STRING];
 var TPL = ('' + $toString).split(TO_STRING);
@@ -639,7 +661,7 @@ __webpack_require__(14).inspectSource = function (it) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // to indexed object, toObject with fallback for non-array-like ES3 strings
-var IObject = __webpack_require__(75);
+var IObject = __webpack_require__(76);
 var defined = __webpack_require__(46);
 module.exports = function (it) {
   return IObject(defined(it));
@@ -650,8 +672,8 @@ module.exports = function (it) {
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsNative = __webpack_require__(202),
-    getValue = __webpack_require__(224);
+var baseIsNative = __webpack_require__(210),
+    getValue = __webpack_require__(232);
 
 /**
  * Gets the native function at `key` of `object`.
@@ -674,14 +696,14 @@ module.exports = getNative;
 /***/ (function(module, exports, __webpack_require__) {
 
 var pIE = __webpack_require__(32);
-var createDesc = __webpack_require__(24);
+var createDesc = __webpack_require__(23);
 var toIObject = __webpack_require__(17);
 var toPrimitive = __webpack_require__(34);
-var has = __webpack_require__(6);
-var IE8_DOM_DEFINE = __webpack_require__(74);
+var has = __webpack_require__(9);
+var IE8_DOM_DEFINE = __webpack_require__(75);
 var gOPD = Object.getOwnPropertyDescriptor;
 
-exports.f = __webpack_require__(12) ? gOPD : function getOwnPropertyDescriptor(O, P) {
+exports.f = __webpack_require__(13) ? gOPD : function getOwnPropertyDescriptor(O, P) {
   O = toIObject(O);
   P = toPrimitive(P, true);
   if (IE8_DOM_DEFINE) try {
@@ -696,7 +718,7 @@ exports.f = __webpack_require__(12) ? gOPD : function getOwnPropertyDescriptor(O
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
-var $keys = __webpack_require__(78);
+var $keys = __webpack_require__(79);
 var enumBugKeys = __webpack_require__(47);
 
 module.exports = Object.keys || function keys(O) {
@@ -706,6 +728,81 @@ module.exports = Object.keys || function keys(O) {
 
 /***/ }),
 /* 21 */
+/***/ (function(module, exports) {
+
+module.exports = {"name":"hmap-js","version":"1.5.1","private":false,"description":"a openlayers extent map library","main":"dist/hmap-js.js","style":"dist/hmap-js.css","scripts":{"dev":"node build/development.js","travisDev":"node build/development.js --env nowatch","build":"node build/build.js","start":"node build/dev-server.js"},"keywords":["webgis","canvas","openlayer3","es6"],"author":"FDD <smileFDD@gmail.com>","repository":{"type":"git","url":"https://github.com/sakitam-fdd/HMap.git"},"dependencies":{"core-js":"^2.5.0","nature-dom-util":"^1.1.0","observable-emit":"^1.0.1","ol-extent":"^1.1.3","openlayers":"^4.3.1","proj4":"^2.4.3"},"devDependencies":{"autoprefixer":"^6.7.7","babel-core":"^6.22.1","babel-eslint":"^7.1.1","babel-loader":"^6.2.10","babel-plugin-add-module-exports":"^0.2.1","babel-plugin-istanbul":"^4.1.1","babel-plugin-transform-runtime":"^6.22.0","babel-polyfill":"^6.23.0","babel-preset-env":"^1.3.2","babel-preset-es2015":"^6.0.0","babel-preset-stage-2":"^6.22.0","babel-register":"^6.22.0","chai":"^3.5.0","chalk":"^1.1.3","compression-webpack-plugin":"^0.4.0","copy-webpack-plugin":"^4.0.1","core-js":"^2.4.1","css-loader":"^0.28.4","eslint":"^3.19.0","eslint-config-standard":"^6.2.1","eslint-friendly-formatter":"^2.0.7","eslint-loader":"^1.7.1","eslint-plugin-html":"^2.0.0","eslint-plugin-promise":"^3.4.0","eslint-plugin-standard":"^2.0.1","extract-text-webpack-plugin":"^2.1.2","file-loader":"^0.11.2","friendly-errors-webpack-plugin":"^1.1.3","node-sass":"^4.5.3","optimize-css-assets-webpack-plugin":"^2.0.0","ora":"^1.3.0","postcss-loader":"^2.0.6","rimraf":"^2.6.0","sass-loader":"^6.0.6","style-loader":"^0.18.2","url-loader":"^0.5.9","expose-loader":"^0.7.3","webpack":"^2.6.1","webpack-bundle-analyzer":"^2.2.1","webpack-dev-middleware":"^1.10.0","webpack-hot-middleware":"^2.18.0","webpack-merge":"^4.1.0","yargs":"^6.0.0"},"engines":{"node":">= 4.0.0","npm":">= 3.0.0"},"license":"MIT"}
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports) {
+
+module.exports = {};
+
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports) {
+
+module.exports = function (bitmap, value) {
+  return {
+    enumerable: !(bitmap & 1),
+    configurable: !(bitmap & 2),
+    writable: !(bitmap & 4),
+    value: value
+  };
+};
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports) {
+
+var id = 0;
+var px = Math.random();
+module.exports = function (key) {
+  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
+};
+
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports) {
+
+/**
+ * Checks if `value` is the
+ * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+ * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(_.noop);
+ * // => true
+ *
+ * _.isObject(null);
+ * // => false
+ */
+function isObject(value) {
+  var type = typeof value;
+  return value != null && (type == 'object' || type == 'function');
+}
+
+module.exports = isObject;
+
+
+/***/ }),
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -741,81 +838,6 @@ var isString = exports.isString = function isString(value) {
   var type = typeof value === 'undefined' ? 'undefined' : _typeof(value);
   return type === 'string';
 };
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports) {
-
-module.exports = {"name":"hmap-js","version":"1.5.0","private":false,"description":"a openlayers extent map library","main":"dist/hmap-js.js","style":"dist/hmap-js.css","scripts":{"dev":"node build/development.js","travisDev":"node build/development.js --env nowatch","build":"node build/build.js","start":"node build/dev-server.js"},"keywords":["webgis","canvas","openlayer3","es6"],"author":"FDD <smileFDD@gmail.com>","repository":{"type":"git","url":"https://github.com/sakitam-fdd/HMap.git"},"dependencies":{"core-js":"^2.5.0","nature-dom-util":"^1.1.0","observable-emit":"^1.0.1","ol-extent":"^1.1.1","openlayers":"^4.3.1","proj4":"^2.4.3"},"devDependencies":{"autoprefixer":"^6.7.7","babel-core":"^6.22.1","babel-eslint":"^7.1.1","babel-loader":"^6.2.10","babel-plugin-add-module-exports":"^0.2.1","babel-plugin-istanbul":"^4.1.1","babel-plugin-transform-runtime":"^6.22.0","babel-polyfill":"^6.23.0","babel-preset-env":"^1.3.2","babel-preset-es2015":"^6.0.0","babel-preset-stage-2":"^6.22.0","babel-register":"^6.22.0","chai":"^3.5.0","chalk":"^1.1.3","compression-webpack-plugin":"^0.4.0","copy-webpack-plugin":"^4.0.1","core-js":"^2.4.1","css-loader":"^0.28.4","eslint":"^3.19.0","eslint-config-standard":"^6.2.1","eslint-friendly-formatter":"^2.0.7","eslint-loader":"^1.7.1","eslint-plugin-html":"^2.0.0","eslint-plugin-promise":"^3.4.0","eslint-plugin-standard":"^2.0.1","extract-text-webpack-plugin":"^2.1.2","file-loader":"^0.11.2","friendly-errors-webpack-plugin":"^1.1.3","node-sass":"^4.5.3","optimize-css-assets-webpack-plugin":"^2.0.0","ora":"^1.3.0","postcss-loader":"^2.0.6","rimraf":"^2.6.0","sass-loader":"^6.0.6","style-loader":"^0.18.2","url-loader":"^0.5.9","expose-loader":"^0.7.3","webpack":"^2.6.1","webpack-bundle-analyzer":"^2.2.1","webpack-dev-middleware":"^1.10.0","webpack-hot-middleware":"^2.18.0","webpack-merge":"^4.1.0","yargs":"^6.0.0"},"engines":{"node":">= 4.0.0","npm":">= 3.0.0"},"license":"MIT"}
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports) {
-
-module.exports = {};
-
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports) {
-
-module.exports = function (bitmap, value) {
-  return {
-    enumerable: !(bitmap & 1),
-    configurable: !(bitmap & 2),
-    writable: !(bitmap & 4),
-    value: value
-  };
-};
-
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports) {
-
-var id = 0;
-var px = Math.random();
-module.exports = function (key) {
-  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
-};
-
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports) {
-
-/**
- * Checks if `value` is the
- * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
- * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an object, else `false`.
- * @example
- *
- * _.isObject({});
- * // => true
- *
- * _.isObject([1, 2, 3]);
- * // => true
- *
- * _.isObject(_.noop);
- * // => true
- *
- * _.isObject(null);
- * // => false
- */
-function isObject(value) {
-  var type = typeof value;
-  return value != null && (type == 'object' || type == 'function');
-}
-
-module.exports = isObject;
-
 
 /***/ }),
 /* 27 */
@@ -858,8 +880,8 @@ module.exports = function (fn, that, length) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-var anObject = __webpack_require__(0);
-var dPs = __webpack_require__(148);
+var anObject = __webpack_require__(1);
+var dPs = __webpack_require__(153);
 var enumBugKeys = __webpack_require__(47);
 var IE_PROTO = __webpack_require__(52)('IE_PROTO');
 var Empty = function () { /* empty */ };
@@ -868,13 +890,13 @@ var PROTOTYPE = 'prototype';
 // Create object with fake `null` prototype: use iframe Object with cleared prototype
 var createDict = function () {
   // Thrash, waste and sodomy: IE GC bug
-  var iframe = __webpack_require__(72)('iframe');
+  var iframe = __webpack_require__(73)('iframe');
   var i = enumBugKeys.length;
   var lt = '<';
   var gt = '>';
   var iframeDocument;
   iframe.style.display = 'none';
-  __webpack_require__(139).appendChild(iframe);
+  __webpack_require__(144).appendChild(iframe);
   iframe.src = 'javascript:'; // eslint-disable-line no-script-url
   // createDict = iframe.contentWindow.Object;
   // html.removeChild(iframe);
@@ -912,8 +934,8 @@ exports.f = Object.getOwnPropertySymbols;
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-var has = __webpack_require__(6);
-var toObject = __webpack_require__(82);
+var has = __webpack_require__(9);
+var toObject = __webpack_require__(83);
 var IE_PROTO = __webpack_require__(52)('IE_PROTO');
 var ObjectProto = Object.prototype;
 
@@ -937,9 +959,9 @@ exports.f = {}.propertyIsEnumerable;
 /* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var def = __webpack_require__(7).f;
-var has = __webpack_require__(6);
-var TAG = __webpack_require__(3)('toStringTag');
+var def = __webpack_require__(10).f;
+var has = __webpack_require__(9);
+var TAG = __webpack_require__(4)('toStringTag');
 
 module.exports = function (it, tag, stat) {
   if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
@@ -951,7 +973,7 @@ module.exports = function (it, tag, stat) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.1 ToPrimitive(input [, PreferredType])
-var isObject = __webpack_require__(4);
+var isObject = __webpack_require__(6);
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
 // and the second argument - flag - preferred type is a string
 module.exports = function (it, S) {
@@ -968,11 +990,11 @@ module.exports = function (it, S) {
 /* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var listCacheClear = __webpack_require__(236),
-    listCacheDelete = __webpack_require__(237),
-    listCacheGet = __webpack_require__(238),
-    listCacheHas = __webpack_require__(239),
-    listCacheSet = __webpack_require__(240);
+var listCacheClear = __webpack_require__(244),
+    listCacheDelete = __webpack_require__(245),
+    listCacheGet = __webpack_require__(246),
+    listCacheHas = __webpack_require__(247),
+    listCacheSet = __webpack_require__(248);
 
 /**
  * Creates an list cache object.
@@ -1006,7 +1028,7 @@ module.exports = ListCache;
 /* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var eq = __webpack_require__(97);
+var eq = __webpack_require__(98);
 
 /**
  * Gets the index at which the `key` is found in `array` of key-value pairs.
@@ -1034,8 +1056,8 @@ module.exports = assocIndexOf;
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(56),
-    getRawTag = __webpack_require__(222),
-    objectToString = __webpack_require__(250);
+    getRawTag = __webpack_require__(230),
+    objectToString = __webpack_require__(258);
 
 /** `Object#toString` result references. */
 var nullTag = '[object Null]',
@@ -1067,8 +1089,8 @@ module.exports = baseGetTag;
 /* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var assignValue = __webpack_require__(89),
-    baseAssignValue = __webpack_require__(90);
+var assignValue = __webpack_require__(90),
+    baseAssignValue = __webpack_require__(91);
 
 /**
  * Copies properties of `source` to `object`.
@@ -1113,7 +1135,7 @@ module.exports = copyObject;
 /* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isKeyable = __webpack_require__(234);
+var isKeyable = __webpack_require__(242);
 
 /**
  * Gets the data for `map`.
@@ -1156,21 +1178,401 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _openlayers = __webpack_require__(0);
+
+var _openlayers2 = _interopRequireDefault(_openlayers);
+
+var _ViewUtil2 = __webpack_require__(65);
+
+var _ViewUtil3 = _interopRequireDefault(_ViewUtil2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Geometry = function (_ViewUtil) {
+  _inherits(Geometry, _ViewUtil);
+
+  function Geometry() {
+    _classCallCheck(this, Geometry);
+
+    var _this = _possibleConstructorReturn(this, (Geometry.__proto__ || Object.getPrototypeOf(Geometry)).call(this));
+
+    _this[Symbol()] = Symbol();
+    return _this;
+  }
+
+  _createClass(Geometry, [{
+    key: '_getExtent',
+    value: function _getExtent(multiFeatures, params) {
+      var extent = multiFeatures.getExtent();
+      var bExtent = true;
+      extent.every(function (item) {
+        if (item === Infinity || isNaN(item) || item === undefined || item === null) {
+          bExtent = false;
+          return false;
+        } else {
+          return true;
+        }
+      });
+      if (bExtent) {
+        if (params['view'] && params['view']['adjustExtent']) {
+          extent = this.adjustExtent(extent, params['view']);
+        }
+        if (params['zoomToExtent']) {
+          this.zoomToExtent(extent, true);
+        }
+      }
+      return extent;
+    }
+  }, {
+    key: 'getCenterExtentFromLine',
+    value: function getCenterExtentFromLine(line, params) {
+      try {
+        var geom = null;
+        if (!(line instanceof _openlayers2.default.geom.Geometry)) {
+          geom = this.getGeomFromGeomData(line, params);
+        }
+        var MultiLine = new _openlayers2.default.geom.MultiLineString([]);
+
+        if (geom && geom instanceof _openlayers2.default.geom.LineString) {
+          MultiLine.appendLineString(geom);
+        } else if (geom && geom instanceof _openlayers2.default.geom.MultiLineString) {
+          var multiGeoms = geom.getLineStrings();
+          if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
+            multiGeoms.forEach(function (_geom) {
+              if (_geom && _geom instanceof _openlayers2.default.geom.LineString) {
+                MultiLine.appendLineString(_geom);
+              }
+            });
+          }
+        }
+        var extent = this._getExtent(MultiLine, params);
+        var center = _openlayers2.default.extent.getCenter(extent);
+        return {
+          extent: extent,
+          center: center
+        };
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, {
+    key: 'getCenterExtentFromPolygon',
+    value: function getCenterExtentFromPolygon(polygon, params) {
+      try {
+        var geom = null;
+        if (!(polygon instanceof _openlayers2.default.geom.Geometry)) {
+          geom = this.getGeomFromGeomData(polygon, params);
+        }
+        var MultiPolygon = new _openlayers2.default.geom.MultiPolygon([]);
+
+        if (geom && geom instanceof _openlayers2.default.geom.Polygon) {
+          MultiPolygon.appendPolygon(geom);
+        } else if (geom && geom instanceof _openlayers2.default.geom.MultiPolygon) {
+          var multiGeoms = geom.getPolygons();
+          if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
+            multiGeoms.forEach(function (_geom) {
+              if (_geom && _geom instanceof _openlayers2.default.geom.Polygon) {
+                MultiPolygon.appendPolygon(_geom);
+              }
+            });
+          }
+        }
+        var extent = this._getExtent(MultiPolygon, params);
+        var center = _openlayers2.default.extent.getCenter(extent);
+        return {
+          extent: extent,
+          center: center
+        };
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, {
+    key: '_getMultiGeomtery',
+    value: function _getMultiGeomtery(data, params) {
+      try {
+        var geom = null;
+        var multiPolygon = new _openlayers2.default.geom.MultiPolygon([]);
+        var multiLine = new _openlayers2.default.geom.MultiLineString([]);
+        var multiPoint = new _openlayers2.default.geom.MultiPoint([]);
+        if (!(data instanceof _openlayers2.default.geom.Geometry)) {
+          geom = this.getGeomFromGeomData(data, params);
+        } else {
+          geom = data;
+        }
+        if (geom) {
+          if (geom instanceof _openlayers2.default.geom.Polygon || geom instanceof _openlayers2.default.geom.MultiPolygon) {
+            if (geom instanceof _openlayers2.default.geom.Polygon) {
+              multiPolygon.appendPolygon(geom);
+            } else {
+              var multiGeoms = geom.getPolygons();
+              if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
+                multiGeoms.forEach(function (_geom) {
+                  if (_geom && _geom instanceof _openlayers2.default.geom.Polygon) {
+                    multiPolygon.appendPolygon(_geom);
+                  }
+                });
+              }
+            }
+            return multiPolygon;
+          } else if (geom instanceof _openlayers2.default.geom.LineString || geom instanceof _openlayers2.default.geom.MultiLineString) {
+            if (geom instanceof _openlayers2.default.geom.LineString) {
+              multiLine.appendLineString(geom);
+            } else {
+              var _multiGeoms2 = geom.getLineStrings();
+              if (_multiGeoms2 && Array.isArray(_multiGeoms2) && _multiGeoms2.length > 0) {
+                _multiGeoms2.forEach(function (_geom) {
+                  if (_geom && _geom instanceof _openlayers2.default.geom.LineString) {
+                    multiLine.appendLineString(_geom);
+                  }
+                });
+              }
+            }
+            return multiLine;
+          } else if (geom instanceof _openlayers2.default.geom.Point || geom instanceof _openlayers2.default.geom.MultiPoint) {
+            if (geom instanceof _openlayers2.default.geom.Point) {
+              multiPoint.appendPoint(geom);
+            } else {
+              var _multiGeoms3 = geom.getPoints();
+              if (_multiGeoms3 && Array.isArray(_multiGeoms3) && _multiGeoms3.length > 0) {
+                _multiGeoms3.forEach(function (_geom) {
+                  if (_geom && _geom instanceof _openlayers2.default.geom.Point) {
+                    multiPoint.appendPoint(_geom);
+                  }
+                });
+              }
+            }
+            return multiPoint;
+          }
+        } else {
+          return false;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'getGeomFromGeomData',
+    value: function getGeomFromGeomData(geomData, options) {
+      try {
+        options = options || {};
+        var featureGeom = null;
+        if (geomData instanceof _openlayers2.default.geom.Geometry) {
+          featureGeom = geomData;
+          if (options['dataProjection'] && options['featureProjection']) {
+            featureGeom = featureGeom.transform(options['dataProjection'], options['featureProjection']);
+          }
+        } else if (geomData.hasOwnProperty('geometry') && geomData['geometry'] instanceof _openlayers2.default.geom.Geometry) {
+          featureGeom = geomData['geometry'];
+          if (options['dataProjection'] && options['featureProjection']) {
+            featureGeom = featureGeom.transform(options['dataProjection'], options['featureProjection']);
+          }
+        } else if (geomData['geomType'] === 'GeoJSON' || options['geomType'] === 'GeoJSON') {
+          var GeoJSONFormat = new _openlayers2.default.format.GeoJSON();
+          featureGeom = GeoJSONFormat.readGeometry(geomData['geometry'], {
+            dataProjection: options['dataProjection'] ? options['dataProjection'] : undefined,
+            featureProjection: options['featureProjection'] ? options['featureProjection'] : undefined
+          });
+        } else if (geomData['geomType'] === 'EsriJSON' || options['geomType'] === 'EsriJSON') {
+          var esriJsonFormat = new _openlayers2.default.format.EsriJSON();
+          featureGeom = esriJsonFormat.readGeometry(geomData['geometry'], {
+            dataProjection: options['dataProjection'] ? options['dataProjection'] : undefined,
+            featureProjection: options['featureProjection'] ? options['featureProjection'] : undefined
+          });
+        } else if (geomData['geomType'] === 'Polyline' || options['geomType'] === 'Polyline') {
+          var polylineFormat = new _openlayers2.default.format.Polyline();
+          featureGeom = polylineFormat.readGeometry(geomData['geometry'], {
+            dataProjection: options['dataProjection'] ? options['dataProjection'] : undefined,
+            featureProjection: options['featureProjection'] ? options['featureProjection'] : undefined
+          });
+        } else if (Array.isArray(geomData['geometry'])) {
+          featureGeom = new _openlayers2.default.geom.Point(geomData['geometry']);
+          if (options['dataProjection'] && options['featureProjection']) {
+            featureGeom = featureGeom.transform(options['dataProjection'], options['featureProjection']);
+          }
+        } else if (geomData['geomType'] === 'MVT' || options['geomType'] === 'MVT') {
+          featureGeom = new _openlayers2.default.format.MVT().readGeometry(geomData);
+        } else if (geomData['geomType'] === 'TopoJSON' || options['geomType'] === 'TopoJSON') {
+          featureGeom = new _openlayers2.default.format.TopoJSON().readGeometry(geomData);
+        } else if (geomData['geomType'] === 'IGC' || options['geomType'] === 'IGC') {
+          featureGeom = new _openlayers2.default.format.IGC().readGeometry(geomData);
+        } else if (geomData['geomType'] === 'GMLBase' || options['geomType'] === 'GMLBase') {
+          featureGeom = new _openlayers2.default.format.GMLBase().readGeometry(geomData);
+        } else if (geomData['geomType'] === 'GPX' || options['geomType'] === 'GPX') {
+          featureGeom = new _openlayers2.default.format.GPX().readGeometry(geomData);
+        } else if (geomData['geomType'] === 'KML' || options['geomType'] === 'KML') {
+          featureGeom = new _openlayers2.default.format.KML().readGeometry(geomData);
+        } else if (geomData['geomType'] === 'OSMXML' || options['geomType'] === 'OSMXML') {
+          featureGeom = new _openlayers2.default.format.OSMXML().readGeometry(geomData);
+        } else if (geomData['geomType'] === 'WFS' || options['geomType'] === 'WFS') {
+          featureGeom = new _openlayers2.default.format.WFS().readGeometry(geomData);
+        } else if (geomData['geomType'] === 'WMSGetFeatureInfo' || options['geomType'] === 'WMSGetFeatureInfo') {
+          featureGeom = new _openlayers2.default.format.WMSGetFeatureInfo().readGeometry(geomData);
+        } else {
+          var wktFormat = new _openlayers2.default.format.WKT();
+          featureGeom = wktFormat.readGeometry(geomData['geometry'], {
+            dataProjection: options['dataProjection'] ? options['dataProjection'] : undefined,
+            featureProjection: options['featureProjection'] ? options['featureProjection'] : undefined
+          });
+        }
+        return featureGeom;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'getCenterExtentFromGeom',
+    value: function getCenterExtentFromGeom(geomData, options) {
+      var geom = this.getGeomFromGeomData(geomData, options);
+      var extent = this._getExtent(geom, options);
+      var center = _openlayers2.default.extent.getCenter(extent);
+      var bExtent = true;
+      extent.every(function (item) {
+        if (item === Infinity || isNaN(item) || item === undefined || item === null) {
+          bExtent = false;
+          return false;
+        } else {
+          return true;
+        }
+      });
+      if (bExtent && options['zoomToExtent']) {
+        if (options['view'] && options['view']['adjustExtent']) {
+          extent = this.adjustExtent(extent, options['view']);
+        }
+        this.zoomToExtent(extent, true);
+      }
+      return {
+        extent: extent,
+        center: center
+      };
+    }
+  }, {
+    key: '_getExtentCenter',
+    value: function _getExtentCenter(multiGeom, options) {
+      var extent = this._getExtent(multiGeom, options);
+      var center = _openlayers2.default.extent.getCenter(extent);
+      var bExtent = true;
+      extent.every(function (item) {
+        if (item === Infinity || isNaN(item) || item === undefined || item === null) {
+          bExtent = false;
+          return false;
+        } else {
+          return true;
+        }
+      });
+      if (bExtent && options['zoomToExtent']) {
+        if (options['view'] && options['view']['adjustExtent']) {
+          extent = this.adjustExtent(extent, options['view']);
+        }
+        this.zoomToExtent(extent, true);
+      }
+      return {
+        extent: extent,
+        center: center
+      };
+    }
+  }, {
+    key: 'getCenterExtentFromGeoms',
+    value: function getCenterExtentFromGeoms(geomDatas, options) {
+      var _this2 = this;
+
+      var res = null,
+          type = '';
+
+      if (geomDatas && Array.isArray(geomDatas) && geomDatas.length > 0) {
+        var multiPolygon = new _openlayers2.default.geom.MultiPolygon([]);
+        var multiLine = new _openlayers2.default.geom.MultiLineString([]);
+        var multiPoint = new _openlayers2.default.geom.MultiPoint([]);
+        geomDatas.forEach(function (item) {
+          if (item) {
+            var multiGeom = _this2._getMultiGeomtery(_this2.getGeomFromGeomData(item, options));
+            if (multiGeom) {
+              if (multiGeom instanceof _openlayers2.default.geom.MultiPolygon) {
+                var _multiGeoms = multiGeom.getPolygons();
+                if (_multiGeoms && Array.isArray(_multiGeoms) && _multiGeoms.length > 0) {
+                  _multiGeoms.forEach(function (_geom) {
+                    if (_geom && _geom instanceof _openlayers2.default.geom.Polygon) {
+                      multiPolygon.appendPolygon(_geom);
+                    }
+                  });
+                }
+                type = 'multiPolygon';
+              } else if (multiGeom instanceof _openlayers2.default.geom.MultiLineString) {
+                var _multiGeoms4 = multiGeom.getLineStrings();
+                if (_multiGeoms4 && Array.isArray(_multiGeoms4) && _multiGeoms4.length > 0) {
+                  _multiGeoms4.forEach(function (_geom) {
+                    if (_geom && _geom instanceof _openlayers2.default.geom.LineString) {
+                      multiLine.appendLineString(_geom);
+                    }
+                  });
+                }
+                type = 'multiLine';
+              } else if (multiGeom instanceof _openlayers2.default.geom.MultiPoint) {
+                var _multiGeoms5 = multiGeom.getPoints();
+                if (_multiGeoms5 && Array.isArray(_multiGeoms5) && _multiGeoms5.length > 0) {
+                  _multiGeoms5.forEach(function (_geom) {
+                    if (_geom && _geom instanceof _openlayers2.default.geom.Point) {
+                      multiPoint.appendPoint(_geom);
+                    }
+                  });
+                }
+                type = 'multiPoint';
+              }
+            }
+          }
+        });
+        if (type === 'multiPolygon') {
+          res = this._getExtentCenter(multiPolygon, options);
+        } else if (type === 'multiLine') {
+          res = this._getExtentCenter(multiLine, options);
+        } else if (type === 'multiPoint') {
+          res = this._getExtentCenter(multiPoint, options);
+        }
+      }
+      return res;
+    }
+  }]);
+
+  return Geometry;
+}(_ViewUtil3.default);
+
+exports.default = Geometry;
+module.exports = exports['default'];
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _openlayers = __webpack_require__(5);
+var _openlayers = __webpack_require__(0);
 
 var _openlayers2 = _interopRequireDefault(_openlayers);
 
-__webpack_require__(130);
+__webpack_require__(135);
 
-__webpack_require__(131);
+__webpack_require__(136);
 
-__webpack_require__(132);
+__webpack_require__(137);
 
-var _factory = __webpack_require__(68);
+var _factory = __webpack_require__(69);
 
 var _factory2 = _interopRequireDefault(_factory);
 
@@ -1273,6 +1675,46 @@ var Layer = function () {
       }
     }
   }, {
+    key: 'getAllLayers',
+    value: function getAllLayers() {
+      var targetLayers = [];
+      if (this.map) {
+        var layers = this.map.getLayers().getArray();
+        targetLayers = this.getAllLayersInternal(layers);
+      }
+      return targetLayers;
+    }
+  }, {
+    key: 'getAllLayersInternal',
+    value: function getAllLayersInternal(layers) {
+      var _this3 = this;
+
+      var _target = [];
+      if (layers.length > 0) {
+        layers.forEach(function (layer) {
+          if (layer instanceof _openlayers2.default.layer.Group) {
+            var _layers3 = layer.getLayers().getArray();
+            var _layer = _this3.getAllLayersInternal(_layers3);
+            if (_layer) {
+              _target = _target.concat(_layer);
+            }
+          } else {
+            _target.push(layer);
+          }
+        });
+      }
+      return _target;
+    }
+  }, {
+    key: 'getVectorLayers',
+    value: function getVectorLayers() {
+      var layers = this.getAllLayers();
+      return layers.filter(function (layer_) {
+        var source = layer_.getSource();
+        return source instanceof _openlayers2.default.source.Vector || source instanceof _openlayers2.default.source.Cluster;
+      });
+    }
+  }, {
     key: 'getTitleLayerByLayerName',
     value: function getTitleLayerByLayerName(layerName) {
       try {
@@ -1328,7 +1770,7 @@ var Layer = function () {
   }, {
     key: '_getLayerByFeatureInternal',
     value: function _getLayerByFeatureInternal(layers, feature) {
-      var _this3 = this;
+      var _this4 = this;
 
       var _target = void 0;
       layers.every(function (layer) {
@@ -1347,8 +1789,8 @@ var Layer = function () {
           }
           return false;
         } else if (layer instanceof _openlayers2.default.layer.Group) {
-          var _layers3 = layer.getLayers().getArray();
-          _target = _this3._getLayerByFeatureInternal(_layers3, feature);
+          var _layers4 = layer.getLayers().getArray();
+          _target = _this4._getLayerByFeatureInternal(_layers4, feature);
           if (_target) {
             return false;
           } else {
@@ -1405,6 +1847,7 @@ var Layer = function () {
             this.map.addLayer(vectorLayer);
           }
         }
+        this.orderLayerZindex();
         return vectorLayer;
       }
     }
@@ -1790,10 +2233,7 @@ var Layer = function () {
             maxZoom: params['maxZoom'] ? params['maxZoom'] : 18,
             minZoom: params['minZoom'] ? params['minZoom'] : 0,
             crossOrigin: params['crossOrigin'] ? params['crossOrigin'] : undefined,
-            tileUrlFunction: function tileUrlFunction(tileCoord) {
-              var url = params['layerUrl'].replace('{z}', tileCoord[0].toString()).replace('{x}', tileCoord[1].toString()).replace('{y}', (-tileCoord[2] - 1).toString());
-              return url;
-            }
+            url: params['layerUrl']
           })
         });
       }
@@ -2256,11 +2696,11 @@ var Layer = function () {
   }, {
     key: 'removeLayerByLayerNames',
     value: function removeLayerByLayerNames(layerNames) {
-      var _this4 = this;
+      var _this5 = this;
 
       if (this.map && Array.isArray(layerNames) && layerNames.length > 0) {
         layerNames.forEach(function (layerName) {
-          _this4.removeLayerByLayerName(layerName);
+          _this5.removeLayerByLayerName(layerName);
         });
       }
     }
@@ -2277,12 +2717,12 @@ var Layer = function () {
   }, {
     key: 'removeLayerByKeyValues',
     value: function removeLayerByKeyValues(key, values) {
-      var _this5 = this;
+      var _this6 = this;
 
       if (this.map && key && Array.isArray(values) && values.length > 0) {
         values.forEach(function (value) {
           if (value) {
-            _this5.removeLayerByKeyValue(key, value);
+            _this6.removeLayerByKeyValue(key, value);
           }
         });
       }
@@ -2290,14 +2730,14 @@ var Layer = function () {
   }, {
     key: 'removeLayersByKeyValue',
     value: function removeLayersByKeyValue(key, value) {
-      var _this6 = this;
+      var _this7 = this;
 
       if (this.map) {
         var layers = this.getLayersArrayByKeyValue(key, value);
         if (layers && layers.length > 0) {
           layers.forEach(function (layer) {
             if (layer && !layer.get('isBaseLayer')) {
-              _this6.removeLayer(layer);
+              _this7.removeLayer(layer);
             }
           });
         }
@@ -2316,13 +2756,13 @@ var Layer = function () {
   }, {
     key: 'removeAllLayer',
     value: function removeAllLayer() {
-      var _this7 = this;
+      var _this8 = this;
 
       if (this.map) {
         var layers = this.map.getLayers().getArray();
         layers.forEach(function (layer) {
           if (!layer.get('isBaseLayer')) {
-            _this7.removeLayer(layer);
+            _this8.removeLayer(layer);
           }
         });
       }
@@ -2336,7 +2776,7 @@ exports.default = Layer;
 module.exports = exports['default'];
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2365,69 +2805,6 @@ var config = {
 
 exports.default = config;
 module.exports = exports['default'];
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var copyProperties = function copyProperties(target, source) {
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
-
-  try {
-    for (var _iterator = Reflect.ownKeys(source)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var key = _step.value;
-
-      if (!key.match(/^(?:constructor|prototype|arguments|caller|name|bind|call|apply|toString|length)$/)) {
-        var desc = Object.getOwnPropertyDescriptor(source, key);
-        Object.defineProperty(target, key, desc);
-      }
-    }
-  } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator.return) {
-        _iterator.return();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
-  }
-};
-
-var mixin = function mixin() {
-  for (var _len = arguments.length, mixins = Array(_len), _key = 0; _key < _len; _key++) {
-    mixins[_key] = arguments[_key];
-  }
-
-  var Mix = function Mix() {
-    _classCallCheck(this, Mix);
-  };
-
-  for (var key in mixins) {
-    var _mixin = mixins[key];
-    copyProperties(Mix, _mixin);
-    copyProperties(Mix.prototype, _mixin.prototype);
-  }
-  return Mix;
-};
-
-exports.default = mixin;
-module.exports = exports["default"];
 
 /***/ }),
 /* 44 */
@@ -2510,15 +2887,15 @@ module.exports = (
 "use strict";
 
 var LIBRARY = __webpack_require__(49);
-var $export = __webpack_require__(1);
+var $export = __webpack_require__(2);
 var redefine = __webpack_require__(16);
 var hide = __webpack_require__(15);
-var has = __webpack_require__(6);
-var Iterators = __webpack_require__(23);
-var $iterCreate = __webpack_require__(76);
+var has = __webpack_require__(9);
+var Iterators = __webpack_require__(22);
+var $iterCreate = __webpack_require__(77);
 var setToStringTag = __webpack_require__(33);
 var getPrototypeOf = __webpack_require__(31);
-var ITERATOR = __webpack_require__(3)('iterator');
+var ITERATOR = __webpack_require__(4)('iterator');
 var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
 var FF_ITERATOR = '@@iterator';
 var KEYS = 'keys';
@@ -2591,15 +2968,15 @@ module.exports = false;
 /* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var META = __webpack_require__(25)('meta');
-var isObject = __webpack_require__(4);
-var has = __webpack_require__(6);
-var setDesc = __webpack_require__(7).f;
+var META = __webpack_require__(24)('meta');
+var isObject = __webpack_require__(6);
+var has = __webpack_require__(9);
+var setDesc = __webpack_require__(10).f;
 var id = 0;
 var isExtensible = Object.isExtensible || function () {
   return true;
 };
-var FREEZE = !__webpack_require__(10)(function () {
+var FREEZE = !__webpack_require__(12)(function () {
   return isExtensible(Object.preventExtensions({}));
 });
 var setMeta = function (it) {
@@ -2651,7 +3028,7 @@ var meta = module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
-var $keys = __webpack_require__(78);
+var $keys = __webpack_require__(79);
 var hiddenKeys = __webpack_require__(47).concat('length', 'prototype');
 
 exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
@@ -2664,7 +3041,7 @@ exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var shared = __webpack_require__(53)('keys');
-var uid = __webpack_require__(25);
+var uid = __webpack_require__(24);
 module.exports = function (key) {
   return shared[key] || (shared[key] = uid(key));
 };
@@ -2674,7 +3051,7 @@ module.exports = function (key) {
 /* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var global = __webpack_require__(2);
+var global = __webpack_require__(3);
 var SHARED = '__core-js_shared__';
 var store = global[SHARED] || (global[SHARED] = {});
 module.exports = function (key) {
@@ -2699,7 +3076,7 @@ module.exports = function (it) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(18),
-    root = __webpack_require__(8);
+    root = __webpack_require__(11);
 
 /* Built-in method references that are verified to be native. */
 var Map = getNative(root, 'Map');
@@ -2711,7 +3088,7 @@ module.exports = Map;
 /* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var root = __webpack_require__(8);
+var root = __webpack_require__(11);
 
 /** Built-in value references. */
 var Symbol = root.Symbol;
@@ -2723,7 +3100,7 @@ module.exports = Symbol;
 /* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Uint8Array = __webpack_require__(191);
+var Uint8Array = __webpack_require__(199);
 
 /**
  * Creates a clone of `arrayBuffer`.
@@ -2745,8 +3122,8 @@ module.exports = cloneArrayBuffer;
 /* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayFilter = __webpack_require__(196),
-    stubArray = __webpack_require__(103);
+var arrayFilter = __webpack_require__(204),
+    stubArray = __webpack_require__(104);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -2872,9 +3249,9 @@ module.exports = isObjectLike;
 /* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayLikeKeys = __webpack_require__(86),
-    baseKeys = __webpack_require__(204),
-    isArrayLike = __webpack_require__(98);
+var arrayLikeKeys = __webpack_require__(87),
+    baseKeys = __webpack_require__(212),
+    isArrayLike = __webpack_require__(99);
 
 /**
  * Creates an array of the own enumerable property names of `object`.
@@ -2995,93 +3372,61 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _openlayers = __webpack_require__(5);
+var _openlayers = __webpack_require__(0);
 
 var _openlayers2 = _interopRequireDefault(_openlayers);
 
-var _mixins = __webpack_require__(43);
-
-var _mixins2 = _interopRequireDefault(_mixins);
-
-var _factory = __webpack_require__(68);
-
-var _factory2 = _interopRequireDefault(_factory);
-
-var _Layer = __webpack_require__(41);
-
-var _Layer2 = _interopRequireDefault(_Layer);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Feature = function (_mixin) {
-  _inherits(Feature, _mixin);
-
-  function Feature() {
-    _classCallCheck(this, Feature);
-
-    var _this = _possibleConstructorReturn(this, (Feature.__proto__ || Object.getPrototypeOf(Feature)).call(this));
-
-    _this.desc = '';
-    return _this;
+var ViewUtil = function () {
+  function ViewUtil() {
+    _classCallCheck(this, ViewUtil);
   }
 
-  _createClass(Feature, [{
-    key: 'getFeatureById',
-    value: function getFeatureById(id) {
-      var layers = this.map.getLayers();
-      var feature = null;
-      layers.forEach(function (layer) {
-        if (layer && layer instanceof _openlayers2.default.layer.Vector && layer.getSource() && layer.getSource().getFeatureById) {
-          feature = layer.getSource().getFeatureById(id);
-        }
-      });
-      return feature;
+  _createClass(ViewUtil, [{
+    key: 'getExtent',
+    value: function getExtent(size) {
+      if (size) {
+        return this.view.calculateExtent(size);
+      } else {
+        return this.view.calculateExtent(this.map.getSize());
+      }
     }
   }, {
-    key: 'getFeatureById2LayerName',
-    value: function getFeatureById2LayerName(id, layerName) {
-      var feature = null;
-      if (layerName) {
-        var layer = this.getLayerByName(layerName);
-        if (layer && layer instanceof _openlayers2.default.layer.Vector) {
-          feature = layer.getSource().getFeatureById(id);
-        }
+    key: 'getMapCurrentExtent',
+    value: function getMapCurrentExtent() {
+      if (this.map) {
+        return this.view.calculateExtent(this.map.getSize());
       }
-      if (!feature || !(feature instanceof _openlayers2.default.Feature)) {
-        feature = this.getFeatureById(id);
-      }
-      return feature;
     }
   }, {
-    key: '_getExtent',
-    value: function _getExtent(multiFeatures, params) {
-      var extent = multiFeatures.getExtent();
-      var bExtent = true;
-      extent.every(function (item) {
-        if (item === Infinity || isNaN(item) || item === undefined || item === null) {
-          bExtent = false;
-          return false;
-        } else {
-          return true;
+    key: 'zoomMaxExtent',
+    value: function zoomMaxExtent(zoom) {
+      var view = this.map.getView();
+      zoom = typeof zoom === 'number' ? zoom : 2;
+      if (this.map && view) {
+        var center = view.getCenter();
+        if (center) {
+          this.view.setCenter(center);
+          this.view.setZoom(zoom);
         }
-      });
-      if (bExtent) {
-        if (params['view'] && params['view']['adjustExtent']) {
-          extent = this.adjustExtent(extent, params['view']);
-        }
-        this.zoomToExtent(extent, true);
       }
-      return extent;
+    }
+  }, {
+    key: 'setViewCenter',
+    value: function setViewCenter(coordinate) {
+      if (coordinate && Array.isArray(coordinate) && this.map) {
+        this.map.getView().animate({
+          center: coordinate,
+          duration: 800
+        });
+      }
     }
   }, {
     key: 'movePointToView',
@@ -3097,824 +3442,163 @@ var Feature = function (_mixin) {
       }
     }
   }, {
-    key: 'setViewCenter',
-    value: function setViewCenter(coordinate) {
-      if (coordinate && Array.isArray(coordinate) && this.map) {
-        this.map.getView().animate({
-          center: coordinate,
-          duration: 800
-        });
-      }
-    }
-  }, {
-    key: 'getMapCurrentExtent',
-    value: function getMapCurrentExtent() {
+    key: 'adjustExtent',
+    value: function adjustExtent(extent, params) {
       if (this.map) {
-        return this.map.getView().calculateExtent(this.map.getSize());
+        params = params || {};
+        var size = _openlayers2.default.extent.getSize(extent);
+        var adjust = typeof params['adjust'] === 'number' ? params['adjust'] : 0.2;
+        var minWidth = typeof params['minWidth'] === 'number' ? params['minWidth'] : 0.05;
+        var minHeight = typeof params['minHeight'] === 'number' ? params['minHeight'] : 0.05;
+        if (size[0] <= minWidth || size[1] <= minHeight) {
+          var bleft = _openlayers2.default.extent.getBottomLeft(extent);
+          var tright = _openlayers2.default.extent.getTopRight(extent);
+          var xmin = bleft[0] - adjust;
+          var ymin = bleft[1] - adjust;
+          var xmax = tright[0] + adjust;
+          var ymax = tright[1] + adjust;
+          extent = _openlayers2.default.extent.buffer([xmin, ymin, xmax, ymax], adjust);
+        }
+        return extent;
       }
     }
   }, {
-    key: 'addPoint',
-    value: function addPoint(point, params) {
-      try {
-        var geometry = this.getGeomFromGeomData(point, params);
-        var feature = new _openlayers2.default.Feature({
-          geometry: geometry,
-          params: params
-        });
-        var style = new _factory2.default(point['attributes']['style'] || params['style']);
-        var selectStyle = new _factory2.default(point['attributes']['selectStyle'] || params['selectStyle']);
-        if (style && feature) {
-          feature.setStyle(style);
-          feature.set('style', style);
-          if (selectStyle) {
-            feature.set('selectStyle', selectStyle);
-          }
-        }
-        if (point['attributes'] && (point['attributes']['id'] || point['attributes']['ID'])) {
-          var id = point.attributes['id'] || point.attributes['ID'] || params['id'];
-          feature.setId(id);
-          feature.setProperties(point['attributes']);
-        }
-        if (params['zoomToExtent']) {
-          var extent = geometry.getExtent();
-          var _extent = this.adjustExtent(extent, params['view']);
-          this.zoomToExtent(_extent, true);
-        }
-        if (params['layerName']) {
-          params['create'] = true;
-          var layer = this.createVectorLayer(params['layerName'], params);
-          layer.getSource().addFeature(feature);
-          this.pointLayers.add(params['layerName']);
-        }
-        this.orderLayerZindex();
-        return feature;
-      } catch (e) {
-        console.error(e);
-      }
-    }
-  }, {
-    key: 'addPoints',
-    value: function addPoints(points, params) {
-      var _this2 = this;
+    key: 'zoomToExtent',
+    value: function zoomToExtent(extent, isanimation, duration) {
+      if (this.map) {
+        var view = this.map.getView();
+        var size = this.map.getSize();
 
-      try {
-        if (points && Array.isArray(points)) {
-          var multiPoint = new _openlayers2.default.geom.MultiPoint([]),
-              change = false;
-
-          if (params['zoomToExtent']) {
-            params['zoomToExtent'] = false;
-            change = true;
-          }
-          points.forEach(function (point) {
-            if (point && point['geometry']) {
-              var pointFeat = _this2.addPoint(point, params);
-              if (pointFeat && pointFeat instanceof _openlayers2.default.Feature) {
-                var geom = pointFeat.getGeometry();
-                if (geom && geom instanceof _openlayers2.default.geom.Point) {
-                  multiPoint.appendPoint(geom);
-                } else if (geom && geom instanceof _openlayers2.default.geom.MultiPoint) {
-                  var multiGeoms = geom.getPoints();
-                  if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
-                    multiGeoms.forEach(function (_geom) {
-                      if (_geom && _geom instanceof _openlayers2.default.geom.Point) {
-                        multiPoint.appendPoint(_geom);
-                      }
-                    });
-                  }
-                }
-              }
-            }
-          });
-          if (change) {
-            this._getExtent(multiPoint, params);
-          }
-          return multiPoint;
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    }
-  }, {
-    key: 'setPointGeometry',
-    value: function setPointGeometry(point, geometry, params) {
-      if (point && geometry && point instanceof _openlayers2.default.Feature) {
-        var _geometry = this.getGeomFromGeomData({
-          geometry: geometry
-        }, params);
-        point.setGeometry(_geometry);
-      } else {
-        console.info('传入数据有误！');
-      }
-    }
-  }, {
-    key: 'addPolyline',
-    value: function addPolyline(line, params) {
-      try {
-        var linefeature = new _openlayers2.default.Feature({
-          geometry: this.getGeomFromGeomData(line, params)
-        });
-        var style = new _factory2.default(line['attributes']['style'] || params['style']);
-        var selectStyle = new _factory2.default(line['attributes']['selectStyle'] || params['selectStyle']);
-        var extent = linefeature.getGeometry().getExtent();
-        if (style && linefeature) {
-          linefeature.setStyle(style);
-          linefeature.set('style', style);
-          if (selectStyle) {
-            linefeature.set('selectStyle', selectStyle);
-          }
-        }
-        if (line['attributes'] && (line.attributes['ID'] || line.attributes['id'])) {
-          var id = line.attributes['id'] || line.attributes['ID'] || params['id'];
-          linefeature.setId(id);
-          linefeature.setProperties(line.attributes);
-        }
-        if (params['zoomToExtent']) {
-          if (params['view'] && params['view']['adjustExtent']) {
-            extent = this.adjustExtent(extent, params['view']);
-          }
-          this.zoomToExtent(extent, true);
-        }
-        if (params['layerName']) {
-          params['create'] = true;
-          var layer = this.createVectorLayer(params['layerName'], params);
-          layer.getSource().addFeature(linefeature);
-          this.lineLayers.add(params['layerName']);
-        }
-        this.orderLayerZindex();
-        return linefeature;
-      } catch (e) {
-        console.error(e);
-      }
-    }
-  }, {
-    key: 'addPolylines',
-    value: function addPolylines(lines, params) {
-      var _this3 = this;
-
-      try {
-        if (lines && Array.isArray(lines)) {
-          var MultiLine = new _openlayers2.default.geom.MultiLineString([]),
-              change = false;
-
-          if (params['zoomToExtent']) {
-            params['zoomToExtent'] = false;
-            change = true;
-          }
-          lines.forEach(function (line) {
-            var polyLine = _this3.addPolyline(line, params);
-            if (polyLine && polyLine instanceof _openlayers2.default.Feature) {
-              var geom = polyLine.getGeometry();
-              if (geom && geom instanceof _openlayers2.default.geom.LineString) {
-                MultiLine.appendLineString(geom);
-              } else if (geom && geom instanceof _openlayers2.default.geom.MultiLineString) {
-                var multiGeoms = geom.getLineStrings();
-                if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
-                  multiGeoms.forEach(function (_geom) {
-                    if (_geom && _geom instanceof _openlayers2.default.geom.LineString) {
-                      MultiLine.appendLineString(_geom);
-                    }
-                  });
-                }
-              }
-            }
-          });
-          if (change) {
-            this._getExtent(MultiLine, params);
-          }
-          return MultiLine;
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    }
-  }, {
-    key: 'addPolygon',
-    value: function addPolygon(polygon, params) {
-      try {
-        if (polygon && polygon['geometry']) {
-          var polygonFeature = new _openlayers2.default.Feature({
-            geometry: this.getGeomFromGeomData(polygon, params)
-          });
-          var style = new _factory2.default(polygon['attributes']['style'] || params['style']);
-          var selectStyle = new _factory2.default(polygon['attributes']['selectStyle'] || params['selectStyle']);
-          var extent = polygonFeature.getGeometry().getExtent();
-          if (style && polygonFeature) {
-            polygonFeature.setStyle(style);
-            if (selectStyle) {
-              polygonFeature.set('selectStyle', selectStyle);
-            }
-          }
-          if (polygon['attributes'] && (polygon.attributes['ID'] || polygon.attributes['id'])) {
-            var id = polygon.attributes['id'] || polygon.attributes['ID'] || params['id'];
-            polygonFeature.setId(id);
-            polygonFeature.setProperties(polygon.attributes);
-          }
-          if (params['zoomToExtent']) {
-            if (params['view'] && params['view']['adjustExtent']) {
-              extent = this.adjustExtent(extent, params['view']);
-            }
-            this.zoomToExtent(extent, true);
-          }
-          if (params['layerName']) {
-            params['create'] = true;
-            var layer = this.createVectorLayer(params['layerName'], params);
-            layer.getSource().addFeature(polygonFeature);
-            this.polygonLayers.add(params['layerName']);
-          }
-          this.orderLayerZindex();
-          return polygonFeature;
-        } else {
-          console.info('传入的数据不标准！');
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, {
-    key: 'addPolygons',
-    value: function addPolygons(polygons, params) {
-      var _this4 = this;
-
-      try {
-        if (polygons && Array.isArray(polygons)) {
-          var MultiPolygon = new _openlayers2.default.geom.MultiPolygon([]),
-              change = false;
-
-          if (params['zoomToExtent']) {
-            params['zoomToExtent'] = false;
-            change = true;
-          }
-          polygons.forEach(function (polygon) {
-            var polygonFeat = _this4.addPolygon(polygon, params);
-            if (polygonFeat && polygonFeat instanceof _openlayers2.default.Feature) {
-              var geom = polygonFeat.getGeometry();
-              if (geom && geom instanceof _openlayers2.default.geom.Polygon) {
-                MultiPolygon.appendPolygon(geom);
-              } else if (geom && geom instanceof _openlayers2.default.geom.MultiPolygon) {
-                var multiGeoms = geom.getPolygons();
-                if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
-                  multiGeoms.forEach(function (_geom) {
-                    if (_geom && _geom instanceof _openlayers2.default.geom.Polygon) {
-                      MultiPolygon.appendPolygon(_geom);
-                    }
-                  });
-                }
-              }
-            }
-          });
-          if (change) {
-            this._getExtent(MultiPolygon, params);
-          }
-          return MultiPolygon;
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, {
-    key: 'addHeatFeatures',
-    value: function addHeatFeatures(points, params) {
-      var _this5 = this;
-
-      try {
-        var feature = '';
-        if (points && Array.isArray(points) && points.length > 0) {
-          var multiPoint = new _openlayers2.default.geom.MultiPoint([]),
-              change = false;
-
-          if (params['zoomToExtent']) {
-            params['zoomToExtent'] = false;
-            change = true;
-          }
-          points.forEach(function (item) {
-            if (item && item['geometry']) {
-              var geometry = _this5.getGeomFromGeomData(item, params);
-              if (geometry && geometry instanceof _openlayers2.default.geom.Point) {
-                multiPoint.appendPoint(geometry);
-              } else if (geometry && geometry instanceof _openlayers2.default.geom.MultiPoint) {
-                var multiGeoms = geometry.getPoints();
-                if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
-                  multiGeoms.forEach(function (_geom) {
-                    if (_geom && _geom instanceof _openlayers2.default.geom.Point) {
-                      multiPoint.appendPoint(_geom);
-                    }
-                  });
-                }
-              }
-            }
-          });
-          if (params['layerName']) {
-            feature = new _openlayers2.default.Feature({
-              geometry: multiPoint,
-              params: params
-            });
-            params['create'] = true;
-            var layer = this.createHeatMapLayer(params['layerName'], params);
-            if (layer && layer instanceof _openlayers2.default.layer.Heatmap) {
-              layer.getSource().addFeature(feature);
-            }
-            this.pointLayers.add(params['layerName']);
-          }
-          if (change) {
-            this._getExtent(multiPoint, params);
-          }
-        }
-        this.orderLayerZindex();
-        return feature;
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, {
-    key: 'getCenterExtentFromLine',
-    value: function getCenterExtentFromLine(line, params) {
-      try {
-        var geom = null;
-        if (!(line instanceof _openlayers2.default.geom.Geometry)) {
-          geom = this.getGeomFromGeomData(line, params);
-        }
-        var MultiLine = new _openlayers2.default.geom.MultiLineString([]);
-
-        if (geom && geom instanceof _openlayers2.default.geom.LineString) {
-          MultiLine.appendLineString(geom);
-        } else if (geom && geom instanceof _openlayers2.default.geom.MultiLineString) {
-          var multiGeoms = geom.getLineStrings();
-          if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
-            multiGeoms.forEach(function (_geom) {
-              if (_geom && _geom instanceof _openlayers2.default.geom.LineString) {
-                MultiLine.appendLineString(_geom);
-              }
-            });
-          }
-        }
-        var extent = this._getExtent(MultiLine, params);
         var center = _openlayers2.default.extent.getCenter(extent);
-        return {
-          extent: extent,
-          center: center
-        };
-      } catch (e) {
-        console.error(e);
-      }
-    }
-  }, {
-    key: 'getCenterExtentFromPolygon',
-    value: function getCenterExtentFromPolygon(polygon, params) {
-      try {
-        var geom = null;
-        if (!(polygon instanceof _openlayers2.default.geom.Geometry)) {
-          geom = this.getGeomFromGeomData(polygon, params);
-        }
-        var MultiPolygon = new _openlayers2.default.geom.MultiPolygon([]);
-
-        if (geom && geom instanceof _openlayers2.default.geom.Polygon) {
-          MultiPolygon.appendPolygon(geom);
-        } else if (geom && geom instanceof _openlayers2.default.geom.MultiPolygon) {
-          var multiGeoms = geom.getPolygons();
-          if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
-            multiGeoms.forEach(function (_geom) {
-              if (_geom && _geom instanceof _openlayers2.default.geom.Polygon) {
-                MultiPolygon.appendPolygon(_geom);
-              }
+        if (!isanimation) {
+          view.fit(extent, size, {
+            padding: [350, 200, 200, 350]
+          });
+          view.setCenter(center);
+        } else {
+          if (!duration) {
+            duration = 800;
+            view.animate({
+              center: center,
+              duration: duration
+            });
+            view.fit(extent, {
+              size: size,
+              duration: duration
             });
           }
         }
-        var extent = this._getExtent(MultiPolygon, params);
-        var center = _openlayers2.default.extent.getCenter(extent);
-        return {
-          extent: extent,
-          center: center
-        };
-      } catch (e) {
-        console.error(e);
       }
     }
   }, {
-    key: '_getMultiGeomtery',
-    value: function _getMultiGeomtery(data, params) {
-      try {
-        var geom = null;
-        var multiPolygon = new _openlayers2.default.geom.MultiPolygon([]);
-        var multiLine = new _openlayers2.default.geom.MultiLineString([]);
-        var multiPoint = new _openlayers2.default.geom.MultiPoint([]);
-        if (!(data instanceof _openlayers2.default.geom.Geometry)) {
-          geom = this.getGeomFromGeomData(data, params);
-        } else {
-          geom = data;
-        }
-        if (geom) {
-          if (geom instanceof _openlayers2.default.geom.Polygon || geom instanceof _openlayers2.default.geom.MultiPolygon) {
-            if (geom instanceof _openlayers2.default.geom.Polygon) {
-              multiPolygon.appendPolygon(geom);
-            } else {
-              var multiGeoms = geom.getPolygons();
-              if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
-                multiGeoms.forEach(function (_geom) {
-                  if (_geom && _geom instanceof _openlayers2.default.geom.Polygon) {
-                    multiPolygon.appendPolygon(_geom);
-                  }
-                });
-              }
-            }
-            return multiPolygon;
-          } else if (geom instanceof _openlayers2.default.geom.LineString || geom instanceof _openlayers2.default.geom.MultiLineString) {
-            if (geom instanceof _openlayers2.default.geom.LineString) {
-              multiLine.appendLineString(geom);
-            } else {
-              var _multiGeoms2 = geom.getLineStrings();
-              if (_multiGeoms2 && Array.isArray(_multiGeoms2) && _multiGeoms2.length > 0) {
-                _multiGeoms2.forEach(function (_geom) {
-                  if (_geom && _geom instanceof _openlayers2.default.geom.LineString) {
-                    multiLine.appendLineString(_geom);
-                  }
-                });
-              }
-            }
-            return multiLine;
-          } else if (geom instanceof _openlayers2.default.geom.Point || geom instanceof _openlayers2.default.geom.MultiPoint) {
-            if (geom instanceof _openlayers2.default.geom.Point) {
-              multiPoint.appendPoint(geom);
-            } else {
-              var _multiGeoms3 = geom.getPoints();
-              if (_multiGeoms3 && Array.isArray(_multiGeoms3) && _multiGeoms3.length > 0) {
-                _multiGeoms3.forEach(function (_geom) {
-                  if (_geom && _geom instanceof _openlayers2.default.geom.Point) {
-                    multiPoint.appendPoint(_geom);
-                  }
-                });
-              }
-            }
-            return multiPoint;
-          }
-        } else {
-          return false;
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, {
-    key: 'getGeomFromGeomData',
-    value: function getGeomFromGeomData(geomData, options) {
-      try {
-        options = options || {};
-        var featureGeom = null;
-        if (geomData instanceof _openlayers2.default.geom.Geometry) {
-          featureGeom = geomData;
-          if (options['dataProjection'] && options['featureProjection']) {
-            featureGeom = featureGeom.transform(options['dataProjection'], options['featureProjection']);
-          }
-        } else if (geomData.hasOwnProperty('geometry') && geomData['geometry'] instanceof _openlayers2.default.geom.Geometry) {
-          featureGeom = geomData['geometry'];
-          if (options['dataProjection'] && options['featureProjection']) {
-            featureGeom = featureGeom.transform(options['dataProjection'], options['featureProjection']);
-          }
-        } else if (geomData['geomType'] === 'GeoJSON' || options['geomType'] === 'GeoJSON') {
-          var GeoJSONFormat = new _openlayers2.default.format.GeoJSON();
-          featureGeom = GeoJSONFormat.readGeometry(geomData['geometry'], {
-            dataProjection: options['dataProjection'] ? options['dataProjection'] : undefined,
-            featureProjection: options['featureProjection'] ? options['featureProjection'] : undefined
-          });
-        } else if (geomData['geomType'] === 'EsriJSON' || options['geomType'] === 'EsriJSON') {
-          var esriJsonFormat = new _openlayers2.default.format.EsriJSON();
-          featureGeom = esriJsonFormat.readGeometry(geomData['geometry'], {
-            dataProjection: options['dataProjection'] ? options['dataProjection'] : undefined,
-            featureProjection: options['featureProjection'] ? options['featureProjection'] : undefined
-          });
-        } else if (geomData['geomType'] === 'Polyline' || options['geomType'] === 'Polyline') {
-          var polylineFormat = new _openlayers2.default.format.Polyline();
-          featureGeom = polylineFormat.readGeometry(geomData['geometry'], {
-            dataProjection: options['dataProjection'] ? options['dataProjection'] : undefined,
-            featureProjection: options['featureProjection'] ? options['featureProjection'] : undefined
-          });
-        } else if (Array.isArray(geomData['geometry'])) {
-          featureGeom = new _openlayers2.default.geom.Point(geomData['geometry']);
-          if (options['dataProjection'] && options['featureProjection']) {
-            featureGeom = featureGeom.transform(options['dataProjection'], options['featureProjection']);
-          }
-        } else if (geomData['geomType'] === 'MVT' || options['geomType'] === 'MVT') {
-          featureGeom = new _openlayers2.default.format.MVT().readGeometry(geomData);
-        } else if (geomData['geomType'] === 'TopoJSON' || options['geomType'] === 'TopoJSON') {
-          featureGeom = new _openlayers2.default.format.TopoJSON().readGeometry(geomData);
-        } else if (geomData['geomType'] === 'IGC' || options['geomType'] === 'IGC') {
-          featureGeom = new _openlayers2.default.format.IGC().readGeometry(geomData);
-        } else if (geomData['geomType'] === 'GMLBase' || options['geomType'] === 'GMLBase') {
-          featureGeom = new _openlayers2.default.format.GMLBase().readGeometry(geomData);
-        } else if (geomData['geomType'] === 'GPX' || options['geomType'] === 'GPX') {
-          featureGeom = new _openlayers2.default.format.GPX().readGeometry(geomData);
-        } else if (geomData['geomType'] === 'KML' || options['geomType'] === 'KML') {
-          featureGeom = new _openlayers2.default.format.KML().readGeometry(geomData);
-        } else if (geomData['geomType'] === 'OSMXML' || options['geomType'] === 'OSMXML') {
-          featureGeom = new _openlayers2.default.format.OSMXML().readGeometry(geomData);
-        } else if (geomData['geomType'] === 'WFS' || options['geomType'] === 'WFS') {
-          featureGeom = new _openlayers2.default.format.WFS().readGeometry(geomData);
-        } else if (geomData['geomType'] === 'WMSGetFeatureInfo' || options['geomType'] === 'WMSGetFeatureInfo') {
-          featureGeom = new _openlayers2.default.format.WMSGetFeatureInfo().readGeometry(geomData);
-        } else {
-          var wktFormat = new _openlayers2.default.format.WKT();
-          featureGeom = wktFormat.readGeometry(geomData['geometry'], {
-            dataProjection: options['dataProjection'] ? options['dataProjection'] : undefined,
-            featureProjection: options['featureProjection'] ? options['featureProjection'] : undefined
-          });
-        }
-        return featureGeom;
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, {
-    key: 'getCenterExtentFromGeom',
-    value: function getCenterExtentFromGeom(geomData, options) {
-      var geom = this.getGeomFromGeomData(geomData, options);
-      var extent = this._getExtent(geom, options);
-      var center = _openlayers2.default.extent.getCenter(extent);
-      var bExtent = true;
-      extent.every(function (item) {
-        if (item === Infinity || isNaN(item) || item === undefined || item === null) {
-          bExtent = false;
-          return false;
-        } else {
-          return true;
-        }
-      });
-      if (bExtent && options['zoomToExtent']) {
-        if (options['view'] && options['view']['adjustExtent']) {
-          extent = this.adjustExtent(extent, options['view']);
-        }
-        this.zoomToExtent(extent, true);
-      }
-      return {
-        extent: extent,
-        center: center
-      };
-    }
-  }, {
-    key: '_getExtentCenter',
-    value: function _getExtentCenter(multiGeom, options) {
-      var extent = this._getExtent(multiGeom, options);
-      var center = _openlayers2.default.extent.getCenter(extent);
-      var bExtent = true;
-      extent.every(function (item) {
-        if (item === Infinity || isNaN(item) || item === undefined || item === null) {
-          bExtent = false;
-          return false;
-        } else {
-          return true;
-        }
-      });
-      if (bExtent && options['zoomToExtent']) {
-        if (options['view'] && options['view']['adjustExtent']) {
-          extent = this.adjustExtent(extent, options['view']);
-        }
-        this.zoomToExtent(extent, true);
-      }
-      return {
-        extent: extent,
-        center: center
-      };
-    }
-  }, {
-    key: 'getCenterExtentFromGeoms',
-    value: function getCenterExtentFromGeoms(geomDatas, options) {
-      var _this6 = this;
+    key: 'orderLayerZindex',
+    value: function orderLayerZindex() {
+      var _this = this;
 
-      var res = null,
-          type = '';
-
-      if (geomDatas && Array.isArray(geomDatas) && geomDatas.length > 0) {
-        var multiPolygon = new _openlayers2.default.geom.MultiPolygon([]);
-        var multiLine = new _openlayers2.default.geom.MultiLineString([]);
-        var multiPoint = new _openlayers2.default.geom.MultiPoint([]);
-        geomDatas.forEach(function (item) {
-          if (item) {
-            var multiGeom = _this6._getMultiGeomtery(_this6.getGeomFromGeomData(item, options));
-            if (multiGeom) {
-              if (multiGeom instanceof _openlayers2.default.geom.MultiPolygon) {
-                var _multiGeoms = multiGeom.getPolygons();
-                if (_multiGeoms && Array.isArray(_multiGeoms) && _multiGeoms.length > 0) {
-                  _multiGeoms.forEach(function (_geom) {
-                    if (_geom && _geom instanceof _openlayers2.default.geom.Polygon) {
-                      multiPolygon.appendPolygon(_geom);
-                    }
-                  });
-                }
-                type = 'multiPolygon';
-              } else if (multiGeom instanceof _openlayers2.default.geom.MultiLineString) {
-                var _multiGeoms4 = multiGeom.getLineStrings();
-                if (_multiGeoms4 && Array.isArray(_multiGeoms4) && _multiGeoms4.length > 0) {
-                  _multiGeoms4.forEach(function (_geom) {
-                    if (_geom && _geom instanceof _openlayers2.default.geom.LineString) {
-                      multiLine.appendLineString(_geom);
-                    }
-                  });
-                }
-                type = 'multiLine';
-              } else if (multiGeom instanceof _openlayers2.default.geom.MultiPoint) {
-                var _multiGeoms5 = multiGeom.getPoints();
-                if (_multiGeoms5 && Array.isArray(_multiGeoms5) && _multiGeoms5.length > 0) {
-                  _multiGeoms5.forEach(function (_geom) {
-                    if (_geom && _geom instanceof _openlayers2.default.geom.Point) {
-                      multiPoint.appendPoint(_geom);
-                    }
-                  });
-                }
-                type = 'multiPoint';
-              }
+      var layerindex = 10;
+      if (this.map) {
+        var pointLayers = [].concat(_toConsumableArray(this.pointLayers));
+        var lineLayers = [].concat(_toConsumableArray(this.lineLayers));
+        var polygonLayers = [].concat(_toConsumableArray(this.polygonLayers));
+        polygonLayers.forEach(function (layerName) {
+          if (layerName) {
+            var layer = _this.getLayerByLayerName(layerName);
+            if (layer) {
+              layer.setZIndex(layerindex++);
             }
           }
         });
-        if (type === 'multiPolygon') {
-          res = this._getExtentCenter(multiPolygon, options);
-        } else if (type === 'multiLine') {
-          res = this._getExtentCenter(multiLine, options);
-        } else if (type === 'multiPoint') {
-          res = this._getExtentCenter(multiPoint, options);
-        }
-      }
-      return res;
-    }
-  }, {
-    key: 'setHeatLayerStyle',
-    value: function setHeatLayerStyle(layerName, params) {
-      try {
-        var layer = null;
-        if (layerName) {
-          layerName = layerName.trim();
-          var _layer = this.getLayerByLayerName(layerName);
-          if (_layer && _layer instanceof _openlayers2.default.layer.Heatmap) {
-            layer = _layer;
-            if (params && (typeof params === 'undefined' ? 'undefined' : _typeof(params)) === 'object') {
-              for (var key in params) {
-                switch (key) {
-                  case 'blur':
-                    layer.setBlur(params[key]);
-                    break;
-                  case 'radius':
-                    layer.setRadius(params[key]);
-                    break;
-                  case 'gradient':
-                    layer.setGradient(params[key]);
-                    break;
-                  case 'visible':
-                    layer.setVisible(params[key]);
-                    break;
-                  case 'opacity':
-                    layer.setOpacity(params[key]);
-                    break;
-                }
-              }
+        lineLayers.forEach(function (layerName) {
+          if (layerName) {
+            var layer = _this.getLayerByLayerName(layerName);
+            if (layer) {
+              layer.setZIndex(layerindex++);
             }
           }
-        }
-        return layer;
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, {
-    key: 'removeFeatureByLayerName',
-    value: function removeFeatureByLayerName(layerName) {
-      try {
-        var layer = this.getLayerByLayerName(layerName);
-        if (layer && layer instanceof _openlayers2.default.layer.Vector && layer.getSource()) {
-          layer.getSource().clear();
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, {
-    key: 'removeFeatureByLayerNames',
-    value: function removeFeatureByLayerNames(layerNames) {
-      var _this7 = this;
-
-      if (layerNames && Array.isArray(layerNames) && layerNames.length > 0) {
-        layerNames.forEach(function (item) {
-          _this7.removeFeatureByLayerName(item);
         });
-      } else {
-        console.info('id为空或者不是数组！');
-      }
-    }
-  }, {
-    key: 'removeFeature',
-    value: function removeFeature(feature) {
-      if (feature && feature instanceof _openlayers2.default.Feature) {
-        var tragetLayer = this.getLayerByFeatuer(feature);
-        if (tragetLayer) {
-          var source = tragetLayer.getSource();
-          if (source && source.removeFeature) {
-            source.removeFeature(feature);
-          }
-        }
-      } else {
-        throw new Error('传入的不是要素!');
-      }
-    }
-  }, {
-    key: 'removeFeatureById',
-    value: function removeFeatureById(id, layerName) {
-      if (this.map && id) {
-        if (layerName) {
-          var layer = this.getLayerByLayerName(layerName);
-          if (layer) {
-            var feature = layer.getSource().getFeatureById(id);
-            if (feature && feature instanceof _openlayers2.default.Feature) {
-              layer.getSource().removeFeature(feature);
+        pointLayers.forEach(function (layerName) {
+          if (layerName) {
+            var layer = _this.getLayerByLayerName(layerName);
+            if (layer) {
+              layer.setZIndex(layerindex++);
             }
           }
-        } else {
-          var layers = this.map.getLayers().getArray();
-          layers.forEach(function (layer) {
-            if (layer && layer instanceof _openlayers2.default.layer.Vector && layer.getSource()) {
-              var _feature = layer.getSource().getFeatureById(id);
-              if (_feature && _feature instanceof _openlayers2.default.Feature) {
-                layer.getSource().removeFeature(_feature);
-              }
-            }
-          });
-        }
-      }
-    }
-  }, {
-    key: 'removeFeatureByIds',
-    value: function removeFeatureByIds(ids, layerName) {
-      var _this8 = this;
-
-      if (ids && Array.isArray(ids) && ids.length > 0) {
-        ids.forEach(function (item) {
-          _this8.removeFeatureById(item, layerName);
         });
-      } else {
-        console.info('id为空或者不是数组！');
-      }
-    }
-  }, {
-    key: 'highLightFeature',
-    value: function highLightFeature(id, feat, layerName) {
-      if (!this.map) return;
-      if (feat && feat instanceof _openlayers2.default.Feature) {
-        var selectStyle = feat.get('selectStyle');
-        if (selectStyle && selectStyle instanceof _openlayers2.default.style.Style) {
-          feat.setStyle(selectStyle);
-        } else if (selectStyle) {
-          var st = this.getStyleByPoint(selectStyle);
-          feat.setStyle(st);
-        }
-        return feat;
-      } else if (id && id.trim() !== "''") {
-        var feature = this.getFeatureById(id);
-        if (feature && feature instanceof _openlayers2.default.Feature) {
-          var _selectStyle = feature.get('selectStyle');
-          if (_selectStyle && _selectStyle instanceof _openlayers2.default.style.Style) {
-            feature.setStyle(_selectStyle);
-          } else if (_selectStyle) {
-            var _st = this.getStyleByPoint(_selectStyle);
-            feature.setStyle(_st);
-          }
-        }
-        return feature;
-      }
-    }
-  }, {
-    key: 'unHighLightFeature',
-    value: function unHighLightFeature(id, feat, layerName) {
-      if (!this.map) return;
-      if (feat && feat instanceof _openlayers2.default.Feature) {
-        var normalStyle = feat.get('style');
-        if (normalStyle && normalStyle instanceof _openlayers2.default.style.Style) {
-          feat.setStyle(normalStyle);
-        } else if (normalStyle) {
-          var st = this.getStyleByPoint(normalStyle);
-          feat.setStyle(st);
-        }
-        return feat;
-      } else if (id && id.trim() !== "''") {
-        var feature = this.getFeatureById(id);
-        if (feature && feature instanceof _openlayers2.default.Feature) {
-          var _normalStyle = feature.get('style');
-          if (_normalStyle && _normalStyle instanceof _openlayers2.default.style.Style) {
-            feature.setStyle(_normalStyle);
-          } else if (_normalStyle) {
-            var _st2 = this.getStyleByPoint(_normalStyle);
-            feature.setStyle(_st2);
-          }
-        }
-        return feature;
       }
     }
   }]);
 
-  return Feature;
-}((0, _mixins2.default)(_Layer2.default));
+  return ViewUtil;
+}();
 
-exports.default = Feature;
+exports.default = ViewUtil;
 module.exports = exports['default'];
 
 /***/ }),
 /* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var copyProperties = function copyProperties(target, source) {
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = Reflect.ownKeys(source)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var key = _step.value;
+
+      if (!key.match(/^(?:constructor|prototype|arguments|caller|name|bind|call|apply|toString|length)$/)) {
+        var desc = Object.getOwnPropertyDescriptor(source, key);
+        Object.defineProperty(target, key, desc);
+      }
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+};
+
+var mixin = function mixin() {
+  for (var _len = arguments.length, mixins = Array(_len), _key = 0; _key < _len; _key++) {
+    mixins[_key] = arguments[_key];
+  }
+
+  var Mix = function Mix() {
+    _classCallCheck(this, Mix);
+  };
+
+  for (var key in mixins) {
+    var _mixin = mixins[key];
+    copyProperties(Mix, _mixin);
+    copyProperties(Mix.prototype, _mixin.prototype);
+  }
+  return Mix;
+};
+
+exports.default = mixin;
+module.exports = exports["default"];
+
+/***/ }),
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4027,7 +3711,7 @@ exports.default = Observable;
 module.exports = exports['default'];
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4103,7 +3787,7 @@ var arrayRemove = exports.arrayRemove = function arrayRemove(arr, obj) {
 };
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4115,10 +3799,16 @@ Object.defineProperty(exports, "__esModule", {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-ol.style.Factory = function (options) {
+var _openlayers = __webpack_require__(0);
+
+var _openlayers2 = _interopRequireDefault(_openlayers);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_openlayers2.default.style.Factory = function (options) {
   var option = options && (typeof options === 'undefined' ? 'undefined' : _typeof(options)) === 'object' ? options : {};
-  var style = new ol.style.Style({});
-  if (option['geometry'] && option['geometry'] instanceof ol.geom.Geometry) {
+  var style = new _openlayers2.default.style.Style({});
+  if (option['geometry'] && option['geometry'] instanceof _openlayers2.default.geom.Geometry) {
     style.setGeometry(option['geometry']);
   }
   if (option['zIndex'] && typeof option['zIndex'] === 'number') {
@@ -4139,9 +3829,9 @@ ol.style.Factory = function (options) {
   return style;
 };
 
-ol.style.Factory.prototype._getRegularShape = function (options) {
+_openlayers2.default.style.Factory.prototype._getRegularShape = function (options) {
   try {
-    var regularShape = new ol.style.RegularShape({
+    var regularShape = new _openlayers2.default.style.RegularShape({
       fill: this._getFill(options['fill']) || undefined,
       points: typeof options['points'] === 'number' ? options['points'] : 1,
       radius: typeof options['radius'] === 'number' ? options['radius'] : undefined,
@@ -4160,7 +3850,7 @@ ol.style.Factory.prototype._getRegularShape = function (options) {
   }
 };
 
-ol.style.Factory.prototype._getImage = function (options) {
+_openlayers2.default.style.Factory.prototype._getImage = function (options) {
   try {
     var image = void 0;
     options = options || {};
@@ -4175,10 +3865,10 @@ ol.style.Factory.prototype._getImage = function (options) {
   }
 };
 
-ol.style.Factory.prototype._getIcon = function (options) {
+_openlayers2.default.style.Factory.prototype._getIcon = function (options) {
   try {
     options = options || {};
-    var icon = new ol.style.Icon({
+    var icon = new _openlayers2.default.style.Icon({
       anchor: options['imageAnchor'] ? options['imageAnchor'] : [0.5, 0.5],
       anchorXUnits: options['imageAnchorXUnits'] ? options['imageAnchorXUnits'] : 'fraction',
       anchorYUnits: options['imageAnchorYUnits'] ? options['imageAnchorYUnits'] : 'fraction',
@@ -4203,10 +3893,10 @@ ol.style.Factory.prototype._getIcon = function (options) {
   }
 };
 
-ol.style.Factory.prototype._getStroke = function (options) {
+_openlayers2.default.style.Factory.prototype._getStroke = function (options) {
   try {
     options = options || {};
-    var stroke = new ol.style.Stroke({
+    var stroke = new _openlayers2.default.style.Stroke({
       color: options['strokeColor'] ? options['strokeColor'] : undefined,
       lineCap: options['strokeLineCap'] && typeof options['strokeLineCap'] === 'string' ? options['strokeLineCap'] : 'round',
       lineJoin: options['strokeLineJoin'] && typeof options['strokeLineJoin'] === 'string' ? options['strokeLineJoin'] : 'round',
@@ -4221,9 +3911,9 @@ ol.style.Factory.prototype._getStroke = function (options) {
   }
 };
 
-ol.style.Factory.prototype._getText = function (options) {
+_openlayers2.default.style.Factory.prototype._getText = function (options) {
   try {
-    var text = new ol.style.Text({
+    var text = new _openlayers2.default.style.Text({
       font: options['textFont'] && typeof options['textFont'] === 'string' ? options['textFont'] : '10px sans-serif',
       offsetX: typeof options['textOffsetX'] === 'number' ? options['textOffsetX'] : 0,
       offsetY: typeof options['textOffsetY'] === 'number' ? options['textOffsetY'] : 0,
@@ -4242,10 +3932,10 @@ ol.style.Factory.prototype._getText = function (options) {
   }
 };
 
-ol.style.Factory.prototype._getFill = function (options) {
+_openlayers2.default.style.Factory.prototype._getFill = function (options) {
   try {
     options = options || {};
-    var fill = new ol.style.Fill({
+    var fill = new _openlayers2.default.style.Fill({
       color: options['fillColor'] ? options['fillColor'] : undefined
     });
     return fill;
@@ -4254,12 +3944,12 @@ ol.style.Factory.prototype._getFill = function (options) {
   }
 };
 
-var olStyleFactory = ol.style.Factory;
+var olStyleFactory = _openlayers2.default.style.Factory;
 exports.default = olStyleFactory;
 module.exports = exports['default'];
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4314,7 +4004,7 @@ exports.default = mixin;
 module.exports = exports["default"];
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports) {
 
 module.exports = function (it, Constructor, name, forbiddenField) {
@@ -4325,12 +4015,12 @@ module.exports = function (it, Constructor, name, forbiddenField) {
 
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // getting tag from 19.1.3.6 Object.prototype.toString()
 var cof = __webpack_require__(45);
-var TAG = __webpack_require__(3)('toStringTag');
+var TAG = __webpack_require__(4)('toStringTag');
 // ES3 wrong here
 var ARG = cof(function () { return arguments; }()) == 'Arguments';
 
@@ -4354,11 +4044,11 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(4);
-var document = __webpack_require__(2).document;
+var isObject = __webpack_require__(6);
+var document = __webpack_require__(3).document;
 // typeof document.createElement is 'object' in old IE
 var is = isObject(document) && isObject(document.createElement);
 module.exports = function (it) {
@@ -4367,15 +4057,15 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ctx = __webpack_require__(28);
-var call = __webpack_require__(144);
-var isArrayIter = __webpack_require__(142);
-var anObject = __webpack_require__(0);
-var toLength = __webpack_require__(81);
-var getIterFn = __webpack_require__(155);
+var call = __webpack_require__(149);
+var isArrayIter = __webpack_require__(147);
+var anObject = __webpack_require__(1);
+var toLength = __webpack_require__(82);
+var getIterFn = __webpack_require__(160);
 var BREAK = {};
 var RETURN = {};
 var exports = module.exports = function (iterable, entries, fn, that, ITERATOR) {
@@ -4398,16 +4088,16 @@ exports.RETURN = RETURN;
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = !__webpack_require__(12) && !__webpack_require__(10)(function () {
-  return Object.defineProperty(__webpack_require__(72)('div'), 'a', { get: function () { return 7; } }).a != 7;
+module.exports = !__webpack_require__(13) && !__webpack_require__(12)(function () {
+  return Object.defineProperty(__webpack_require__(73)('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
 
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
@@ -4419,18 +4109,18 @@ module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var create = __webpack_require__(29);
-var descriptor = __webpack_require__(24);
+var descriptor = __webpack_require__(23);
 var setToStringTag = __webpack_require__(33);
 var IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-__webpack_require__(15)(IteratorPrototype, __webpack_require__(3)('iterator'), function () { return this; });
+__webpack_require__(15)(IteratorPrototype, __webpack_require__(4)('iterator'), function () { return this; });
 
 module.exports = function (Constructor, NAME, next) {
   Constructor.prototype = create(IteratorPrototype, { next: descriptor(1, next) });
@@ -4439,7 +4129,7 @@ module.exports = function (Constructor, NAME, next) {
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports) {
 
 module.exports = function (done, value) {
@@ -4448,12 +4138,12 @@ module.exports = function (done, value) {
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var has = __webpack_require__(6);
+var has = __webpack_require__(9);
 var toIObject = __webpack_require__(17);
-var arrayIndexOf = __webpack_require__(134)(false);
+var arrayIndexOf = __webpack_require__(139)(false);
 var IE_PROTO = __webpack_require__(52)('IE_PROTO');
 
 module.exports = function (object, names) {
@@ -4471,7 +4161,7 @@ module.exports = function (object, names) {
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var redefine = __webpack_require__(16);
@@ -4482,13 +4172,13 @@ module.exports = function (target, src, safe) {
 
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Works with __proto__ only. Old v8 can't work with null proto objects.
 /* eslint-disable no-proto */
-var isObject = __webpack_require__(4);
-var anObject = __webpack_require__(0);
+var isObject = __webpack_require__(6);
+var anObject = __webpack_require__(1);
 var check = function (O, proto) {
   anObject(O);
   if (!isObject(proto) && proto !== null) throw TypeError(proto + ": can't set as prototype!");
@@ -4513,7 +4203,7 @@ module.exports = {
 
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.15 ToLength
@@ -4525,7 +4215,7 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.13 ToObject(argument)
@@ -4536,10 +4226,10 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(4);
+var isObject = __webpack_require__(6);
 module.exports = function (it, TYPE) {
   if (!isObject(it) || it._t !== TYPE) throw TypeError('Incompatible receiver, ' + TYPE + ' required!');
   return it;
@@ -4547,22 +4237,22 @@ module.exports = function (it, TYPE) {
 
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports.f = __webpack_require__(3);
+exports.f = __webpack_require__(4);
 
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 // 19.1.3.6 Object.prototype.toString()
-var classof = __webpack_require__(71);
+var classof = __webpack_require__(72);
 var test = {};
-test[__webpack_require__(3)('toStringTag')] = 'z';
+test[__webpack_require__(4)('toStringTag')] = 'z';
 if (test + '' != '[object z]') {
   __webpack_require__(16)(Object.prototype, 'toString', function toString() {
     return '[object ' + classof(this) + ']';
@@ -4571,15 +4261,15 @@ if (test + '' != '[object z]') {
 
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseTimes = __webpack_require__(206),
-    isArguments = __webpack_require__(258),
+var baseTimes = __webpack_require__(214),
+    isArguments = __webpack_require__(266),
     isArray = __webpack_require__(60),
-    isBuffer = __webpack_require__(99),
-    isIndex = __webpack_require__(233),
-    isTypedArray = __webpack_require__(259);
+    isBuffer = __webpack_require__(100),
+    isIndex = __webpack_require__(241),
+    isTypedArray = __webpack_require__(267);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -4626,7 +4316,7 @@ module.exports = arrayLikeKeys;
 
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports) {
 
 /**
@@ -4652,7 +4342,7 @@ module.exports = arrayPush;
 
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports) {
 
 /**
@@ -4684,11 +4374,11 @@ module.exports = arrayReduce;
 
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseAssignValue = __webpack_require__(90),
-    eq = __webpack_require__(97);
+var baseAssignValue = __webpack_require__(91),
+    eq = __webpack_require__(98);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -4718,10 +4408,10 @@ module.exports = assignValue;
 
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var defineProperty = __webpack_require__(219);
+var defineProperty = __webpack_require__(227);
 
 /**
  * The base implementation of `assignValue` and `assignMergeValue` without
@@ -4749,10 +4439,10 @@ module.exports = baseAssignValue;
 
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayPush = __webpack_require__(87),
+var arrayPush = __webpack_require__(88),
     isArray = __webpack_require__(60);
 
 /**
@@ -4775,7 +4465,7 @@ module.exports = baseGetAllKeys;
 
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/** Detect free variable `global` from Node.js. */
@@ -4783,13 +4473,13 @@ var freeGlobal = typeof global == 'object' && global && global.Object === Object
 
 module.exports = freeGlobal;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(105)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(106)))
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var overArg = __webpack_require__(95);
+var overArg = __webpack_require__(96);
 
 /** Built-in value references. */
 var getPrototype = overArg(Object.getPrototypeOf, Object);
@@ -4798,13 +4488,13 @@ module.exports = getPrototype;
 
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayPush = __webpack_require__(87),
-    getPrototype = __webpack_require__(93),
+var arrayPush = __webpack_require__(88),
+    getPrototype = __webpack_require__(94),
     getSymbols = __webpack_require__(58),
-    stubArray = __webpack_require__(103);
+    stubArray = __webpack_require__(104);
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeGetSymbols = Object.getOwnPropertySymbols;
@@ -4829,7 +4519,7 @@ module.exports = getSymbolsIn;
 
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports) {
 
 /**
@@ -4850,7 +4540,7 @@ module.exports = overArg;
 
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -4882,7 +4572,7 @@ module.exports = toSource;
 
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports) {
 
 /**
@@ -4925,11 +4615,11 @@ module.exports = eq;
 
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isFunction = __webpack_require__(100),
-    isLength = __webpack_require__(101);
+var isFunction = __webpack_require__(101),
+    isLength = __webpack_require__(102);
 
 /**
  * Checks if `value` is array-like. A value is considered array-like if it's
@@ -4964,11 +4654,11 @@ module.exports = isArrayLike;
 
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(8),
-    stubFalse = __webpack_require__(260);
+/* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(11),
+    stubFalse = __webpack_require__(268);
 
 /** Detect free variable `exports`. */
 var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
@@ -5009,11 +4699,11 @@ module.exports = isBuffer;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(63)(module)))
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(37),
-    isObject = __webpack_require__(26);
+    isObject = __webpack_require__(25);
 
 /** `Object#toString` result references. */
 var asyncTag = '[object AsyncFunction]',
@@ -5052,7 +4742,7 @@ module.exports = isFunction;
 
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports) {
 
 /** Used as references for various `Number` constants. */
@@ -5093,12 +4783,12 @@ module.exports = isLength;
 
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayLikeKeys = __webpack_require__(86),
-    baseKeysIn = __webpack_require__(205),
-    isArrayLike = __webpack_require__(98);
+var arrayLikeKeys = __webpack_require__(87),
+    baseKeysIn = __webpack_require__(213),
+    isArrayLike = __webpack_require__(99);
 
 /**
  * Creates an array of the own and inherited enumerable property names of `object`.
@@ -5131,7 +4821,7 @@ module.exports = keysIn;
 
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports) {
 
 /**
@@ -5160,7 +4850,7 @@ module.exports = stubArray;
 
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -6638,7 +6328,7 @@ module.exports = stubArray;
 }));
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports) {
 
 var g;
@@ -6665,7 +6355,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6680,7 +6370,922 @@ var logo = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAA
 exports.logo = logo;
 
 /***/ }),
-/* 107 */
+/* 108 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _openlayers = __webpack_require__(0);
+
+var _openlayers2 = _interopRequireDefault(_openlayers);
+
+var _mixins = __webpack_require__(66);
+
+var _mixins2 = _interopRequireDefault(_mixins);
+
+var _factory = __webpack_require__(69);
+
+var _factory2 = _interopRequireDefault(_factory);
+
+var _Layer = __webpack_require__(42);
+
+var _Layer2 = _interopRequireDefault(_Layer);
+
+var _Geometry = __webpack_require__(41);
+
+var _Geometry2 = _interopRequireDefault(_Geometry);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Feature = function (_mixin) {
+  _inherits(Feature, _mixin);
+
+  function Feature() {
+    _classCallCheck(this, Feature);
+
+    var _this = _possibleConstructorReturn(this, (Feature.__proto__ || Object.getPrototypeOf(Feature)).call(this));
+
+    _this[Symbol()] = Symbol();
+    return _this;
+  }
+
+  _createClass(Feature, [{
+    key: 'getFeatureFromLayer',
+    value: function getFeatureFromLayer(layer, id) {
+      var feature = void 0;
+      if (layer && layer instanceof _openlayers2.default.layer.Vector && id) {
+        var source = layer.getSource();
+        if (source && source.getFeatureById) {
+          feature = source.getFeatureById(id);
+        }
+      }
+      return feature;
+    }
+  }, {
+    key: 'getFeatureById',
+    value: function getFeatureById(id) {
+      var _this2 = this;
+
+      var layers = this.getVectorLayers();
+      var feature = void 0;
+      layers.every(function (layer) {
+        feature = _this2.getFeatureFromLayer(layer, id);
+        if (feature && feature instanceof _openlayers2.default.Feature) {
+          return false;
+        } else {
+          return true;
+        }
+      });
+      return feature;
+    }
+  }, {
+    key: 'getFeatureById2LayerName',
+    value: function getFeatureById2LayerName(id, layerName) {
+      var feature = void 0;
+      if (layerName) {
+        var layer = this.getLayerByLayerName(layerName);
+        feature = this.getFeatureFromLayer(layer, id);
+      }
+      if (!feature || !(feature instanceof _openlayers2.default.Feature)) {
+        feature = this.getFeatureById(id);
+      }
+      return feature;
+    }
+  }, {
+    key: 'fixStyle',
+    value: function fixStyle(data_, params, feature) {
+      if (!data_['attributes']) data_['attributes'] = {};
+      var style = new _factory2.default(data_['attributes']['style'] || params['style']);
+      var selectStyle = new _factory2.default(data_['attributes']['selectStyle'] || params['selectStyle']);
+      if (style && feature) {
+        feature.setStyle(style);
+        feature.set('style', style);
+        if (selectStyle) {
+          feature.set('selectStyle', selectStyle);
+        }
+      }
+      return feature;
+    }
+  }, {
+    key: 'fixProperties',
+    value: function fixProperties(data_, params, feature) {
+      if (data_['attributes'] && (data_['attributes']['id'] || data_['attributes']['ID'])) {
+        var id = data_.attributes['id'] || data_.attributes['ID'] || params['id'];
+        feature.setId(id);
+        feature.setProperties(data_['attributes']);
+      }
+      return feature;
+    }
+  }, {
+    key: 'fixView',
+    value: function fixView(geometry, params) {
+      if (params['zoomToExtent']) {
+        var extent = geometry.getExtent();
+        if (params['view'] && params['view']['adjustExtent']) {
+          extent = this.adjustExtent(extent, params['view']);
+        }
+        this.zoomToExtent(extent, true);
+      }
+    }
+  }, {
+    key: 'appendFeature',
+    value: function appendFeature(params, feature) {
+      params['create'] = true;
+      var layer = this.createVectorLayer(params['layerName'], params);
+      layer.getSource().addFeature(feature);
+    }
+  }, {
+    key: 'addPoint',
+    value: function addPoint(point, params) {
+      var geometry = this.getGeomFromGeomData(point, params);
+      if (geometry) {
+        var feature = new _openlayers2.default.Feature({
+          geometry: geometry,
+          params: params
+        });
+        feature = this.fixStyle(point, params, feature);
+        feature = this.fixProperties(point, params, feature);
+        this.fixView(geometry, params);
+        if (params['layerName']) {
+          this.appendFeature(params, feature);
+          this.pointLayers.add(params['layerName']);
+        }
+        return feature;
+      }
+    }
+  }, {
+    key: 'addPoints',
+    value: function addPoints(points, params) {
+      var _this3 = this;
+
+      try {
+        if (points && Array.isArray(points)) {
+          var features = [],
+              multiPoint = new _openlayers2.default.geom.MultiPoint([]),
+              change = false;
+
+          if (params['zoomToExtent']) {
+            params['zoomToExtent'] = false;
+            change = true;
+          }
+          points.forEach(function (point) {
+            if (point && point['geometry']) {
+              var pointFeat = _this3.addPoint(point, params);
+              if (pointFeat && pointFeat instanceof _openlayers2.default.Feature) {
+                features.push(pointFeat);
+                var geom = pointFeat.getGeometry();
+                if (geom && geom instanceof _openlayers2.default.geom.Point) {
+                  multiPoint.appendPoint(geom);
+                } else if (geom && geom instanceof _openlayers2.default.geom.MultiPoint) {
+                  var multiGeoms = geom.getPoints();
+                  if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
+                    multiGeoms.forEach(function (_geom) {
+                      if (_geom && _geom instanceof _openlayers2.default.geom.Point) {
+                        multiPoint.appendPoint(_geom);
+                      }
+                    });
+                  }
+                }
+              }
+            }
+          });
+          if (change) {
+            params['zoomToExtent'] = true;
+            this.fixView(multiPoint, params);
+          }
+          return features;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, {
+    key: 'setPointGeometry',
+    value: function setPointGeometry(point, geometry, params) {
+      if (point && geometry && point instanceof _openlayers2.default.Feature) {
+        var _geometry = this.getGeomFromGeomData({
+          geometry: geometry
+        }, params);
+        point.setGeometry(_geometry);
+      } else {
+        console.info('传入数据有误！');
+      }
+    }
+  }, {
+    key: 'addPolyline',
+    value: function addPolyline(line, params) {
+      var geometry = this.getGeomFromGeomData(line, params);
+      if (geometry) {
+        var lineFeature = new _openlayers2.default.Feature({
+          geometry: geometry,
+          params: params
+        });
+        lineFeature = this.fixStyle(line, params, lineFeature);
+        lineFeature = this.fixProperties(line, params, lineFeature);
+        this.fixView(geometry, params);
+        if (params['layerName']) {
+          this.appendFeature(params, lineFeature);
+          this.lineLayers.add(params['layerName']);
+        }
+        return lineFeature;
+      }
+    }
+  }, {
+    key: 'addPolylines',
+    value: function addPolylines(lines, params) {
+      var _this4 = this;
+
+      try {
+        if (lines && Array.isArray(lines)) {
+          var features = [],
+              MultiLine = new _openlayers2.default.geom.MultiLineString([]),
+              change = false;
+
+          if (params['zoomToExtent']) {
+            params['zoomToExtent'] = false;
+            change = true;
+          }
+          lines.forEach(function (line) {
+            var polyLine = _this4.addPolyline(line, params);
+            if (polyLine && polyLine instanceof _openlayers2.default.Feature) {
+              features.push(polyLine);
+              var geom = polyLine.getGeometry();
+              if (geom && geom instanceof _openlayers2.default.geom.LineString) {
+                MultiLine.appendLineString(geom);
+              } else if (geom && geom instanceof _openlayers2.default.geom.MultiLineString) {
+                var multiGeoms = geom.getLineStrings();
+                if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
+                  multiGeoms.forEach(function (_geom) {
+                    if (_geom && _geom instanceof _openlayers2.default.geom.LineString) {
+                      MultiLine.appendLineString(_geom);
+                    }
+                  });
+                }
+              }
+            }
+          });
+          if (change) {
+            params['zoomToExtent'] = true;
+            this.fixView(MultiLine, params);
+          }
+          return features;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, {
+    key: 'addPolygon',
+    value: function addPolygon(polygon, params) {
+      var geometry = this.getGeomFromGeomData(polygon, params);
+      if (geometry) {
+        var polygonFeature = new _openlayers2.default.Feature({
+          geometry: geometry,
+          params: params
+        });
+        polygonFeature = this.fixStyle(polygon, params, polygonFeature);
+        polygonFeature = this.fixProperties(polygon, params, polygonFeature);
+        this.fixView(geometry, params);
+        if (params['layerName']) {
+          this.appendFeature(params, polygonFeature);
+          this.polygonLayers.add(params['layerName']);
+        }
+        return polygonFeature;
+      }
+    }
+  }, {
+    key: 'addPolygons',
+    value: function addPolygons(polygons, params) {
+      var _this5 = this;
+
+      try {
+        if (polygons && Array.isArray(polygons)) {
+          var features = [],
+              MultiPolygon = new _openlayers2.default.geom.MultiPolygon([]),
+              change = false;
+
+          if (params['zoomToExtent']) {
+            params['zoomToExtent'] = false;
+            change = true;
+          }
+          polygons.forEach(function (polygon) {
+            var polygonFeat = _this5.addPolygon(polygon, params);
+            if (polygonFeat && polygonFeat instanceof _openlayers2.default.Feature) {
+              features.push(polygonFeat);
+              var geom = polygonFeat.getGeometry();
+              if (geom && geom instanceof _openlayers2.default.geom.Polygon) {
+                MultiPolygon.appendPolygon(geom);
+              } else if (geom && geom instanceof _openlayers2.default.geom.MultiPolygon) {
+                var multiGeoms = geom.getPolygons();
+                if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
+                  multiGeoms.forEach(function (_geom) {
+                    if (_geom && _geom instanceof _openlayers2.default.geom.Polygon) {
+                      MultiPolygon.appendPolygon(_geom);
+                    }
+                  });
+                }
+              }
+            }
+          });
+          if (change) {
+            params['zoomToExtent'] = true;
+            this.fixView(MultiPolygon, params);
+          }
+          return features;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'addHeatFeatures',
+    value: function addHeatFeatures(points, params) {
+      var _this6 = this;
+
+      try {
+        var feature = '';
+        if (points && Array.isArray(points) && points.length > 0) {
+          var multiPoint = new _openlayers2.default.geom.MultiPoint([]),
+              change = false;
+
+          if (params['zoomToExtent']) {
+            params['zoomToExtent'] = false;
+            change = true;
+          }
+          points.forEach(function (item) {
+            if (item && item['geometry']) {
+              var geometry = _this6.getGeomFromGeomData(item, params);
+              if (geometry && geometry instanceof _openlayers2.default.geom.Point) {
+                multiPoint.appendPoint(geometry);
+              } else if (geometry && geometry instanceof _openlayers2.default.geom.MultiPoint) {
+                var multiGeoms = geometry.getPoints();
+                if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
+                  multiGeoms.forEach(function (_geom) {
+                    if (_geom && _geom instanceof _openlayers2.default.geom.Point) {
+                      multiPoint.appendPoint(_geom);
+                    }
+                  });
+                }
+              }
+            }
+          });
+          if (params['layerName']) {
+            feature = new _openlayers2.default.Feature({
+              geometry: multiPoint,
+              params: params
+            });
+            params['create'] = true;
+            var layer = this.createHeatMapLayer(params['layerName'], params);
+            if (layer && layer instanceof _openlayers2.default.layer.Heatmap) {
+              layer.getSource().addFeature(feature);
+            }
+            this.pointLayers.add(params['layerName']);
+          }
+          if (change) {
+            params['zoomToExtent'] = true;
+            this.fixView(multiPoint, params);
+          }
+        }
+        return feature;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'setHeatLayerStyle',
+    value: function setHeatLayerStyle(layerName, params) {
+      try {
+        var layer = null;
+        if (layerName) {
+          layerName = layerName.trim();
+          var _layer = this.getLayerByLayerName(layerName);
+          if (_layer && _layer instanceof _openlayers2.default.layer.Heatmap) {
+            layer = _layer;
+            if (params && (typeof params === 'undefined' ? 'undefined' : _typeof(params)) === 'object') {
+              for (var key in params) {
+                switch (key) {
+                  case 'blur':
+                    layer.setBlur(params[key]);
+                    break;
+                  case 'radius':
+                    layer.setRadius(params[key]);
+                    break;
+                  case 'gradient':
+                    layer.setGradient(params[key]);
+                    break;
+                  case 'visible':
+                    layer.setVisible(params[key]);
+                    break;
+                  case 'opacity':
+                    layer.setOpacity(params[key]);
+                    break;
+                }
+              }
+            }
+          }
+        }
+        return layer;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'removeFeatureByLayerName',
+    value: function removeFeatureByLayerName(layerName, fast) {
+      try {
+        var layer = this.getLayerByLayerName(layerName);
+        var features = [];
+        if (layer && layer instanceof _openlayers2.default.layer.Vector) {
+          var source = layer.getSource();
+          if (source && source.clear) {
+            if (source.getFeatures) {
+              features = source.getFeatures();
+            }
+            source.clear(fast || false);
+          }
+        }
+        return features;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, {
+    key: 'removeFeatureByLayerNames',
+    value: function removeFeatureByLayerNames(layerNames) {
+      var _this7 = this;
+
+      var features = [];
+      if (layerNames && Array.isArray(layerNames) && layerNames.length > 0) {
+        layerNames.forEach(function (item) {
+          features = features.concat(_this7.removeFeatureByLayerName(item));
+        });
+        return features;
+      } else {
+        console.info('传入的不是数组！');
+      }
+    }
+  }, {
+    key: 'removeFeature',
+    value: function removeFeature(feature) {
+      if (feature && feature instanceof _openlayers2.default.Feature) {
+        var tragetLayer = this.getLayerByFeature(feature);
+        if (tragetLayer) {
+          var source = tragetLayer.getSource();
+          if (source && source.removeFeature) {
+            source.removeFeature(feature);
+          }
+        }
+      } else {
+        throw new Error('传入的不是要素!');
+      }
+    }
+  }, {
+    key: 'removeFeatureById',
+    value: function removeFeatureById(id, layerName) {
+      var _this8 = this;
+
+      var feature = void 0;
+      if (this.map && id) {
+        if (layerName) {
+          var layer = this.getLayerByLayerName(layerName);
+          if (layer && layer.getSource) {
+            var source = layer.getSource();
+            if (source && source.getFeatureById) {
+              feature = source.getFeatureById(id);
+              if (feature && feature instanceof _openlayers2.default.Feature) {
+                source.removeFeature(feature);
+              }
+            }
+          }
+        } else {
+          var layers = this.getAllLayers();
+          layers.every(function (layer) {
+            feature = _this8.getFeatureFromLayer(layer, id);
+            if (feature && feature instanceof _openlayers2.default.Feature) {
+              layer.getSource().removeFeature(feature);
+              return false;
+            } else {
+              return true;
+            }
+          });
+        }
+      }
+      return feature;
+    }
+  }, {
+    key: 'removeFeatureByIds',
+    value: function removeFeatureByIds(ids, layerName) {
+      var _this9 = this;
+
+      var features = [];
+      if (ids && Array.isArray(ids) && ids.length > 0) {
+        ids.forEach(function (item) {
+          features.push(_this9.removeFeatureById(item, layerName));
+        });
+      } else {
+        console.info('id为空或者不是数组！');
+      }
+      return features;
+    }
+  }, {
+    key: 'highLightFeature',
+    value: function highLightFeature(key, style) {
+      if (!this.map) return;
+      if (key && key instanceof _openlayers2.default.Feature) {
+        if (style && style instanceof _openlayers2.default.style.Style) {
+          key.setStyle(style);
+        } else if ((typeof style === 'undefined' ? 'undefined' : _typeof(style)) === 'object') {
+          var st = new _factory2.default(style);
+          key.setStyle(st);
+        } else {
+          var selectStyle = key.get('selectStyle');
+          if (selectStyle && selectStyle instanceof _openlayers2.default.style.Style) {
+            key.setStyle(selectStyle);
+          } else if ((typeof selectStyle === 'undefined' ? 'undefined' : _typeof(selectStyle)) === 'object') {
+            var _st = new _factory2.default(selectStyle);
+            key.setStyle(_st);
+          }
+        }
+        return key;
+      } else if (key && typeof key === 'string' && key.trim() !== "''") {
+        var feature = this.getFeatureById(key);
+        if (feature && feature instanceof _openlayers2.default.Feature) {
+          if (style && style instanceof _openlayers2.default.style.Style) {
+            feature.setStyle(style);
+          } else if ((typeof style === 'undefined' ? 'undefined' : _typeof(style)) === 'object') {
+            var _st2 = new _factory2.default(style);
+            feature.setStyle(_st2);
+          } else {
+            var _selectStyle = feature.get('selectStyle');
+            if (_selectStyle && _selectStyle instanceof _openlayers2.default.style.Style) {
+              feature.setStyle(_selectStyle);
+            } else if ((typeof _selectStyle === 'undefined' ? 'undefined' : _typeof(_selectStyle)) === 'object') {
+              var _st3 = new _factory2.default(_selectStyle);
+              feature.setStyle(_st3);
+            }
+          }
+        }
+        return feature;
+      }
+    }
+  }, {
+    key: 'unHighLightFeature',
+    value: function unHighLightFeature(key, style) {
+      if (!this.map) return;
+      if (key && key instanceof _openlayers2.default.Feature) {
+        if (style && style instanceof _openlayers2.default.style.Style) {
+          key.setStyle(style);
+        } else if ((typeof style === 'undefined' ? 'undefined' : _typeof(style)) === 'object') {
+          var st = new _factory2.default(style);
+          key.setStyle(st);
+        } else {
+          var normalStyle = key.get('style');
+          if (normalStyle && normalStyle instanceof _openlayers2.default.style.Style) {
+            key.setStyle(normalStyle);
+          } else if ((typeof normalStyle === 'undefined' ? 'undefined' : _typeof(normalStyle)) === 'object') {
+            var _st4 = new _factory2.default(normalStyle);
+            key.setStyle(_st4);
+          }
+        }
+        return key;
+      } else if (key && typeof key === 'string' && key.trim() !== "''") {
+        var feature = this.getFeatureById(key);
+        if (feature && feature instanceof _openlayers2.default.Feature) {
+          if (style && style instanceof _openlayers2.default.style.Style) {
+            feature.setStyle(style);
+          } else if ((typeof style === 'undefined' ? 'undefined' : _typeof(style)) === 'object') {
+            var _st5 = new _factory2.default(style);
+            feature.setStyle(_st5);
+          } else {
+            var _normalStyle = feature.get('style');
+            if (_normalStyle && _normalStyle instanceof _openlayers2.default.style.Style) {
+              feature.setStyle(_normalStyle);
+            } else if ((typeof _normalStyle === 'undefined' ? 'undefined' : _typeof(_normalStyle)) === 'object') {
+              var _st6 = new _factory2.default(_normalStyle);
+              feature.setStyle(_st6);
+            }
+          }
+        }
+        return feature;
+      }
+    }
+  }]);
+
+  return Feature;
+}((0, _mixins2.default)(_Layer2.default, _Geometry2.default));
+
+exports.default = Feature;
+module.exports = exports['default'];
+
+/***/ }),
+/* 109 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _openlayers = __webpack_require__(0);
+
+var _openlayers2 = _interopRequireDefault(_openlayers);
+
+var _config2 = __webpack_require__(43);
+
+var _config3 = _interopRequireDefault(_config2);
+
+var _Layer2 = __webpack_require__(42);
+
+var _Layer3 = _interopRequireDefault(_Layer2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var BaseLayers = function (_Layer) {
+  _inherits(BaseLayers, _Layer);
+
+  function BaseLayers() {
+    _classCallCheck(this, BaseLayers);
+
+    return _possibleConstructorReturn(this, (BaseLayers.__proto__ || Object.getPrototypeOf(BaseLayers)).apply(this, arguments));
+  }
+
+  _createClass(BaseLayers, [{
+    key: 'addBaseLayers',
+    value: function addBaseLayers() {
+      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+      if (!params || !Array.isArray(params) || params.length <= 0) {
+        return [new _openlayers2.default.layer.Group({
+          layers: [new _openlayers2.default.layer.Tile({
+            source: new _openlayers2.default.source.OSM()
+          })],
+          isBaseLayer: true
+        })];
+      } else {
+        return [new _openlayers2.default.layer.Group({
+          layers: this._getBaseLayerGroup(params),
+          isBaseLayer: true
+        })];
+      }
+    }
+  }, {
+    key: '_getBaseLayerGroup',
+    value: function _getBaseLayerGroup(layerConfigs) {
+      var _this2 = this;
+
+      var layers = [],
+          labelLayers = [],
+          _layers = [],
+          labelLayersConfig = [];
+
+      if (layerConfigs && Array.isArray(layerConfigs) && layerConfigs.length > 0) {
+        layerConfigs.forEach(function (_config) {
+          if (_config['layerName'] && _config['layerUrl'] && _config['layerType']) {
+            var layer = _this2._getLayer(_config);
+            if (layer) layers.push(layer);
+            if (_config['label'] && Array.isArray(_config['label'])) {
+              _config['label'].forEach(function (_label) {
+                if (_label['layerName'] && _label['layerUrl'] && _label['layerType']) {
+                  labelLayersConfig.push(_label);
+                }
+              });
+            } else if (_typeof(_config['label']) === 'object') {
+              labelLayersConfig.push(_config['label']);
+            }
+          }
+        });
+      }
+      labelLayers = this._getBaseLayerLabel(labelLayersConfig);
+      _layers = layers.concat(labelLayers);
+      return _layers;
+    }
+  }, {
+    key: '_getBaseLayerLabel',
+    value: function _getBaseLayerLabel(labelLayersConfig) {
+      var _this3 = this;
+
+      var labelLayers = [],
+          _labelLayersLayerNames = new Set();
+
+      if (labelLayersConfig && Array.isArray(labelLayersConfig) && labelLayersConfig.length > 0) {
+        labelLayersConfig.forEach(function (config) {
+          if (config['layerName'] && config['layerUrl'] && config['layerType']) {
+            _labelLayersLayerNames.add(config['layerName']);
+          }
+        });
+        [].concat(_toConsumableArray(_labelLayersLayerNames)).forEach(function (layerName) {
+          labelLayersConfig.every(function (configM) {
+            if (configM && configM['layerName'] === layerName) {
+              var labelLayer = _this3._getLayer(configM);
+              if (labelLayer) labelLayers.push(labelLayer);
+              return false;
+            }
+            return true;
+          });
+        });
+      }
+      return labelLayers;
+    }
+  }, {
+    key: '_getLayer',
+    value: function _getLayer(layerConfig) {
+      switch (layerConfig['layerType']) {
+        case 'TileXYZ':
+          return this._getXYZLayer(layerConfig);
+        case 'TitleWMTS':
+          return this._getWMTSLayer(layerConfig);
+        case 'OSM':
+          return this._getOSMLayer(layerConfig);
+        case 'ImageWMS':
+          return this._getImageWMSLayer(layerConfig);
+        case 'TileWMS':
+          return this._getTileWMSLayer(layerConfig);
+        case 'MapboxVectorTile':
+          return this._getMapboxVectorTileLayer(layerConfig);
+        case 'TileArcGISRest':
+          return this._getTileArcGISRestLayer(layerConfig);
+        case 'BaiDu':
+          return this._getBaiDuLayer(layerConfig);
+        case 'GaoDe':
+          return this._getGaoDeLayer(layerConfig);
+        case 'Google':
+          return this._getGoogleLayer(layerConfig);
+        default:
+          throw new Error('不支持的图层类型！');
+      }
+    }
+  }, {
+    key: '_getXYZLayer',
+    value: function _getXYZLayer(layerConfig) {
+      var layerName = layerConfig['layerName'] || '';
+      layerConfig['addLayer'] = false;
+      layerConfig['create'] = true;
+      if (!layerConfig.hasOwnProperty('tileGrid')) {
+        layerConfig['tileGrid'] = {};
+      }
+      var layer = this.createXYZLayer(layerName, layerConfig);
+      layer = this._addLayerAlias(layer, layerConfig);
+      return layer;
+    }
+  }, {
+    key: '_getOSMLayer',
+    value: function _getOSMLayer(layerConfig) {
+      var layerName = layerConfig['layerName'] || '';
+      layerConfig['addLayer'] = false;
+      layerConfig['create'] = true;
+      var layer = this.createOSMLayer(layerName, layerConfig);
+      layer = this._addLayerAlias(layer, layerConfig);
+      return layer;
+    }
+  }, {
+    key: '_getBaiDuLayer',
+    value: function _getBaiDuLayer(layerConfig) {
+      var layerName = layerConfig['layerName'] || '';
+      layerConfig['addLayer'] = false;
+      layerConfig['create'] = true;
+      var layer = this.createBaiDuLayer(layerName, layerConfig);
+      layer = this._addLayerAlias(layer, layerConfig);
+      return layer;
+    }
+  }, {
+    key: '_getGaoDeLayer',
+    value: function _getGaoDeLayer(layerConfig) {
+      var layerName = layerConfig['layerName'] || '';
+      layerConfig['addLayer'] = false;
+      layerConfig['create'] = true;
+      var layer = this.createGaoDeLayer(layerName, layerConfig);
+      layer = this._addLayerAlias(layer, layerConfig);
+      return layer;
+    }
+  }, {
+    key: '_getGoogleLayer',
+    value: function _getGoogleLayer(layerConfig) {
+      var layerName = layerConfig['layerName'] || '';
+      layerConfig['addLayer'] = false;
+      layerConfig['create'] = true;
+      var layer = this.createGoogleLayer(layerName, layerConfig);
+      layer = this._addLayerAlias(layer, layerConfig);
+      return layer;
+    }
+  }, {
+    key: '_getWMTSLayer',
+    value: function _getWMTSLayer(layerConfig) {
+      var layerName = layerConfig['layerName'] || '';
+      layerConfig['addLayer'] = false;
+      layerConfig['create'] = true;
+      var layer = this.createWMTSLayer(layerName, layerConfig);
+      layer = this._addLayerAlias(layer, layerConfig);
+      return layer;
+    }
+  }, {
+    key: '_getImageWMSLayer',
+    value: function _getImageWMSLayer(layerConfig) {
+      var layerName = layerConfig['layerName'] || '';
+      layerConfig['addLayer'] = false;
+      layerConfig['create'] = true;
+      var layer = this.createImageWMSLayer(layerName, layerConfig);
+      layer = this._addLayerAlias(layer, layerConfig);
+      return layer;
+    }
+  }, {
+    key: '_getTileWMSLayer',
+    value: function _getTileWMSLayer(layerConfig) {
+      var layerName = layerConfig['layerName'] || '';
+      layerConfig['addLayer'] = false;
+      layerConfig['create'] = true;
+      var layer = this.createTileWMSLayer(layerName, layerConfig);
+      layer = this._addLayerAlias(layer, layerConfig);
+      return layer;
+    }
+  }, {
+    key: '_getMapboxVectorTileLayer',
+    value: function _getMapboxVectorTileLayer(layerConfig) {
+      var layerName = layerConfig['layerName'] || '';
+      layerConfig['addLayer'] = false;
+      layerConfig['create'] = true;
+      var layer = this.createMapboxVectorTileLayer(layerName, layerConfig);
+      layer = this._addLayerAlias(layer, layerConfig);
+      return layer;
+    }
+  }, {
+    key: '_getTileArcGISRestLayer',
+    value: function _getTileArcGISRestLayer(layerConfig) {
+      var layerName = layerConfig['layerName'] || '';
+      layerConfig['addLayer'] = false;
+      layerConfig['create'] = true;
+      var layer = this.createTitleLayer(layerName, layerConfig);
+      layer = this._addLayerAlias(layer, layerConfig);
+      return layer;
+    }
+  }, {
+    key: '_addLayerAlias',
+    value: function _addLayerAlias(layer, layerConfig) {
+      var isDefault = layerConfig['isDefault'] === true ? layerConfig['isDefault'] : false;
+      layer.set('isDefault', isDefault);
+      layer.set('isBaseLayer', true);
+      layer.setVisible(isDefault);
+      layer.set('alias', layerConfig['alias'] ? layerConfig['alias'] : '');
+      layer.getSource().setAttributions(this._getAttribution(layerConfig['attribution']));
+      return layer;
+    }
+  }, {
+    key: '_getAttribution',
+    value: function _getAttribution(params) {
+      var attribution = void 0;
+      if (params === true) {
+        params = {};
+        params['url'] = _config3.default.INDEX_URL;
+        params['messages'] = 'contributors.';
+        params['title'] = 'HMap';
+        attribution = new _openlayers2.default.Attribution({
+          html: '&copy; ' + '<a href="' + params['url'] + '">' + params['title'] + '</a> ' + params['messages']
+        });
+      } else if ((typeof params === 'undefined' ? 'undefined' : _typeof(params)) === 'object') {
+        attribution = new _openlayers2.default.Attribution({
+          html: '&copy; ' + '<a href="' + params['url'] + '">' + params['title'] + '</a> ' + params['messages']
+        });
+      }
+      return attribution;
+    }
+  }]);
+
+  return BaseLayers;
+}(_Layer3.default);
+
+exports.default = BaseLayers;
+module.exports = exports['default'];
+
+/***/ }),
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6692,23 +7297,824 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _openlayers = __webpack_require__(5);
+var _openlayers = __webpack_require__(0);
 
 var _openlayers2 = _interopRequireDefault(_openlayers);
 
-var _mixins = __webpack_require__(43);
+var _utils = __webpack_require__(26);
 
-var _mixins2 = _interopRequireDefault(_mixins);
+var utils = _interopRequireWildcard(_utils);
 
-var _domUtils = __webpack_require__(9);
+__webpack_require__(123);
+
+__webpack_require__(126);
+
+__webpack_require__(129);
+
+__webpack_require__(133);
+
+__webpack_require__(124);
+
+__webpack_require__(125);
+
+__webpack_require__(132);
+
+__webpack_require__(131);
+
+__webpack_require__(130);
+
+__webpack_require__(127);
+
+__webpack_require__(128);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _Controls = function () {
+  function _Controls() {
+    _classCallCheck(this, _Controls);
+  }
+
+  _createClass(_Controls, [{
+    key: '_addControls',
+    value: function _addControls(params) {
+      var options = params || {};
+      var controls = [];
+
+      if (!options.hasOwnProperty('zoom')) {
+        this.addZoom({}, controls);
+      }
+
+      if (!options.hasOwnProperty('rotate')) {
+        this.addRotate({}, controls);
+      }
+
+      if (!options.hasOwnProperty('attribution')) {
+        this.addAttribution({}, controls);
+      }
+      if (options) {
+        for (var key in options) {
+          if (key && options[key]) {
+            this['add' + utils.upperFirstChart(key)](options[key], controls);
+          }
+        }
+      }
+      return controls;
+    }
+  }, {
+    key: 'addZoom',
+    value: function addZoom() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var controls = arguments[1];
+
+      controls = controls || this.map.getControls();
+      controls.push(new _openlayers2.default.control.ZoomMenu({
+        className: options['className'],
+        duration: options['duration'],
+        target: options['target'],
+        delta: options['delta']
+      }));
+    }
+  }, {
+    key: 'addRotate',
+    value: function addRotate() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var controls = arguments[1];
+
+      controls = controls || this.map.getControls();
+      controls.push(new _openlayers2.default.control.RotateControl({
+        className: options['className'],
+        duration: options['duration'],
+        label: options['resetNorth'],
+        autoHide: options['autoHide'],
+        target: options['target']
+      }));
+    }
+  }, {
+    key: 'addAttribution',
+    value: function addAttribution(options, controls) {
+      controls = controls || this.map.getControls();
+      controls.push(new _openlayers2.default.control.Attribution({
+        className: options['className'] ? options['className'] : 'ol-attribution',
+        label: options['label'] ? options['label'] : 'i',
+        tipLabel: options['tipLabel'] && typeof options['tipLabel'] === 'string' ? options['tipLabel'] : '版权',
+        collapsible: options['collapsible'] === false ? options['collapsible'] : true,
+        collapsed: options['collapsed'] === false ? options['collapsed'] : true,
+        collapseLabel: options['collapseLabel'] ? options['collapseLabel'] : '»',
+        target: options['target'] ? options['target'] : undefined
+      }));
+    }
+  }, {
+    key: 'addScaleLine',
+    value: function addScaleLine(options, controls) {
+      controls = controls || this.map.getControls();
+      controls.push(new _openlayers2.default.control.ScaleLineH({
+        units: options['units'] ? options['units'] : 'metric_cn'
+      }));
+    }
+  }, {
+    key: 'addFullScreen',
+    value: function addFullScreen() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var controls = arguments[1];
+
+      controls = controls || this.map.getControls();
+      controls.push(new _openlayers2.default.control.FullScreenMenu(options));
+    }
+  }, {
+    key: 'addMousePosition',
+    value: function addMousePosition(options, controls) {
+      controls = controls || this.map.getControls();
+      if (!options['projection']) options['projection'] = this.view.getProjection();
+      controls.push(new _openlayers2.default.control.MousePositionH(options));
+    }
+  }, {
+    key: 'addZoomSlider',
+    value: function addZoomSlider(options, controls) {
+      controls = controls || this.map.getControls();
+      var zoomSlider = new _openlayers2.default.control.BZoomSlider(options);
+      controls.push(zoomSlider);
+    }
+  }, {
+    key: 'addGeolocation',
+    value: function addGeolocation(options, controls) {
+      controls = controls || this.map.getControls();
+      controls.push(new _openlayers2.default.control.Geolocation(options));
+    }
+  }, {
+    key: 'addLoading',
+    value: function addLoading(options, controls) {
+      controls = controls || this.map.getControls();
+      var loading_ = new _openlayers2.default.control.Loading({
+        className: options['className'] ? options['className'] : 'hmap-loading-panel',
+        widget: options['widget'] ? options['widget'] : 'animatedGif',
+        target: options['target'] ? options['target'] : undefined
+      });
+      controls.push(loading_);
+    }
+  }, {
+    key: 'addCompareLayer',
+    value: function addCompareLayer(beforeMap, afterMap) {
+      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+      var controls = arguments[3];
+
+      controls = controls || this.map.getControls();
+      var _compareLayer = new _openlayers2.default.control.CompareLayer(beforeMap, afterMap, options);
+      controls.push(_compareLayer);
+    }
+  }, {
+    key: 'addContextMenu',
+    value: function addContextMenu() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var controls = arguments[1];
+
+      controls = controls || this.map.getControls();
+      var ContextMenu = new _openlayers2.default.control.ContextMenu(options);
+      controls.push(ContextMenu);
+    }
+  }, {
+    key: 'addLayerSwitcher',
+    value: function addLayerSwitcher() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var controls = arguments[1];
+
+      controls = controls || this.map.getControls();
+      var Switcher = new _openlayers2.default.control.LayerSwitcher(options);
+      controls.push(Switcher);
+    }
+  }, {
+    key: 'addOverviewMap',
+    value: function addOverviewMap() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var controls = arguments[1];
+
+      controls = controls || this.map.getControls();
+      var Switcher = new _openlayers2.default.control.OverviewMapH(options);
+      controls.push(Switcher);
+    }
+  }]);
+
+  return _Controls;
+}();
+
+exports.default = _Controls;
+module.exports = exports['default'];
+
+/***/ }),
+/* 111 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _openlayers = __webpack_require__(0);
+
+var _openlayers2 = _interopRequireDefault(_openlayers);
+
+var _config = __webpack_require__(43);
+
+var _config2 = _interopRequireDefault(_config);
+
+var _utils = __webpack_require__(26);
+
+var utils = _interopRequireWildcard(_utils);
+
+__webpack_require__(272);
+
+__webpack_require__(274);
+
+__webpack_require__(273);
+
+__webpack_require__(275);
+
+var _PointerEvents = __webpack_require__(122);
+
+var _PointerEvents2 = _interopRequireDefault(_PointerEvents);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _Interactions = function () {
+  function _Interactions() {
+    _classCallCheck(this, _Interactions);
+  }
+
+  _createClass(_Interactions, [{
+    key: '_addInteractions',
+    value: function _addInteractions(params) {
+      var options = Object.assign(_config2.default.INTERACTIONS, params || {});
+      var interactions = [];
+      if (options) {
+        for (var key in options) {
+          if (key && options[key]) {
+            this['add' + utils.upperFirstChart(key)](options[key], interactions);
+          }
+        }
+      }
+      return interactions;
+    }
+  }, {
+    key: 'addDoubleClickZoom',
+    value: function addDoubleClickZoom() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var interactions = arguments[1];
+
+      interactions = interactions || this.map.getInteractions();
+      interactions.push(new _openlayers2.default.interaction.DoubleClickZoom({
+        delta: options.zoomDelta,
+        duration: options.zoomDuration
+      }));
+    }
+  }, {
+    key: 'addMouseWheelZoom',
+    value: function addMouseWheelZoom() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var interactions = arguments[1];
+
+      interactions = interactions || this.map.getInteractions();
+      interactions.push(new _openlayers2.default.interaction.MouseWheelZoom({
+        constrainResolution: options.constrainResolution,
+        duration: options.zoomDuration
+      }));
+    }
+  }, {
+    key: 'addKeyboard',
+    value: function addKeyboard() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var interactions = arguments[1];
+
+      interactions = interactions || this.map.getInteractions();
+      interactions.push(new _openlayers2.default.interaction.KeyboardPan());
+      interactions.push(new _openlayers2.default.interaction.KeyboardZoom({
+        delta: options.zoomDelta,
+        duration: options.zoomDuration
+      }));
+    }
+  }, {
+    key: 'addAltShiftDragRotate',
+    value: function addAltShiftDragRotate() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var interactions = arguments[1];
+
+      interactions = interactions || this.map.getInteractions();
+      interactions.push(new _openlayers2.default.interaction.DragRotate());
+    }
+  }, {
+    key: 'addShiftDragZoom',
+    value: function addShiftDragZoom() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var interactions = arguments[1];
+
+      interactions = interactions || this.map.getInteractions();
+      interactions.push(new _openlayers2.default.interaction.DragZoom({
+        duration: options.zoomDuration
+      }));
+    }
+  }, {
+    key: 'addDragPan',
+    value: function addDragPan() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var interactions = arguments[1];
+
+      interactions = interactions || this.map.getInteractions();
+      interactions.push(new _openlayers2.default.interaction.DragPan({
+        kinetic: new _openlayers2.default.Kinetic(-0.005, 0.05, 100)
+      }));
+    }
+  }, {
+    key: 'addPinchRotate',
+    value: function addPinchRotate() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var interactions = arguments[1];
+
+      interactions = interactions || this.map.getInteractions();
+      interactions.push(new _openlayers2.default.interaction.PinchRotate());
+    }
+  }, {
+    key: 'addPinchZoom',
+    value: function addPinchZoom() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var interactions = arguments[1];
+
+      interactions = interactions || this.map.getInteractions();
+      interactions.push(new _openlayers2.default.interaction.PinchZoom({
+        constrainResolution: options.constrainResolution,
+        duration: options.zoomDuration
+      }));
+    }
+  }, {
+    key: 'addDraw',
+    value: function addDraw() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var interactions = arguments[1];
+
+      interactions = interactions || this.map.getInteractions();
+      interactions.push(new _openlayers2.default.interaction.Draw(options));
+    }
+  }, {
+    key: 'addMeasureTool',
+    value: function addMeasureTool() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var interactions = arguments[1];
+
+      interactions = interactions || this.map.getInteractions();
+      interactions.push(new _openlayers2.default.interaction.MeasureTool(options));
+    }
+  }, {
+    key: 'addFreeHandCircle',
+    value: function addFreeHandCircle() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var interactions = arguments[1];
+
+      interactions = interactions || this.map.getInteractions();
+      interactions.push(new _openlayers2.default.interaction.FreeHandCircle(options));
+    }
+  }, {
+    key: 'addLayerMagnify',
+    value: function addLayerMagnify() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var interactions = arguments[1];
+
+      interactions = interactions || this.map.getInteractions();
+      interactions.push(new _openlayers2.default.interaction.LayerMagnify(options));
+    }
+  }, {
+    key: 'addLayerSpyglass',
+    value: function addLayerSpyglass() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var interactions = arguments[1];
+
+      interactions = interactions || this.map.getInteractions();
+      interactions.push(new _openlayers2.default.interaction.LayerSpyglass(options));
+    }
+  }, {
+    key: 'addPointerEvents',
+    value: function addPointerEvents(interactions) {
+      interactions = interactions || this.map.getInteractions();
+      interactions.push(new _PointerEvents2.default());
+    }
+  }]);
+
+  return _Interactions;
+}();
+
+exports.default = _Interactions;
+module.exports = exports['default'];
+
+/***/ }),
+/* 112 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _openlayers = __webpack_require__(0);
+
+var _openlayers2 = _interopRequireDefault(_openlayers);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Map = function () {
+  function Map() {
+    _classCallCheck(this, Map);
+  }
+
+  _createClass(Map, [{
+    key: 'addControl',
+    value: function addControl(control) {
+      if (this.map && control instanceof _openlayers2.default.control.Control) {
+        this.map.addControl(control);
+      } else {
+        throw new Error('不存在地图或者传入控件对象有误！');
+      }
+    }
+  }, {
+    key: 'addInteraction',
+    value: function addInteraction(interaction) {
+      if (this.map && interaction instanceof _openlayers2.default.interaction.Interaction) {
+        this.map.addInteraction(interaction);
+      } else {
+        throw new Error('不存在地图或者传入交互对象有误！');
+      }
+    }
+  }, {
+    key: 'addLayer',
+    value: function addLayer(layer) {
+      this.map.addLayer(layer);
+    }
+  }, {
+    key: 'removeLayer',
+    value: function removeLayer(layer) {
+      this.map.removeLayer(layer);
+    }
+  }, {
+    key: 'addOverlay',
+    value: function addOverlay(overlay) {
+      this.map.addOverlay(overlay);
+    }
+  }, {
+    key: 'removeOverlay',
+    value: function removeOverlay(overlay) {
+      this.map.removeOverlay(overlay);
+    }
+  }, {
+    key: 'changed',
+    value: function changed() {
+      this.map.changed();
+    }
+  }, {
+    key: 'dispatchEvent',
+    value: function dispatchEvent(event) {
+      return this.map.dispatchEvent(event);
+    }
+  }, {
+    key: 'forEachFeatureAtPixel',
+    value: function forEachFeatureAtPixel(pixel, callback, options) {
+      return this.map.forEachFeatureAtPixel(pixel, callback, options);
+    }
+  }, {
+    key: 'forEachLayerAtPixel',
+    value: function forEachLayerAtPixel(pixel, callback, optThis, optLayerFilter, optThis2) {
+      return this.map.forEachLayerAtPixel(pixel, callback, optThis, optLayerFilter, optThis2);
+    }
+  }, {
+    key: 'get',
+    value: function get(key) {
+      return this.map.get(key);
+    }
+  }, {
+    key: 'getControls',
+    value: function getControls() {
+      return this.map.getControls();
+    }
+  }, {
+    key: 'getInteractions',
+    value: function getInteractions() {
+      return this.map.getInteractions();
+    }
+  }, {
+    key: 'getCoordinateFromPixel',
+    value: function getCoordinateFromPixel(pixel) {
+      return this.map.getCoordinateFromPixel(pixel);
+    }
+  }, {
+    key: 'getPixelFromCoordinate',
+    value: function getPixelFromCoordinate(coordinate) {
+      return this.map.getPixelFromCoordinate(coordinate);
+    }
+  }, {
+    key: 'getEventCoordinate',
+    value: function getEventCoordinate(event) {
+      return this.map.getEventCoordinate(event);
+    }
+  }, {
+    key: 'getEventPixel',
+    value: function getEventPixel(event) {
+      return this.map.getEventPixel(event);
+    }
+  }, {
+    key: 'getFeaturesAtPixel',
+    value: function getFeaturesAtPixel(pixel, options) {
+      return this.map.getFeaturesAtPixel(pixel, options);
+    }
+  }, {
+    key: 'getLayerGroup',
+    value: function getLayerGroup() {
+      return this.map.getLayerGroup();
+    }
+  }, {
+    key: 'getLayers',
+    value: function getLayers() {
+      return this.map.getLayers();
+    }
+  }, {
+    key: 'getOverlayById',
+    value: function getOverlayById(id) {
+      return this.map.getOverlayById(id);
+    }
+  }, {
+    key: 'getOverlays',
+    value: function getOverlays() {
+      return this.map.getOverlays();
+    }
+  }, {
+    key: 'getProperties',
+    value: function getProperties() {
+      return this.map.getProperties();
+    }
+  }, {
+    key: 'getRevision',
+    value: function getRevision() {
+      return this.map.getRevision();
+    }
+  }, {
+    key: 'getSize',
+    value: function getSize() {
+      return this.map.getSize();
+    }
+  }, {
+    key: 'getTarget',
+    value: function getTarget() {
+      return this.map.getTarget();
+    }
+  }, {
+    key: 'getTargetElement',
+    value: function getTargetElement() {
+      return this.map.getTargetElement();
+    }
+  }, {
+    key: 'getKeys',
+    value: function getKeys() {
+      return this.map.getKeys();
+    }
+  }, {
+    key: 'getView',
+    value: function getView() {
+      return this.map.getView();
+    }
+  }, {
+    key: 'getViewport',
+    value: function getViewport() {
+      return this.map.getViewport();
+    }
+  }, {
+    key: 'hasFeatureAtPixel',
+    value: function hasFeatureAtPixel(pixel, options) {
+      return this.map.hasFeatureAtPixel(pixel, options);
+    }
+  }, {
+    key: 'removeControl',
+    value: function removeControl(control) {
+      return this.map.removeControl(control);
+    }
+  }, {
+    key: 'removeInteraction',
+    value: function removeInteraction(interaction) {
+      return this.map.removeInteraction(interaction);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      this.map.render();
+    }
+  }, {
+    key: 'renderSync',
+    value: function renderSync(key, value, silent) {
+      this.map.renderSync(key, value, silent);
+    }
+  }, {
+    key: 'setLayerGroup',
+    value: function setLayerGroup(layerGroup) {
+      this.map.setLayerGroup(layerGroup);
+    }
+  }, {
+    key: 'setProperties',
+    value: function setProperties(values, silent) {
+      this.map.setProperties(values, silent);
+    }
+  }, {
+    key: 'setSize',
+    value: function setSize(size) {
+      this.map.setSize(size);
+    }
+  }, {
+    key: 'setTarget',
+    value: function setTarget(target) {
+      this.map.setTarget(target);
+    }
+  }, {
+    key: 'getMap',
+    value: function getMap() {
+      return this.map;
+    }
+  }, {
+    key: 'setMap',
+    value: function setMap(map) {
+      if (map && map instanceof _openlayers2.default.Map) {
+        this.map = map;
+      }
+    }
+  }, {
+    key: 'setView',
+    value: function setView(view) {
+      if (this.map && view instanceof _openlayers2.default.View) {
+        this.map.setView(view);
+      } else {
+        throw new Error('不存在地图或者传入视图对象有误！');
+      }
+    }
+  }, {
+    key: 'unset',
+    value: function unset(key, silent) {
+      this.map.unset(key, silent);
+    }
+  }, {
+    key: 'updateSize',
+    value: function updateSize() {
+      if (this.map) {
+        this.map.updateSize();
+        return this.map;
+      } else {
+        throw new Error('未实例化地图对象！');
+      }
+    }
+  }]);
+
+  return Map;
+}();
+
+exports.default = Map;
+module.exports = exports['default'];
+
+/***/ }),
+/* 113 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _openlayers = __webpack_require__(0);
+
+var _openlayers2 = _interopRequireDefault(_openlayers);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _View = function () {
+  function _View() {
+    _classCallCheck(this, _View);
+  }
+
+  _createClass(_View, [{
+    key: '_addView',
+    value: function _addView(params) {
+      var option = params || {};
+
+      this.projection = _openlayers2.default.proj.get(option['projection'] || 'EPSG:3857');
+
+      this.fullExtent = option['extent'];
+
+      if (this.fullExtent) {
+        this.projection.setExtent(this.fullExtent);
+      }
+
+      return new _openlayers2.default.View({
+        center: option['center'] && Array.isArray(option['center']) ? option['center'] : [0, 0],
+        zoom: option['zoom'] && typeof option['zoom'] === 'number' ? option['zoom'] : 0,
+        minZoom: option['minZoom'] && typeof option['minZoom'] === 'number' ? option['minZoom'] : undefined,
+        maxZoom: option['maxZoom'] && typeof option['maxZoom'] === 'number' ? option['maxZoom'] : undefined,
+        zoomFactor: option['zoomFactor'] && typeof option['zoomFactor'] === 'number' ? option['zoomFactor'] : 2,
+        rotation: option['rotation'] && typeof option['rotation'] === 'number' ? option['rotation'] : 0,
+        enableRotation: option['enableRotation'] === false ? option['enableRotation'] : true,
+        projection: option['projection'] ? option['projection'] : 'EPSG:3857',
+        extent: option['extent'] && Array.isArray(option['extent']) && option['extent'].length === 4 ? option['extent'] : undefined,
+        resolutions: option['resolutions'] && Array.isArray(option['resolutions']) && option['resolutions'].length > 0 ? option['resolutions'] : undefined
+      });
+    }
+  }, {
+    key: 'zoomIn',
+    value: function zoomIn(duration) {
+      var zoom = this.map.getView().getZoom();
+      this.map.getView().animate({
+        zoom: zoom + 1,
+        duration: duration && typeof duration === 'number' ? duration : 300
+      });
+    }
+  }, {
+    key: 'zoomOut',
+    value: function zoomOut(duration) {
+      var zoom = this.map.getView().getZoom();
+      this.map.getView().animate({
+        zoom: zoom - 1,
+        duration: duration && typeof duration === 'number' ? duration : 300
+      });
+    }
+  }, {
+    key: 'zoomByDelta',
+    value: function zoomByDelta(delta, duration) {
+      var view = this.map.getView();
+      if (!view || !(view instanceof _openlayers2.default.View)) {
+        return false;
+      } else {
+        var currentResolution = view.getResolution();
+        if (currentResolution) {
+          var newResolution = view.constrainResolution(currentResolution, delta);
+          if (duration > 0) {
+            if (view.getAnimating()) {
+              view.cancelAnimations();
+            }
+            view.animate({
+              resolution: newResolution,
+              duration: duration,
+              easing: _openlayers2.default.easing.easeOut
+            });
+          } else {
+            view.setResolution(newResolution);
+          }
+        }
+      }
+    }
+  }]);
+
+  return _View;
+}();
+
+exports.default = _View;
+module.exports = exports['default'];
+
+/***/ }),
+/* 114 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _openlayers = __webpack_require__(0);
+
+var _openlayers2 = _interopRequireDefault(_openlayers);
+
+var _domUtils = __webpack_require__(5);
 
 var htmlUtils = _interopRequireWildcard(_domUtils);
 
-var _utils = __webpack_require__(21);
+var _utils = __webpack_require__(26);
 
-var _feature = __webpack_require__(65);
+var _Geometry2 = __webpack_require__(41);
 
-var _feature2 = _interopRequireDefault(_feature);
+var _Geometry3 = _interopRequireDefault(_Geometry2);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -6720,8 +8126,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Overlay = function (_mixin) {
-  _inherits(Overlay, _mixin);
+var Overlay = function (_Geometry) {
+  _inherits(Overlay, _Geometry);
 
   function Overlay() {
     _classCallCheck(this, Overlay);
@@ -6874,6 +8280,10 @@ var Overlay = function (_mixin) {
         if (points && Array.isArray(points)) {
           var multiPoint = new _openlayers2.default.geom.MultiPoint([]);
           var change = false;
+          if (params['zoomToExtent']) {
+            params['zoomToExtent'] = false;
+            change = true;
+          }
           points.forEach(function (item, index) {
             if (item && item['geometry']) {
               var _geom = _this2.getGeomFromGeomData(item, params);
@@ -6883,12 +8293,9 @@ var Overlay = function (_mixin) {
               }
             }
           });
-          if (params['zoomToExtent']) {
-            params['zoomToExtent'] = !params['zoomToExtent'];
-            change = true;
-          }
           if (change) {
-            this._getExtent(multiPoint, params);
+            params['zoomToExtent'] = true;
+            this.fixView(multiPoint, params);
           }
         }
       } catch (e) {
@@ -6921,7 +8328,7 @@ var Overlay = function (_mixin) {
             if (overLay.get('markFeature') && overLay.get('markFeature') instanceof _openlayers2.default.Feature) {
               this.removeFeature(overLay.get('markFeature'));
             }
-            this.map.removeOverlay(overLay);
+            this.removeOverlay(overLay);
           }
           return overLay;
         }
@@ -6942,7 +8349,7 @@ var Overlay = function (_mixin) {
             if (overlays[i].get('markFeature') && overlays[i].get('markFeature') instanceof _openlayers2.default.Feature) {
               this.removeFeature(overlays[i].get('markFeature'));
             }
-            this.map.removeOverlay(overlays[i]);
+            this.removeOverlay(overlays[i]);
             i--;
           }
         }
@@ -7155,1197 +8562,26 @@ var Overlay = function (_mixin) {
   }]);
 
   return Overlay;
-}((0, _mixins2.default)(_feature2.default));
+}(_Geometry3.default);
 
 exports.default = Overlay;
 module.exports = exports['default'];
 
 /***/ }),
-/* 108 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+__webpack_require__(192);
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+__webpack_require__(191);
 
-var _openlayers = __webpack_require__(5);
-
-var _openlayers2 = _interopRequireDefault(_openlayers);
-
-var _utils = __webpack_require__(21);
-
-var _config2 = __webpack_require__(42);
-
-var _config3 = _interopRequireDefault(_config2);
-
-var _Layer2 = __webpack_require__(41);
-
-var _Layer3 = _interopRequireDefault(_Layer2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var BaseLayers = function (_Layer) {
-  _inherits(BaseLayers, _Layer);
-
-  function BaseLayers() {
-    _classCallCheck(this, BaseLayers);
-
-    return _possibleConstructorReturn(this, (BaseLayers.__proto__ || Object.getPrototypeOf(BaseLayers)).apply(this, arguments));
-  }
-
-  _createClass(BaseLayers, [{
-    key: 'addBaseLayers',
-    value: function addBaseLayers() {
-      var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-
-      if (!params || !Array.isArray(params) || params.length <= 0) {
-        return [new _openlayers2.default.layer.Group({
-          layers: [new _openlayers2.default.layer.Tile({
-            source: new _openlayers2.default.source.OSM()
-          })],
-          isBaseLayer: true
-        })];
-      } else {
-        return [new _openlayers2.default.layer.Group({
-          layers: this._getBaseLayerGroup(params),
-          isBaseLayer: true
-        })];
-      }
-    }
-  }, {
-    key: '_getBaseLayerGroup',
-    value: function _getBaseLayerGroup(layerConfigs) {
-      var _this2 = this;
-
-      var layers = [],
-          labelLayers = [],
-          _layers = [],
-          labelLayersConfig = [];
-
-      if (layerConfigs && Array.isArray(layerConfigs) && layerConfigs.length > 0) {
-        layerConfigs.forEach(function (_config) {
-          if (_config['layerName'] && _config['layerUrl'] && _config['layerType']) {
-            var layer = _this2._getLayer(_config);
-            if (layer) layers.push(layer);
-            if (_config['label']) {
-              labelLayersConfig.push(_config['label']);
-            }
-          }
-        });
-      }
-      labelLayers = this._getBaseLayerLabel(labelLayersConfig);
-      _layers = layers.concat(labelLayers);
-      return _layers;
-    }
-  }, {
-    key: '_getBaseLayerLabel',
-    value: function _getBaseLayerLabel(labelLayersConfig) {
-      var _this3 = this;
-
-      var labelLayers = [],
-          _labelLayersLayerNames = new Set();
-
-      if (labelLayersConfig && Array.isArray(labelLayersConfig) && labelLayersConfig.length > 0) {
-        labelLayersConfig.forEach(function (config) {
-          if (config['layerName'] && config['layerUrl'] && config['layerType']) {
-            _labelLayersLayerNames.add(config['layerName']);
-          }
-        });
-        [].concat(_toConsumableArray(_labelLayersLayerNames)).forEach(function (layerName) {
-          labelLayersConfig.every(function (configM) {
-            if (configM && configM['layerName'] === layerName) {
-              var labelLayer = _this3._getLayer(configM);
-              if (labelLayer) labelLayers.push(labelLayer);
-              return false;
-            }
-            return true;
-          });
-        });
-      }
-      return labelLayers;
-    }
-  }, {
-    key: '_getLayer',
-    value: function _getLayer(layerConfig) {
-      switch (layerConfig['layerType']) {
-        case 'TileXYZ':
-          return this._getXYZLayer(layerConfig);
-        case 'TitleWMTS':
-          return this._getWMTSLayer(layerConfig);
-        case 'OSM':
-          return this._getOSMLayer(layerConfig);
-        case 'ImageWMS':
-          return this._getImageWMSLayer(layerConfig);
-        case 'TileWMS':
-          return this._getTileWMSLayer(layerConfig);
-        case 'MapboxVectorTile':
-          return this._getMapboxVectorTileLayer(layerConfig);
-        case 'TileArcGISRest':
-          return this._getTileArcGISRestLayer(layerConfig);
-        case 'BaiDu':
-          return this._getBaiDuLayer(layerConfig);
-        case 'GaoDe':
-          return this._getGaoDeLayer(layerConfig);
-        case 'Google':
-          return this._getGoogleLayer(layerConfig);
-        default:
-          throw new Error('不支持的图层类型！');
-      }
-    }
-  }, {
-    key: '_getXYZLayer',
-    value: function _getXYZLayer(layerConfig) {
-      var layerName = layerConfig['layerName'] || '';
-      layerConfig['addLayer'] = false;
-      layerConfig['create'] = true;
-      if (!layerConfig.hasOwnProperty('tileGrid')) {
-        layerConfig['tileGrid'] = {};
-      }
-      var layer = this.createXYZLayer(layerName, layerConfig);
-      layer = this._addLayerAlias(layer, layerConfig);
-      return layer;
-    }
-  }, {
-    key: '_getOSMLayer',
-    value: function _getOSMLayer(layerConfig) {
-      var layerName = layerConfig['layerName'] || '';
-      layerConfig['addLayer'] = false;
-      layerConfig['create'] = true;
-      var layer = this.createOSMLayer(layerName, layerConfig);
-      layer = this._addLayerAlias(layer, layerConfig);
-      return layer;
-    }
-  }, {
-    key: '_getBaiDuLayer',
-    value: function _getBaiDuLayer(layerConfig) {
-      var layerName = layerConfig['layerName'] || '';
-      layerConfig['addLayer'] = false;
-      layerConfig['create'] = true;
-      var layer = this.createBaiDuLayer(layerName, layerConfig);
-      layer = this._addLayerAlias(layer, layerConfig);
-      return layer;
-    }
-  }, {
-    key: '_getGaoDeLayer',
-    value: function _getGaoDeLayer(layerConfig) {
-      var layerName = layerConfig['layerName'] || '';
-      layerConfig['addLayer'] = false;
-      layerConfig['create'] = true;
-      var layer = this.createGaoDeLayer(layerName, layerConfig);
-      layer = this._addLayerAlias(layer, layerConfig);
-      return layer;
-    }
-  }, {
-    key: '_getGoogleLayer',
-    value: function _getGoogleLayer(layerConfig) {
-      var layerName = layerConfig['layerName'] || '';
-      layerConfig['addLayer'] = false;
-      layerConfig['create'] = true;
-      var layer = this.createGoogleLayer(layerName, layerConfig);
-      layer = this._addLayerAlias(layer, layerConfig);
-      return layer;
-    }
-  }, {
-    key: '_getWMTSLayer',
-    value: function _getWMTSLayer(layerConfig) {
-      var layerName = layerConfig['layerName'] || '';
-      layerConfig['addLayer'] = false;
-      layerConfig['create'] = true;
-      var layer = this.createWMTSLayer(layerName, layerConfig);
-      layer = this._addLayerAlias(layer, layerConfig);
-      return layer;
-    }
-  }, {
-    key: '_getImageWMSLayer',
-    value: function _getImageWMSLayer(layerConfig) {
-      var layerName = layerConfig['layerName'] || '';
-      layerConfig['addLayer'] = false;
-      layerConfig['create'] = true;
-      var layer = this.createImageWMSLayer(layerName, layerConfig);
-      layer = this._addLayerAlias(layer, layerConfig);
-      return layer;
-    }
-  }, {
-    key: '_getTileWMSLayer',
-    value: function _getTileWMSLayer(layerConfig) {
-      var layerName = layerConfig['layerName'] || '';
-      layerConfig['addLayer'] = false;
-      layerConfig['create'] = true;
-      var layer = this.createTileWMSLayer(layerName, layerConfig);
-      layer = this._addLayerAlias(layer, layerConfig);
-      return layer;
-    }
-  }, {
-    key: '_getMapboxVectorTileLayer',
-    value: function _getMapboxVectorTileLayer(layerConfig) {
-      var layerName = layerConfig['layerName'] || '';
-      layerConfig['addLayer'] = false;
-      layerConfig['create'] = true;
-      var layer = this.createMapboxVectorTileLayer(layerName, layerConfig);
-      layer = this._addLayerAlias(layer, layerConfig);
-      return layer;
-    }
-  }, {
-    key: '_getTileArcGISRestLayer',
-    value: function _getTileArcGISRestLayer(layerConfig) {
-      var layerName = layerConfig['layerName'] || '';
-      layerConfig['addLayer'] = false;
-      layerConfig['create'] = true;
-      var layer = this.createTitleLayer(layerName, layerConfig);
-      layer = this._addLayerAlias(layer, layerConfig);
-      return layer;
-    }
-  }, {
-    key: '_addLayerAlias',
-    value: function _addLayerAlias(layer, layerConfig) {
-      var isDefault = layerConfig['isDefault'] === true ? layerConfig['isDefault'] : false;
-      layer.set('isDefault', isDefault);
-      layer.set('isBaseLayer', true);
-      layer.setVisible(isDefault);
-      layer.set('alias', layerConfig['alias'] ? layerConfig['alias'] : '');
-      layer.getSource().setAttributions(this._getAttribution(layerConfig['attribution']));
-      return layer;
-    }
-  }, {
-    key: '_getAttribution',
-    value: function _getAttribution(params) {
-      var attribution = void 0;
-      if (params === true) {
-        params = {};
-        params['url'] = _config3.default.INDEX_URL;
-        params['messages'] = 'contributors.';
-        params['title'] = 'HMap';
-        attribution = new _openlayers2.default.Attribution({
-          html: '&copy; ' + '<a href="' + params['url'] + '">' + params['title'] + '</a> ' + params['messages']
-        });
-      } else if ((0, _utils.isObject)(params)) {
-        attribution = new _openlayers2.default.Attribution({
-          html: '&copy; ' + '<a href="' + params['url'] + '">' + params['title'] + '</a> ' + params['messages']
-        });
-      }
-      return attribution;
-    }
-  }]);
-
-  return BaseLayers;
-}(_Layer3.default);
-
-exports.default = BaseLayers;
-module.exports = exports['default'];
+__webpack_require__(280);
 
 /***/ }),
-/* 109 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _openlayers = __webpack_require__(5);
-
-var _openlayers2 = _interopRequireDefault(_openlayers);
-
-var _utils = __webpack_require__(21);
-
-var utils = _interopRequireWildcard(_utils);
-
-__webpack_require__(121);
-
-__webpack_require__(124);
-
-__webpack_require__(125);
-
-__webpack_require__(128);
-
-__webpack_require__(122);
-
-__webpack_require__(123);
-
-__webpack_require__(127);
-
-__webpack_require__(126);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var _Controls = function () {
-  function _Controls() {
-    _classCallCheck(this, _Controls);
-  }
-
-  _createClass(_Controls, [{
-    key: '_addControls',
-    value: function _addControls(params) {
-      var options = params || {};
-      var controls = [];
-
-      if (!options.hasOwnProperty('zoom')) {
-        this.addZoom({}, controls);
-      }
-
-      if (!options.hasOwnProperty('rotate')) {
-        this.addRotate({}, controls);
-      }
-
-      if (!options.hasOwnProperty('attribution')) {
-        this.addAttribution({}, controls);
-      }
-      if (options) {
-        for (var key in options) {
-          if (key && options[key]) {
-            this['add' + utils.upperFirstChart(key)](options[key], controls);
-          }
-        }
-      }
-      return controls;
-    }
-  }, {
-    key: 'addZoom',
-    value: function addZoom() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var controls = arguments[1];
-
-      controls = controls || this.map.getControls();
-      controls.push(new _openlayers2.default.control.ZoomMenu({
-        className: options['className'],
-        duration: options['duration'],
-        target: options['target'],
-        delta: options['delta']
-      }));
-    }
-  }, {
-    key: 'addRotate',
-    value: function addRotate() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var controls = arguments[1];
-
-      controls = controls || this.map.getControls();
-      controls.push(new _openlayers2.default.control.RotateControl({
-        className: options['className'],
-        duration: options['duration'],
-        label: options['resetNorth'],
-        autoHide: options['autoHide'],
-        target: options['target']
-      }));
-    }
-  }, {
-    key: 'addAttribution',
-    value: function addAttribution(options, controls) {
-      controls = controls || this.map.getControls();
-      controls.push(new _openlayers2.default.control.Attribution({
-        className: options['className'] ? options['className'] : 'ol-attribution',
-        label: options['label'] ? options['label'] : 'i',
-        tipLabel: options['tipLabel'] && typeof options['tipLabel'] === 'string' ? options['tipLabel'] : '版权',
-        collapsible: options['collapsible'] === false ? options['collapsible'] : true,
-        collapsed: options['collapsed'] === false ? options['collapsed'] : true,
-        collapseLabel: options['collapseLabel'] ? options['collapseLabel'] : '»',
-        target: options['target'] ? options['target'] : undefined
-      }));
-    }
-  }, {
-    key: 'addScaleLine',
-    value: function addScaleLine(options, controls) {
-      controls = controls || this.map.getControls();
-      controls.push(new _openlayers2.default.control.ScaleLine({
-        className: options['className'] ? options['className'] : 'ol-scale-line',
-        minWidth: options['minWidth'] && typeof options['minWidth'] === 'number' ? options['minWidth'] : 64,
-        render: options['render'] && typeof options['render'] === 'function' ? options['render'] : undefined,
-        target: options['target'] ? options['target'] : undefined,
-        units: options['units'] ? options['units'] : 'metric'
-      }));
-    }
-  }, {
-    key: 'addFullScreen',
-    value: function addFullScreen() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var controls = arguments[1];
-
-      controls = controls || this.map.getControls();
-      controls.push(new _openlayers2.default.control.FullScreenMenu({
-        className: options['className'],
-        label: options['label'],
-        labelActive: options['labelActive'],
-        keys: options['keys'],
-        target: options['target'],
-        source: options['source']
-      }));
-    }
-  }, {
-    key: 'addMousePosition',
-    value: function addMousePosition(options, controls) {
-      controls = controls || this.map.getControls();
-      controls.push(new _openlayers2.default.control.MousePosition({
-        className: options['className'] ? options['className'] : 'ol-mouse-position',
-        coordinateFormat: options['coordinateFormat'] ? options['coordinateFormat'] : undefined,
-        projection: options['projection'] ? options['projection'] : this.view.getProjection(),
-        undefinedHTML: options['undefinedHTML'] && typeof options['undefinedHTML'] === 'string' ? options['undefinedHTML'] : '无坐标',
-        target: options['target'] ? options['target'] : undefined
-      }));
-    }
-  }, {
-    key: 'addZoomSlider',
-    value: function addZoomSlider(options, controls) {
-      controls = controls || this.map.getControls();
-      var zoomSlider = new _openlayers2.default.control.BZoomSlider({
-        duration: options['duration'],
-        pixelDelta: options['pixelDelta'],
-        className: options['className'],
-        target: options['target']
-      });
-      controls.push(zoomSlider);
-    }
-  }, {
-    key: 'addZoomToExtent',
-    value: function addZoomToExtent(options, controls) {
-      controls = controls || this.map.getControls();
-      controls.push(new _openlayers2.default.control.ZoomToExtent({
-        className: options['className'] ? options['className'] : 'ol-zoom-extent',
-        label: options['label'] ? options['label'] : 'E',
-        tipLabel: options['tipLabel'] && typeof options['tipLabel'] === 'string' ? options['tipLabel'] : '缩放到范围',
-        extent: options['extent'] ? options['extent'] : undefined
-      }));
-    }
-  }, {
-    key: 'addGeolocation',
-    value: function addGeolocation(options, controls) {
-      controls = controls || this.map.getControls();
-      controls.push(new _openlayers2.default.control.Geolocation({
-        className: options['className'] ? options['className'] : 'hmap-geolocation',
-        target: options['target'] ? options['target'] : undefined
-      }));
-    }
-  }, {
-    key: 'addLoading',
-    value: function addLoading(options, controls) {
-      controls = controls || this.map.getControls();
-      var loading_ = new _openlayers2.default.control.Loading({
-        className: options['className'] ? options['className'] : 'hmap-loading-panel',
-        widget: options['widget'] ? options['widget'] : 'animatedGif',
-        target: options['target'] ? options['target'] : undefined
-      });
-      controls.push(loading_);
-    }
-  }, {
-    key: 'addCompareLayer',
-    value: function addCompareLayer(beforeMap, afterMap) {
-      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-      var controls = arguments[3];
-
-      controls = controls || this.map.getControls();
-      var _compareLayer = new _openlayers2.default.control.CompareLayer(beforeMap, afterMap, options);
-      controls.push(_compareLayer);
-    }
-  }, {
-    key: 'addContextMenu',
-    value: function addContextMenu() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var controls = arguments[1];
-
-      controls = controls || this.map.getControls();
-      var ContextMenu = new _openlayers2.default.control.ContextMenu(options);
-      controls.push(ContextMenu);
-    }
-  }, {
-    key: 'addLayerSwitcher',
-    value: function addLayerSwitcher() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var controls = arguments[1];
-
-      controls = controls || this.map.getControls();
-      var Switcher = new _openlayers2.default.control.LayerSwitcher(options);
-      controls.push(Switcher);
-    }
-  }]);
-
-  return _Controls;
-}();
-
-exports.default = _Controls;
-module.exports = exports['default'];
-
-/***/ }),
-/* 110 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _openlayers = __webpack_require__(5);
-
-var _openlayers2 = _interopRequireDefault(_openlayers);
-
-var _config = __webpack_require__(42);
-
-var _config2 = _interopRequireDefault(_config);
-
-var _utils = __webpack_require__(21);
-
-var utils = _interopRequireWildcard(_utils);
-
-var _PointerEvents = __webpack_require__(120);
-
-var _PointerEvents2 = _interopRequireDefault(_PointerEvents);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var _Interactions = function () {
-  function _Interactions() {
-    _classCallCheck(this, _Interactions);
-  }
-
-  _createClass(_Interactions, [{
-    key: '_addInteractions',
-    value: function _addInteractions(params) {
-      var options = Object.assign(_config2.default.INTERACTIONS, params || {});
-      var interactions = [];
-      if (options) {
-        for (var key in options) {
-          if (key && options[key]) {
-            this['add' + utils.upperFirstChart(key)](options[key], interactions);
-          }
-        }
-      }
-      return interactions;
-    }
-  }, {
-    key: 'addDoubleClickZoom',
-    value: function addDoubleClickZoom() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var interactions = arguments[1];
-
-      interactions = interactions || this.map.getInteractions();
-      interactions.push(new _openlayers2.default.interaction.DoubleClickZoom({
-        delta: options.zoomDelta,
-        duration: options.zoomDuration
-      }));
-    }
-  }, {
-    key: 'addMouseWheelZoom',
-    value: function addMouseWheelZoom() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var interactions = arguments[1];
-
-      interactions = interactions || this.map.getInteractions();
-      interactions.push(new _openlayers2.default.interaction.MouseWheelZoom({
-        constrainResolution: options.constrainResolution,
-        duration: options.zoomDuration
-      }));
-    }
-  }, {
-    key: 'addKeyboard',
-    value: function addKeyboard() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var interactions = arguments[1];
-
-      interactions = interactions || this.map.getInteractions();
-      interactions.push(new _openlayers2.default.interaction.KeyboardPan());
-      interactions.push(new _openlayers2.default.interaction.KeyboardZoom({
-        delta: options.zoomDelta,
-        duration: options.zoomDuration
-      }));
-    }
-  }, {
-    key: 'addAltShiftDragRotate',
-    value: function addAltShiftDragRotate() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var interactions = arguments[1];
-
-      interactions = interactions || this.map.getInteractions();
-      interactions.push(new _openlayers2.default.interaction.DragRotate());
-    }
-  }, {
-    key: 'addShiftDragZoom',
-    value: function addShiftDragZoom() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var interactions = arguments[1];
-
-      interactions = interactions || this.map.getInteractions();
-      interactions.push(new _openlayers2.default.interaction.DragZoom({
-        duration: options.zoomDuration
-      }));
-    }
-  }, {
-    key: 'addDragPan',
-    value: function addDragPan() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var interactions = arguments[1];
-
-      interactions = interactions || this.map.getInteractions();
-      interactions.push(new _openlayers2.default.interaction.DragPan({
-        kinetic: new _openlayers2.default.Kinetic(-0.005, 0.05, 100)
-      }));
-    }
-  }, {
-    key: 'addPinchRotate',
-    value: function addPinchRotate() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var interactions = arguments[1];
-
-      interactions = interactions || this.map.getInteractions();
-      interactions.push(new _openlayers2.default.interaction.PinchRotate());
-    }
-  }, {
-    key: 'addPinchZoom',
-    value: function addPinchZoom() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var interactions = arguments[1];
-
-      interactions = interactions || this.map.getInteractions();
-      interactions.push(new _openlayers2.default.interaction.PinchZoom({
-        constrainResolution: options.constrainResolution,
-        duration: options.zoomDuration
-      }));
-    }
-  }, {
-    key: 'addPointerEvents',
-    value: function addPointerEvents(interactions) {
-      interactions = interactions || this.map.getInteractions();
-      interactions.push(new _PointerEvents2.default());
-    }
-  }]);
-
-  return _Interactions;
-}();
-
-exports.default = _Interactions;
-module.exports = exports['default'];
-
-/***/ }),
-/* 111 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _openlayers = __webpack_require__(5);
-
-var _openlayers2 = _interopRequireDefault(_openlayers);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Map = function () {
-  function Map() {
-    _classCallCheck(this, Map);
-  }
-
-  _createClass(Map, [{
-    key: 'addControl',
-    value: function addControl(control) {
-      if (this.map && control instanceof _openlayers2.default.control.Control) {
-        this.map.addControl(control);
-      } else {
-        throw new Error('不存在地图或者传入控件对象有误！');
-      }
-    }
-  }, {
-    key: 'addInteraction',
-    value: function addInteraction(interaction) {
-      if (this.map && interaction instanceof _openlayers2.default.interaction.Interaction) {
-        this.map.addInteraction(interaction);
-      } else {
-        throw new Error('不存在地图或者传入交互对象有误！');
-      }
-    }
-  }, {
-    key: 'addLayer',
-    value: function addLayer(layer) {
-      this.map.addLayer(layer);
-    }
-  }, {
-    key: 'addOverlay',
-    value: function addOverlay(overlay) {
-      this.map.addOverlay(overlay);
-    }
-  }, {
-    key: 'changed',
-    value: function changed() {
-      this.map.changed();
-    }
-  }, {
-    key: 'dispatchEvent',
-    value: function dispatchEvent(event) {
-      return this.map.dispatchEvent(event);
-    }
-  }, {
-    key: 'forEachFeatureAtPixel',
-    value: function forEachFeatureAtPixel(pixel, callback, options) {
-      return this.map.forEachFeatureAtPixel(pixel, callback, options);
-    }
-  }, {
-    key: 'forEachLayerAtPixel',
-    value: function forEachLayerAtPixel(pixel, callback, optThis, optLayerFilter, optThis2) {
-      return this.map.forEachLayerAtPixel(pixel, callback, optThis, optLayerFilter, optThis2);
-    }
-  }, {
-    key: 'get',
-    value: function get(key) {
-      return this.map.get(key);
-    }
-  }, {
-    key: 'getControls',
-    value: function getControls() {
-      return this.map.getControls();
-    }
-  }, {
-    key: 'getInteractions',
-    value: function getInteractions() {
-      return this.map.getInteractions();
-    }
-  }, {
-    key: 'getCoordinateFromPixel',
-    value: function getCoordinateFromPixel(pixel) {
-      return this.map.getCoordinateFromPixel(pixel);
-    }
-  }, {
-    key: 'getPixelFromCoordinate',
-    value: function getPixelFromCoordinate(coordinate) {
-      return this.map.getPixelFromCoordinate(coordinate);
-    }
-  }, {
-    key: 'getEventCoordinate',
-    value: function getEventCoordinate(event) {
-      return this.map.getEventCoordinate(event);
-    }
-  }, {
-    key: 'getEventPixel',
-    value: function getEventPixel(event) {
-      return this.map.getEventPixel(event);
-    }
-  }, {
-    key: 'getFeaturesAtPixel',
-    value: function getFeaturesAtPixel(pixel, options) {
-      return this.map.getFeaturesAtPixel(pixel, options);
-    }
-  }, {
-    key: 'getLayerGroup',
-    value: function getLayerGroup() {
-      return this.map.getLayerGroup();
-    }
-  }, {
-    key: 'getLayers',
-    value: function getLayers() {
-      return this.map.getLayers();
-    }
-  }, {
-    key: 'getOverlayById',
-    value: function getOverlayById(id) {
-      return this.map.getOverlayById(id);
-    }
-  }, {
-    key: 'getOverlays',
-    value: function getOverlays() {
-      return this.map.getOverlays();
-    }
-  }, {
-    key: 'getProperties',
-    value: function getProperties() {
-      return this.map.getProperties();
-    }
-  }, {
-    key: 'getRevision',
-    value: function getRevision() {
-      return this.map.getRevision();
-    }
-  }, {
-    key: 'getSize',
-    value: function getSize() {
-      return this.map.getSize();
-    }
-  }, {
-    key: 'getTarget',
-    value: function getTarget() {
-      return this.map.getTarget();
-    }
-  }, {
-    key: 'getTargetElement',
-    value: function getTargetElement() {
-      return this.map.getTargetElement();
-    }
-  }, {
-    key: 'getKeys',
-    value: function getKeys() {
-      return this.map.getKeys();
-    }
-  }, {
-    key: 'getView',
-    value: function getView() {
-      return this.map.getView();
-    }
-  }, {
-    key: 'getViewport',
-    value: function getViewport() {
-      return this.map.getViewport();
-    }
-  }, {
-    key: 'hasFeatureAtPixel',
-    value: function hasFeatureAtPixel(pixel, options) {
-      return this.map.hasFeatureAtPixel(pixel, options);
-    }
-  }, {
-    key: 'removeControl',
-    value: function removeControl(control) {
-      return this.map.removeControl(control);
-    }
-  }, {
-    key: 'removeInteraction',
-    value: function removeInteraction(interaction) {
-      return this.map.removeInteraction(interaction);
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      this.map.render();
-    }
-  }, {
-    key: 'renderSync',
-    value: function renderSync(key, value, silent) {
-      this.map.renderSync(key, value, silent);
-    }
-  }, {
-    key: 'setLayerGroup',
-    value: function setLayerGroup(layerGroup) {
-      this.map.setLayerGroup(layerGroup);
-    }
-  }, {
-    key: 'setProperties',
-    value: function setProperties(values, silent) {
-      this.map.setProperties(values, silent);
-    }
-  }, {
-    key: 'setSize',
-    value: function setSize(size) {
-      this.map.setSize(size);
-    }
-  }, {
-    key: 'setTarget',
-    value: function setTarget(target) {
-      this.map.setTarget(target);
-    }
-  }, {
-    key: 'getMap',
-    value: function getMap() {
-      return this.map;
-    }
-  }, {
-    key: 'setMap',
-    value: function setMap(map) {
-      if (map && map instanceof _openlayers2.default.Map) {
-        this.map = map;
-      }
-    }
-  }, {
-    key: 'setView',
-    value: function setView(view) {
-      if (this.map && view instanceof _openlayers2.default.View) {
-        this.map.setView(view);
-      } else {
-        throw new Error('不存在地图或者传入视图对象有误！');
-      }
-    }
-  }, {
-    key: 'unset',
-    value: function unset(key, silent) {
-      this.map.unset(key, silent);
-    }
-  }, {
-    key: 'updateSize',
-    value: function updateSize() {
-      if (this.map) {
-        this.map.updateSize();
-        return this.map;
-      } else {
-        throw new Error('未实例化地图对象！');
-      }
-    }
-  }]);
-
-  return Map;
-}();
-
-exports.default = Map;
-module.exports = exports['default'];
-
-/***/ }),
-/* 112 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _openlayers = __webpack_require__(5);
-
-var _openlayers2 = _interopRequireDefault(_openlayers);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var _View = function () {
-  function _View() {
-    _classCallCheck(this, _View);
-  }
-
-  _createClass(_View, [{
-    key: '_addView',
-    value: function _addView(params) {
-      var option = params || {};
-
-      this.projection = _openlayers2.default.proj.get(option['projection'] || 'EPSG:3857');
-
-      this.fullExtent = option['extent'];
-
-      if (this.fullExtent) {
-        this.projection.setExtent(this.fullExtent);
-      }
-
-      return new _openlayers2.default.View({
-        center: option['center'] && Array.isArray(option['center']) ? option['center'] : [0, 0],
-        zoom: option['zoom'] && typeof option['zoom'] === 'number' ? option['zoom'] : 0,
-        minZoom: option['minZoom'] && typeof option['minZoom'] === 'number' ? option['minZoom'] : undefined,
-        maxZoom: option['maxZoom'] && typeof option['maxZoom'] === 'number' ? option['maxZoom'] : undefined,
-        zoomFactor: option['zoomFactor'] && typeof option['zoomFactor'] === 'number' ? option['zoomFactor'] : 2,
-        rotation: option['rotation'] && typeof option['rotation'] === 'number' ? option['rotation'] : 0,
-        enableRotation: option['enableRotation'] === false ? option['enableRotation'] : true,
-        projection: option['projection'] ? option['projection'] : 'EPSG:3857',
-        extent: option['extent'] && Array.isArray(option['extent']) && option['extent'].length === 4 ? option['extent'] : undefined,
-        resolutions: option['resolutions'] && Array.isArray(option['resolutions']) && option['resolutions'].length > 0 ? option['resolutions'] : undefined
-      });
-    }
-  }, {
-    key: 'zoomIn',
-    value: function zoomIn(duration) {
-      var zoom = this.map.getView().getZoom();
-      this.map.getView().animate({
-        zoom: zoom + 1,
-        duration: duration && typeof duration === 'number' ? duration : 300
-      });
-    }
-  }, {
-    key: 'zoomOut',
-    value: function zoomOut(duration) {
-      var zoom = this.map.getView().getZoom();
-      this.map.getView().animate({
-        zoom: zoom - 1,
-        duration: duration && typeof duration === 'number' ? duration : 300
-      });
-    }
-  }, {
-    key: 'zoomByDelta',
-    value: function zoomByDelta(delta, duration) {
-      var view = this.map.getView();
-      if (!view || !(view instanceof _openlayers2.default.View)) {
-        return false;
-      } else {
-        var currentResolution = view.getResolution();
-        if (currentResolution) {
-          var newResolution = view.constrainResolution(currentResolution, delta);
-          if (duration > 0) {
-            if (view.getAnimating()) {
-              view.cancelAnimations();
-            }
-            view.animate({
-              resolution: newResolution,
-              duration: duration,
-              easing: _openlayers2.default.easing.easeOut
-            });
-          } else {
-            view.setResolution(newResolution);
-          }
-        }
-      }
-    }
-  }, {
-    key: 'getExtent',
-    value: function getExtent(size) {
-      if (size) {
-        return this.view.calculateExtent(size);
-      } else {
-        return this.view.calculateExtent(this.map.getSize());
-      }
-    }
-  }, {
-    key: 'getMapCurrentExtent',
-    value: function getMapCurrentExtent() {
-      if (this.map) {
-        return this.view.calculateExtent(this.map.getSize());
-      }
-    }
-  }, {
-    key: 'zoomMaxExtent',
-    value: function zoomMaxExtent(zoom) {
-      var view = this.map.getView();
-      zoom = typeof zoom === 'number' ? zoom : 2;
-      if (this.map && view) {
-        var center = view.getCenter();
-        if (center) {
-          this.view.setCenter(center);
-          this.view.setZoom(zoom);
-        }
-      }
-    }
-  }, {
-    key: 'movePointToView',
-    value: function movePointToView(coord) {
-      if (this.map) {
-        var extent = this.getMapCurrentExtent();
-        if (!_openlayers2.default.extent.containsXY(extent, coord[0], coord[1])) {
-          this.view.setCenter(coord);
-        }
-      }
-    }
-  }, {
-    key: 'adjustExtent',
-    value: function adjustExtent(extent, params) {
-      if (this.map) {
-        params = params || {};
-        var size = _openlayers2.default.extent.getSize(extent);
-        var adjust = typeof params['adjust'] === 'number' ? params['adjust'] : 0.2;
-        var minWidth = typeof params['minWidth'] === 'number' ? params['minWidth'] : 0.05;
-        var minHeight = typeof params['minHeight'] === 'number' ? params['minHeight'] : 0.05;
-        if (size[0] <= minWidth || size[1] <= minHeight) {
-          var bleft = _openlayers2.default.extent.getBottomLeft(extent);
-          var tright = _openlayers2.default.extent.getTopRight(extent);
-          var xmin = bleft[0] - adjust;
-          var ymin = bleft[1] - adjust;
-          var xmax = tright[0] + adjust;
-          var ymax = tright[1] + adjust;
-          extent = _openlayers2.default.extent.buffer([xmin, ymin, xmax, ymax], adjust);
-        }
-        return extent;
-      }
-    }
-  }, {
-    key: 'zoomToExtent',
-    value: function zoomToExtent(extent, isanimation, duration) {
-      if (this.map) {
-        var view = this.map.getView();
-        var size = this.map.getSize();
-
-        var center = _openlayers2.default.extent.getCenter(extent);
-        if (!isanimation) {
-          view.fit(extent, size, {
-            padding: [350, 200, 200, 350]
-          });
-          view.setCenter(center);
-        } else {
-          if (!duration) {
-            duration = 800;
-            view.animate({
-              center: center,
-              duration: duration
-            });
-            view.fit(extent, {
-              size: size,
-              duration: duration
-            });
-          }
-        }
-      }
-    }
-  }, {
-    key: 'orderLayerZindex',
-    value: function orderLayerZindex() {
-      var _this = this;
-
-      var layerindex = 10;
-      if (this.map) {
-        var pointLayers = [].concat(_toConsumableArray(this.pointLayers));
-        var lineLayers = [].concat(_toConsumableArray(this.lineLayers));
-        var polygonLayers = [].concat(_toConsumableArray(this.polygonLayers));
-        polygonLayers.forEach(function (layerName) {
-          if (layerName) {
-            var layer = _this.getLayerByLayerName(layerName);
-            if (layer) {
-              layer.setZIndex(layerindex++);
-            }
-          }
-        });
-        lineLayers.forEach(function (layerName) {
-          if (layerName) {
-            var layer = _this.getLayerByLayerName(layerName);
-            if (layer) {
-              layer.setZIndex(layerindex++);
-            }
-          }
-        });
-        pointLayers.forEach(function (layerName) {
-          if (layerName) {
-            var layer = _this.getLayerByLayerName(layerName);
-            if (layer) {
-              layer.setZIndex(layerindex++);
-            }
-          }
-        });
-      }
-    }
-  }]);
-
-  return _View;
-}();
-
-exports.default = _View;
-module.exports = exports['default'];
-
-/***/ }),
-/* 113 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-__webpack_require__(184);
-
-__webpack_require__(183);
-
-/***/ }),
-/* 114 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8419,58 +8655,58 @@ exports.isUint8ClampedArraySupported = isUint8ClampedArraySupported;
 exports.isWebGLSupportedCached = isWebGLSupportedCached;
 
 /***/ }),
-/* 115 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(157);
-__webpack_require__(158);
-__webpack_require__(159);
-__webpack_require__(160);
-__webpack_require__(161);
-__webpack_require__(164);
-__webpack_require__(162);
-__webpack_require__(163);
-__webpack_require__(165);
-__webpack_require__(166);
-__webpack_require__(167);
-__webpack_require__(168);
-__webpack_require__(170);
-__webpack_require__(169);
-module.exports = __webpack_require__(14).Reflect;
-
-
-/***/ }),
-/* 116 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(85);
-__webpack_require__(172);
-__webpack_require__(174);
-__webpack_require__(171);
-module.exports = __webpack_require__(14).Set;
-
-
-/***/ }),
 /* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
+__webpack_require__(162);
+__webpack_require__(163);
+__webpack_require__(164);
+__webpack_require__(165);
+__webpack_require__(166);
+__webpack_require__(169);
+__webpack_require__(167);
+__webpack_require__(168);
+__webpack_require__(170);
+__webpack_require__(171);
+__webpack_require__(172);
 __webpack_require__(173);
-__webpack_require__(85);
-module.exports = __webpack_require__(14).Symbol;
+__webpack_require__(175);
+__webpack_require__(174);
+module.exports = __webpack_require__(14).Reflect;
 
 
 /***/ }),
 /* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// 19.1.3.1 Object.assign(target, source)
-var $export = __webpack_require__(1);
-
-$export($export.S + $export.F, 'Object', { assign: __webpack_require__(147) });
+__webpack_require__(86);
+__webpack_require__(177);
+__webpack_require__(179);
+__webpack_require__(176);
+module.exports = __webpack_require__(14).Set;
 
 
 /***/ }),
 /* 119 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(178);
+__webpack_require__(86);
+module.exports = __webpack_require__(14).Symbol;
+
+
+/***/ }),
+/* 120 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 19.1.3.1 Object.assign(target, source)
+var $export = __webpack_require__(2);
+
+$export($export.S + $export.F, 'Object', { assign: __webpack_require__(152) });
+
+
+/***/ }),
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8482,71 +8718,83 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+__webpack_require__(120);
+
 __webpack_require__(118);
 
-__webpack_require__(116);
+__webpack_require__(119);
 
 __webpack_require__(117);
 
 __webpack_require__(115);
 
-__webpack_require__(113);
-
-var _openlayers = __webpack_require__(5);
+var _openlayers = __webpack_require__(0);
 
 var _openlayers2 = _interopRequireDefault(_openlayers);
 
-var _mixins = __webpack_require__(43);
+var _mixins = __webpack_require__(66);
 
 var _mixins2 = _interopRequireDefault(_mixins);
 
-var _observableEmit = __webpack_require__(66);
+var _observableEmit = __webpack_require__(67);
 
 var _observableEmit2 = _interopRequireDefault(_observableEmit);
 
-var _supported = __webpack_require__(114);
+var _popover = __webpack_require__(278);
+
+var _popover2 = _interopRequireDefault(_popover);
+
+var _supported = __webpack_require__(116);
 
 var supported = _interopRequireWildcard(_supported);
 
-var _index = __webpack_require__(106);
+var _index = __webpack_require__(107);
 
-var _config = __webpack_require__(42);
+var _config = __webpack_require__(43);
 
 var _config2 = _interopRequireDefault(_config);
 
-var _Layer2 = __webpack_require__(41);
+var _Layer2 = __webpack_require__(42);
 
 var _Layer3 = _interopRequireDefault(_Layer2);
 
-var _Map2 = __webpack_require__(111);
+var _Map2 = __webpack_require__(112);
 
 var _Map3 = _interopRequireDefault(_Map2);
 
-var _View2 = __webpack_require__(112);
+var _View2 = __webpack_require__(113);
 
 var _View3 = _interopRequireDefault(_View2);
 
-var _BaseLayers2 = __webpack_require__(108);
+var _BaseLayers2 = __webpack_require__(109);
 
 var _BaseLayers3 = _interopRequireDefault(_BaseLayers2);
 
-var _Controls2 = __webpack_require__(109);
+var _Controls2 = __webpack_require__(110);
 
 var _Controls3 = _interopRequireDefault(_Controls2);
 
-var _Interactions2 = __webpack_require__(110);
+var _Interactions2 = __webpack_require__(111);
 
 var _Interactions3 = _interopRequireDefault(_Interactions2);
 
-var _feature = __webpack_require__(65);
+var _feature = __webpack_require__(108);
 
 var _feature2 = _interopRequireDefault(_feature);
 
-var _overlay = __webpack_require__(107);
+var _overlay = __webpack_require__(114);
 
 var _overlay2 = _interopRequireDefault(_overlay);
 
-var _utils = __webpack_require__(21);
+var _Geometry2 = __webpack_require__(41);
+
+var _Geometry3 = _interopRequireDefault(_Geometry2);
+
+var _ViewUtil2 = __webpack_require__(65);
+
+var _ViewUtil3 = _interopRequireDefault(_ViewUtil2);
+
+var _utils = __webpack_require__(26);
 
 var _constants = __webpack_require__(64);
 
@@ -8560,9 +8808,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var version = __webpack_require__(22).version;
-var name = __webpack_require__(22).name;
-var author = __webpack_require__(22).author;
+var version = __webpack_require__(21).version;
+var name = __webpack_require__(21).name;
+var author = __webpack_require__(21).author;
 
 var HMap = function (_mixin) {
   _inherits(HMap, _mixin);
@@ -8627,7 +8875,7 @@ var HMap = function (_mixin) {
 
         this.options_ = params;
 
-        this.view_ = this._addView(this.options_['view']);
+        this.view = this._addView(this.options_['view']);
         var _logo = this._addCopyRight(this.options_['logo']);
         var layers = this.addBaseLayers(this.options_['baseLayers']);
         var interactions = this._addInteractions(this.options_['interactions']);
@@ -8639,7 +8887,7 @@ var HMap = function (_mixin) {
           loadTilesWhileInteracting: typeof this.options_['loadTilesWhileInteracting'] === 'boolean' ? this.options_['loadTilesWhileInteracting'] : false,
           logo: _logo,
           layers: layers,
-          view: this.view_,
+          view: this.view,
           interactions: interactions,
           controls: controls
         });
@@ -8883,15 +9131,16 @@ var HMap = function (_mixin) {
   }]);
 
   return HMap;
-}((0, _mixins2.default)(_Map3.default, _observableEmit2.default, _View3.default, _BaseLayers3.default, _Controls3.default, _Interactions3.default, _Layer3.default, _feature2.default, _overlay2.default));
+}((0, _mixins2.default)(_Map3.default, _observableEmit2.default, _View3.default, _BaseLayers3.default, _Controls3.default, _Interactions3.default, _Layer3.default, _ViewUtil3.default, _Geometry3.default, _feature2.default, _overlay2.default));
 
 HMap.supported = supported;
 HMap.layer = _Layer3.default;
+HMap.Popover = _popover2.default;
 exports.default = HMap;
 module.exports = exports['default'];
 
 /***/ }),
-/* 120 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8901,7 +9150,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _openlayers = __webpack_require__(5);
+var _openlayers = __webpack_require__(0);
 
 var _openlayers2 = _interopRequireDefault(_openlayers);
 
@@ -9022,7 +9271,7 @@ exports.default = _openlayers2.default.interaction.PointerEvents;
 module.exports = exports['default'];
 
 /***/ }),
-/* 121 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9032,30 +9281,36 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-__webpack_require__(182);
+var _openlayers = __webpack_require__(0);
 
-var _constants = __webpack_require__(11);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
-var _domUtils = __webpack_require__(9);
+__webpack_require__(190);
+
+var _constants = __webpack_require__(7);
+
+var _domUtils = __webpack_require__(5);
 
 var htmlUtils = _interopRequireWildcard(_domUtils);
 
-var _Events = __webpack_require__(13);
+var _Events = __webpack_require__(8);
 
 var Events = _interopRequireWildcard(_Events);
 
 var _EventType = __webpack_require__(44);
 
-__webpack_require__(104);
+__webpack_require__(105);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-ol.control.BZoomSlider = function (params) {
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_openlayers2.default.control.BZoomSlider = function (params) {
   this.options = params || {};
 
   this.currentResolution_ = undefined;
 
-  this.direction_ = ol.control.BZoomSlider.Direction_.VERTICAL;
+  this.direction_ = _openlayers2.default.control.BZoomSlider.Direction_.VERTICAL;
 
   this.dragging_ = false;
 
@@ -9090,23 +9345,23 @@ ol.control.BZoomSlider = function (params) {
 
   var translateN = htmlUtils.create('div', 'hmap-zoom-slider-button hmap-zoom-slider-translate-n' + ' ' + _constants.BASE_CLASS_NAME.CLASS_SELECTABLE, translateContent);
   translateN.setAttribute('title', '向上平移');
-  Events.listen(translateN, _EventType.EventType.CLICK, ol.control.BZoomSlider.prototype.handletranslateClick_.bind(this, 'translateN'));
+  Events.listen(translateN, _EventType.EventType.CLICK, _openlayers2.default.control.BZoomSlider.prototype.handletranslateClick_.bind(this, 'translateN'));
   var translateS = htmlUtils.create('div', 'hmap-zoom-slider-button hmap-zoom-slider-translate-s' + ' ' + _constants.BASE_CLASS_NAME.CLASS_SELECTABLE, translateContent);
   translateS.setAttribute('title', '向下平移');
-  Events.listen(translateS, _EventType.EventType.CLICK, ol.control.BZoomSlider.prototype.handletranslateClick_.bind(this, 'translateS'));
+  Events.listen(translateS, _EventType.EventType.CLICK, _openlayers2.default.control.BZoomSlider.prototype.handletranslateClick_.bind(this, 'translateS'));
   var translateW = htmlUtils.create('div', 'hmap-zoom-slider-button hmap-zoom-slider-translate-w' + ' ' + _constants.BASE_CLASS_NAME.CLASS_SELECTABLE, translateContent);
   translateW.setAttribute('title', '向左平移');
-  Events.listen(translateW, _EventType.EventType.CLICK, ol.control.BZoomSlider.prototype.handletranslateClick_.bind(this, 'translateW'));
+  Events.listen(translateW, _EventType.EventType.CLICK, _openlayers2.default.control.BZoomSlider.prototype.handletranslateClick_.bind(this, 'translateW'));
   var translateE = htmlUtils.create('div', 'hmap-zoom-slider-button hmap-zoom-slider-translate-e' + ' ' + _constants.BASE_CLASS_NAME.CLASS_SELECTABLE, translateContent);
   translateE.setAttribute('title', '向右平移');
-  Events.listen(translateE, _EventType.EventType.CLICK, ol.control.BZoomSlider.prototype.handletranslateClick_.bind(this, 'translateE'));
+  Events.listen(translateE, _EventType.EventType.CLICK, _openlayers2.default.control.BZoomSlider.prototype.handletranslateClick_.bind(this, 'translateE'));
   var zoomIn = htmlUtils.create('div', 'hmap-zoom-slider-zoom-in' + ' ' + _constants.BASE_CLASS_NAME.CLASS_SELECTABLE, silderContent);
   zoomIn.setAttribute('title', '放大');
-  Events.listen(zoomIn, _EventType.EventType.CLICK, ol.control.BZoomSlider.prototype.handleZoomClick_.bind(this, 1));
+  Events.listen(zoomIn, _EventType.EventType.CLICK, _openlayers2.default.control.BZoomSlider.prototype.handleZoomClick_.bind(this, 1));
 
   var zoomOut = htmlUtils.create('div', 'hmap-zoom-slider-zoom-out' + ' ' + _constants.BASE_CLASS_NAME.CLASS_SELECTABLE, silderContent);
   zoomOut.setAttribute('title', '缩小');
-  Events.listen(zoomOut, _EventType.EventType.CLICK, ol.control.BZoomSlider.prototype.handleZoomClick_.bind(this, -1));
+  Events.listen(zoomOut, _EventType.EventType.CLICK, _openlayers2.default.control.BZoomSlider.prototype.handleZoomClick_.bind(this, -1));
 
   var slider = htmlUtils.create('div', 'hmap-zoom-slider-zoom-slider' + ' ' + _constants.BASE_CLASS_NAME.CLASS_SELECTABLE, silderContent);
   this.sliderBackgroundTop = htmlUtils.create('div', 'slider-background-top' + ' ' + _constants.BASE_CLASS_NAME.CLASS_SELECTABLE, slider);
@@ -9125,22 +9380,22 @@ ol.control.BZoomSlider = function (params) {
   Events.listen(this.sliderBar, _EventType.EventType.CLICK, function (event) {
     event.stopPropagation();
   });
-  var render = this.options['render'] ? this.options['render'] : ol.control.BZoomSlider.render;
-  ol.control.Control.call(this, {
+  var render = this.options['render'] ? this.options['render'] : _openlayers2.default.control.BZoomSlider.render;
+  _openlayers2.default.control.Control.call(this, {
     element: this.element,
     render: render,
     target: this.options['target']
   });
 };
 
-ol.inherits(ol.control.BZoomSlider, ol.control.Control);
+_openlayers2.default.inherits(_openlayers2.default.control.BZoomSlider, _openlayers2.default.control.Control);
 
-ol.control.BZoomSlider.prototype.handleZoomClick_ = function (delta, event) {
+_openlayers2.default.control.BZoomSlider.prototype.handleZoomClick_ = function (delta, event) {
   event.preventDefault();
   this.zoomByDelta_(delta);
 };
 
-ol.control.BZoomSlider.prototype.handletranslateClick_ = function (type, event) {
+_openlayers2.default.control.BZoomSlider.prototype.handletranslateClick_ = function (type, event) {
   event.preventDefault();
   var view = this.getMap().getView();
   var mapUnitsDelta = view.getResolution() * this.pixelDelta_;
@@ -9162,18 +9417,18 @@ ol.control.BZoomSlider.prototype.handletranslateClick_ = function (type, event) 
       break;
   }
   var delta = [deltaX, deltaY];
-  ol.coordinate.rotate(delta, view.getRotation());
+  _openlayers2.default.coordinate.rotate(delta, view.getRotation());
   this.pan(view, delta, this.duration_);
 };
 
-ol.control.BZoomSlider.prototype.pan = function (view, delta, optDuration) {
+_openlayers2.default.control.BZoomSlider.prototype.pan = function (view, delta, optDuration) {
   var currentCenter = view.getCenter();
   if (currentCenter) {
     var center = view.constrainCenter([currentCenter[0] + delta[0], currentCenter[1] + delta[1]]);
     if (optDuration) {
       view.animate({
         duration: optDuration,
-        easing: ol.easing.linear,
+        easing: _openlayers2.default.easing.linear,
         center: center
       });
     } else {
@@ -9182,9 +9437,9 @@ ol.control.BZoomSlider.prototype.pan = function (view, delta, optDuration) {
   }
 };
 
-ol.control.BZoomSlider.prototype.zoomByDelta_ = function (delta) {
+_openlayers2.default.control.BZoomSlider.prototype.zoomByDelta_ = function (delta) {
   var view = this.getMap().getView();
-  if (view && view instanceof ol.View) {
+  if (view && view instanceof _openlayers2.default.View) {
     var currentResolution = view.getResolution();
     if (currentResolution) {
       var newResolution = view.constrainResolution(currentResolution, delta);
@@ -9195,7 +9450,7 @@ ol.control.BZoomSlider.prototype.zoomByDelta_ = function (delta) {
         view.animate({
           resolution: newResolution,
           duration: this.duration_,
-          easing: ol.easing.easeOut
+          easing: _openlayers2.default.easing.easeOut
         });
       } else {
         view.setResolution(newResolution);
@@ -9204,7 +9459,7 @@ ol.control.BZoomSlider.prototype.zoomByDelta_ = function (delta) {
   }
 };
 
-ol.control.BZoomSlider.render = function (mapEvent) {
+_openlayers2.default.control.BZoomSlider.render = function (mapEvent) {
   if (!mapEvent.frameState) {
     return;
   }
@@ -9218,14 +9473,14 @@ ol.control.BZoomSlider.render = function (mapEvent) {
   }
 };
 
-ol.control.BZoomSlider.Direction_ = {
+_openlayers2.default.control.BZoomSlider.Direction_ = {
   VERTICAL: 0,
   HORIZONTAL: 1
 };
 
-ol.control.BZoomSlider.prototype.setMap = function (map) {
-  if (map && map instanceof ol.Map) {
-    ol.control.Control.prototype.setMap.call(this, map);
+_openlayers2.default.control.BZoomSlider.prototype.setMap = function (map) {
+  if (map && map instanceof _openlayers2.default.Map) {
+    _openlayers2.default.control.Control.prototype.setMap.call(this, map);
     if (map) {
       map.render();
     }
@@ -9234,12 +9489,12 @@ ol.control.BZoomSlider.prototype.setMap = function (map) {
   }
 };
 
-ol.control.BZoomSlider.prototype.disposeInternal = function () {
+_openlayers2.default.control.BZoomSlider.prototype.disposeInternal = function () {
   Events.listen(this.silderContent, 'pointercancel', function (event) {}, this);
-  ol.control.Control.prototype.disposeInternal.call(this);
+  _openlayers2.default.control.Control.prototype.disposeInternal.call(this);
 };
 
-ol.control.BZoomSlider.prototype.initSlider_ = function () {
+_openlayers2.default.control.BZoomSlider.prototype.initSlider_ = function () {
   var container = this.silderContent;
   var containerSize = {
     width: container.offsetWidth, height: container.offsetHeight
@@ -9250,27 +9505,27 @@ ol.control.BZoomSlider.prototype.initSlider_ = function () {
   var thumbHeight = thumb.offsetHeight + parseFloat(computedStyle['marginTop']) + parseFloat(computedStyle['marginBottom']);
   this.thumbSize_ = [thumbWidth, thumbHeight];
   if (containerSize.width > containerSize.height) {
-    this.direction_ = ol.control.BZoomSlider.Direction_.HORIZONTAL;
+    this.direction_ = _openlayers2.default.control.BZoomSlider.Direction_.HORIZONTAL;
     this.widthLimit_ = containerSize.width - thumbWidth;
   } else {
-    this.direction_ = ol.control.BZoomSlider.Direction_.VERTICAL;
+    this.direction_ = _openlayers2.default.control.BZoomSlider.Direction_.VERTICAL;
     this.heightLimit_ = containerSize.height - thumbHeight;
   }
   this.sliderInitialized_ = true;
 };
 
-ol.control.BZoomSlider.prototype.handleContainerClick_ = function (event) {
+_openlayers2.default.control.BZoomSlider.prototype.handleContainerClick_ = function (event) {
   var view = this.getMap().getView();
   var relativePosition = this.getRelativePosition_(event.offsetX - this.thumbSize_[0] / 2, event.offsetY - this.thumbSize_[1] / 2);
   var resolution = this.getResolutionForPosition_(relativePosition);
   view.animate({
     resolution: view.constrainResolution(resolution),
     duration: this.duration_,
-    easing: ol.easing.easeOut
+    easing: _openlayers2.default.easing.easeOut
   });
 };
 
-ol.control.BZoomSlider.prototype.handleDraggerStart_ = function (event) {
+_openlayers2.default.control.BZoomSlider.prototype.handleDraggerStart_ = function (event) {
   if (!this.dragging_ && event.target === htmlUtils.getElementsByClassName('.slider-bar', this.silderContent)) {
     this.previousX_ = event.clientX;
     this.previousY_ = event.clientY;
@@ -9278,7 +9533,7 @@ ol.control.BZoomSlider.prototype.handleDraggerStart_ = function (event) {
   }
 };
 
-ol.control.BZoomSlider.prototype.handleDraggerDrag_ = function (event) {
+_openlayers2.default.control.BZoomSlider.prototype.handleDraggerDrag_ = function (event) {
   if (this.dragging_) {
     var element = htmlUtils.getElementsByClassName('.slider-bar', this.silderContent);
     var deltaX = event.clientX - this.previousX_ + parseInt(element.style.left, 10);
@@ -9292,14 +9547,14 @@ ol.control.BZoomSlider.prototype.handleDraggerDrag_ = function (event) {
   }
 };
 
-ol.control.BZoomSlider.prototype.handleDraggerEnd_ = function (event) {
+_openlayers2.default.control.BZoomSlider.prototype.handleDraggerEnd_ = function (event) {
   if (this.dragging_) {
     var view = this.getMap().getView();
 
     view.animate({
       resolution: view.constrainResolution(this.currentResolution_),
       duration: this.duration_,
-      easing: ol.easing.easeOut
+      easing: _openlayers2.default.easing.easeOut
     });
     this.dragging_ = false;
     this.previousX_ = undefined;
@@ -9307,10 +9562,10 @@ ol.control.BZoomSlider.prototype.handleDraggerEnd_ = function (event) {
   }
 };
 
-ol.control.BZoomSlider.prototype.setThumbPosition_ = function (res) {
+_openlayers2.default.control.BZoomSlider.prototype.setThumbPosition_ = function (res) {
   var position = this.getPositionForResolution_(res);
   var thumb = htmlUtils.getElementsByClassName('.slider-bar', this.silderContent);
-  if (this.direction_ === ol.control.BZoomSlider.Direction_.HORIZONTAL) {
+  if (this.direction_ === _openlayers2.default.control.BZoomSlider.Direction_.HORIZONTAL) {
     thumb.style.left = this.widthLimit_ * position + 'px';
     this.sliderBackgroundBottom.style.width = this.widthLimit_ - (this.widthLimit_ * position - 5) + 'px';
   } else {
@@ -9319,9 +9574,9 @@ ol.control.BZoomSlider.prototype.setThumbPosition_ = function (res) {
   }
 };
 
-ol.control.BZoomSlider.prototype.getRelativePosition_ = function (x, y) {
+_openlayers2.default.control.BZoomSlider.prototype.getRelativePosition_ = function (x, y) {
   var amount = void 0;
-  if (this.direction_ === ol.control.BZoomSlider.Direction_.HORIZONTAL) {
+  if (this.direction_ === _openlayers2.default.control.BZoomSlider.Direction_.HORIZONTAL) {
     amount = x / this.widthLimit_;
   } else {
     amount = y / this.heightLimit_;
@@ -9329,14 +9584,14 @@ ol.control.BZoomSlider.prototype.getRelativePosition_ = function (x, y) {
   return Math.min(Math.max(amount, 0), 1);
 };
 
-ol.control.BZoomSlider.prototype.getResolutionForPosition_ = function (position) {
+_openlayers2.default.control.BZoomSlider.prototype.getResolutionForPosition_ = function (position) {
   var view = this.getMap().getView();
-  if (view && view instanceof ol.View) {
+  if (view && view instanceof _openlayers2.default.View) {
     return this.getResolutionForValueFunction(1 - position);
   }
 };
 
-ol.control.BZoomSlider.prototype.getValueForResolutionFunction = function (resolution, optPower) {
+_openlayers2.default.control.BZoomSlider.prototype.getValueForResolutionFunction = function (resolution, optPower) {
   var power = optPower || 2;
   var view = this.getMap().getView();
   var maxResolution = view.getMaxResolution();
@@ -9345,7 +9600,7 @@ ol.control.BZoomSlider.prototype.getValueForResolutionFunction = function (resol
   return Math.log(maxResolution / resolution) / Math.log(power) / max;
 };
 
-ol.control.BZoomSlider.prototype.getResolutionForValueFunction = function (value, optPower) {
+_openlayers2.default.control.BZoomSlider.prototype.getResolutionForValueFunction = function (value, optPower) {
   var power = optPower || 2;
   var view = this.getMap().getView();
   var maxResolution = view.getMaxResolution();
@@ -9354,20 +9609,20 @@ ol.control.BZoomSlider.prototype.getResolutionForValueFunction = function (value
   return maxResolution / Math.pow(power, value * max);
 };
 
-ol.control.BZoomSlider.prototype.getPositionForResolution_ = function (res) {
+_openlayers2.default.control.BZoomSlider.prototype.getPositionForResolution_ = function (res) {
   var view = this.getMap().getView();
-  if (view && view instanceof ol.View) {
+  if (view && view instanceof _openlayers2.default.View) {
     return 1 - this.getValueForResolutionFunction(res);
   }
 };
 
-var olControlBZoomSlider = ol.control.BZoomSlider;
+var olControlBZoomSlider = _openlayers2.default.control.BZoomSlider;
 
 exports.default = olControlBZoomSlider;
 module.exports = exports['default'];
 
 /***/ }),
-/* 122 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9377,29 +9632,33 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-__webpack_require__(177);
+var _openlayers = __webpack_require__(0);
 
-var _constants = __webpack_require__(11);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
-var _domUtils = __webpack_require__(9);
+__webpack_require__(183);
+
+var _constants = __webpack_require__(7);
+
+var _domUtils = __webpack_require__(5);
 
 var htmlUtils = _interopRequireWildcard(_domUtils);
 
-var _Events = __webpack_require__(13);
+var _Events = __webpack_require__(8);
 
 var Events = _interopRequireWildcard(_Events);
 
 var _EventType = __webpack_require__(44);
 
-var _screenfull = __webpack_require__(262);
+var _screenfull = __webpack_require__(270);
 
 var _screenfull2 = _interopRequireDefault(_screenfull);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-ol.control.FullScreenMenu = function () {
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_openlayers2.default.control.FullScreenMenu = function () {
   var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
   var options = params;
@@ -9418,14 +9677,14 @@ ol.control.FullScreenMenu = function () {
 
   this.element_ = this.initDomInternal_(className);
 
-  ol.control.Control.call(this, {
+  _openlayers2.default.control.Control.call(this, {
     element: this.element_,
     target: options.target
   });
 };
-ol.inherits(ol.control.FullScreenMenu, ol.control.Control);
+_openlayers2.default.inherits(_openlayers2.default.control.FullScreenMenu, _openlayers2.default.control.Control);
 
-ol.control.FullScreenMenu.prototype.handleClick_ = function (event) {
+_openlayers2.default.control.FullScreenMenu.prototype.handleClick_ = function (event) {
   var _this = this;
 
   event.preventDefault();
@@ -9450,7 +9709,7 @@ ol.control.FullScreenMenu.prototype.handleClick_ = function (event) {
   }
 };
 
-ol.control.FullScreenMenu.prototype.initDomInternal_ = function (className) {
+_openlayers2.default.control.FullScreenMenu.prototype.initDomInternal_ = function (className) {
   var element = htmlUtils.create('div', className + ' ' + _constants.BASE_CLASS_NAME.CLASS_UNSELECTABLE);
   var inner = htmlUtils.create('span', className + '-inner', element);
   inner.setAttribute('title', '放大');
@@ -9459,12 +9718,12 @@ ol.control.FullScreenMenu.prototype.initDomInternal_ = function (className) {
   return element;
 };
 
-var olControlFullScreenMenu = ol.control.FullScreenMenu;
+var olControlFullScreenMenu = _openlayers2.default.control.FullScreenMenu;
 exports.default = olControlFullScreenMenu;
 module.exports = exports['default'];
 
 /***/ }),
-/* 123 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9474,31 +9733,35 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-__webpack_require__(178);
+var _openlayers = __webpack_require__(0);
 
-var _constants = __webpack_require__(11);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
-var _domUtils = __webpack_require__(9);
+__webpack_require__(184);
+
+var _constants = __webpack_require__(7);
+
+var _domUtils = __webpack_require__(5);
 
 var htmlUtils = _interopRequireWildcard(_domUtils);
 
-var _Events = __webpack_require__(13);
+var _Events = __webpack_require__(8);
 
 var Events = _interopRequireWildcard(_Events);
 
-var _layerUtils = __webpack_require__(129);
+var _layerUtils = __webpack_require__(134);
 
 var _layerUtils2 = _interopRequireDefault(_layerUtils);
 
-var _mixin = __webpack_require__(69);
+var _mixin = __webpack_require__(70);
 
 var _mixin2 = _interopRequireDefault(_mixin);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-ol.control.LayerSwitcher = function () {
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_openlayers2.default.control.LayerSwitcher = function () {
   var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
   this.options = params;
@@ -9517,9 +9780,11 @@ ol.control.LayerSwitcher = function () {
 
   this.labelAliasKey = this.options['labelAlias'] ? this.options['labelAlias'] : 'layerName';
 
-  this.labelLayerKey = this.options['labelLayerKey'] ? this.options['labelLayerKey'] : 'isLabelLayerKey';
+  this.labelLayerKey = this.options['labelLayerKey'] ? this.options['labelLayerKey'] : 'isLabelLayer';
 
   this.isActionSelected_ = false;
+
+  this.forcedUpdate = this.options['forcedUpdate'];
 
   this.options['itemHeight'] = typeof this.options['itemHeight'] === 'number' ? this.options['itemHeight'] : 60;
 
@@ -9539,16 +9804,16 @@ ol.control.LayerSwitcher = function () {
   } else {
     this.element_.style.display = 'none';
   }
-  ol.control.Control.call(this, {
+  _openlayers2.default.control.Control.call(this, {
     element: this.element_,
     target: this.options['target']
   });
 };
 
-ol.inherits(ol.control.LayerSwitcher, ol.control.Control);
-(0, _mixin2.default)(ol.control.LayerSwitcher, _layerUtils2.default);
+_openlayers2.default.inherits(_openlayers2.default.control.LayerSwitcher, _openlayers2.default.control.Control);
+(0, _mixin2.default)(_openlayers2.default.control.LayerSwitcher, _layerUtils2.default);
 
-ol.control.LayerSwitcher.prototype.initDomInternal = function (layers, className, key) {
+_openlayers2.default.control.LayerSwitcher.prototype.initDomInternal = function (layers, className, key) {
   var _this = this;
 
   var width = this.options['itemWidth'];
@@ -9572,7 +9837,13 @@ ol.control.LayerSwitcher.prototype.initDomInternal = function (layers, className
         name_.setAttribute('data-name', item[key]);
         name_.innerHTML = item['name'];
       }
-      if (!_this.isActionSelected_ && (item[_this.isDefaultKey] || index === length - 1)) {
+      if (!_this.isActionSelected_) {
+        if (item[_this.isDefaultKey]) {
+          htmlUtils.addClass(li_, 'selected-item');
+          _this.isActionSelected_ = true;
+        }
+      }
+      if (!_this.isActionSelected_ && index === length - 1) {
         htmlUtils.addClass(li_, 'selected-item');
         _this.isActionSelected_ = true;
       }
@@ -9580,7 +9851,7 @@ ol.control.LayerSwitcher.prototype.initDomInternal = function (layers, className
   });
 };
 
-ol.control.LayerSwitcher.prototype.contentMouseOver_ = function (event) {
+_openlayers2.default.control.LayerSwitcher.prototype.contentMouseOver_ = function (event) {
   var length = this.options['layers'].length;
   if (length > 0) {
     for (var i = 0; i < length - 1; i++) {
@@ -9595,7 +9866,7 @@ ol.control.LayerSwitcher.prototype.contentMouseOver_ = function (event) {
   }
 };
 
-ol.control.LayerSwitcher.prototype.contentMouseOut_ = function (event) {
+_openlayers2.default.control.LayerSwitcher.prototype.contentMouseOut_ = function (event) {
   var length = this.options['layers'].length;
   if (length > 0) {
     for (var i = 0; i < length - 1; i++) {
@@ -9610,20 +9881,32 @@ ol.control.LayerSwitcher.prototype.contentMouseOut_ = function (event) {
   }
 };
 
-ol.control.LayerSwitcher.prototype.handleClick_ = function (event) {
+_openlayers2.default.control.LayerSwitcher.prototype.handleClick_ = function (event) {
   var value = event.target.getAttribute('data-name');
   this.switcher(this.options['key'], value);
 };
 
-ol.control.LayerSwitcher.prototype.switcher = function (key, value) {
+_openlayers2.default.control.LayerSwitcher.prototype.updateBaseLayer_ = function () {
+  if (!this.map) return;
+  this.baseLayers_ = this.getLayersArrayByKeyValue(this.baseLayerKey, true);
+  this.labelLayers_ = this.getLayersArrayByKeyValue(this.labelLayerKey, true);
+  if (this.baseLayers_ && this.baseLayers_.length > 0) {
+    this.baseLayers_.filter(function (_item) {
+      return !!_item;
+    });
+  }
+  if (this.labelLayers_ && this.labelLayers_.length > 0) {
+    this.labelLayers_.filter(function (_item) {
+      return !!_item;
+    });
+  }
+};
+
+_openlayers2.default.control.LayerSwitcher.prototype.switcher = function (key, value) {
   var _this2 = this;
 
-  if (!this.map) return;
-  if (this.baseLayers_.length <= 0) {
-    this.baseLayers_ = this.getLayersArrayByKeyValue(this.baseLayerKey, true);
-  }
-  if (this.labelLayers_.length <= 0) {
-    this.labelLayers_ = this.getLayersArrayByKeyValue(this.labelLayerKey, true);
+  if (this.forcedUpdate) {
+    this.updateBaseLayer_();
   }
   if (this.baseLayers_.length > 0 && this.baseLayers_.length === this.options['layers'].length) {
     if (this.labelLayers_ && this.labelLayers_.length > 0) {
@@ -9660,21 +9943,20 @@ ol.control.LayerSwitcher.prototype.switcher = function (key, value) {
   }
 };
 
-ol.control.LayerSwitcher.prototype.setMap = function (map) {
-  ol.control.Control.prototype.setMap.call(this, map);
+_openlayers2.default.control.LayerSwitcher.prototype.setMap = function (map) {
+  _openlayers2.default.control.Control.prototype.setMap.call(this, map);
   this.map = map;
-  if (map && map instanceof ol.Map) {
-    this.baseLayers_ = this.getLayersArrayByKeyValue(this.baseLayerKey, true);
-    this.labelLayers_ = this.getLayersArrayByKeyValue(this.labelLayerKey, true);
+  if (map && map instanceof _openlayers2.default.Map) {
+    this.updateBaseLayer_();
   }
 };
 
-var olControlLayerSwitcher = ol.control.LayerSwitcher;
+var olControlLayerSwitcher = _openlayers2.default.control.LayerSwitcher;
 exports.default = olControlLayerSwitcher;
 module.exports = exports['default'];
 
 /***/ }),
-/* 124 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9684,17 +9966,23 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _constants = __webpack_require__(11);
+var _openlayers = __webpack_require__(0);
 
-var _domUtils = __webpack_require__(9);
+var _openlayers2 = _interopRequireDefault(_openlayers);
+
+var _constants = __webpack_require__(7);
+
+var _domUtils = __webpack_require__(5);
 
 var htmlUtils = _interopRequireWildcard(_domUtils);
 
-__webpack_require__(179);
+__webpack_require__(185);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-ol.control.Loading = function (params) {
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_openlayers2.default.control.Loading = function (params) {
   this.options = params || {};
 
   this.mapListeners = [];
@@ -9734,15 +10022,15 @@ ol.control.Loading = function (params) {
   this.onCustomStart = this.options['onStart'] ? this.options['onStart'] : false;
   this.onCustomProgress = this.options['onProgress'] ? this.options['onProgress'] : false;
   this.onCustomEnd = this.options['onEnd'] ? this.options['onEnd'] : false;
-  ol.control.Control.call(this, {
+  _openlayers2.default.control.Control.call(this, {
     element: element,
     target: this.options['target']
   });
 };
 
-ol.inherits(ol.control.Loading, ol.control.Control);
+_openlayers2.default.inherits(_openlayers2.default.control.Loading, _openlayers2.default.control.Control);
 
-ol.control.Loading.prototype.setup = function () {
+_openlayers2.default.control.Loading.prototype.setup = function () {
   var _this = this;
 
   this.setDomPosition();
@@ -9776,14 +10064,14 @@ ol.control.Loading.prototype.setup = function () {
   this.mapListeners.push(afterRander);
 };
 
-ol.control.Loading.prototype.setDomPosition = function () {
+_openlayers2.default.control.Loading.prototype.setDomPosition = function () {
   var size = this.getMap().getSize();
   var domSize = [this.element.clientWidth, this.element.clientHeight];
   this.element.style.left = String(Math.round((size[0] - domSize[0]) / 2)) + 'px';
   this.element.style.bottom = String(Math.round((size[1] - domSize[1]) / 2)) + 'px';
 };
 
-ol.control.Loading.prototype.resize = function () {
+_openlayers2.default.control.Loading.prototype.resize = function () {
   var resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
   var doc = window.document;
   var that = this;
@@ -9812,11 +10100,11 @@ ol.control.Loading.prototype.resize = function () {
   }
 };
 
-ol.control.Loading.prototype.updateSourceLoadStatus_ = function (source) {
+_openlayers2.default.control.Loading.prototype.updateSourceLoadStatus_ = function (source) {
   return Math.round(source.loaded / source.loading * 100) === 100;
 };
 
-ol.control.Loading.prototype.registerLayerLoadEvents_ = function (layer) {
+_openlayers2.default.control.Loading.prototype.registerLayerLoadEvents_ = function (layer) {
   var that = this;
   layer.getSource().on('tileloadstart', function (event) {
     if (that.loadStatus_) {
@@ -9865,36 +10153,36 @@ ol.control.Loading.prototype.registerLayerLoadEvents_ = function (layer) {
   });
 };
 
-ol.control.Loading.prototype.registerLayersLoadEvents_ = function () {
+_openlayers2.default.control.Loading.prototype.registerLayersLoadEvents_ = function () {
   var groups = this.getMap().getLayers().getArray();
   for (var i = 0; i < groups.length; i++) {
     var layer = groups[i];
-    if (layer instanceof ol.layer.Group) {
+    if (layer instanceof _openlayers2.default.layer.Group) {
       var layers = layer.getLayers().getArray();
       for (var j = 0; j < layers.length; j++) {
         var l = layers[j];
-        if (!(l instanceof ol.layer.Vector)) {
+        if (!(l instanceof _openlayers2.default.layer.Vector)) {
           this.tileListeners.push(this.registerLayerLoadEvents_(l));
         }
       }
-    } else if (layer instanceof ol.layer.Layer) {
-      if (!(layer instanceof ol.layer.Vector)) {
+    } else if (layer instanceof _openlayers2.default.layer.Layer) {
+      if (!(layer instanceof _openlayers2.default.layer.Vector)) {
         this.tileListeners.push(this.registerLayerLoadEvents_(layer));
       }
     }
   }
 };
 
-ol.control.Loading.prototype.updateLoadStatus_ = function () {
+_openlayers2.default.control.Loading.prototype.updateLoadStatus_ = function () {
   var loadStatusArray = [];
   var groups = this.getMap().getLayers().getArray();
   for (var i = 0; i < groups.length; i++) {
     var layer = groups[i];
-    if (layer instanceof ol.layer.Group) {
+    if (layer instanceof _openlayers2.default.layer.Group) {
       var layers = layer.getLayers().getArray();
       for (var j = 0; j < layers.length; j++) {
         var l = layers[j];
-        if (!(l instanceof ol.layer.Vector)) {
+        if (!(l instanceof _openlayers2.default.layer.Vector)) {
           loadStatusArray.push(l.getSource().isLoaded);
         }
       }
@@ -9921,27 +10209,27 @@ ol.control.Loading.prototype.updateLoadStatus_ = function () {
   }
 };
 
-ol.control.Loading.prototype.show = function () {
+_openlayers2.default.control.Loading.prototype.show = function () {
   if (this.showPanel) {
     this.element.style.display = 'block';
   }
 };
 
-ol.control.Loading.prototype.hide = function () {
+_openlayers2.default.control.Loading.prototype.hide = function () {
   if (this.showPanel) {
     this.element.style.display = 'none';
   }
 };
 
-ol.control.Loading.prototype.progressDetails = function () {
+_openlayers2.default.control.Loading.prototype.progressDetails = function () {
   return this.loadProgress_;
 };
 
-ol.control.Loading.prototype.progress = function () {
+_openlayers2.default.control.Loading.prototype.progress = function () {
   return this.loadProgress_[0] / this.loadProgress_[1];
 };
 
-ol.control.Loading.prototype.setMap = function (map) {
+_openlayers2.default.control.Loading.prototype.setMap = function (map) {
   var _this2 = this;
 
   if (this.mapListeners && this.mapListeners.length > 0) {
@@ -9950,18 +10238,18 @@ ol.control.Loading.prototype.setMap = function (map) {
     });
   }
   this.mapListeners.length = 0;
-  ol.control.Control.prototype.setMap.call(this, map);
+  _openlayers2.default.control.Control.prototype.setMap.call(this, map);
   if (map) {
     this.setup();
   }
 };
 
-var olControlLoading = ol.control.Loading;
+var olControlLoading = _openlayers2.default.control.Loading;
 exports.default = olControlLoading;
 module.exports = exports['default'];
 
 /***/ }),
-/* 125 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9971,26 +10259,572 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-__webpack_require__(180);
+__webpack_require__(186);
 
-var _constants = __webpack_require__(11);
+var _constants = __webpack_require__(7);
 
-var _domUtils = __webpack_require__(9);
+var _domUtils = __webpack_require__(5);
 
 var htmlUtils = _interopRequireWildcard(_domUtils);
 
-var _Events = __webpack_require__(13);
+var _Events = __webpack_require__(8);
 
 var Events = _interopRequireWildcard(_Events);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-ol.control.RotateControl = function () {
+ol.control.MousePositionH = function () {
+  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+  this.className_ = options.className !== undefined ? options.className : 'hmap-mouse-position';
+  var element = htmlUtils.create('div', this.className_ + ' ' + _constants.BASE_CLASS_NAME.CLASS_UNSELECTABLE);
+  var render = options.render ? options.render : ol.control.MousePositionH.render;
+  ol.control.Control.call(this, {
+    element: element,
+    render: render,
+    target: options.target
+  });
+
+  Events.listen(this, 'change:' + ol.control.MousePositionH.Property_.PROJECTION, this.handleProjectionChanged_, this);
+
+  if (options.coordinateFormat) {
+    this.setCoordinateFormat(options.coordinateFormat);
+  }
+  if (options.projection) {
+    this.setProjection(options.projection);
+  }
+
+  if (options.units) {
+    this.setUnits(options.units);
+  }
+
+  this.undefinedHTML_ = options.undefinedHTML !== undefined ? options.undefinedHTML : '';
+
+  this.renderedHTML_ = element.innerHTML;
+
+  this.mapProjection_ = null;
+
+  this.transform_ = null;
+
+  this.lastMouseMovePixel_ = null;
+
+  this.followMouse_ = options['followMouse'] === true ? options['followMouse'] : false;
+
+  this.popver_ = null;
+
+  this._bounds = null;
+};
+
+ol.inherits(ol.control.MousePositionH, ol.control.Control);
+
+ol.control.MousePositionH.render = function (mapEvent) {
+  var frameState = mapEvent.frameState;
+  if (!frameState) {
+    this.mapProjection_ = null;
+  } else {
+    if (this.mapProjection_ !== frameState.viewState.projection) {
+      this.mapProjection_ = frameState.viewState.projection;
+      this.transform_ = null;
+    }
+  }
+  if (this.getMap() && this.lastMouseMovePixel_) {
+    if (this.followMouse_) {
+      this.followMousePopver_(this.lastMouseMovePixel_);
+    } else {
+      this.updateHTML_(this.lastMouseMovePixel_);
+    }
+  }
+};
+
+ol.control.MousePositionH.prototype.handleProjectionChanged_ = function () {
+  this.transform_ = null;
+};
+
+ol.control.MousePositionH.prototype.getCoordinateFormat = function () {
+  return this.get(ol.control.MousePositionH.Property_.COORDINATE_FORMAT);
+};
+
+ol.control.MousePositionH.prototype.getProjection = function () {
+  return this.get(ol.control.MousePositionH.Property_.PROJECTION);
+};
+
+ol.control.MousePositionH.prototype.handleMouseMove = function (event) {
+  var map = this.getMap();
+  if (map) {
+    this.lastMouseMovePixel_ = map.getEventPixel(event);
+    if (this.lastMouseMovePixel_) {
+      if (this.followMouse_) {
+        this.followMousePopver_(event);
+      } else {
+        this.updateHTML_(this.lastMouseMovePixel_);
+      }
+    }
+  }
+};
+
+ol.control.MousePositionH.prototype.followMousePopver_ = function () {
+  var html = this.getHTML_(this.lastMouseMovePixel_);
+  var map = this.getMap();
+  var coordinates = map.getCoordinateFromPixel(this.lastMouseMovePixel_);
+  if (!this.popver_) {
+    var ele = htmlUtils.create('div', this.className_ + '_overlay');
+    ele.innerHTML = html;
+    this.popver_ = new ol.Overlay({
+      element: ele,
+      offset: [10, 0],
+      position: coordinates,
+      positioning: 'center-left'
+    });
+    map.addOverlay(this.popver_);
+    map.render();
+  } else {
+    var _ele = this.popver_.getElement();
+    _ele.innerHTML = html;
+    if (_ele.offsetWidth >= this._bounds.width - this.lastMouseMovePixel_[0]) {
+      this.popver_.setPositioning('center-right');
+      this.popver_.setOffset([-10, 0]);
+    } else {
+      this.popver_.setPositioning('center-left');
+      this.popver_.setOffset([10, 0]);
+    }
+    this.popver_.setPosition(coordinates);
+    this.popver_.setElement(_ele);
+  }
+};
+
+ol.control.MousePositionH.prototype.handleMouseOut = function (event) {
+  this.updateHTML_(null);
+  this.lastMouseMovePixel_ = null;
+};
+
+ol.control.MousePositionH.prototype.setMap = function (map) {
+  ol.control.Control.prototype.setMap.call(this, map);
+  if (map) {
+    var viewport = map.getViewport();
+    this._bounds = map.getTargetElement().getBoundingClientRect();
+    Events.listen(viewport, 'mousemove', this.handleMouseMove, this);
+    Events.listen(viewport, 'mouseout', this.handleMouseOut, this);
+  }
+};
+
+ol.control.MousePositionH.prototype.setCoordinateFormat = function (format) {
+  this.set(ol.control.MousePositionH.Property_.COORDINATE_FORMAT, format);
+};
+
+ol.control.MousePositionH.prototype.setProjection = function (projection) {
+  this.set(ol.control.MousePositionH.Property_.PROJECTION, ol.proj.get(projection));
+};
+
+ol.control.MousePositionH.prototype.setUnits = function (units) {
+  this.set(ol.control.MousePositionH.Property_.PROJECTION, units);
+};
+
+ol.control.MousePositionH.prototype.updateHTML_ = function (pixel) {
+  var html = this.getHTML_(pixel);
+  if (!this.renderedHTML_ || html !== this.renderedHTML_) {
+    this.element.innerHTML = html;
+    this.renderedHTML_ = html;
+  }
+};
+
+ol.control.MousePositionH.prototype.getHTML_ = function (pixel) {
+  var html = this.undefinedHTML_;
+  if (pixel && this.mapProjection_) {
+    if (!this.transform_) {
+      var projection = this.getProjection();
+      if (projection) {
+        this.transform_ = ol.proj.getTransformFromProjections(this.mapProjection_, projection);
+      } else {
+        this.transform_ = ol.control.MousePositionH.identityTransform;
+      }
+    }
+    var map = this.getMap();
+    var coordinate = map.getCoordinateFromPixel(pixel);
+    if (coordinate) {
+      this.transform_(coordinate, coordinate);
+      var coordinateFormat = this.getCoordinateFormat();
+      if (coordinateFormat) {
+        html = coordinateFormat(coordinate);
+      } else {
+        html = ol.control.MousePositionH.Property_.UNITS[0] + '：' + coordinate[0] + ' ' + ol.control.MousePositionH.Property_.UNITS[1] + '：' + coordinate[1];
+      }
+    }
+  }
+  return html;
+};
+
+ol.control.MousePositionH.Property_ = {
+  PROJECTION: 'projection',
+  COORDINATE_FORMAT: 'coordinateFormat',
+  UNITS: ['经度', '纬度']
+};
+
+ol.control.MousePositionH.identityTransform = function (input, output, dimension) {
+  if (output !== undefined && input !== output) {
+    for (var i = 0, ii = input.length; i < ii; ++i) {
+      output[i] = input[i];
+    }
+    input = output;
+  }
+  return input;
+};
+
+var olControlMousePosition = ol.control.MousePositionH;
+exports.default = olControlMousePosition;
+module.exports = exports['default'];
+
+/***/ }),
+/* 128 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+__webpack_require__(187);
+
+var _constants = __webpack_require__(7);
+
+var _domUtils = __webpack_require__(5);
+
+var htmlUtils = _interopRequireWildcard(_domUtils);
+
+var _Events = __webpack_require__(8);
+
+var Events = _interopRequireWildcard(_Events);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+ol.control.OverviewMapH = function () {
+  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+  this.collapsed_ = options.collapsed !== undefined ? options.collapsed : true;
+
+  this.collapsible_ = options.collapsible !== undefined ? options.collapsible : true;
+
+  if (!this.collapsible_) {
+    this.collapsed_ = false;
+  }
+  var className = options.className !== undefined ? options.className : 'hmap-overview-map';
+  var element = htmlUtils.create('div', className + ' ' + _constants.BASE_CLASS_NAME.CLASS_UNSELECTABLE);
+
+  this.ovmapDiv_ = htmlUtils.create('div', 'hmap-overview-map-target', element);
+
+  if (this.collapsible_) {
+    this.collapsElement_ = htmlUtils.create('div', 'hmap-overview-map-button', element);
+    Events.listen(this.collapsElement_, 'click', this.handleClick_, this);
+  }
+
+  this.ovmap_ = new ol.Map({
+    controls: new ol.Collection(),
+    interactions: new ol.Collection(),
+    view: options.view
+  });
+  var render = options.render ? options.render : ol.control.OverviewMapH.render;
+  ol.control.Control.call(this, {
+    element: element,
+    render: render,
+    target: options.target
+  });
+  this.addBoxControl_();
+};
+
+ol.inherits(ol.control.OverviewMapH, ol.control.Control);
+
+ol.control.OverviewMapH.prototype.addOptionLayers_ = function (options) {
+  var ovmap = this.ovmap_;
+  if (options.layers) {
+    options.layers.forEach(function (layer) {
+      ovmap.addLayer(layer);
+    }, this);
+  }
+};
+
+ol.control.OverviewMapH.computeDesiredMousePosition = function (mousePosition, overlayBox) {
+  return {
+    clientX: mousePosition.clientX - overlayBox.offsetWidth / 2,
+    clientY: mousePosition.clientY + overlayBox.offsetHeight / 2
+  };
+};
+
+ol.control.OverviewMapH.prototype.move_ = function (event) {
+  var overlayBox = this.boxOverlay_.getElement();
+  var coordinates = this.ovmap_.getEventCoordinate(ol.control.OverviewMapH.computeDesiredMousePosition(event, overlayBox));
+  this.boxOverlay_.setPosition(coordinates);
+};
+
+ol.control.OverviewMapH.prototype.endMoving_ = function (event) {
+  var coordinates = this.ovmap_.getEventCoordinate(event);
+  this.getMap().getView().setCenter(coordinates);
+  Events.unListen(window, 'mousemove', this.move_, this);
+  Events.unListen(window, 'mouseup', this.endMoving_, this);
+};
+
+ol.control.OverviewMapH.prototype.addEvent_ = function () {
+  Events.listen(window, 'mousemove', this.move_, this);
+  Events.listen(window, 'mouseup', this.endMoving_, this);
+};
+
+ol.control.OverviewMapH.prototype.addBoxControl_ = function () {
+  var box = htmlUtils.create('div', 'hmap-overview-map-box');
+  Events.listen(box, 'mousedown', this.addEvent_, this);
+  this.boxOverlay_ = new ol.Overlay({
+    position: [0, 0],
+    positioning: 'bottom-left',
+    element: box
+  });
+  this.ovmap_.addOverlay(this.boxOverlay_);
+};
+
+ol.control.OverviewMapH.prototype.setMap = function (map) {
+  var oldMap = this.getMap();
+  if (map === oldMap) {
+    return;
+  }
+  if (oldMap) {
+    var oldView = oldMap.getView();
+    if (oldView) {
+      this.unbindView_(oldView);
+    }
+    this.ovmap_.setTarget(null);
+  }
+  ol.control.Control.prototype.setMap.call(this, map);
+  if (map) {
+    this.ovmap_.setTarget(this.ovmapDiv_);
+    Events.listen(map, 'propertychange', this.handleMapPropertyChange_, this);
+    if (this.ovmap_.getLayers().getLength() === 0) {
+      this.ovmap_.setLayerGroup(map.getLayerGroup());
+    }
+    var view = map.getView();
+    if (view) {
+      this.bindView_(view);
+      if (this.isDef(view)) {
+        this.ovmap_.updateSize();
+        this.resetExtent_();
+      }
+    }
+  }
+};
+
+ol.control.OverviewMapH.prototype.isDef = function (view) {
+  return !!view.getCenter() && view.getResolution() !== undefined;
+};
+
+ol.control.OverviewMapH.prototype.handleMapPropertyChange_ = function (event) {
+  if (event.key === 'view') {
+    var oldView = event.oldValue;
+    if (oldView) {
+      this.unbindView_(oldView);
+    }
+    var newView = this.getMap().getView();
+    this.bindView_(newView);
+  }
+};
+
+ol.control.OverviewMapH.prototype.bindView_ = function (view) {
+  Events.listen(view, 'change:rotation', this.handleRotationChanged_, this);
+};
+
+ol.control.OverviewMapH.prototype.unbindView_ = function (view) {
+  Events.unListen(view, 'change:rotation', this.handleRotationChanged_, this);
+};
+
+ol.control.OverviewMapH.prototype.handleRotationChanged_ = function () {
+  this.ovmap_.getView().setRotation(this.getMap().getView().getRotation());
+};
+
+ol.control.OverviewMapH.render = function (mapEvent) {
+  this.validateExtent_();
+  this.updateBox_();
+};
+
+ol.control.OverviewMapH.prototype.validateExtent_ = function () {
+  var map = this.getMap();
+  var ovmap = this.ovmap_;
+  var mapSize = map.getSize();
+  var view = map.getView();
+  var extent = view.calculateExtent(mapSize);
+  var ovmapSize = ovmap.getSize();
+  var ovview = ovmap.getView();
+  var ovextent = ovview.calculateExtent(ovmapSize);
+  var topLeftPixel = ovmap.getPixelFromCoordinate(ol.extent.getTopLeft(extent));
+  var bottomRightPixel = ovmap.getPixelFromCoordinate(ol.extent.getBottomRight(extent));
+  var boxWidth = Math.abs(topLeftPixel[0] - bottomRightPixel[0]);
+  var boxHeight = Math.abs(topLeftPixel[1] - bottomRightPixel[1]);
+  var ovmapWidth = ovmapSize[0];
+  var ovmapHeight = ovmapSize[1];
+  if (boxWidth < ovmapWidth * _constants.OVERVIEWMAP.MIN_RATIO || boxHeight < ovmapHeight * _constants.OVERVIEWMAP.MIN_RATIO || boxWidth > ovmapWidth * _constants.OVERVIEWMAP.MAX_RATIO || boxHeight > ovmapHeight * _constants.OVERVIEWMAP.MAX_RATIO) {
+    this.resetExtent_();
+  } else if (!ol.extent.containsExtent(ovextent, extent)) {
+    this.recenter_();
+  }
+};
+
+ol.control.OverviewMapH.prototype.resetExtent_ = function () {
+  if (_constants.OVERVIEWMAP.MAX_RATIO === 0 || _constants.OVERVIEWMAP.MIN_RATIO === 0) {
+    return;
+  }
+  var map = this.getMap();
+  var ovmap = this.ovmap_;
+  var mapSize = map.getSize();
+  var view = map.getView();
+  var extent = view.calculateExtent(mapSize);
+  var ovview = ovmap.getView();
+  var steps = Math.log(_constants.OVERVIEWMAP.MAX_RATIO / _constants.OVERVIEWMAP.MIN_RATIO) / Math.LN2;
+  var ratio = 1 / (Math.pow(2, steps / 2) * _constants.OVERVIEWMAP.MIN_RATIO);
+  this.scaleFromCenter(extent, ratio);
+  ovview.fit(extent);
+};
+
+ol.control.OverviewMapH.prototype.scaleFromCenter = function (extent, value) {
+  var deltaX = (extent[2] - extent[0]) / 2 * (value - 1);
+  var deltaY = (extent[3] - extent[1]) / 2 * (value - 1);
+  extent[0] -= deltaX;
+  extent[2] += deltaX;
+  extent[1] -= deltaY;
+  extent[3] += deltaY;
+};
+
+ol.control.OverviewMapH.prototype.recenter_ = function () {
+  var map = this.getMap();
+  var ovmap = this.ovmap_;
+  var view = map.getView();
+  var ovview = ovmap.getView();
+  ovview.setCenter(view.getCenter());
+};
+
+ol.control.OverviewMapH.prototype.updateBox_ = function () {
+  var map = this.getMap();
+  var ovmap = this.ovmap_;
+  var mapSize = map.getSize();
+  var view = map.getView();
+  var ovview = ovmap.getView();
+  var rotation = view.getRotation();
+  var overlay = this.boxOverlay_;
+  var box = this.boxOverlay_.getElement();
+  var extent = view.calculateExtent(mapSize);
+  var ovresolution = ovview.getResolution();
+  var bottomLeft = ol.extent.getBottomLeft(extent);
+  var topRight = ol.extent.getTopRight(extent);
+  var rotateBottomLeft = this.calculateCoordinateRotate_(rotation, bottomLeft);
+  overlay.setPosition(rotateBottomLeft);
+  if (box) {
+    box.style.width = Math.abs((bottomLeft[0] - topRight[0]) / ovresolution) + 'px';
+    box.style.height = Math.abs((topRight[1] - bottomLeft[1]) / ovresolution) + 'px';
+  }
+};
+
+ol.control.OverviewMapH.prototype.calculateCoordinateRotate_ = function (rotation, coordinate) {
+  var coordinateRotate = void 0;
+  var map = this.getMap();
+  var view = map.getView();
+  var currentCenter = view.getCenter();
+  if (currentCenter) {
+    coordinateRotate = [coordinate[0] - currentCenter[0], coordinate[1] - currentCenter[1]];
+    ol.coordinate.rotate(coordinateRotate, rotation);
+    ol.coordinate.add(coordinateRotate, currentCenter);
+  }
+  return coordinateRotate;
+};
+
+ol.control.OverviewMapH.prototype.handleClick_ = function (event) {
+  event.preventDefault();
+  this.handleToggle_();
+};
+
+ol.control.OverviewMapH.prototype.handleToggle_ = function () {
+  if (this.collapsed_) {
+    this.collapsed_ = false;
+    event.target.style.backgroundPosition = '-40px -405px';
+    this.element.style.width = '17px';
+    this.element.style.height = '17px';
+  } else {
+    this.collapsed_ = true;
+    event.target.style.backgroundPosition = '-40px -386px';
+    this.element.style.width = '120px';
+    this.element.style.height = '120px';
+  }
+  var ovmap = this.ovmap_;
+  if (!this.collapsed_ && !ovmap) {
+    ovmap.updateSize();
+    this.resetExtent_();
+    Events.listenOnce(ovmap, 'postrender', this.updateBox_, this);
+  }
+};
+
+ol.control.OverviewMapH.prototype.getCollapsible = function () {
+  return this.collapsible_;
+};
+
+ol.control.OverviewMapH.prototype.setCollapsible = function (collapsible) {
+  if (this.collapsible_ === collapsible) {
+    return;
+  }
+  this.collapsible_ = collapsible;
+  if (!collapsible && this.collapsed_) {
+    this.handleToggle_();
+  }
+};
+
+ol.control.OverviewMapH.prototype.setCollapsed = function (collapsed) {
+  if (!this.collapsible_ || this.collapsed_ === collapsed) {
+    return;
+  }
+  this.handleToggle_();
+};
+
+ol.control.OverviewMapH.prototype.getCollapsed = function () {
+  return this.collapsed_;
+};
+
+ol.control.OverviewMapH.prototype.getOverviewMap = function () {
+  return this.ovmap_;
+};
+
+var olControlOverviewMap = ol.control.OverviewMapH;
+exports.default = olControlOverviewMap;
+module.exports = exports['default'];
+
+/***/ }),
+/* 129 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _openlayers = __webpack_require__(0);
+
+var _openlayers2 = _interopRequireDefault(_openlayers);
+
+__webpack_require__(188);
+
+var _constants = __webpack_require__(7);
+
+var _domUtils = __webpack_require__(5);
+
+var htmlUtils = _interopRequireWildcard(_domUtils);
+
+var _Events = __webpack_require__(8);
+
+var Events = _interopRequireWildcard(_Events);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_openlayers2.default.control.RotateControl = function () {
   var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
   this.className = params.className !== undefined ? params.className : 'hmap-rotate-control';
 
-  var render = params.render ? params.render : ol.control.RotateControl.render;
+  var render = params.render ? params.render : _openlayers2.default.control.RotateControl.render;
 
   this.callResetNorth_ = params.resetNorth ? params.resetNorth : undefined;
 
@@ -10002,33 +10836,33 @@ ol.control.RotateControl = function () {
 
   this.rotation_ = undefined;
 
-  ol.control.Control.call(this, {
+  _openlayers2.default.control.Control.call(this, {
     element: element,
     render: render,
     target: params.target
   });
 };
 
-ol.inherits(ol.control.RotateControl, ol.control.Control);
+_openlayers2.default.inherits(_openlayers2.default.control.RotateControl, _openlayers2.default.control.Control);
 
-ol.control.RotateControl.prototype.initDomInternal_ = function (className) {
+_openlayers2.default.control.RotateControl.prototype.initDomInternal_ = function (className) {
   var element = htmlUtils.create('div', className + ' ' + _constants.BASE_CLASS_NAME.CLASS_UNSELECTABLE);
   var rButton = htmlUtils.create('button', className + '-inner right-button', element);
   var cButton = htmlUtils.create('button', className + '-inner center-button', element, className + '-inner-center');
   this.label_ = cButton;
   var lButton = htmlUtils.create('button', className + '-inner left-button', element);
-  Events.listen(rButton, 'click', ol.control.RotateControl.prototype.handleClick_.bind(this, 'right'));
-  Events.listen(cButton, 'click', ol.control.RotateControl.prototype.handleClick_.bind(this, 'center'));
-  Events.listen(lButton, 'click', ol.control.RotateControl.prototype.handleClick_.bind(this, 'left'));
+  Events.listen(rButton, 'click', _openlayers2.default.control.RotateControl.prototype.handleClick_.bind(this, 'right'));
+  Events.listen(cButton, 'click', _openlayers2.default.control.RotateControl.prototype.handleClick_.bind(this, 'center'));
+  Events.listen(lButton, 'click', _openlayers2.default.control.RotateControl.prototype.handleClick_.bind(this, 'left'));
   return element;
 };
 
-ol.control.RotateControl.prototype.handleClick_ = function (type, event) {
+_openlayers2.default.control.RotateControl.prototype.handleClick_ = function (type, event) {
   event.preventDefault();
   this.resetNorth_(type);
 };
 
-ol.control.RotateControl.prototype.resetNorth_ = function (type) {
+_openlayers2.default.control.RotateControl.prototype.resetNorth_ = function (type) {
   var rotation = 0;
   if (type === 'center') {
     rotation = 0;
@@ -10046,17 +10880,17 @@ ol.control.RotateControl.prototype.resetNorth_ = function (type) {
   }
 };
 
-ol.control.RotateControl.prototype.rotationView_ = function (rotation, type) {
+_openlayers2.default.control.RotateControl.prototype.rotationView_ = function (rotation, type) {
   var map = this.getMap();
   var view = map.getView();
   var r = type === 'center' ? 0 : view.getRotation() + rotation / 180 * Math.PI;
-  if (view && view instanceof ol.View) {
+  if (view && view instanceof _openlayers2.default.View) {
     if (view.getRotation() !== undefined) {
       if (this.duration_ > 0) {
         view.animate({
           rotation: r,
           duration: this.duration_,
-          easing: ol.easing.easeOut
+          easing: _openlayers2.default.easing.easeOut
         });
       } else {
         view.setRotation(0);
@@ -10067,7 +10901,7 @@ ol.control.RotateControl.prototype.rotationView_ = function (rotation, type) {
   }
 };
 
-ol.control.RotateControl.render = function (mapEvent) {
+_openlayers2.default.control.RotateControl.render = function (mapEvent) {
   var frameState = mapEvent.frameState;
   if (!frameState) {
     return;
@@ -10090,12 +10924,12 @@ ol.control.RotateControl.render = function (mapEvent) {
   this.rotation_ = rotation;
 };
 
-var olControlRotate = ol.control.RotateControl;
+var olControlRotate = _openlayers2.default.control.RotateControl;
 exports.default = olControlRotate;
 module.exports = exports['default'];
 
 /***/ }),
-/* 126 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10105,23 +10939,248 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-__webpack_require__(175);
+__webpack_require__(180);
 
-var _constants = __webpack_require__(11);
+var _constants = __webpack_require__(7);
 
-var _domUtils = __webpack_require__(9);
+var _domUtils = __webpack_require__(5);
 
 var htmlUtils = _interopRequireWildcard(_domUtils);
 
-var _Events = __webpack_require__(13);
+var _Events = __webpack_require__(8);
 
 var Events = _interopRequireWildcard(_Events);
 
-__webpack_require__(104);
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+ol.control.ScaleLineH = function () {
+  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+  var className = options.className !== undefined ? options.className : 'hmap-scale-line-control';
+
+  this.element_ = htmlUtils.create('div', className + ' ' + _constants.BASE_CLASS_NAME.CLASS_UNSELECTABLE);
+
+  this.innerElement_ = htmlUtils.create('div', className + '-inner', this.element_);
+
+  this.viewState_ = null;
+
+  this.minWidth_ = options.minWidth !== undefined ? options.minWidth : 64;
+
+  this.renderedVisible_ = false;
+
+  this.renderedWidth_ = undefined;
+
+  this.renderedHTML_ = '';
+
+  var render = options.render ? options.render : ol.control.ScaleLineH.render;
+
+  ol.control.Control.call(this, {
+    element: this.element_,
+    render: render,
+    target: options.target
+  });
+  Events.listen(this, 'change:' + ol.control.ScaleLineH.Property_.UNITS, this.handleUnitsChanged_, this);
+  this.setUnits(options.units || ol.control.ScaleLineH.ScaleLineUnits.METRIC);
+};
+
+ol.inherits(ol.control.ScaleLineH, ol.control.Control);
+
+ol.control.ScaleLineH.LEADING_DIGITS = [1, 2, 5];
+
+ol.control.ScaleLineH.ScaleLineUnits = {
+  DEGREES: 'degrees',
+  IMPERIAL: 'imperial',
+  NAUTICAL: 'nautical',
+  METRIC: 'metric',
+  CHINESEMETRIC: 'metric_cn',
+  US: 'us'
+};
+
+ol.control.ScaleLineH.prototype.getUnits = function () {
+  return this.get(ol.control.ScaleLineH.Property_.UNITS);
+};
+
+ol.control.ScaleLineH.render = function (mapEvent) {
+  var frameState = mapEvent.frameState;
+  if (!frameState) {
+    this.viewState_ = null;
+  } else {
+    this.viewState_ = frameState.viewState;
+  }
+  this.updateElement_();
+};
+
+ol.control.ScaleLineH.prototype.handleUnitsChanged_ = function () {
+  this.updateElement_();
+};
+
+ol.control.ScaleLineH.prototype.setUnits = function (units) {
+  this.set(ol.control.ScaleLineH.Property_.UNITS, units);
+};
+
+ol.control.ScaleLineH.prototype.updateElement_ = function () {
+  var viewState = this.viewState_;
+  if (!viewState) {
+    if (this.renderedVisible_) {
+      this.element_.style.display = 'none';
+      this.renderedVisible_ = false;
+    }
+    return;
+  }
+  var _ref = [viewState.center, viewState.projection],
+      center = _ref[0],
+      projection = _ref[1];
+
+  var units = this.getUnits();
+  var pointResolutionUnits = units === ol.control.ScaleLineH.ScaleLineUnits.DEGREES ? _constants.UNITS.DEGREES : _constants.UNITS.METERS;
+  var pointResolution = ol.proj.getPointResolution(projection, viewState.resolution, center, pointResolutionUnits);
+  var nominalCount = this.minWidth_ * pointResolution;
+  var suffix = '';
+  if (units === ol.control.ScaleLineH.ScaleLineUnits.DEGREES) {
+    var metersPerDegree = ol.proj.METERS_PER_UNIT[_constants.UNITS.DEGREES];
+    if (projection.getUnits() === _constants.UNITS.DEGREES) {
+      nominalCount *= metersPerDegree;
+    } else {
+      pointResolution /= metersPerDegree;
+    }
+    if (nominalCount < metersPerDegree / 60) {
+      suffix = '\u2033';
+      pointResolution *= 3600;
+    } else if (nominalCount < metersPerDegree) {
+      suffix = '\u2032';
+      pointResolution *= 60;
+    } else {
+      suffix = '\xB0';
+    }
+  } else if (units === ol.control.ScaleLineH.ScaleLineUnits.IMPERIAL) {
+    if (nominalCount < 0.9144) {
+      suffix = 'in';
+      pointResolution /= 0.0254;
+    } else if (nominalCount < 1609.344) {
+      suffix = 'ft';
+      pointResolution /= 0.3048;
+    } else {
+      suffix = 'mi';
+      pointResolution /= 1609.344;
+    }
+  } else if (units === ol.control.ScaleLineH.ScaleLineUnits.NAUTICAL) {
+    pointResolution /= 1852;
+    suffix = 'nm';
+  } else if (units === ol.control.ScaleLineH.ScaleLineUnits.METRIC) {
+    if (nominalCount < 0.001) {
+      suffix = 'μm';
+      pointResolution *= 1000000;
+    } else if (nominalCount < 1) {
+      suffix = 'mm';
+      pointResolution *= 1000;
+    } else if (nominalCount < 1000) {
+      suffix = 'm';
+    } else {
+      suffix = 'km';
+      pointResolution /= 1000;
+    }
+  } else if (units === ol.control.ScaleLineH.ScaleLineUnits.US) {
+    if (nominalCount < 0.9144) {
+      suffix = 'in';
+      pointResolution *= 39.37;
+    } else if (nominalCount < 1609.344) {
+      suffix = 'ft';
+      pointResolution /= 0.30480061;
+    } else {
+      suffix = 'mi';
+      pointResolution /= 1609.3472;
+    }
+  } else if (units === ol.control.ScaleLineH.ScaleLineUnits.CHINESEMETRIC) {
+    if (nominalCount < 0.001) {
+      suffix = '微米';
+      pointResolution *= 1000000;
+    } else if (nominalCount < 1) {
+      suffix = '毫米';
+      pointResolution *= 1000;
+    } else if (nominalCount < 1000) {
+      suffix = '米';
+    } else {
+      suffix = '千米';
+      pointResolution /= 1000;
+    }
+  } else {
+    ol.asserts.assert(false, 33);
+  }
+
+  var i = 3 * Math.floor(Math.log(this.minWidth_ * pointResolution) / Math.log(10));
+  var _ref2 = [],
+      count = _ref2[0],
+      width = _ref2[1];
+
+  while (true) {
+    count = ol.control.ScaleLineH.LEADING_DIGITS[(i % 3 + 3) % 3] * Math.pow(10, Math.floor(i / 3));
+    width = Math.round(count / pointResolution);
+    if (isNaN(width)) {
+      this.element_.style.display = 'none';
+      this.renderedVisible_ = false;
+      return;
+    } else if (width >= this.minWidth_) {
+      break;
+    }
+    ++i;
+  }
+  var html = count + ' ' + suffix;
+  if (this.renderedHTML_ !== html) {
+    this.innerElement_.innerHTML = html;
+    this.renderedHTML_ = html;
+  }
+  if (this.renderedWidth_ !== width) {
+    this.innerElement_.style.width = width + 'px';
+    this.renderedWidth_ = width;
+  }
+  if (!this.renderedVisible_) {
+    this.element_.style.display = '';
+    this.renderedVisible_ = true;
+  }
+};
+
+ol.control.ScaleLineH.Property_ = {
+  UNITS: 'units'
+};
+
+var olControlScaleLine = ol.control.ScaleLineH;
+exports.default = olControlScaleLine;
+module.exports = exports['default'];
+
+/***/ }),
+/* 131 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _openlayers = __webpack_require__(0);
+
+var _openlayers2 = _interopRequireDefault(_openlayers);
+
+__webpack_require__(181);
+
+var _constants = __webpack_require__(7);
+
+var _domUtils = __webpack_require__(5);
+
+var htmlUtils = _interopRequireWildcard(_domUtils);
+
+var _Events = __webpack_require__(8);
+
+var Events = _interopRequireWildcard(_Events);
+
+__webpack_require__(105);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-ol.control.CompareLayer = function (beforeMap, afterMap, params) {
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_openlayers2.default.control.CompareLayer = function (beforeMap, afterMap, params) {
   this.options = params || {};
   if (beforeMap && afterMap) {
     this.beforeMap = beforeMap;
@@ -10151,15 +11210,15 @@ ol.control.CompareLayer = function (beforeMap, afterMap, params) {
   Events.listen(innerElement_, 'pointerup', this.handleDraggerEnd_, this);
   Events.listen(window, 'pointerup', this.handleDraggerEnd_, this);
 
-  ol.control.Control.call(this, {
+  _openlayers2.default.control.Control.call(this, {
     element: this.element_,
     target: this.options['target']
   });
 };
 
-ol.inherits(ol.control.CompareLayer, ol.control.Control);
+_openlayers2.default.inherits(_openlayers2.default.control.CompareLayer, _openlayers2.default.control.Control);
 
-ol.control.CompareLayer.prototype.initControl = function () {
+_openlayers2.default.control.CompareLayer.prototype.initControl = function () {
   this._bounds = this.getMap().getTargetElement().getBoundingClientRect();
   this.percent = 0.5;
   this._setPosition(this._bounds.width, this._bounds.width / 2);
@@ -10167,7 +11226,7 @@ ol.control.CompareLayer.prototype.initControl = function () {
   this.clipLayer();
 };
 
-ol.control.CompareLayer.prototype.handleDraggerStart_ = function (event) {
+_openlayers2.default.control.CompareLayer.prototype.handleDraggerStart_ = function (event) {
   if (!this.dragging_ && event.target === htmlUtils.getElementsByClassName('.' + this.className + '-inner', this.element_)) {
     this.previousX_ = event.clientX;
     this.previousY_ = event.clientY;
@@ -10175,7 +11234,7 @@ ol.control.CompareLayer.prototype.handleDraggerStart_ = function (event) {
   }
 };
 
-ol.control.CompareLayer.prototype.handleDraggerDrag_ = function (event) {
+_openlayers2.default.control.CompareLayer.prototype.handleDraggerDrag_ = function (event) {
   if (this.dragging_) {
     this._bounds = this.getMap().getTargetElement().getBoundingClientRect();
     this._setPosition(this._bounds.width, this._getX(event));
@@ -10184,7 +11243,7 @@ ol.control.CompareLayer.prototype.handleDraggerDrag_ = function (event) {
   }
 };
 
-ol.control.CompareLayer.prototype.handleDraggerEnd_ = function (event) {
+_openlayers2.default.control.CompareLayer.prototype.handleDraggerEnd_ = function (event) {
   if (this.dragging_) {
     this.dragging_ = false;
     this.previousX_ = undefined;
@@ -10192,7 +11251,7 @@ ol.control.CompareLayer.prototype.handleDraggerEnd_ = function (event) {
   }
 };
 
-ol.control.CompareLayer.prototype.clipLayer = function () {
+_openlayers2.default.control.CompareLayer.prototype.clipLayer = function () {
   var that = this;
   this.getMap().un('precompose', this.precompose);
   this.getMap().un('postcompose', this.postcompose);
@@ -10210,7 +11269,7 @@ ol.control.CompareLayer.prototype.clipLayer = function () {
   });
 };
 
-ol.control.CompareLayer.prototype._setPosition = function (sourceWidth, value) {
+_openlayers2.default.control.CompareLayer.prototype._setPosition = function (sourceWidth, value) {
   var pos = 'translate(' + value + 'px, 0)';
   this.element_.style.transform = pos;
   this.element_.style.WebkitTransform = pos;
@@ -10220,7 +11279,7 @@ ol.control.CompareLayer.prototype._setPosition = function (sourceWidth, value) {
   this.getMap().render();
 };
 
-ol.control.CompareLayer.prototype.resize = function () {
+_openlayers2.default.control.CompareLayer.prototype.resize = function () {
   var resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
   var doc = window.document;
   var that = this;
@@ -10253,7 +11312,7 @@ ol.control.CompareLayer.prototype.resize = function () {
   }
 };
 
-ol.control.CompareLayer.prototype._getX = function (e) {
+_openlayers2.default.control.CompareLayer.prototype._getX = function (e) {
   e = e.touches ? e.touches[0] : e;
   var x = e.clientX - this._bounds.left;
   if (x < 0) x = 0;
@@ -10261,9 +11320,9 @@ ol.control.CompareLayer.prototype._getX = function (e) {
   return x;
 };
 
-ol.control.CompareLayer.prototype.setMap = function (map) {
-  if (map && map instanceof ol.Map) {
-    ol.control.Control.prototype.setMap.call(this, map);
+_openlayers2.default.control.CompareLayer.prototype.setMap = function (map) {
+  if (map && map instanceof _openlayers2.default.Map) {
+    _openlayers2.default.control.Control.prototype.setMap.call(this, map);
     if (map) {
       map.render();
       this.initControl();
@@ -10273,7 +11332,7 @@ ol.control.CompareLayer.prototype.setMap = function (map) {
   }
 };
 
-ol.control.CompareLayer.prototype.setBeforeLayet = function (beforeMap) {
+_openlayers2.default.control.CompareLayer.prototype.setBeforeLayet = function (beforeMap) {
   if (beforeMap) {
     this.beforeMap = beforeMap;
     this.orderLayerZindex();
@@ -10282,7 +11341,7 @@ ol.control.CompareLayer.prototype.setBeforeLayet = function (beforeMap) {
   }
 };
 
-ol.control.CompareLayer.prototype.setAfterLayer = function (afterMap) {
+_openlayers2.default.control.CompareLayer.prototype.setAfterLayer = function (afterMap) {
   if (afterMap) {
     this.afterMap = afterMap;
     this.orderLayerZindex();
@@ -10291,7 +11350,7 @@ ol.control.CompareLayer.prototype.setAfterLayer = function (afterMap) {
   }
 };
 
-ol.control.CompareLayer.prototype.orderLayerZindex = function () {
+_openlayers2.default.control.CompareLayer.prototype.orderLayerZindex = function () {
   if (this.afterMap && this.beforeMap) {
     var afterMapIndex = this.afterMap.getZIndex();
     var beforeMapIndex = this.beforeMap.getZIndex();
@@ -10305,12 +11364,12 @@ ol.control.CompareLayer.prototype.orderLayerZindex = function () {
   }
 };
 
-var olControlCompareLayer = ol.control.CompareLayer;
+var olControlCompareLayer = _openlayers2.default.control.CompareLayer;
 exports.default = olControlCompareLayer;
 module.exports = exports['default'];
 
 /***/ }),
-/* 127 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10322,35 +11381,39 @@ Object.defineProperty(exports, "__esModule", {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-__webpack_require__(176);
+var _openlayers = __webpack_require__(0);
 
-var _constants = __webpack_require__(11);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
-var _domUtils = __webpack_require__(9);
+__webpack_require__(182);
+
+var _constants = __webpack_require__(7);
+
+var _domUtils = __webpack_require__(5);
 
 var htmlUtils = _interopRequireWildcard(_domUtils);
 
-var _Events = __webpack_require__(13);
+var _Events = __webpack_require__(8);
 
 var Events = _interopRequireWildcard(_Events);
 
-var _observableEmit = __webpack_require__(66);
+var _observableEmit = __webpack_require__(67);
 
 var _observableEmit2 = _interopRequireDefault(_observableEmit);
 
-var _mixin = __webpack_require__(69);
+var _mixin = __webpack_require__(70);
 
 var _mixin2 = _interopRequireDefault(_mixin);
 
-var _cloneDeep = __webpack_require__(257);
+var _cloneDeep = __webpack_require__(265);
 
 var _cloneDeep2 = _interopRequireDefault(_cloneDeep);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-ol.control.ContextMenu = function () {
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_openlayers2.default.control.ContextMenu = function () {
   var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
   this.options = params;
@@ -10367,17 +11430,17 @@ ol.control.ContextMenu = function () {
 
   this.element_ = htmlUtils.create('div', this.className_ + ' ' + _constants.BASE_CLASS_NAME.CLASS_UNSELECTABLE);
   this.element_.style.display = 'none';
-  ol.control.Control.call(this, {
+  _openlayers2.default.control.Control.call(this, {
     element: this.element_,
     target: this.options['target']
   });
   _observableEmit2.default.call(this);
 };
 
-ol.inherits(ol.control.ContextMenu, ol.control.Control);
-(0, _mixin2.default)(ol.control.ContextMenu, _observableEmit2.default);
+_openlayers2.default.inherits(_openlayers2.default.control.ContextMenu, _openlayers2.default.control.Control);
+(0, _mixin2.default)(_openlayers2.default.control.ContextMenu, _observableEmit2.default);
 
-ol.control.ContextMenu.prototype.initDomInternal = function (items) {
+_openlayers2.default.control.ContextMenu.prototype.initDomInternal = function (items) {
   this.htmlUtils(items, '', this.element_);
   if (this.getMap()) {
     this.mapContent = this.getMap().getViewport();
@@ -10385,7 +11448,7 @@ ol.control.ContextMenu.prototype.initDomInternal = function (items) {
   }
 };
 
-ol.control.ContextMenu.prototype.mouseDownHandle_ = function (event) {
+_openlayers2.default.control.ContextMenu.prototype.mouseDownHandle_ = function (event) {
   var that = this;
   event.stopPropagation();
   event.preventDefault();
@@ -10403,7 +11466,7 @@ ol.control.ContextMenu.prototype.mouseDownHandle_ = function (event) {
   }, this, true);
 };
 
-ol.control.ContextMenu.prototype.show = function (position) {
+_openlayers2.default.control.ContextMenu.prototype.show = function (position) {
   this.element_.style.display = 'block';
   this.element_.style.top = position[1] + 'px';
   this.element_.style.left = position[0] + 'px';
@@ -10418,12 +11481,12 @@ ol.control.ContextMenu.prototype.show = function (position) {
   }
 };
 
-ol.control.ContextMenu.prototype.hide = function () {
+_openlayers2.default.control.ContextMenu.prototype.hide = function () {
   this.element_.style.display = 'none';
   this.pixel = [];
 };
 
-ol.control.ContextMenu.prototype.htmlUtils = function (items, index, content, isOffset) {
+_openlayers2.default.control.ContextMenu.prototype.htmlUtils = function (items, index, content, isOffset) {
   var _this = this;
 
   var that = this;
@@ -10474,7 +11537,7 @@ ol.control.ContextMenu.prototype.htmlUtils = function (items, index, content, is
   return ulList;
 };
 
-ol.control.ContextMenu.prototype.updateElement_ = function (type, item, items) {
+_openlayers2.default.control.ContextMenu.prototype.updateElement_ = function (type, item, items) {
   var child_ = htmlUtils.get(this.className_ + '-ul' + '-inner');
   var cloneItems = (0, _cloneDeep2.default)(this.options['items']);
   var afterItems = null;
@@ -10512,15 +11575,15 @@ ol.control.ContextMenu.prototype.updateElement_ = function (type, item, items) {
   return afterItems;
 };
 
-ol.control.ContextMenu.prototype.getCurrentPixel = function () {
+_openlayers2.default.control.ContextMenu.prototype.getCurrentPixel = function () {
   return this.pixel;
 };
 
-ol.control.ContextMenu.prototype.getCurrentCoordinates = function () {
+_openlayers2.default.control.ContextMenu.prototype.getCurrentCoordinates = function () {
   return this.getMap().getCoordinateFromPixel(this.getCurrentPixel());
 };
 
-ol.control.ContextMenu.prototype.handleItemClick_ = function (event, item) {
+_openlayers2.default.control.ContextMenu.prototype.handleItemClick_ = function (event, item) {
   var _this2 = this;
 
   if (item && item['callback'] && typeof item['callback'] === 'function') {
@@ -10540,7 +11603,7 @@ ol.control.ContextMenu.prototype.handleItemClick_ = function (event, item) {
   }, 50);
 };
 
-ol.control.ContextMenu.prototype.handleItemMouseOver_ = function (event) {
+_openlayers2.default.control.ContextMenu.prototype.handleItemMouseOver_ = function (event) {
   if (event.target && event.target.childNodes) {
     var elements = Array.prototype.slice.call(event.target.childNodes, 0);
     if (elements && elements.length > 0) {
@@ -10556,7 +11619,7 @@ ol.control.ContextMenu.prototype.handleItemMouseOver_ = function (event) {
   }
 };
 
-ol.control.ContextMenu.prototype.handleItemMouseOut_ = function (event) {
+_openlayers2.default.control.ContextMenu.prototype.handleItemMouseOut_ = function (event) {
   if (event.target && event.target.childNodes) {
     var elements = Array.prototype.slice.call(event.target.childNodes, 0);
     if (elements && elements.length > 0) {
@@ -10572,18 +11635,18 @@ ol.control.ContextMenu.prototype.handleItemMouseOut_ = function (event) {
   }
 };
 
-ol.control.ContextMenu.prototype.setMap = function (map) {
-  ol.control.Control.prototype.setMap.call(this, map);
-  if (map && map instanceof ol.Map) {
+_openlayers2.default.control.ContextMenu.prototype.setMap = function (map) {
+  _openlayers2.default.control.Control.prototype.setMap.call(this, map);
+  if (map && map instanceof _openlayers2.default.Map) {
     this.initDomInternal(this.options['items']);
   }
 };
 
-ol.control.ContextMenu.prototype.pop = function () {
+_openlayers2.default.control.ContextMenu.prototype.pop = function () {
   return this.updateElement_('pop');
 };
 
-ol.control.ContextMenu.prototype.push = function (item) {
+_openlayers2.default.control.ContextMenu.prototype.push = function (item) {
   if (item && (typeof item === 'undefined' ? 'undefined' : _typeof(item)) === 'object') {
     return this.updateElement_('push', item);
   } else {
@@ -10591,15 +11654,15 @@ ol.control.ContextMenu.prototype.push = function (item) {
   }
 };
 
-ol.control.ContextMenu.prototype.shift = function () {
+_openlayers2.default.control.ContextMenu.prototype.shift = function () {
   return this.updateElement_('shift');
 };
 
-ol.control.ContextMenu.prototype.reverse = function () {
+_openlayers2.default.control.ContextMenu.prototype.reverse = function () {
   return this.updateElement_('reverse');
 };
 
-ol.control.ContextMenu.prototype.unshift = function (item) {
+_openlayers2.default.control.ContextMenu.prototype.unshift = function (item) {
   if (item && (typeof item === 'undefined' ? 'undefined' : _typeof(item)) === 'object') {
     return this.updateElement_('unshift', item);
   } else {
@@ -10607,7 +11670,7 @@ ol.control.ContextMenu.prototype.unshift = function (item) {
   }
 };
 
-ol.control.ContextMenu.prototype.update = function (items) {
+_openlayers2.default.control.ContextMenu.prototype.update = function (items) {
   if (items && Array.isArray(items) && items.length > 0) {
     this.updateElement_('', '', items);
   } else {
@@ -10615,7 +11678,7 @@ ol.control.ContextMenu.prototype.update = function (items) {
   }
 };
 
-ol.control.ContextMenu.prototype.updateOption = function (items) {
+_openlayers2.default.control.ContextMenu.prototype.updateOption = function (items) {
   if (items && Array.isArray(items) && items.length > 0) {
     this.options['items'] = items;
     this.updateElement_('', '', items);
@@ -10624,12 +11687,12 @@ ol.control.ContextMenu.prototype.updateOption = function (items) {
   }
 };
 
-var olControlContextMenu = ol.control.ContextMenu;
+var olControlContextMenu = _openlayers2.default.control.ContextMenu;
 exports.default = olControlContextMenu;
 module.exports = exports['default'];
 
 /***/ }),
-/* 128 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10639,15 +11702,19 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-__webpack_require__(181);
+var _openlayers = __webpack_require__(0);
 
-var _constants = __webpack_require__(11);
+var _openlayers2 = _interopRequireDefault(_openlayers);
 
-var _domUtils = __webpack_require__(9);
+__webpack_require__(189);
+
+var _constants = __webpack_require__(7);
+
+var _domUtils = __webpack_require__(5);
 
 var htmlUtils = _interopRequireWildcard(_domUtils);
 
-var _Events = __webpack_require__(13);
+var _Events = __webpack_require__(8);
 
 var Events = _interopRequireWildcard(_Events);
 
@@ -10655,7 +11722,9 @@ var _EventType = __webpack_require__(44);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-ol.control.ZoomMenu = function () {
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_openlayers2.default.control.ZoomMenu = function () {
   var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
   this.options = params;
@@ -10667,14 +11736,14 @@ ol.control.ZoomMenu = function () {
   var element_ = this.initDomInternal_(className, delta);
 
   this.duration_ = this.options.duration !== undefined ? this.options.duration : 250;
-  ol.control.Control.call(this, {
+  _openlayers2.default.control.Control.call(this, {
     element: element_,
     target: this.options.target
   });
 };
-ol.inherits(ol.control.ZoomMenu, ol.control.Control);
+_openlayers2.default.inherits(_openlayers2.default.control.ZoomMenu, _openlayers2.default.control.Control);
 
-ol.control.ZoomMenu.prototype.initDomInternal_ = function (className, delta) {
+_openlayers2.default.control.ZoomMenu.prototype.initDomInternal_ = function (className, delta) {
   var element = htmlUtils.create('div', className + ' ' + _constants.BASE_CLASS_NAME.CLASS_UNSELECTABLE);
   var zoomin = htmlUtils.create('span', 'zoom-in', element);
   zoomin.setAttribute('title', '放大');
@@ -10682,17 +11751,17 @@ ol.control.ZoomMenu.prototype.initDomInternal_ = function (className, delta) {
   var zoomout = htmlUtils.create('span', 'zoom-out', element);
   zoomout.setAttribute('title', '缩小');
   zoomout.innerHTML = '\u2212';
-  Events.listen(zoomin, _EventType.EventType.CLICK, ol.control.ZoomMenu.prototype.handleClick_.bind(this, delta));
-  Events.listen(zoomout, _EventType.EventType.CLICK, ol.control.ZoomMenu.prototype.handleClick_.bind(this, -delta));
+  Events.listen(zoomin, _EventType.EventType.CLICK, _openlayers2.default.control.ZoomMenu.prototype.handleClick_.bind(this, delta));
+  Events.listen(zoomout, _EventType.EventType.CLICK, _openlayers2.default.control.ZoomMenu.prototype.handleClick_.bind(this, -delta));
   return element;
 };
 
-ol.control.ZoomMenu.prototype.handleClick_ = function (delta, event) {
+_openlayers2.default.control.ZoomMenu.prototype.handleClick_ = function (delta, event) {
   event.preventDefault();
   this.zoomByDelta_(delta);
 };
 
-ol.control.ZoomMenu.prototype.zoomByDelta_ = function (delta) {
+_openlayers2.default.control.ZoomMenu.prototype.zoomByDelta_ = function (delta) {
   var map = this.getMap();
   var view = map.getView();
   if (!view) {
@@ -10708,7 +11777,7 @@ ol.control.ZoomMenu.prototype.zoomByDelta_ = function (delta) {
         view.animate({
           resolution: newResolution,
           duration: this.duration_,
-          easing: ol.easing.easeOut
+          easing: _openlayers2.default.easing.easeOut
         });
       } else {
         view.setResolution(newResolution);
@@ -10717,12 +11786,12 @@ ol.control.ZoomMenu.prototype.zoomByDelta_ = function (delta) {
   }
 };
 
-var olControlZoomMenu = ol.control.ZoomMenu;
+var olControlZoomMenu = _openlayers2.default.control.ZoomMenu;
 exports.default = olControlZoomMenu;
 module.exports = exports['default'];
 
 /***/ }),
-/* 129 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10731,15 +11800,22 @@ module.exports = exports['default'];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-ol.layer.LayerUtils = function (map) {
-  if (map && map instanceof ol.Map) {
+
+var _openlayers = __webpack_require__(0);
+
+var _openlayers2 = _interopRequireDefault(_openlayers);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_openlayers2.default.layer.LayerUtils = function (map) {
+  if (map && map instanceof _openlayers2.default.Map) {
     this.map = map;
   } else {
     throw new Error('传入的不是地图对象！');
   }
 };
 
-ol.layer.LayerUtils.prototype.getLayerByLayerName = function (layerName) {
+_openlayers2.default.layer.LayerUtils.prototype.getLayerByLayerName = function (layerName) {
   try {
     var targetLayer = null;
     if (this.map) {
@@ -10752,13 +11828,13 @@ ol.layer.LayerUtils.prototype.getLayerByLayerName = function (layerName) {
   }
 };
 
-ol.layer.LayerUtils.prototype.getLayerInternal = function (layers, key, value) {
+_openlayers2.default.layer.LayerUtils.prototype.getLayerInternal = function (layers, key, value) {
   var _this = this;
 
   var _target = null;
   if (layers.length > 0) {
     layers.every(function (layer) {
-      if (layer instanceof ol.layer.Group) {
+      if (layer instanceof _openlayers2.default.layer.Group) {
         var _layers = layer.getLayers().getArray();
         _target = _this.getLayerInternal(_layers, key, value);
         if (_target) {
@@ -10777,17 +11853,17 @@ ol.layer.LayerUtils.prototype.getLayerInternal = function (layers, key, value) {
   return _target;
 };
 
-ol.layer.LayerUtils.prototype.getLayersArrayInternal = function (layers, key, value) {
+_openlayers2.default.layer.LayerUtils.prototype.getLayersArrayInternal = function (layers, key, value) {
   var _this2 = this;
 
   var _target = [];
   if (layers.length > 0) {
     layers.forEach(function (layer) {
-      if (layer instanceof ol.layer.Group) {
+      if (layer instanceof _openlayers2.default.layer.Group) {
         var _layers2 = layer.getLayers().getArray();
-        var _layer = _this2.getLayerInternal(_layers2, key, value);
+        var _layer = _this2.getLayersArrayInternal(_layers2, key, value);
         if (_layer) {
-          _target.push(layer);
+          _target = _target.concat(_layer);
         }
       } else if (layer.get(key) === value) {
         _target.push(layer);
@@ -10797,7 +11873,7 @@ ol.layer.LayerUtils.prototype.getLayersArrayInternal = function (layers, key, va
   return _target;
 };
 
-ol.layer.LayerUtils.prototype.getLayerByKeyValue = function (key, value) {
+_openlayers2.default.layer.LayerUtils.prototype.getLayerByKeyValue = function (key, value) {
   try {
     var targetLayer = null;
     if (this.map) {
@@ -10810,7 +11886,7 @@ ol.layer.LayerUtils.prototype.getLayerByKeyValue = function (key, value) {
   }
 };
 
-ol.layer.LayerUtils.prototype.getLayersArrayByKeyValue = function (key, value) {
+_openlayers2.default.layer.LayerUtils.prototype.getLayersArrayByKeyValue = function (key, value) {
   try {
     var targetLayers = [];
     if (this.map) {
@@ -10823,33 +11899,33 @@ ol.layer.LayerUtils.prototype.getLayersArrayByKeyValue = function (key, value) {
   }
 };
 
-ol.layer.LayerUtils.prototype.createVectorLayer = function (layerName, params) {
+_openlayers2.default.layer.LayerUtils.prototype.createVectorLayer = function (layerName, params) {
   try {
     if (this.map) {
       var vectorLayer = this.getLayerByLayerName(layerName);
-      if (!(vectorLayer instanceof ol.layer.Vector)) {
+      if (!(vectorLayer instanceof _openlayers2.default.layer.Vector)) {
         vectorLayer = null;
       }
       if (!vectorLayer) {
         if (params && params.create) {
-          vectorLayer = new ol.layer.Vector({
+          vectorLayer = new _openlayers2.default.layer.Vector({
             layerName: layerName,
             params: params,
             layerType: 'vector',
-            source: new ol.source.Vector({
+            source: new _openlayers2.default.source.Vector({
               wrapX: false
             }),
-            style: new ol.style.Style({
-              fill: new ol.style.Fill({
+            style: new _openlayers2.default.style.Style({
+              fill: new _openlayers2.default.style.Fill({
                 color: 'rgba(67, 110, 238, 0.4)'
               }),
-              stroke: new ol.style.Stroke({
+              stroke: new _openlayers2.default.style.Stroke({
                 color: '#4781d9',
                 width: 2
               }),
-              image: new ol.style.Circle({
+              image: new _openlayers2.default.style.Circle({
                 radius: 7,
-                fill: new ol.style.Fill({
+                fill: new _openlayers2.default.style.Fill({
                   color: '#ffcc33'
                 })
               })
@@ -10863,7 +11939,7 @@ ol.layer.LayerUtils.prototype.createVectorLayer = function (layerName, params) {
         }
 
         var _vectorLayer = this.getLayerByLayerName(layerName);
-        if (!_vectorLayer || !(_vectorLayer instanceof ol.layer.Vector)) {
+        if (!_vectorLayer || !(_vectorLayer instanceof _openlayers2.default.layer.Vector)) {
           this.map.addLayer(vectorLayer);
         }
       }
@@ -10874,12 +11950,12 @@ ol.layer.LayerUtils.prototype.createVectorLayer = function (layerName, params) {
   }
 };
 
-var olLayerLayerUtils = ol.layer.LayerUtils;
+var olLayerLayerUtils = _openlayers2.default.layer.LayerUtils;
 exports.default = olLayerLayerUtils;
 module.exports = exports['default'];
 
 /***/ }),
-/* 130 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10889,13 +11965,19 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-ol.source.BAIDU = function (optOptions) {
+var _openlayers = __webpack_require__(0);
+
+var _openlayers2 = _interopRequireDefault(_openlayers);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_openlayers2.default.source.BAIDU = function (optOptions) {
   var options = optOptions || {};
   var attributions = '';
   if (options.attributions !== undefined) {
     attributions = options.attributions;
   } else {
-    attributions = [ol.source.BAIDU.ATTRIBUTION];
+    attributions = [_openlayers2.default.source.BAIDU.ATTRIBUTION];
   }
   options.projection = options['projection'] ? options.projection : 'EPSG:3857';
   var crossOrigin = options.crossOrigin !== undefined ? options.crossOrigin : 'anonymous';
@@ -10912,7 +11994,7 @@ ol.source.BAIDU = function (optOptions) {
       if (y < 0) {
         y = 'M' + -y;
       }
-      return url.replace('{0-3}', ol.source.BAIDU.getRandom(0, 3)).replace('{x}', x.toString()).replace('{y}', y.toString()).replace('{z}', z.toString());
+      return url.replace('{0-3}', _openlayers2.default.source.BAIDU.getRandom(0, 3)).replace('{x}', x.toString()).replace('{y}', y.toString()).replace('{z}', z.toString());
     };
   }
   var levels = options['levels'] ? options['levels'] : 19;
@@ -10920,14 +12002,14 @@ ol.source.BAIDU = function (optOptions) {
   for (var z = 0; z < levels; z++) {
     resolutions[z] = Math.pow(2, levels - 1 - z);
   }
-  var tileGrid = new ol.tilegrid.TileGrid({
+  var tileGrid = new _openlayers2.default.tilegrid.TileGrid({
     tileSize: options['tileSize'] ? options['tileSize'] : 256,
     origin: options['origin'] ? options['origin'] : [0, 0],
     extent: options['extent'] ? options['extent'] : undefined,
     resolutions: resolutions,
     minZoom: options['minZoom'] && typeof options['minZoom'] === 'number' ? options['minZoom'] : 0
   });
-  ol.source.TileImage.call(this, {
+  _openlayers2.default.source.TileImage.call(this, {
     tileGrid: tileGrid,
     attributions: attributions,
     cacheSize: options.cacheSize,
@@ -10941,25 +12023,25 @@ ol.source.BAIDU = function (optOptions) {
     wrapX: options.wrapX
   });
 };
-ol.inherits(ol.source.BAIDU, ol.source.TileImage);
+_openlayers2.default.inherits(_openlayers2.default.source.BAIDU, _openlayers2.default.source.TileImage);
 
-ol.source.BAIDU.getRandom = function (min, max) {
+_openlayers2.default.source.BAIDU.getRandom = function (min, max) {
   var r = Math.random() * (max - min);
   var re = Math.round(r + min);
   re = Math.max(Math.min(re, max), min);
   return re;
 };
 
-ol.source.BAIDU.ATTRIBUTION = new ol.Attribution({
+_openlayers2.default.source.BAIDU.ATTRIBUTION = new _openlayers2.default.Attribution({
   html: '&copy; ' + '<a href="http://map.baidu.com/">百度地图</a> ' + 'contributors.'
 });
 
-var olSourceBaidu = ol.source.BAIDU;
+var olSourceBaidu = _openlayers2.default.source.BAIDU;
 exports.default = olSourceBaidu;
 module.exports = exports['default'];
 
 /***/ }),
-/* 131 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10969,18 +12051,24 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-ol.source.GAODE = function (optOptions) {
+var _openlayers = __webpack_require__(0);
+
+var _openlayers2 = _interopRequireDefault(_openlayers);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_openlayers2.default.source.GAODE = function (optOptions) {
   var options = optOptions || {};
   var attributions = '';
   if (options.attributions !== undefined) {
     attributions = options.attributions;
   } else {
-    attributions = [ol.source.GAODE.ATTRIBUTION];
+    attributions = [_openlayers2.default.source.GAODE.ATTRIBUTION];
   }
   var crossOrigin = options.crossOrigin !== undefined ? options.crossOrigin : undefined;
   var url = options.url !== undefined ? options.url : 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=6&x={x}&y={y}&z={z}';
   var tileUrlFunction = options.tileUrlFunction ? options.tileUrlFunction : undefined;
-  ol.source.XYZ.call(this, {
+  _openlayers2.default.source.XYZ.call(this, {
     attributions: attributions,
     cacheSize: options.cacheSize,
     crossOrigin: crossOrigin,
@@ -10993,18 +12081,18 @@ ol.source.GAODE = function (optOptions) {
     wrapX: options.wrapX
   });
 };
-ol.inherits(ol.source.GAODE, ol.source.XYZ);
+_openlayers2.default.inherits(_openlayers2.default.source.GAODE, _openlayers2.default.source.XYZ);
 
-ol.source.GAODE.ATTRIBUTION = new ol.Attribution({
+_openlayers2.default.source.GAODE.ATTRIBUTION = new _openlayers2.default.Attribution({
   html: '&copy; ' + '<a href="http://ditu.amap.com/">高德地图</a> ' + 'contributors.'
 });
 
-var olSourceGaode = ol.source.GAODE;
+var olSourceGaode = _openlayers2.default.source.GAODE;
 exports.default = olSourceGaode;
 module.exports = exports['default'];
 
 /***/ }),
-/* 132 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11014,18 +12102,24 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-ol.source.GOOGLE = function (optOptions) {
+var _openlayers = __webpack_require__(0);
+
+var _openlayers2 = _interopRequireDefault(_openlayers);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_openlayers2.default.source.GOOGLE = function (optOptions) {
   var options = optOptions || {};
   var attributions = '';
   if (options.attributions !== undefined) {
     attributions = options.attributions;
   } else {
-    attributions = [ol.source.GOOGLE.ATTRIBUTION];
+    attributions = [_openlayers2.default.source.GOOGLE.ATTRIBUTION];
   }
   var crossOrigin = options.crossOrigin !== undefined ? options.crossOrigin : 'anonymous';
   var url = options.url !== undefined ? options.url : 'http://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}';
 
-  ol.source.XYZ.call(this, {
+  _openlayers2.default.source.XYZ.call(this, {
     attributions: attributions,
     cacheSize: options.cacheSize,
     crossOrigin: crossOrigin,
@@ -11037,22 +12131,22 @@ ol.source.GOOGLE = function (optOptions) {
     wrapX: options.wrapX
   });
 };
-ol.inherits(ol.source.GOOGLE, ol.source.XYZ);
+_openlayers2.default.inherits(_openlayers2.default.source.GOOGLE, _openlayers2.default.source.XYZ);
 
-ol.source.GOOGLE.ATTRIBUTION = new ol.Attribution({
+_openlayers2.default.source.GOOGLE.ATTRIBUTION = new _openlayers2.default.Attribution({
   html: '&copy; ' + '<a href="http://www.google.cn/maps">谷歌地图</a> ' + 'contributors.'
 });
 
-var olSourceGoogle = ol.source.GOOGLE;
+var olSourceGoogle = _openlayers2.default.source.GOOGLE;
 exports.default = olSourceGoogle;
 module.exports = exports['default'];
 
 /***/ }),
-/* 133 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 22.1.3.31 Array.prototype[@@unscopables]
-var UNSCOPABLES = __webpack_require__(3)('unscopables');
+var UNSCOPABLES = __webpack_require__(4)('unscopables');
 var ArrayProto = Array.prototype;
 if (ArrayProto[UNSCOPABLES] == undefined) __webpack_require__(15)(ArrayProto, UNSCOPABLES, {});
 module.exports = function (key) {
@@ -11061,14 +12155,14 @@ module.exports = function (key) {
 
 
 /***/ }),
-/* 134 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // false -> Array#indexOf
 // true  -> Array#includes
 var toIObject = __webpack_require__(17);
-var toLength = __webpack_require__(81);
-var toAbsoluteIndex = __webpack_require__(153);
+var toLength = __webpack_require__(82);
+var toAbsoluteIndex = __webpack_require__(158);
 module.exports = function (IS_INCLUDES) {
   return function ($this, el, fromIndex) {
     var O = toIObject($this);
@@ -11090,14 +12184,14 @@ module.exports = function (IS_INCLUDES) {
 
 
 /***/ }),
-/* 135 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var aFunction = __webpack_require__(27);
-var isObject = __webpack_require__(4);
-var invoke = __webpack_require__(141);
+var isObject = __webpack_require__(6);
+var invoke = __webpack_require__(146);
 var arraySlice = [].slice;
 var factories = {};
 
@@ -11122,23 +12216,23 @@ module.exports = Function.bind || function bind(that /* , ...args */) {
 
 
 /***/ }),
-/* 136 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var dP = __webpack_require__(7).f;
+var dP = __webpack_require__(10).f;
 var create = __webpack_require__(29);
-var redefineAll = __webpack_require__(79);
+var redefineAll = __webpack_require__(80);
 var ctx = __webpack_require__(28);
-var anInstance = __webpack_require__(70);
-var forOf = __webpack_require__(73);
+var anInstance = __webpack_require__(71);
+var forOf = __webpack_require__(74);
 var $iterDefine = __webpack_require__(48);
-var step = __webpack_require__(77);
-var setSpecies = __webpack_require__(151);
-var DESCRIPTORS = __webpack_require__(12);
+var step = __webpack_require__(78);
+var setSpecies = __webpack_require__(156);
+var DESCRIPTORS = __webpack_require__(13);
 var fastKey = __webpack_require__(50).fastKey;
-var validate = __webpack_require__(83);
+var validate = __webpack_require__(84);
 var SIZE = DESCRIPTORS ? '_s' : 'size';
 
 var getEntry = function (that, key) {
@@ -11273,23 +12367,23 @@ module.exports = {
 
 
 /***/ }),
-/* 137 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var global = __webpack_require__(2);
-var $export = __webpack_require__(1);
+var global = __webpack_require__(3);
+var $export = __webpack_require__(2);
 var redefine = __webpack_require__(16);
-var redefineAll = __webpack_require__(79);
+var redefineAll = __webpack_require__(80);
 var meta = __webpack_require__(50);
-var forOf = __webpack_require__(73);
-var anInstance = __webpack_require__(70);
-var isObject = __webpack_require__(4);
-var fails = __webpack_require__(10);
-var $iterDetect = __webpack_require__(145);
+var forOf = __webpack_require__(74);
+var anInstance = __webpack_require__(71);
+var isObject = __webpack_require__(6);
+var fails = __webpack_require__(12);
+var $iterDetect = __webpack_require__(150);
 var setToStringTag = __webpack_require__(33);
-var inheritIfRequired = __webpack_require__(140);
+var inheritIfRequired = __webpack_require__(145);
 
 module.exports = function (NAME, wrapper, methods, common, IS_MAP, IS_WEAK) {
   var Base = global[NAME];
@@ -11365,7 +12459,7 @@ module.exports = function (NAME, wrapper, methods, common, IS_MAP, IS_WEAK) {
 
 
 /***/ }),
-/* 138 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // all enumerable object keys, includes symbols
@@ -11386,19 +12480,19 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 139 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var document = __webpack_require__(2).document;
+var document = __webpack_require__(3).document;
 module.exports = document && document.documentElement;
 
 
 /***/ }),
-/* 140 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(4);
-var setPrototypeOf = __webpack_require__(80).set;
+var isObject = __webpack_require__(6);
+var setPrototypeOf = __webpack_require__(81).set;
 module.exports = function (that, target, C) {
   var S = target.constructor;
   var P;
@@ -11409,7 +12503,7 @@ module.exports = function (that, target, C) {
 
 
 /***/ }),
-/* 141 */
+/* 146 */
 /***/ (function(module, exports) {
 
 // fast apply, http://jsperf.lnkit.com/fast-apply/5
@@ -11431,12 +12525,12 @@ module.exports = function (fn, args, that) {
 
 
 /***/ }),
-/* 142 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // check on default Array iterator
-var Iterators = __webpack_require__(23);
-var ITERATOR = __webpack_require__(3)('iterator');
+var Iterators = __webpack_require__(22);
+var ITERATOR = __webpack_require__(4)('iterator');
 var ArrayProto = Array.prototype;
 
 module.exports = function (it) {
@@ -11445,7 +12539,7 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 143 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.2.2 IsArray(argument)
@@ -11456,11 +12550,11 @@ module.exports = Array.isArray || function isArray(arg) {
 
 
 /***/ }),
-/* 144 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // call something on iterator step with safe closing on error
-var anObject = __webpack_require__(0);
+var anObject = __webpack_require__(1);
 module.exports = function (iterator, fn, value, entries) {
   try {
     return entries ? fn(anObject(value)[0], value[1]) : fn(value);
@@ -11474,10 +12568,10 @@ module.exports = function (iterator, fn, value, entries) {
 
 
 /***/ }),
-/* 145 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var ITERATOR = __webpack_require__(3)('iterator');
+var ITERATOR = __webpack_require__(4)('iterator');
 var SAFE_CLOSING = false;
 
 try {
@@ -11502,7 +12596,7 @@ module.exports = function (exec, skipClosing) {
 
 
 /***/ }),
-/* 146 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getKeys = __webpack_require__(20);
@@ -11518,7 +12612,7 @@ module.exports = function (object, el) {
 
 
 /***/ }),
-/* 147 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11527,12 +12621,12 @@ module.exports = function (object, el) {
 var getKeys = __webpack_require__(20);
 var gOPS = __webpack_require__(30);
 var pIE = __webpack_require__(32);
-var toObject = __webpack_require__(82);
-var IObject = __webpack_require__(75);
+var toObject = __webpack_require__(83);
+var IObject = __webpack_require__(76);
 var $assign = Object.assign;
 
 // should work with symbols and should have deterministic property order (V8 bug)
-module.exports = !$assign || __webpack_require__(10)(function () {
+module.exports = !$assign || __webpack_require__(12)(function () {
   var A = {};
   var B = {};
   // eslint-disable-next-line no-undef
@@ -11559,14 +12653,14 @@ module.exports = !$assign || __webpack_require__(10)(function () {
 
 
 /***/ }),
-/* 148 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var dP = __webpack_require__(7);
-var anObject = __webpack_require__(0);
+var dP = __webpack_require__(10);
+var anObject = __webpack_require__(1);
 var getKeys = __webpack_require__(20);
 
-module.exports = __webpack_require__(12) ? Object.defineProperties : function defineProperties(O, Properties) {
+module.exports = __webpack_require__(13) ? Object.defineProperties : function defineProperties(O, Properties) {
   anObject(O);
   var keys = getKeys(Properties);
   var length = keys.length;
@@ -11578,7 +12672,7 @@ module.exports = __webpack_require__(12) ? Object.defineProperties : function de
 
 
 /***/ }),
-/* 149 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
@@ -11603,14 +12697,14 @@ module.exports.f = function getOwnPropertyNames(it) {
 
 
 /***/ }),
-/* 150 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // all object keys, includes non-enumerable and symbols
 var gOPN = __webpack_require__(51);
 var gOPS = __webpack_require__(30);
-var anObject = __webpack_require__(0);
-var Reflect = __webpack_require__(2).Reflect;
+var anObject = __webpack_require__(1);
+var Reflect = __webpack_require__(3).Reflect;
 module.exports = Reflect && Reflect.ownKeys || function ownKeys(it) {
   var keys = gOPN.f(anObject(it));
   var getSymbols = gOPS.f;
@@ -11619,15 +12713,15 @@ module.exports = Reflect && Reflect.ownKeys || function ownKeys(it) {
 
 
 /***/ }),
-/* 151 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var global = __webpack_require__(2);
-var dP = __webpack_require__(7);
-var DESCRIPTORS = __webpack_require__(12);
-var SPECIES = __webpack_require__(3)('species');
+var global = __webpack_require__(3);
+var dP = __webpack_require__(10);
+var DESCRIPTORS = __webpack_require__(13);
+var SPECIES = __webpack_require__(4)('species');
 
 module.exports = function (KEY) {
   var C = global[KEY];
@@ -11639,7 +12733,7 @@ module.exports = function (KEY) {
 
 
 /***/ }),
-/* 152 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var toInteger = __webpack_require__(54);
@@ -11662,7 +12756,7 @@ module.exports = function (TO_STRING) {
 
 
 /***/ }),
-/* 153 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var toInteger = __webpack_require__(54);
@@ -11675,14 +12769,14 @@ module.exports = function (index, length) {
 
 
 /***/ }),
-/* 154 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var global = __webpack_require__(2);
+var global = __webpack_require__(3);
 var core = __webpack_require__(14);
 var LIBRARY = __webpack_require__(49);
-var wksExt = __webpack_require__(84);
-var defineProperty = __webpack_require__(7).f;
+var wksExt = __webpack_require__(85);
+var defineProperty = __webpack_require__(10).f;
 module.exports = function (name) {
   var $Symbol = core.Symbol || (core.Symbol = LIBRARY ? {} : global.Symbol || {});
   if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: wksExt.f(name) });
@@ -11690,12 +12784,12 @@ module.exports = function (name) {
 
 
 /***/ }),
-/* 155 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var classof = __webpack_require__(71);
-var ITERATOR = __webpack_require__(3)('iterator');
-var Iterators = __webpack_require__(23);
+var classof = __webpack_require__(72);
+var ITERATOR = __webpack_require__(4)('iterator');
+var Iterators = __webpack_require__(22);
 module.exports = __webpack_require__(14).getIteratorMethod = function (it) {
   if (it != undefined) return it[ITERATOR]
     || it['@@iterator']
@@ -11704,14 +12798,14 @@ module.exports = __webpack_require__(14).getIteratorMethod = function (it) {
 
 
 /***/ }),
-/* 156 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var addToUnscopables = __webpack_require__(133);
-var step = __webpack_require__(77);
-var Iterators = __webpack_require__(23);
+var addToUnscopables = __webpack_require__(138);
+var step = __webpack_require__(78);
+var Iterators = __webpack_require__(22);
 var toIObject = __webpack_require__(17);
 
 // 22.1.3.4 Array.prototype.entries()
@@ -11745,17 +12839,17 @@ addToUnscopables('entries');
 
 
 /***/ }),
-/* 157 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.1 Reflect.apply(target, thisArgument, argumentsList)
-var $export = __webpack_require__(1);
+var $export = __webpack_require__(2);
 var aFunction = __webpack_require__(27);
-var anObject = __webpack_require__(0);
-var rApply = (__webpack_require__(2).Reflect || {}).apply;
+var anObject = __webpack_require__(1);
+var rApply = (__webpack_require__(3).Reflect || {}).apply;
 var fApply = Function.apply;
 // MS Edge argumentsList argument is optional
-$export($export.S + $export.F * !__webpack_require__(10)(function () {
+$export($export.S + $export.F * !__webpack_require__(12)(function () {
   rApply(function () { /* empty */ });
 }), 'Reflect', {
   apply: function apply(target, thisArgument, argumentsList) {
@@ -11767,18 +12861,18 @@ $export($export.S + $export.F * !__webpack_require__(10)(function () {
 
 
 /***/ }),
-/* 158 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.2 Reflect.construct(target, argumentsList [, newTarget])
-var $export = __webpack_require__(1);
+var $export = __webpack_require__(2);
 var create = __webpack_require__(29);
 var aFunction = __webpack_require__(27);
-var anObject = __webpack_require__(0);
-var isObject = __webpack_require__(4);
-var fails = __webpack_require__(10);
-var bind = __webpack_require__(135);
-var rConstruct = (__webpack_require__(2).Reflect || {}).construct;
+var anObject = __webpack_require__(1);
+var isObject = __webpack_require__(6);
+var fails = __webpack_require__(12);
+var bind = __webpack_require__(140);
+var rConstruct = (__webpack_require__(3).Reflect || {}).construct;
 
 // MS Edge supports only 2 arguments and argumentsList argument is optional
 // FF Nightly sets third argument as `new.target`, but does not create `this` from it
@@ -11820,17 +12914,17 @@ $export($export.S + $export.F * (NEW_TARGET_BUG || ARGS_BUG), 'Reflect', {
 
 
 /***/ }),
-/* 159 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.3 Reflect.defineProperty(target, propertyKey, attributes)
-var dP = __webpack_require__(7);
-var $export = __webpack_require__(1);
-var anObject = __webpack_require__(0);
+var dP = __webpack_require__(10);
+var $export = __webpack_require__(2);
+var anObject = __webpack_require__(1);
 var toPrimitive = __webpack_require__(34);
 
 // MS Edge has broken Reflect.defineProperty - throwing instead of returning false
-$export($export.S + $export.F * __webpack_require__(10)(function () {
+$export($export.S + $export.F * __webpack_require__(12)(function () {
   // eslint-disable-next-line no-undef
   Reflect.defineProperty(dP.f({}, 1, { value: 1 }), 1, { value: 2 });
 }), 'Reflect', {
@@ -11849,13 +12943,13 @@ $export($export.S + $export.F * __webpack_require__(10)(function () {
 
 
 /***/ }),
-/* 160 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.4 Reflect.deleteProperty(target, propertyKey)
-var $export = __webpack_require__(1);
+var $export = __webpack_require__(2);
 var gOPD = __webpack_require__(19).f;
-var anObject = __webpack_require__(0);
+var anObject = __webpack_require__(1);
 
 $export($export.S, 'Reflect', {
   deleteProperty: function deleteProperty(target, propertyKey) {
@@ -11866,14 +12960,14 @@ $export($export.S, 'Reflect', {
 
 
 /***/ }),
-/* 161 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 // 26.1.5 Reflect.enumerate(target)
-var $export = __webpack_require__(1);
-var anObject = __webpack_require__(0);
+var $export = __webpack_require__(2);
+var anObject = __webpack_require__(1);
 var Enumerate = function (iterated) {
   this._t = anObject(iterated); // target
   this._i = 0;                  // next index
@@ -11881,7 +12975,7 @@ var Enumerate = function (iterated) {
   var key;
   for (key in iterated) keys.push(key);
 };
-__webpack_require__(76)(Enumerate, 'Object', function () {
+__webpack_require__(77)(Enumerate, 'Object', function () {
   var that = this;
   var keys = that._k;
   var key;
@@ -11899,13 +12993,13 @@ $export($export.S, 'Reflect', {
 
 
 /***/ }),
-/* 162 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.7 Reflect.getOwnPropertyDescriptor(target, propertyKey)
 var gOPD = __webpack_require__(19);
-var $export = __webpack_require__(1);
-var anObject = __webpack_require__(0);
+var $export = __webpack_require__(2);
+var anObject = __webpack_require__(1);
 
 $export($export.S, 'Reflect', {
   getOwnPropertyDescriptor: function getOwnPropertyDescriptor(target, propertyKey) {
@@ -11915,13 +13009,13 @@ $export($export.S, 'Reflect', {
 
 
 /***/ }),
-/* 163 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.8 Reflect.getPrototypeOf(target)
-var $export = __webpack_require__(1);
+var $export = __webpack_require__(2);
 var getProto = __webpack_require__(31);
-var anObject = __webpack_require__(0);
+var anObject = __webpack_require__(1);
 
 $export($export.S, 'Reflect', {
   getPrototypeOf: function getPrototypeOf(target) {
@@ -11931,16 +13025,16 @@ $export($export.S, 'Reflect', {
 
 
 /***/ }),
-/* 164 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.6 Reflect.get(target, propertyKey [, receiver])
 var gOPD = __webpack_require__(19);
 var getPrototypeOf = __webpack_require__(31);
-var has = __webpack_require__(6);
-var $export = __webpack_require__(1);
-var isObject = __webpack_require__(4);
-var anObject = __webpack_require__(0);
+var has = __webpack_require__(9);
+var $export = __webpack_require__(2);
+var isObject = __webpack_require__(6);
+var anObject = __webpack_require__(1);
 
 function get(target, propertyKey /* , receiver */) {
   var receiver = arguments.length < 3 ? target : arguments[2];
@@ -11958,11 +13052,11 @@ $export($export.S, 'Reflect', { get: get });
 
 
 /***/ }),
-/* 165 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.9 Reflect.has(target, propertyKey)
-var $export = __webpack_require__(1);
+var $export = __webpack_require__(2);
 
 $export($export.S, 'Reflect', {
   has: function has(target, propertyKey) {
@@ -11972,12 +13066,12 @@ $export($export.S, 'Reflect', {
 
 
 /***/ }),
-/* 166 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.10 Reflect.isExtensible(target)
-var $export = __webpack_require__(1);
-var anObject = __webpack_require__(0);
+var $export = __webpack_require__(2);
+var anObject = __webpack_require__(1);
 var $isExtensible = Object.isExtensible;
 
 $export($export.S, 'Reflect', {
@@ -11989,22 +13083,22 @@ $export($export.S, 'Reflect', {
 
 
 /***/ }),
-/* 167 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.11 Reflect.ownKeys(target)
-var $export = __webpack_require__(1);
+var $export = __webpack_require__(2);
 
-$export($export.S, 'Reflect', { ownKeys: __webpack_require__(150) });
+$export($export.S, 'Reflect', { ownKeys: __webpack_require__(155) });
 
 
 /***/ }),
-/* 168 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.12 Reflect.preventExtensions(target)
-var $export = __webpack_require__(1);
-var anObject = __webpack_require__(0);
+var $export = __webpack_require__(2);
+var anObject = __webpack_require__(1);
 var $preventExtensions = Object.preventExtensions;
 
 $export($export.S, 'Reflect', {
@@ -12021,12 +13115,12 @@ $export($export.S, 'Reflect', {
 
 
 /***/ }),
-/* 169 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.14 Reflect.setPrototypeOf(target, proto)
-var $export = __webpack_require__(1);
-var setProto = __webpack_require__(80);
+var $export = __webpack_require__(2);
+var setProto = __webpack_require__(81);
 
 if (setProto) $export($export.S, 'Reflect', {
   setPrototypeOf: function setPrototypeOf(target, proto) {
@@ -12042,18 +13136,18 @@ if (setProto) $export($export.S, 'Reflect', {
 
 
 /***/ }),
-/* 170 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 26.1.13 Reflect.set(target, propertyKey, V [, receiver])
-var dP = __webpack_require__(7);
+var dP = __webpack_require__(10);
 var gOPD = __webpack_require__(19);
 var getPrototypeOf = __webpack_require__(31);
-var has = __webpack_require__(6);
-var $export = __webpack_require__(1);
-var createDesc = __webpack_require__(24);
-var anObject = __webpack_require__(0);
-var isObject = __webpack_require__(4);
+var has = __webpack_require__(9);
+var $export = __webpack_require__(2);
+var createDesc = __webpack_require__(23);
+var anObject = __webpack_require__(1);
+var isObject = __webpack_require__(6);
 
 function set(target, propertyKey, V /* , receiver */) {
   var receiver = arguments.length < 4 ? target : arguments[3];
@@ -12079,17 +13173,17 @@ $export($export.S, 'Reflect', { set: set });
 
 
 /***/ }),
-/* 171 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var strong = __webpack_require__(136);
-var validate = __webpack_require__(83);
+var strong = __webpack_require__(141);
+var validate = __webpack_require__(84);
 var SET = 'Set';
 
 // 23.2 Set Objects
-module.exports = __webpack_require__(137)(SET, function (get) {
+module.exports = __webpack_require__(142)(SET, function (get) {
   return function Set() { return get(this, arguments.length > 0 ? arguments[0] : undefined); };
 }, {
   // 23.2.3.1 Set.prototype.add(value)
@@ -12100,12 +13194,12 @@ module.exports = __webpack_require__(137)(SET, function (get) {
 
 
 /***/ }),
-/* 172 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var $at = __webpack_require__(152)(true);
+var $at = __webpack_require__(157)(true);
 
 // 21.1.3.27 String.prototype[@@iterator]()
 __webpack_require__(48)(String, 'String', function (iterated) {
@@ -12124,36 +13218,36 @@ __webpack_require__(48)(String, 'String', function (iterated) {
 
 
 /***/ }),
-/* 173 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 // ECMAScript 6 symbols shim
-var global = __webpack_require__(2);
-var has = __webpack_require__(6);
-var DESCRIPTORS = __webpack_require__(12);
-var $export = __webpack_require__(1);
+var global = __webpack_require__(3);
+var has = __webpack_require__(9);
+var DESCRIPTORS = __webpack_require__(13);
+var $export = __webpack_require__(2);
 var redefine = __webpack_require__(16);
 var META = __webpack_require__(50).KEY;
-var $fails = __webpack_require__(10);
+var $fails = __webpack_require__(12);
 var shared = __webpack_require__(53);
 var setToStringTag = __webpack_require__(33);
-var uid = __webpack_require__(25);
-var wks = __webpack_require__(3);
-var wksExt = __webpack_require__(84);
-var wksDefine = __webpack_require__(154);
-var keyOf = __webpack_require__(146);
-var enumKeys = __webpack_require__(138);
-var isArray = __webpack_require__(143);
-var anObject = __webpack_require__(0);
+var uid = __webpack_require__(24);
+var wks = __webpack_require__(4);
+var wksExt = __webpack_require__(85);
+var wksDefine = __webpack_require__(159);
+var keyOf = __webpack_require__(151);
+var enumKeys = __webpack_require__(143);
+var isArray = __webpack_require__(148);
+var anObject = __webpack_require__(1);
 var toIObject = __webpack_require__(17);
 var toPrimitive = __webpack_require__(34);
-var createDesc = __webpack_require__(24);
+var createDesc = __webpack_require__(23);
 var _create = __webpack_require__(29);
-var gOPNExt = __webpack_require__(149);
+var gOPNExt = __webpack_require__(154);
 var $GOPD = __webpack_require__(19);
-var $DP = __webpack_require__(7);
+var $DP = __webpack_require__(10);
 var $keys = __webpack_require__(20);
 var gOPD = $GOPD.f;
 var dP = $DP.f;
@@ -12366,16 +13460,16 @@ setToStringTag(global.JSON, 'JSON', true);
 
 
 /***/ }),
-/* 174 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $iterators = __webpack_require__(156);
+var $iterators = __webpack_require__(161);
 var getKeys = __webpack_require__(20);
 var redefine = __webpack_require__(16);
-var global = __webpack_require__(2);
+var global = __webpack_require__(3);
 var hide = __webpack_require__(15);
-var Iterators = __webpack_require__(23);
-var wks = __webpack_require__(3);
+var Iterators = __webpack_require__(22);
+var wks = __webpack_require__(4);
 var ITERATOR = wks('iterator');
 var TO_STRING_TAG = wks('toStringTag');
 var ArrayValues = Iterators.Array;
@@ -12430,36 +13524,6 @@ for (var collections = getKeys(DOMIterables), i = 0; i < collections.length; i++
 
 
 /***/ }),
-/* 175 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 176 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 177 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 178 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 179 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
 /* 180 */
 /***/ (function(module, exports) {
 
@@ -12491,10 +13555,58 @@ for (var collections = getKeys(DOMIterables), i = 0; i < collections.length; i++
 
 /***/ }),
 /* 185 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 186 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 187 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 188 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 189 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 190 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 191 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 192 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(18),
-    root = __webpack_require__(8);
+    root = __webpack_require__(11);
 
 /* Built-in method references that are verified to be native. */
 var DataView = getNative(root, 'DataView');
@@ -12503,14 +13615,14 @@ module.exports = DataView;
 
 
 /***/ }),
-/* 186 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var hashClear = __webpack_require__(225),
-    hashDelete = __webpack_require__(226),
-    hashGet = __webpack_require__(227),
-    hashHas = __webpack_require__(228),
-    hashSet = __webpack_require__(229);
+var hashClear = __webpack_require__(233),
+    hashDelete = __webpack_require__(234),
+    hashGet = __webpack_require__(235),
+    hashHas = __webpack_require__(236),
+    hashSet = __webpack_require__(237);
 
 /**
  * Creates a hash object.
@@ -12541,14 +13653,14 @@ module.exports = Hash;
 
 
 /***/ }),
-/* 187 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var mapCacheClear = __webpack_require__(241),
-    mapCacheDelete = __webpack_require__(242),
-    mapCacheGet = __webpack_require__(243),
-    mapCacheHas = __webpack_require__(244),
-    mapCacheSet = __webpack_require__(245);
+var mapCacheClear = __webpack_require__(249),
+    mapCacheDelete = __webpack_require__(250),
+    mapCacheGet = __webpack_require__(251),
+    mapCacheHas = __webpack_require__(252),
+    mapCacheSet = __webpack_require__(253);
 
 /**
  * Creates a map cache object to store key-value pairs.
@@ -12579,11 +13691,11 @@ module.exports = MapCache;
 
 
 /***/ }),
-/* 188 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(18),
-    root = __webpack_require__(8);
+    root = __webpack_require__(11);
 
 /* Built-in method references that are verified to be native. */
 var Promise = getNative(root, 'Promise');
@@ -12592,11 +13704,11 @@ module.exports = Promise;
 
 
 /***/ }),
-/* 189 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(18),
-    root = __webpack_require__(8);
+    root = __webpack_require__(11);
 
 /* Built-in method references that are verified to be native. */
 var Set = getNative(root, 'Set');
@@ -12605,15 +13717,15 @@ module.exports = Set;
 
 
 /***/ }),
-/* 190 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ListCache = __webpack_require__(35),
-    stackClear = __webpack_require__(252),
-    stackDelete = __webpack_require__(253),
-    stackGet = __webpack_require__(254),
-    stackHas = __webpack_require__(255),
-    stackSet = __webpack_require__(256);
+    stackClear = __webpack_require__(260),
+    stackDelete = __webpack_require__(261),
+    stackGet = __webpack_require__(262),
+    stackHas = __webpack_require__(263),
+    stackSet = __webpack_require__(264);
 
 /**
  * Creates a stack cache object to store key-value pairs.
@@ -12638,10 +13750,10 @@ module.exports = Stack;
 
 
 /***/ }),
-/* 191 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var root = __webpack_require__(8);
+var root = __webpack_require__(11);
 
 /** Built-in value references. */
 var Uint8Array = root.Uint8Array;
@@ -12650,11 +13762,11 @@ module.exports = Uint8Array;
 
 
 /***/ }),
-/* 192 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(18),
-    root = __webpack_require__(8);
+    root = __webpack_require__(11);
 
 /* Built-in method references that are verified to be native. */
 var WeakMap = getNative(root, 'WeakMap');
@@ -12663,7 +13775,7 @@ module.exports = WeakMap;
 
 
 /***/ }),
-/* 193 */
+/* 201 */
 /***/ (function(module, exports) {
 
 /**
@@ -12684,7 +13796,7 @@ module.exports = addMapEntry;
 
 
 /***/ }),
-/* 194 */
+/* 202 */
 /***/ (function(module, exports) {
 
 /**
@@ -12705,7 +13817,7 @@ module.exports = addSetEntry;
 
 
 /***/ }),
-/* 195 */
+/* 203 */
 /***/ (function(module, exports) {
 
 /**
@@ -12733,7 +13845,7 @@ module.exports = arrayEach;
 
 
 /***/ }),
-/* 196 */
+/* 204 */
 /***/ (function(module, exports) {
 
 /**
@@ -12764,7 +13876,7 @@ module.exports = arrayFilter;
 
 
 /***/ }),
-/* 197 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var copyObject = __webpack_require__(38),
@@ -12787,11 +13899,11 @@ module.exports = baseAssign;
 
 
 /***/ }),
-/* 198 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var copyObject = __webpack_require__(38),
-    keysIn = __webpack_require__(102);
+    keysIn = __webpack_require__(103);
 
 /**
  * The base implementation of `_.assignIn` without support for multiple sources
@@ -12810,27 +13922,27 @@ module.exports = baseAssignIn;
 
 
 /***/ }),
-/* 199 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Stack = __webpack_require__(190),
-    arrayEach = __webpack_require__(195),
-    assignValue = __webpack_require__(89),
-    baseAssign = __webpack_require__(197),
-    baseAssignIn = __webpack_require__(198),
-    cloneBuffer = __webpack_require__(208),
-    copyArray = __webpack_require__(215),
-    copySymbols = __webpack_require__(216),
-    copySymbolsIn = __webpack_require__(217),
-    getAllKeys = __webpack_require__(220),
-    getAllKeysIn = __webpack_require__(221),
-    getTag = __webpack_require__(223),
-    initCloneArray = __webpack_require__(230),
-    initCloneByTag = __webpack_require__(231),
-    initCloneObject = __webpack_require__(232),
+var Stack = __webpack_require__(198),
+    arrayEach = __webpack_require__(203),
+    assignValue = __webpack_require__(90),
+    baseAssign = __webpack_require__(205),
+    baseAssignIn = __webpack_require__(206),
+    cloneBuffer = __webpack_require__(216),
+    copyArray = __webpack_require__(223),
+    copySymbols = __webpack_require__(224),
+    copySymbolsIn = __webpack_require__(225),
+    getAllKeys = __webpack_require__(228),
+    getAllKeysIn = __webpack_require__(229),
+    getTag = __webpack_require__(231),
+    initCloneArray = __webpack_require__(238),
+    initCloneByTag = __webpack_require__(239),
+    initCloneObject = __webpack_require__(240),
     isArray = __webpack_require__(60),
-    isBuffer = __webpack_require__(99),
-    isObject = __webpack_require__(26),
+    isBuffer = __webpack_require__(100),
+    isObject = __webpack_require__(25),
     keys = __webpack_require__(62);
 
 /** Used to compose bitmasks for cloning. */
@@ -12969,10 +14081,10 @@ module.exports = baseClone;
 
 
 /***/ }),
-/* 200 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(26);
+var isObject = __webpack_require__(25);
 
 /** Built-in value references. */
 var objectCreate = Object.create;
@@ -13005,7 +14117,7 @@ module.exports = baseCreate;
 
 
 /***/ }),
-/* 201 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(37),
@@ -13029,13 +14141,13 @@ module.exports = baseIsArguments;
 
 
 /***/ }),
-/* 202 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isFunction = __webpack_require__(100),
-    isMasked = __webpack_require__(235),
-    isObject = __webpack_require__(26),
-    toSource = __webpack_require__(96);
+var isFunction = __webpack_require__(101),
+    isMasked = __webpack_require__(243),
+    isObject = __webpack_require__(25),
+    toSource = __webpack_require__(97);
 
 /**
  * Used to match `RegExp`
@@ -13082,11 +14194,11 @@ module.exports = baseIsNative;
 
 
 /***/ }),
-/* 203 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(37),
-    isLength = __webpack_require__(101),
+    isLength = __webpack_require__(102),
     isObjectLike = __webpack_require__(61);
 
 /** `Object#toString` result references. */
@@ -13148,11 +14260,11 @@ module.exports = baseIsTypedArray;
 
 
 /***/ }),
-/* 204 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isPrototype = __webpack_require__(59),
-    nativeKeys = __webpack_require__(247);
+    nativeKeys = __webpack_require__(255);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -13184,12 +14296,12 @@ module.exports = baseKeys;
 
 
 /***/ }),
-/* 205 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(26),
+var isObject = __webpack_require__(25),
     isPrototype = __webpack_require__(59),
-    nativeKeysIn = __webpack_require__(248);
+    nativeKeysIn = __webpack_require__(256);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -13223,7 +14335,7 @@ module.exports = baseKeysIn;
 
 
 /***/ }),
-/* 206 */
+/* 214 */
 /***/ (function(module, exports) {
 
 /**
@@ -13249,7 +14361,7 @@ module.exports = baseTimes;
 
 
 /***/ }),
-/* 207 */
+/* 215 */
 /***/ (function(module, exports) {
 
 /**
@@ -13269,10 +14381,10 @@ module.exports = baseUnary;
 
 
 /***/ }),
-/* 208 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(8);
+/* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(11);
 
 /** Detect free variable `exports`. */
 var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
@@ -13311,7 +14423,7 @@ module.exports = cloneBuffer;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(63)(module)))
 
 /***/ }),
-/* 209 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var cloneArrayBuffer = __webpack_require__(57);
@@ -13333,12 +14445,12 @@ module.exports = cloneDataView;
 
 
 /***/ }),
-/* 210 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addMapEntry = __webpack_require__(193),
-    arrayReduce = __webpack_require__(88),
-    mapToArray = __webpack_require__(246);
+var addMapEntry = __webpack_require__(201),
+    arrayReduce = __webpack_require__(89),
+    mapToArray = __webpack_require__(254);
 
 /** Used to compose bitmasks for cloning. */
 var CLONE_DEEP_FLAG = 1;
@@ -13361,7 +14473,7 @@ module.exports = cloneMap;
 
 
 /***/ }),
-/* 211 */
+/* 219 */
 /***/ (function(module, exports) {
 
 /** Used to match `RegExp` flags from their coerced string values. */
@@ -13384,12 +14496,12 @@ module.exports = cloneRegExp;
 
 
 /***/ }),
-/* 212 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addSetEntry = __webpack_require__(194),
-    arrayReduce = __webpack_require__(88),
-    setToArray = __webpack_require__(251);
+var addSetEntry = __webpack_require__(202),
+    arrayReduce = __webpack_require__(89),
+    setToArray = __webpack_require__(259);
 
 /** Used to compose bitmasks for cloning. */
 var CLONE_DEEP_FLAG = 1;
@@ -13412,7 +14524,7 @@ module.exports = cloneSet;
 
 
 /***/ }),
-/* 213 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(56);
@@ -13436,7 +14548,7 @@ module.exports = cloneSymbol;
 
 
 /***/ }),
-/* 214 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var cloneArrayBuffer = __webpack_require__(57);
@@ -13458,7 +14570,7 @@ module.exports = cloneTypedArray;
 
 
 /***/ }),
-/* 215 */
+/* 223 */
 /***/ (function(module, exports) {
 
 /**
@@ -13484,7 +14596,7 @@ module.exports = copyArray;
 
 
 /***/ }),
-/* 216 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var copyObject = __webpack_require__(38),
@@ -13506,11 +14618,11 @@ module.exports = copySymbols;
 
 
 /***/ }),
-/* 217 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var copyObject = __webpack_require__(38),
-    getSymbolsIn = __webpack_require__(94);
+    getSymbolsIn = __webpack_require__(95);
 
 /**
  * Copies own and inherited symbols of `source` to `object`.
@@ -13528,10 +14640,10 @@ module.exports = copySymbolsIn;
 
 
 /***/ }),
-/* 218 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var root = __webpack_require__(8);
+var root = __webpack_require__(11);
 
 /** Used to detect overreaching core-js shims. */
 var coreJsData = root['__core-js_shared__'];
@@ -13540,7 +14652,7 @@ module.exports = coreJsData;
 
 
 /***/ }),
-/* 219 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(18);
@@ -13557,10 +14669,10 @@ module.exports = defineProperty;
 
 
 /***/ }),
-/* 220 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetAllKeys = __webpack_require__(91),
+var baseGetAllKeys = __webpack_require__(92),
     getSymbols = __webpack_require__(58),
     keys = __webpack_require__(62);
 
@@ -13579,12 +14691,12 @@ module.exports = getAllKeys;
 
 
 /***/ }),
-/* 221 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetAllKeys = __webpack_require__(91),
-    getSymbolsIn = __webpack_require__(94),
-    keysIn = __webpack_require__(102);
+var baseGetAllKeys = __webpack_require__(92),
+    getSymbolsIn = __webpack_require__(95),
+    keysIn = __webpack_require__(103);
 
 /**
  * Creates an array of own and inherited enumerable property names and
@@ -13602,7 +14714,7 @@ module.exports = getAllKeysIn;
 
 
 /***/ }),
-/* 222 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(56);
@@ -13654,16 +14766,16 @@ module.exports = getRawTag;
 
 
 /***/ }),
-/* 223 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var DataView = __webpack_require__(185),
+var DataView = __webpack_require__(193),
     Map = __webpack_require__(55),
-    Promise = __webpack_require__(188),
-    Set = __webpack_require__(189),
-    WeakMap = __webpack_require__(192),
+    Promise = __webpack_require__(196),
+    Set = __webpack_require__(197),
+    WeakMap = __webpack_require__(200),
     baseGetTag = __webpack_require__(37),
-    toSource = __webpack_require__(96);
+    toSource = __webpack_require__(97);
 
 /** `Object#toString` result references. */
 var mapTag = '[object Map]',
@@ -13718,7 +14830,7 @@ module.exports = getTag;
 
 
 /***/ }),
-/* 224 */
+/* 232 */
 /***/ (function(module, exports) {
 
 /**
@@ -13737,7 +14849,7 @@ module.exports = getValue;
 
 
 /***/ }),
-/* 225 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var nativeCreate = __webpack_require__(40);
@@ -13758,7 +14870,7 @@ module.exports = hashClear;
 
 
 /***/ }),
-/* 226 */
+/* 234 */
 /***/ (function(module, exports) {
 
 /**
@@ -13781,7 +14893,7 @@ module.exports = hashDelete;
 
 
 /***/ }),
-/* 227 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var nativeCreate = __webpack_require__(40);
@@ -13817,7 +14929,7 @@ module.exports = hashGet;
 
 
 /***/ }),
-/* 228 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var nativeCreate = __webpack_require__(40);
@@ -13846,7 +14958,7 @@ module.exports = hashHas;
 
 
 /***/ }),
-/* 229 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var nativeCreate = __webpack_require__(40);
@@ -13875,7 +14987,7 @@ module.exports = hashSet;
 
 
 /***/ }),
-/* 230 */
+/* 238 */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -13907,16 +15019,16 @@ module.exports = initCloneArray;
 
 
 /***/ }),
-/* 231 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var cloneArrayBuffer = __webpack_require__(57),
-    cloneDataView = __webpack_require__(209),
-    cloneMap = __webpack_require__(210),
-    cloneRegExp = __webpack_require__(211),
-    cloneSet = __webpack_require__(212),
-    cloneSymbol = __webpack_require__(213),
-    cloneTypedArray = __webpack_require__(214);
+    cloneDataView = __webpack_require__(217),
+    cloneMap = __webpack_require__(218),
+    cloneRegExp = __webpack_require__(219),
+    cloneSet = __webpack_require__(220),
+    cloneSymbol = __webpack_require__(221),
+    cloneTypedArray = __webpack_require__(222);
 
 /** `Object#toString` result references. */
 var boolTag = '[object Boolean]',
@@ -13993,11 +15105,11 @@ module.exports = initCloneByTag;
 
 
 /***/ }),
-/* 232 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseCreate = __webpack_require__(200),
-    getPrototype = __webpack_require__(93),
+var baseCreate = __webpack_require__(208),
+    getPrototype = __webpack_require__(94),
     isPrototype = __webpack_require__(59);
 
 /**
@@ -14017,7 +15129,7 @@ module.exports = initCloneObject;
 
 
 /***/ }),
-/* 233 */
+/* 241 */
 /***/ (function(module, exports) {
 
 /** Used as references for various `Number` constants. */
@@ -14045,7 +15157,7 @@ module.exports = isIndex;
 
 
 /***/ }),
-/* 234 */
+/* 242 */
 /***/ (function(module, exports) {
 
 /**
@@ -14066,10 +15178,10 @@ module.exports = isKeyable;
 
 
 /***/ }),
-/* 235 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var coreJsData = __webpack_require__(218);
+var coreJsData = __webpack_require__(226);
 
 /** Used to detect methods masquerading as native. */
 var maskSrcKey = (function() {
@@ -14092,7 +15204,7 @@ module.exports = isMasked;
 
 
 /***/ }),
-/* 236 */
+/* 244 */
 /***/ (function(module, exports) {
 
 /**
@@ -14111,7 +15223,7 @@ module.exports = listCacheClear;
 
 
 /***/ }),
-/* 237 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var assocIndexOf = __webpack_require__(36);
@@ -14152,7 +15264,7 @@ module.exports = listCacheDelete;
 
 
 /***/ }),
-/* 238 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var assocIndexOf = __webpack_require__(36);
@@ -14177,7 +15289,7 @@ module.exports = listCacheGet;
 
 
 /***/ }),
-/* 239 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var assocIndexOf = __webpack_require__(36);
@@ -14199,7 +15311,7 @@ module.exports = listCacheHas;
 
 
 /***/ }),
-/* 240 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var assocIndexOf = __webpack_require__(36);
@@ -14231,10 +15343,10 @@ module.exports = listCacheSet;
 
 
 /***/ }),
-/* 241 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Hash = __webpack_require__(186),
+var Hash = __webpack_require__(194),
     ListCache = __webpack_require__(35),
     Map = __webpack_require__(55);
 
@@ -14258,7 +15370,7 @@ module.exports = mapCacheClear;
 
 
 /***/ }),
-/* 242 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getMapData = __webpack_require__(39);
@@ -14282,7 +15394,7 @@ module.exports = mapCacheDelete;
 
 
 /***/ }),
-/* 243 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getMapData = __webpack_require__(39);
@@ -14304,7 +15416,7 @@ module.exports = mapCacheGet;
 
 
 /***/ }),
-/* 244 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getMapData = __webpack_require__(39);
@@ -14326,7 +15438,7 @@ module.exports = mapCacheHas;
 
 
 /***/ }),
-/* 245 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getMapData = __webpack_require__(39);
@@ -14354,7 +15466,7 @@ module.exports = mapCacheSet;
 
 
 /***/ }),
-/* 246 */
+/* 254 */
 /***/ (function(module, exports) {
 
 /**
@@ -14378,10 +15490,10 @@ module.exports = mapToArray;
 
 
 /***/ }),
-/* 247 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var overArg = __webpack_require__(95);
+var overArg = __webpack_require__(96);
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeKeys = overArg(Object.keys, Object);
@@ -14390,7 +15502,7 @@ module.exports = nativeKeys;
 
 
 /***/ }),
-/* 248 */
+/* 256 */
 /***/ (function(module, exports) {
 
 /**
@@ -14416,10 +15528,10 @@ module.exports = nativeKeysIn;
 
 
 /***/ }),
-/* 249 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(module) {var freeGlobal = __webpack_require__(92);
+/* WEBPACK VAR INJECTION */(function(module) {var freeGlobal = __webpack_require__(93);
 
 /** Detect free variable `exports`. */
 var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
@@ -14445,7 +15557,7 @@ module.exports = nodeUtil;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(63)(module)))
 
 /***/ }),
-/* 250 */
+/* 258 */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -14473,7 +15585,7 @@ module.exports = objectToString;
 
 
 /***/ }),
-/* 251 */
+/* 259 */
 /***/ (function(module, exports) {
 
 /**
@@ -14497,7 +15609,7 @@ module.exports = setToArray;
 
 
 /***/ }),
-/* 252 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ListCache = __webpack_require__(35);
@@ -14518,7 +15630,7 @@ module.exports = stackClear;
 
 
 /***/ }),
-/* 253 */
+/* 261 */
 /***/ (function(module, exports) {
 
 /**
@@ -14542,7 +15654,7 @@ module.exports = stackDelete;
 
 
 /***/ }),
-/* 254 */
+/* 262 */
 /***/ (function(module, exports) {
 
 /**
@@ -14562,7 +15674,7 @@ module.exports = stackGet;
 
 
 /***/ }),
-/* 255 */
+/* 263 */
 /***/ (function(module, exports) {
 
 /**
@@ -14582,12 +15694,12 @@ module.exports = stackHas;
 
 
 /***/ }),
-/* 256 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ListCache = __webpack_require__(35),
     Map = __webpack_require__(55),
-    MapCache = __webpack_require__(187);
+    MapCache = __webpack_require__(195);
 
 /** Used as the size to enable large array optimizations. */
 var LARGE_ARRAY_SIZE = 200;
@@ -14622,10 +15734,10 @@ module.exports = stackSet;
 
 
 /***/ }),
-/* 257 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseClone = __webpack_require__(199);
+var baseClone = __webpack_require__(207);
 
 /** Used to compose bitmasks for cloning. */
 var CLONE_DEEP_FLAG = 1,
@@ -14657,10 +15769,10 @@ module.exports = cloneDeep;
 
 
 /***/ }),
-/* 258 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsArguments = __webpack_require__(201),
+var baseIsArguments = __webpack_require__(209),
     isObjectLike = __webpack_require__(61);
 
 /** Used for built-in method references. */
@@ -14699,12 +15811,12 @@ module.exports = isArguments;
 
 
 /***/ }),
-/* 259 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsTypedArray = __webpack_require__(203),
-    baseUnary = __webpack_require__(207),
-    nodeUtil = __webpack_require__(249);
+var baseIsTypedArray = __webpack_require__(211),
+    baseUnary = __webpack_require__(215),
+    nodeUtil = __webpack_require__(257);
 
 /* Node.js helper references. */
 var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
@@ -14732,7 +15844,7 @@ module.exports = isTypedArray;
 
 
 /***/ }),
-/* 260 */
+/* 268 */
 /***/ (function(module, exports) {
 
 /**
@@ -14756,7 +15868,7 @@ module.exports = stubFalse;
 
 
 /***/ }),
-/* 261 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // OpenLayers. See https://openlayers.org/
@@ -15816,7 +16928,7 @@ dl.prototype.un=dl.prototype.K;
 
 
 /***/ }),
-/* 262 */
+/* 270 */
 /***/ (function(module, exports) {
 
 /*!
@@ -15988,6 +17100,1678 @@ dl.prototype.un=dl.prototype.K;
 	}
 })();
 
+
+/***/ }),
+/* 271 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var has = function has(object_, key_) {
+  return (typeof object_ === 'undefined' ? 'undefined' : _typeof(object_)) === 'object' && object_.hasOwnProperty(key_);
+};
+
+var checkBrowser = function checkBrowser() {
+  var userAgent = navigator.userAgent;
+  if (userAgent.indexOf('OPR') > -1) {
+    return 'Opera';
+  } else if (userAgent.indexOf('Firefox') > -1) {
+    return 'FF';
+  } else if (userAgent.indexOf('Trident') > -1) {
+    return 'IE';
+  } else if (userAgent.indexOf('Edge') > -1) {
+    return 'Edge';
+  } else if (userAgent.indexOf('Chrome') > -1) {
+    return 'Chrome';
+  } else if (userAgent.indexOf('Safari') > -1) {
+    return 'Safari';
+  }
+};
+
+var getuuid = function getuuid() {
+  var s = [],
+      hexDigits = '0123456789abcdef';
+
+  for (var i = 0; i < 36; i++) {
+    s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+  }
+  s[14] = '4';
+  s[19] = hexDigits.substr(s[19] & 0x3 | 0x8, 1);
+  s[8] = s[13] = s[18] = s[23] = '-';
+  return s.join('');
+};
+
+var replaceNode = function replaceNode(newNode, oldNode) {
+  var parent = oldNode.parentNode;
+  if (parent) {
+    parent.replaceChild(newNode, oldNode);
+  }
+};
+
+exports.has = has;
+exports.checkBrowser = checkBrowser;
+exports.getuuid = getuuid;
+exports.replaceNode = replaceNode;
+
+/***/ }),
+/* 272 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _openlayers = __webpack_require__(0);
+
+var _openlayers2 = _interopRequireDefault(_openlayers);
+
+__webpack_require__(276);
+
+var _factory = __webpack_require__(69);
+
+var _factory2 = _interopRequireDefault(_factory);
+
+var _layerUtils = __webpack_require__(134);
+
+var _layerUtils2 = _interopRequireDefault(_layerUtils);
+
+var _observableEmit = __webpack_require__(67);
+
+var _observableEmit2 = _interopRequireDefault(_observableEmit);
+
+var _utils = __webpack_require__(271);
+
+var _mixin = __webpack_require__(70);
+
+var _mixin2 = _interopRequireDefault(_mixin);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_openlayers2.default.interaction.FreeHandCircle = function (params) {
+  this.options = params || {};
+
+  this.wgs84Sphere = new _openlayers2.default.Sphere(typeof this.options['sphere'] === 'number' ? this.options['sphere'] : 6378137);
+
+  this.layerName = this.options['layerName'] || 'FREE_HAND_CIRCLE';
+
+  this.centerStyle = this.options['centerStyle'] || null;
+
+  this.layer = null;
+
+  this.radius = '';
+
+  this.center_ = [];
+
+  this.isMouseDown = false;
+
+  this.isDraging = false;
+
+  this.cursor_ = 'pointer';
+
+  this.drawStart_ = false;
+
+  this.previousCursor_ = undefined;
+
+  this.coordinate_ = null;
+
+  this.feature_ = null;
+
+  this.textOverlay = null;
+
+  this.circleFeature = null;
+
+  this.centerFeature = null;
+
+  this.labelFeature = null;
+
+  this.style_ = {
+    fill: {
+      fillColor: 'rgba(67, 110, 238, 0)'
+    },
+    stroke: {
+      strokeColor: 'rgba(249, 185, 154, 1)',
+      strokeWidth: 2.5
+    },
+    image: {
+      type: '',
+      image: {
+        fill: {
+          fillColor: 'rgba(255, 255, 255, 0.8)'
+        },
+        points: Infinity,
+        radius: 4,
+        stroke: {
+          strokeColor: 'rgba(255, 0, 0, 1)',
+          strokeWidth: 1.5
+        }
+      }
+    }
+  };
+  if (this.options['style'] && _typeof(this.options['style']) === 'object') {
+    this.style_ = this.options['style'];
+  }
+
+  _openlayers2.default.interaction.Pointer.call(this, {
+    handleMoveEvent: _openlayers2.default.interaction.FreeHandCircle.handleMoveEvent_,
+    handleDownEvent: _openlayers2.default.interaction.FreeHandCircle.handleDownEvent_,
+    handleUpEvent: _openlayers2.default.interaction.FreeHandCircle.handleUpEvent_,
+    handleDragEvent: _openlayers2.default.interaction.FreeHandCircle.handleDragEvent_
+  });
+
+  _observableEmit2.default.call(this);
+};
+
+_openlayers2.default.inherits(_openlayers2.default.interaction.FreeHandCircle, _openlayers2.default.interaction.Pointer);
+(0, _mixin2.default)(_openlayers2.default.interaction.FreeHandCircle, _observableEmit2.default);
+
+_openlayers2.default.interaction.FreeHandCircle.handleMoveEvent_ = function (mapBrowserEvent) {
+  if (this.cursor_) {
+    var map = mapBrowserEvent.map;
+    var feature = map.forEachFeatureAtPixel(mapBrowserEvent.pixel, function (feature) {
+      return feature;
+    });
+    var element = map.getTargetElement();
+    if (feature && feature.get('free-hand-circle-lable')) {
+      if (element.style.cursor !== this.cursor_) {
+        this.previousCursor_ = element.style.cursor;
+        element.style.cursor = this.cursor_;
+      }
+    } else if (this.previousCursor_ !== undefined) {
+      element.style.cursor = this.previousCursor_;
+      this.previousCursor_ = undefined;
+    }
+  }
+};
+
+_openlayers2.default.interaction.FreeHandCircle.handleDownEvent_ = function (mapBrowserEvent) {
+  this.isMouseDown = true;
+  if (!this.drawStart_ && mapBrowserEvent.originalEvent.button === 0) {
+    var map = mapBrowserEvent.map;
+    var feature = map.forEachFeatureAtPixel(mapBrowserEvent.pixel, function (feature) {
+      return feature;
+    });
+    if (feature && feature.get('free-hand-circle-lable')) {
+      this.coordinate_ = mapBrowserEvent.coordinate;
+      this.feature_ = feature;
+    }
+    return !!this.feature_;
+  }
+};
+
+_openlayers2.default.interaction.FreeHandCircle.handleUpEvent_ = function (mapBrowserEvent) {
+  if (this.feature_ && this.coordinate_ && this.isDraging) {
+    this.dispatch('changeend', this.circleFeature.getGeometry());
+  }
+  this.coordinate_ = null;
+  this.feature_ = null;
+  this.isMouseDown = false;
+  this.isDraging = false;
+  return false;
+};
+
+_openlayers2.default.interaction.FreeHandCircle.handleDragEvent_ = function (mapBrowserEvent) {
+  if (!this.coordinate_ || !this.feature_) {
+    return;
+  }
+  this.isDraging = true;
+  var deltaX = mapBrowserEvent.coordinate[0] - this.coordinate_[0];
+  var deltaY = 0;
+  var geometry = this.feature_.getGeometry();
+  geometry.translate(deltaX, deltaY);
+  this.coordinate_[0] = mapBrowserEvent.coordinate[0];
+  this.coordinate_[1] = mapBrowserEvent.coordinate[1];
+  this.createCircle(this.center_, this.mathRadius(this.center_, geometry.getCoordinates()));
+};
+
+_openlayers2.default.interaction.FreeHandCircle.prototype.initDrawInteraction = function () {
+  if (!this.getMap()) return;
+  var style_ = new _factory2.default(this.style_);
+  this.draw = new _openlayers2.default.interaction.Draw({
+    type: 'Circle',
+    style: style_
+  });
+  this.draw.set('uuid', (0, _utils.getuuid)());
+  this.getMap().addInteraction(this.draw);
+  this.draw.on('drawstart', this.drawStartHandle_, this);
+  this.draw.on('drawend', this.drawEndHandle_, this);
+};
+
+_openlayers2.default.interaction.FreeHandCircle.prototype.removeLastInteraction_ = function () {
+  if (!this.getMap()) return;
+  this.draw.un('drawstart', this.drawStartHandle_, this);
+  this.draw.un('drawend', this.drawEndHandle_, this);
+  this.getMap().removeInteraction(this.draw);
+};
+
+_openlayers2.default.interaction.FreeHandCircle.prototype.drawStartHandle_ = function (event) {
+  this.drawStart_ = true;
+};
+
+_openlayers2.default.interaction.FreeHandCircle.prototype.drawEndHandle_ = function (event) {
+  if (event && event.feature) {
+    var geom_ = event.feature.getGeometry();
+    this.center_ = geom_.getCenter();
+    var coordinates = geom_.getLastCoordinate();
+    this.radius = this.mathRadius(this.center_, coordinates);
+    this.createCircle(this.center_, this.radius);
+  }
+  this.removeLastInteraction_();
+  this.drawStart_ = false;
+};
+
+_openlayers2.default.interaction.FreeHandCircle.prototype.createCircle = function (center, radius) {
+  var _this = this;
+
+  if (!this.getMap()) return;
+  var style_ = new _factory2.default(this.style_);
+  if (!this.layer) {
+    this.layer = new _layerUtils2.default(this.getMap()).createVectorLayer(this.layerName, {
+      create: true
+    });
+    this.layer.setStyle(style_);
+  }
+  var params = this.transformCenterAndRadius_(center, radius);
+  if (!this.circleFeature) {
+    this.circleFeature = new _openlayers2.default.Feature({
+      geometry: new _openlayers2.default.geom.Circle(params['center'], params['radius'])
+    });
+    var uuid = this.draw && this.draw.get('uuid') ? this.draw.get('uuid') : (0, _utils.getuuid)();
+    this.circleFeature.set('uuid', uuid);
+    this.layer.getSource().addFeature(this.circleFeature);
+    this.circleFeature.getGeometry().on('change', function (evt) {
+      var geom = evt.target;
+      var coordinates = geom.getLastCoordinate();
+      _this.center_ = geom.getCenter();
+      _this.radius = _this.mathRadius(_this.center_, coordinates);
+      _this.addLabelFeature_(_this.center_, 'center');
+      _this.addLabelFeature_(coordinates, 'endLabel');
+      _this.drawTextLabel_(_this.radius + ' m', coordinates);
+      if (_this.drawStart_ || !(_this.isMouseDown && _this.isDraging)) {
+        _this.dispatch('changeend', geom);
+      }
+    });
+    this.circleFeature.getGeometry().dispatchEvent('change');
+  } else {
+    this.circleFeature.getGeometry().setCenterAndRadius(params['center'], params['radius']);
+  }
+};
+
+_openlayers2.default.interaction.FreeHandCircle.prototype.transformCenterAndRadius_ = function (center, radius) {
+  var center_ = _openlayers2.default.proj.transform(center, this._getProjectionCode(), 'EPSG:4326');
+  var sourceGeom = new _openlayers2.default.geom.Circle(center_, this.transformRadius(center_, radius));
+  var trans_ = sourceGeom.transform('EPSG:4326', this._getProjectionCode());
+  return {
+    center: trans_.getCenter(),
+    radius: trans_.getRadius()
+  };
+};
+
+_openlayers2.default.interaction.FreeHandCircle.prototype.addLabelFeature_ = function (coordinates, type) {
+  if (type === 'center') {
+    if (!this.centerFeature) {
+      this.centerFeature = new _openlayers2.default.Feature({
+        uuid: this.circleFeature.get('uuid'),
+        geometry: new _openlayers2.default.geom.Point(coordinates)
+      });
+      if (this.centerStyle) {
+        var _style = new _factory2.default(this.centerStyle);
+        this.centerFeature.setStyle(_style);
+      }
+      this.layer.getSource().addFeature(this.centerFeature);
+    } else {
+      this.centerFeature.setGeometry(new _openlayers2.default.geom.Point(coordinates));
+    }
+  } else {
+    if (!this.labelFeature) {
+      this.labelFeature = new _openlayers2.default.Feature({
+        uuid: this.circleFeature.get('uuid'),
+        geometry: new _openlayers2.default.geom.Point(coordinates)
+      });
+      var _style2 = new _factory2.default({
+        image: {
+          type: 'icon',
+          image: {
+            imageSrc: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAATCAYAAAGCZu9cAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QTAyQjQ0OTk5MUZGMTFFN0JCMzdENDYyNTY0RDI4MzAiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QTAyQjQ0OUE5MUZGMTFFN0JCMzdENDYyNTY0RDI4MzAiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpBMDJCNDQ5NzkxRkYxMUU3QkIzN0Q0NjI1NjREMjgzMCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpBMDJCNDQ5ODkxRkYxMUU3QkIzN0Q0NjI1NjREMjgzMCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Poms414AAAUoSURBVHjaYmxqamJg+PTJn+H//0gGBoYVtT09G1iADMm86uoNDBAQDsSMTEDi+bPHj9/9//eP4dWzZx9AMgABxAjW/vHjCrA6fv4Ixo8fPvwHAgYYYObi4rpnZmoaCLSAYfKUKSIAAcQA0nJkz54nP3/8+I+OTx858hykG2SZiJ6JifS7N28YXEqvMCDTqlpaEiCjAQIIYjkDAwvQAd0gJ0OtfAl0SD5EgoFBubys7A4DJsjr7OoC+unjxyXfv38HGw2ikdmcv36dZ2Lg4Dj5/etXhlXlEgwgGoX948cMJgZ29obZEybs5+TmZuDg5ARjEHt2f/8+Bj6+mQABBHMkI8PPn8YO9vbrbZydZZADCB0wMjIynDx06NnuLVscgR65VVtbCw4ODoYvX+aU1tScNraykgG578ePHwwOhRfANAzD+CB5PVNTqdLm5psMHz70gQwGGSLG8O+fyvcvX+B+8ai8AbYVxgdhEACJw/jfgOqBwAoW5sxA2gdoalVmebnZD6BNhAA7BwfDjK6uMwwCApZA7/wBxctfIN4IFNg9feZMTSBbCYi5cej/BsQPgPgaUP0XmCBAAMECFhK437+LMvz6lQtkq2JoB4U2IyPIn1OBAfoGJgwKWBYomxOYEFaVtbR4srKxMTPgih1gzABBfWtp6XagS7xhwqCAZWP4/HlGZUeHDzD6mP/8/s3w588f7Bgk9/s3I1CtFzAM5yEbouYTHOz+6+dPuGJQUgRhXPxfv34xRKWmBiIbog7MHiK/gbaAMCx6NzcpM8DEQGxYFMPEpBUUBIBBwAszhPPHt29//gBNB+H1NbJgDTA+DIMASA7G//v7939gAH+FGfLm6L59T0DOhNkCyjiBLY/hfBAbJAbjg9SePnr0CVDvP5ghVy5dv77q65cvH/8Cix2Yv5cVi2Bl//37F4S/Hd6/vxAWJqAofsbAyrp26ZIlDDrq6mFmtrZS3Dw8nNhiGJiaf549fvzZuXPnmhl4eDYgGwJy0nmgQS+v3Lt3EIjFQKUbFjNA6l4D8VUGTk64V0AAIMCQUywk1YIM/vVLDJhlE4EZ09vAzExMUU2ND5hfmAUEBdkZiASfP3369e3r1z9PHz78curwYZDlG4CJdQYwMt4hqwOleJhvYA7gBAacBsPXrx2egYG6RhYWEv/+/WMgFwgKC3OBaA0dHRFnb28FRiYm02sXLhRsWLbsEtBBsUAHPUdWzwKNZBFgKHjKiImVx9bWav6FJmxswK38Gpje1alFkhwIqGpriwJznfPmVasOXzl/PgXomAPIDuEHYh1gVMT5hIUp/gQWa9hKaa+a23D2thZVcHZGByBxkDqYg0B8dPAXWJa4BwQoXgElNAYGW+QczAuuy/794+Hm5maD5Q1kjOyIjfUKDNjUwDBIHtnx6PKgkAaWWUx8AgJ8wHaAKHKIgMroXwwsLM8e3b//QUxKSgjdt2uqpMF0SNtTBv/GByhiyAAkj67nN5pZzMzMDO/fvv326ePHG8jFNMgh74H4HjA/7li9aBF/YESErpS8vAiwvYARRStKxeBsbFGDTx5U8QKLf4aP799/XDpr1hlg1Z8Hqj2QHQKqia6DQ4WP79v69etNgBWPRUBUlJKMggLYQaASCJSD8NXw2OoVJiBmZmEBtibYGd69fv1h+Zw5d4BlzWJgSMwHqviCnmtg1SIohT0G6roAxPs2bNsmAWxmqAPDVhHoCn4g5iM5DzMyfmZgYnoLjPZLQDN3ACu6u0DRD9DkgAIAomQEZFjvy7gAAAAASUVORK5CYII='
+          }
+        }
+      });
+      this.labelFeature.set('free-hand-circle-lable', true);
+      this.labelFeature.setStyle(_style2);
+      this.layer.getSource().addFeature(this.labelFeature);
+    } else {
+      this.labelFeature.setGeometry(new _openlayers2.default.geom.Point(coordinates));
+    }
+  }
+};
+
+_openlayers2.default.interaction.FreeHandCircle.prototype.drawTextLabel_ = function (text, coordinates) {
+  if (!this.textOverlay) {
+    var editor = document.createElement('span');
+    editor.className = 'free-hand-circle-label';
+    editor.innerHTML = text;
+    this.textOverlay = new _openlayers2.default.Overlay({
+      element: editor,
+      position: coordinates,
+      positioning: 'center-left',
+      offset: [20, 0]
+    });
+    this.getMap().addOverlay(this.textOverlay);
+  } else {
+    var element = this.textOverlay.getElement();
+    element.innerHTML = text;
+    this.textOverlay.setPosition(coordinates);
+    this.getMap().render();
+  }
+};
+
+_openlayers2.default.interaction.FreeHandCircle.prototype.getImageSrc_ = function (text) {
+  var canvas = document.createElement('canvas');
+  var ctx = canvas.getContext('2d');
+  ctx.font = '30px Arial';
+  ctx.textAlign = 'center';
+  var width = ctx.measureText(text).width;
+  var height = 20;
+  canvas.width = width + 8;
+  canvas.height = height + 4;
+  ctx.fillText(text, 2, 10);
+  ctx.fillStyle = 'white';
+  ctx.fillRect(0, 0, width, height);
+  var image = canvas.toDataURL('image/.png', 1);
+  return image;
+};
+
+_openlayers2.default.interaction.FreeHandCircle.prototype.transformRadius = function (center, meterRadius) {
+  try {
+    var lastCoords = this.wgs84Sphere.offset(center, meterRadius, 270 / 360 * 2 * Math.PI);var ptx = center[0] - lastCoords[0],
+        pty = center[1] - lastCoords[1];
+
+    var transformRadiu = Math.sqrt(Math.pow(ptx, 2) + Math.pow(pty, 2));
+    return transformRadiu;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+_openlayers2.default.interaction.FreeHandCircle.prototype.mathRadius = function (center, coords) {
+  var radius_ = '';
+  if (center && coords) {
+    var c1 = _openlayers2.default.proj.transform(this.center_, this._getProjectionCode(), 'EPSG:4326');
+    var c2 = _openlayers2.default.proj.transform(coords, this._getProjectionCode(), 'EPSG:4326');
+    var radius = this.wgs84Sphere.haversineDistance(c1, c2);
+    if (this.options['maxRadius'] && radius > this.options['maxRadius']) {
+      radius_ = this.options['maxRadius'] - 1;
+    } else if (this.options['minRadius'] && radius < this.options['minRadius']) {
+      radius_ = this.options['minRadius'] - 1;
+    } else {
+      radius_ = radius;
+    }
+    radius_ = Math.floor(radius_) + 1;
+  }
+  return radius_;
+};
+
+_openlayers2.default.interaction.FreeHandCircle.prototype._getProjectionCode = function () {
+  var code = '';
+  if (this.getMap()) {
+    code = this.getMap().getView().getProjection().getCode();
+  } else {
+    code = 'EPSG:3857';
+  }
+  return code;
+};
+
+_openlayers2.default.interaction.FreeHandCircle.prototype.setActive = function (active) {
+  _openlayers2.default.interaction.Pointer.prototype.setActive.call(this, active);
+};
+
+_openlayers2.default.interaction.FreeHandCircle.prototype.destroy = function () {
+  if (this.draw) {
+    this.removeLastInteraction_();
+  }
+  if (this.textOverlay && this.textOverlay instanceof _openlayers2.default.Overlay) {
+    this.getMap().removeOverlay(this.textOverlay);
+    this.textOverlay = null;
+  }
+  if (this.layer) {
+    this.layer.getSource().clear();
+    this.circleFeature = null;
+    this.centerFeature = null;
+    this.labelFeature = null;
+  }
+  this.coordinate_ = null;
+  this.feature_ = null;
+  this.drawStart_ = false;
+  this.center_ = [];
+  this.radius = '';
+  this.isDraging = false;
+  this.isMouseDown = false;
+};
+
+var olInteractionFreeHandCircle = _openlayers2.default.interaction.FreeHandCircle;
+exports.default = olInteractionFreeHandCircle;
+module.exports = exports['default'];
+
+/***/ }),
+/* 273 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _openlayers = __webpack_require__(0);
+
+var _openlayers2 = _interopRequireDefault(_openlayers);
+
+var _Events = __webpack_require__(8);
+
+var Events = _interopRequireWildcard(_Events);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_openlayers2.default.interaction.LayerMagnify = function (params) {
+  this.options = params || {};
+  if (this.options['magnifyLayer']) {
+    this.magnifyLayer = this.options['magnifyLayer'];
+  } else {
+    throw new Error('图层必须传入！');
+  }
+
+  this._currentLayerIndex = null;
+
+  this.radius = typeof this.options['radius'] === 'number' ? this.options['radius'] : 75;
+
+  this.minRadius = typeof this.options['minRadius'] === 'number' ? this.options['minRadius'] : 150;
+
+  this.maxRadius = typeof this.options['maxRadius'] === 'number' ? this.options['maxRadius'] : 25;
+
+  this.lineWidth = typeof this.options['lineWidth'] === 'number' ? this.options['lineWidth'] : 2;
+
+  this.strokeStyle = this.options['strokeStyle'] ? this.options['strokeStyle'] : 'rgba(0, 0, 0, 0.5)';
+
+  this.zoomInKeyCode = this.options['zoomInKeyCode'] !== undefined ? this.options['zoomInKeyCode'] : 38;
+
+  this.zoomOutKeyCode = this.options['zoomOutKeyCode'] !== undefined ? this.options['zoomOutKeyCode'] : 40;
+
+  this.mousePosition = null;
+  _openlayers2.default.interaction.Pointer.call(this, {
+    handleEvent: _openlayers2.default.interaction.LayerMagnify.handleEvent_,
+    handleMoveEvent: _openlayers2.default.interaction.LayerMagnify.handleMoveEvent_
+  });
+};
+
+_openlayers2.default.inherits(_openlayers2.default.interaction.LayerMagnify, _openlayers2.default.interaction.Pointer);
+
+_openlayers2.default.interaction.LayerMagnify.handleMoveEvent_ = function (mapBrowserEvent) {
+  this.mousePosition = mapBrowserEvent['pixel'];
+  this.getMap().render();
+};
+
+_openlayers2.default.interaction.LayerMagnify.handleEvent_ = function (evt) {
+  return _openlayers2.default.interaction.Pointer.handleEvent.call(this, evt);
+};
+
+_openlayers2.default.interaction.LayerMagnify.prototype.initEvents_ = function () {
+  if (this.getMap()) {
+    Events.listen(this.getMap().getTargetElement(), 'mouseout', this.handleMouseOut_, this);
+    Events.listen(document, 'keydown', this.handleKeyDown_, this);
+
+    this.magnifyLayer.on('postcompose', this.handlePostcompose_, this);
+  }
+};
+
+_openlayers2.default.interaction.LayerMagnify.prototype.handleMouseOut_ = function (event) {
+  this.mousePosition = null;
+  this.getMap().render();
+};
+
+_openlayers2.default.interaction.LayerMagnify.prototype.handleKeyDown_ = function (event) {
+  if (event.which === this.zoomInKeyCode) {
+    this.radius = Math.min(this.radius + 5, 150);
+    this.getMap().render();
+    event.preventDefault();
+  } else if (event.which === this.zoomOutKeyCode) {
+    this.radius = Math.max(this.radius - 5, 25);
+    this.getMap().render();
+    event.preventDefault();
+  }
+};
+
+_openlayers2.default.interaction.LayerMagnify.prototype.handlePostcompose_ = function (event) {
+  if (this.mousePosition) {
+    var _ref = [event.context, event.frameState.pixelRatio],
+        context = _ref[0],
+        pixelRatio = _ref[1];
+
+    var half = this.radius * pixelRatio;
+    var centerX = this.mousePosition[0] * pixelRatio,
+        centerY = this.mousePosition[1] * pixelRatio;
+    var originX = centerX - half,
+        originY = centerY - half,
+        size = 2 * half + 1;
+
+    var sourceData = context.getImageData(originX, originY, size, size).data;
+    var dest = context.createImageData(size, size);
+    var destData = dest.data;
+    for (var j = 0; j < size; ++j) {
+      for (var i = 0; i < size; ++i) {
+        var dI = i - half;
+        var dJ = j - half;
+        var dist = Math.sqrt(dI * dI + dJ * dJ);
+        var sourceI = i;
+        var sourceJ = j;
+        if (dist < half) {
+          sourceI = Math.round(half + dI / 2);
+          sourceJ = Math.round(half + dJ / 2);
+        }
+        var destOffset = (j * size + i) * 4;
+        var sourceOffset = (sourceJ * size + sourceI) * 4;
+        destData[destOffset] = sourceData[sourceOffset];
+        destData[destOffset + 1] = sourceData[sourceOffset + 1];
+        destData[destOffset + 2] = sourceData[sourceOffset + 2];
+        destData[destOffset + 3] = sourceData[sourceOffset + 3];
+      }
+    }
+    context.beginPath();
+    context.arc(centerX, centerY, half, 0, 2 * Math.PI, false);
+    context.lineWidth = this.lineWidth * pixelRatio;
+    context.strokeStyle = this.strokeStyle;
+    context.putImageData(dest, originX, originY);
+    context.stroke();
+    context.restore();
+  }
+};
+
+_openlayers2.default.interaction.LayerMagnify.prototype.setMap = function (map) {
+  if (map && map instanceof _openlayers2.default.Map) {
+    _openlayers2.default.interaction.Interaction.prototype.setMap.call(this, map);
+    this.initEvents_();
+  } else {
+    Events.unListen(this.getMap().getTargetElement(), 'mouseout', this.handleMouseOut_, this);
+    Events.unListen(document, 'keydown', this.handleKeyDown_, this);
+
+    this.magnifyLayer.un('postcompose', this.handlePostcompose_, this);
+    _openlayers2.default.interaction.Interaction.prototype.setMap.call(this, map);
+  }
+};
+
+var olInteractionLayerMagnify = _openlayers2.default.interaction.LayerMagnify;
+
+exports.default = olInteractionLayerMagnify;
+module.exports = exports['default'];
+
+/***/ }),
+/* 274 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _openlayers = __webpack_require__(0);
+
+var _openlayers2 = _interopRequireDefault(_openlayers);
+
+var _Events = __webpack_require__(8);
+
+var Events = _interopRequireWildcard(_Events);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_openlayers2.default.interaction.LayerSpyglass = function (params) {
+  this.options = params || {};
+  if (this.options['spyLayer']) {
+    this.spyLayer = this.options['spyLayer'];
+  } else {
+    throw new Error('图层必须传入！');
+  }
+
+  this._currentLayerIndex = null;
+
+  this.radius = typeof this.options['radius'] === 'number' ? this.options['radius'] : 75;
+
+  this.minRadius = typeof this.options['minRadius'] === 'number' ? this.options['minRadius'] : 150;
+
+  this.maxRadius = typeof this.options['maxRadius'] === 'number' ? this.options['maxRadius'] : 25;
+
+  this.lineWidth = typeof this.options['lineWidth'] === 'number' ? this.options['lineWidth'] : 5;
+
+  this.strokeStyle = this.options['strokeStyle'] ? this.options['strokeStyle'] : 'rgba(0, 0, 0, 0.5)';
+
+  this.zoomInKeyCode = this.options['zoomInKeyCode'] !== undefined ? this.options['zoomInKeyCode'] : 38;
+
+  this.zoomOutKeyCode = this.options['zoomOutKeyCode'] !== undefined ? this.options['zoomOutKeyCode'] : 40;
+
+  this.mousePosition = null;
+  _openlayers2.default.interaction.Pointer.call(this, {
+    handleEvent: _openlayers2.default.interaction.LayerSpyglass.handleEvent_,
+    handleMoveEvent: _openlayers2.default.interaction.LayerSpyglass.handleMoveEvent_
+  });
+};
+
+_openlayers2.default.inherits(_openlayers2.default.interaction.LayerSpyglass, _openlayers2.default.interaction.Pointer);
+
+_openlayers2.default.interaction.LayerSpyglass.handleMoveEvent_ = function (mapBrowserEvent) {
+  this.mousePosition = mapBrowserEvent['pixel'];
+  this.getMap().render();
+};
+
+_openlayers2.default.interaction.LayerSpyglass.handleEvent_ = function (evt) {
+  return _openlayers2.default.interaction.Pointer.handleEvent.call(this, evt);
+};
+
+_openlayers2.default.interaction.LayerSpyglass.prototype.initEvents_ = function () {
+  if (this.getMap()) {
+    Events.listen(this.getMap().getTargetElement(), 'mouseout', this.handleMouseOut_, this);
+    Events.listen(document, 'keydown', this.handleKeyDown_, this);
+    var layers = this.getMap().getLayers().getArray();
+    var layerIndexs = [];
+    this._currentLayerIndex = this.spyLayer.getZIndex();
+    layers.every(function (layer) {
+      layerIndexs.push(layer.getZIndex());
+    });
+    var maxIndex = Math.max.apply(Math, layerIndexs);
+
+    this.spyLayer.setZIndex(maxIndex + 10);
+    this.spyLayer.setVisible(true);
+
+    this.spyLayer.on('precompose', this.handlePrecompose_, this);
+
+    this.spyLayer.on('postcompose', this.handlePostcompose_, this);
+  }
+};
+
+_openlayers2.default.interaction.LayerSpyglass.prototype.handleMouseOut_ = function (event) {
+  this.mousePosition = null;
+  this.getMap().render();
+};
+
+_openlayers2.default.interaction.LayerSpyglass.prototype.handleKeyDown_ = function (event) {
+  if (event.which === this.zoomInKeyCode) {
+    this.radius = Math.min(this.radius + 5, 150);
+    this.getMap().render();
+    event.preventDefault();
+  } else if (event.which === this.zoomOutKeyCode) {
+    this.radius = Math.max(this.radius - 5, 25);
+    this.getMap().render();
+    event.preventDefault();
+  }
+};
+
+_openlayers2.default.interaction.LayerSpyglass.prototype.handlePrecompose_ = function (event) {
+  var ctx = event.context;
+  var pixelRatio = event.frameState.pixelRatio;
+  ctx.save();
+  ctx.beginPath();
+  if (this.mousePosition) {
+    ctx.arc(this.mousePosition[0] * pixelRatio, this.mousePosition[1] * pixelRatio, this.radius * pixelRatio, 0, 2 * Math.PI);
+    ctx.lineWidth = this.lineWidth * pixelRatio;
+    ctx.strokeStyle = this.strokeStyle;
+    ctx.stroke();
+  }
+  ctx.clip();
+};
+
+_openlayers2.default.interaction.LayerSpyglass.prototype.handlePostcompose_ = function (event) {
+  var ctx = event.context;
+  ctx.restore();
+};
+
+_openlayers2.default.interaction.LayerSpyglass.prototype.setMap = function (map) {
+  if (map && map instanceof _openlayers2.default.Map) {
+    _openlayers2.default.interaction.Interaction.prototype.setMap.call(this, map);
+    this.initEvents_();
+  } else {
+    Events.unListen(this.getMap().getTargetElement(), 'mouseout', this.handleMouseOut_, this);
+    Events.unListen(document, 'keydown', this.handleKeyDown_, this);
+
+    this.spyLayer.un('precompose', this.handlePrecompose_, this);
+
+    this.spyLayer.un('postcompose', this.handlePostcompose_, this);
+    this.spyLayer.setVisible(false);
+    this.spyLayer.setZIndex(this._currentLayerIndex);
+    this._currentLayerIndex = null;
+    _openlayers2.default.interaction.Interaction.prototype.setMap.call(this, map);
+  }
+};
+
+var olInteractionLayerSpyglass = _openlayers2.default.interaction.LayerSpyglass;
+
+exports.default = olInteractionLayerSpyglass;
+module.exports = exports['default'];
+
+/***/ }),
+/* 275 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _openlayers = __webpack_require__(0);
+
+var _openlayers2 = _interopRequireDefault(_openlayers);
+
+var _factory = __webpack_require__(69);
+
+var _factory2 = _interopRequireDefault(_factory);
+
+var _layerUtils = __webpack_require__(134);
+
+var _layerUtils2 = _interopRequireDefault(_layerUtils);
+
+var _utils = __webpack_require__(271);
+
+__webpack_require__(277);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_openlayers2.default.interaction.MeasureTool = function (params) {
+  this.options = params || {};
+
+  this.wgs84Sphere = new _openlayers2.default.Sphere(typeof this.options['sphere'] === 'number' ? this.options['sphere'] : 6378137);
+
+  this.measureTypes = {
+    measureLength: {
+      name: 'measureLength',
+      type: 'LineString'
+    },
+    measureArea: {
+      name: 'measureArea',
+      type: 'Polygon'
+    },
+    measureCircle: {
+      name: 'measureCircle',
+      type: 'Circle'
+    }
+  };
+
+  this.measureType = '';
+
+  this.freehand = false;
+
+  this.isGeodesic = this.options['isGeodesic'] === false ? this.options['isGeodesic'] : true;
+
+  this.layerName = this.options['layerName'] || 'measureTool';
+
+  this.layer = null;
+
+  this.draw = null;
+
+  this.isActive_ = false;
+
+  this.clickCount = '';
+
+  this.drawStyle = {
+    fill: {
+      fillColor: 'rgba(67, 110, 238, 0.4)'
+    },
+    stroke: {
+      strokeColor: 'rgba(249, 185, 154, 1)',
+      strokeWidth: 2.5
+    },
+    image: {
+      type: '',
+      image: {
+        fill: {
+          fillColor: 'rgba(255, 255, 255, 0.8)'
+        },
+        points: Infinity,
+        radius: 4,
+        stroke: {
+          strokeColor: 'rgba(255, 0, 0, 1)',
+          strokeWidth: 1.5
+        }
+      }
+    }
+  };
+  if (this.options['drawStyle'] && _typeof(this.options['drawStyle']) === 'object') {
+    this.drawStyle = this.options['drawStyle'];
+  }
+
+  this.finshStyle = {
+    fill: {
+      fillColor: 'rgba(67, 110, 238, 0.4)'
+    },
+    stroke: {
+      strokeColor: 'rgba(253, 128, 68, 1)',
+      strokeWidth: 3
+    },
+    image: {
+      type: '',
+      image: {
+        fill: {
+          fillColor: 'rgba(255, 255, 255, 0.8)'
+        },
+        points: Infinity,
+        radius: 4,
+        stroke: {
+          strokeColor: 'rgba(255, 0, 0, 1)',
+          strokeWidth: 1.5
+        }
+      }
+    }
+  };
+  if (this.options['finshStyle'] && _typeof(this.options['finshStyle']) === 'object') {
+    this.finshStyle = this.options['finshStyle'];
+  }
+
+  this.cursor_ = 'default';
+
+  this.previousCursor_ = undefined;
+  _openlayers2.default.interaction.Pointer.call(this, {
+    handleMoveEvent: _openlayers2.default.interaction.MeasureTool.handleMoveEvent_,
+    handleDownEvent: _openlayers2.default.interaction.MeasureTool.handleDownEvent_,
+    handleDragEvent: _openlayers2.default.interaction.MeasureTool.handleDragEvent_
+  });
+
+  this.doubleClickZoom = null;
+};
+
+_openlayers2.default.inherits(_openlayers2.default.interaction.MeasureTool, _openlayers2.default.interaction.Pointer);
+
+_openlayers2.default.interaction.MeasureTool.handleMoveEvent_ = function (mapBrowserEvent) {
+  if (this.getTool()) {
+    if (this.drawStart_ && !mapBrowserEvent.dragging && this.measureType === this.measureTypes.measureCircle['name']) {
+      this.afterDrawPointClickHandler(mapBrowserEvent);
+    } else if (!this.drawStart_ && !mapBrowserEvent.dragging) {
+      this.beforeDrawPointClickHandler(mapBrowserEvent);
+    } else if (this.drawStart_ && !mapBrowserEvent.dragging) {
+      this.afterDrawPointClickHandler(mapBrowserEvent);
+    } else if (this.freehand && this.drawStart_ && mapBrowserEvent.dragging) {
+      this.afterDragHandler_(mapBrowserEvent);
+    }
+  }
+};
+
+_openlayers2.default.interaction.MeasureTool.handleDownEvent_ = function (mapBrowserEvent) {
+  if (this.freehand) {
+    console.log(mapBrowserEvent);
+  }
+};
+
+_openlayers2.default.interaction.MeasureTool.handleDragEvent_ = function (mapBrowserEvent) {
+  if (this.freehand) {
+    console.log(mapBrowserEvent);
+  }
+};
+
+_openlayers2.default.interaction.MeasureTool.prototype.addDrawInteractions_ = function (type) {
+  var style_ = new _factory2.default(this.drawStyle);
+  this.draw = new _openlayers2.default.interaction.Draw({
+    type: type,
+    style: style_,
+    freehand: this.freehand
+  });
+  this.draw.set('uuid', (0, _utils.getuuid)());
+  this.getMap().addInteraction(this.draw);
+  this.draw.on('drawstart', this.drawStartHandle_, this);
+  this.draw.on('drawend', this.drawEndHandle_, this);
+  if (type === 'LineString' && !this.freehand) {
+    this.getMap().on('singleclick', this.drawClickHandle_, this);
+  }
+};
+
+_openlayers2.default.interaction.MeasureTool.prototype.drawClickHandle_ = function (event) {
+  if (this.drawStart_ && !event.dragging) {
+    if (!this.clickCount) {
+      this.clickCount = (0, _utils.getuuid)();
+      this.draw.set('measureResult', '起点');
+    }
+    this.addMeasurecircle(event.coordinate);
+    this.addMeasureOverlay(event.coordinate, this.draw.get('measureResult'));
+  }
+};
+
+_openlayers2.default.interaction.MeasureTool.prototype.addMeasurecircle = function (coordinate) {
+  var feature = new _openlayers2.default.Feature({
+    uuid: this.draw.get('uuid'),
+    geometry: new _openlayers2.default.geom.Point(coordinate)
+  });
+  this.layer.getSource().addFeature(feature);
+};
+
+_openlayers2.default.interaction.MeasureTool.prototype.drawStartHandle_ = function (event) {
+  var _this = this;
+
+  var that = this;
+  this.drawStart_ = true;
+  event.feature.getGeometry().on('change', function (evt) {
+    var geom = evt.target;
+    if (geom instanceof _openlayers2.default.geom.LineString) {
+      var output = that.formatData(geom);
+      that.draw.set('measureResult', output);
+    } else if (geom instanceof _openlayers2.default.geom.Polygon) {
+      var area = _this.formatData(geom);
+      that.draw.set('measureResult', area);
+    } else if (geom instanceof _openlayers2.default.geom.Circle) {
+      var _area = _this.formatData(geom);
+      that.draw.set('measureResult', _area);
+    }
+  });
+};
+
+_openlayers2.default.interaction.MeasureTool.prototype.drawEndHandle_ = function (event) {
+  this.drawEnd_ = true;
+  var feature = event.feature;
+  feature.set('uuid', this.draw.get('uuid'));
+  this.layer.getSource().addFeature(feature);
+  var coordinates = feature.getGeometry().getLastCoordinate();
+  if (this.measureTypes.measureLength['name'] === this.measureType) {
+    this.addMeasurecircle(coordinates);
+    this.addMeasureOverlay(coordinates, this.draw.get('measureResult'), 'length');
+  } else if (this.measureTypes.measureArea['name'] === this.measureType) {
+    var center = _openlayers2.default.extent.getCenter(feature.getGeometry().getExtent());
+    this.addMeasureOverlay(center, this.draw.get('measureResult'), 'area');
+  } else if (this.measureTypes.measureCircle['name'] === this.measureType) {
+    var _center = _openlayers2.default.extent.getCenter(feature.getGeometry().getExtent());
+    this.addMeasureOverlay(_center, this.draw.get('measureResult'), 'circle');
+  }
+  this.addMeasureRemoveButton(coordinates);
+  this.setTool(false);
+  this.dispatchEvent('measureEnd');
+};
+
+_openlayers2.default.interaction.MeasureTool.prototype.beforeDrawPointClickHandler = function (event) {
+  if (!this.measureHelpTooltip && this.getTool()) {
+    var helpTooltipElement = document.createElement('span');
+    if (this.measureTypes.measureLength['name'] === this.measureType) {
+      helpTooltipElement.className = 'hamp-js-measure hamp-js-measure-length';
+      if (this.freehand) {
+        helpTooltipElement.innerHTML = '按下鼠标拖拽开始测量';
+      } else {
+        helpTooltipElement.innerHTML = '单击开始测距';
+      }
+    } else if (this.measureTypes.measureArea['name'] === this.measureType) {
+      helpTooltipElement.className = 'hamp-js-measure hamp-js-measure-area';
+      if (this.freehand) {
+        helpTooltipElement.innerHTML = '按下鼠标拖拽开始测量';
+      } else {
+        helpTooltipElement.innerHTML = '单击开始测面';
+      }
+    } else if (this.measureTypes.measureCircle['name'] === this.measureType) {
+      helpTooltipElement.className = 'hamp-js-measure hamp-js-measure-area';
+      if (this.freehand) {
+        helpTooltipElement.innerHTML = '按下鼠标拖拽开始测量';
+      } else {
+        helpTooltipElement.innerHTML = '单击开始测方圆面积';
+      }
+    }
+    this.measureHelpTooltip = new _openlayers2.default.Overlay({
+      element: helpTooltipElement,
+      offset: [15, 0],
+      positioning: 'center-left'
+    });
+    this.measureHelpTooltip.set('layerName', this.layerName);
+    this.getMap().addOverlay(this.measureHelpTooltip);
+  } else if (this.measureHelpTooltip && this.measureHelpTooltip instanceof _openlayers2.default.Overlay) {
+    this.measureHelpTooltip.setPosition(event.coordinate);
+  }
+};
+
+_openlayers2.default.interaction.MeasureTool.prototype.afterDrawPointClickHandler = function (event) {
+  var helpTooltipElement = this.measureHelpTooltip.getElement();
+  if (this.measureTypes.measureLength['name'] === this.measureType) {
+    helpTooltipElement.className = 'hamp-js-measure-move hamp-js-measure-length';
+    var length = this.draw.get('measureResult');
+    helpTooltipElement.innerHTML = '<span>总长：' + '<span class="measure-result">' + length + '</span>' + '</span><br>' + '<span class="tool-tip">单击确定地点，双击结束</span>';
+  } else if (this.measureTypes.measureArea['name'] === this.measureType) {
+    helpTooltipElement.className = 'hamp-js-measure-move hamp-js-measure-area';
+    var area = this.draw.get('measureResult');
+    helpTooltipElement.innerHTML = '<span>总面积：' + '<span class="measure-result">' + area + '</span>' + '</span><br>' + '<span class="tool-tip">单击确定地点，双击结束</span>';
+  } else if (this.measureTypes.measureCircle['name'] === this.measureType) {
+    helpTooltipElement.className = 'hamp-js-measure-move hamp-js-measure-area';
+    var _area2 = this.draw.get('measureResult');
+    helpTooltipElement.innerHTML = '<span>总面积：' + '<span class="measure-result">' + _area2 + '</span>' + '</span><br>' + '<span class="tool-tip">单击确定地点，双击结束</span>';
+  }
+  this.measureHelpTooltip.setPosition(event.coordinate);
+  this.getMap().render();
+};
+
+_openlayers2.default.interaction.MeasureTool.prototype.afterDragHandler_ = function (event) {
+  var helpTooltipElement = this.measureHelpTooltip.getElement();
+  if (this.measureTypes.measureLength['name'] === this.measureType) {
+    helpTooltipElement.className = 'hamp-js-measure-move hamp-js-measure-length';
+    var length = this.draw.get('measureResult');
+    helpTooltipElement.innerHTML = '<span>总长：' + '<span class="measure-result">' + length + '</span>' + '</span><br>' + '<span class="tool-tip">松开鼠标按键结束测量</span>';
+  } else if (this.measureTypes.measureArea['name'] === this.measureType) {
+    helpTooltipElement.className = 'hamp-js-measure-move hamp-js-measure-area';
+    var area = this.draw.get('measureResult');
+    helpTooltipElement.innerHTML = '<span>总面积：' + '<span class="measure-result">' + area + '</span>' + '</span><br>' + '<span class="tool-tip">松开鼠标按键结束测量</span>';
+  } else if (this.measureTypes.measureCircle['name'] === this.measureType) {
+    helpTooltipElement.className = 'hamp-js-measure-move hamp-js-measure-area';
+    var _area3 = this.draw.get('measureResult');
+    helpTooltipElement.innerHTML = '<span>总面积：' + '<span class="measure-result">' + _area3 + '</span>' + '</span><br>' + '<span class="tool-tip">松开鼠标按键结束测量</span>';
+  }
+  this.measureHelpTooltip.setPosition(event.coordinate);
+  this.getMap().render();
+};
+
+_openlayers2.default.interaction.MeasureTool.prototype.addMeasureOverlay = function (coordinate, length, type) {
+  var measureResult = document.createElement('span');
+  var measureOverlay = null;
+  if (type === 'length') {
+    measureResult.className = 'hmap-measure-end-overlay-label';
+    measureResult.innerHTML = "总长：<span class='measure-end-label'>" + length + '</span>';
+    measureOverlay = new _openlayers2.default.Overlay({
+      element: measureResult,
+      position: coordinate,
+      offset: [10, 10],
+      positioning: 'top-left'
+    });
+  } else if (type === 'area') {
+    measureResult.className = 'hmap-measure-area-overlay-label';
+    measureResult.innerHTML = '<span class="measure-label">' + length + '</span>';
+    measureOverlay = new _openlayers2.default.Overlay({
+      element: measureResult,
+      position: coordinate,
+      positioning: 'center-center'
+    });
+  } else if (type === 'circle') {
+    measureResult.className = 'hmap-measure-area-overlay-label';
+    measureResult.innerHTML = '<span class="measure-label">' + length + '</span>';
+    measureOverlay = new _openlayers2.default.Overlay({
+      element: measureResult,
+      position: coordinate,
+      positioning: 'center-center'
+    });
+  } else {
+    measureResult.className = 'hmap-measure-overlay-label';
+    measureResult.innerHTML = length;
+    measureOverlay = new _openlayers2.default.Overlay({
+      element: measureResult,
+      position: coordinate,
+      offset: [10, 0],
+      positioning: 'center-left'
+    });
+  }
+  measureOverlay.set('layerName', this.layerName);
+  measureOverlay.set('uuid', this.draw.get('uuid'));
+  this.getMap().addOverlay(measureOverlay);
+  this.getMap().render();
+};
+
+_openlayers2.default.interaction.MeasureTool.prototype.addMeasureRemoveButton = function (coordinate) {
+  var that = this;
+  var imageButton = document.createElement('img');
+  imageButton.src = this.options['removeButtonSrc'] ? this.options['removeButtonSrc'] : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NEYzMzc1RDY3RDU1MTFFNUFDNDJFNjQ4NUUwMzRDRDYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NEYzMzc1RDc3RDU1MTFFNUFDNDJFNjQ4NUUwMzRDRDYiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo0RjMzNzVENDdENTUxMUU1QUM0MkU2NDg1RTAzNENENiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo0RjMzNzVENTdENTUxMUU1QUM0MkU2NDg1RTAzNENENiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsDx84AAAAC3SURBVHjavJIxDoMwDEV/ok5wDCbu0DvAdUBIwMLFSs/AxDXY6tZ2SCGVUikd+ifn20+2k5hHVd0AXJGmGQw+UyWMxY8KQGpbUNcB23aYHIsnuSgIy8dlAQ2DgwWSmD0YE5ReAq5pQOMIrKsDRByjKGC/dsxz2L7XQgU8JB7n4qDoY6SYF4J+p72T7/zeOXqr03SMx8XnsTUX7UgElKVCyDK3s8Tsae6sv/8ceceZ6jr1k99fAgwAsZy0Sa2HgDcAAAAASUVORK5CYII=';
+  imageButton.style.cursor = 'pointer';
+  imageButton.title = '清除测量结果';
+  imageButton.uuid_ = this.draw.get('uuid');
+  imageButton.onclick = function (event) {
+    that.removeMeasure_(this.uuid_);
+  };
+  var closeBtn = new _openlayers2.default.Overlay({
+    element: imageButton,
+    offset: [8, 0],
+    position: coordinate,
+    positioning: 'center-left'
+  });
+  closeBtn.set('uuid', this.draw.get('uuid'));
+  closeBtn.set('layerName', this.layerName);
+  this.getMap().addOverlay(closeBtn);
+  this.getMap().render();
+};
+
+_openlayers2.default.interaction.MeasureTool.prototype.removeMeasure_ = function (uuid) {
+  var overlays = this.getMap().getOverlays().getArray();
+  if (overlays && Array.isArray(overlays)) {
+    var length = overlays.length;
+
+    for (var j = 0, i = 0; j < length; j++) {
+      i++;
+      if (overlays[length - i] && overlays[length - i] instanceof _openlayers2.default.Overlay && overlays[length - i].get('uuid') === uuid) {
+        this.getMap().removeOverlay(overlays[length - i]);
+      }
+    }
+  }
+  if (this.layer && this.layer.getSource()) {
+    var source = this.layer.getSource();
+    var features = source.getFeatures();
+    features.forEach(function (feat) {
+      if (feat.get('uuid') === uuid) {
+        source.removeFeature(feat);
+      }
+    }, this);
+  }
+};
+
+_openlayers2.default.interaction.MeasureTool.prototype.setTool = function (active, key, freehand) {
+  this.removeLastInteraction_();
+  if (active && key && this.measureTypes.hasOwnProperty(key)) {
+    this.isActive_ = active;
+    this.freehand = freehand;
+    this.measureType = key;
+    if (!this.layer) {
+      var _style = new _factory2.default(this.finshStyle);
+      this.layer = new _layerUtils2.default(this.getMap()).createVectorLayer(this.layerName, {
+        create: true
+      });
+      this.layer.setStyle(_style);
+    }
+    this.addDrawInteractions_(this.measureTypes[key]['type']);
+  }
+};
+
+_openlayers2.default.interaction.MeasureTool.prototype.removeLastInteraction_ = function () {
+  this.isActive_ = false;
+  this.freehand = false;
+  this.drawStart_ = false;
+  if (this.draw) {
+    this.draw.un('drawstart', this.drawStartHandle_, this);
+    this.draw.un('drawend', this.drawEndHandle_, this);
+    this.getMap().un('singleclick', this.drawClickHandle_, this);
+    if (this.measureHelpTooltip && this.measureHelpTooltip instanceof _openlayers2.default.Overlay) {
+      this.getMap().removeOverlay(this.measureHelpTooltip);
+      this.measureHelpTooltip = null;
+    }
+    this.clickCount = '';
+    this.disActionInteraction();
+    this.getMap().removeInteraction(this.draw);
+    this.measureType = '';
+  }
+};
+
+_openlayers2.default.interaction.MeasureTool.prototype.getTool = function () {
+  return this.isActive_;
+};
+
+_openlayers2.default.interaction.MeasureTool.prototype.setActive = function (active) {
+  _openlayers2.default.interaction.Pointer.prototype.setActive.call(this, active);
+};
+
+_openlayers2.default.interaction.MeasureTool.prototype.disActionInteraction = function () {
+  var _this2 = this;
+
+  this.doubleClickZoom = this.getDoubleClickZoomInteraction();
+  var active = this.doubleClickZoom.getActive();
+  this.doubleClickZoom.setActive(false);
+  window.setTimeout(function () {
+    _this2.doubleClickZoom.setActive(active);
+  }, 200);
+};
+
+_openlayers2.default.interaction.MeasureTool.prototype.getDoubleClickZoomInteraction = function () {
+  var _this3 = this;
+
+  if (!this.doubleClickZoom) {
+    var items = this.getMap().getInteractions().getArray();
+    items.every(function (item) {
+      if (item && item instanceof _openlayers2.default.interaction.DoubleClickZoom) {
+        _this3.doubleClickZoom = item;
+        return false;
+      } else {
+        return true;
+      }
+    });
+  }
+  return this.doubleClickZoom;
+};
+
+_openlayers2.default.interaction.MeasureTool.prototype.formatData = function (geom) {
+  var output = 0;
+  if (geom) {
+    if (this.measureTypes.measureLength['name'] === this.measureType) {
+      if (this.isGeodesic) {
+        var _ref = [geom.getCoordinates(), 0],
+            coordinates = _ref[0],
+            length = _ref[1];
+
+        var sourceProj = this.getMap().getView().getProjection();
+        for (var i = 0, ii = coordinates.length - 1; i < ii; ++i) {
+          var c1 = _openlayers2.default.proj.transform(coordinates[i], sourceProj, 'EPSG:4326');
+          var c2 = _openlayers2.default.proj.transform(coordinates[i + 1], sourceProj, 'EPSG:4326');
+          length += this.wgs84Sphere.haversineDistance(c1, c2);
+        }
+        if (length > 100) {
+          output = Math.round(length / 1000 * 100) / 100 + ' ' + '公里';
+        } else {
+          output = Math.round(length * 100) / 100 + ' ' + '米';
+        }
+      } else {
+        output = Math.round(geom.getLength() * 100) / 100;
+      }
+    } else if (this.measureType === 'measureArea') {
+      if (this.isGeodesic) {
+        var _sourceProj = this.getMap().getView().getProjection();
+        var geometry = geom.clone().transform(_sourceProj, 'EPSG:4326');
+        var _coordinates = geometry.getLinearRing(0).getCoordinates();
+        var area = Math.abs(this.wgs84Sphere.geodesicArea(_coordinates));
+        if (area > 10000000000) {
+          output = Math.round(area / (1000 * 1000 * 10000) * 100) / 100 + ' ' + '万平方公里';
+        } else if (area > 1000000 && area < 10000000000) {
+          output = Math.round(area / (1000 * 1000) * 100) / 100 + ' ' + '平方公里';
+        } else {
+          output = Math.round(area * 100) / 100 + ' ' + '平方米';
+        }
+      } else {
+        output = geom.getArea();
+      }
+    } else if (this.measureType === 'measureCircle') {
+      var _sourceProj2 = this.getMap().getView().getProjection();
+      var circle = geom.clone().transform(_sourceProj2, 'EPSG:4326');
+      var polygon = _openlayers2.default.geom.Polygon.fromCircle(circle, 64, 0);
+      if (this.isGeodesic) {
+        var _coordinates2 = polygon.getLinearRing(0).getCoordinates();
+        var _area4 = Math.abs(this.wgs84Sphere.geodesicArea(_coordinates2));
+        if (_area4 > 10000000000) {
+          output = Math.round(_area4 / (1000 * 1000 * 10000) * 100) / 100 + ' ' + '万平方公里';
+        } else if (_area4 > 1000000 && _area4 < 10000000000) {
+          output = Math.round(_area4 / (1000 * 1000) * 100) / 100 + ' ' + '平方公里';
+        } else {
+          output = Math.round(_area4 * 100) / 100 + ' ' + '平方米';
+        }
+      } else {
+        output = polygon.getArea();
+      }
+    }
+  }
+  return output;
+};
+
+var olInteractionMeasureTool = _openlayers2.default.interaction.MeasureTool;
+exports.default = olInteractionMeasureTool;
+module.exports = exports['default'];
+
+/***/ }),
+/* 276 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 277 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 278 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _openlayers = __webpack_require__(0);
+
+var _openlayers2 = _interopRequireDefault(_openlayers);
+
+__webpack_require__(279);
+
+var _domUtils = __webpack_require__(5);
+
+var DomUtils = _interopRequireWildcard(_domUtils);
+
+var _utils = __webpack_require__(271);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_openlayers2.default.Popover = function (map, params) {
+  var _this = this;
+
+  if (map && map instanceof _openlayers2.default.Map) {
+    this.map = map;
+  } else {
+    throw new Error('传入的不是地图对象或者地图对象为空！');
+  }
+
+  this.options = params || {};
+
+  if (this.options['autoPan'] === undefined) {
+    this.options['autoPan'] = true;
+  }
+
+  if (!this.options['offset']) {
+    this.options.offset = [0, 0];
+  }
+
+  if (this.options['autoPanAnimation'] === undefined) {
+    this.options['autoPanAnimation'] = {
+      duration: 250
+    };
+  }
+
+  if (!this.options['className']) {
+    this.options['className'] = 'hmap-js-popup';
+  }
+
+  if (this.options['opacity'] === undefined) {
+    this.options['opacity'] = 1;
+  }
+
+  if (this.options['id'] === undefined || this.options['id'] === null) {
+    this.options['id'] = (0, _utils.getuuid)();
+  }
+
+  if (!this.options['markIcon']) {
+    this.options['markIcon'] = 'data:image;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAcCAYAAAC6YTVCAAAACXBIWXMAAAsTAAALEwEAmpwYAAAKTWlDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjanVN3WJP3Fj7f92UPVkLY8LGXbIEAIiOsCMgQWaIQkgBhhBASQMWFiApWFBURnEhVxILVCkidiOKgKLhnQYqIWotVXDjuH9yntX167+3t+9f7vOec5/zOec8PgBESJpHmomoAOVKFPDrYH49PSMTJvYACFUjgBCAQ5svCZwXFAADwA3l4fnSwP/wBr28AAgBw1S4kEsfh/4O6UCZXACCRAOAiEucLAZBSAMguVMgUAMgYALBTs2QKAJQAAGx5fEIiAKoNAOz0ST4FANipk9wXANiiHKkIAI0BAJkoRyQCQLsAYFWBUiwCwMIAoKxAIi4EwK4BgFm2MkcCgL0FAHaOWJAPQGAAgJlCLMwAIDgCAEMeE80DIEwDoDDSv+CpX3CFuEgBAMDLlc2XS9IzFLiV0Bp38vDg4iHiwmyxQmEXKRBmCeQinJebIxNI5wNMzgwAABr50cH+OD+Q5+bk4eZm52zv9MWi/mvwbyI+IfHf/ryMAgQAEE7P79pf5eXWA3DHAbB1v2upWwDaVgBo3/ldM9sJoFoK0Hr5i3k4/EAenqFQyDwdHAoLC+0lYqG9MOOLPv8z4W/gi372/EAe/tt68ABxmkCZrcCjg/1xYW52rlKO58sEQjFu9+cj/seFf/2OKdHiNLFcLBWK8ViJuFAiTcd5uVKRRCHJleIS6X8y8R+W/QmTdw0ArIZPwE62B7XLbMB+7gECiw5Y0nYAQH7zLYwaC5EAEGc0Mnn3AACTv/mPQCsBAM2XpOMAALzoGFyolBdMxggAAESggSqwQQcMwRSswA6cwR28wBcCYQZEQAwkwDwQQgbkgBwKoRiWQRlUwDrYBLWwAxqgEZrhELTBMTgN5+ASXIHrcBcGYBiewhi8hgkEQcgIE2EhOogRYo7YIs4IF5mOBCJhSDSSgKQg6YgUUSLFyHKkAqlCapFdSCPyLXIUOY1cQPqQ28ggMor8irxHMZSBslED1AJ1QLmoHxqKxqBz0XQ0D12AlqJr0Rq0Hj2AtqKn0UvodXQAfYqOY4DRMQ5mjNlhXIyHRWCJWBomxxZj5Vg1Vo81Yx1YN3YVG8CeYe8IJAKLgBPsCF6EEMJsgpCQR1hMWEOoJewjtBK6CFcJg4Qxwicik6hPtCV6EvnEeGI6sZBYRqwm7iEeIZ4lXicOE1+TSCQOyZLkTgohJZAySQtJa0jbSC2kU6Q+0hBpnEwm65Btyd7kCLKArCCXkbeQD5BPkvvJw+S3FDrFiOJMCaIkUqSUEko1ZT/lBKWfMkKZoKpRzame1AiqiDqfWkltoHZQL1OHqRM0dZolzZsWQ8ukLaPV0JppZ2n3aC/pdLoJ3YMeRZfQl9Jr6Afp5+mD9HcMDYYNg8dIYigZaxl7GacYtxkvmUymBdOXmchUMNcyG5lnmA+Yb1VYKvYqfBWRyhKVOpVWlX6V56pUVXNVP9V5qgtUq1UPq15WfaZGVbNQ46kJ1Bar1akdVbupNq7OUndSj1DPUV+jvl/9gvpjDbKGhUaghkijVGO3xhmNIRbGMmXxWELWclYD6yxrmE1iW7L57Ex2Bfsbdi97TFNDc6pmrGaRZp3mcc0BDsax4PA52ZxKziHODc57LQMtPy2x1mqtZq1+rTfaetq+2mLtcu0W7eva73VwnUCdLJ31Om0693UJuja6UbqFutt1z+o+02PreekJ9cr1Dund0Uf1bfSj9Rfq79bv0R83MDQINpAZbDE4Y/DMkGPoa5hpuNHwhOGoEctoupHEaKPRSaMnuCbuh2fjNXgXPmasbxxirDTeZdxrPGFiaTLbpMSkxeS+Kc2Ua5pmutG003TMzMgs3KzYrMnsjjnVnGueYb7ZvNv8jYWlRZzFSos2i8eW2pZ8ywWWTZb3rJhWPlZ5VvVW16xJ1lzrLOtt1ldsUBtXmwybOpvLtqitm63Edptt3xTiFI8p0in1U27aMez87ArsmuwG7Tn2YfYl9m32zx3MHBId1jt0O3xydHXMdmxwvOuk4TTDqcSpw+lXZxtnoXOd8zUXpkuQyxKXdpcXU22niqdun3rLleUa7rrStdP1o5u7m9yt2W3U3cw9xX2r+00umxvJXcM970H08PdY4nHM452nm6fC85DnL152Xlle+70eT7OcJp7WMG3I28Rb4L3Le2A6Pj1l+s7pAz7GPgKfep+Hvqa+It89viN+1n6Zfgf8nvs7+sv9j/i/4XnyFvFOBWABwQHlAb2BGoGzA2sDHwSZBKUHNQWNBbsGLww+FUIMCQ1ZH3KTb8AX8hv5YzPcZyya0RXKCJ0VWhv6MMwmTB7WEY6GzwjfEH5vpvlM6cy2CIjgR2yIuB9pGZkX+X0UKSoyqi7qUbRTdHF09yzWrORZ+2e9jvGPqYy5O9tqtnJ2Z6xqbFJsY+ybuIC4qriBeIf4RfGXEnQTJAntieTE2MQ9ieNzAudsmjOc5JpUlnRjruXcorkX5unOy553PFk1WZB8OIWYEpeyP+WDIEJQLxhP5aduTR0T8oSbhU9FvqKNolGxt7hKPJLmnVaV9jjdO31D+miGT0Z1xjMJT1IreZEZkrkj801WRNberM/ZcdktOZSclJyjUg1plrQr1zC3KLdPZisrkw3keeZtyhuTh8r35CP5c/PbFWyFTNGjtFKuUA4WTC+oK3hbGFt4uEi9SFrUM99m/ur5IwuCFny9kLBQuLCz2Lh4WfHgIr9FuxYji1MXdy4xXVK6ZHhp8NJ9y2jLspb9UOJYUlXyannc8o5Sg9KlpUMrglc0lamUycturvRauWMVYZVkVe9ql9VbVn8qF5VfrHCsqK74sEa45uJXTl/VfPV5bdra3kq3yu3rSOuk626s91m/r0q9akHV0IbwDa0b8Y3lG19tSt50oXpq9Y7NtM3KzQM1YTXtW8y2rNvyoTaj9nqdf13LVv2tq7e+2Sba1r/dd3vzDoMdFTve75TsvLUreFdrvUV99W7S7oLdjxpiG7q/5n7duEd3T8Wej3ulewf2Re/ranRvbNyvv7+yCW1SNo0eSDpw5ZuAb9qb7Zp3tXBaKg7CQeXBJ9+mfHvjUOihzsPcw83fmX+39QjrSHkr0jq/dawto22gPaG97+iMo50dXh1Hvrf/fu8x42N1xzWPV56gnSg98fnkgpPjp2Snnp1OPz3Umdx590z8mWtdUV29Z0PPnj8XdO5Mt1/3yfPe549d8Lxw9CL3Ytslt0utPa49R35w/eFIr1tv62X3y+1XPK509E3rO9Hv03/6asDVc9f41y5dn3m978bsG7duJt0cuCW69fh29u0XdwruTNxdeo94r/y+2v3qB/oP6n+0/rFlwG3g+GDAYM/DWQ/vDgmHnv6U/9OH4dJHzEfVI0YjjY+dHx8bDRq98mTOk+GnsqcTz8p+Vv9563Or59/94vtLz1j82PAL+YvPv655qfNy76uprzrHI8cfvM55PfGm/K3O233vuO+638e9H5ko/ED+UPPR+mPHp9BP9z7nfP78L/eE8/sl0p8zAAA7BWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS41LWMwMTQgNzkuMTUxNDgxLCAyMDEzLzAzLzEzLTEyOjA5OjE1ICAgICAgICAiPgogICA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogICAgICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgICAgICAgICB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iCiAgICAgICAgICAgIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIKICAgICAgICAgICAgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIgogICAgICAgICAgICB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIKICAgICAgICAgICAgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIKICAgICAgICAgICAgeG1sbnM6dGlmZj0iaHR0cDovL25zLmFkb2JlLmNvbS90aWZmLzEuMC8iCiAgICAgICAgICAgIHhtbG5zOmV4aWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20vZXhpZi8xLjAvIj4KICAgICAgICAgPHhtcDpDcmVhdG9yVG9vbD5BZG9iZSBQaG90b3Nob3AgQ0MgKE1hY2ludG9zaCk8L3htcDpDcmVhdG9yVG9vbD4KICAgICAgICAgPHhtcDpDcmVhdGVEYXRlPjIwMTYtMDQtMDdUMTE6MDM6MzkrMDg6MDA8L3htcDpDcmVhdGVEYXRlPgogICAgICAgICA8eG1wOk1vZGlmeURhdGU+MjAxNi0wNC0wN1QyMDozMDoxNSswODowMDwveG1wOk1vZGlmeURhdGU+CiAgICAgICAgIDx4bXA6TWV0YWRhdGFEYXRlPjIwMTYtMDQtMDdUMjA6MzA6MTUrMDg6MDA8L3htcDpNZXRhZGF0YURhdGU+CiAgICAgICAgIDxkYzpmb3JtYXQ+aW1hZ2UvcG5nPC9kYzpmb3JtYXQ+CiAgICAgICAgIDxwaG90b3Nob3A6Q29sb3JNb2RlPjM8L3Bob3Rvc2hvcDpDb2xvck1vZGU+CiAgICAgICAgIDxwaG90b3Nob3A6SUNDUHJvZmlsZT5zUkdCIElFQzYxOTY2LTIuMTwvcGhvdG9zaG9wOklDQ1Byb2ZpbGU+CiAgICAgICAgIDx4bXBNTTpJbnN0YW5jZUlEPnhtcC5paWQ6MDk1Y2NlYjctNjUzMC00YjlhLTkzMWMtZjFlNGVkMDFkMjNkPC94bXBNTTpJbnN0YW5jZUlEPgogICAgICAgICA8eG1wTU06RG9jdW1lbnRJRD54bXAuZGlkOjU5MmJmNDUyLTlhOWEtNDBiYS04YWUzLWQxZTVlZDg4MDVmZjwveG1wTU06RG9jdW1lbnRJRD4KICAgICAgICAgPHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD54bXAuZGlkOjU5MmJmNDUyLTlhOWEtNDBiYS04YWUzLWQxZTVlZDg4MDVmZjwveG1wTU06T3JpZ2luYWxEb2N1bWVudElEPgogICAgICAgICA8eG1wTU06SGlzdG9yeT4KICAgICAgICAgICAgPHJkZjpTZXE+CiAgICAgICAgICAgICAgIDxyZGY6bGkgcmRmOnBhcnNlVHlwZT0iUmVzb3VyY2UiPgogICAgICAgICAgICAgICAgICA8c3RFdnQ6YWN0aW9uPmNyZWF0ZWQ8L3N0RXZ0OmFjdGlvbj4KICAgICAgICAgICAgICAgICAgPHN0RXZ0Omluc3RhbmNlSUQ+eG1wLmlpZDo1OTJiZjQ1Mi05YTlhLTQwYmEtOGFlMy1kMWU1ZWQ4ODA1ZmY8L3N0RXZ0Omluc3RhbmNlSUQ+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDp3aGVuPjIwMTYtMDQtMDdUMTE6MDM6MzkrMDg6MDA8L3N0RXZ0OndoZW4+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDpzb2Z0d2FyZUFnZW50PkFkb2JlIFBob3Rvc2hvcCBDQyAoTWFjaW50b3NoKTwvc3RFdnQ6c29mdHdhcmVBZ2VudD4KICAgICAgICAgICAgICAgPC9yZGY6bGk+CiAgICAgICAgICAgICAgIDxyZGY6bGkgcmRmOnBhcnNlVHlwZT0iUmVzb3VyY2UiPgogICAgICAgICAgICAgICAgICA8c3RFdnQ6YWN0aW9uPmNvbnZlcnRlZDwvc3RFdnQ6YWN0aW9uPgogICAgICAgICAgICAgICAgICA8c3RFdnQ6cGFyYW1ldGVycz5mcm9tIGFwcGxpY2F0aW9uL3ZuZC5hZG9iZS5waG90b3Nob3AgdG8gaW1hZ2UvcG5nPC9zdEV2dDpwYXJhbWV0ZXJzPgogICAgICAgICAgICAgICA8L3JkZjpsaT4KICAgICAgICAgICAgICAgPHJkZjpsaSByZGY6cGFyc2VUeXBlPSJSZXNvdXJjZSI+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDphY3Rpb24+c2F2ZWQ8L3N0RXZ0OmFjdGlvbj4KICAgICAgICAgICAgICAgICAgPHN0RXZ0Omluc3RhbmNlSUQ+eG1wLmlpZDowOTVjY2ViNy02NTMwLTRiOWEtOTMxYy1mMWU0ZWQwMWQyM2Q8L3N0RXZ0Omluc3RhbmNlSUQ+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDp3aGVuPjIwMTYtMDQtMDdUMjA6MzA6MTUrMDg6MDA8L3N0RXZ0OndoZW4+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDpzb2Z0d2FyZUFnZW50PkFkb2JlIFBob3Rvc2hvcCBDQyAoTWFjaW50b3NoKTwvc3RFdnQ6c29mdHdhcmVBZ2VudD4KICAgICAgICAgICAgICAgICAgPHN0RXZ0OmNoYW5nZWQ+Lzwvc3RFdnQ6Y2hhbmdlZD4KICAgICAgICAgICAgICAgPC9yZGY6bGk+CiAgICAgICAgICAgIDwvcmRmOlNlcT4KICAgICAgICAgPC94bXBNTTpIaXN0b3J5PgogICAgICAgICA8dGlmZjpPcmllbnRhdGlvbj4xPC90aWZmOk9yaWVudGF0aW9uPgogICAgICAgICA8dGlmZjpYUmVzb2x1dGlvbj43MjAwMDAvMTAwMDA8L3RpZmY6WFJlc29sdXRpb24+CiAgICAgICAgIDx0aWZmOllSZXNvbHV0aW9uPjcyMDAwMC8xMDAwMDwvdGlmZjpZUmVzb2x1dGlvbj4KICAgICAgICAgPHRpZmY6UmVzb2x1dGlvblVuaXQ+MjwvdGlmZjpSZXNvbHV0aW9uVW5pdD4KICAgICAgICAgPGV4aWY6Q29sb3JTcGFjZT4xPC9leGlmOkNvbG9yU3BhY2U+CiAgICAgICAgIDxleGlmOlBpeGVsWERpbWVuc2lvbj4xMzwvZXhpZjpQaXhlbFhEaW1lbnNpb24+CiAgICAgICAgIDxleGlmOlBpeGVsWURpbWVuc2lvbj4yODwvZXhpZjpQaXhlbFlEaW1lbnNpb24+CiAgICAgIDwvcmRmOkRlc2NyaXB0aW9uPgogICA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgIAo8P3hwYWNrZXQgZW5kPSJ3Ij8+u0hEhgAAACBjSFJNAAB6JQAAgIMAAPn/AACA6QAAdTAAAOpgAAA6mAAAF2+SX8VGAAAB/klEQVR42pSSP08UYRDGf89lAWNi4h/kOkxItCFqYSkQSipqPwAWgIXkEv0Wl1gctn4Tw3ImlBAqaA4t9DaSnMZEip13x+Levds7ciCTzCab93memXlm9Ht1FSRwB7SE2MZ9GfQQ8RN8H6eFaOMCOeqtrAAkDh+ALWLIwUU1doG3QJ5YMHB9BDY0M83M2hrh21fs8Ah3B0H8bOFMI3+dmIWXgg2A6acvmFlfxy8u6G1u4hHuw2obgk+JmW2XD8XxMVNHR+QnJ+RmA2SVKHijs+fPukAdNFCmBHn0aGQ0vid5bvVSQiVawqNEVSqSZxMLlgH1qpxiP16a4EOai/PEcvsMvOqrll6PzFDyUH9PqQ7nHy0h9hmZiMu/7kgCWK5ZYW2z0ApWEMwIIYymGRYCRREIZq0QrJ0UVoDYoW/f1rCnSyV3gR1wdFCfG6Lcl5C2gRVgFuccPEVqAe2BUQdz9cqh9W368u79jyzrdjuds/lGmj6o+o0cuY+urtlsAniWZZx1OnSzTHt7eyOYGhPCuXTl15N0BWsiaXhTNyH5mPP/RZpY50ojJpe6ZqabGoEm9leTRDWHFB9MNY6pVZq5Dyw0Go3F/hkKIdI0XQQW4rsAkkh6DNwZHynu9lbMe8AscFr282ScNCH+VEmKSneB28BUNKkAcuAv8AvoAf5vALfw5dErL2VFAAAAAElFTkSuQmCC';
+  }
+
+  if (!this.options['layerName']) {
+    this.options['layerName'] = 'PopoverFeatureLayer';
+  }
+
+  var size = this.map.getSize();
+  this.container = DomUtils.create('div', this.options['className']);
+  this.content = DomUtils.create('div', 'hmap-js-popup-content', this.container);
+  this.content.style.maxHeight = size[1] - 20 + 'px';
+  if (this.options['showCloser'] !== false) {
+    this.closer = DomUtils.create('div', 'hmap-js-popup-closer', this.container);
+    this.closer.innerHTML = '+';
+    this.closer.addEventListener('click', function (event) {
+      var e = !event ? window.event : event;
+      e.stopPropagation();
+      if (_this && _this.options['id']) {
+        _this.map.removeOverlay(_this);
+        var layer = _this.getLayerByLayerName(_this.options['layerName']);
+        layer.getSource().removeFeature(_this.markFeature);
+        _this.markFeature = null;
+      }
+    });
+  }
+  if (this.options['showMinimize'] !== false) {
+    this.minimize = DomUtils.create('div', 'hmap-js-popup-minimize', this.container);
+    this.minimize.innerHTML = '_';
+    this.minimize.addEventListener('click', function (event) {
+      var e = !event ? window.event : event;
+      e.stopPropagation();
+      if (_this) {
+        _this.showMinimize();
+      }
+    });
+  }
+  this.enableTouchScroll_(this.content);
+  this.options.element = this.container;
+
+  this.miniOverLay = null;
+  _openlayers2.default.Overlay.call(this, {
+    element: this.container,
+    stopEvent: true,
+    offset: this.options['offset'],
+    id: this.options['id'],
+    layerName: this.options['layerName'],
+    insertFirst: this.options.hasOwnProperty('insertFirst') ? this.options.insertFirst : true
+  });
+};
+_openlayers2.default.inherits(_openlayers2.default.Popover, _openlayers2.default.Overlay);
+
+_openlayers2.default.Popover.prototype.show = function (coord, html, options) {
+  options = options || {};
+  if (options['dataProjection'] && options['featureProjection']) {
+    var geom = new _openlayers2.default.geom.Point(coord);
+    this.coords = geom.transform(options['dataProjection'], options['featureProjection']).getCoordinates();
+  } else {
+    this.coords = coord;
+  }
+  if (html instanceof HTMLElement) {
+    this.content.innerHTML = '';
+    this.content.appendChild(html);
+  } else {
+    this.content.innerHTML = html;
+  }
+  this.container.style.display = 'block';
+  this.content.scrollTop = 0;
+  if (this.options['showMarkFeature']) {
+    this.showMarkFeature(this.coords);
+  }
+  if (this.markFeature) {
+    var size = this.markFeature.getStyle().getImage().getSize();
+    if (size && this.options['offset']) {
+      this.options['offset'] = [this.options['offset'][0], this.options['offset'][1] - size[1]];
+    }
+  }
+  if (this.options['properties']) {
+    this.setProperties(this.options['properties']);
+  }
+  this.setOffset(this.options['offset']);
+  this.setPosition(this.coords);
+  this.updateSize();
+  return this;
+};
+
+_openlayers2.default.Popover.prototype.showMarkFeature = function (coord) {
+  var _this2 = this;
+
+  this.markFeature = new _openlayers2.default.Feature({
+    params: {
+      moveable: true
+    },
+    geometry: new _openlayers2.default.geom.Point(coord)
+  });
+  this.set('markFeature', this.markFeature);
+  var style = new _openlayers2.default.style.Style({
+    image: new _openlayers2.default.style.Icon({
+      anchor: [0.5, 1],
+      anchorXUnits: 'fraction',
+      anchorYUnits: 'fraction',
+      opacity: 1,
+      src: this.options['markIcon']
+    })
+  });
+  this.markFeature.setId(this.options['id']);
+  this.markFeature.setStyle(style);
+  this.markFeature.on('featureMove', function (event) {
+    var coords = _this2.markFeature.getGeometry().getCoordinates();
+    _this2.coords = coords;
+    _this2.setPosition(coords);
+    if (_this2.miniOverLay) {
+      _this2.miniOverLay.setPosition(_this2.coords);
+    }
+  });
+  var layer = this.createVectorLayer(this.options['layerName'], {
+    create: true
+  });
+  if (layer && layer instanceof _openlayers2.default.layer.Vector) {
+    layer.getSource().addFeature(this.markFeature);
+  }
+};
+
+_openlayers2.default.Popover.prototype.createVectorLayer = function (layerName, params) {
+  try {
+    if (this.map) {
+      var vectorLayer = this.getLayerByLayerName(layerName);
+      if (!(vectorLayer instanceof _openlayers2.default.layer.Vector)) {
+        vectorLayer = null;
+      }
+      if (!vectorLayer) {
+        if (params && params.create) {
+          vectorLayer = new _openlayers2.default.layer.Vector({
+            layerName: layerName,
+            params: params,
+            layerType: 'vector',
+            source: new _openlayers2.default.source.Vector({
+              wrapX: false
+            }),
+            style: new _openlayers2.default.style.Style({
+              fill: new _openlayers2.default.style.Fill({
+                color: 'rgba(67, 110, 238, 0.4)'
+              }),
+              stroke: new _openlayers2.default.style.Stroke({
+                color: '#4781d9',
+                width: 2
+              }),
+              image: new _openlayers2.default.style.Circle({
+                radius: 7,
+                fill: new _openlayers2.default.style.Fill({
+                  color: '#ffcc33'
+                })
+              })
+            })
+          });
+        }
+      }
+      if (this.map && vectorLayer) {
+        if (params && params.hasOwnProperty('selectable')) {
+          vectorLayer.set('selectable', params.selectable);
+        }
+
+        var _vectorLayer = this.getLayerByLayerName(layerName);
+        if (!_vectorLayer || !(_vectorLayer instanceof _openlayers2.default.layer.Vector)) {
+          this.map.addLayer(vectorLayer);
+        }
+      }
+      return vectorLayer;
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+_openlayers2.default.Popover.prototype.getLayerByLayerName = function (layerName) {
+  try {
+    var targetLayer = null;
+    if (this.map) {
+      var layers = this.map.getLayers().getArray();
+      layers.every(function (layer) {
+        if (layer.get('layerName') === layerName) {
+          targetLayer = layer;
+          return false;
+        } else {
+          return true;
+        }
+      });
+    }
+    return targetLayer;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+_openlayers2.default.Popover.prototype.showMinimize = function () {
+  var _this3 = this;
+
+  var that = this;
+  if (this.options['showMarkFeature']) {
+    if (!this.miniOverLay) {
+      var element = DomUtils.create('span', 'hmap-marker-minimize-panel');
+      element.setAttribute('data-state', 'block');
+      that.container.style.display = 'none';
+      var eventListener = function eventListener(event) {
+        var e = !event ? window.event : event;
+        e.stopPropagation();
+        that.container.style.display = 'block';
+        that.miniOverLay.getElement().style.display = 'none';
+        _this3.miniOverLay.getElement().setAttribute('data-state', 'none');
+      };
+      element.removeEventListener('click', eventListener);
+      element.addEventListener('click', eventListener);
+      var label = DomUtils.create('label', 'hmap-marker-minimize-label', element);
+      if (this.options['minimizeText']) {
+        label.innerText = this.options['minimizeText'];
+        label.setAttribute('title', this.options['minimizeText']);
+      } else {
+        label.innerText = '我的标记';
+        label.setAttribute('title', '我的标记');
+      }
+      this.miniOverLay = new _openlayers2.default.Overlay({
+        element: element,
+        stopEvent: true,
+        offset: [0, 0],
+        id: this.options['id'] + '_minimize',
+        position: this.coords
+      });
+      this.map.addOverlay(this.miniOverLay);
+    } else {
+      this.miniOverLay.getElement().style.display = 'block';
+      that.container.style.display = 'none';
+      this.miniOverLay.getElement().setAttribute('data-state', 'block');
+      this.miniOverLay.setPosition(this.coords);
+    }
+  }
+};
+
+_openlayers2.default.Popover.prototype.hide = function () {
+  this.container.style.display = 'none';
+  if (this && this.options['id']) {
+    this.map.removeOverlay(this);
+  }
+  return this;
+};
+
+_openlayers2.default.Popover.prototype.updateSize = function () {
+  this.container.style.marginLeft = -this.container.clientWidth / 2 - 1 + 'px';
+  this.container.style.display = 'block';
+  this.container.style.opacity = 1;
+  this.content.scrollTop = 0;
+  this.map.render();
+  return this;
+};
+
+_openlayers2.default.Popover.prototype.isOpened = function () {
+  return this.container.style.display === 'block';
+};
+
+_openlayers2.default.Popover.prototype.isTouchDevice_ = function () {
+  try {
+    document.createEvent('TouchEvent');
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
+_openlayers2.default.Popover.prototype.enableTouchScroll_ = function (elm) {
+  var _this4 = this;
+
+  if (this.isTouchDevice_()) {
+    var scrollStartPos = 0;
+    elm.addEventListener('touchstart', function (event) {
+      scrollStartPos = _this4.scrollTop + event.touches[0].pageY;
+    }, false);
+    elm.addEventListener('touchmove', function (event) {
+      _this4.scrollTop = scrollStartPos - event.touches[0].pageY;
+    }, false);
+  }
+};
+
+var olPopover = _openlayers2.default.Popover;
+exports.default = olPopover;
+module.exports = exports['default'];
+
+/***/ }),
+/* 279 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 280 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

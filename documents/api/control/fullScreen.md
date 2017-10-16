@@ -53,7 +53,7 @@ var Map = new HMap('map', {
       ]
     });
     var olControlFullScreenMenu = new ol.control.FullScreenMenu()
-    Map.map.addControl(olControlFullScreenMenu)
+    Map.addControl(olControlFullScreenMenu)
 ```
 
 #### 尝试编辑它
