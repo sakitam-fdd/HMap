@@ -93,7 +93,7 @@ class BaseLayers extends Layer {
     switch (layerConfig['layerType']) {
       case 'TileXYZ':
         return (this._getXYZLayer(layerConfig))
-      case 'TitleWMTS':
+      case 'TileWMTS':
         return (this._getWMTSLayer(layerConfig))
       case 'OSM':
         return (this._getOSMLayer(layerConfig))
