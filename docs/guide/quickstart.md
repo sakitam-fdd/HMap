@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>Title</title>
   <!--<link rel="stylesheet" href="../dist/hmap.css">-->
-  <link rel="stylesheet" href="https://unpkg.com/hmap-js@1.5.0/dist/hmap.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/hmap-js/dist/hmap.min.css">
   <style type="text/css">
     html, body, #map{
       width: 100%;
@@ -26,7 +26,7 @@
 <body>
 <div id="map"></div>
 <!--<script src="../dist/hmap.js"></script>-->
-<script src="https://unpkg.com/hmap-js@1.5.0/dist/hmap.min.js"></script>
+<script src="https://unpkg.com/hmap-js/dist/hmap.min.js"></script>
 <script type="text/javascript">
   var Map = new HMap('map', {
     controls: {
@@ -58,19 +58,23 @@
 ```
 
 ### 尝试编辑它
----
-<iframe width="100%" height="430" src="//jsfiddle.net/sakitamfdd/pjz8cuxw/embedded/result,html,js/?bodyColor=fff" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<iframe width="100%" height="430" src="//jsrun.net/yUiKp/embedded/all/light/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 ### 分步剖析上面示例
 
 * 在页面中引入hmap javascript API入口脚本和样式外链
 
+注意：如果需要指定版本需要在 `hmap-js` 后加入 `@版本号`，比如 `https://unpkg.com/hmap-js@1.5.1/dist/hmap.min.js`
+
 ```html
-<link rel="stylesheet" href="https://unpkg.com/hmap-js@1.5.0/dist/hmap.min.css">
-<script type="text/javascript" src="https://unpkg.com/hmap-js@1.5.0/dist/hmap.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/hmap-js/dist/hmap.min.css">
+<script type="text/javascript" src="https://unpkg.com/hmap-js/dist/hmap.min.js"></script>
 ```
 
 * 创建地图容器
+
+注意：容器必须存在
 
 ```html
 <div id="map"></div>
