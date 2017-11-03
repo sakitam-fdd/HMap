@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>地图事件</title>
+  <link rel="stylesheet" href="../../dist/hmap.css">
+  <style type="text/css">
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    .menu {
+      position: absolute;
+      width: 100%;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .menu span {
+      height: 30px;
+      line-height: 30px;
+      background: #1b9de8;
+      color: #ffffff;
+      border: 1px solid #bfcbd9;
+      padding: 0 10px;
+      box-shadow: 0 4px 10px rgba(73, 127, 255, .42);
+      transition: .3s;
+    }
+  </style>
+</head>
+<body>
+<div id="map">
+  <div class="menu"></div>
+</div>
+<script src="../../dist/hmap.js"></script>
+<script src="../assets/lib/JSLite.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    var Map = new HMap({
+      target: 'map',
+      controls: {
+        scaleLine: true
+      },
+      view: {
+        center: [113.53450137499999, 34.44104525],
+        projection: 'EPSG:4326',
+        zoom: 5, // resolution
+      },
+      baseLayers: [
+        {
+          layerName: 'Google',
+          isDefault: true,
+          layerType: 'Google',
+          layerUrl: 'http://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}'
+        }
+      ]
+    });
+    Map.on('loadMapSuccess', function (event) {
+      console.log(event);
+      showMessage(event, 'map', '地图加载事件：')
+    });
+    Map.on('click', function (event) {
+      console.log(event);
+      showMessage(event.coordinate, 'map-click', '点击位置坐标：')
+    });
+    Map.on('dbclick', function (event) {
+      console.log(event);
+      showMessage(event.coordinate, 'map-dbclick', '双击位置坐标：')
+    });
+    Map.on('singleclick', function (event) {
+      console.log(event);
+      showMessage(event.coordinate, 'map-singleclick', '单击位置坐标：')
+    });
+    Map.on('movestart', function (event) {
+      console.log(event);
+      showMessage('开始', 'map-move', '地图移动：')
+    });
+    Map.on('moveend', function (event) {
+      console.log(event);
+      showMessage('结束', 'map-move', '地图移动：')
+    });
+    Map.on('pointerdrag', function (event) {
+      console.log(event);
+      showMessage(event.coordinate, 'map-pointerdrag', '鼠标拖动：')
+    });
+    Map.on('pointermove', function (event) {
+      console.log(event);
+      showMessage(event.coordinate, 'map-pointermove', '鼠标移动：')
+    });
+    Map.on('change:size', function (event) {
+      console.log(event);
+      showMessage(event.oldValue, 'map-change-size', '地图尺寸变化：')
+    });
+//    Map.on('precompose', function (event) {
+//      console.log(event);
+//      showMessage('之前', 'map-render', '地图渲染：')
+//    });
+//    Map.on('postrender', function (event) {
+//      console.log(event);
+//      showMessage('开始', 'map-render', '地图渲染：')
+//    });
+//    Map.on('postcompose', function (event) {
+//      console.log(event);
+//      showMessage('完成', 'map-render', '地图渲染：')
+//    });
+
+    /**
+     * 显示相关消息
+     * @param message
+     * @param className
+     * @param title
+     */
+    function showMessage (message, className, title) {
+      var source = $('.' + className)
+      if (source.length === 0) {
+        $('<span class="' + className + '">' + title + message + '</span>').appendTo($('.menu'))
+      } else {
+        source.text(title + message)
+      }
+    }
+  })
+</script>
+</body>
+</html>

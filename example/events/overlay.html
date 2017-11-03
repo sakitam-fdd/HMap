@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>覆盖物事件</title>
+  <link rel="stylesheet" href="../../dist/hmap.css">
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_293677_1oq4vbh6yrykfbt9.css">
+  <style type="text/css">
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    .menu {
+      position: absolute;
+      width: 100%;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .menu span {
+      height: 30px;
+      line-height: 30px;
+      background: #1b9de8;
+      color: #ffffff;
+      border: 1px solid #bfcbd9;
+      padding: 0 10px;
+      box-shadow: 0 4px 10px rgba(73, 127, 255, .42);
+      transition: .3s;
+    }
+  </style>
+</head>
+<body>
+<div id="map">
+  <div class="menu"></div>
+</div>
+<script src="../../dist/hmap.js"></script>
+<script src="../assets/lib/JSLite.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    var Map = new HMap({
+      target: 'map',
+      controls: {
+        scaleLine: true
+      },
+      view: {
+        center: [113.53450137499999, 34.44104525],
+        projection: 'EPSG:4326',
+        zoom: 5, // resolution
+      },
+      baseLayers: [
+        {
+          layerName: 'Google',
+          isDefault: true,
+          layerType: 'Google',
+          layerUrl: 'http://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}'
+        }
+      ]
+    });
+    Map.on('loadMapSuccess', function (event) {
+      if (event) {
+        $.ajax({
+          url: '../assets/json/points.json',
+          type: 'GET',
+          dataType: 'json',
+          // 如果请求成功时执行回调
+          success: function (res) {
+            Map.addOverlayPoints(res['data']['features'], {
+              layerName: 'point',
+              zoomToExtent: true,
+              orderBy: true,
+              style: {
+                element: {
+                  className: 'icon-map4',
+                  fontSize: '28px'
+                }
+              }
+            })
+          },
+          // 如果请求失败时执行回调
+          error: function (error) {
+            console.log(error)
+          }
+        });
+      }
+    });
+    Map.on('overlay:onmouseover', function (event) {
+      console.log(event);
+      var id = event.value.getId();
+      if (id) {
+        showMessage(id, 'mouse-over', '移入：')
+      }
+    });
+    Map.on('overlay:onmouseout', function (event) {
+      console.log(event);
+      var id = event.value.getId();
+      if (id) {
+        showMessage(id, 'mouse-out', '移出：')
+      }
+    });
+    Map.on('overlay:click', function (event) {
+      console.log(event);
+      var id = event.value.getId();
+      if (id) {
+        showMessage(id, 'mouse-click', '点击触发：')
+      }
+    });
+    Map.on('overlay:onmouseleft', function (event) {
+      console.log(event);
+      var id = event.value.getId();
+      if (id) {
+        showMessage(id, 'mouse-left', '左键触发：')
+      }
+    });
+    Map.on('overlay:onmouseright', function (event) {
+      console.log(event);
+      var id = event.value.getId();
+      if (id) {
+        showMessage(id, 'mouse-right', '右键触发：')
+      }
+    });
+
+    /**
+     * 显示相关消息
+     * @param message
+     * @param className
+     * @param title
+     */
+    function showMessage (message, className, title) {
+      var source = $('.' + className)
+      if (source.length === 0) {
+        $('<span class="' + className + '">' + title + '：' + message + '</span>').appendTo($('.menu'))
+      } else {
+        source.text(title + message)
+      }
+    }
+  })
+</script>
+</body>
+</html>

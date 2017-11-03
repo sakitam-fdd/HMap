@@ -27,7 +27,12 @@ const EVENT_TYPE = { // 事件类型
   FEATUREONMOUSEUP: 'feature:onmouseup', // 要素鼠标抬起
   FEATUREONMOVE: 'feature:onmove', // 要素移动
   FEATUREONSELECT: 'feature:onselect', // 要素选中事件
-  FEATUREONDISSELECT: 'feature:ondisselect' // 要素取消选中事件
+  FEATUREONDISSELECT: 'feature:ondisselect', // 要素取消选中事件
+  OVERLAYONMOUSELEFT: 'overlay:onmouseleft', // 覆盖物左键事件
+  OVERLAYONMOUSERIGHT: 'overlay:onmouseright', // 覆盖物右键事件
+  OVERLAYCLICK: 'overlay:click', // 覆盖物点击事件
+  OVERLAYONMOUSEOVER: 'overlay:onmouseover', // 覆盖物鼠标移入
+  OVERLAYONMOUSEOUT: 'overlay:onmouseout' // 覆盖物鼠标移出
 }
 
 const INTERNAL_KEY = { // 自定义键值
