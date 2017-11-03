@@ -323,6 +323,20 @@ class HMap extends mixin(
     this.map.on(EVENT_TYPE.CHANGEVIEW, event => {
       this.dispatch(EVENT_TYPE.CHANGEVIEW, event)
     })
+
+    /**
+     * 要素鼠标按下（需要在PointEvents交互添加后）
+     */
+    this.map.on(EVENT_TYPE.FEATUREONMOUSEDOWN, event => {
+      this.dispatch(EVENT_TYPE.FEATUREONMOUSEDOWN, event)
+    })
+
+    /**
+     * 要素鼠标抬起 （需要在PointEvents交互添加后）
+     */
+    this.map.on(EVENT_TYPE.FEATUREONMOUSEUP, event => {
+      this.dispatch(EVENT_TYPE.FEATUREONMOUSEUP, event)
+    })
   }
 
   /**

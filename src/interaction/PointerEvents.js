@@ -53,7 +53,7 @@ ol.interaction.PointerEvents.handleDownEvent = function (evt) {
     if (feature && this.isSelectSupported(feature)) {
       this.coordinate_ = evt.coordinate
       this.feature_ = feature
-      this.feature_.dispatchEvent({
+      map.dispatchEvent({
         type: EVENT_TYPE.FEATUREONMOUSEDOWN,
         originEvent: evt,
         value: feature
@@ -113,8 +113,9 @@ ol.interaction.PointerEvents.handleMoveEvent = function (evt) {
  * @return {boolean} `false` to stop the drag sequence.
  */
 ol.interaction.PointerEvents.handleUpEvent = function (evt) {
+  let map = evt.map
   if (this.feature_ && this.isSelectSupported(this.feature_)) {
-    this.feature_.dispatchEvent({
+    map.dispatchEvent({
       type: EVENT_TYPE.FEATUREONMOUSEUP,
       originEvent: evt,
       value: this.feature_
