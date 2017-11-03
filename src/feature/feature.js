@@ -10,7 +10,7 @@ import Geometry from '../geom/Geometry'
 class Feature extends mixin(Layer, Geometry) {
   constructor () {
     super()
-    this[Symbol()] = Symbol()
+    this[Symbol('feature')] = Symbol('feature')
   }
 
   /**

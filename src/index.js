@@ -3,10 +3,6 @@ import 'core-js/modules/es6.object.assign'
 import 'core-js/es6/set'
 import 'core-js/es6/symbol'
 import 'core-js/es6/reflect'
-// message
-const version = require('../package.json').version
-const name = require('../package.json').name
-const author = require('../package.json').author
 // scss
 import './scss/index'
 // outer
@@ -30,6 +26,10 @@ import _Geometry from './geom/Geometry'
 import _ViewUtil from './utils/ViewUtil'
 import { isObject } from './utils/utils'
 import { EVENT_TYPE, INTERNAL_KEY } from './constants'
+// message
+const version = require('../package.json').version
+const name = require('../package.json').name
+const author = require('../package.json').author
 class HMap extends mixin(
   _Map, Observable, _View, _BaseLayers,
   _Controls, _Interactions, _Layer,
@@ -497,4 +497,3 @@ class HMap extends mixin(
   }
 }
 export default HMap
-

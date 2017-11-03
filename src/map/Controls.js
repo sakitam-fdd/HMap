@@ -16,7 +16,6 @@ import 'ol-extent/src/control/ScaleLineH'
 import 'ol-extent/src/control/MousePosition'
 import 'ol-extent/src/control/OverviewMap'
 class _Controls {
-
   /**
    * 添加控件
    * @param params

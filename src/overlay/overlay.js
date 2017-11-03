@@ -7,7 +7,6 @@ import * as htmlUtils from 'nature-dom-util/src/utils/domUtils'
 import { trim } from '../utils/utils'
 import Geometry from '../geom/Geometry'
 class Overlay extends Geometry {
-
   /**
    * 添加字体图标要素
    * @param point
