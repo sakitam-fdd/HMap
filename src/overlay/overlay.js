@@ -5,9 +5,9 @@
 import ol from 'openlayers'
 import * as htmlUtils from 'nature-dom-util/src/utils/domUtils'
 import { trim } from '../utils/utils'
+import { EVENT_TYPE } from '../constants'
 import Geometry from '../geom/Geometry'
 class Overlay extends Geometry {
-
   /**
    * 添加字体图标要素
    * @param point
@@ -73,36 +73,36 @@ class Overlay extends Geometry {
     let that = this
     marker.onmousedown = function (event) {
       if (event.button === 2) {
-        that.dispatch('overlay:onmouseright', {
-          type: 'overlay:onmouseright',
+        that.dispatch(EVENT_TYPE.OVERLAYONMOUSERIGHT, {
+          type: EVENT_TYPE.OVERLAYONMOUSERIGHT,
           originEvent: event,
           value: OverLay
         })
       } else if (event.button === 0) {
-        that.dispatch('overlay:onmouseleft', {
-          type: 'overlay:onmouseleft',
+        that.dispatch(EVENT_TYPE.OVERLAYONMOUSELEFT, {
+          type: EVENT_TYPE.OVERLAYONMOUSELEFT,
           originEvent: event,
           value: OverLay
         })
       }
-      that.dispatch('overlay:click', {
-        type: 'overlay:click',
+      that.dispatch(EVENT_TYPE.OVERLAYCLICK, {
+        type: EVENT_TYPE.OVERLAYCLICK,
         originEvent: event,
         value: OverLay
       })
     }
     marker.onmouseover = function (event) {
       ele.style.color = ele.selectColor
-      that.dispatch('overlay:onmouseover', {
-        type: 'overlay:onmouseover',
+      that.dispatch(EVENT_TYPE.OVERLAYONMOUSEOVER, {
+        type: EVENT_TYPE.OVERLAYONMOUSEOVER,
         originEvent: event,
         value: OverLay
       })
     }
     marker.onmouseout = function (event) {
       ele.style.color = ele.normalColor
-      that.dispatch('overlay:onmouseout', {
-        type: 'overlay:onmouseout',
+      that.dispatch(EVENT_TYPE.OVERLAYONMOUSEOUT, {
+        type: EVENT_TYPE.OVERLAYONMOUSEOUT,
         originEvent: event,
         value: OverLay
       })

@@ -1,3 +1,29 @@
+## HMap  |  基于openlayers的封装组件
+
+- 采用mapbox配置式创建和管理地图
+- 开发者无需关心gis地图相关原理就可以轻松创建地图
+- 相比原生openlayers更易用，也更符合国内webgis应用场景
+
+### 编译
+
+> 重要: Github 仓库的 /dist 文件夹只有在新版本发布时才会更新。如果想要使用 Github 上 HMap 最新的源码，你需要自己构建。
+
+```bash
+git clone https://github.com/sakitam-fdd/HMap.git
+npm install
+npm run dev
+npm run build
+```
+
+### 浏览器支持
+
+支持在HTML5和ECMAScript 5的所有现代浏览器上运行。包括Chrome，Firefox，
+Safari和Edge。对于旧版浏览器和平台，如Internet Explorer（至9版）和Android 4.x，
+必须提供`requestAnimationFrame`和`Element.prototype.classList`的polyfill，
+并且使用KML格式需要一个polyfill的URL。
+
+### 安装
+
 #### npm安装
 
 ```
@@ -6,11 +32,43 @@ npm install hmap-js --save
 
 #### cdn
 
-目前可通过 [unpkg.com/hmap-js](https://unpkg.com/hmap-js@1.5.0/dist/hmap.js) 获取最新版本的资源。
+目前可通过 [unpkg.com/hmap-js](https://unpkg.com/hmap-js@1.5.1/dist/hmap.js) 获取最新版本的资源。
 
 ```bash
-https://unpkg.com/hmap-js@1.5.0/dist/hmap.js
-https://unpkg.com/hmap-js@1.5.0/dist/hmap.min.js
-https://unpkg.com/hmap-js@1.5.0/dist/hmap.css
-https://unpkg.com/hmap-js@1.5.0/dist/hmap.min.css
+https://unpkg.com/hmap-js@1.5.1/dist/hmap.js
+https://unpkg.com/hmap-js@1.5.1/dist/hmap.min.js
+https://unpkg.com/hmap-js@1.5.1/dist/hmap.css
+https://unpkg.com/hmap-js@1.5.1/dist/hmap.min.css
 ```
+
+#### 示例
+
+> 注意：ol类库已被打包，对于高级用户，可以直接使用ol来进行必要的操作。
+
+```javascript
+var Map = new HMap('map', {
+    controls: {
+      loading: true,
+      zoomSlider: true,
+      fullScreen: true
+    },
+    interactions: {
+      shiftDragZoom: false
+    },
+    view: {
+      center: [12118909.300259633, 4086043.1061670054],
+      projection: 'EPSG:3857',
+      zoom: 5, // resolution
+    },
+    baseLayers: [
+      {
+        layerName: 'openstreetmap',
+        isDefault: true,
+        layerType: 'OSM',
+        layerUrl: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+      }
+    ]
+  });
+```
+
+<iframe width="100%" height="430" src="//jsrun.net/yUiKp/embedded/all/light/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>

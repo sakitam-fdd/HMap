@@ -39,13 +39,13 @@ npm install hmap-js --save
 
 #### cdn
 
-目前可通过 [unpkg.com/hmap-js](https://unpkg.com/hmap-js@1.5.0/dist/hmap.js) 获取最新版本的资源。
+目前可通过 [unpkg.com/hmap-js](https://unpkg.com/hmap-js@1.5.1/dist/hmap.js) 获取最新版本的资源。
 
 ```bash
-https://unpkg.com/hmap-js@1.5.0/dist/hmap.js
-https://unpkg.com/hmap-js@1.5.0/dist/hmap.min.js
-https://unpkg.com/hmap-js@1.5.0/dist/hmap.css
-https://unpkg.com/hmap-js@1.5.0/dist/hmap.min.css
+https://unpkg.com/hmap-js@1.5.1/dist/hmap.js
+https://unpkg.com/hmap-js@1.5.1/dist/hmap.min.js
+https://unpkg.com/hmap-js@1.5.1/dist/hmap.css
+https://unpkg.com/hmap-js@1.5.1/dist/hmap.min.css
 ```
 
 #### 示例
@@ -78,4 +78,4 @@ var Map = new HMap('map', {
   });
 ```
 
-<iframe width="100%" height="430" src="//jsfiddle.net/sakitamfdd/pjz8cuxw/embedded/result,html,js/?bodyColor=fff" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="430" src="//jsrun.net/yUiKp/embedded/all/light/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>

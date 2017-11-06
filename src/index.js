@@ -3,10 +3,6 @@ import 'core-js/modules/es6.object.assign'
 import 'core-js/es6/set'
 import 'core-js/es6/symbol'
 import 'core-js/es6/reflect'
-// message
-const version = require('../package.json').version
-const name = require('../package.json').name
-const author = require('../package.json').author
 // scss
 import './scss/index'
 // outer
@@ -30,6 +26,10 @@ import _Geometry from './geom/Geometry'
 import _ViewUtil from './utils/ViewUtil'
 import { isObject } from './utils/utils'
 import { EVENT_TYPE, INTERNAL_KEY } from './constants'
+// message
+const version = require('../package.json').version
+const name = require('../package.json').name
+const author = require('../package.json').author
 class HMap extends mixin(
   _Map, Observable, _View, _BaseLayers,
   _Controls, _Interactions, _Layer,
@@ -323,6 +323,20 @@ class HMap extends mixin(
     this.map.on(EVENT_TYPE.CHANGEVIEW, event => {
       this.dispatch(EVENT_TYPE.CHANGEVIEW, event)
     })
+
+    /**
+     * 要素鼠标按下（需要在PointEvents交互添加后）
+     */
+    this.map.on(EVENT_TYPE.FEATUREONMOUSEDOWN, event => {
+      this.dispatch(EVENT_TYPE.FEATUREONMOUSEDOWN, event)
+    })
+
+    /**
+     * 要素鼠标抬起 （需要在PointEvents交互添加后）
+     */
+    this.map.on(EVENT_TYPE.FEATUREONMOUSEUP, event => {
+      this.dispatch(EVENT_TYPE.FEATUREONMOUSEUP, event)
+    })
   }
 
   /**
@@ -338,7 +352,7 @@ class HMap extends mixin(
           new ol.style.Style({
             stroke: new ol.style.Stroke({
               color: '#D97363',
-              width: 10
+              width: 5
             })
           })
         ]
@@ -355,7 +369,7 @@ class HMap extends mixin(
           new ol.style.Style({
             stroke: new ol.style.Stroke({
               color: '#D97363',
-              width: 10
+              width: 5
             })
           })
         ]
@@ -372,11 +386,11 @@ class HMap extends mixin(
     })
     this.moveInteraction.on('select', event => {
       let [selected, feature] = [event.selected, null]
-      if (selected.length === 0) {
+      if (event.deselected) {
         let deselected = event.deselected
         if (deselected.length > 0) {
           feature = deselected[0]
-          this.unHighLightFeature('', feature, '')
+          this.unHighLightFeature(feature)
           if (feature && feature instanceof ol.Feature) {
             this.dispatch(EVENT_TYPE.FEATUREONMOUSEOUT, {
               type: EVENT_TYPE.FEATUREONMOUSEOUT,
@@ -385,15 +399,16 @@ class HMap extends mixin(
             })
           }
         }
-      } else {
+      }
+      if (selected.length > 0) {
         feature = selected[0]
         // 如果两个要素距离太近，会连续选中，而无法得到上一个选中的要素，所以在此保留起来
         if (this.lastSelectFeature && this.lastSelectFeature instanceof ol.Feature) {
-          this.unHighLightFeature('', this.lastSelectFeature, '')
+          this.unHighLightFeature(this.lastSelectFeature)
           this.lastSelectFeature = null
         }
         this.lastSelectFeature = feature
-        this.highLightFeature('', feature, '')
+        this.highLightFeature(feature)
         if (feature && feature instanceof ol.Feature) {
           this.dispatch(EVENT_TYPE.FEATUREONMOUSEOVER, {
             type: EVENT_TYPE.FEATUREONMOUSEOVER,
@@ -405,11 +420,11 @@ class HMap extends mixin(
     })
     this.selectInteraction.on('select', event => {
       let [selected, feature] = [event.selected, null]
-      if (selected.length === 0) {
+      if (event.deselected) {
         let deselected = event.deselected
         if (deselected.length > 0) {
           feature = deselected[0]
-          this.unHighLightFeature('', feature, '')
+          this.unHighLightFeature(feature)
           if (feature && feature instanceof ol.Feature) {
             this.dispatch(EVENT_TYPE.FEATUREONDISSELECT, {
               type: EVENT_TYPE.FEATUREONDISSELECT,
@@ -418,15 +433,16 @@ class HMap extends mixin(
             })
           }
         }
-      } else {
+      }
+      if (selected.length > 0) {
         feature = selected[0]
         // 如果两个要素距离太近，会连续选中，而无法得到上一个选中的要素，所以在此保留起来
         if (this.lastSelectFeature && this.lastSelectFeature instanceof ol.Feature) {
-          this.unHighLightFeature('', this.lastSelectFeature, '')
+          this.unHighLightFeature(this.lastSelectFeature)
           this.lastSelectFeature = null
         }
         this.lastSelectFeature = feature
-        this.highLightFeature('', feature, '')
+        this.highLightFeature(feature)
         if (feature && feature instanceof ol.Feature) {
           this.dispatch(EVENT_TYPE.FEATUREONSELECT, {
             type: EVENT_TYPE.FEATUREONSELECT,
@@ -497,4 +513,3 @@ class HMap extends mixin(
   }
 }
 export default HMap
-

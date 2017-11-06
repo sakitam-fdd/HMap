@@ -7,7 +7,7 @@ import ViewUtil from '../utils/ViewUtil'
 class Geometry extends ViewUtil {
   constructor () {
     super()
-    this[Symbol()] = Symbol()
+    this[Symbol('geometry')] = Symbol('geometry')
   }
   /**
    * 获取当前范围
