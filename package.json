@@ -3,8 +3,8 @@
   "version": "1.5.1",
   "private": false,
   "description": "a openlayers extent map library",
-  "main": "dist/hmap-js.js",
-  "style": "dist/hmap-js.css",
+  "main": "dist/hmap.js",
+  "style": "dist/hmap.css",
   "scripts": {
     "dev": "node build/development.js",
     "travisDev": "node build/development.js --env nowatch",
@@ -15,6 +15,7 @@
     "webgis",
     "canvas",
     "openlayer3",
+    "openlayer4",
     "es6"
   ],
   "author": "FDD <smileFDD@gmail.com>",
