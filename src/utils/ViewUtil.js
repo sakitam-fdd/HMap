@@ -125,7 +125,8 @@ class ViewUtil {
           })
           view.fit(extent, {
             size: size,
-            duration: duration
+            duration: duration,
+            maxZoom: (view.getMaxZoom() || undefined)
           })
         }
       }
