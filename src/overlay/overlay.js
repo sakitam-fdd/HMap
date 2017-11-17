@@ -4,7 +4,7 @@
  */
 import ol from 'openlayers'
 import * as htmlUtils from 'nature-dom-util/src/utils/domUtils'
-import { trim } from '../utils/utils'
+import { trim, isObject } from '../utils/utils'
 import { EVENT_TYPE } from '../constants'
 import Geometry from '../geom/Geometry'
 class Overlay extends Geometry {
@@ -121,7 +121,14 @@ class Overlay extends Geometry {
     marker.className = 'overlay-point-content'
     let style = point['attributes']['style'] || params['style']
     let [ele, spanEle] = ['', '']
-    if (style['element']) {
+    if (style['element'] instanceof Element) {
+      ele = document.createElement('div')
+      ele.setAttribute('normalColor', (style['color'] ? style['color'] : '#1b9de8'))
+      ele.setAttribute('selectColor', (style['selectColor'] ? style['selectColor'] : '#F61717'))
+      ele.innerHTML = style['text'] ? style['text'] : ''
+      ele.appendChild(style['element'])
+      marker.appendChild(ele)
+    } else if (style['element'] && isObject(style['element'])) {
       ele = document.createElement('div')
       let eleClass = (style['element']['className'] ? style['element']['className'] : 'maker-point')
       htmlUtils.addClass(ele, 'iconfont')
@@ -135,8 +142,8 @@ class Overlay extends Geometry {
       ele.style.width = style['element']['width'] ? style['element']['width'] : '100%'
       ele.style.height = style['element']['height'] ? style['element']['height'] : '100%'
       ele.style.borderRadius = style['element']['borderRadius'] ? style['element']['borderRadius'] : '0px'
-      ele.normalColor = ele.style.color = style['element']['color'] ? style['element']['color'] : '#1b9de8'
-      ele.selectColor = style['element']['selectColor'] ? style['element']['selectColor'] : '#F61717'
+      ele.setAttribute('normalColor', (style['color'] ? style['color'] : '#1b9de8'))
+      ele.setAttribute('selectColor', (style['selectColor'] ? style['selectColor'] : '#F61717'))
       ele.innerHTML = style['element']['text'] ? style['element']['text'] : ''
       if (params['orderBy']) {
         spanEle = document.createElement('span')
@@ -144,6 +151,8 @@ class Overlay extends Geometry {
       } else if (params['orderByNum'] && point['attributes']['number'] !== undefined && point['attributes']['number'] !== '' && point['attributes']['number'] !== null) {
         spanEle = document.createElement('span')
         spanEle.innerHTML = Number(point['attributes']['number']) + 1
+      } else if (params['innerHtml']) {
+        spanEle.innerHTML = point['attributes']['innerHtml']
       }
       if (spanEle) {
         ele.appendChild(spanEle)
