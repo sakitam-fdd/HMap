@@ -7,6 +7,7 @@ import 'ol-extent/src/source/Baidu'
 import 'ol-extent/src/source/Gaode'
 import 'ol-extent/src/source/Google'
 import olStyleFactory from 'ol-extent/src/style/factory'
+import {isFunction} from '../utils/utils'
 class Layer {
   /**
    * 通过layerName获取图层
@@ -269,6 +270,24 @@ class Layer {
       }
     })
     return _target
+  }
+
+  /**
+   * 格式化样式
+   * @param style
+   * @returns {*}
+   * @private
+   */
+  _fixStyleForLayer (style) {
+    let $style
+    if (style && style instanceof ol.style.Style) {
+      $style = style
+    } else if (isFunction(style)) {
+      $style = style
+    } else if (typeof style === 'object') {
+      $style = new olStyleFactory(style)
+    }
+    return $style
   }
 
   /**
@@ -572,7 +591,7 @@ class Layer {
     }
     if (!vectorLayer) {
       let proj = params['projection'] ? params['projection'] : 'EPSG:3857'
-      let style = new olStyleFactory(params['style'])
+      let style = this._fixStyleForLayer(params['style'])
       vectorLayer = new ol.layer.Vector({
         layerName: layerName,
         params: params,
@@ -621,7 +640,7 @@ class Layer {
       layer = null
     }
     if (!layer && params && params['layerUrl'] && params['create']) {
-      let style = new olStyleFactory(params['style'])
+      let style = this._fixStyleForLayer(params['style'])
       layer = new ol.layer.Vector({
         layerName: layerName,
         params: params,
