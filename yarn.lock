@@ -3707,7 +3707,7 @@ natural-compare@^1.4.0:
   version "1.4.0"
   resolved "http://registry.npm.taobao.org/natural-compare/download/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
 
-nature-dom-util@^1.1.0:
+nature-dom-util@1.1.0, nature-dom-util@^1.1.0:
   version "1.1.0"
   resolved "http://registry.npm.taobao.org/nature-dom-util/download/nature-dom-util-1.1.0.tgz#039eec7fc0844e5a3159bd4e8d2ef4c4f87e7074"
 
@@ -3920,7 +3920,7 @@ observable-emit@^1.0.1:
   dependencies:
     uuid "^3.1.0"
 
-ol-extent@^1.1.3:
+ol-extent@1.1.3:
   version "1.1.3"
   resolved "http://registry.npm.taobao.org/ol-extent/download/ol-extent-1.1.3.tgz#8cb2c88b344c4d97ee0b32e125a241857dd4a9b6"
   dependencies:
@@ -3956,7 +3956,7 @@ opener@^1.4.3:
   version "1.4.3"
   resolved "http://registry.npm.taobao.org/opener/download/opener-1.4.3.tgz#5c6da2c5d7e5831e8ffa3964950f8d6674ac90b8"
 
-openlayers@^4.3.1:
+openlayers@^4.3.1, openlayers@^4.6.4:
   version "4.6.4"
   resolved "http://registry.npm.taobao.org/openlayers/download/openlayers-4.6.4.tgz#7fa1032177103dbde19d1238a04a957a47a22156"
   dependencies:
