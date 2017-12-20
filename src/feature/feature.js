@@ -4,6 +4,7 @@
  */
 import ol from 'openlayers'
 import mixin from '../utils/mixins'
+import {isFunction} from '../utils/utils'
 import olStyleFactory from 'ol-extent/src/style/factory'
 import Layer from '../layer/Layer'
 import Geometry from '../geom/Geometry'
@@ -77,8 +78,19 @@ class Feature extends mixin(Layer, Geometry) {
    */
   fixStyle (data_, params, feature) {
     if (!data_['attributes']) data_['attributes'] = {}
-    let style = new olStyleFactory(data_['attributes']['style'] || params['style'])
-    let selectStyle = new olStyleFactory(data_['attributes']['selectStyle'] || params['selectStyle'])
+    let [style, selectStyle] = []
+    const _style = (data_['attributes']['style'] || params['style'])
+    const _selectStyle = (data_['attributes']['selectStyle'] || params['selectStyle'])
+    if (isFunction(_style)) {
+      style = _style
+    } else {
+      style = new olStyleFactory(_style)
+    }
+    if (isFunction(_selectStyle)) {
+      selectStyle = _selectStyle
+    } else {
+      selectStyle = new olStyleFactory(_selectStyle)
+    }
     if (style && feature) {
       feature.setStyle(style)
       feature.set('style', style)
@@ -572,6 +584,8 @@ class Feature extends mixin(Layer, Geometry) {
     if (key && key instanceof ol.Feature) {
       if (style && style instanceof ol.style.Style) {
         key.setStyle(style)
+      } else if (isFunction(style)) {
+        key.setStyle(style)
       } else if (typeof style === 'object') {
         let st = new olStyleFactory(style)
         key.setStyle(st)
@@ -579,6 +593,8 @@ class Feature extends mixin(Layer, Geometry) {
         let selectStyle = key.get('selectStyle')
         if (selectStyle && selectStyle instanceof ol.style.Style) {
           key.setStyle(selectStyle)
+        } else if (isFunction(selectStyle)) {
+          key.setStyle(style)
         } else if (typeof selectStyle === 'object') {
           let st = new olStyleFactory(selectStyle)
           key.setStyle(st)
@@ -590,12 +606,16 @@ class Feature extends mixin(Layer, Geometry) {
       if (feature && feature instanceof ol.Feature) {
         if (style && style instanceof ol.style.Style) {
           feature.setStyle(style)
+        } else if (isFunction(style)) {
+          feature.setStyle(style)
         } else if (typeof style === 'object') {
           let st = new olStyleFactory(style)
           feature.setStyle(st)
         } else {
           let selectStyle = feature.get('selectStyle')
           if (selectStyle && selectStyle instanceof ol.style.Style) {
+            feature.setStyle(selectStyle)
+          } else if (isFunction(style)) {
             feature.setStyle(selectStyle)
           } else if (typeof selectStyle === 'object') {
             let st = new olStyleFactory(selectStyle)
@@ -618,12 +638,16 @@ class Feature extends mixin(Layer, Geometry) {
     if (key && key instanceof ol.Feature) {
       if (style && style instanceof ol.style.Style) {
         key.setStyle(style)
+      } else if (isFunction(style)) {
+        key.setStyle(style)
       } else if (typeof style === 'object') {
         let st = new olStyleFactory(style)
         key.setStyle(st)
       } else {
         let normalStyle = key.get('style')
         if (normalStyle && normalStyle instanceof ol.style.Style) {
+          key.setStyle(normalStyle)
+        } else if (isFunction(normalStyle)) {
           key.setStyle(normalStyle)
         } else if (typeof normalStyle === 'object') {
           let st = new olStyleFactory(normalStyle)
@@ -636,6 +660,8 @@ class Feature extends mixin(Layer, Geometry) {
       if (feature && feature instanceof ol.Feature) {
         if (style && style instanceof ol.style.Style) {
           feature.setStyle(style)
+        } else if (isFunction(style)) {
+          feature.setStyle(style)
         } else if (typeof style === 'object') {
           let st = new olStyleFactory(style)
           feature.setStyle(st)
@@ -643,6 +669,8 @@ class Feature extends mixin(Layer, Geometry) {
           let normalStyle = feature.get('style')
           if (normalStyle && normalStyle instanceof ol.style.Style) {
             feature.setStyle(normalStyle)
+          } else if (isFunction(normalStyle)) {
+            feature.setStyle(style)
           } else if (typeof normalStyle === 'object') {
             let st = new olStyleFactory(normalStyle)
             feature.setStyle(st)

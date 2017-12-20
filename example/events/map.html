@@ -84,12 +84,12 @@
       console.log(event);
       showMessage('结束', 'map-move', '地图移动：')
     });
-    Map.on('pointerdrag', function (event) {
+    Map.on('pointerdrag', function (event, arr) {
       console.log(event);
       showMessage(event.coordinate, 'map-pointerdrag', '鼠标拖动：')
     });
-    Map.on('pointermove', function (event) {
-      console.log(event);
+    Map.on('pointermove', function (target) {
+      console.log(event, arr);
       showMessage(event.coordinate, 'map-pointermove', '鼠标移动：')
     });
     Map.on('change:size', function (event) {
