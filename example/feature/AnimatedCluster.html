@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>添加动态点要素</title>
+  <link rel="stylesheet" href="../../dist/hmap.css">
+  <style type="text/css">
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .menu {
+      position: absolute;
+      width: 100%;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .base-button {
+      height: 30px;
+      line-height: 30px;
+      background: #1b9de8;
+      color: #ffffff;
+      border-radius: 6px;
+      border: 1px solid #bfcbd9;
+      padding: 0 10px;
+      box-shadow: 0 4px 10px rgba(73, 127, 255, .42);
+      transition: .3s;
+    }
+
+    .base-button:hover {
+      cursor: pointer;
+      border-color: #1b9de8;
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+<div id="map">
+  <div class="menu">
+    <button class="base-button" id="addPoint">添加单点</button>
+    <button class="base-button" id="addPoints">添加多点</button>
+    <button class="base-button" id="removePointByLayerName">通过layerName移除点</button>
+  </div>
+</div>
+<script src="../../dist/hmap.js"></script>
+<script src="../assets/lib/JSLite.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    var Map = new HMap({
+      target: 'map',
+      controls: {
+        scaleLine: true
+      },
+      view: {
+        center: [113.53450137499999, 34.44104525],
+        projection: 'EPSG:4326',
+        zoom: 5, // resolution
+        maxZoom: 17
+      },
+      baseLayers: [
+        {
+          layerName: 'Google',
+          isDefault: true,
+          layerType: 'Google',
+          layerUrl: 'http://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}'
+        }
+      ]
+    });
+    var points = []
+    Map.on('loadMapSuccess', function (event) {
+      console.log(event)
+      if (event) {
+        $.ajax({
+          url: '../assets/json/points.json',
+          type: 'GET',
+          dataType: 'json',
+          // 如果请求成功时执行回调
+          success: function (res) {
+            points = res['data']['features']
+          },
+          // 如果请求失败时执行回调
+          error: function (error) {
+            console.log(error)
+          }
+        })
+      }
+    });
+
+    // Style for the clusters
+    var styleCache = {};
+
+    function getStyle (feature, resolution) {
+      var size = feature.get('features').length;
+      var style = styleCache[size];
+      if (!style) {
+        var color = size > 25 ? "192,0,0" : size > 8 ? "255,128,0" : "0,128,0";
+        var radius = Math.max(8, Math.min(size * 0.75, 20));
+        var dash = 2 * Math.PI * radius / 6;
+        var dash = [0, dash, dash, dash, dash, dash, dash];
+        style = styleCache[size] = new ol.style.Style({
+          image: new ol.style.Circle({
+            radius: radius,
+            stroke: new ol.style.Stroke({
+              color: "rgba(" + color + ",0.5)",
+              width: 15,
+              lineDash: dash,
+              lineCap: "butt"
+            }),
+            fill: new ol.style.Fill({
+              color: "rgba(" + color + ",1)"
+            })
+          }),
+          text: new ol.style.Text({
+            text: size.toString(),
+            fill: new ol.style.Fill({
+              color: '#fff'
+            })
+          })
+        });
+      }
+      return [style];
+    }
+
+    function addFeatures (nb) {
+      var ext = Map.getView().calculateExtent(Map.getSize());
+      var features = [];
+      for (var i = 0; i < nb; ++i) {
+        features[i] = new ol.Feature(new ol.geom.Point([ext[0] + (ext[2] - ext[0]) * Math.random(), ext[1] + (ext[3] - ext[1]) * Math.random()]));
+        features[i].set('id', i);
+      }
+      clusterSource.getSource().clear();
+      clusterSource.getSource().addFeatures(features);
+    }
+
+    // Cluster Source
+    var clusterSource = new ol.source.Cluster({
+      distance: 40,
+      source: new ol.source.Vector()
+    });
+    // Animated cluster layer
+    var clusterLayer = new ol.layer.AnimatedCluster({
+        name: 'Cluster',
+        source: clusterSource,
+        animationDuration: 700,
+        style: getStyle
+      });
+    Map.addLayer(clusterLayer);
+
+    // add 2000 features
+    addFeatures(2000);
+    // Style for selection
+    var img = new ol.style.Circle({
+        radius: 5,
+        stroke: new ol.style.Stroke(
+          {
+            color: "rgba(0,255,255,1)",
+            width: 1
+          }),
+        fill: new ol.style.Fill(
+          {
+            color: "rgba(0,255,255,0.3)"
+          })
+      });
+    var style0 = new ol.style.Style({
+        image: img
+      });
+    var style1 = new ol.style.Style({
+        image: img,
+        // Draw a link beetween points (or not)
+        stroke: new ol.style.Stroke(
+          {
+            color: "#fff",
+            width: 1
+          })
+      });
+    // Select interaction to spread cluster out and select features
+    var selectCluster = new ol.interaction.SelectCluster({	// Point radius: to calculate distance between the features
+        pointRadius: 7,
+        animate: $("#animatesel").prop('checked'),
+        // Feature style when it springs apart
+        featureStyle: function () {
+          return [$("#haslink").prop('checked') ? style1 : style0]
+        },
+        // selectCluster: false,	// disable cluster selection
+        // Style to draw cluster when selected
+        style: function (f, res) {
+          var cluster = f.get('features');
+          if (cluster.length > 1) {
+            var s = getStyle(f, res);
+            if ($("#convexhull").prop("checked") && ol.coordinate.convexHull) {
+              var coords = [];
+              for (i = 0; i < cluster.length; i++) coords.push(cluster[i].getGeometry().getFirstCoordinate());
+              var chull = ol.coordinate.convexHull(coords);
+              s.push(new ol.style.Style(
+                {
+                  stroke: new ol.style.Stroke({color: "rgba(0,0,192,0.5)", width: 2}),
+                  fill: new ol.style.Fill({color: "rgba(0,0,192,0.3)"}),
+                  geometry: new ol.geom.Polygon([chull]),
+                  zIndex: 1
+                }));
+            }
+            return s;
+          }
+          else {
+            return [
+              new ol.style.Style(
+                {
+                  image: new ol.style.Circle(
+                    {
+                      stroke: new ol.style.Stroke({color: "rgba(0,0,192,0.5)", width: 2}),
+                      fill: new ol.style.Fill({color: "rgba(0,0,192,0.3)"}),
+                      radius: 5
+                    })
+                })];
+          }
+        }
+      });
+    map.addInteraction(selectCluster);
+    // On selected => get feature in cluster and show info
+    selectCluster.getFeatures().on(['add'], function (e) {
+      var c = e.element.get('features');
+      if (c.length == 1) {
+        var feature = c[0];
+        $(".infos").html("One feature selected...<br/>(id=" + feature.get('id') + ")");
+      }
+      else {
+        $(".infos").text("Cluster (" + c.length + " features)");
+      }
+    })
+    selectCluster.getFeatures().on(['remove'], function (e) {
+      $(".infos").html("");
+    })
+
+
+    $('#addPoints').on('click', function () {
+      Map.addPoints(points, {
+        layerName: 'points',
+        zoomToExtent: true,
+        style: {
+          image: {
+            type: 'icon',
+            image: {
+              imageSrc: '../assets/images/point2.png',
+              imageAnchor: [0.5, 1]
+            }
+          }
+        }
+      })
+    });
+  })
+</script>
+</body>
+</html>
