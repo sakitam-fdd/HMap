@@ -3,6 +3,7 @@
  * @desc 空间数据处理
  */
 import ol from 'openlayers'
+import './Convexhull'
 import ViewUtil from '../utils/ViewUtil'
 class Geometry extends ViewUtil {
   constructor () {

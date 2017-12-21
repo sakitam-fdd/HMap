@@ -9,6 +9,7 @@ import 'ol-extent/src/interaction/freeHandCircle'
 import 'ol-extent/src/interaction/layerSpyglass'
 import 'ol-extent/src/interaction/layerMagnify'
 import 'ol-extent/src/interaction/measureTool'
+import '../interaction/SelectCluster'
 import PointerEvents from '../interaction/PointerEvents'
 class _Interactions {
   _addInteractions (params) {
