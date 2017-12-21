@@ -2,5 +2,3 @@ build/*.js
 config/*.js
 dist/*.js
 example/
-src/interaction/SelectCluster.js
-src/layer/AnimatedClusterLayer.js

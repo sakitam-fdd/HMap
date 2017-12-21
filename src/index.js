@@ -14,16 +14,17 @@ import Popover from 'ol-extent/src/overlay/popover'
 import * as supported from './utils/supported'
 import { logo } from './assets/index'
 import config from './utils/config'
-import _Layer from './layer/Layer'
-import _Map from './map/Map'
-import _View from './map/View'
-import _BaseLayers from './map/BaseLayers'
-import _Controls from './map/Controls'
-import _Interactions from './map/Interactions'
-import _Feature from './feature/feature'
-import _Overlay from './overlay/overlay'
-import _Geometry from './geom/Geometry'
-import _ViewUtil from './utils/ViewUtil'
+import Layer from './layer/Layer'
+import AnimatedClusterLayer from './layer/AnimatedClusterLayer'
+import Map from './map/Map'
+import View from './map/View'
+import BaseLayers from './map/BaseLayers'
+import Controls from './map/Controls'
+import Interactions from './map/Interactions'
+import Feature from './feature/feature'
+import Overlay from './overlay/overlay'
+import Geometry from './geom/Geometry'
+import ViewUtil from './utils/ViewUtil'
 import { isObject } from './utils/utils'
 import { EVENT_TYPE, INTERNAL_KEY } from './constants'
 // message
@@ -31,10 +32,10 @@ const version = require('../package.json').version
 const name = require('../package.json').name
 const author = require('../package.json').author
 class HMap extends mixin(
-  _Map, Observable, _View, _BaseLayers,
-  _Controls, _Interactions, _Layer,
-  _ViewUtil, _Geometry, _Feature,
-  _Overlay
+  Map, Observable, View, BaseLayers,
+  Controls, Interactions, Layer,
+  ViewUtil, Geometry, Feature,
+  Overlay
 ) {
   constructor () {
     super()
@@ -503,8 +504,19 @@ class HMap extends mixin(
     console.log(name, version, '©', author)
   }
   static supported = supported
-  static layer = _Layer
   static Popover = Popover
+  static AnimatedClusterLayer = AnimatedClusterLayer
+  static Layer = ol.layer
+  static Map = ol.Map
+  static Observable = Observable
+  static View = ol.View
+  static BaseLayers = BaseLayers
+  static Controls = ol.control
+  static Interactions = ol.interaction
+  static ViewUtil = ViewUtil
+  static Geometry = ol.geom
+  static Feature = Feature
+  static Overlay = Overlay
   static get accessToken () {
     return config.ACCESS_TOKEN
   }
@@ -512,4 +524,5 @@ class HMap extends mixin(
     config.ACCESS_TOKEN = token
   }
 }
+
 export default HMap
