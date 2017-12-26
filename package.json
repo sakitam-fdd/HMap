@@ -1,6 +1,6 @@
 {
   "name": "hmap-js",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "private": false,
   "description": "a openlayers extent map library",
   "main": "dist/hmap.js",
@@ -27,7 +27,7 @@
     "core-js": "^2.5.0",
     "nature-dom-util": "1.1.0",
     "observable-emit": "1.0.1",
-    "ol-extent": "1.1.3",
+    "ol-extent": "1.1.4",
     "openlayers": "^4.6.4",
     "proj4": "^2.4.3"
   },

@@ -89,6 +89,9 @@
   });
   var olControlContextMenu = new ol.control.ContextMenu(contextMenu)
   Map.addControl(olControlContextMenu)
+  olControlContextMenu.on('item-click', function (event, data) {
+    console.log(event, data)
+  })
 </script>
 </body>
 </html>
