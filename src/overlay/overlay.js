@@ -144,6 +144,7 @@ class Overlay extends Geometry {
       ele.style.borderRadius = style['element']['borderRadius'] ? style['element']['borderRadius'] : '0px'
       ele.setAttribute('normalColor', (style['color'] ? style['color'] : '#1b9de8'))
       ele.setAttribute('selectColor', (style['selectColor'] ? style['selectColor'] : '#F61717'))
+      ele.style.color = style['color'] ? style['color'] : '#1b9de8'
       ele.innerHTML = style['element']['text'] ? style['element']['text'] : ''
       if (params['orderBy']) {
         spanEle = document.createElement('span')
