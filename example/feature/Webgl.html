@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>测试10万数据</title>
+  <link rel="stylesheet" href="../../dist/hmap.css">
+  <style type="text/css">
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    .menu {
+      position: absolute;
+      width: 100%;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .base-button {
+      height: 30px;
+      line-height: 30px;
+      background: #1b9de8;
+      color: #ffffff;
+      border-radius: 6px;
+      border: 1px solid #bfcbd9;
+      padding: 0 10px;
+      box-shadow: 0 4px 10px rgba(73, 127, 255, .42);
+      transition: .3s;
+    }
+
+    .base-button:hover {
+      cursor: pointer;
+      border-color: #1b9de8;
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+<div id="map">
+  <div class="menu">
+    <button class="base-button" id="addPoints">添加多点</button>
+  </div>
+</div>
+<script src="../../dist/hmap.js"></script>
+<script src="../assets/lib/JSLite.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    var map = new ol.Map({
+      view: new ol.View({
+        center: [113.53450137499999, 34.44104525],
+        projection: 'EPSG:4326',
+        zoom: 5 // resolution
+      }),
+      layers: [
+        new ol.layer.Tile({
+          source: new ol.source.GOOGLE({
+            url: 'http://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}'
+          })
+        })
+      ],
+      renderer: 'webgl',
+      target: 'map'
+    });
+
+
+    $('#addPoints').click(function () {
+      _addFeatures(200000)
+    })
+
+    function addVectorLayer (params) {
+      var vectorLayer
+      if (params) {
+        vectorLayer = getLayerByLayerName(params['layerName'])
+        if (!vectorLayer) {
+          vectorLayer = new ol.layer.Vector({
+            layerName: params.layerName,
+            params: params,
+            layerType: 'vector',
+            source: new ol.source.Vector({
+              wrapX: false
+            }),
+            style: new ol.style.Style({
+              fill: new ol.style.Fill({
+                color: 'rgba(67, 110, 238, 0.4)'
+              }),
+              stroke: new ol.style.Stroke({
+                color: '#4781d9',
+                width: 2
+              }),
+              image: new ol.style.Circle({
+                radius: 2,
+                fill: new ol.style.Fill({
+                  color: '#1B9DE8'
+                })
+              })
+            })
+          });
+          map.addLayer(vectorLayer)
+        }
+      }
+      return vectorLayer
+    }
+
+    function getLayerByLayerName (layerName) {
+      var layers = map.getLayers().getArray();
+      var res
+      layers.every(function (layer) {
+        if (layer && layer.get('layerName') === layerName) {
+          res = layer
+          return false
+        } else {
+          return true
+        }
+      })
+      return res
+    }
+
+    function _addFeatures (nb) {
+      var ext = map.getView().calculateExtent(map.getSize());
+      var features = [];
+      for (var i = 0; i < nb; ++i) {
+        features[i] = new ol.Feature(new ol.geom.Point([ext[0] + (ext[2] - ext[0]) * Math.random(), ext[1] + (ext[3] - ext[1]) * Math.random()]));
+        features[i].set('id', i);
+      }
+      var layer = addVectorLayer({
+        layerName: 'test'
+      });
+      layer.getSource().addFeatures(features)
+    }
+  })
+</script>
+</body>
+</html>

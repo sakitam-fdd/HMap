@@ -191,6 +191,7 @@ class HMap extends mixin(
         logo: logo,
         layers: layers,
         view: this.view,
+        renderer: this.options_['renderer'] ? this.options_['renderer'] : undefined,
         interactions: interactions,
         controls: controls
       })
