@@ -122,9 +122,7 @@ class Overlay extends Geometry {
     let style = point['attributes']['style'] || params['style']
     let [ele, spanEle] = ['', '']
     ele = document.createElement('div')
-    if (style['color']) {
-      ele.style.color = style['color'] ? style['color'] : '#1b9de8'
-    }
+    ele.style.color = style['color'] ? style['color'] : '#1b9de8'
     if (style['element'] instanceof Element) {
       ele.setAttribute('normalColor', (style['color'] ? style['color'] : '#1b9de8'))
       ele.setAttribute('selectColor', (style['selectColor'] ? style['selectColor'] : '#F61717'))
