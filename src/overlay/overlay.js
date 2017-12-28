@@ -121,15 +121,15 @@ class Overlay extends Geometry {
     marker.className = 'overlay-point-content'
     let style = point['attributes']['style'] || params['style']
     let [ele, spanEle] = ['', '']
+    ele = document.createElement('div')
+    ele.style.color = style['color'] ? style['color'] : '#1b9de8'
     if (style['element'] instanceof Element) {
-      ele = document.createElement('div')
       ele.setAttribute('normalColor', (style['color'] ? style['color'] : '#1b9de8'))
       ele.setAttribute('selectColor', (style['selectColor'] ? style['selectColor'] : '#F61717'))
       ele.innerHTML = style['text'] ? style['text'] : ''
       ele.appendChild(style['element'])
       marker.appendChild(ele)
     } else if (style['element'] && isObject(style['element'])) {
-      ele = document.createElement('div')
       let eleClass = (style['element']['className'] ? style['element']['className'] : 'maker-point')
       htmlUtils.addClass(ele, 'iconfont')
       htmlUtils.addClass(ele, eleClass)
@@ -144,7 +144,6 @@ class Overlay extends Geometry {
       ele.style.borderRadius = style['element']['borderRadius'] ? style['element']['borderRadius'] : '0px'
       ele.setAttribute('normalColor', (style['color'] ? style['color'] : '#1b9de8'))
       ele.setAttribute('selectColor', (style['selectColor'] ? style['selectColor'] : '#F61717'))
-      ele.style.color = style['color'] ? style['color'] : '#1b9de8'
       ele.innerHTML = style['element']['text'] ? style['element']['text'] : ''
       if (params['orderBy']) {
         spanEle = document.createElement('span')
