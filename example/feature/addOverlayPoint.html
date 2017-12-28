@@ -75,6 +75,19 @@
         }
       ]
     });
+    $.ajax({
+      url: '../assets/json/points.json',
+      type: 'GET',
+      dataType: 'json',
+      // 如果请求成功时执行回调
+      success: function (res) {
+        points = res['data']['features']
+      },
+      // 如果请求失败时执行回调
+      error: function (error) {
+        console.log(error)
+      }
+    })
     var points = []
     Map.on('loadMapSuccess', function (event) {
       if (event) {
@@ -98,9 +111,11 @@
         layerName: 'point',
         zoomToExtent: true,
         style: {
+          color: '#1b9d8e',
           element: {
             className: 'icon-map4',
-            fontSize: '28px'
+            fontSize: '28px',
+            color: 'red'
           }
         }
       })
@@ -111,6 +126,7 @@
         zoomToExtent: true,
         orderBy: true,
         style: {
+          color: 'red',
           element: {
             className: 'icon-map4',
             fontSize: '28px'
