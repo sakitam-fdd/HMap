@@ -81,14 +81,18 @@ class Feature extends mixin(Layer, Geometry) {
     let [style, selectStyle] = []
     const _style = (data_['attributes']['style'] || params['style'])
     const _selectStyle = (data_['attributes']['selectStyle'] || params['selectStyle'])
-    if (isFunction(_style)) {
+    if (_style && _style instanceof ol.style.Style) {
       style = _style
-    } else {
+    } else if (isFunction(_style)) {
+      style = _style
+    } else if (typeof _style === 'object') {
       style = new olStyleFactory(_style)
     }
-    if (isFunction(_selectStyle)) {
+    if (_selectStyle && _selectStyle instanceof ol.style.Style) {
       selectStyle = _selectStyle
-    } else {
+    } else if (isFunction(_selectStyle)) {
+      selectStyle = _selectStyle
+    } else if (typeof _selectStyle === 'object') {
       selectStyle = new olStyleFactory(_selectStyle)
     }
     if (style && feature) {
