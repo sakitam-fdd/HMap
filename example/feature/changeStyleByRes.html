@@ -105,6 +105,7 @@
               zoomToExtent: true,
               style: function (feature, res) { // 此处style return的可以为原生ol对象或者封装的ol.style.Factory对象，还可以为函数。
                 var zoom = Map.getView().getZoom()
+                console.log(zoom);
                 return new ol.style.Style({
                   image: new ol.style.Icon({
                     anchor: [0.5, 1],
@@ -117,10 +118,6 @@
                 })
               }
             });
-            var _featureLayer = Map.getLayerByLayerName('points'); // 和创建点的图层完全相同
-            if (_featureLayer) {
-              _featureLayer.setStyle(getStyle)
-            }
           },
           // 如果请求失败时执行回调
           error: function (error) {

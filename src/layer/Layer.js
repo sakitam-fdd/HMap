@@ -326,7 +326,8 @@ class Layer {
                   color: '#ffcc33'
                 })
               })
-            })
+            }),
+            zIndex: params['zIndex']
           })
         }
       }
@@ -351,7 +352,7 @@ class Layer {
    * @param params
    * @returns {*}
    */
-  creatClusterLayer (layerName, params) {
+  createClusterLayer (layerName, params) {
     if (this.map) {
       let vectorLayer = this.getLayerByLayerName(layerName)
       if (!(vectorLayer instanceof ol.layer.Vector)) {
@@ -363,6 +364,7 @@ class Layer {
             layerName: layerName,
             params: params,
             layerType: 'vector',
+            zIndex: params['zIndex'],
             source: new ol.source.Cluster({
               distance: (typeof params['distance'] === 'number' ? params['distance'] : 20),
               source: new ol.source.Vector(),
@@ -466,6 +468,7 @@ class Layer {
         layerName: layerName,
         layerType: ((params['notShowLayerType'] === true) ? '' : 'title'),
         visible: (params['visible'] === false) ? params['visible'] : true,
+        zIndex: params['zIndex'],
         source: new ol.source.TileArcGISRest({
           url: serviceUrl,
           crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
@@ -500,6 +503,7 @@ class Layer {
         layerName: layerName,
         visible: (params['visible'] === false) ? params['visible'] : true,
         opacity: (params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1,
+        zIndex: params['zIndex'],
         source: new ol.source.ImageWMS({
           url: params['layerUrl'],
           crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
@@ -549,6 +553,7 @@ class Layer {
         layerName: layerName,
         visible: (params['visible'] === false) ? params['visible'] : true,
         opacity: (params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1,
+        zIndex: params['zIndex'],
         source: new ol.source.TileWMS({
           url: params['layerUrl'],
           crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
@@ -599,6 +604,7 @@ class Layer {
         layerType: 'vector',
         visible: (params['visible'] === false) ? params['visible'] : true,
         opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
+        zIndex: params['zIndex'],
         source: new ol.source.Vector({
           format: new ol.format.GeoJSON(),
           crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
@@ -646,6 +652,7 @@ class Layer {
         layerName: layerName,
         params: params,
         layerType: 'vector',
+        zIndex: params['zIndex'],
         visible: (params['visible'] === false) ? params['visible'] : true,
         opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
         source: new ol.source.Vector({
@@ -692,6 +699,7 @@ class Layer {
       }
       layer = new ol.layer.Tile({
         layerName: layerName,
+        zIndex: params['zIndex'],
         visible: (params['visible'] === false) ? params['visible'] : true,
         opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
         source: new ol.source.WMTS({
@@ -760,6 +768,7 @@ class Layer {
       }
       layer = new ol.layer.Tile({
         layerName: layerName,
+        zIndex: params['zIndex'],
         visible: (params['visible'] === false) ? params['visible'] : true,
         opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
         source: new ol.source.XYZ({
@@ -799,6 +808,7 @@ class Layer {
     if (!layer && params['create']) {
       layer = new ol.layer.Tile({
         layerName: layerName,
+        zIndex: params['zIndex'],
         visible: (params['visible'] === false) ? params['visible'] : true,
         opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
         source: new ol.source.OSM({
@@ -832,6 +842,7 @@ class Layer {
     if (!layer && params['create']) {
       layer = new ol.layer.Tile({
         layerName: layerName,
+        zIndex: params['zIndex'],
         visible: (params['visible'] === false) ? params['visible'] : true,
         opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
         source: new ol.source.BAIDU({
@@ -867,6 +878,7 @@ class Layer {
     if (!layer && params['create']) {
       layer = new ol.layer.Tile({
         layerName: layerName,
+        zIndex: params['zIndex'],
         visible: (params['visible'] === false) ? params['visible'] : true,
         opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
         source: new ol.source.GAODE({
@@ -900,6 +912,7 @@ class Layer {
     if (!layer && params['create']) {
       layer = new ol.layer.Tile({
         layerName: layerName,
+        zIndex: params['zIndex'],
         visible: (params['visible'] === false) ? params['visible'] : true,
         opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
         source: new ol.source.GOOGLE({
@@ -955,6 +968,7 @@ class Layer {
       }
       layer = new ol.layer.VectorTile({
         visible: (params['visible'] === false) ? params['visible'] : true,
+        zIndex: params['zIndex'],
         renderBuffer: ((params['renderBuffer'] && (typeof params['renderBuffer'] === 'number')) ? params['renderBuffer'] : 100),
         renderMode: (params['renderMode'] ? params['renderMode'] : 'hybrid'), // 渲染方式image，hybrid，vector，性能由高到低
         extent: (params['extent'] ? params['extent'] : undefined),
@@ -1115,6 +1129,7 @@ class Layer {
       }
       layer = new ol.layer.VectorTile({
         visible: (params['visible'] === false) ? params['visible'] : true,
+        zIndex: params['zIndex'],
         renderBuffer: ((params['renderBuffer'] && (typeof params['renderBuffer'] === 'number')) ? params['renderBuffer'] : 100),
         renderMode: (params['renderMode'] ? params['renderMode'] : 'hybrid'), // 渲染方式image，hybrid，vector，性能由高到低
         extent: (params['extent'] ? params['extent'] : undefined),
@@ -1165,6 +1180,7 @@ class Layer {
       let source = this.getImagesSource(params)
       layer = new ol.layer.Image({
         layerName: layerName,
+        zIndex: params['zIndex'],
         extent: (params['extent'] ? params['extent'] : undefined),
         visible: (params['visible'] === false) ? params['visible'] : true,
         opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),

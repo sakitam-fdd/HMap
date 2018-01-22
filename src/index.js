@@ -361,7 +361,8 @@ class HMap extends mixin(
       },
       layers: function (layer) {
         return (layer.get(INTERNAL_KEY.SELECTABLE) === true)
-      }
+      },
+      wrapX: false
     })
     // 添加鼠标移动交互
     this.moveInteraction = new ol.interaction.Select({
@@ -384,7 +385,8 @@ class HMap extends mixin(
           return feat.get('features').length <= 1
         }
         return true
-      }
+      },
+      wrapX: false
     })
     this.moveInteraction.on('select', event => {
       let [selected, feature] = [event.selected, null]
