@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>添加点要素</title>
+  <title>根据分辨率改变要素样式</title>
   <link rel="stylesheet" href="../../dist/hmap.css">
   <style type="text/css">
     html, body, #map {
@@ -75,7 +75,23 @@
         }
       ]
     });
-    var points = []
+
+    var getStyle = (function () {
+      return function (feature, res) {
+        var zoom = Map.getView().getZoom()
+        return new ol.style.Style({
+          image: new ol.style.Icon({
+            anchor: [0.5, 1],
+            anchorXUnits: 'fraction',
+            anchorYUnits: 'fraction',
+            opacity: 0.75,
+            scale: zoom / 23 + 0.1,
+            src: '../assets/images/point2.png'
+          })
+        })
+      }
+    })();
+
     Map.on('loadMapSuccess', function (event) {
       if (event) {
         $.ajax({
@@ -84,7 +100,24 @@
           dataType: 'json',
           // 如果请求成功时执行回调
           success: function (res) {
-            points = res['data']['features']
+            Map.addPoints(res['data']['features'], {
+              layerName: 'points', // 同一类型同一名称的图层只会创建一次
+              zoomToExtent: true,
+              style: function (feature, res) { // 此处style return的可以为原生ol对象或者封装的ol.style.Factory对象，还可以为函数。
+                var zoom = Map.getView().getZoom()
+                console.log(zoom);
+                return new ol.style.Style({
+                  image: new ol.style.Icon({
+                    anchor: [0.5, 1],
+                    anchorXUnits: 'fraction',
+                    anchorYUnits: 'fraction',
+                    opacity: 0.75,
+                    // scale: zoom / 23 + 0.1,
+                    src: zoom > 10 ? '../assets/images/i-map.png' : '../assets/images/point2.png'
+                  })
+                })
+              }
+            });
           },
           // 如果请求失败时执行回调
           error: function (error) {
@@ -92,59 +125,6 @@
           }
         })
       }
-    });
-    $('#addPoint').on('click', function () {
-      Map.addPoint(points[0], {
-        layerName: 'point',
-        zoomToExtent: true,
-        selectable: true,
-        style: {
-          image: {
-            type: 'icon',
-            image: {
-              imageSrc: '../assets/images/point2.png',
-              imageAnchor: [0.5, 1]
-            }
-          }
-        },
-        selectStyle: {
-          image: {
-            type: 'icon',
-            image: {
-              imageSrc: '../assets/images/point2o.png',
-              imageAnchor: [0.5, 1]
-            }
-          }
-        }
-      })
-    });
-    $('#addPoints').on('click', function () {
-      Map.addPoints(points, {
-        layerName: 'points',
-        zoomToExtent: true,
-        selectable: true,
-        style: {
-          image: {
-            type: 'icon',
-            image: {
-              imageSrc: '../assets/images/point2.png',
-              imageAnchor: [0.5, 1]
-            }
-          }
-        }
-      })
-    });
-    $('#removePointByLayerName').on('click', function () {
-      Map.removeFeatureByLayerName('point')
-    });
-    $('#removePointById').on('click', function () {
-      Map.removeFeatureById('{CF7D9F39-3549-4068-8648-76F5E06C0295}')
-    });
-    $('#highLightPointById').on('click', function () {
-      Map.highLightFeature('{393C392E-17FE-46EF-B39B-91433EB01AB6}')
-    });
-    $('#unHighLightPointById').on('click', function () {
-      Map.unHighLightFeature('{393C392E-17FE-46EF-B39B-91433EB01AB6}')
     });
   })
 </script>

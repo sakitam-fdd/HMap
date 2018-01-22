@@ -107,28 +107,19 @@ class ViewUtil {
     if (this.map) {
       let view = this.map.getView()
       let size = this.map.getSize()
-      /**
-       *  @type {ol.Coordinate} center The center of the view.
-       */
-      let center = ol.extent.getCenter(extent)
       if (!isanimation) {
-        view.fit(extent, size, {
-          padding: [350, 200, 200, 350]
+        view.fit(extent, {
+          size: size,
+          padding: [350, 200, 200, 350],
+          duration: 0
         })
-        view.setCenter(center)
       } else {
-        if (!duration) {
-          duration = 800
-          view.animate({
-            center: center,
-            duration: duration
-          })
-          view.fit(extent, {
-            size: size,
-            duration: duration,
-            maxZoom: (view.getMaxZoom() || undefined)
-          })
-        }
+        view.fit(extent, {
+          size: size,
+          padding: [350, 200, 200, 350],
+          duration: duration || 800,
+          maxZoom: (view.getMaxZoom() || undefined)
+        })
       }
     }
   }
