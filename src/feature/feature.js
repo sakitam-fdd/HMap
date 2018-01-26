@@ -581,9 +581,10 @@ class Feature extends mixin(Layer, Geometry) {
    * 高亮要素
    * @param key (若传feat时其他参数可不传)
    * @param style
+   * @param keep
    * @returns {*}
    */
-  highLightFeature (key, style) {
+  highLightFeature (key, style, keep) {
     if (!this.map) return
     if (key && key instanceof ol.Feature) {
       if (style && style instanceof ol.style.Style) {
@@ -626,6 +627,7 @@ class Feature extends mixin(Layer, Geometry) {
             feature.setStyle(st)
           }
         }
+        feature.set('keepStyle', keep)
       }
       return feature
     }
@@ -635,11 +637,14 @@ class Feature extends mixin(Layer, Geometry) {
    * 取消高亮状态
    * @param key (若传feat时其他参数可不传)
    * @param style
+   * @param unKeep
    * @returns {*}
    */
-  unHighLightFeature (key, style) {
+  unHighLightFeature (key, style, unKeep) {
     if (!this.map) return
     if (key && key instanceof ol.Feature) {
+      if (!unKeep && key.get('keepStyle')) return key
+      key.set('keepStyle', false)
       if (style && style instanceof ol.style.Style) {
         key.setStyle(style)
       } else if (isFunction(style)) {
@@ -662,6 +667,8 @@ class Feature extends mixin(Layer, Geometry) {
     } else if (key && (typeof key === 'string') && key.trim() !== "''") {
       let feature = this.getFeatureById(key)
       if (feature && feature instanceof ol.Feature) {
+        if (!unKeep && feature.get('keepStyle')) return feature
+        feature.set('keepStyle', false)
         if (style && style instanceof ol.style.Style) {
           feature.setStyle(style)
         } else if (isFunction(style)) {
