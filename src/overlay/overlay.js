@@ -144,6 +144,7 @@ class Overlay extends Geometry {
       ele.style.borderRadius = style['element']['borderRadius'] ? style['element']['borderRadius'] : '0px'
       ele.setAttribute('normalColor', (style['color'] ? style['color'] : '#1b9de8'))
       ele.setAttribute('selectColor', (style['selectColor'] ? style['selectColor'] : '#F61717'))
+      ele.setAttribute('selectClass', (style['selectClass'] ? style['selectClass'] : 'overlay-point-marker-raise'))
       ele.style.color = style['color'] ? style['color'] : '#1b9de8'
       ele.innerHTML = style['element']['text'] ? style['element']['text'] : ''
       if (params['orderBy']) {
@@ -322,16 +323,16 @@ class Overlay extends Geometry {
       if (overlay && overlay instanceof ol.Overlay) {
         let overlayElement = overlay.getElement()
         let iconElement = overlayElement.getElementsByTagName('div')[0]
-        iconElement.style.color = iconElement.selectColor
-        htmlUtils.addClass(overlayElement, 'overlay-point-marker-raise')
+        iconElement.style.color = iconElement.getAttribute('selectColor')
+        htmlUtils.addClass(overlayElement, iconElement.getAttribute('selectClass'))
         return overlay
       } else if (id && trim(id) !== "''") {
         let _overlay = this.map.getOverlayById(id)
         if (_overlay && _overlay instanceof ol.Overlay) {
           let _overlayElement = _overlay.getElement()
           let _iconElement = _overlayElement.getElementsByTagName('div')[0]
-          _iconElement.style.color = _iconElement.selectColor
-          htmlUtils.addClass(_overlayElement, 'overlay-point-marker-raise')
+          _iconElement.style.color = _iconElement.getAttribute('selectColor')
+          htmlUtils.addClass(_overlayElement, _iconElement.getAttribute('selectClass'))
           return _overlay
         }
       }
@@ -351,16 +352,16 @@ class Overlay extends Geometry {
     if (overlay && overlay instanceof ol.Overlay) {
       let overlayElement = overlay.getElement()
       let iconElement = overlayElement.getElementsByTagName('div')[0]
-      iconElement.style.color = iconElement.normalColor
-      htmlUtils.removeClass(overlayElement, 'overlay-point-marker-raise')
+      iconElement.style.color = iconElement.getAttribute('normalColor')
+      htmlUtils.removeClass(overlayElement, iconElement.getAttribute('selectClass'))
       return overlay
     } else if (id && trim(id) !== "''") {
       let _overlay = this.map.getOverlayById(id)
       if (_overlay && _overlay instanceof ol.Overlay) {
         let _overlayElement = _overlay.getElement()
         let _iconElement = _overlayElement.getElementsByTagName('div')[0]
-        _iconElement.style.color = _iconElement.normalColor
-        htmlUtils.removeClass(_overlayElement, 'overlay-point-marker-raise')
+        _iconElement.style.color = _iconElement.getAttribute('normalColor')
+        htmlUtils.removeClass(_overlayElement, _iconElement.getAttribute('selectClass'))
         return _overlay
       }
     }
