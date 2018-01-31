@@ -129,7 +129,7 @@
       })
     });
     $('#removeFeatureByLayerName').on('click', function () {
-      Map.removeFeatureByLayerName('lines')
+      Map.removeFeatureByLayerNames(['line', 'lines'])
     });
     $('#removeFeatureById').on('click', function () {
       Map.removeFeatureById('{344F08BA-61CA-49B8-B949-01FFCAE5153F}')
