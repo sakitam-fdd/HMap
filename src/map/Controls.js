@@ -33,10 +33,6 @@ class _Controls {
     if (!options.hasOwnProperty('rotate')) {
       this.addRotate({}, controls)
     }
-    // 添加版权
-    if (!options.hasOwnProperty('attribution')) {
-      this.addAttribution({}, controls)
-    }
     if (options) {
       for (let key in options) {
         if (key && options[key]) {

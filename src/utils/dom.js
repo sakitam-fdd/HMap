@@ -43,17 +43,19 @@ const create = function (tagName, className, container, id) {
 /**
  * get element
  * @param selector
+ * @param root
  * @returns {*}
  */
-const getElement = function (selector) {
+const getElement = function (selector, root) {
+  const _root = root || window
   const dom = (function () {
     let found
-    return (document && /^#([\w-]+)$/.test(selector))
-      ? ((found = document.getElementById(RegExp.$1)) ? [found] : [])
+    return (_root.document && /^#([\w-]+)$/.test(selector))
+      ? ((found = _root.document.getElementById(RegExp.$1)) ? [found] : [])
       : Array.prototype.slice.call(/^\.([\w-]+)$/.test(selector)
-        ? document.getElementsByClassName(RegExp.$1)
-        : /^[\w-]+$/.test(selector) ? document.getElementsByTagName(selector)
-          : document.querySelectorAll(selector)
+        ? _root.document.getElementsByClassName(RegExp.$1)
+        : /^[\w-]+$/.test(selector) ? _root.document.getElementsByTagName(selector)
+          : _root.document.querySelectorAll(selector)
       )
   })()
   return dom

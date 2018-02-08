@@ -2,12 +2,14 @@
 
 const path = require('path');
 const babel = require('rollup-plugin-babel'); // ES2015 tran
+const json = require('rollup-plugin-json');
 const cjs = require('rollup-plugin-commonjs');
 const nodeResolve = require('rollup-plugin-node-resolve');
 const replace = require('rollup-plugin-replace');
 const eslint = require('rollup-plugin-eslint');
 const friendlyFormatter = require('eslint-friendly-formatter');
 const scss = require('rollup-plugin-scss');
+const urlLoader = require('rollup-plugin-url');
 const _package = require('../package.json');
 const eslintConfig = require('../.eslintrc');
 const time = new Date();
@@ -25,15 +27,31 @@ const genConfig = (opts) => {
     input: {
       input: resolve('src/index.js'),
       plugins: [
-        scss({
-          output: resolve(_package.style)
+        json({
+          include: resolve('package.json'),
+          indent: ' '
         }),
         eslint(Object.assign({}, eslintConfig, {
           formatter: friendlyFormatter,
-          exclude: [resolve('node_modules'), resolve('src/asset')]
+          exclude: [
+            resolve('package.json'),
+            resolve('node_modules/**'),
+            resolve('src/assets/**')]
         })),
+        scss({
+          output: resolve(_package.style)
+        }),
+        urlLoader({
+          limit: 1024, // inline files < 10k, copy files > 10k
+          include: ['**/*.svg', '**/*.png', '**/*.gif'], // defaults to .svg, .png, .jpg and .gif files
+          emitFiles: true, // defaults to true
+          publicPath: resolve('src/dist/img')
+        }),
         babel({
-          exclude: resolve('node_modules') // only transpile our source code
+          exclude: [
+            resolve('package.json'),
+            resolve('node_modules/**')
+          ] // only transpile our source code
         }),
         nodeResolve({
           jsnext: true,
@@ -41,8 +59,8 @@ const genConfig = (opts) => {
           browser: true
         }),
         cjs()
-      ],
-      external: ['openlayers']
+      ]
+      // external: ['openlayers']
     },
     output: {
       file: opts.file,

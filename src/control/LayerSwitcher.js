@@ -167,7 +167,7 @@ ol.control.LayerSwitcher.prototype.contentMouseOver_ = function (event) {
   let length = this.options['layers'].length
   if (length > 0) {
     for (let i = 0; i < length - 1; i++) {
-      let item = htmlUtils.get(this.className_ + '-li' + i + '-inner')
+      let item = htmlUtils.getTarget(this.className_ + '-li' + i + '-inner')
       if (item) {
         item.style.marginRight = '0px'
         item.style.zIndex = ''
@@ -187,7 +187,7 @@ ol.control.LayerSwitcher.prototype.contentMouseOut_ = function (event) {
   let length = this.options['layers'].length
   if (length > 0) {
     for (let i = 0; i < length - 1; i++) {
-      let item = htmlUtils.get(this.className_ + '-li' + i + '-inner')
+      let item = htmlUtils.getTarget(this.className_ + '-li' + i + '-inner')
       if (item) {
         item.style.zIndex = i + 1
         item.style.right = '0px'
@@ -259,7 +259,7 @@ ol.control.LayerSwitcher.prototype.switcher = function (key, value) {
     let length = this.options['layers'].length
     if (length > 0) {
       for (let i = 0; i < length; i++) {
-        let item = htmlUtils.get(this.className_ + '-li' + i + '-inner')
+        let item = htmlUtils.getTarget(this.className_ + '-li' + i + '-inner')
         if (item && item.getAttribute('data-name') === value) {
           htmlUtils.addClass(item, 'selected-item')
         } else {

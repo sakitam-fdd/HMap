@@ -28,9 +28,7 @@ import ViewUtil from './utils/ViewUtil'
 import { isObject } from './utils/utils'
 import { EVENT_TYPE, INTERNAL_KEY } from './constants'
 // message
-const version = require('../package.json').version
-const name = require('../package.json').name
-const author = require('../package.json').author
+import { version, name, author } from '../package.json'
 class HMap extends mixin(
   Map, Observable, View, BaseLayers,
   Controls, Interactions, Layer,

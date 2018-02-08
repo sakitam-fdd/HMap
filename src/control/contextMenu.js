@@ -185,7 +185,7 @@ ol.control.ContextMenu.prototype.htmlUtils = function (items, index, content, is
  * @private
  */
 ol.control.ContextMenu.prototype.updateElement_ = function (type, item, items) {
-  let child_ = htmlUtils.get(this.className_ + '-ul' + '-inner')
+  let child_ = htmlUtils.getTarget(this.className_ + '-ul' + '-inner')
   let cloneItems = cloneDeep(this.options['items'])
   let afterItems = null
   switch (type) {

@@ -8,7 +8,7 @@
     overflow: hidden;
     background-position : 0px 0px;
     background-repeat : no-repeat;
-    background-image: url("../images/slider.png");
+    background-image: url("./images/slider.png");
     .hmap-zoom-slider-button {
       position: absolute;
       height: 15px;
@@ -68,7 +68,7 @@
       left: 12px;
       overflow: hidden;
       background-position: 0px -221px;
-      background-image: url("../images/slider.png");
+      background-image: url("./images/slider.png");
       background-repeat: no-repeat;
       &:hover {
         background-position: 0px -243px;
@@ -83,7 +83,7 @@
       left: 12px;
       overflow: hidden;
       background-position: 0px -265px;
-      background-image: url("../images/slider.png");
+      background-image: url("./images/slider.png");
       background-repeat: no-repeat;
       &:hover {
         background-position: 0px -287px;
@@ -97,7 +97,7 @@
         left: 18px;
         width: 10px;
         overflow: hidden;
-        background: url("../images/slider.png") no-repeat -23px -226px;
+        background: url("./images/slider.png") no-repeat -23px -226px;
       }
       .slider-background-bottom {
         position: absolute;
@@ -106,7 +106,7 @@
         left: 19px;
         bottom: 0px;
         overflow: hidden;
-        background: url("../images/slider.png") no-repeat -33px bottom;
+        background: url("./images/slider.png") no-repeat -33px bottom;
       }
       .slider-bar {
         position: absolute;
@@ -114,7 +114,7 @@
         height: 11px;
         width: 19px;
         overflow: hidden;
-        background: url("../images/slider.png") no-repeat 0 -309px;
+        background: url("./images/slider.png") no-repeat 0 -309px;
       }
     }
   }

@@ -692,4 +692,5 @@ class Feature extends mixin(Layer, Geometry) {
     }
   }
 }
+
 export default Feature

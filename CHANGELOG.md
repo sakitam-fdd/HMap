@@ -1,3 +1,10 @@
+## 1.5.4 (2018.2.8)
+
+* 支持 overlay point dom对象传入。
+* 修复overlay point 事件bug。
+* 测试 webgl。
+* 修复feature相关方法问题，修复样式字体重叠问题。
+
 ## 1.5.3 (2017.12.26)
 
 * 锁定部分pkg版本。

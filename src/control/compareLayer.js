@@ -93,7 +93,7 @@ ol.control.CompareLayer.prototype.initControl = function () {
  * @private
  */
 ol.control.CompareLayer.prototype.handleDraggerStart_ = function (event) {
-  if (!this.dragging_ && event.target === htmlUtils.getElementsByClassName('.' + this.className + '-inner', this.element_)) {
+  if (!this.dragging_ && event.target === htmlUtils.getElement('.' + this.className + '-inner', this.element_)) {
     this.previousX_ = event.clientX
     this.previousY_ = event.clientY
     this.dragging_ = true
