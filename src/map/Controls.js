@@ -4,17 +4,17 @@
  */
 import ol from 'openlayers'
 import * as utils from '../utils/utils'
-import 'ol-extent/src/control/BZoomSlider'
-import 'ol-extent/src/control/Loading'
-import 'ol-extent/src/control/RotateControl'
-import 'ol-extent/src/control/zoom'
-import 'ol-extent/src/control/FullScreen'
-import 'ol-extent/src/control/LayerSwitcher'
-import 'ol-extent/src/control/contextMenu'
-import 'ol-extent/src/control/compareLayer'
-import 'ol-extent/src/control/ScaleLineH'
-import 'ol-extent/src/control/MousePosition'
-import 'ol-extent/src/control/OverviewMap'
+import '../control/BZoomSlider'
+import '../control/Loading'
+import '../control/RotateControl'
+import '../control/zoom'
+// import '../control/FullScreen'
+import '../control/LayerSwitcher'
+import '../control/contextMenu'
+import '../control/compareLayer'
+import '../control/ScaleLineH'
+import '../control/MousePosition'
+import '../control/OverviewMap'
 class _Controls {
   /**
    * 添加控件

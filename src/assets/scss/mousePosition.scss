@@ -1,0 +1,28 @@
+.ol-overlaycontainer-stopevent .hmap-mouse-position {
+  top: 8px;
+  right: 8px;
+  position: absolute;
+}
+
+.hmap-mouse-position {
+  position: absolute;
+  top: .5em;
+  right: .5em;
+  text-align: center;
+  background: #1b9de8;
+  color: #ffffff;
+  border-radius: 6px;
+  padding: 0 10px;
+  box-shadow: 0 4px 10px rgba(73, 127, 255, .42);
+  transition: .3s;
+}
+
+.ol-overlay-container .hmap-mouse-position_overlay {
+  text-align: center;
+  background: #1b9de8;
+  color: #ffffff;
+  border-radius: 6px;
+  padding: 0 10px;
+  box-shadow: 0 4px 10px rgba(73, 127, 255, .42);
+  transition: .3s;
+}

@@ -4,12 +4,12 @@ import 'core-js/es6/set'
 import 'core-js/es6/symbol'
 import 'core-js/es6/reflect'
 // scss
-import './scss/index'
+import './assets/scss/index'
 // outer
 import ol from 'openlayers'
 import mixin from './utils/mixins'
-import Observable from 'observable-emit'
-import Popover from 'ol-extent/src/overlay/popover'
+import Observable from './utils/Observable'
+import Popover from './overlay/popover'
 // inter
 import * as supported from './utils/supported'
 import { logo } from './assets/index'

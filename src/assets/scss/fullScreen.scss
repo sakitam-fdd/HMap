@@ -1,0 +1,25 @@
+.hmap-control-full-screen {
+  position: absolute;
+  right: .5em;
+  top: .5em;
+  width: 28px;
+  height: 28px;
+  text-align: center;
+  line-height: 28px;
+  pointer-events: none;
+  border-radius: 2px;
+  background-color: #FFF;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, .15);
+  .hmap-control-full-screen-inner {
+    display: inline-block;
+    font-size: 22px;
+    color: #7c8196;
+    width: 26px;
+    height: 26px;
+    pointer-events: auto;
+    &:hover {
+      cursor: pointer;
+      color: #2c9eff;
+    }
+  }
+}

@@ -1,0 +1,49 @@
+.hmap-rotate-control {
+  position: absolute;
+  bottom: 5rem;
+  right: 20px;
+  width: 52px;
+  height: 54px;
+  background: url(../images/rotate.png) 0% 0% / 266px no-repeat;
+  .center-button {
+    position: absolute;
+    outline: none;
+    border: none;
+    background: url(../images/rotate.png) -56px -4px / 266px no-repeat;
+    cursor: pointer;
+    left: 19px;
+    top: 4px;
+    width: 14px;
+    height: 44px;
+    transform: rotate(0deg);
+  }
+  .right-button {
+    position: absolute;
+    outline: none;
+    border: none;
+    background: url(../images/rotate.png) -75px -5px / 266px no-repeat;
+    right: 2px;
+    top: 5px;
+    width: 15px;
+    height: 42px;
+    transform: scaleX(-1);
+    &:hover {
+      cursor: pointer;
+      background: url(../images/rotate.png) -89px -5px / 266px no-repeat;
+    }
+  }
+  .left-button {
+    position: absolute;
+    outline: none;
+    border: none;
+    background: url(../images/rotate.png) -75px -5px / 266px no-repeat;
+    left: 2px;
+    top: 5px;
+    width: 15px;
+    height: 42px;
+    &:hover {
+      cursor: pointer;
+      background: url(../images/rotate.png) -89px -5px / 266px no-repeat;
+    }
+  }
+}

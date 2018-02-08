@@ -3,11 +3,11 @@
  * @desc 图层相关处理
  */
 import ol from 'openlayers'
-import 'ol-extent/src/source/Baidu'
-import 'ol-extent/src/source/Gaode'
-import 'ol-extent/src/source/Google'
+import '../source/Baidu'
+import '../source/Gaode'
+import '../source/Google'
 import '../layer/AnimatedClusterLayer'
-import olStyleFactory from 'ol-extent/src/style/factory'
+import olStyleFactory from '../style/factory'
 import {isFunction} from '../utils/utils'
 class Layer {
   /**

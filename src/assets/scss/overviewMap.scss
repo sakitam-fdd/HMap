@@ -1,0 +1,64 @@
+.hmap-overview-map {
+  position: absolute;
+  right: 0em;
+  bottom: 0em;
+  width: 120px;
+  height: 120px;
+  visibility: visible;
+  background: #fff;
+  border-top: solid 1px #ccc;
+  border-left: solid 1px #ccc;
+  transition: all 0.3s;
+}
+
+.hmap-overview-map .hmap-overview-main {
+  width: 115px;
+  height: 115px;
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  overflow: hidden;
+  border-top: solid 1px #ccc;
+  border-left: solid 1px #ccc;
+}
+
+.hmap-overview-map.ol-uncollapsible {
+  bottom: 0;
+  left: 0;
+  border-radius: 0 4px 0 0;
+}
+.hmap-overview-map .hmap-overview-map-target,
+.hmap-overview-map button {
+  display: inline-block;
+}
+.hmap-overview-map .hmap-overview-map-target {
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  overflow: hidden;
+  width: 115px;
+  height: 115px;
+  border-top: solid 1px #ccc;
+  border-left: solid 1px #ccc;
+}
+
+.hmap-overview-map:not(.overview-collapsed) .hmap-overview-map-button{
+  width: 17px;
+  height: 17px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background: url(../images/mapcontrols.png) -40px -386px;
+  cursor: pointer;
+  background-position: -40px -386px;
+}
+
+.hmap-overview-map .hmap-overview-map-box {
+  width: 62px;
+  height: 35px;
+  background: rgba(27,157,232, 0.5);
+  opacity: .5;
+  border: 2px solid red;
+  filter: alpha(opacity=25);
+  cursor: move;
+}

@@ -3,7 +3,7 @@
  * @desc 用于dom标绘（包含自定义dom或者iconfont）
  */
 import ol from 'openlayers'
-import * as htmlUtils from 'nature-dom-util/src/utils/domUtils'
+import * as htmlUtils from '../utils/dom'
 import { trim, isObject } from '../utils/utils'
 import { EVENT_TYPE } from '../constants'
 import Geometry from '../geom/Geometry'

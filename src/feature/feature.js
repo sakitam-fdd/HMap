@@ -5,7 +5,7 @@
 import ol from 'openlayers'
 import mixin from '../utils/mixins'
 import {isFunction} from '../utils/utils'
-import olStyleFactory from 'ol-extent/src/style/factory'
+import olStyleFactory from '../style/factory'
 import Layer from '../layer/Layer'
 import Geometry from '../geom/Geometry'
 class Feature extends mixin(Layer, Geometry) {
