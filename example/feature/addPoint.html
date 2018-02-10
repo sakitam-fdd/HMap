@@ -130,7 +130,7 @@
           },
           text: {
             text: (index + 1).toString(),
-            textFont: '12px serif',
+            textFont: 'normal normal 100 12px ArialMT',
             textOffsetX: 3,
             textOffsetY: -15,
             textOverflow: true,
@@ -153,7 +153,7 @@
           },
           text: {
             text: (index + 1).toString(),
-            textFont: '12px serif',
+            textFont: 'normal normal 100 12px ArialMT',
             textOverflow: true,
             textOffsetX: 3,
             textOffsetY: -15,
@@ -180,7 +180,9 @@
               imageAnchor: [0.5, 1]
             }
           }
-        }
+        },
+        dataProjection: 'EPSG:3857',
+        featureProjection: 'EPSG:4326'
       })
     });
     $('#removePointByLayerName').on('click', function () {

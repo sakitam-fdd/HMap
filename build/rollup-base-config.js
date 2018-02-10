@@ -9,6 +9,9 @@ const replace = require('rollup-plugin-replace');
 const eslint = require('rollup-plugin-eslint');
 const friendlyFormatter = require('eslint-friendly-formatter');
 const scss = require('rollup-plugin-scss');
+const postcss = require('postcss');
+const autoprefixer = require('autoprefixer');
+const cssnano = require('cssnano');
 const urlLoader = require('rollup-plugin-url');
 const _package = require('../package.json');
 const eslintConfig = require('../.eslintrc');
@@ -39,7 +42,10 @@ const genConfig = (opts) => {
             resolve('src/assets/**')]
         })),
         scss({
-          output: resolve(_package.style)
+          output: resolve(_package.style),
+          processor: css => postcss([autoprefixer, cssnano])
+            .process(css)
+            .then(result => result.css)
         }),
         urlLoader({
           limit: 1024, // inline files < 10k, copy files > 10k

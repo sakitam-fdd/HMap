@@ -124,7 +124,7 @@ ol.style.Factory.prototype._getStroke = function (options) {
       lineDash: (options['strokeLineDash'] ? options['strokeLineDash'] : undefined),
       lineDashOffset: (typeof options['strokeLineDashOffset'] === 'number' ? options['strokeLineDashOffset'] : '0'),
       miterLimit: (typeof options['strokeMiterLimit'] === 'number' ? options['strokeMiterLimit'] : 10),
-      width: (typeof options['strokeWidth'] === 'number' ? options['strokeWidth'] : undefined)
+      width: (typeof options['strokeWidth'] === 'number' ? options['strokeWidth'] : 1)
     })
     return stroke
   } catch (error) {

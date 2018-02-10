@@ -176,9 +176,10 @@ class HMap extends mixin(
       let layers = this.addBaseLayers(this.options_['baseLayers'])
       let interactions = this._addInteractions(this.options_['interactions'])
       let controls = this._addControls(this.options_['controls'])
+
       /**
        * 当前地图对象
-       * @type {ol.Map}
+       * @type {module.exports.Map|{alias, name, singular, node}}
        */
       this.map = new ol.Map({
         target: this.target_,
