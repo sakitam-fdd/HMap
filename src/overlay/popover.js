@@ -4,7 +4,9 @@
  */
 import ol from 'openlayers'
 import * as DomUtils from '../utils/dom'
+import { addListener } from '../utils/events'
 import {getuuid} from '../utils/utils'
+import {createVectorLayer, getLayerByLayerName} from '../layer/LayerUtils'
 ol.Popover = function (map, params) {
   if (map && map instanceof ol.Map) {
     /**
@@ -86,27 +88,27 @@ ol.Popover = function (map, params) {
   if (this.options['showCloser'] !== false) {
     this.closer = DomUtils.create('div', 'hmap-js-popup-closer', this.container)
     this.closer.innerHTML = '+'
-    this.closer.addEventListener('click', (event) => {
+    addListener(this.closer, 'click', function (event) {
       let e = !event ? window.event : event
       e.stopPropagation()
       if (this && this.options['id']) {
         this.map.removeOverlay(this)
-        let layer = this.getLayerByLayerName(this.options['layerName'])
+        let layer = getLayerByLayerName(this.map, this.options['layerName'])
         layer.getSource().removeFeature(this.markFeature)
         this.markFeature = null
       }
-    })
+    }, this)
   }
   if (this.options['showMinimize'] !== false) {
     this.minimize = DomUtils.create('div', 'hmap-js-popup-minimize', this.container)
     this.minimize.innerHTML = '_'
-    this.minimize.addEventListener('click', (event) => {
+    addListener(this.minimize, 'click', function (event) {
       let e = !event ? window.event : event
       e.stopPropagation()
       if (this) {
         this.showMinimize()
       }
-    })
+    }, this)
   }
   this.enableTouchScroll_(this.content)
   this.options.element = this.container
@@ -196,93 +198,11 @@ ol.Popover.prototype.showMarkFeature = function (coord) {
       this.miniOverLay.setPosition(this.coords)
     }
   })
-  let layer = this.createVectorLayer(this.options['layerName'], {
+  let layer = createVectorLayer(this.map, this.options['layerName'], {
     create: true
   })
   if (layer && layer instanceof ol.layer.Vector) {
     layer.getSource().addFeature(this.markFeature)
-  }
-}
-
-/**
- * 创建矢量图层
- * @param layerName
- * @param params
- * @returns {*}
- */
-ol.Popover.prototype.createVectorLayer = function (layerName, params) {
-  try {
-    if (this.map) {
-      let vectorLayer = this.getLayerByLayerName(layerName)
-      if (!(vectorLayer instanceof ol.layer.Vector)) {
-        vectorLayer = null
-      }
-      if (!vectorLayer) {
-        if (params && params.create) {
-          vectorLayer = new ol.layer.Vector({
-            layerName: layerName,
-            params: params,
-            layerType: 'vector',
-            source: new ol.source.Vector({
-              wrapX: false
-            }),
-            style: new ol.style.Style({
-              fill: new ol.style.Fill({
-                color: 'rgba(67, 110, 238, 0.4)'
-              }),
-              stroke: new ol.style.Stroke({
-                color: '#4781d9',
-                width: 2
-              }),
-              image: new ol.style.Circle({
-                radius: 7,
-                fill: new ol.style.Fill({
-                  color: '#ffcc33'
-                })
-              })
-            })
-          })
-        }
-      }
-      if (this.map && vectorLayer) {
-        if (params && params.hasOwnProperty('selectable')) {
-          vectorLayer.set('selectable', params.selectable)
-        }
-        // 图层只添加一次
-        let _vectorLayer = this.getLayerByLayerName(layerName)
-        if (!_vectorLayer || !(_vectorLayer instanceof ol.layer.Vector)) {
-          this.map.addLayer(vectorLayer)
-        }
-      }
-      return vectorLayer
-    }
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-/**
- * 通过图层名获取图层
- * @param layerName
- * @returns {*}
- */
-ol.Popover.prototype.getLayerByLayerName = function (layerName) {
-  try {
-    let targetLayer = null
-    if (this.map) {
-      let layers = this.map.getLayers().getArray()
-      layers.every(layer => {
-        if (layer.get('layerName') === layerName) {
-          targetLayer = layer
-          return false
-        } else {
-          return true
-        }
-      })
-    }
-    return targetLayer
-  } catch (e) {
-    console.log(e)
   }
 }
 
@@ -385,12 +305,12 @@ ol.Popover.prototype.isTouchDevice_ = function () {
 ol.Popover.prototype.enableTouchScroll_ = function (elm) {
   if (this.isTouchDevice_()) {
     let scrollStartPos = 0
-    elm.addEventListener('touchstart', event => {
+    addListener(elm, 'touchstart', function (event) {
       scrollStartPos = this.scrollTop + event.touches[0].pageY
-    }, false)
-    elm.addEventListener('touchmove', event => {
+    }, this)
+    addListener(elm, 'touchmove', function (event) {
       this.scrollTop = scrollStartPos - event.touches[0].pageY
-    }, false)
+    }, this)
   }
 }
 

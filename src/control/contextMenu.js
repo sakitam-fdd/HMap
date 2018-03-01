@@ -129,7 +129,6 @@ ol.control.ContextMenu.prototype.hide = function () {
  * @returns {*}
  */
 ol.control.ContextMenu.prototype.htmlUtils = function (items, index, content, isOffset) {
-  let that = this
   let ulList = null
   if (items && Array.isArray(items) && items.length > 0) {
     ulList = htmlUtils.create('ul', this.className_ + '-ul' + index + '-inner', content, this.className_ + '-ul' + index + '-inner')
@@ -146,9 +145,7 @@ ol.control.ContextMenu.prototype.htmlUtils = function (items, index, content, is
         li_.style.height = this.itemHeight + 'px'
         li_.style.lineHeight = this.itemHeight + 'px'
         li_.setAttribute('data-name', item['alias'])
-        Events.listen(li_, 'click', function (event) {
-          that.handleItemClick_(event, item)
-        }, this)
+        Events.listen(li_, 'click', this.handleItemClick_.bind(this, item))
         if (item['icon']) {
           let span_ = htmlUtils.create('span', 'li-icon-content', li_)
           if (item['iconType'] === 'iconfont') {
@@ -240,11 +237,12 @@ ol.control.ContextMenu.prototype.getCurrentCoordinates = function () {
 
 /**
  * 处理列表点击事件
- * @param event
  * @param item
+ * @param event
  * @private
  */
-ol.control.ContextMenu.prototype.handleItemClick_ = function (event, item) {
+ol.control.ContextMenu.prototype.handleItemClick_ = function (item, event) {
+  Events.stopPropagation(event)
   if (item && item['callback'] && typeof item['callback'] === 'function') {
     item['callback'](event, {
       source: item,
@@ -268,6 +266,7 @@ ol.control.ContextMenu.prototype.handleItemClick_ = function (event, item) {
  * @private
  */
 ol.control.ContextMenu.prototype.handleItemMouseOver_ = function (event) {
+  Events.stopPropagation(event)
   if (event.target && event.target.childNodes) {
     let elements = Array.prototype.slice.call(event.target.childNodes, 0)
     if (elements && elements.length > 0) {
@@ -289,6 +288,7 @@ ol.control.ContextMenu.prototype.handleItemMouseOver_ = function (event) {
  * @private
  */
 ol.control.ContextMenu.prototype.handleItemMouseOut_ = function (event) {
+  Events.stopPropagation(event)
   if (event.target && event.target.childNodes) {
     let elements = Array.prototype.slice.call(event.target.childNodes, 0)
     if (elements && elements.length > 0) {

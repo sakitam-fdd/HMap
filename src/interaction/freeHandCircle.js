@@ -4,7 +4,7 @@
  */
 import ol from 'openlayers'
 import olStyleFactory from '../style/factory'
-import olLayerLayerUtils from '../layer/Layer'
+import {createVectorLayer} from '../layer/LayerUtils'
 import Observable from '../utils/Observable'
 import {getuuid} from '../utils/utils'
 import mixin from '../utils/mixin'
@@ -304,7 +304,7 @@ ol.interaction.FreeHandCircle.prototype.createCircle = function (center, radius)
   if (!this.getMap()) return
   let style_ = new olStyleFactory(this.style_)
   if (!this.layer) {
-    this.layer = new olLayerLayerUtils(this.getMap()).createVectorLayer(this.layerName, {
+    this.layer = createVectorLayer(this.getMap(), this.layerName, {
       create: true
     })
     this.layer.setStyle(style_)

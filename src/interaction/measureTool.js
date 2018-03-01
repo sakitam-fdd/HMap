@@ -1,6 +1,6 @@
 import ol from 'openlayers'
 import olStyleFactory from '../style/factory'
-import olLayerLayerUtils from '../layer/Layer'
+import {createVectorLayer} from '../layer/LayerUtils'
 import {getuuid} from '../utils/utils'
 ol.interaction.MeasureTool = function (params) {
   this.options = params || {}
@@ -528,7 +528,7 @@ ol.interaction.MeasureTool.prototype.setTool = function (active, key, freehand) 
     this.measureType = key
     if (!this.layer) {
       let _style = new olStyleFactory(this.finshStyle)
-      this.layer = new olLayerLayerUtils(this.getMap()).createVectorLayer(this.layerName, {
+      this.layer = createVectorLayer(this.getMap(), this.layerName, {
         create: true
       })
       this.layer.setStyle(_style)

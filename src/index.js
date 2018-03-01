@@ -527,4 +527,12 @@ class HMap extends mixin(
   }
 }
 
+if (typeof window !== 'undefined') {
+  window.ol = ol
+} else if (typeof global !== 'undefined') {
+  global.ol = ol
+} else if (typeof self !== 'undefined') {
+  self.ol = ol
+}
+
 export default HMap
