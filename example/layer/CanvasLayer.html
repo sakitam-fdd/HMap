@@ -34,11 +34,16 @@
       }
     ]
   });
+  var flag = false, center = [113.53450137499999, 34.44104525], pixel;
   var canvas = new ol.layer.CanvasLayer({
     map: map.getMap(),
     projection: 'EPSG:4326',
-    render: function (event, context) {
-      draw()
+    render: function (event) {
+      pixel = map.getPixelFromCoordinate(center);
+      if (!flag) {
+        flag = true;
+        draw()
+      }
     }
   });
 
@@ -51,7 +56,7 @@
     context.globalAlpha = (context.globalAlpha - 0.01 + 1) % 1;
     radious = (radious + 1) % 100;
     context.beginPath();
-    context.arc(100, 100, radious, 0, 2 * Math.PI);
+    context.arc(pixel[0], pixel[1], radious, 0, 2 * Math.PI);
     context.fill();
     context.stroke();
     window.requestAnimationFrame(draw)

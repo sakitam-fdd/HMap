@@ -31,6 +31,12 @@ class CanvasLayer extends ol.layer.Image {
      */
     this._canvas = null
 
+    /**
+     * options
+     * @type {{}}
+     */
+    this.options = options
+
     this.setSource(new ol.source.ImageCanvas({
       logo: options.logo,
       state: options.state,
@@ -42,44 +48,14 @@ class CanvasLayer extends ol.layer.Image {
     }))
 
     this.on('precompose', this.redraw, this)
-    this.on('postcompose', this._canvasUpdate, this)
   }
 
   /**
    * re-draw
    */
   redraw () {
-    if (!this) return
-    const _extent = this.getExtent() || this.getMapExtent()
+    const _extent = this.options.extent || this._getMapExtent()
     this.setExtent(_extent)
-  }
-
-  /**
-   * canvas update
-   * @param event
-   * @private
-   */
-  _canvasUpdate (event) {
-    const res = event.frameState.viewState.resolution
-    if (res <= this.get('maxResolution')) {
-      let ratio = event.frameState.pixelRatio
-      const ctx = event.context
-      const context = this.getContext()
-      let matrix = this.matrix_ = event.frameState.coordinateToPixelTransform
-      if (!matrix) {
-        matrix = event.frameState.coordinateToPixelMatrix
-        matrix[2] = matrix[4]
-        matrix[3] = matrix[5]
-        matrix[4] = matrix[12]
-        matrix[5] = matrix[13]
-      }
-      ctx.save()
-      ctx.scale(ratio, ratio)
-      this.get('render') && this.get('render')(event, context)
-      ctx.restore()
-    } else {
-      // console.warn('超出所设置最大分辨率！')
-    }
   }
 
   /**
@@ -93,12 +69,22 @@ class CanvasLayer extends ol.layer.Image {
   /**
    * get map current extent
    * @returns {ol.View|*|Array<number>}
+   * @private
    */
-  getMapExtent () {
+  _getMapExtent () {
     if (!this.getMap()) return
-    const size = this.getMap().getSize()
+    const size = this._getMapSize()
     const _view = this.getMap().getView()
-    return (_view && _view.calculateExtent(size))
+    return _view && _view.calculateExtent(size)
+  }
+
+  /**
+   * get size
+   * @private
+   */
+  _getMapSize () {
+    if (!this.getMap()) return
+    return this.getMap().getSize()
   }
 
   /**
@@ -116,6 +102,18 @@ class CanvasLayer extends ol.layer.Image {
     } else {
       this._canvas.width = size[0]
       this._canvas.height = size[1]
+    }
+    if (resolution <= this.get('maxResolution')) {
+      const context = this.getContext()
+      this.get('render') && this.get('render')({
+        context: context,
+        extent: extent,
+        size: size,
+        pixelRatio: pixelRatio,
+        projection: projection
+      })
+    } else {
+      // console.warn('超出所设置最大分辨率！')
     }
     return this._canvas
   }
