@@ -9,6 +9,13 @@ const toString = objectProto.toString
 const hasOwnProperty = Object.prototype.hasOwnProperty
 const symToStringTag = typeof Symbol !== 'undefined' ? Symbol.toStringTag : undefined
 
+/* eslint no-extend-native: "off" */
+Array.prototype.add = function (string) {
+  if (!(this.indexOf(string) > -1)) {
+    this.push(string)
+  }
+}
+
 /**
  * 首字母大写(其他小写)
  * @param str

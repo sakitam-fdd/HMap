@@ -145,6 +145,7 @@ class Feature extends mixin(Layer, Geometry) {
     params['create'] = true
     let layer = this.createVectorLayer(params['layerName'], params)
     layer.getSource().addFeature(feature)
+    this.orderLayerZindex()
   }
 
   /**

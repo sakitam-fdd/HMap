@@ -72,19 +72,19 @@ class HMap extends mixin(
      * 当前地图线图层
      * @type {Set}
      */
-    this.lineLayers = new Set()
+    this.lineLayers = []
 
     /**
      * 当前地图点图层
      * @type {Set}
      */
-    this.pointLayers = new Set()
+    this.pointLayers = []
 
     /**
      * 当前地图面图层
      * @type {Set}
      */
-    this.polygonLayers = new Set()
+    this.polygonLayers = []
 
     /**
      * 选择交互
