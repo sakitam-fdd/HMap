@@ -115,6 +115,7 @@ ol.control.Loading.prototype.setup = function () {
  */
 ol.control.Loading.prototype.setDomPosition = function () {
   let size = this.getMap().getSize()
+  if (!size) return
   let domSize = [this.element.clientWidth, this.element.clientHeight]
   this.element.style.left = String(Math.round((size[0] - domSize[0]) / 2)) + 'px'
   this.element.style.bottom = String(Math.round((size[1] - domSize[1]) / 2)) + 'px'

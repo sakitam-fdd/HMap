@@ -1,6 +1,9 @@
 const serve = require('rollup-plugin-serve');
 const livereload = require('rollup-plugin-livereload');
-const { input, output } = require('./rollup-base-config')[0]
+const {input, output} = require('./rollup-base-config')[0];
+const {cssPlugins} = require('./helper');
+
+input.plugins.splice(2, 0, cssPlugins);
 
 module.exports = Object.assign({
   plugins: [
@@ -15,6 +18,6 @@ module.exports = Object.assign({
       watch: ['dist', 'example', 'docs']
     })
   ]
-}, input, { output })
+}, input, {output});
 
 console.log(`examples: http://127.0.0.1:3333`)
