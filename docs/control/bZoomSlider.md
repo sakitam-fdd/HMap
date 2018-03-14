@@ -1,8 +1,8 @@
-## 添加图层平移缩放控件
+### 添加图层平移缩放控件
 
 > 为用户提供了单独的图层平移缩放控件，可配置开启，也可手动添加，也可单独配合openlayers使用
 
-### 如何使用
+#### 如何使用
 
 > 图层平移缩放控件(具体代码实现：[bZoomSlider](https://github.com/sakitam-fdd/ol-extent/blob/master/src/control/BZoomSlider.js))。
   此控件以实现并包含在HMap内部。所以你可以按照以下代码添加控件。

@@ -1,8 +1,8 @@
-## 添加图层对比控件
+### 添加图层对比控件
 
 > 为用户提供了单独的图层对比控件，可手动添加，也可单独配合openlayers使用
 
-### 如何使用
+#### 如何使用
 
 > 图层对比控件(具体代码实现：[compareLayer](https://github.com/sakitam-fdd/ol-extent/blob/master/src/control/compareLayer.js))。
   此控件以实现并包含在HMap内部。所以你可以按照以下代码添加控件。

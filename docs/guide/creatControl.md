@@ -86,4 +86,4 @@ Map.addControl(loadingControl)
 | ScaleLine | 比例尺控件 | [ScaleLine](api/control/scaleLine.md) | 支持单独配合openlayers使用 |
 | MousePosition | 鼠标位置显示控件 | [MousePosition](api/control/mousePosition.md) | 支持单独配合openlayers使用 |
 | Geolocation | 定位控件 | [Geolocation](api/control/geolocation.md) | 因为浏览器安全限制，暂时停用此控件 |
-| OverviewMap | 鹰眼控件 | [OverviewMap](api/control/overviewMap.md) | 计划中 |
+| OverviewMap | 鹰眼控件 | [OverviewMap](api/control/overviewMap.md) | 支持单独配合openlayers使用 |

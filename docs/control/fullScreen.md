@@ -1,8 +1,8 @@
-## 添加全屏控件
+### 添加全屏控件
 
 > 为用户提供了单独的全屏控件，可配置开启，也可手动添加，也可单独配合openlayers使用
 
-### 如何使用
+#### 如何使用
 
 > 放大缩小控件(具体代码实现：[fullScreen](https://github.com/sakitam-fdd/ol-extent/blob/master/src/control/FullScreen.js))。
   此控件以实现并包含在HMap内部。所以你可以按照以下代码添加控件。
