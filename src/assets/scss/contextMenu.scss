@@ -1,0 +1,48 @@
+.ol-overlaycontainer-stopevent {
+  .hmap-context-menu-content {
+    position: absolute;
+    padding: 10px 0px;
+    background: #fff;
+    box-sizing: border-box;
+    box-shadow: 0 1px 10px rgba(0,0,0,.29);
+    -moz-box-shadow: 0 1px 10px rgba(0,0,0,.29);
+    -webkit-box-shadow: 0 1px 10px rgba(0,0,0,.29);
+    transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    ul {
+      list-style: none;
+      margin: 0px;
+      padding: 0px;
+      background: #fff;
+      transition: visibility 0s linear .3s,opacity .3s;
+      li {
+        position: relative;
+        padding: 0 10px;
+        color: #565656;
+        word-wrap: break-word;
+        ul {
+          display: none;
+          box-sizing: border-box;
+          box-shadow: 0 1px 10px rgba(0,0,0,.29);
+          -moz-box-shadow: 0 1px 10px rgba(0,0,0,.29);
+          -webkit-box-shadow: 0 1px 10px rgba(0,0,0,.29);
+          transform: translateZ(0);
+          -moz-transform: translateZ(0);
+          -webkit-transform: translateZ(0);
+          transition: visibility 0s linear .3s,opacity .3s;
+        }
+        .li-name-content {
+          display: inline-block;
+          padding-left: 12px;
+          font-size: 14px;
+          font-family: Arial,sans-serif;
+        }
+        &:hover {
+          cursor: pointer;
+          background: #f6f6f6;
+        }
+      }
+    }
+  }
+}

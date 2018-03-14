@@ -119,7 +119,56 @@
       })
     });
     $('#addPoints').on('click', function () {
-      Map.addPoints(points, {
+      var _points = points.map(function (item, index) {
+        item['attributes']['style'] = {
+          image: {
+            type: 'icon',
+            image: {
+              imageSrc: '../assets/images/point1.png',
+              imageAnchor: [0.5, 1]
+            }
+          },
+          text: {
+            text: (index + 1).toString(),
+            textFont: 'normal normal 100 12px ArialMT',
+            textOffsetX: 3,
+            textOffsetY: -15,
+            textOverflow: true,
+            textFill: {
+              fillColor: '#FFF'
+            },
+            textStroke: {
+              strokeColor: '#FFF'
+            }
+          },
+          zIndex: index
+        };
+        item['attributes']['selectStyle'] = {
+          image: {
+            type: 'icon',
+            image: {
+              imageSrc: '../assets/images/point1.png',
+              imageAnchor: [0.5, 1]
+            }
+          },
+          text: {
+            text: (index + 1).toString(),
+            textFont: 'normal normal 100 12px ArialMT',
+            textOverflow: true,
+            textOffsetX: 3,
+            textOffsetY: -15,
+            textFill: {
+              fillColor: '#FFF'
+            },
+            textStroke: {
+              strokeColor: '#FFF'
+            }
+          },
+          zIndex: index
+        };
+        return item
+      })
+      Map.addPoints(_points, {
         layerName: 'points',
         zoomToExtent: true,
         selectable: true,
@@ -131,7 +180,9 @@
               imageAnchor: [0.5, 1]
             }
           }
-        }
+        },
+        dataProjection: 'EPSG:3857',
+        featureProjection: 'EPSG:4326'
       })
     });
     $('#removePointByLayerName').on('click', function () {
@@ -141,10 +192,10 @@
       Map.removeFeatureById('{CF7D9F39-3549-4068-8648-76F5E06C0295}')
     });
     $('#highLightPointById').on('click', function () {
-      Map.highLightFeature('{393C392E-17FE-46EF-B39B-91433EB01AB6}')
+      Map.highLightFeature('{393C392E-17FE-46EF-B39B-91433EB01AB6}', '', true)
     });
     $('#unHighLightPointById').on('click', function () {
-      Map.unHighLightFeature('{393C392E-17FE-46EF-B39B-91433EB01AB6}')
+      Map.unHighLightFeature('{393C392E-17FE-46EF-B39B-91433EB01AB6}', '', true)
     });
   })
 </script>

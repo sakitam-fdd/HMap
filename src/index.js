@@ -4,12 +4,12 @@ import 'core-js/es6/set'
 import 'core-js/es6/symbol'
 import 'core-js/es6/reflect'
 // scss
-import './scss/index'
+import './assets/scss/index'
 // outer
 import ol from 'openlayers'
 import mixin from './utils/mixins'
-import Observable from 'observable-emit'
-import Popover from 'ol-extent/src/overlay/popover'
+import Observable from './utils/Observable'
+import Popover from './overlay/popover'
 // inter
 import * as supported from './utils/supported'
 import { logo } from './assets/index'
@@ -28,9 +28,7 @@ import ViewUtil from './utils/ViewUtil'
 import { isObject } from './utils/utils'
 import { EVENT_TYPE, INTERNAL_KEY } from './constants'
 // message
-const version = require('../package.json').version
-const name = require('../package.json').name
-const author = require('../package.json').author
+import { version, name, author } from '../package.json'
 class HMap extends mixin(
   Map, Observable, View, BaseLayers,
   Controls, Interactions, Layer,
@@ -74,19 +72,19 @@ class HMap extends mixin(
      * 当前地图线图层
      * @type {Set}
      */
-    this.lineLayers = new Set()
+    this.lineLayers = []
 
     /**
      * 当前地图点图层
      * @type {Set}
      */
-    this.pointLayers = new Set()
+    this.pointLayers = []
 
     /**
      * 当前地图面图层
      * @type {Set}
      */
-    this.polygonLayers = new Set()
+    this.polygonLayers = []
 
     /**
      * 选择交互
@@ -178,9 +176,10 @@ class HMap extends mixin(
       let layers = this.addBaseLayers(this.options_['baseLayers'])
       let interactions = this._addInteractions(this.options_['interactions'])
       let controls = this._addControls(this.options_['controls'])
+
       /**
        * 当前地图对象
-       * @type {ol.Map}
+       * @type {module.exports.Map|{alias, name, singular, node}}
        */
       this.map = new ol.Map({
         target: this.target_,
@@ -526,6 +525,14 @@ class HMap extends mixin(
   static set accessToken (token) {
     config.ACCESS_TOKEN = token
   }
+}
+
+if (typeof window !== 'undefined') {
+  window.ol = ol
+} else if (typeof global !== 'undefined') {
+  global.ol = ol
+} else if (typeof self !== 'undefined') {
+  self.ol = ol
 }
 
 export default HMap

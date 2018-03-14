@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>transformPointsToLine</title>
+  <link rel="stylesheet" href="../../dist/hmap.css">
+  <style type="text/css">
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .menu {
+      position: absolute;
+      width: 100%;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .base-button {
+      height: 30px;
+      line-height: 30px;
+      background: #1b9de8;
+      color: #ffffff;
+      border-radius: 6px;
+      border: 1px solid #bfcbd9;
+      padding: 0 10px;
+      box-shadow: 0 4px 10px rgba(73, 127, 255, .42);
+      transition: .3s;
+    }
+
+    .base-button:hover {
+      cursor: pointer;
+      border-color: #1b9de8;
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+<div id="map">
+  <div class="menu">
+    <button class="base-button" id="startFollow">开始跟车</button>
+    <button class="base-button" id="endFollow">停止跟车</button>
+  </div>
+</div>
+<script src="../../dist/hmap.js"></script>
+<script src="../assets/lib/JSLite.min.js"></script>
+<script type="text/javascript">
+  var Map = new HMap({
+    target: 'map',
+    controls: {
+      scaleLine: true
+    },
+    view: {
+      center: [113.53450137499999, 34.44104525],
+      projection: 'EPSG:4326',
+      zoom: 5, // resolution
+    },
+    baseLayers: [
+      {
+        layerName: 'Google',
+        isDefault: true,
+        layerType: 'Google',
+        layerUrl: 'http://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}'
+      }
+    ]
+  });
+  var sourceCoodinates = [
+    [115.38471083, 27.73665917],
+    [114.82185304, 26.10575486],
+    [115.82774333, 28.92115167],
+    [114.69919167, 26.70806167],
+    [115.5648825, 28.0807064],
+    [115.62007333, 29.04628167],
+    [115.64802432, 28.14227757],
+    [114.62649333, 26.24446667],
+    [115.843292, 28.932785],
+    [115.62012167, 28.990095]
+  ]; // 原始坐标数据
+  var timer = null; // 模拟跟车定时器
+  var index = 0; // 序列
+  var lines = [];
+  var lineFeature = null, pointFeature = null;
+  $('#startFollow').on('click', function () {
+    timer = window.setInterval(function () {
+      var coords = sourceCoodinates[index]
+      lines.push(coords)
+      if (index + 1 < sourceCoodinates.length) {
+        index++
+      } else {
+        window.clearInterval(timer);
+        timer = null;
+      }
+      if (!pointFeature) {
+        pointFeature = Map.addPoint({
+          attributes: {
+            "name": index
+          },
+          geometry: {
+            "type": "Point",
+            "coordinates": coords
+          },
+        }, {
+          layerName: 'point',
+          zoomToExtent: false,
+          geomType: 'GeoJSON',
+          style: {
+            image: {
+              type: 'icon',
+              image: {
+                imageSrc: '../assets/images/point2.png',
+                imageAnchor: [0.5, 1]
+              }
+            }
+          }
+        });
+      } else {
+        pointFeature.getGeometry().setCoordinates(coords)
+      }
+      if (!lineFeature) {
+        lineFeature = Map.addPolyline({
+          attributes: {
+            "id": 'line'
+          },
+          geometry: {
+            "type": "LineString",
+            "coordinates": lines
+          },
+        }, {
+          layerName: 'line',
+          zoomToExtent: false,
+          geomType: 'GeoJSON',
+          style: {
+            stroke: {
+              strokeColor: '#1b9de8',
+              strokeWidth: 3
+            }
+          },
+          selectStyle: {
+            stroke: {
+              strokeColor: '#D81E06',
+              strokeWidth: 3
+            }
+          }
+        })
+      } else {
+        lineFeature.getGeometry().setCoordinates(lines)
+      }
+    }, 1000 * 2)
+  });
+  $('#endFollow').on('click', function () {
+    if (timer) {
+      window.clearInterval(timer);
+      timer = null
+    }
+  });
+</script>
+</body>
+</html>

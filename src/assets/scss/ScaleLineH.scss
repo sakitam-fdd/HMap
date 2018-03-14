@@ -1,0 +1,20 @@
+.hmap-scale-line-control {
+  position: absolute;
+  bottom: .5em;
+  left: .5em;
+  border-radius: 4px;
+  padding: 2px;
+  transition: .3s;
+  .hmap-scale-line-control-inner {
+    border: 2px solid #2D2922;
+    border-top: none;
+    color: #2D2922;
+    font-size: 12px;
+    text-align: center;
+    height: 10px;
+    line-height: 0px;
+    font-family: "Microsoft YaHei";
+    margin: 1px;
+    will-change: contents, width;
+  }
+}

@@ -50,11 +50,13 @@
   - [4.5、添加Vector矢量图层](/layer/vector.md)
   - [4.6、添加MapBox矢量图层](/layer/mapbox.md)
   - [4.7、添加静态图层](/layer/static.md)
+  - [4.8、添加Canvas图层](/layer/Canvas.md)
 - 5、添加要素
-  - [5.1、点要素](/feature/point.md)
-  - [5.2、线要素](/feature/line.md)
-  - [5.3、面要素](/feature/polygon.md)
-  - [5.4、热力图要素](/feature/heatLayer.md)
+  - [5.1、要素](/feature/index.md)
+  - [5.2、点要素](/feature/point.md)
+  - [5.3、线要素](/feature/line.md)
+  - [5.4、面要素](/feature/polygon.md)
+  - [5.5、热力图要素](/feature/heatLayer.md)
 - 6、要素样式
   - [6.1、点要素样式](/guide/style.md)
 - 7、气泡弹窗

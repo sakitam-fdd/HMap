@@ -65,7 +65,7 @@
 
 * 在页面中引入hmap javascript API入口脚本和样式外链
 
-注意：如果需要指定版本需要在 `hmap-js` 后加入 `@版本号`，比如 `https://unpkg.com/hmap-js@1.5.1/dist/hmap.min.js`
+注意：如果需要指定版本需要在 `hmap-js` 后加入 `@版本号`，比如 `https://unpkg.com/hmap-js@1.5.5/dist/hmap.min.js`
 
 ```html
 <link rel="stylesheet" href="https://unpkg.com/hmap-js/dist/hmap.min.css">
@@ -133,3 +133,5 @@ var Map = new HMap('map', {
 | --- | --- | --- | --- |
 | 标绘 | 支持军事标绘功能扩展 | `https://github.com/sakitam-fdd/ol-plot` | 支持单独配合openlayers使用 |
 | Echarts | Echarts图表的地图扩展 | `https://github.com/sakitam-fdd/ol3Echarts` | 支持单独配合openlayers使用 |
+| wind-layer | 动态风向图层 | `https://github.com/sakitam-fdd/wind-layer` | 支持单独配合openlayers使用 |
+| mapv | 百度出品的地图可视化工具 | `https://github.com/huiyan-fe/mapv` | 支持单独配合openlayers使用 |

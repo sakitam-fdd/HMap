@@ -131,9 +131,9 @@ class ViewUtil {
   orderLayerZindex () {
     let layerindex = 10
     if (this.map) {
-      let pointLayers = [...(this.pointLayers)]
-      let lineLayers = [...(this.lineLayers)]
-      let polygonLayers = [...(this.polygonLayers)]
+      let pointLayers = this.pointLayers
+      let lineLayers = this.lineLayers
+      let polygonLayers = this.polygonLayers
       polygonLayers.forEach(layerName => {
         if (layerName) {
           let layer = this.getLayerByLayerName(layerName)

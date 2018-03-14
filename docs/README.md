@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/sakitam-fdd/HMap.svg?branch=master)](https://www.travis-ci.org/sakitam-fdd/HMap)
 [![NPM downloads](https://img.shields.io/npm/dm/hmap-js.svg)](https://npmjs.org/package/hmap-js)
+[![](https://data.jsdelivr.com/v1/package/npm/hmap-js/badge)](https://www.jsdelivr.com/package/npm/hmap-js)
 ![JS gzip size](http://img.badgesize.io/https://unpkg.com/hmap-js/dist/hmap.js?compression=gzip&label=gzip%20size:%20JS)
 [![Npm package](https://img.shields.io/npm/v/hmap-js.svg)](https://www.npmjs.org/package/hmap-js)
 [![GitHub stars](https://img.shields.io/github/stars/sakitam-fdd/HMap.svg)](https://github.com/sakitam-fdd/HMap/stargazers)
@@ -39,13 +40,19 @@ npm install hmap-js --save
 
 #### cdn
 
-目前可通过 [unpkg.com/hmap-js](https://unpkg.com/hmap-js@1.5.1/dist/hmap.js) 获取最新版本的资源。
+目前可通过 [unpkg.com/hmap-js](https://unpkg.com/hmap-js/dist/hmap.js) / [jsdelivr](https://cdn.jsdelivr.net/npm/hmap-js/dist/hmap.js) 获取最新版本的资源。
 
 ```bash
-https://unpkg.com/hmap-js@1.5.1/dist/hmap.js
-https://unpkg.com/hmap-js@1.5.1/dist/hmap.min.js
-https://unpkg.com/hmap-js@1.5.1/dist/hmap.css
-https://unpkg.com/hmap-js@1.5.1/dist/hmap.min.css
+// jsdelivr (jsdelivr由于缓存原因最好锁定版本号，否则可能会出现意料之外的问题)
+https://cdn.jsdelivr.net/npm/hmap-js@1.5.5/dist/hmap.js
+https://cdn.jsdelivr.net/npm/hmap-js@1.5.5/dist/hmap.min.js
+https://cdn.jsdelivr.net/npm/hmap-js@1.5.5/dist/hmap.css
+https://cdn.jsdelivr.net/npm/hmap-js@1.5.5/dist/hmap.min.css
+// npm
+https://unpkg.com/hmap-js/dist/hmap.js
+https://unpkg.com/hmap-js/dist/hmap.min.js
+https://unpkg.com/hmap-js/dist/hmap.css
+https://unpkg.com/hmap-js/dist/hmap.min.css
 ```
 
 #### 示例
@@ -77,5 +84,3 @@ var Map = new HMap('map', {
     ]
   });
 ```
-
-<iframe width="100%" height="430" src="//jsrun.net/yUiKp/embedded/all/light/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>

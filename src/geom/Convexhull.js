@@ -1,3 +1,5 @@
+import ol from 'openlayers'
+
 /**
  * Tests if a point is left or right of line (a,b).
  * @param a

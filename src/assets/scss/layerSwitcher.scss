@@ -1,0 +1,54 @@
+.ol-overlaycontainer-stopevent {
+  .hmap-layer-switcher {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    padding: 8px;
+    background-color: rgba(255, 255, 255, 0.8);
+    .hmap-layer-switcher-ul-inner {
+      position: relative;
+      list-style: none;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      -webkit-transition-property: width, background-color;
+      transition-property: width, background-color;
+      -webkit-transition-duration: .4s;
+      transition-duration: .4s;
+      .hmap-layer-switcher-li-inner {
+        position: absolute;
+        box-sizing: border-box;
+        border: 1px solid rgba(153, 153, 153, .42);
+        float: left;
+        width: 86px;
+        height: 60px;
+        margin-right: 10px;
+        .layer-name {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          display: inline-block;
+          padding: 3px 3px 2px 4px;
+          font-size: 12px;
+          height: 12px;
+          line-height: 12px;
+          color: #FFFFFF;
+          border-top-left-radius: 2px;
+        }
+        &:hover {
+          cursor: pointer;
+          border-color: #3385FF;
+          .layer-name {
+            background-color: #3385FF;
+          }
+        }
+      }
+      .selected-item {
+        border-color: #3385FF;
+        .layer-name {
+          background-color: #3385FF;
+        }
+      }
+    }
+  }
+}

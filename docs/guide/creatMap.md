@@ -109,7 +109,8 @@ var interactions = {
 
 > baseLayers <Array>, 接受一个数组类型的配置。为什么是数组呢？ 因为我们知道一般GIS应用
   一般会有一个默认底图，附带影像，地形等图层，所以一般底图会是一组图层，而且这样也便于图层
-  管理。（*注意*：不传时默认加载OSM图层）
+  管理。（*注意*：不传时默认加载OSM图层）。并且支持 label 图层加载，详见下面 百度图层配置
+ 。
 
 ```javascript
 var baseLayers = [
@@ -149,6 +150,23 @@ var baseLayers = [
    matrixSet: 'w',
    format: 'tiles',
    projection: 'EPSG:3857',
+ },
+ {
+   layerName: 'BaiDu',
+   isDefault: true,
+   layerType: 'BaiDu',
+   origin: [43.88955327932, 12.590178885765],
+   label: [
+     {
+       layerName: 'BaiDuLabel',
+       isDefault: true,
+       visible: true,
+       layerType: 'BaiDu',
+       origin: [43.88955327932, 12.590178885765],
+       layerUrl: 'http://online{0-3}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=sl&p=0&v=083&udt=20170926'
+     }
+   ],
+   layerUrl: 'http://shangetu{0-3}.map.bdimg.com/it/u=x={x};y={y};z={z};v=009;type=sate&fm=46&app=webearth2&v=009&udt=20170926'
  }
 ]
 ```

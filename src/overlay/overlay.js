@@ -3,7 +3,7 @@
  * @desc 用于dom标绘（包含自定义dom或者iconfont）
  */
 import ol from 'openlayers'
-import * as htmlUtils from 'nature-dom-util/src/utils/domUtils'
+import * as htmlUtils from '../utils/dom'
 import { trim, isObject } from '../utils/utils'
 import { EVENT_TYPE } from '../constants'
 import Geometry from '../geom/Geometry'
@@ -121,15 +121,15 @@ class Overlay extends Geometry {
     marker.className = 'overlay-point-content'
     let style = point['attributes']['style'] || params['style']
     let [ele, spanEle] = ['', '']
-    ele = document.createElement('div')
-    ele.style.color = style['color'] ? style['color'] : '#1b9de8'
     if (style['element'] instanceof Element) {
+      ele = document.createElement('div')
       ele.setAttribute('normalColor', (style['color'] ? style['color'] : '#1b9de8'))
       ele.setAttribute('selectColor', (style['selectColor'] ? style['selectColor'] : '#F61717'))
       ele.innerHTML = style['text'] ? style['text'] : ''
       ele.appendChild(style['element'])
       marker.appendChild(ele)
     } else if (style['element'] && isObject(style['element'])) {
+      ele = document.createElement('div')
       let eleClass = (style['element']['className'] ? style['element']['className'] : 'maker-point')
       htmlUtils.addClass(ele, 'iconfont')
       htmlUtils.addClass(ele, eleClass)
@@ -144,6 +144,8 @@ class Overlay extends Geometry {
       ele.style.borderRadius = style['element']['borderRadius'] ? style['element']['borderRadius'] : '0px'
       ele.setAttribute('normalColor', (style['color'] ? style['color'] : '#1b9de8'))
       ele.setAttribute('selectColor', (style['selectColor'] ? style['selectColor'] : '#F61717'))
+      ele.setAttribute('selectClass', (style['selectClass'] ? style['selectClass'] : 'overlay-point-marker-raise'))
+      ele.style.color = style['color'] ? style['color'] : '#1b9de8'
       ele.innerHTML = style['element']['text'] ? style['element']['text'] : ''
       if (params['orderBy']) {
         spanEle = document.createElement('span')
@@ -321,16 +323,16 @@ class Overlay extends Geometry {
       if (overlay && overlay instanceof ol.Overlay) {
         let overlayElement = overlay.getElement()
         let iconElement = overlayElement.getElementsByTagName('div')[0]
-        iconElement.style.color = iconElement.selectColor
-        htmlUtils.addClass(overlayElement, 'overlay-point-marker-raise')
+        iconElement.style.color = iconElement.getAttribute('selectColor')
+        htmlUtils.addClass(overlayElement, iconElement.getAttribute('selectClass'))
         return overlay
       } else if (id && trim(id) !== "''") {
         let _overlay = this.map.getOverlayById(id)
         if (_overlay && _overlay instanceof ol.Overlay) {
           let _overlayElement = _overlay.getElement()
           let _iconElement = _overlayElement.getElementsByTagName('div')[0]
-          _iconElement.style.color = _iconElement.selectColor
-          htmlUtils.addClass(_overlayElement, 'overlay-point-marker-raise')
+          _iconElement.style.color = _iconElement.getAttribute('selectColor')
+          htmlUtils.addClass(_overlayElement, _iconElement.getAttribute('selectClass'))
           return _overlay
         }
       }
@@ -350,16 +352,16 @@ class Overlay extends Geometry {
     if (overlay && overlay instanceof ol.Overlay) {
       let overlayElement = overlay.getElement()
       let iconElement = overlayElement.getElementsByTagName('div')[0]
-      iconElement.style.color = iconElement.normalColor
-      htmlUtils.removeClass(overlayElement, 'overlay-point-marker-raise')
+      iconElement.style.color = iconElement.getAttribute('normalColor')
+      htmlUtils.removeClass(overlayElement, iconElement.getAttribute('selectClass'))
       return overlay
     } else if (id && trim(id) !== "''") {
       let _overlay = this.map.getOverlayById(id)
       if (_overlay && _overlay instanceof ol.Overlay) {
         let _overlayElement = _overlay.getElement()
         let _iconElement = _overlayElement.getElementsByTagName('div')[0]
-        _iconElement.style.color = _iconElement.normalColor
-        htmlUtils.removeClass(_overlayElement, 'overlay-point-marker-raise')
+        _iconElement.style.color = _iconElement.getAttribute('normalColor')
+        htmlUtils.removeClass(_overlayElement, _iconElement.getAttribute('selectClass'))
         return _overlay
       }
     }

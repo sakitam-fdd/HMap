@@ -16,6 +16,8 @@
 </head>
 <body>
 <div id="map"></div>
+<!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
 <script src="../../dist/hmap.js"></script>
 <script type="text/javascript">
   var Map = new HMap({
@@ -31,13 +33,16 @@
         isDefault: true,
         layerType: 'BaiDu',
         origin: [43.88955327932, 12.590178885765],
-        label: {
-          layerName: 'BaiDuLabel',
-          isDefault: true,
-          layerType: 'BaiDu',
-          origin: [43.88955327932, 12.590178885765],
-          layerUrl: 'http://online{0-3}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=sl&p=0&v=083&udt=20170926'
-        },
+        label: [
+          {
+            layerName: 'BaiDuLabel',
+            isDefault: true,
+            visible: true,
+            layerType: 'BaiDu',
+            origin: [43.88955327932, 12.590178885765],
+            layerUrl: 'http://online{0-3}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=sl&p=0&v=083&udt=20170926'
+          }
+        ],
         layerUrl: 'http://shangetu{0-3}.map.bdimg.com/it/u=x={x};y={y};z={z};v=009;type=sate&fm=46&app=webearth2&v=009&udt=20170926'
       }
     ]
