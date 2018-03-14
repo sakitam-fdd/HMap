@@ -6,6 +6,7 @@ const cjs = require('rollup-plugin-commonjs');
 const nodeResolve = require('rollup-plugin-node-resolve');
 const replace = require('rollup-plugin-replace');
 const eslint = require('rollup-plugin-eslint');
+const copy = require('rollup-plugin-copied');
 const friendlyFormatter = require('eslint-friendly-formatter');
 const _package = require('../package.json');
 const { handleMinEsm, resolve } = require('./helper');
@@ -45,7 +46,12 @@ const genConfig = (opts) => {
           main: true,
           browser: true
         }),
-        cjs()
+        cjs(),
+        copy({
+          from: resolve('src/assets/images'),
+          to: resolve('dist/images'),
+          emitFiles: true // defaults to true
+        })
       ]
       // external: ['openlayers']
     },

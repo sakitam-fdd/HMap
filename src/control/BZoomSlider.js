@@ -313,7 +313,7 @@ ol.control.BZoomSlider.prototype.initSlider_ = function () {
   let containerSize = {
     width: container.offsetWidth, height: container.offsetHeight
   }
-  let thumb = htmlUtils.getElement('.slider-bar', container)
+  let thumb = htmlUtils.getElement('.slider-bar', container)[0]
   let computedStyle = getComputedStyle(thumb)
   let thumbWidth = thumb.offsetWidth +
     parseFloat(computedStyle['marginRight']) +
@@ -369,7 +369,7 @@ ol.control.BZoomSlider.prototype.handleDraggerStart_ = function (event) {
  */
 ol.control.BZoomSlider.prototype.handleDraggerDrag_ = function (event) {
   if (this.dragging_) {
-    let element = htmlUtils.getElement('.slider-bar', this.silderContent)
+    let element = htmlUtils.getElement('.slider-bar', this.silderContent)[0]
     let deltaX = event.clientX - this.previousX_ + parseInt(element.style.left, 10)
     let deltaY = event.clientY - this.previousY_ + parseInt(element.style.top, 10)
     let relativePosition = this.getRelativePosition_(deltaX, deltaY)
@@ -408,7 +408,7 @@ ol.control.BZoomSlider.prototype.handleDraggerEnd_ = function (event) {
  */
 ol.control.BZoomSlider.prototype.setThumbPosition_ = function (res) {
   let position = this.getPositionForResolution_(res)
-  let thumb = htmlUtils.getElement('.slider-bar', this.silderContent)
+  let thumb = htmlUtils.getElement('.slider-bar', this.silderContent)[0]
   if (this.direction_ === ol.control.BZoomSlider.Direction_.HORIZONTAL) {
     thumb.style.left = this.widthLimit_ * position + 'px'
     this.sliderBackgroundBottom.style.width = this.widthLimit_ - (this.widthLimit_ * position - 5) + 'px'

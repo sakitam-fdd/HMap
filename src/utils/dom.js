@@ -47,15 +47,15 @@ const create = function (tagName, className, container, id) {
  * @returns {*}
  */
 const getElement = function (selector, root) {
-  const _root = root || window
+  const _root = root || window.document
   const dom = (function () {
     let found
     return (_root.document && /^#([\w-]+)$/.test(selector))
-      ? ((found = _root.document.getElementById(RegExp.$1)) ? [found] : [])
+      ? ((found = _root.getElementById(RegExp.$1)) ? [found] : [])
       : Array.prototype.slice.call(/^\.([\w-]+)$/.test(selector)
-        ? _root.document.getElementsByClassName(RegExp.$1)
-        : /^[\w-]+$/.test(selector) ? _root.document.getElementsByTagName(selector)
-          : _root.document.querySelectorAll(selector)
+        ? _root.getElementsByClassName(RegExp.$1)
+        : /^[\w-]+$/.test(selector) ? _root.getElementsByTagName(selector)
+          : _root.querySelectorAll(selector)
       )
   })()
   return dom
