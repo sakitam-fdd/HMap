@@ -36,6 +36,8 @@ Safari和Edge。对于旧版浏览器和平台，如Internet Explorer（至9版�
 
 ```
 npm install hmap-js --save
+import 'hmap-js/dist/hmap.css' // style
+import HMap from 'hmap-js' // lib
 ```
 
 #### cdn
@@ -44,10 +46,10 @@ npm install hmap-js --save
 
 ```bash
 // jsdelivr (jsdelivr由于缓存原因最好锁定版本号，否则可能会出现意料之外的问题)
-https://cdn.jsdelivr.net/npm/hmap-js@1.5.4/dist/hmap.js
-https://cdn.jsdelivr.net/npm/hmap-js@1.5.4/dist/hmap.min.js
-https://cdn.jsdelivr.net/npm/hmap-js@1.5.4/dist/hmap.css
-https://cdn.jsdelivr.net/npm/hmap-js@1.5.4/dist/hmap.min.css
+https://cdn.jsdelivr.net/npm/hmap-js@1.5.5/dist/hmap.js
+https://cdn.jsdelivr.net/npm/hmap-js@1.5.5/dist/hmap.min.js
+https://cdn.jsdelivr.net/npm/hmap-js@1.5.5/dist/hmap.css
+https://cdn.jsdelivr.net/npm/hmap-js@1.5.5/dist/hmap.min.css
 // npm
 https://unpkg.com/hmap-js/dist/hmap.js
 https://unpkg.com/hmap-js/dist/hmap.min.js
