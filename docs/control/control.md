@@ -51,5 +51,130 @@ ol.control.Control.call(this, {
 | 参数 | 简介 | 类型 | 备注 |
 | --- | --- | --- | --- |
 | element | 当前控件的 `dom` | `Element or undefined` | 一般所有控件最终都渲染为 `dom`, 此参数就是为构造的 `dom` 元素。  |
-| target | 右键控件 | `	Element or string or undefined` | 支持单独配合openlayers使用 |
-| render | 右键控件 | `function or undefined` | 支持单独配合openlayers使用 |
+| target | 右键控件 | `	Element or string or undefined` | 将控件渲染到地图容器之外的目标容器（此时你需要自己处理与地图交互的事件冲突） |
+| render | 右键控件 | `function or undefined` | 当控件应该被重新渲染时调用的函数。这在requestAnimationFrame回调中被调用. |
+
+另外如果需要监听控件被添加至地图的事件在执行某些操作时可以采用 ``call`` 方法：
+
+```javascript
+ol.control.myControl.prototype.setMap = function (map) {
+  // do something
+  ol.control.Control.prototype.setMap.call(this, map)
+}
+```
+
+#### 方法
+
+##### changed()
+
+手动触发变化事件。
+
+##### dispatchEvent(event)
+
+触发一个自定义事件。例如：
+
+```javascript
+control.dispatchEvent('changePosition');
+control.on('changePosition', function(event) {
+  console.log(event);
+});
+```
+
+##### get(key) / set(key, value, silent)
+
+获取或者设置属性值。
+
+```javascript
+control.set('mykey', 'key');
+control.get('mykey'); // key
+```
+
+配置项说明
+
+| 配置项 | 简介 | 类型 | 备注 |
+| --- | --- |--- | --- |
+| key | 控件属性键名 | `string` | `` |
+| value | 控件属性键值 | `*` | `` |
+| silent | 更新而不触发事件 | `Boolean` | `` |
+
+##### getMap() / setMap(map)
+
+```javascript
+control.setMap(map);
+control.getMap(); // map
+```
+
+配置项说明
+
+| 配置项 | 简介 | 类型 | 备注 |
+| --- | --- |--- | --- |
+| map | 地图对象实例 | `ol.Map` | `` |
+
+获取或者设置控件指向的地图对象。
+
+##### getProperties() / setProperties(values, silent)
+
+获取或者设置键值对的集合。请注意，这会更改任何现有属性并添加新属性（它不会删除任何现有属性）。
+
+配置项说明
+
+| 配置项 | 简介 | 类型 | 备注 |
+| --- | --- |--- | --- |
+| values | 属性集合 | `Object.<string, *>` | `` |
+| silent | 更新而不触发事件 | `boolean` | `` |
+
+##### getKeys()
+
+获取对象属性名称的列表。
+
+##### getRevision()
+
+获取此控件被修改的次数。
+
+##### unset(key, silent)
+
+取消设置属性。
+
+配置项说明
+
+| 配置项 | 简介 | 类型 | 备注 |
+| --- | --- |--- | --- |
+| key | 属性键名 | `string` | `` |
+| silent | 更新而不触发事件 | `boolean` | `` |
+
+##### setTarget(target)
+
+用于重新设置控件所在的目标容器。
+
+配置项说明
+
+| 配置项 | 简介 | 类型 | 备注 |
+| --- | --- |--- | --- |
+| target | 目标容器 | `Element or string or undefined` | 如果未设置或者设置为 `undefined` 控件默认会被添加到 `overlay container` |
+
+#### Event
+
+* on(type, listener, this)
+* once(type, listener, this)
+* un(type, listener, this)
+
+配置项说明
+
+| 配置项 | 简介 | 类型 | 备注 |
+| --- | --- |--- | --- |
+| type | 事件类型或事件类型的数组 | `string or Array.<string>` | `` |
+| listener | 监听函数 | `function` | `` |
+| this | 监听函数需要绑定的上下文 | `Object` | `` |
+
+##### change
+##### propertychange
+
+```javascript
+control.on('change', function(event) {
+  console.log(event)
+})
+control.on('propertychange', function(event) {
+  console.log(event)
+})
+```
+

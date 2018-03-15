@@ -2,14 +2,12 @@
 
 > 控制器为用户提供了和地图交互的入口。
 
-所有的控制器都存在于ol.control对象上，可以在源码中查看。关于扩展你需要查看
-``ol-extent`` 项目[ol-extent](https://github.com/sakitam-fdd/ol-extent), 
+所有的控制器都存在于ol.control对象上，可以在源码中查看, 
 关于使用文档和如何实现一个自定义控件会在项目文档包含。
 
 ### 如何使用
 
-> 假设我们已经定义了一个图层加载进度loading控件(具体代码实现：[loading](https://github.com/sakitam-fdd/ol-extent/blob/master/src/control/Loading.js))。
-  此控件以实现并包含在HMap内部。所以你可以按照以下代码添加控件。
+> 假设我们已经定义了一个图层加载进度loading控件，你可以按照以下代码添加控件。
   
 * 配置中开启, 直接在controls设置 ``loading`` 为true，若要添加自定义配置的话请设置
   参数为对象，包含对应的参数即可。具体查看[loading](api/control/loading.md)。

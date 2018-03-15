@@ -4,9 +4,6 @@
 
 #### 如何使用
 
-> 放大缩小控件(具体代码实现：[fullScreen](https://github.com/sakitam-fdd/ol-extent/blob/master/src/control/FullScreen.js))。
-  此控件以实现并包含在HMap内部。所以你可以按照以下代码添加控件。
-
 * 配置中开启, 直接在controls设置fullScreen 为true。
 
 ```javascript
@@ -28,10 +25,6 @@ var Map = new HMap('map', {
     ]
   });
 ```
-
-#### 尝试编辑它
----
-<iframe width="100%" height="430"></iframe>
 
 * 手动添加，在创建地图完成后你可以获取一个地图对象，先实例化
   你的控件，然后调用 ``addControl()`` 方法添加控件。此添加方式也适合用户
@@ -55,10 +48,6 @@ var Map = new HMap('map', {
     var olControlFullScreenMenu = new ol.control.FullScreenMenu()
     Map.addControl(olControlFullScreenMenu)
 ```
-
-#### 尝试编辑它
----
-<iframe width="100%" height="430"></iframe>
 
 > fullScreen控件配置
 

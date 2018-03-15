@@ -7,7 +7,6 @@
   自定义交互添加。
 
 ```html
-  <script src="../../node_modules/ol-extent/dist/olInteractionLayerMagnify.js"></script>
 ```  
   
 ```javascript
