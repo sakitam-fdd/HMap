@@ -8,7 +8,7 @@
 - 开发者无需关心gis地图相关原理就可以轻松创建地图
 - 相比原生openlayers更易用，也更符合国内webgis应用场景
 
-[GitHub](https://github.com/sakitam-fdd/HMap)
+[Git](http://211.101.37.244/TDD/map/HMap)
 [文档](/guide/install.md)
 
 ![color](#e4fff7)
