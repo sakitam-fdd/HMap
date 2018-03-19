@@ -17,7 +17,9 @@ ol.source.BAIDU = function (optOptions) {
   }
   options.projection = options['projection'] ? options.projection : 'EPSG:3857'
   var crossOrigin = options.crossOrigin !== undefined ? options.crossOrigin : 'anonymous'
-  var url = options.url !== undefined ? options.url : 'http://online{0-3}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&udt=20170607&scaler=1&p=1'
+  var url = options.url !== undefined ? options.url : 'http://online{0-3}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20170607&scaler=1&p=1'
+  var hidpi = options.hidpi || (window.devicePixelRatio || (window.screen.deviceXDPI / window.screen.logicalXDPI)) > 1
+  url = url.replace('{styles}', (hidpi ? 'ph' : 'pl'))
   var tileUrlFunction = options.tileUrlFunction ? options.tileUrlFunction : undefined
   if (!tileUrlFunction) {
     tileUrlFunction = function (tileCoord) {
@@ -41,7 +43,7 @@ ol.source.BAIDU = function (optOptions) {
   var tileGrid = new ol.tilegrid.TileGrid({
     tileSize: options['tileSize'] ? options['tileSize'] : 256,
     origin: (options['origin'] ? options['origin'] : [0, 0]),
-    extent: (options['extent'] ? options['extent'] : undefined),
+    extent: (options['extent'] ? options['extent'] : [-33554432, -33554432, 33554432, 33554432]),
     resolutions: resolutions,
     minZoom: ((options['minZoom'] && typeof options['minZoom'] === 'number') ? options['minZoom'] : 0)
   })
@@ -56,7 +58,8 @@ ol.source.BAIDU = function (optOptions) {
     reprojectionErrorThreshold: options.reprojectionErrorThreshold,
     tileUrlFunction: tileUrlFunction,
     url: url,
-    wrapX: options.wrapX
+    wrapX: options.wrapX,
+    tilePixelRatio: hidpi ? 2 : 1
   })
 }
 ol.inherits(ol.source.BAIDU, ol.source.TileImage)

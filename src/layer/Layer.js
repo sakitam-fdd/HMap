@@ -8,7 +8,7 @@ import '../source/Gaode'
 import '../source/Google'
 import '../layer/AnimatedClusterLayer'
 import olStyleFactory from '../style/factory'
-import {isFunction} from '../utils/utils'
+import {isFunction, merge} from '../utils/utils'
 import * as LayerUtils from './LayerUtils'
 import './CanvasLayer'
 class Layer {
@@ -649,14 +649,14 @@ class Layer {
         zIndex: params['zIndex'],
         visible: (params['visible'] === false) ? params['visible'] : true,
         opacity: ((params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1),
-        source: new ol.source.BAIDU({
+        source: new ol.source.BAIDU(merge(params, {
           wrapX: false,
           projection: params['projection'] ? params['projection'] : 'EPSG:3857',
           origin: params['origin'] ? params['origin'] : [0, 0],
           opaque: (params['opaque'] === false) ? params['opaque'] : true, // 图层是否不透明（主题相关）
           url: params['layerUrl'] ? params['layerUrl'] : 'http://online{0-3}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&udt=20170607&scaler=1&p=1',
           crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined)
-        })
+        }))
       })
     }
     if (this.map && layer && !(params['addLayer'] === false)) {
