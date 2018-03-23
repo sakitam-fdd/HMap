@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>谷歌地图</title>
+  <link rel="stylesheet" href="../../dist/hmap.css">
+  <link rel="stylesheet" href="../assets/lib/olcs.css">
+  <style type="text/css">
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+<div id="map"></div>
+<script src="http://openlayers.org/ol-cesium/Cesium/Cesium.js"></script>
+<!--<script src="../../dist/hmap.js"></script>-->
+<script src="../assets/lib/olcesium.js"></script>
+<script type="text/javascript">
+  // var Map = new HMap({
+  //   target: 'map',
+  //   view: {
+  //     center: [113.53450137499999, 34.44104525],
+  //     projection: 'EPSG:4326',
+  //     zoom: 5, // resolution
+  //   },
+  //   baseLayers: [
+  //     {
+  //       layerName: 'Google',
+  //       isDefault: true,
+  //       layerType: 'Google',
+  //       layerUrl: 'http://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}'
+  //     }
+  //   ]
+  // });
+  var map = new ol.Map({
+    target: 'map',
+    layers: [
+      new ol.layer.Tile({
+        source: new ol.source.XYZ({
+          url: 'http://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}'
+        })
+      })
+    ],
+    view: new ol.View({
+      center: [113.53450137499999, 34.44104525],
+      projection: 'EPSG:4326',
+      zoom: 5, // resolution
+    })
+  })
+
+  var ol3d = new olcs.OLCesium({
+    map: map,
+    time() {
+      return Cesium.JulianDate.now();
+    }
+  });
+  const scene = ol3d.getCesiumScene();
+  const terrainProvider = new Cesium.CesiumTerrainProvider({
+    url: '//assets.agi.com/stk-terrain/world',
+    requestVertexNormals: true
+  });
+  scene.terrainProvider = terrainProvider;
+  ol3d.setEnabled(true);
+
+</script>
+</body>
+</html>

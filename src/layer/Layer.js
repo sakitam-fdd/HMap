@@ -11,6 +11,7 @@ import olStyleFactory from '../style/factory'
 import {isFunction, merge} from '../utils/utils'
 import * as LayerUtils from './LayerUtils'
 import './CanvasLayer'
+import './DozensLayer'
 class Layer {
   /**
    * 通过layerName获取图层

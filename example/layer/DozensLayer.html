@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>layer</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link href="../../dist/hmap.css" rel="stylesheet" />
+  <style type="text/css">
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+<div id="map"></div>
+<div id="info"></div>
+<script src="../../dist/hmap.js"></script>
+<script src="./priteData.js"></script>
+<script type="text/javascript">
+  var map = new ol.Map({
+    view: new ol.View({
+      center: [113.53450137499999, 34.44104525],
+      projection: 'EPSG:4326',
+      zoom: 8
+    }),
+    layers: [
+      new ol.layer.Tile({
+        source: new ol.source.OSM()
+      })
+    ],
+    target: 'map'
+  });
+  var myMarkers = [];
+  for (var i = 0; i < 200000; i++) {
+    myMarkers.push(new ol.Feature({
+      geometry: new ol.geom.Point([Math.random() + 113.53450137499999, Math.random()  + 34.44104525]),
+      population: 4000,
+      rainfall: 500
+    }));
+  };
+
+  var vectorLayer = new ol.layer.DozensLayer({
+    id: 'name1',
+    map: map,
+    style: new ol.style.Style({
+      image: new ol.style.Icon(({
+        anchor: [0.5, 1],
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'fraction',
+        src: '../assets/images/point1.png',
+        size: [32, 32]
+      }))
+    })
+  });
+  map.addLayer(vectorLayer);
+
+  var beauty = new Image()
+  beauty.src = '../assets/images/point1.png';
+  if (beauty.complete) {
+    vectorLayer.addFeatures(myMarkers);
+  }
+</script>
+</body>
+</html>
