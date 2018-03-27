@@ -515,6 +515,31 @@ ol.interaction.MeasureTool.prototype.removeMeasure_ = function (uuid) {
 }
 
 /**
+ * remove all measure
+ * @private
+ */
+ol.interaction.MeasureTool.prototype.removeAllMeasure_ = function () {
+  let overlays = this.getMap().getOverlays().getArray()
+  if (overlays && Array.isArray(overlays)) {
+    let length = overlays.length
+    // TODO 注意地图移除Overlay时数组长度会变化
+    for (let j = 0, i = 0; j < length; j++) {
+      i++
+      if (overlays[length - i] && overlays[length - i] instanceof ol.Overlay && overlays[length - i].get('layerName') === this.layerName) {
+        this.getMap().removeOverlay(overlays[length - i])
+      }
+    }
+  }
+  if (this.layer && this.layer.getSource()) {
+    let source = this.layer.getSource()
+    let features = source.getFeatures()
+    features.forEach(function (feat) {
+      source.removeFeature(feat)
+    }, this)
+  }
+}
+
+/**
  * 激活测量工具
  * @param active
  * @param key

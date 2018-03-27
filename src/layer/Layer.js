@@ -401,7 +401,6 @@ class Layer {
       vectorLayer = null
     }
     if (!vectorLayer) {
-      let proj = params['projection'] ? params['projection'] : 'EPSG:3857'
       let style = this._fixStyleForLayer(params['style'])
       vectorLayer = new ol.layer.Vector({
         layerName: layerName,
@@ -413,9 +412,8 @@ class Layer {
         source: new ol.source.Vector({
           format: new ol.format.GeoJSON(),
           crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
-          url: function (extent) {
-            return params['layerUrl'] + extent.join(',') + ',' + proj
-          },
+          url: params['layerUrl'],
+          loader: params['loader'] || ol.FeatureLoader,
           wrapX: false,
           strategy: ol.loadingstrategy.bbox
         }),
