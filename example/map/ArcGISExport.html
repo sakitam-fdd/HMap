@@ -43,6 +43,32 @@
       }
     ]
   });
+  Map.createVectorTileLayer('vectorTile', {
+    create: true,
+    addLayer: true,
+    layerUrl: 'http://192.168.0.226:8089/geoserver/gwc/service/tms',
+    projection: new ol.proj.Projection({
+      code: 'EPSG:4326',
+      units: 'degrees'
+    }),
+    format: 'GeoJSON',
+    tileGrid: {
+      extent: [-180, -90, 180, 90],
+      gridType: 'XYZ',
+      maxZoom: 22
+    },
+    style: function (features, resolution) {
+      return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: '#18BF00',
+          width: 3
+        })
+      })
+    },
+    tileUrlFunction: function (tileCoord) {
+      return 'http://192.168.0.226:8089/geoserver/gwc/service/tms/1.0.0/lwjk:roadSituation' + '@EPSG%3A4326@pdf/' + (tileCoord[0] - 1) + '/' + tileCoord[1] + '/' + (Math.pow(2, tileCoord[0] - 1) + tileCoord[2]) + '.geojson'
+    }
+  })
 </script>
 </body>
 </html>
