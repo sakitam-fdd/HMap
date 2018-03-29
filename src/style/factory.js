@@ -142,6 +142,7 @@ ol.style.Factory.prototype._getText = function (options) {
   try {
     let text = new ol.style.Text({
       placement: options['placement'],
+      overflow: options['textOverflow'],
       font: ((options['textFont'] && typeof options['textFont'] === 'string') ? options['textFont'] : '10px sans-serif'),
       offsetX: (typeof options['textOffsetX'] === 'number' ? options['textOffsetX'] : 0),
       offsetY: (typeof options['textOffsetY'] === 'number' ? options['textOffsetY'] : 0),
