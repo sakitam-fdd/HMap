@@ -207,6 +207,12 @@ const createVectorLayer = function (map, layerName, params) {
       if (params && params.create) {
         vectorLayer = new ol.layer.Vector({
           layerName: layerName,
+          declutter: params['declutter'],
+          renderMode: params['renderMode'],
+          renderOrder: params['renderOrder'],
+          renderBuffer: params['renderBuffer'],
+          updateWhileAnimating: params['updateWhileAnimating'],
+          updateWhileInteracting: params['updateWhileInteracting'],
           params: params,
           layerType: 'vector',
           source: new ol.source.Vector({
