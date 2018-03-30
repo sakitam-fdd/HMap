@@ -106,8 +106,12 @@ Map.addLayer(vectorTileLayer)
 
 | 配置项 | 简介 | 类型 | 备注 |
 | --- | ---- |--- | --- |
-| resolutions | 分辨率 | `Array` | 每个分辨率的阵列索引需要与缩放级别匹配。这意味着即使配置了minZoom，分辨率数组的长度也将为maxZoom + 1 |
-| origin | 切片原点 | `Array` | 瓦片网格原点，即x和y轴相交（[z, 0, 0]）。平铺坐标从左到右增加。如果没有指定，必须提供 `extent` 或 `origins` |
+| gridType | tileGrid类型 | `String` | tileGrid类型 `XYZ WMTS` |
 | tileSize | 切片大小 | `Number Array` | 切片服务使用的切片尺寸。默认值为 `[256,256]` 像素 |
+| resolutions | 分辨率 | `Array` | 每个分辨率的阵列索引需要与缩放级别匹配。这意味着即使配置了minZoom，分辨率数组的长度也将为maxZoom + 1 |
 | extent | 图层范围 | `Array` | 图层的范围。 ol.source.Tile来源将不需要这个范围之外的图块。当没有配置原点或原点时，原点将被设置到范围的左上角 |
+| origin | 切片原点 | `Array` | 瓦片网格原点，即x和y轴相交（[z, 0, 0]）。平铺坐标从左到右增加。如果没有指定，必须提供 `extent` 或 `origins` |
+| matrixIds | 矩阵集 | `String` | 矩阵集 |
+| widths | 每级对应的图块列数 | `Number` | 每级对应的图块列数 即每个分辨率都有对应匹配的条目 |
 | minZoom | 最小级别 | `Number` | 允许的最小级别，小于此级别将不再显示 |
+
