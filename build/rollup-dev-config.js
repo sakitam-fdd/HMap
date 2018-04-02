@@ -9,13 +9,13 @@ module.exports = Object.assign({
   plugins: [
     serve({
       open: true, // 是否打开浏览器
-      contentBase: ['docs'],
+      contentBase: ['docs', 'dist'],
       historyApiFallback: true, // Set to true to return index.html instead of 404
       host: '127.0.0.1',
       port: 3333,
     }),
     livereload({
-      watch: ['docs']
+      watch: ['docs', 'dist']
     })
   ]
 }, input, {output});
