@@ -40,9 +40,30 @@
   var map = new ol.Map({
     target: 'map',
     layers: [
+      // new ol.layer.Tile({
+      //   source: new ol.source.XYZ({
+      //     url: 'http://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}'
+      //   })
+      // }),
+      // new ol.layer.Tile({
+      //   source: new ol.source.TileWMS({
+      //     // url: 'http://211.101.37.234:8079/hdmapserver/wms',
+      //     url: 'http://211.101.37.246:7090/geoserver/sasmac/wms',
+      //     params: {'LAYERS': 'WGS84', 'TILED': true},
+      //     serverType: 'geoserver',
+      //     // Countries have transparency, so do not fade tiles:
+      //     transition: 0
+      //   })
+      // })
       new ol.layer.Tile({
         source: new ol.source.XYZ({
-          url: 'http://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}'
+          tileGrid: new ol.tilegrid.TileGrid({
+            tileSize: 256,
+            origin: [-400, 399.9999999999998],
+            resolutions: [0.0624062618086491, 0.04394531353227711, 0.021972656766138556, 0.010986328383069278, 0.005493164191534639, 0.0027465809060368165, 0.0013732916427489112, 6.866458213744556E-4]
+          }),
+          tileSize: 256,
+          url: 'http://211.101.37.251:6080/arcgis/rest/services/henan/HNmapqgdy/MapServer/tile/{z}/{y}/{x}'
         })
       })
     ],
