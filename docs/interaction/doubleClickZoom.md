@@ -27,10 +27,6 @@
   })
 ```
 
-#### 尝试编辑它
----
-<iframe width="100%" height="430"></iframe>
-
 * 手动添加，在创建地图完成后你可以获取一个地图对象，先实例化
   你的交互，然后调用 ``addInteraction()`` 方法添加交互。此添加方式也适合用户
   自定义交互添加。
@@ -56,11 +52,7 @@
   Map.addInteraction(interactionDoubleClickZoom)
 ```  
 
-#### 尝试编辑它
----
-<iframe width="100%" height="430"></iframe>
-
-ol.interaction.DoubleClickZoom 配置项说明
+* ol.interaction.DoubleClickZoom 配置项说明
 
 | 配置项 | 简介 | 类型 | 备注 |
 | --- | --- |--- | --- |

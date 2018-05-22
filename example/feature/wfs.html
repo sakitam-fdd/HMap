@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>添加点要素</title>
+  <link rel="stylesheet" href="../../dist/hmap.css">
+  <style type="text/css">
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+<div id="map"></div>
+<script src="../../node_modules/openlayers/dist/ol.js"></script>
+<script type="text/javascript">
+  var map = new ol.Map({
+    view: new ol.View({
+      center: [113.53450137499999, 34.44104525],
+      projection: 'EPSG:4326',
+      zoom: 9, // resolution
+      maxZoom: 17
+    }),
+    layers: [
+      new ol.layer.Tile({
+        source: new ol.source.OSM({
+          url: 'http://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}'
+        })
+      })
+    ],
+    target: 'map'
+  });
+  var url = 'http://211.101.37.253:8089/geoserver/lwjk/wfs';
+  var vectorSource = new ol.source.Vector({
+    format: new ol.format.GeoJSON(),
+    loader: function(extent, resolution, projection) {
+      var featureRequest = new ol.format.WFS().writeGetFeature({
+        srsName: 'EPSG:4326',
+        featureNS: 'http://openstreemap.org',
+        featurePrefix: 'lwjk',
+        featureTypes: ['gl_sd'],
+        outputFormat: 'application/json',
+        filter: ol.format.filter.bbox('', extent, 'EPSG:4326')
+      });
+      var filter = new XMLSerializer().serializeToString(featureRequest);
+      fetch(url, {
+        method: 'POST',
+        body: filter
+      }).then(function(response) {
+        return response.json();
+      }).then(function(json) {
+        vectorSource.addFeatures(
+          vectorSource.getFormat().readFeatures(json))
+      }).catch(function (error) {
+        vectorSource.removeLoadedExtent(extent);
+      })
+    },
+    strategy: ol.loadingstrategy.bbox
+  });
+  var vectorLayer = new ol.layer.Vector({
+    source: vectorSource,
+    style: new ol.style.Style({
+      image: new ol.style.Icon({
+        src: '../assets/images/point2.png',
+        anchor: [0.5, 1],
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'fraction'
+      })
+    })
+  });
+  map.addLayer(vectorLayer);
+</script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 // polyfill
-import 'core-js/modules/es6.object.assign'
+import './utils/Polyfill'
 import 'core-js/es6/set'
 import 'core-js/es6/symbol'
 import 'core-js/es6/reflect'

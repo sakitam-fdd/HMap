@@ -2,8 +2,7 @@
 
 > 交互功能是一个地图基本的功能，这些功能直接面向用户
 
-所有的控制器都存在于ol.interaction对象上，可以在源码中查看。关于扩展你需要查看
-``ol-extent`` 项目[ol-extent](https://github.com/sakitam-fdd/ol-extent), 
+所有的控制器都存在于ol.interaction对象上，可以在源码中查看, 
 关于使用文档和如何实现一个自定义交互会在项目文档包含。
 
 ### 如何使用

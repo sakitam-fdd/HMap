@@ -27,11 +27,7 @@
   Map.addInteraction(draw)
 ```  
 
-#### 尝试编辑它
----
-<iframe width="100%" height="430"></iframe>
-
-ol.interaction.Draw 配置项说明
+* ol.interaction.Draw 配置项说明
 
 | 配置项 | 简介 | 类型 | 备注 |
 | --- | --- |--- | --- |

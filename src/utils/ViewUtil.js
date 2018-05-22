@@ -110,13 +110,14 @@ class ViewUtil {
       if (!isanimation) {
         view.fit(extent, {
           size: size,
-          padding: [350, 200, 200, 350],
-          duration: 0
+          padding: [0, 0, 0, 0],
+          duration: 0,
+          maxZoom: (view.getMaxZoom() || undefined)
         })
       } else {
         view.fit(extent, {
           size: size,
-          padding: [350, 200, 200, 350],
+          padding: [0, 0, 0, 0],
           duration: duration || 800,
           maxZoom: (view.getMaxZoom() || undefined)
         })

@@ -7,7 +7,6 @@
   自定义交互添加。
 
 ```html
-  <script src="../../node_modules/ol-extent/dist/olInteractionLayerMagnify.js"></script>
 ```  
   
 ```javascript
@@ -33,10 +32,6 @@
   Map.addInteraction(LayerMagnify); // 添加放大镜
   Map.removeInteraction(LayerMagnify); // 移除放大镜
 ```  
-
-#### 尝试编辑它
----
-<iframe width="100%" height="430"></iframe>
 
 配置项说明
 

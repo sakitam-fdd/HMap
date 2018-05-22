@@ -4,10 +4,9 @@
 
 #### 如何使用
 
-> 右键菜单控件(具体代码实现：[contextMenu](https://github.com/sakitam-fdd/ol-extent/blob/master/src/control/contextMenu.js))。
-  此控件以实现并包含在HMap内部。所以你可以按照以下代码添加控件。
+> 具体方法和事件继承自 `ol.control.Control`，[查看](/control/control.md)。
 
-> contextMenu控件配置,以下实现均使用此配置示例
+contextMenu控件配置,以下实现均使用此配置示例
 
 ```javascript
 var contextMenu = {
@@ -65,10 +64,6 @@ var contextMenu = {
   });  
 ```
 
-##### 尝试编辑它
----
-<iframe width="100%" height="430"></iframe>
-
 * 手动添加，在创建地图完成后你可以获取一个地图对象，先实例化
   你的控件，然后调用 ``addControl()`` 方法添加控件。此添加方式也适合用户
   自定义的控件添加。
@@ -91,10 +86,6 @@ var contextMenu = {
     var olControlContextMenu = new ol.control.ContextMenu(contextMenu)
     Map.addControl(olControlContextMenu)
 ```  
-
-##### 尝试编辑它
----
-<iframe width="100%" height="430"></iframe>
 
 ##### 配置项说明
 
@@ -175,7 +166,7 @@ item `Object` 配置项说明
 | item-click | 菜单项点击事件响应 | `String` | 响应当前点击项item和当前右键坐标和屏幕位置 |
 | before-show | 菜单显示之前触发事件 | `String` | 响应事件event |
 | show | 响应菜单显示事件 | `String` | 事件响应在before-show事件之后 |
-| hide | 响应菜单影藏事件 | `String` | '' |
+| hide | 响应菜单隐藏事件 | `String` | '' |
 
 - 示例代码(可针对右键的位置不同更新不同的菜单项)
 

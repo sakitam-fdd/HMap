@@ -1,11 +1,10 @@
-## 添加放大缩小控件
+### 添加放大缩小控件
 
-> 为用户提供了单独的放大缩小控件，可配置开启，也可手动添加，也可单独配合openlayers使用
+!> 为用户提供了单独的放大缩小控件，可配置开启，也可手动添加，也可单独配合openlayers使用。具体方法和事件继承自 `ol.control.Control`，[查看](/control/control.md)。
 
-### 如何使用
+#### 如何使用
 
-> 放大缩小控件(具体代码实现：[zoom](https://github.com/sakitam-fdd/ol-extent/blob/master/src/control/zoom.js))。
-  此控件以实现并包含在HMap内部。所以你可以按照以下代码添加控件。
+> 放大缩小控件(具体代码实现参照 `src/control/zoom.js`)。
 
 * 配置中开启, 直接在controls设置zoom 为true。
 * 注：放大缩小控件默认即开启
@@ -31,9 +30,6 @@ var Map = new HMap('map', {
 ```
 
 #### 尝试编辑它
----
-<iframe width="100%" height="430"></iframe>
-
 
 * 手动添加，在创建地图完成后你可以获取一个地图对象，先实例化
   你的控件，然后调用 ``addControl()`` 方法添加控件。此添加方式也适合用户
@@ -59,8 +55,6 @@ var Map = new HMap('map', {
 ```
 
 #### 尝试编辑它
----
-<iframe width="100%" height="430"></iframe>
 
 * 控件单独使用,配合openlayers 单独使用，通过 ``` new ol.control.ZoomMenu() ``` 开启放大缩小控件
 

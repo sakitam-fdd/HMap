@@ -1,4 +1,4 @@
-## 使用版权控件
+### 使用版权控件
 
 > openlayers内置的版权控件，可配置开启，也可通过openlayers添加
 
@@ -32,10 +32,6 @@
  });
 ```
 
-#### 尝试编辑它
----
-<iframe width="100%" height="430"></iframe>
-
 配置项说明
 
 | 配置项 | 简介 | 类型 | 备注 |
@@ -54,11 +50,7 @@
   layer.getSource().setAttributions(attribution)
 ```
 
-#### 尝试编辑它
----
-<iframe width="100%" height="430"></iframe>
-
-ol.Attribution配置项说明
+* ol.Attribution配置项说明
 
 | 配置项 | 简介 | 类型 | 备注 |
 | --- | --- |--- | --- |
@@ -74,11 +66,7 @@ ol.Attribution配置项说明
   Map.addControl(controlAttribution)
 ```
 
-#### 尝试编辑它
----
-<iframe width="100%" height="430"></iframe>
-
-ol.control.Attribution配置项说明
+* ol.control.Attribution配置项说明
 
 | 配置项 | 简介 | 类型 | 备注 |
 | --- | --- |--- | --- |
