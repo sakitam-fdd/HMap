@@ -21,8 +21,10 @@
   var Map = new HMap({
     target: 'map',
     view: {
-      center: [12118909.300259633, 4086043.1061670054],
-      projection: 'EPSG:3857',
+      // center: [12118909.300259633, 4086043.1061670054],
+      // projection: 'EPSG:3857',
+      center: [113.53450137499999, 34.44104525],
+      projection: 'EPSG:4326',
       zoom: 5, // resolution
     },
     baseLayers: [
@@ -30,7 +32,9 @@
         layerName: 'BaiDu',
         isDefault: true,
         layerType: 'BaiDu',
+        visible: true,
         origin: [43.88955327932, 12.590178885765],
+        projection: 'EPSG:3857',
         hidpi: true,
         layerUrl: 'http://online{0-3}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20170607&scaler=1&p=1'
       }
