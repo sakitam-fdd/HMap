@@ -3,6 +3,7 @@
  * @desc 通过json获取样式
  */
 import ol from 'openlayers'
+import { isNumber } from '../utils'
 ol.style.Factory = function (options) {
   let option = (options && typeof options === 'object') ? options : {}
   let style = new ol.style.Style({})
@@ -147,13 +148,17 @@ ol.style.Factory.prototype._getText = function (options) {
       offsetX: (typeof options['textOffsetX'] === 'number' ? options['textOffsetX'] : 0),
       offsetY: (typeof options['textOffsetY'] === 'number' ? options['textOffsetY'] : 0),
       scale: (typeof options['textScale'] === 'number' ? options['textScale'] : undefined),
-      rotation: (typeof options['textRotation'] === 'number' ? options['textRotation'] : 0),
       text: ((options['text'] && typeof options['text'] === 'string') ? options['text'] : undefined),
       textAlign: ((options['textAlign'] && typeof options['textAlign'] === 'string') ? options['textAlign'] : 'start'),
       textBaseline: ((options['textBaseline'] && typeof options['textBaseline'] === 'string') ? options['textBaseline'] : 'alphabetic'),
       rotateWithView: (typeof options['rotateWithView'] === 'boolean' ? options['rotateWithView'] : false),
-      fill: this._getFill(options['textFill']),
-      stroke: this._getStroke(options['textStroke'])
+      fill: (options['textFill'] && this._getFill(options['textFill'])),
+      backgroundFill: (options['textBackgroundFill'] && this._getFill(options['textBackgroundFill'])),
+      stroke: (options['textStroke'] && this._getStroke(options['textStroke'])),
+      backgroundStroke: (options['textBackgroundStroke'] && this._getStroke(options['textBackgroundStroke'])),
+      maxAngle: (options['maxAngle'] && isNumber(options['maxAngle']) ? options['maxAngle'] : undefined),
+      rotation: (options['textRotation'] && isNumber(options['textRotation']) ? options['textRotation'] : 0),
+      padding: (options['textPadding'] && options['textPadding'].length > 0 ? options['textPadding'] : undefined)
     })
     return text
   } catch (error) {

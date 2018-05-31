@@ -6,8 +6,6 @@
 /** Used to infer the `Object` constructor. */
 const objectProto = Object.prototype
 const toString = objectProto.toString
-const hasOwnProperty = Object.prototype.hasOwnProperty
-const symToStringTag = typeof Symbol !== 'undefined' ? Symbol.toStringTag : undefined
 
 /* eslint no-extend-native: "off" */
 Array.prototype.add = function (string) {
@@ -42,6 +40,24 @@ const trim = (str) => {
 }
 
 /**
+ * check is null
+ * @param obj
+ * @returns {boolean}
+ */
+const isNull = (obj) => {
+  return obj == null
+}
+
+/**
+ * check is number
+ * @param val
+ * @returns {boolean}
+ */
+const isNumber = (val) => {
+  return (typeof val === 'number') && !isNaN(val)
+}
+
+/**
  * 判断是否为对象
  * @param value
  * @returns {boolean}
@@ -52,53 +68,7 @@ const isObject = value => {
 }
 
 /**
- * 判断是否为字符串
- * @param value
- * @returns {boolean}
- */
-const isString = value => {
-  const type = typeof value
-  return type === 'string'
-}
-
-/**
- * 获取对象基础标识
- * @param value
- * @returns {*}
- */
-const baseGetTag = (value) => {
-  if (value === null) {
-    return value === undefined ? '[object Undefined]' : '[object Null]'
-  }
-  if (!(symToStringTag && symToStringTag in Object(value))) {
-    return toString.call(value)
-  }
-  const isOwn = hasOwnProperty.call(value, symToStringTag)
-  const tag = value[symToStringTag]
-  let unmasked = false
-  try {
-    value[symToStringTag] = undefined
-    unmasked = true
-  } catch (e) {
-  }
-
-  const result = toString.call(value)
-  if (unmasked) {
-    if (isOwn) {
-      value[symToStringTag] = tag
-    } else {
-      delete value[symToStringTag]
-    }
-  }
-  return result
-}
-
-const TypeOf = (ob) => {
-  return Object.prototype.toString.call(ob).slice(8, -1).toLowerCase()
-}
-
-/**
- * 判断是否为函数
+ * check is function
  * @param value
  * @returns {boolean}
  */
@@ -106,9 +76,28 @@ const isFunction = value => {
   if (!isObject(value)) {
     return false
   }
-  const tag = baseGetTag(value)
-  return tag === '[object Function]' || tag === '[object AsyncFunction]' ||
-    tag === '[object GeneratorFunction]' || tag === '[object Proxy]'
+  return typeof value === 'function' || (value.constructor !== null && value.constructor === Function)
+}
+
+/**
+ * is date value
+ * @param val
+ * @returns {boolean}
+ */
+const isDate = (val) => {
+  return toString.call(val) === '[object Date]'
+}
+
+/**
+ * 判断是否为合法字符串
+ * @param value
+ * @returns {boolean}
+ */
+const isString = (value) => {
+  if (value == null) {
+    return false
+  }
+  return typeof value === 'string' || (value.constructor !== null && value.constructor === String)
 }
 
 /**
@@ -202,9 +191,11 @@ export {
   camelCase,
   isObject,
   isFunction,
-  TypeOf,
+  isDate,
   isString,
   trim,
+  isNumber,
+  isNull,
   firstUpperToCase,
   upperFirstChart,
   getuuid,
