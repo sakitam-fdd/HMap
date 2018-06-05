@@ -314,7 +314,7 @@ class Layer {
           crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
           params: {
             LAYERS: params['layers'], // require
-            STYLES: params['style'] ? params['style'] : '',
+            STYLES: params['styles'] ? params['styles'] : '',
             VERSION: params['version'] ? params['version'] : '1.3.0',
             WIDTH: params['width'] ? params['width'] : 256,
             HEIGHT: params['height'] ? params['height'] : 256,
@@ -364,7 +364,7 @@ class Layer {
           crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
           params: {
             LAYERS: params['layers'], // require
-            STYLES: params['style'] ? params['style'] : '',
+            STYLES: params['styles'] ? params['styles'] : '',
             VERSION: params['version'] ? params['version'] : '1.3.0',
             WIDTH: params['width'] ? params['width'] : 256,
             HEIGHT: params['height'] ? params['height'] : 256,
@@ -1025,7 +1025,7 @@ class Layer {
           crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
           params: {
             LAYERS: params['layers'], // require
-            STYLES: params['style'] ? params['style'] : '',
+            STYLES: params['styles'] ? params['styles'] : '',
             TYPE: params['type'] ? params['type'] : '',
             VERSION: params['version'] ? params['version'] : '1.3.0',
             WIDTH: params['width'] ? params['width'] : 256,
