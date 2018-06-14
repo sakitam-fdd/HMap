@@ -69,8 +69,9 @@ class BaseLayers extends Layer {
         if (config['layerName'] && config['layerUrl'] && config['layerType']) {
           _labelLayersLayerNames.add(config['layerName'])
         }
-      });
-      [...(toConsumableArray(_labelLayersLayerNames))].forEach(layerName => {
+      })
+      const layers = [...(toConsumableArray(_labelLayersLayerNames))]
+      layers.forEach(layerName => {
         labelLayersConfig.every(configM => {
           if (configM && configM['layerName'] === layerName) {
             let labelLayer = this._getLayer(configM)
