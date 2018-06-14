@@ -37,7 +37,6 @@ class HMap extends mixin(
 ) {
   constructor () {
     super()
-
     /**
      * 当前版本
      */

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>根据分辨率改变要素样式</title>
+  <link rel="stylesheet" href="../../dist/hmap.css">
+  <style type="text/css">
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    .menu {
+      position: absolute;
+      width: 100%;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .base-button {
+      height: 30px;
+      line-height: 30px;
+      background: #1b9de8;
+      color: #ffffff;
+      border-radius: 6px;
+      border: 1px solid #bfcbd9;
+      padding: 0 10px;
+      box-shadow: 0 4px 10px rgba(73, 127, 255, .42);
+      transition: .3s;
+    }
+
+    .base-button:hover {
+      cursor: pointer;
+      border-color: #1b9de8;
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+<div id="map"></div>
+<script src="../../dist/hmap.js"></script>
+<script src="../assets/lib/JSLite.min.js"></script>
+<script type="text/javascript">
+  var map = new ol.Map({
+    target: 'map',
+    view: new ol.View({
+      center: [113.53450137499999, 34.44104525],
+      projection: 'EPSG:4326',
+      zoom: 5, // resolution
+      maxZoom: 17
+    }),
+    layers: [
+      new ol.layer.Tile({
+        source: new ol.source.GOOGLE()
+      })
+    ]
+  });
+  var styleFunction = function (feature, res) {
+    var zoom = map.getView().getZoom()
+    console.log(zoom, feature);
+    var style = new ol.style.Style({
+      image: new ol.style.Icon({
+        anchor: [0.5, 1],
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'fraction',
+        opacity: 0.75,
+        // scale: zoom / 23 + 0.1,
+        src: zoom > 10 ? '../assets/images/i-map.png' : '../assets/images/point2.png'
+      })
+    });
+    var selectStyle = new ol.style.Style({
+      image: new ol.style.Icon({
+        anchor: [0.5, 1],
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'fraction',
+        opacity: 0.75,
+        // scale: zoom / 23 + 0.1,
+        src: zoom > 10 ? '../assets/images/i-map.png' : '../assets/images/point2o.png'
+      })
+    });
+    feature.set('style', undefined, true);
+    feature.set('selectStyle', undefined, true);
+    feature.set('style', style, true);
+    feature.set('selectStyle', selectStyle, true);
+    return style;
+  }
+  var source = new ol.source.Vector({});
+  var vector = new ol.layer.Vector({
+    source: source,
+    style: styleFunction
+  });
+
+  $.ajax({
+    url: '../assets/json/points.json',
+    type: 'GET',
+    dataType: 'json',
+    // 如果请求成功时执行回调
+    success: function (res) {
+      var features = [];
+      res['data']['features'].forEach(function (item) {
+        if (item && item['geometry']) {
+          var feature = new ol.Feature({
+            geometry: (new ol.format.WKT()).readGeometry(item['geometry'])
+          });
+          feature.setProperties(item.attributes);
+          feature.setStyle(
+            new ol.style.Style({
+              image: new ol.style.Icon({
+                anchor: [0.5, 1],
+                anchorXUnits: 'fraction',
+                anchorYUnits: 'fraction',
+                opacity: 0.75,
+                // scale: zoom / 23 + 0.1,
+                src: '../assets/images/i-map.png'
+              })
+            })
+          )
+          features.push(feature);
+        }
+      });
+      source.addFeatures(features);
+      map.addLayer(vector);
+    },
+    // 如果请求失败时执行回调
+    error: function (error) {
+      console.log(error)
+    }
+  });
+</script>
+</body>
+</html>
