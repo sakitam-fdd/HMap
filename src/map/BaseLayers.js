@@ -5,6 +5,7 @@
 import ol from 'openlayers'
 import config from '../utils/config'
 import Layer from '../layer/Layer'
+import {toConsumableArray} from '../utils'
 class BaseLayers extends Layer {
   /**
    * 添加底图
@@ -68,8 +69,9 @@ class BaseLayers extends Layer {
         if (config['layerName'] && config['layerUrl'] && config['layerType']) {
           _labelLayersLayerNames.add(config['layerName'])
         }
-      });
-      [...(_labelLayersLayerNames)].forEach(layerName => {
+      })
+      const layers = [...(toConsumableArray(_labelLayersLayerNames))]
+      layers.forEach(layerName => {
         labelLayersConfig.every(configM => {
           if (configM && configM['layerName'] === layerName) {
             let labelLayer = this._getLayer(configM)

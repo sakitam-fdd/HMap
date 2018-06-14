@@ -1,5 +1,6 @@
 // polyfill
 import './utils/Polyfill'
+import 'core-js/es6/array'
 import 'core-js/es6/set'
 import 'core-js/es6/symbol'
 import 'core-js/es6/reflect'
@@ -37,7 +38,6 @@ class HMap extends mixin(
 ) {
   constructor () {
     super()
-
     /**
      * 当前版本
      */
