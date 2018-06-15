@@ -93,8 +93,9 @@
         })
       }
     });
+    var points_
     $('#addPoint').on('click', function () {
-      Map.addPoint(points[0], {
+      points_ = Map.addPoint(points[0], {
         layerName: 'point',
         zoomToExtent: true,
         selectable: true,
@@ -116,7 +117,9 @@
             }
           }
         }
-      })
+      });
+      var layer = Map.getLayerByFeature(points_)
+      console.log(layer)
     });
     $('#addPoints').on('click', function () {
       var _points = points.map(function (item, index) {
@@ -180,9 +183,7 @@
               imageAnchor: [0.5, 1]
             }
           }
-        },
-        dataProjection: 'EPSG:3857',
-        featureProjection: 'EPSG:4326'
+        }
       })
     });
     $('#removePointByLayerName').on('click', function () {
