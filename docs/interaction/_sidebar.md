@@ -43,6 +43,7 @@
   - [3.22、图层滤镜功能](/interaction/layerSpyglass.md)
   - [3.23、自由圆创建](/interaction/freeHandCircle.md)
   - [3.24、测量工具](/interaction/measureTool.md)   
+  - [3.25、旋转工具](/interaction/rotate.md)   
 - 4、添加图层
   - [4.1、添加XYZ切片图层](/layer/xyz.md)
   - [4.2、添加ArcGIS图层](/layer/arcgis.md)

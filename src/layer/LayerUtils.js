@@ -174,7 +174,7 @@ const _getLayerByFeatureInternal = function (layers, feature) {
           }
         })
       }
-      return false
+      return !_target
     } else if (layer instanceof ol.layer.Group) {
       let layers = layer.getLayers().getArray()
       _target = _getLayerByFeatureInternal(layers, feature)

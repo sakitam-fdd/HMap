@@ -198,7 +198,12 @@ function toConsumableArray (arr) {
   }
 }
 
+const coalesce = (...args) => {
+  return args.filter(value => value != null).shift()
+}
+
 export {
+  coalesce,
   camelCase,
   isObject,
   isFunction,
