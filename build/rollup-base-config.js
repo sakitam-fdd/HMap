@@ -36,6 +36,7 @@ const genConfig = (opts) => {
             resolve('src/assets/**')]
         })),
         babel({
+          runtimeHelpers: true,
           exclude: [
             resolve('package.json'),
             resolve('node_modules/**')

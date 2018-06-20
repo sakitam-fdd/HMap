@@ -10,6 +10,7 @@ import '../interaction/layerSpyglass'
 import '../interaction/layerMagnify'
 import '../interaction/measureTool'
 import '../interaction/SelectCluster'
+import '../interaction/RotateFeature'
 import PointerEvents from '../interaction/PointerEvents'
 class _Interactions {
   _addInteractions (params) {
