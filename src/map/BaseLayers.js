@@ -113,6 +113,8 @@ class BaseLayers extends Layer {
         return (this._getGaoDeLayer(layerConfig))
       case 'Google':
         return (this._getGoogleLayer(layerConfig))
+      case 'ImageLayer':
+        return this._getImageLayer(layerConfig)
       default:
         throw new Error('不支持的图层类型！')
     }
@@ -266,6 +268,21 @@ class BaseLayers extends Layer {
     layerConfig['addLayer'] = false
     layerConfig['create'] = true
     let layer = this.createTitleLayer(layerName, layerConfig)
+    layer = this._addLayerAlias(layer, layerConfig)
+    return layer
+  }
+
+  /**
+   * 获取静态图层
+   * @param layerConfig
+   * @returns {*}
+   * @private
+   */
+  _getImageLayer (layerConfig) {
+    let layerName = layerConfig['layerName'] || ''
+    layerConfig['addLayer'] = false
+    layerConfig['create'] = true
+    let layer = this.createImageLayer(layerName, layerConfig)
     layer = this._addLayerAlias(layer, layerConfig)
     return layer
   }
