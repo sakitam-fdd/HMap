@@ -377,6 +377,7 @@ class Layer {
             TILESORIGIN: (params['tiledsorrigin'] ? params['tiledsorrigin'] : undefined),
             SERVICE: 'WMS',
             FORMAT: (params['format'] ? params['format'] : 'image/png'),
+            CQL_FILTER: (params['cql_filter'] ? params['cql_filter'] : ''),
             VIEWPARAMS: (params['viewparams'] ? params['viewparams'] : '')
           },
           wrapX: false
