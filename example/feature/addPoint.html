@@ -78,6 +78,8 @@
     var points = []
     Map.on('loadMapSuccess', function (event) {
       if (event) {
+        var sel = new ol.interaction.PointerEvents()
+        Map.addInteraction(sel)
         $.ajax({
           url: '../assets/json/points.json',
           type: 'GET',
@@ -99,6 +101,7 @@
         layerName: 'point',
         zoomToExtent: true,
         selectable: true,
+        moveable: true,
         style: {
           image: {
             type: 'icon',
@@ -175,6 +178,7 @@
         layerName: 'points',
         zoomToExtent: true,
         selectable: true,
+        moveable: true,
         style: {
           image: {
             type: 'icon',
@@ -184,6 +188,9 @@
             }
           }
         }
+      });
+      Map.getMap().on('feature:onmove', function (event) {
+        console.log(event)
       })
     });
     $('#removePointByLayerName').on('click', function () {

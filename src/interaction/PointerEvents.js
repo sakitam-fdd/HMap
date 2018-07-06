@@ -77,6 +77,12 @@ ol.interaction.PointerEvents.handleDragEvent = function (evt) {
     this.coordinate_[0] = evt.coordinate[0]
     this.coordinate_[1] = evt.coordinate[1]
     this.feature_.dispatchEvent(EVENT_TYPE.FEATUREONMOVE)
+    let map = evt.map
+    map.dispatchEvent({
+      type: EVENT_TYPE.FEATUREONMOVE,
+      originEvent: evt,
+      value: this.feature_
+    })
   }
 }
 
