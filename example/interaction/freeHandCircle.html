@@ -42,7 +42,36 @@
   Map.addInteraction(freeHandCircle)
 
   freeHandCircle.on('changeend', function (event) {
-    console.log(event)
+    Map.removeFeatureByLayerName('point');
+    Map.addPoint({
+      attributes: {
+        id: '001',
+        style: {
+          image: {
+            type: 'icon',
+            image: {
+              imageSrc: '../assets/images/point2.png',
+              imageAnchor: [0.5, 1]
+            }
+          }
+        },
+        selectStyle: {
+          image: {
+            type: 'icon',
+            image: {
+              imageSrc: '../assets/images/point2o.png',
+              imageAnchor: [0.5, 1]
+            }
+          }
+        }
+      },
+      geometry: event.getCenter()
+    }, {
+      layerName: 'point',
+      zoomToExtent: false,
+      selectable: true,
+      moveable: true
+    })
   })
   function activeTool () {
     freeHandCircle.initDrawInteraction()
@@ -55,7 +84,7 @@
   }
   function clearer () {
     freeHandCircle.destroy()
-    Map.removeInteraction(freeHandCircle)
+    // Map.removeInteraction(freeHandCircle)
   }
 </script>
 </body>

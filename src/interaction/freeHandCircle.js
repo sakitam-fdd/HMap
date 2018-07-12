@@ -177,6 +177,10 @@ ol.interaction.FreeHandCircle.handleMoveEvent_ = function (mapBrowserEvent) {
       feature
     ) {
       return feature;
+    }, {
+      layerFilter: layer => {
+        return layer.get('layerName') === this.layerName;
+      }
     });
     let element = map.getTargetElement();
     if (feature && feature.get('free-hand-circle-lable')) {
@@ -204,6 +208,10 @@ ol.interaction.FreeHandCircle.handleDownEvent_ = function (mapBrowserEvent) {
       feature
     ) {
       return feature;
+    }, {
+      layerFilter: layer => {
+        return layer.get('layerName') === this.layerName;
+      }
     });
     if (feature && feature.get('free-hand-circle-lable')) {
       this.coordinate_ = mapBrowserEvent.coordinate;
