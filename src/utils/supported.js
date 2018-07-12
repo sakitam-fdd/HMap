@@ -1,4 +1,4 @@
-const isSupported = (options) => {
+const isSupported = options => {
   return !!(
     isBrowser() &&
     isArraySupported() &&
@@ -6,14 +6,14 @@ const isSupported = (options) => {
     isObjectSupported() &&
     isJSONSupported() &&
     isWorkerSupported()
-    // isUint8ClampedArraySupported() &&
-    // isWebGLSupportedCached(options && options.failIfMajorPerformanceCaveat)
-  )
-}
+  );
+  // isUint8ClampedArraySupported() &&
+  // isWebGLSupportedCached(options && options.failIfMajorPerformanceCaveat)
+};
 
 const isBrowser = () => {
-  return typeof window !== 'undefined' && typeof document !== 'undefined'
-}
+  return typeof window !== 'undefined' && typeof document !== 'undefined';
+};
 
 const isArraySupported = () => {
   return (
@@ -28,12 +28,12 @@ const isArraySupported = () => {
     Array.prototype.reduce &&
     Array.prototype.reduceRight &&
     Array.isArray
-  )
-}
+  );
+};
 
 const isFunctionSupported = () => {
-  return Function.prototype && Function.prototype.bind
-}
+  return Function.prototype && Function.prototype.bind;
+};
 
 const isObjectSupported = () => {
   return (
@@ -50,59 +50,58 @@ const isObjectSupported = () => {
     Object.seal &&
     Object.freeze &&
     Object.preventExtensions
-  )
-}
+  );
+};
 
 const isJSONSupported = () => {
-  return 'JSON' in window && 'parse' in JSON && 'stringify' in JSON
-}
+  return 'JSON' in window && 'parse' in JSON && 'stringify' in JSON;
+};
 
 const isWorkerSupported = () => {
-  return 'Worker' in window
-}
+  return 'Worker' in window;
+};
 
 const isUint8ClampedArraySupported = () => {
-  return 'Uint8ClampedArray' in window
-}
+  return 'Uint8ClampedArray' in window;
+};
 
-let isWebGLSupportedCache = {}
-const isWebGLSupportedCached = (failIfMajorPerformanceCaveat) => {
+let isWebGLSupportedCache = {};
+const isWebGLSupportedCached = failIfMajorPerformanceCaveat => {
   if (isWebGLSupportedCache[failIfMajorPerformanceCaveat] === undefined) {
-    isWebGLSupportedCache[failIfMajorPerformanceCaveat] = isWebGLSupported(failIfMajorPerformanceCaveat)
+    isWebGLSupportedCache[failIfMajorPerformanceCaveat] = isWebGLSupported(
+      failIfMajorPerformanceCaveat
+    );
   }
-  return isWebGLSupportedCache[failIfMajorPerformanceCaveat]
-}
+  return isWebGLSupportedCache[failIfMajorPerformanceCaveat];
+};
 
 isSupported.webGLContextAttributes = {
   antialias: false,
   alpha: true,
   stencil: true,
   depth: true
-}
+};
 
-const isWebGLSupported = (failIfMajorPerformanceCaveat) => {
-  let canvas = document.createElement('canvas')
-  let attributes = Object.create(isSupported.webGLContextAttributes)
-  attributes.failIfMajorPerformanceCaveat = failIfMajorPerformanceCaveat
+const isWebGLSupported = failIfMajorPerformanceCaveat => {
+  let canvas = document.createElement('canvas');
+  let attributes = Object.create(isSupported.webGLContextAttributes);
+  attributes.failIfMajorPerformanceCaveat = failIfMajorPerformanceCaveat;
   if (canvas.probablySupportsContext) {
     return (
       canvas.probablySupportsContext('webgl', attributes) ||
       canvas.probablySupportsContext('experimental-webgl', attributes)
-    )
+    );
   } else if (canvas.supportsContext) {
     return (
       canvas.supportsContext('webgl', attributes) ||
       canvas.supportsContext('experimental-webgl', attributes)
-    )
+    );
   } else {
     return (
-      canvas.getContext('webgl', attributes) || canvas.getContext('experimental-webgl', attributes)
-    )
+      canvas.getContext('webgl', attributes) ||
+      canvas.getContext('experimental-webgl', attributes)
+    );
   }
-}
+};
 
-export {
-  isSupported,
-  isUint8ClampedArraySupported,
-  isWebGLSupportedCached
-}
+export { isSupported, isUint8ClampedArraySupported, isWebGLSupportedCached };

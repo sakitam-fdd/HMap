@@ -2,10 +2,10 @@
  * Created by FDD on 2017/9/18.
  * @desc 底图相关处理
  */
-import ol from 'openlayers'
-import config from '../utils/config'
-import Layer from '../layer/Layer'
-import {toConsumableArray} from '../utils'
+import ol from 'openlayers';
+import config from '../utils/config';
+import Layer from '../layer/Layer';
+import { toConsumableArray } from '../utils';
 class BaseLayers extends Layer {
   /**
    * 添加底图
@@ -14,17 +14,23 @@ class BaseLayers extends Layer {
    */
   addBaseLayers (params = []) {
     if (!params || !Array.isArray(params) || params.length <= 0) {
-      return [new ol.layer.Group({
-        layers: [new ol.layer.Tile({
-          source: new ol.source.OSM()
-        })],
-        isBaseLayer: true
-      })]
+      return [
+        new ol.layer.Group({
+          layers: [
+            new ol.layer.Tile({
+              source: new ol.source.OSM()
+            })
+          ],
+          isBaseLayer: true
+        })
+      ];
     } else {
-      return [new ol.layer.Group({
-        layers: this._getBaseLayerGroup(params),
-        isBaseLayer: true
-      })]
+      return [
+        new ol.layer.Group({
+          layers: this._getBaseLayerGroup(params),
+          isBaseLayer: true
+        })
+      ];
     }
   }
 
@@ -33,27 +39,40 @@ class BaseLayers extends Layer {
    * @returns {ol.layer.Group}
    */
   _getBaseLayerGroup (layerConfigs) {
-    let [layers, labelLayers, _layers, labelLayersConfig] = [[], [], [], []]
-    if (layerConfigs && Array.isArray(layerConfigs) && layerConfigs.length > 0) {
+    let [layers, labelLayers, _layers, labelLayersConfig] = [[], [], [], []];
+    if (
+      layerConfigs &&
+      Array.isArray(layerConfigs) &&
+      layerConfigs.length > 0
+    ) {
       layerConfigs.forEach(_config => {
-        if (_config['layerName'] && _config['layerUrl'] && _config['layerType']) {
-          let layer = this._getLayer(_config)
-          if (layer) layers.push(layer)
+        if (
+          _config['layerName'] &&
+          _config['layerUrl'] &&
+          _config['layerType']
+        ) {
+          let layer = this._getLayer(_config);
+          if (layer) layers.push(layer);
           if (_config['label'] && Array.isArray(_config['label'])) {
             _config['label'].forEach(_label => {
-              if (_label['layerName'] && _label['layerUrl'] && _label['layerType']) {
-                labelLayersConfig.push(_label)
+              if (
+                _label['layerName'] &&
+                _label['layerUrl'] &&
+                _label['layerType']
+              ) {
+                labelLayersConfig.push(_label);
               }
-            })
-          } else if (typeof _config['label'] === 'object') { // 处理多个标注层的情况
-            labelLayersConfig.push(_config['label'])
+            });
+          } else if (typeof _config['label'] === 'object') {
+            // 处理多个标注层的情况
+            labelLayersConfig.push(_config['label']);
           }
         }
-      })
+      });
     }
-    labelLayers = this._getBaseLayerLabel(labelLayersConfig)
-    _layers = layers.concat(labelLayers)
-    return _layers
+    labelLayers = this._getBaseLayerLabel(labelLayersConfig);
+    _layers = layers.concat(labelLayers);
+    return _layers;
   }
 
   /**
@@ -63,26 +82,30 @@ class BaseLayers extends Layer {
    * @private
    */
   _getBaseLayerLabel (labelLayersConfig) {
-    let [labelLayers, _labelLayersLayerNames] = [[], (new Set())]
-    if (labelLayersConfig && Array.isArray(labelLayersConfig) && labelLayersConfig.length > 0) {
+    let [labelLayers, _labelLayersLayerNames] = [[], new Set()];
+    if (
+      labelLayersConfig &&
+      Array.isArray(labelLayersConfig) &&
+      labelLayersConfig.length > 0
+    ) {
       labelLayersConfig.forEach(config => {
         if (config['layerName'] && config['layerUrl'] && config['layerType']) {
-          _labelLayersLayerNames.add(config['layerName'])
+          _labelLayersLayerNames.add(config['layerName']);
         }
-      })
-      const layers = [...(toConsumableArray(_labelLayersLayerNames))]
+      });
+      const layers = [...toConsumableArray(_labelLayersLayerNames)];
       layers.forEach(layerName => {
         labelLayersConfig.every(configM => {
           if (configM && configM['layerName'] === layerName) {
-            let labelLayer = this._getLayer(configM)
-            if (labelLayer) labelLayers.push(labelLayer)
-            return false
+            let labelLayer = this._getLayer(configM);
+            if (labelLayer) labelLayers.push(labelLayer);
+            return false;
           }
-          return true
-        })
-      })
+          return true;
+        });
+      });
     }
-    return labelLayers
+    return labelLayers;
   }
 
   /**
@@ -94,29 +117,29 @@ class BaseLayers extends Layer {
   _getLayer (layerConfig) {
     switch (layerConfig['layerType']) {
       case 'TileXYZ':
-        return (this._getXYZLayer(layerConfig))
+        return this._getXYZLayer(layerConfig);
       case 'TileWMTS':
-        return (this._getWMTSLayer(layerConfig))
+        return this._getWMTSLayer(layerConfig);
       case 'OSM':
-        return (this._getOSMLayer(layerConfig))
+        return this._getOSMLayer(layerConfig);
       case 'ImageWMS':
-        return (this._getImageWMSLayer(layerConfig))
+        return this._getImageWMSLayer(layerConfig);
       case 'TileWMS':
-        return (this._getTileWMSLayer(layerConfig))
+        return this._getTileWMSLayer(layerConfig);
       case 'MapboxVectorTile':
-        return (this._getMapboxVectorTileLayer(layerConfig))
+        return this._getMapboxVectorTileLayer(layerConfig);
       case 'TileArcGISRest':
-        return (this._getTileArcGISRestLayer(layerConfig))
+        return this._getTileArcGISRestLayer(layerConfig);
       case 'BaiDu':
-        return (this._getBaiDuLayer(layerConfig))
+        return this._getBaiDuLayer(layerConfig);
       case 'GaoDe':
-        return (this._getGaoDeLayer(layerConfig))
+        return this._getGaoDeLayer(layerConfig);
       case 'Google':
-        return (this._getGoogleLayer(layerConfig))
+        return this._getGoogleLayer(layerConfig);
       case 'ImageLayer':
-        return this._getImageLayer(layerConfig)
+        return this._getImageLayer(layerConfig);
       default:
-        throw new Error('不支持的图层类型！')
+        throw new Error('不支持的图层类型！');
     }
   }
 
@@ -127,15 +150,15 @@ class BaseLayers extends Layer {
    * @private
    */
   _getXYZLayer (layerConfig) {
-    let layerName = layerConfig['layerName'] || ''
-    layerConfig['addLayer'] = false
-    layerConfig['create'] = true
+    let layerName = layerConfig['layerName'] || '';
+    layerConfig['addLayer'] = false;
+    layerConfig['create'] = true;
     if (!layerConfig.hasOwnProperty('tileGrid')) {
-      layerConfig['tileGrid'] = {}
+      layerConfig['tileGrid'] = {};
     }
-    let layer = this.createXYZLayer(layerName, layerConfig)
-    layer = this._addLayerAlias(layer, layerConfig)
-    return layer
+    let layer = this.createXYZLayer(layerName, layerConfig);
+    layer = this._addLayerAlias(layer, layerConfig);
+    return layer;
   }
 
   /**
@@ -145,12 +168,12 @@ class BaseLayers extends Layer {
    * @private
    */
   _getOSMLayer (layerConfig) {
-    let layerName = layerConfig['layerName'] || ''
-    layerConfig['addLayer'] = false
-    layerConfig['create'] = true
-    let layer = this.createOSMLayer(layerName, layerConfig)
-    layer = this._addLayerAlias(layer, layerConfig)
-    return layer
+    let layerName = layerConfig['layerName'] || '';
+    layerConfig['addLayer'] = false;
+    layerConfig['create'] = true;
+    let layer = this.createOSMLayer(layerName, layerConfig);
+    layer = this._addLayerAlias(layer, layerConfig);
+    return layer;
   }
 
   /**
@@ -160,12 +183,12 @@ class BaseLayers extends Layer {
    * @private
    */
   _getBaiDuLayer (layerConfig) {
-    let layerName = layerConfig['layerName'] || ''
-    layerConfig['addLayer'] = false
-    layerConfig['create'] = true
-    let layer = this.createBaiDuLayer(layerName, layerConfig)
-    layer = this._addLayerAlias(layer, layerConfig)
-    return layer
+    let layerName = layerConfig['layerName'] || '';
+    layerConfig['addLayer'] = false;
+    layerConfig['create'] = true;
+    let layer = this.createBaiDuLayer(layerName, layerConfig);
+    layer = this._addLayerAlias(layer, layerConfig);
+    return layer;
   }
 
   /**
@@ -175,12 +198,12 @@ class BaseLayers extends Layer {
    * @private
    */
   _getGaoDeLayer (layerConfig) {
-    let layerName = layerConfig['layerName'] || ''
-    layerConfig['addLayer'] = false
-    layerConfig['create'] = true
-    let layer = this.createGaoDeLayer(layerName, layerConfig)
-    layer = this._addLayerAlias(layer, layerConfig)
-    return layer
+    let layerName = layerConfig['layerName'] || '';
+    layerConfig['addLayer'] = false;
+    layerConfig['create'] = true;
+    let layer = this.createGaoDeLayer(layerName, layerConfig);
+    layer = this._addLayerAlias(layer, layerConfig);
+    return layer;
   }
 
   /**
@@ -190,12 +213,12 @@ class BaseLayers extends Layer {
    * @private
    */
   _getGoogleLayer (layerConfig) {
-    let layerName = layerConfig['layerName'] || ''
-    layerConfig['addLayer'] = false
-    layerConfig['create'] = true
-    let layer = this.createGoogleLayer(layerName, layerConfig)
-    layer = this._addLayerAlias(layer, layerConfig)
-    return layer
+    let layerName = layerConfig['layerName'] || '';
+    layerConfig['addLayer'] = false;
+    layerConfig['create'] = true;
+    let layer = this.createGoogleLayer(layerName, layerConfig);
+    layer = this._addLayerAlias(layer, layerConfig);
+    return layer;
   }
 
   /**
@@ -205,12 +228,12 @@ class BaseLayers extends Layer {
    * @private
    */
   _getWMTSLayer (layerConfig) {
-    let layerName = layerConfig['layerName'] || ''
-    layerConfig['addLayer'] = false
-    layerConfig['create'] = true
-    let layer = this.createWMTSLayer(layerName, layerConfig)
-    layer = this._addLayerAlias(layer, layerConfig)
-    return layer
+    let layerName = layerConfig['layerName'] || '';
+    layerConfig['addLayer'] = false;
+    layerConfig['create'] = true;
+    let layer = this.createWMTSLayer(layerName, layerConfig);
+    layer = this._addLayerAlias(layer, layerConfig);
+    return layer;
   }
 
   /**
@@ -219,12 +242,12 @@ class BaseLayers extends Layer {
    * @private
    */
   _getImageWMSLayer (layerConfig) {
-    let layerName = layerConfig['layerName'] || ''
-    layerConfig['addLayer'] = false
-    layerConfig['create'] = true
-    let layer = this.createImageWMSLayer(layerName, layerConfig)
-    layer = this._addLayerAlias(layer, layerConfig)
-    return layer
+    let layerName = layerConfig['layerName'] || '';
+    layerConfig['addLayer'] = false;
+    layerConfig['create'] = true;
+    let layer = this.createImageWMSLayer(layerName, layerConfig);
+    layer = this._addLayerAlias(layer, layerConfig);
+    return layer;
   }
 
   /**
@@ -234,12 +257,12 @@ class BaseLayers extends Layer {
    * @private
    */
   _getTileWMSLayer (layerConfig) {
-    let layerName = layerConfig['layerName'] || ''
-    layerConfig['addLayer'] = false
-    layerConfig['create'] = true
-    let layer = this.createTileWMSLayer(layerName, layerConfig)
-    layer = this._addLayerAlias(layer, layerConfig)
-    return layer
+    let layerName = layerConfig['layerName'] || '';
+    layerConfig['addLayer'] = false;
+    layerConfig['create'] = true;
+    let layer = this.createTileWMSLayer(layerName, layerConfig);
+    layer = this._addLayerAlias(layer, layerConfig);
+    return layer;
   }
 
   /**
@@ -249,12 +272,12 @@ class BaseLayers extends Layer {
    * @private
    */
   _getMapboxVectorTileLayer (layerConfig) {
-    let layerName = layerConfig['layerName'] || ''
-    layerConfig['addLayer'] = false
-    layerConfig['create'] = true
-    let layer = this.createMapboxVectorTileLayer(layerName, layerConfig)
-    layer = this._addLayerAlias(layer, layerConfig)
-    return layer
+    let layerName = layerConfig['layerName'] || '';
+    layerConfig['addLayer'] = false;
+    layerConfig['create'] = true;
+    let layer = this.createMapboxVectorTileLayer(layerName, layerConfig);
+    layer = this._addLayerAlias(layer, layerConfig);
+    return layer;
   }
 
   /**
@@ -264,12 +287,12 @@ class BaseLayers extends Layer {
    * @private
    */
   _getTileArcGISRestLayer (layerConfig) {
-    let layerName = layerConfig['layerName'] || ''
-    layerConfig['addLayer'] = false
-    layerConfig['create'] = true
-    let layer = this.createTitleLayer(layerName, layerConfig)
-    layer = this._addLayerAlias(layer, layerConfig)
-    return layer
+    let layerName = layerConfig['layerName'] || '';
+    layerConfig['addLayer'] = false;
+    layerConfig['create'] = true;
+    let layer = this.createTitleLayer(layerName, layerConfig);
+    layer = this._addLayerAlias(layer, layerConfig);
+    return layer;
   }
 
   /**
@@ -279,12 +302,12 @@ class BaseLayers extends Layer {
    * @private
    */
   _getImageLayer (layerConfig) {
-    let layerName = layerConfig['layerName'] || ''
-    layerConfig['addLayer'] = false
-    layerConfig['create'] = true
-    let layer = this.createImageLayer(layerName, layerConfig)
-    layer = this._addLayerAlias(layer, layerConfig)
-    return layer
+    let layerName = layerConfig['layerName'] || '';
+    layerConfig['addLayer'] = false;
+    layerConfig['create'] = true;
+    let layer = this.createImageLayer(layerName, layerConfig);
+    layer = this._addLayerAlias(layer, layerConfig);
+    return layer;
   }
 
   /**
@@ -295,13 +318,16 @@ class BaseLayers extends Layer {
    * @private
    */
   _addLayerAlias (layer, layerConfig) {
-    const isDefault = (layerConfig['isDefault'] === true) ? layerConfig['isDefault'] : false
-    layer.set('isDefault', isDefault)
-    layer.set('isBaseLayer', true)
-    layer.setVisible(isDefault)
-    layer.set('alias', (layerConfig['alias'] ? layerConfig['alias'] : ''))
-    layer.getSource().setAttributions(this._getAttribution(layerConfig['attribution']))
-    return layer
+    const isDefault =
+      layerConfig['isDefault'] === true ? layerConfig['isDefault'] : false;
+    layer.set('isDefault', isDefault);
+    layer.set('isBaseLayer', true);
+    layer.setVisible(isDefault);
+    layer.set('alias', layerConfig['alias'] ? layerConfig['alias'] : '');
+    layer
+      .getSource()
+      .setAttributions(this._getAttribution(layerConfig['attribution']));
+    return layer;
   }
 
   /**
@@ -310,22 +336,36 @@ class BaseLayers extends Layer {
    * @private
    */
   _getAttribution (params) {
-    let attribution
+    let attribution;
     if (params === true) {
-      params = {}
-      params['url'] = config.INDEX_URL
-      params['messages'] = 'contributors.'
-      params['title'] = 'HMap'
+      params = {};
+      params['url'] = config.INDEX_URL;
+      params['messages'] = 'contributors.';
+      params['title'] = 'HMap';
       attribution = new ol.Attribution({
-        html: '&copy; ' + '<a href="' + params['url'] + '">' + params['title'] + '</a> ' + params['messages']
-      })
+        html:
+          '&copy; ' +
+          '<a href="' +
+          params['url'] +
+          '">' +
+          params['title'] +
+          '</a> ' +
+          params['messages']
+      });
     } else if (typeof params === 'object') {
       attribution = new ol.Attribution({
-        html: '&copy; ' + '<a href="' + params['url'] + '">' + params['title'] + '</a> ' + params['messages']
-      })
+        html:
+          '&copy; ' +
+          '<a href="' +
+          params['url'] +
+          '">' +
+          params['title'] +
+          '</a> ' +
+          params['messages']
+      });
     }
-    return attribution
+    return attribution;
   }
 }
 
-export default BaseLayers
+export default BaseLayers;

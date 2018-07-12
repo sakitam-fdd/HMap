@@ -4,58 +4,58 @@
  */
 
 /** Used to infer the `Object` constructor. */
-const objectProto = Object.prototype
-const toString = objectProto.toString
+const objectProto = Object.prototype;
+const toString = objectProto.toString;
 
 /* eslint no-extend-native: "off" */
 Array.prototype.add = function (string) {
   if (!(this.indexOf(string) > -1)) {
-    this.push(string)
+    this.push(string);
   }
-}
+};
 
 /**
  * 首字母大写(其他小写)
  * @param str
  * @returns {string}
  */
-const firstUpperToCase = (str) => {
-  return (str.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase()))
-}
+const firstUpperToCase = str => {
+  return str.toLowerCase().replace(/( |^)[a-z]/g, L => L.toUpperCase());
+};
 /**
  * 只转换第一个字母
  * @param str
  */
 const upperFirstChart = str => {
-  return (str.replace(/( |^)[a-z]/g, (L) => L.toUpperCase()))
-}
+  return str.replace(/( |^)[a-z]/g, L => L.toUpperCase());
+};
 
 /**
  * 去除字符串前后空格
  * @param str
  * @returns {*}
  */
-const trim = (str) => {
-  return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g, '')
-}
+const trim = str => {
+  return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g, '');
+};
 
 /**
  * check is null
  * @param obj
  * @returns {boolean}
  */
-const isNull = (obj) => {
-  return obj == null
-}
+const isNull = obj => {
+  return obj == null;
+};
 
 /**
  * check is number
  * @param val
  * @returns {boolean}
  */
-const isNumber = (val) => {
-  return (typeof val === 'number') && !isNaN(val)
-}
+const isNumber = val => {
+  return typeof val === 'number' && !isNaN(val);
+};
 
 /**
  * 判断是否为对象
@@ -63,9 +63,9 @@ const isNumber = (val) => {
  * @returns {boolean}
  */
 const isObject = value => {
-  const type = typeof value
-  return value !== null && (type === 'object' || type === 'function')
-}
+  const type = typeof value;
+  return value !== null && (type === 'object' || type === 'function');
+};
 
 /**
  * check is function
@@ -74,31 +74,37 @@ const isObject = value => {
  */
 const isFunction = value => {
   if (!isObject(value)) {
-    return false
+    return false;
   }
-  return typeof value === 'function' || (value.constructor !== null && value.constructor === Function)
-}
+  return (
+    typeof value === 'function' ||
+    (value.constructor !== null && value.constructor === Function)
+  );
+};
 
 /**
  * is date value
  * @param val
  * @returns {boolean}
  */
-const isDate = (val) => {
-  return toString.call(val) === '[object Date]'
-}
+const isDate = val => {
+  return toString.call(val) === '[object Date]';
+};
 
 /**
  * 判断是否为合法字符串
  * @param value
  * @returns {boolean}
  */
-const isString = (value) => {
+const isString = value => {
   if (value == null) {
-    return false
+    return false;
   }
-  return typeof value === 'string' || (value.constructor !== null && value.constructor === String)
-}
+  return (
+    typeof value === 'string' ||
+    (value.constructor !== null && value.constructor === String)
+  );
+};
 
 /**
  * 判断对象是否有某个键值
@@ -107,44 +113,50 @@ const isString = (value) => {
  * @returns {boolean}
  */
 const has = (object_, key_) => {
-  return typeof object_ === 'object' && object_.hasOwnProperty(key_)
-}
+  return typeof object_ === 'object' && object_.hasOwnProperty(key_);
+};
 
 /**
  * 检查浏览器版本
  * @returns {*}
  */
 const checkBrowser = () => {
-  let userAgent = navigator.userAgent // 取得浏览器的userAgent字符串
-  if (userAgent.indexOf('OPR') > -1) { // 判断是否Opera浏览器 OPR/43.0.2442.991
-    return 'Opera'
-  } else if (userAgent.indexOf('Firefox') > -1) { // 判断是否Firefox浏览器  Firefox/51.0
-    return 'FF'
-  } else if (userAgent.indexOf('Trident') > -1) { // 判断是否IE浏览器  Trident/7.0; rv:11.0
-    return 'IE'
-  } else if (userAgent.indexOf('Edge') > -1) { // 判断是否Edge浏览器  Edge/14.14393
-    return 'Edge'
-  } else if (userAgent.indexOf('Chrome') > -1) { // Chrome/56.0.2924.87
-    return 'Chrome'
-  } else if (userAgent.indexOf('Safari') > -1) { // 判断是否Safari浏览器
-    return 'Safari'
+  let userAgent = navigator.userAgent; // 取得浏览器的userAgent字符串
+  if (userAgent.indexOf('OPR') > -1) {
+    // 判断是否Opera浏览器 OPR/43.0.2442.991
+    return 'Opera';
+  } else if (userAgent.indexOf('Firefox') > -1) {
+    // 判断是否Firefox浏览器  Firefox/51.0
+    return 'FF';
+  } else if (userAgent.indexOf('Trident') > -1) {
+    // 判断是否IE浏览器  Trident/7.0; rv:11.0
+    return 'IE';
+  } else if (userAgent.indexOf('Edge') > -1) {
+    // 判断是否Edge浏览器  Edge/14.14393
+    return 'Edge';
+  } else if (userAgent.indexOf('Chrome') > -1) {
+    // Chrome/56.0.2924.87
+    return 'Chrome';
+  } else if (userAgent.indexOf('Safari') > -1) {
+    // 判断是否Safari浏览器
+    return 'Safari';
   }
-}
+};
 
 /**
  * 获取uuid
  * @returns {*|string|!Array.<T>}
  */
 const getuuid = () => {
-  let [s, hexDigits] = [[], '0123456789abcdef']
+  let [s, hexDigits] = [[], '0123456789abcdef'];
   for (let i = 0; i < 36; i++) {
-    s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1)
+    s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
   }
-  s[14] = '4'
-  s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1)
-  s[8] = s[13] = s[18] = s[23] = '-'
-  return (s.join(''))
-}
+  s[14] = '4';
+  s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);
+  s[8] = s[13] = s[18] = s[23] = '-';
+  return s.join('');
+};
 
 /**
  * 替换节点
@@ -152,11 +164,11 @@ const getuuid = () => {
  * @param oldNode
  */
 const replaceNode = (newNode, oldNode) => {
-  let parent = oldNode.parentNode
+  let parent = oldNode.parentNode;
   if (parent) {
-    parent.replaceChild(newNode, oldNode)
+    parent.replaceChild(newNode, oldNode);
   }
-}
+};
 
 /**
  * merge
@@ -165,42 +177,44 @@ const replaceNode = (newNode, oldNode) => {
  */
 function merge (target) {
   for (let i = 1, j = arguments.length; i < j; i++) {
-    let source = arguments[i] || {}
+    let source = arguments[i] || {};
     for (let prop in source) {
       if (source.hasOwnProperty(prop)) {
-        let value = source[prop]
+        let value = source[prop];
         if (value !== undefined) {
-          target[prop] = value
+          target[prop] = value;
         }
       }
     }
   }
-  return target
+  return target;
 }
 
 /* eslint no-useless-escape: "off" */
-const SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g
-const MOZ_HACK_REGEXP = /^moz([A-Z])/
+const SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g;
+const MOZ_HACK_REGEXP = /^moz([A-Z])/;
 const camelCase = function (name) {
-  return name.replace(SPECIAL_CHARS_REGEXP, function (_, separator, letter, offset) {
-    return offset ? letter.toUpperCase() : letter
-  }).replace(MOZ_HACK_REGEXP, 'Moz$1')
-}
+  return name
+    .replace(SPECIAL_CHARS_REGEXP, function (_, separator, letter, offset) {
+      return offset ? letter.toUpperCase() : letter;
+    })
+    .replace(MOZ_HACK_REGEXP, 'Moz$1');
+};
 
 function toConsumableArray (arr) {
   if (Array.isArray(arr)) {
     for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
-      arr2[i] = arr[i]
+      arr2[i] = arr[i];
     }
-    return arr2
+    return arr2;
   } else {
-    return Array.from(arr)
+    return Array.from(arr);
   }
 }
 
 const coalesce = (...args) => {
-  return args.filter(value => value != null).shift()
-}
+  return args.filter(value => value != null).shift();
+};
 
 export {
   coalesce,
@@ -220,4 +234,4 @@ export {
   replaceNode,
   checkBrowser,
   toConsumableArray
-}
+};

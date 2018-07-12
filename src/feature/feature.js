@@ -2,16 +2,16 @@
  * Created by FDD on 2017/9/18.
  * @desc 矢量要素标绘
  */
-import ol from 'openlayers'
-import mixin from '../utils/mixins'
-import {isFunction} from '../utils/utils'
-import olStyleFactory from '../style/factory'
-import Layer from '../layer/Layer'
-import Geometry from '../geom/Geometry'
+import ol from 'openlayers';
+import mixin from '../utils/mixins';
+import { isFunction } from '../utils/utils';
+import olStyleFactory from '../style/factory';
+import Layer from '../layer/Layer';
+import Geometry from '../geom/Geometry';
 class Feature extends mixin(Layer, Geometry) {
   constructor () {
-    super()
-    this[Symbol('feature')] = Symbol('feature')
+    super();
+    this[Symbol('feature')] = Symbol('feature');
   }
 
   /**
@@ -21,14 +21,14 @@ class Feature extends mixin(Layer, Geometry) {
    * @returns {*}
    */
   getFeatureFromLayer (layer, id) {
-    let feature
+    let feature;
     if (layer && layer instanceof ol.layer.Vector && id) {
-      const source = layer.getSource()
+      const source = layer.getSource();
       if (source && source.getFeatureById) {
-        feature = source.getFeatureById(id)
+        feature = source.getFeatureById(id);
       }
     }
-    return feature
+    return feature;
   }
 
   /**
@@ -37,17 +37,17 @@ class Feature extends mixin(Layer, Geometry) {
    * @returns {*}
    */
   getFeatureById (id) {
-    let layers = this.getVectorLayers()
-    let feature
+    let layers = this.getVectorLayers();
+    let feature;
     layers.every(layer => {
-      feature = this.getFeatureFromLayer(layer, id)
+      feature = this.getFeatureFromLayer(layer, id);
       if (feature && feature instanceof ol.Feature) {
-        return false
+        return false;
       } else {
-        return true
+        return true;
       }
-    })
-    return feature
+    });
+    return feature;
   }
 
   /**
@@ -58,15 +58,15 @@ class Feature extends mixin(Layer, Geometry) {
    * @returns {*}
    */
   getFeatureById2LayerName (id, layerName) {
-    let feature
+    let feature;
     if (layerName) {
-      let layer = this.getLayerByLayerName(layerName)
-      feature = this.getFeatureFromLayer(layer, id)
+      let layer = this.getLayerByLayerName(layerName);
+      feature = this.getFeatureFromLayer(layer, id);
     }
     if (!feature || !(feature instanceof ol.Feature)) {
-      feature = this.getFeatureById(id)
+      feature = this.getFeatureById(id);
     }
-    return feature
+    return feature;
   }
 
   /**
@@ -77,32 +77,33 @@ class Feature extends mixin(Layer, Geometry) {
    * @returns {*}
    */
   fixStyle (data_, params, feature) {
-    if (!data_['attributes']) data_['attributes'] = {}
-    let [style, selectStyle] = []
-    const _style = (data_['attributes']['style'] || params['style'])
-    const _selectStyle = (data_['attributes']['selectStyle'] || params['selectStyle'])
+    if (!data_['attributes']) data_['attributes'] = {};
+    let [style, selectStyle] = [];
+    const _style = data_['attributes']['style'] || params['style'];
+    const _selectStyle =
+      data_['attributes']['selectStyle'] || params['selectStyle'];
     if (_style && _style instanceof ol.style.Style) {
-      style = _style
+      style = _style;
     } else if (isFunction(_style)) {
-      style = _style
+      style = _style;
     } else if (typeof _style === 'object') {
-      style = new olStyleFactory(_style)
+      style = new olStyleFactory(_style);
     }
     if (_selectStyle && _selectStyle instanceof ol.style.Style) {
-      selectStyle = _selectStyle
+      selectStyle = _selectStyle;
     } else if (isFunction(_selectStyle)) {
-      selectStyle = _selectStyle
+      selectStyle = _selectStyle;
     } else if (typeof _selectStyle === 'object') {
-      selectStyle = new olStyleFactory(_selectStyle)
+      selectStyle = new olStyleFactory(_selectStyle);
     }
     if (style && feature) {
-      feature.setStyle(style)
-      feature.set('style', style)
+      feature.setStyle(style);
+      feature.set('style', style);
       if (selectStyle) {
-        feature.set('selectStyle', selectStyle)
+        feature.set('selectStyle', selectStyle);
       }
     }
-    return feature
+    return feature;
   }
 
   /**
@@ -113,12 +114,15 @@ class Feature extends mixin(Layer, Geometry) {
    * @returns {*}
    */
   fixProperties (data_, params, feature) {
-    if (data_['attributes'] && (data_['attributes']['id'] || data_['attributes']['ID'])) {
-      let id = (data_.attributes['id'] || data_.attributes['ID'] || params['id'])
-      feature.setId(id)
-      feature.setProperties(data_['attributes'])
+    if (
+      data_['attributes'] &&
+      (data_['attributes']['id'] || data_['attributes']['ID'])
+    ) {
+      let id = data_.attributes['id'] || data_.attributes['ID'] || params['id'];
+      feature.setId(id);
+      feature.setProperties(data_['attributes']);
     }
-    return feature
+    return feature;
   }
 
   /**
@@ -128,11 +132,11 @@ class Feature extends mixin(Layer, Geometry) {
    */
   fixView (geometry, params) {
     if (params['zoomToExtent']) {
-      let extent = geometry.getExtent()
+      let extent = geometry.getExtent();
       if (params['view'] && params['view']['adjustExtent']) {
-        extent = this.adjustExtent(extent, params['view'])
+        extent = this.adjustExtent(extent, params['view']);
       }
-      this.zoomToExtent(extent, true)
+      this.zoomToExtent(extent, true);
     }
   }
 
@@ -142,10 +146,10 @@ class Feature extends mixin(Layer, Geometry) {
    * @param feature
    */
   appendFeature (params, feature) {
-    params['create'] = true
-    let layer = this.createVectorLayer(params['layerName'], params)
-    layer.getSource().addFeature(feature)
-    this.orderLayerZindex()
+    params['create'] = true;
+    let layer = this.createVectorLayer(params['layerName'], params);
+    layer.getSource().addFeature(feature);
+    this.orderLayerZindex();
   }
 
   /**
@@ -155,20 +159,20 @@ class Feature extends mixin(Layer, Geometry) {
    * @returns {ol.Feature|ol.format.Feature|*|ol.render.Feature|Feature}
    */
   addPoint (point, params) {
-    let geometry = this.getGeomFromGeomData(point, params)
+    let geometry = this.getGeomFromGeomData(point, params);
     if (geometry) {
       let feature = new ol.Feature({
         geometry: geometry,
         params: params
-      })
-      feature = this.fixStyle(point, params, feature)
-      feature = this.fixProperties(point, params, feature)
-      this.fixView(geometry, params)
+      });
+      feature = this.fixStyle(point, params, feature);
+      feature = this.fixProperties(point, params, feature);
+      this.fixView(geometry, params);
       if (params['layerName']) {
-        this.appendFeature(params, feature)
-        this.pointLayers.add(params['layerName'])
+        this.appendFeature(params, feature);
+        this.pointLayers.add(params['layerName']);
       }
-      return feature
+      return feature;
     }
   }
 
@@ -180,40 +184,48 @@ class Feature extends mixin(Layer, Geometry) {
   addPoints (points, params) {
     try {
       if (points && Array.isArray(points)) {
-        let [features, multiPoint, change] = [[], (new ol.geom.MultiPoint([])), false]
+        let [features, multiPoint, change] = [
+          [],
+          new ol.geom.MultiPoint([]),
+          false
+        ];
         if (params['zoomToExtent']) {
-          params['zoomToExtent'] = false
-          change = true
+          params['zoomToExtent'] = false;
+          change = true;
         }
         points.forEach(point => {
           if (point && point['geometry']) {
-            let pointFeat = this.addPoint(point, params)
+            let pointFeat = this.addPoint(point, params);
             if (pointFeat && pointFeat instanceof ol.Feature) {
-              features.push(pointFeat)
-              let geom = pointFeat.getGeometry()
+              features.push(pointFeat);
+              let geom = pointFeat.getGeometry();
               if (geom && geom instanceof ol.geom.Point) {
-                multiPoint.appendPoint(geom)
+                multiPoint.appendPoint(geom);
               } else if (geom && geom instanceof ol.geom.MultiPoint) {
-                let multiGeoms = geom.getPoints()
-                if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
+                let multiGeoms = geom.getPoints();
+                if (
+                  multiGeoms &&
+                  Array.isArray(multiGeoms) &&
+                  multiGeoms.length > 0
+                ) {
                   multiGeoms.forEach(_geom => {
                     if (_geom && _geom instanceof ol.geom.Point) {
-                      multiPoint.appendPoint(_geom)
+                      multiPoint.appendPoint(_geom);
                     }
-                  })
+                  });
                 }
               }
             }
           }
-        })
+        });
         if (change) {
-          params['zoomToExtent'] = true
-          this.fixView(multiPoint, params)
+          params['zoomToExtent'] = true;
+          this.fixView(multiPoint, params);
         }
-        return features
+        return features;
       }
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
   }
 
@@ -225,12 +237,15 @@ class Feature extends mixin(Layer, Geometry) {
    */
   setPointGeometry (point, geometry, params) {
     if (point && geometry && point instanceof ol.Feature) {
-      let _geometry = this.getGeomFromGeomData({
-        geometry: geometry
-      }, params)
-      point.setGeometry(_geometry)
+      let _geometry = this.getGeomFromGeomData(
+        {
+          geometry: geometry
+        },
+        params
+      );
+      point.setGeometry(_geometry);
     } else {
-      console.info('传入数据有误！')
+      console.info('传入数据有误！');
     }
   }
 
@@ -241,20 +256,20 @@ class Feature extends mixin(Layer, Geometry) {
    * @returns {*}
    */
   addPolyline (line, params) {
-    let geometry = this.getGeomFromGeomData(line, params)
+    let geometry = this.getGeomFromGeomData(line, params);
     if (geometry) {
       let lineFeature = new ol.Feature({
         geometry: geometry,
         params: params
-      })
-      lineFeature = this.fixStyle(line, params, lineFeature)
-      lineFeature = this.fixProperties(line, params, lineFeature)
-      this.fixView(geometry, params)
+      });
+      lineFeature = this.fixStyle(line, params, lineFeature);
+      lineFeature = this.fixProperties(line, params, lineFeature);
+      this.fixView(geometry, params);
       if (params['layerName']) {
-        this.appendFeature(params, lineFeature)
-        this.lineLayers.add(params['layerName'])
+        this.appendFeature(params, lineFeature);
+        this.lineLayers.add(params['layerName']);
       }
-      return lineFeature
+      return lineFeature;
     }
   }
 
@@ -266,38 +281,46 @@ class Feature extends mixin(Layer, Geometry) {
   addPolylines (lines, params) {
     try {
       if (lines && Array.isArray(lines)) {
-        let [features, MultiLine, change] = [[], (new ol.geom.MultiLineString([])), false]
+        let [features, MultiLine, change] = [
+          [],
+          new ol.geom.MultiLineString([]),
+          false
+        ];
         if (params['zoomToExtent']) {
-          params['zoomToExtent'] = false
-          change = true
+          params['zoomToExtent'] = false;
+          change = true;
         }
         lines.forEach(line => {
-          let polyLine = this.addPolyline(line, params)
+          let polyLine = this.addPolyline(line, params);
           if (polyLine && polyLine instanceof ol.Feature) {
-            features.push(polyLine)
-            let geom = polyLine.getGeometry()
+            features.push(polyLine);
+            let geom = polyLine.getGeometry();
             if (geom && geom instanceof ol.geom.LineString) {
-              MultiLine.appendLineString(geom)
+              MultiLine.appendLineString(geom);
             } else if (geom && geom instanceof ol.geom.MultiLineString) {
-              let multiGeoms = geom.getLineStrings()
-              if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
+              let multiGeoms = geom.getLineStrings();
+              if (
+                multiGeoms &&
+                Array.isArray(multiGeoms) &&
+                multiGeoms.length > 0
+              ) {
                 multiGeoms.forEach(_geom => {
                   if (_geom && _geom instanceof ol.geom.LineString) {
-                    MultiLine.appendLineString(_geom)
+                    MultiLine.appendLineString(_geom);
                   }
-                })
+                });
               }
             }
           }
-        })
+        });
         if (change) {
-          params['zoomToExtent'] = true
-          this.fixView(MultiLine, params)
+          params['zoomToExtent'] = true;
+          this.fixView(MultiLine, params);
         }
-        return features
+        return features;
       }
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
   }
 
@@ -308,20 +331,20 @@ class Feature extends mixin(Layer, Geometry) {
    * @returns {ol.render.Feature|ol.format.Feature|Feature|*|ol.Feature}
    */
   addPolygon (polygon, params) {
-    let geometry = this.getGeomFromGeomData(polygon, params)
+    let geometry = this.getGeomFromGeomData(polygon, params);
     if (geometry) {
       let polygonFeature = new ol.Feature({
         geometry: geometry,
         params: params
-      })
-      polygonFeature = this.fixStyle(polygon, params, polygonFeature)
-      polygonFeature = this.fixProperties(polygon, params, polygonFeature)
-      this.fixView(geometry, params)
+      });
+      polygonFeature = this.fixStyle(polygon, params, polygonFeature);
+      polygonFeature = this.fixProperties(polygon, params, polygonFeature);
+      this.fixView(geometry, params);
       if (params['layerName']) {
-        this.appendFeature(params, polygonFeature)
-        this.polygonLayers.add(params['layerName'])
+        this.appendFeature(params, polygonFeature);
+        this.polygonLayers.add(params['layerName']);
       }
-      return polygonFeature
+      return polygonFeature;
     }
   }
 
@@ -333,38 +356,46 @@ class Feature extends mixin(Layer, Geometry) {
   addPolygons (polygons, params) {
     try {
       if (polygons && Array.isArray(polygons)) {
-        let [features, MultiPolygon, change] = [[], (new ol.geom.MultiPolygon([])), false]
+        let [features, MultiPolygon, change] = [
+          [],
+          new ol.geom.MultiPolygon([]),
+          false
+        ];
         if (params['zoomToExtent']) {
-          params['zoomToExtent'] = false
-          change = true
+          params['zoomToExtent'] = false;
+          change = true;
         }
         polygons.forEach(polygon => {
-          let polygonFeat = this.addPolygon(polygon, params)
+          let polygonFeat = this.addPolygon(polygon, params);
           if (polygonFeat && polygonFeat instanceof ol.Feature) {
-            features.push(polygonFeat)
-            let geom = polygonFeat.getGeometry()
+            features.push(polygonFeat);
+            let geom = polygonFeat.getGeometry();
             if (geom && geom instanceof ol.geom.Polygon) {
-              MultiPolygon.appendPolygon(geom)
+              MultiPolygon.appendPolygon(geom);
             } else if (geom && geom instanceof ol.geom.MultiPolygon) {
-              let multiGeoms = geom.getPolygons()
-              if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
+              let multiGeoms = geom.getPolygons();
+              if (
+                multiGeoms &&
+                Array.isArray(multiGeoms) &&
+                multiGeoms.length > 0
+              ) {
                 multiGeoms.forEach(_geom => {
                   if (_geom && _geom instanceof ol.geom.Polygon) {
-                    MultiPolygon.appendPolygon(_geom)
+                    MultiPolygon.appendPolygon(_geom);
                   }
-                })
+                });
               }
             }
           }
-        })
+        });
         if (change) {
-          params['zoomToExtent'] = true
-          this.fixView(MultiPolygon, params)
+          params['zoomToExtent'] = true;
+          this.fixView(MultiPolygon, params);
         }
-        return features
+        return features;
       }
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
 
@@ -376,50 +407,54 @@ class Feature extends mixin(Layer, Geometry) {
    */
   addHeatFeatures (points, params) {
     try {
-      let feature = ''
+      let feature = '';
       if (points && Array.isArray(points) && points.length > 0) {
-        let [multiPoint, change] = [(new ol.geom.MultiPoint([])), false]
+        let [multiPoint, change] = [new ol.geom.MultiPoint([]), false];
         if (params['zoomToExtent']) {
-          params['zoomToExtent'] = false
-          change = true
+          params['zoomToExtent'] = false;
+          change = true;
         }
         points.forEach(item => {
           if (item && item['geometry']) {
-            let geometry = this.getGeomFromGeomData(item, params)
+            let geometry = this.getGeomFromGeomData(item, params);
             if (geometry && geometry instanceof ol.geom.Point) {
-              multiPoint.appendPoint(geometry)
+              multiPoint.appendPoint(geometry);
             } else if (geometry && geometry instanceof ol.geom.MultiPoint) {
-              let multiGeoms = geometry.getPoints()
-              if (multiGeoms && Array.isArray(multiGeoms) && multiGeoms.length > 0) {
+              let multiGeoms = geometry.getPoints();
+              if (
+                multiGeoms &&
+                Array.isArray(multiGeoms) &&
+                multiGeoms.length > 0
+              ) {
                 multiGeoms.forEach(_geom => {
                   if (_geom && _geom instanceof ol.geom.Point) {
-                    multiPoint.appendPoint(_geom)
+                    multiPoint.appendPoint(_geom);
                   }
-                })
+                });
               }
             }
           }
-        })
+        });
         if (params['layerName']) {
           feature = new ol.Feature({
             geometry: multiPoint,
             params: params
-          })
-          params['create'] = true
-          let layer = this.createHeatMapLayer(params['layerName'], params)
+          });
+          params['create'] = true;
+          let layer = this.createHeatMapLayer(params['layerName'], params);
           if (layer && layer instanceof ol.layer.Heatmap) {
-            layer.getSource().addFeature(feature)
+            layer.getSource().addFeature(feature);
           }
-          this.pointLayers.add(params['layerName'])
+          this.pointLayers.add(params['layerName']);
         }
         if (change) {
-          params['zoomToExtent'] = true
-          this.fixView(multiPoint, params)
+          params['zoomToExtent'] = true;
+          this.fixView(multiPoint, params);
         }
       }
-      return feature
+      return feature;
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
 
@@ -431,38 +466,38 @@ class Feature extends mixin(Layer, Geometry) {
    */
   setHeatLayerStyle (layerName, params) {
     try {
-      let layer = null
+      let layer = null;
       if (layerName) {
-        layerName = layerName.trim()
-        let _layer = this.getLayerByLayerName(layerName)
+        layerName = layerName.trim();
+        let _layer = this.getLayerByLayerName(layerName);
         if (_layer && _layer instanceof ol.layer.Heatmap) {
-          layer = _layer
+          layer = _layer;
           if (params && typeof params === 'object') {
             for (let key in params) {
               switch (key) {
                 case 'blur':
-                  layer.setBlur(params[key])
-                  break
+                  layer.setBlur(params[key]);
+                  break;
                 case 'radius':
-                  layer.setRadius(params[key])
-                  break
+                  layer.setRadius(params[key]);
+                  break;
                 case 'gradient':
-                  layer.setGradient(params[key])
-                  break
+                  layer.setGradient(params[key]);
+                  break;
                 case 'visible':
-                  layer.setVisible(params[key])
-                  break
+                  layer.setVisible(params[key]);
+                  break;
                 case 'opacity':
-                  layer.setOpacity(params[key])
-                  break
+                  layer.setOpacity(params[key]);
+                  break;
               }
             }
           }
         }
       }
-      return layer
+      return layer;
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
 
@@ -474,20 +509,20 @@ class Feature extends mixin(Layer, Geometry) {
    */
   removeFeatureByLayerName (layerName, fast) {
     try {
-      let layer = this.getLayerByLayerName(layerName)
-      let features = []
+      let layer = this.getLayerByLayerName(layerName);
+      let features = [];
       if (layer && layer instanceof ol.layer.Vector) {
-        const source = layer.getSource()
+        const source = layer.getSource();
         if (source && source.clear) {
           if (source.getFeatures) {
-            features = source.getFeatures()
+            features = source.getFeatures();
           }
-          source.clear((fast || false))
+          source.clear(fast || false);
         }
       }
-      return features
+      return features;
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
 
@@ -497,14 +532,14 @@ class Feature extends mixin(Layer, Geometry) {
    * @returns {Array}
    */
   removeFeatureByLayerNames (layerNames) {
-    let features = []
+    let features = [];
     if (layerNames && Array.isArray(layerNames) && layerNames.length > 0) {
       layerNames.forEach(item => {
-        features = features.concat(this.removeFeatureByLayerName(item))
-      })
-      return features
+        features = features.concat(this.removeFeatureByLayerName(item));
+      });
+      return features;
     } else {
-      console.info('传入的不是数组！')
+      console.info('传入的不是数组！');
     }
   }
 
@@ -514,15 +549,15 @@ class Feature extends mixin(Layer, Geometry) {
    */
   removeFeature (feature) {
     if (feature && feature instanceof ol.Feature) {
-      let tragetLayer = this.getLayerByFeature(feature)
+      let tragetLayer = this.getLayerByFeature(feature);
       if (tragetLayer) {
-        let source = tragetLayer.getSource()
+        let source = tragetLayer.getSource();
         if (source && source.removeFeature) {
-          source.removeFeature(feature)
+          source.removeFeature(feature);
         }
       }
     } else {
-      throw new Error('传入的不是要素!')
+      throw new Error('传入的不是要素!');
     }
   }
 
@@ -532,33 +567,33 @@ class Feature extends mixin(Layer, Geometry) {
    * @param layerName
    */
   removeFeatureById (id, layerName) {
-    let feature
+    let feature;
     if (this.map && id) {
       if (layerName) {
-        let layer = this.getLayerByLayerName(layerName)
+        let layer = this.getLayerByLayerName(layerName);
         if (layer && layer.getSource) {
-          let source = layer.getSource()
+          let source = layer.getSource();
           if (source && source.getFeatureById) {
-            feature = source.getFeatureById(id)
+            feature = source.getFeatureById(id);
             if (feature && feature instanceof ol.Feature) {
-              source.removeFeature(feature)
+              source.removeFeature(feature);
             }
           }
         }
       } else {
-        let layers = this.getAllLayers()
+        let layers = this.getAllLayers();
         layers.every(layer => {
-          feature = this.getFeatureFromLayer(layer, id)
+          feature = this.getFeatureFromLayer(layer, id);
           if (feature && feature instanceof ol.Feature) {
-            layer.getSource().removeFeature(feature)
-            return false
+            layer.getSource().removeFeature(feature);
+            return false;
           } else {
-            return true
+            return true;
           }
-        })
+        });
       }
     }
-    return feature
+    return feature;
   }
 
   /**
@@ -567,15 +602,15 @@ class Feature extends mixin(Layer, Geometry) {
    * @param layerName
    */
   removeFeatureByIds (ids, layerName) {
-    let features = []
+    let features = [];
     if (ids && Array.isArray(ids) && ids.length > 0) {
       ids.forEach(item => {
-        features.push(this.removeFeatureById(item, layerName))
-      })
+        features.push(this.removeFeatureById(item, layerName));
+      });
     } else {
-      console.info('id为空或者不是数组！')
+      console.info('id为空或者不是数组！');
     }
-    return features
+    return features;
   }
 
   /**
@@ -586,51 +621,51 @@ class Feature extends mixin(Layer, Geometry) {
    * @returns {*}
    */
   highLightFeature (key, style, keep) {
-    if (!this.map) return
+    if (!this.map) return;
     if (key && key instanceof ol.Feature) {
       if (style && style instanceof ol.style.Style) {
-        key.setStyle(style)
+        key.setStyle(style);
       } else if (isFunction(style)) {
-        key.setStyle(style)
+        key.setStyle(style);
       } else if (typeof style === 'object') {
-        let st = new olStyleFactory(style)
-        key.setStyle(st)
+        let st = new olStyleFactory(style);
+        key.setStyle(st);
       } else {
-        let selectStyle = key.get('selectStyle')
+        let selectStyle = key.get('selectStyle');
         if (selectStyle && selectStyle instanceof ol.style.Style) {
-          key.setStyle(selectStyle)
+          key.setStyle(selectStyle);
         } else if (isFunction(selectStyle)) {
-          key.setStyle(style)
+          key.setStyle(style);
         } else if (typeof selectStyle === 'object') {
-          let st = new olStyleFactory(selectStyle)
-          key.setStyle(st)
+          let st = new olStyleFactory(selectStyle);
+          key.setStyle(st);
         }
       }
-      return key
-    } else if (key && (typeof key === 'string') && key.trim() !== "''") {
-      let feature = this.getFeatureById(key)
+      return key;
+    } else if (key && typeof key === 'string' && key.trim() !== "''") {
+      let feature = this.getFeatureById(key);
       if (feature && feature instanceof ol.Feature) {
         if (style && style instanceof ol.style.Style) {
-          feature.setStyle(style)
+          feature.setStyle(style);
         } else if (isFunction(style)) {
-          feature.setStyle(style)
+          feature.setStyle(style);
         } else if (typeof style === 'object') {
-          let st = new olStyleFactory(style)
-          feature.setStyle(st)
+          let st = new olStyleFactory(style);
+          feature.setStyle(st);
         } else {
-          let selectStyle = feature.get('selectStyle')
+          let selectStyle = feature.get('selectStyle');
           if (selectStyle && selectStyle instanceof ol.style.Style) {
-            feature.setStyle(selectStyle)
+            feature.setStyle(selectStyle);
           } else if (isFunction(style)) {
-            feature.setStyle(selectStyle)
+            feature.setStyle(selectStyle);
           } else if (typeof selectStyle === 'object') {
-            let st = new olStyleFactory(selectStyle)
-            feature.setStyle(st)
+            let st = new olStyleFactory(selectStyle);
+            feature.setStyle(st);
           }
         }
-        feature.set('keepStyle', keep)
+        feature.set('keepStyle', keep);
       }
-      return feature
+      return feature;
     }
   }
 
@@ -642,56 +677,56 @@ class Feature extends mixin(Layer, Geometry) {
    * @returns {*}
    */
   unHighLightFeature (key, style, unKeep) {
-    if (!this.map) return
+    if (!this.map) return;
     if (key && key instanceof ol.Feature) {
-      if (!unKeep && key.get('keepStyle')) return key
-      key.set('keepStyle', false)
+      if (!unKeep && key.get('keepStyle')) return key;
+      key.set('keepStyle', false);
       if (style && style instanceof ol.style.Style) {
-        key.setStyle(style)
+        key.setStyle(style);
       } else if (isFunction(style)) {
-        key.setStyle(style)
+        key.setStyle(style);
       } else if (typeof style === 'object') {
-        let st = new olStyleFactory(style)
-        key.setStyle(st)
+        let st = new olStyleFactory(style);
+        key.setStyle(st);
       } else {
-        let normalStyle = key.get('style')
+        let normalStyle = key.get('style');
         if (normalStyle && normalStyle instanceof ol.style.Style) {
-          key.setStyle(normalStyle)
+          key.setStyle(normalStyle);
         } else if (isFunction(normalStyle)) {
-          key.setStyle(normalStyle)
+          key.setStyle(normalStyle);
         } else if (typeof normalStyle === 'object') {
-          let st = new olStyleFactory(normalStyle)
-          key.setStyle(st)
+          let st = new olStyleFactory(normalStyle);
+          key.setStyle(st);
         }
       }
-      return key
-    } else if (key && (typeof key === 'string') && key.trim() !== "''") {
-      let feature = this.getFeatureById(key)
+      return key;
+    } else if (key && typeof key === 'string' && key.trim() !== "''") {
+      let feature = this.getFeatureById(key);
       if (feature && feature instanceof ol.Feature) {
-        if (!unKeep && feature.get('keepStyle')) return feature
-        feature.set('keepStyle', false)
+        if (!unKeep && feature.get('keepStyle')) return feature;
+        feature.set('keepStyle', false);
         if (style && style instanceof ol.style.Style) {
-          feature.setStyle(style)
+          feature.setStyle(style);
         } else if (isFunction(style)) {
-          feature.setStyle(style)
+          feature.setStyle(style);
         } else if (typeof style === 'object') {
-          let st = new olStyleFactory(style)
-          feature.setStyle(st)
+          let st = new olStyleFactory(style);
+          feature.setStyle(st);
         } else {
-          let normalStyle = feature.get('style')
+          let normalStyle = feature.get('style');
           if (normalStyle && normalStyle instanceof ol.style.Style) {
-            feature.setStyle(normalStyle)
+            feature.setStyle(normalStyle);
           } else if (isFunction(normalStyle)) {
-            feature.setStyle(style)
+            feature.setStyle(style);
           } else if (typeof normalStyle === 'object') {
-            let st = new olStyleFactory(normalStyle)
-            feature.setStyle(st)
+            let st = new olStyleFactory(normalStyle);
+            feature.setStyle(st);
           }
         }
       }
-      return feature
+      return feature;
     }
   }
 }
 
-export default Feature
+export default Feature;

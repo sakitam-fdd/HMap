@@ -11,7 +11,10 @@
   "namespace": "HMap",
   "scripts": {
     "dev": "rollup -wm -c build/rollup-dev-config.js",
-    "build": "node build/rollup-prod-config.js"
+    "build": "node build/rollup-prod-config.js",
+    "prettify": "prettier --write src/*.js src/**/*.js",
+    "lint": "eslint --ext .js src",
+    "lint:fix": "eslint --fix --ext .js src"
   },
   "keywords": [
     "webgis",
@@ -52,6 +55,7 @@
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
     "postcss": "^6.0.17",
+    "prettier": "^1.13.7",
     "rollup": "^0.55.1",
     "rollup-plugin-babel": "^3.0.3",
     "rollup-plugin-buble": "^0.18.0",
