@@ -41,6 +41,7 @@ class Map {
    * @param layer
    */
   removeLayer (layer) {
+    this._removeSelectFeature(null, true);
     this.map.removeLayer(layer);
   }
 

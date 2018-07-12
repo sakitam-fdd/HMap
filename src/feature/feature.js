@@ -509,6 +509,7 @@ class Feature extends mixin(Layer, Geometry) {
    */
   removeFeatureByLayerName (layerName, fast) {
     try {
+      this._removeSelectFeature(null, true);
       let layer = this.getLayerByLayerName(layerName);
       let features = [];
       if (layer && layer instanceof ol.layer.Vector) {
@@ -533,6 +534,7 @@ class Feature extends mixin(Layer, Geometry) {
    */
   removeFeatureByLayerNames (layerNames) {
     let features = [];
+    this._removeSelectFeature(null, true);
     if (layerNames && Array.isArray(layerNames) && layerNames.length > 0) {
       layerNames.forEach(item => {
         features = features.concat(this.removeFeatureByLayerName(item));
@@ -548,6 +550,7 @@ class Feature extends mixin(Layer, Geometry) {
    * @param feature
    */
   removeFeature (feature) {
+    this._removeSelectFeature(feature, false);
     if (feature && feature instanceof ol.Feature) {
       let tragetLayer = this.getLayerByFeature(feature);
       if (tragetLayer) {
@@ -577,6 +580,7 @@ class Feature extends mixin(Layer, Geometry) {
             feature = source.getFeatureById(id);
             if (feature && feature instanceof ol.Feature) {
               source.removeFeature(feature);
+              this._removeSelectFeature(feature, false);
             }
           }
         }
@@ -586,6 +590,7 @@ class Feature extends mixin(Layer, Geometry) {
           feature = this.getFeatureFromLayer(layer, id);
           if (feature && feature instanceof ol.Feature) {
             layer.getSource().removeFeature(feature);
+            this._removeSelectFeature(feature, false);
             return false;
           } else {
             return true;

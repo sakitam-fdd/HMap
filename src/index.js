@@ -483,6 +483,27 @@ class HMap extends mixin(
   }
 
   /**
+   * 移除选择交互的要素，避免清除不掉要素
+   * @param feature
+   * @param clearHole
+   * @private
+   */
+  _removeSelectFeature (feature, clearHole) {
+    if (this.selectInteraction) {
+      const features = this.selectInteraction.getFeatures().getArray();
+      if (features && features.length > 0) {
+        for (let i = 0; i < features.length; i++) {
+          if (clearHole) {
+            this.selectInteraction.getFeatures().remove(features[i]);
+          } else if (!clearHole && features[i] === feature) {
+            this.selectInteraction.getFeatures().remove(features[i]);
+          }
+        }
+      }
+    }
+  }
+
+  /**
    * 添加要素选择事件
    * @param event
    * @private

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>要素选择交互</title>
+  <link rel="stylesheet" href="../../dist/hmap.css">
+  <style type="text/css">
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    .menu {
+      position: absolute;
+      width: 100%;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .base-button {
+      height: 30px;
+      line-height: 30px;
+      background: #1b9de8;
+      color: #ffffff;
+      border-radius: 6px;
+      border: 1px solid #bfcbd9;
+      padding: 0 10px;
+      box-shadow: 0 4px 10px rgba(73, 127, 255, .42);
+      transition: .3s;
+    }
+
+    .base-button:hover {
+      cursor: pointer;
+      border-color: #1b9de8;
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+<div id="map">
+  <div class="menu">
+    <button class="base-button" id="addPoint">添加单点</button>
+    <button class="base-button" id="addPoints">添加多点</button>
+    <button class="base-button" id="removePointByLayerName">通过layerName移除点</button>
+    <button class="base-button" id="removePointById">通过id移除点</button>
+  </div>
+</div>
+<script src="../../dist/hmap.js"></script>
+<script src="../assets/lib/JSLite.min.js"></script>
+<script type="text/javascript">
+  var Map = new HMap({
+    target: 'map',
+    controls: {
+      scaleLine: true
+    },
+    view: {
+      center: [113.53450137499999, 34.44104525],
+      projection: 'EPSG:4326',
+      zoom: 5, // resolution
+      maxZoom: 17
+    },
+    baseLayers: [
+      {
+        layerName: 'Google',
+        isDefault: true,
+        layerType: 'Google',
+        layerUrl: 'http://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}'
+      }
+    ]
+  });
+  var points = [], sel = null;
+  Map.on('loadMapSuccess', function (event) {
+    if (event) {
+      sel = new ol.interaction.PointerEvents();
+      Map.addInteraction(sel);
+      fetch('../assets/json/points.json', {
+        method: 'GET'
+      }).then(function(response) {
+        return response.json();
+      }).then(function(json) {
+        points = json['data']['features']
+      }).catch(function (error) {
+        console.error(error)
+      });
+    }
+  });
+
+  var points_;
+  $('#addPoint').on('click', function () {
+    points_ = Map.addPoint(points[0], {
+      layerName: 'point',
+      zoomToExtent: true,
+      selectable: true,
+      moveable: true,
+      style: {
+        image: {
+          type: 'icon',
+          image: {
+            imageSrc: '../assets/images/point2.png',
+            imageAnchor: [0.5, 1]
+          }
+        }
+      },
+      selectStyle: {
+        image: {
+          type: 'icon',
+          image: {
+            imageSrc: '../assets/images/point2o.png',
+            imageAnchor: [0.5, 1]
+          }
+        }
+      }
+    });
+    var layer = Map.getLayerByFeature(points_)
+    console.log(layer)
+  });
+  $('#addPoints').on('click', function () {
+    var _points = points.map(function (item, index) {
+      item['attributes']['style'] = {
+        image: {
+          type: 'icon',
+          image: {
+            imageSrc: '../assets/images/point1.png',
+            imageAnchor: [0.5, 1]
+          }
+        },
+        text: {
+          text: (index + 1).toString(),
+          textFont: 'normal normal 100 12px ArialMT',
+          textOffsetX: 3,
+          textOffsetY: -15,
+          textOverflow: true,
+          textFill: {
+            fillColor: '#FFF'
+          },
+          textStroke: {
+            strokeColor: '#FFF'
+          }
+        },
+        zIndex: index
+      };
+      item['attributes']['selectStyle'] = {
+        image: {
+          type: 'icon',
+          image: {
+            imageSrc: '../assets/images/point1.png',
+            imageAnchor: [0.5, 1]
+          }
+        },
+        text: {
+          text: (index + 1).toString(),
+          textFont: 'normal normal 100 12px ArialMT',
+          textOverflow: true,
+          textOffsetX: 3,
+          textOffsetY: -15,
+          textFill: {
+            fillColor: '#FFF'
+          },
+          textStroke: {
+            strokeColor: '#FFF'
+          }
+        },
+        zIndex: index
+      };
+      return item
+    })
+    Map.addPoints(_points, {
+      layerName: 'points',
+      zoomToExtent: true,
+      selectable: true,
+      moveable: true,
+      style: {
+        image: {
+          type: 'icon',
+          image: {
+            imageSrc: '../assets/images/point2.png',
+            imageAnchor: [0.5, 1]
+          }
+        }
+      }
+    });
+    Map.getMap().on('feature:onmove', function (event) {
+    })
+  });
+  $('#removePointByLayerName').on('click', function () {
+    Map.removeFeatureByLayerName('points');
+    sel.changed();
+  });
+  $('#removePointById').on('click', function () {
+    Map.removeFeatureById('{CF7D9F39-3549-4068-8648-76F5E06C0295}')
+  });
+</script>
+</body>
+</html>
