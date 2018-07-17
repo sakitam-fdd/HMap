@@ -108,28 +108,37 @@ class DozensLayer extends ol.layer.Image {
     const that = this;
     if (!this.getMap()) return;
     if (!this._context) this._context = this.getContext();
-    const _length = this.features.length;
     const imageStyle = that._style.getImage();
-    function render_ (beauty) {
-      for (let i = 0; i < _length; i++) {
-        const geometry = that.features[i].getGeometry();
-        const coordinates = geometry && geometry.getCoordinates();
-        if (coordinates) {
-          const pixel = that.getMap().getPixelFromCoordinate(coordinates);
-          const imageStyle = that._style.getImage();
-          if (imageStyle) {
-            // imageStyle.load()
-          }
-          const size = imageStyle.getSize();
-          that._context.drawImage(beauty, pixel[0], pixel[1], size[0], size[1]);
-        }
+    if (imageStyle) {
+      const _image = new Image();
+      _image.src = imageStyle.getSrc();
+      if (_image.complete) {
+        this.render_(_image);
+      } else {
+        _image.onload = function () {
+          that.render_(_image);
+        };
+        _image.onerror = function () {
+        };
       }
     }
-    if (imageStyle) {
-      const beauty = new Image();
-      beauty.src = imageStyle.getSrc();
-      if (beauty.complete) {
-        render_(beauty);
+  }
+
+  render_ (_image) {
+    const _length = this.features.length;
+    const _scale = this._style.getImage().getScale() || 1;
+    const _anchor = this._style.getImage().getAnchor() || [0.5, 0.5];
+    for (let i = 0; i < _length; i++) {
+      const geometry = this.features[i].getGeometry();
+      const coordinates = geometry && geometry.getCoordinates();
+      if (coordinates) {
+        const pixel = this.getMap().getPixelFromCoordinate(coordinates);
+        const imageStyle = this._style.getImage();
+        if (imageStyle) {
+          // imageStyle.load()
+        }
+        const size = imageStyle.getSize();
+        this._context.drawImage(_image, pixel[0] - _anchor[0], pixel[1] - _anchor[1], size[0] * _scale, size[1] * _scale);
       }
     }
   }
@@ -218,6 +227,9 @@ class DozensLayer extends ol.layer.Image {
    */
   getMap () {
     return this.get('originMap');
+  }
+
+  getClosestPoint () {
   }
 }
 

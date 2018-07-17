@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>添加点要素</title>
+  <link rel="stylesheet" href="../../dist/hmap.css">
+  <style type="text/css">
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    .menu {
+      position: absolute;
+      width: 100%;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .base-button {
+      height: 30px;
+      line-height: 30px;
+      background: #1b9de8;
+      color: #ffffff;
+      border-radius: 6px;
+      border: 1px solid #bfcbd9;
+      padding: 0 10px;
+      box-shadow: 0 4px 10px rgba(73, 127, 255, .42);
+      transition: .3s;
+    }
+
+    .base-button:hover {
+      cursor: pointer;
+      border-color: #1b9de8;
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+<div id="map">
+  <div class="menu">
+    <button class="base-button" id="addPoint">添加单点</button>
+    <button class="base-button" id="addPoints">添加多点</button>
+    <button class="base-button" id="removePointByLayerName">通过layerName移除点</button>
+    <button class="base-button" id="removePointById">通过id移除点</button>
+    <button class="base-button" id="highLightPointById">通过id高亮点</button>
+    <button class="base-button" id="unHighLightPointById">通过id取消高亮点</button>
+  </div>
+</div>
+<script src="../../dist/hmap.js"></script>
+<script type="text/javascript">
+  var Map = new HMap({
+    target: 'map',
+    controls: {
+      scaleLine: true
+    },
+    view: {
+      center: [113.53450137499999, 34.44104525],
+      projection: 'EPSG:4326',
+      zoom: 5, // resolution
+      maxZoom: 17
+    },
+    baseLayers: [
+      {
+        layerName: 'Google',
+        isDefault: true,
+        layerType: 'Google',
+        layerUrl: 'http://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}'
+      }
+    ]
+  });
+  var points_ = Map.addPoint({
+    "layerId": 0,
+    "layerName": "GISDB.GIS_QL",
+    "displayFieldName": "ID",
+    "value": "DC551BBC908046179DA85297D18ED49F",
+    "attributes": {
+      // "id": '111',
+      "OBJECTID": "6284",
+      "唯一标示": "DC551BBC908046179DA85297D18ED49F",
+      "桥梁代码": "S102610928L0430",
+      "桥梁名称": "磨房沟桥",
+      "路线编码": "S102",
+      "路线名称": "西旬线",
+      "桥梁中心桩号": "174.314",
+      "偏移桩号": "0",
+      "桥梁全长": "25",
+      "桥面全宽": "8.6",
+      "桥面净宽": "7",
+      "上下行方向": "1",
+      "桥梁跨径分类": "4",
+      "设计荷载等级": "4",
+      "技术状况评定等级": "1",
+      "按使用年限分类": "1",
+      "单位信息": "4ddec42f77da426fb4e80659c6af2e82",
+      "导入时间": "2015/3/3 16:03:55",
+      "导入人": "c48d391f-fc57-4f3c-824a-5b3b8d6cca58",
+      "行政区划编码": "610928",
+      "SHAPE": "Point",
+      "KYDWDM": "Null",
+      "KYDWLX": "Null",
+      "KYDWMC": "Null",
+      "THDJ": "Null",
+      "SFHTLJ": "Null",
+      "PDRQ": "Null",
+      "JTGZCSDM": "Null",
+      "JTGZCSMC": "Null",
+      "PATH": "Null"
+    },
+    "geometryType": "esriGeometryPoint",
+    "geometry": "POINT (109.16013576 32.996383980000019)"
+  }, {
+    layerName: 'point',
+    style: {
+      image: {
+        type: 'icon',
+        image: {
+          imageSrc: '../assets/images/point2.png',
+          imageAnchor: [0.5, 1]
+        }
+      }
+    },
+    selectStyle: {
+      image: {
+        type: 'icon',
+        image: {
+          imageSrc: '../assets/images/point2o.png',
+          imageAnchor: [0.5, 1]
+        }
+      }
+    },
+    zoomToExtent: true,
+    selectable: false,
+    // moveable: true,
+  });
+  var layer = Map.getLayerByFeature(points_)
+  console.log(layer)
+</script>
+</body>
+</html>

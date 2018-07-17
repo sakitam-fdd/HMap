@@ -45,23 +45,21 @@
   var vectorLayer = new ol.layer.DozensLayer({
     id: 'name1',
     map: map,
+    projection: 'EPSG:4326',
     style: new ol.style.Style({
       image: new ol.style.Icon(({
         anchor: [0.5, 1],
         anchorXUnits: 'fraction',
         anchorYUnits: 'fraction',
         src: '../assets/images/point1.png',
-        size: [32, 32]
+        size: [32, 32],
+        scale: 1
       }))
     })
   });
   map.addLayer(vectorLayer);
 
-  var beauty = new Image()
-  beauty.src = '../assets/images/point1.png';
-  if (beauty.complete) {
-    vectorLayer.addFeatures(myMarkers);
-  }
+  vectorLayer.addFeatures(myMarkers);
 </script>
 </body>
 </html>
