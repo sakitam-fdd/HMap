@@ -30,6 +30,8 @@
   },
   "dependencies": {
     "core-js": "^2.5.3",
+    "flatbush": "^3.0.0",
+    "kdbush": "^2.0.1",
     "lodash": "^4.17.5",
     "openlayers": "^4.6.4",
     "proj4": "^2.4.4",

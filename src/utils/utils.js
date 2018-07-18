@@ -3,6 +3,8 @@
  * @desc 工具类
  */
 
+import ol from "openlayers";
+
 /** Used to infer the `Object` constructor. */
 const objectProto = Object.prototype;
 const toString = objectProto.toString;
@@ -216,6 +218,25 @@ const coalesce = (...args) => {
   return args.filter(value => value != null).shift();
 };
 
+const toRadians = (angleInDegrees) => {
+  return angleInDegrees * Math.PI / 180;
+};
+
+const getDistance = (c1, c2, radius) => {
+  const lat1 = toRadians(c1[1]);
+  const lat2 = toRadians(c2[1]);
+  const deltaLatBy2 = (lat2 - lat1) / 2;
+  const deltaLonBy2 = toRadians(c2[0] - c1[0]) / 2;
+  const a = Math.sin(deltaLatBy2) * Math.sin(deltaLatBy2) +
+    Math.sin(deltaLonBy2) * Math.sin(deltaLonBy2) *
+    Math.cos(lat1) * Math.cos(lat2);
+  return 2 * radius * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+};
+
+const formDistance = (distance, radius) => {
+  const radians = distance / (2 * radius);
+};
+
 export {
   coalesce,
   camelCase,
@@ -233,5 +254,6 @@ export {
   has,
   replaceNode,
   checkBrowser,
+  getDistance,
   toConsumableArray
 };

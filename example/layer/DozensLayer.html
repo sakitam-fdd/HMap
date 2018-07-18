@@ -24,7 +24,7 @@
     view: new ol.View({
       center: [113.53450137499999, 34.44104525],
       projection: 'EPSG:4326',
-      zoom: 8
+      zoom: 6
     }),
     layers: [
       new ol.layer.Tile({
@@ -34,9 +34,10 @@
     target: 'map'
   });
   var myMarkers = [];
-  for (var i = 0; i < 200000; i++) {
+  var ext = map.getView().calculateExtent(map.getSize());
+  for (var i = 0; i < 5; i++) {
     myMarkers.push(new ol.Feature({
-      geometry: new ol.geom.Point([Math.random() + 113.53450137499999, Math.random()  + 34.44104525]),
+      geometry: new ol.geom.Point([ext[0] + (ext[2] - ext[0]) * Math.random(), ext[1] + (ext[3] - ext[1]) * Math.random()]),
       population: 4000,
       rainfall: 500
     }));
@@ -60,6 +61,13 @@
   map.addLayer(vectorLayer);
 
   vectorLayer.addFeatures(myMarkers);
+
+  map.on("pointermove", function(event){
+    var point = vectorLayer.getClosestPoint(event.coordinate, 1000);
+    if (point.length > 0) {
+      console.log(point);
+    }
+  });
 </script>
 </body>
 </html>

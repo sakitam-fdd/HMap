@@ -1,3 +1,4 @@
+import kdbush from 'kdbush';
 import ol from 'openlayers';
 
 /**
@@ -57,6 +58,16 @@ class DozensLayer extends ol.layer.Image {
      */
     this.options = options;
 
+    /**
+     * 计算工具
+     * @type {ol.Sphere}
+     */
+    this.wgs84Sphere = new ol.Sphere(
+      typeof this.options['sphere'] === 'number'
+        ? this.options['sphere']
+        : 6378137
+    );
+
     this.setSource(
       new ol.source.ImageCanvas({
         logo: options.logo,
@@ -82,6 +93,7 @@ class DozensLayer extends ol.layer.Image {
 
   addFeatures (features) {
     this.features = this.features.concat(features);
+    this.originData = kdbush(this.features, (p) => p.getGeometry().getCoordinates()[0], (p) => p.getGeometry().getCoordinates()[1]);
   }
 
   getFeatures () {
@@ -104,7 +116,12 @@ class DozensLayer extends ol.layer.Image {
     this._style = style;
   }
 
-  _drawFeature () {
+  /**
+   * draw feature
+   * @param extent
+   * @private
+   */
+  _drawFeature (extent) {
     const that = this;
     if (!this.getMap()) return;
     if (!this._context) this._context = this.getContext();
@@ -113,10 +130,10 @@ class DozensLayer extends ol.layer.Image {
       const _image = new Image();
       _image.src = imageStyle.getSrc();
       if (_image.complete) {
-        this.render_(_image);
+        this.render_(_image, extent);
       } else {
         _image.onload = function () {
-          that.render_(_image);
+          that.render_(_image, extent);
         };
         _image.onerror = function () {
         };
@@ -124,12 +141,19 @@ class DozensLayer extends ol.layer.Image {
     }
   }
 
-  render_ (_image) {
-    const _length = this.features.length;
+  /**
+   * render
+   * @param _image
+   * @param extent
+   * @private
+   */
+  render_ (_image, extent) {
+    const viewFeature = this.originData.range(...extent).map((id) => this.features[id]);
+    const _length = viewFeature.length;
     const _scale = this._style.getImage().getScale() || 1;
     const _anchor = this._style.getImage().getAnchor() || [0.5, 0.5];
     for (let i = 0; i < _length; i++) {
-      const geometry = this.features[i].getGeometry();
+      const geometry = viewFeature[i].getGeometry();
       const coordinates = geometry && geometry.getCoordinates();
       if (coordinates) {
         const pixel = this.getMap().getPixelFromCoordinate(coordinates);
@@ -198,7 +222,7 @@ class DozensLayer extends ol.layer.Image {
     }
     if (resolution <= this.get('maxResolution')) {
       const context = this.getContext();
-      this._drawFeature();
+      this._drawFeature(extent);
       this.get('render') &&
         this.get('render')({
           context: context,
@@ -229,7 +253,32 @@ class DozensLayer extends ol.layer.Image {
     return this.get('originMap');
   }
 
-  getClosestPoint () {
+  transformRadius (
+    center,
+    meterRadius
+  ) {
+    try {
+      let lastCoords = this.wgs84Sphere.offset(
+        center,
+        meterRadius,
+        (270 / 360) * 2 * Math.PI
+      ); // 计算偏移量
+      let [ptx, pty] = [center[0] - lastCoords[0], center[1] - lastCoords[1]];
+      return Math.sqrt(Math.pow(ptx, 2) + Math.pow(pty, 2));
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  /**
+   * 获取最近的要素
+   * @param coords
+   * @param tolerance
+   * @returns {*}
+   */
+  getClosestPoint (coords, tolerance) {
+    const radius_ = this.transformRadius(coords, tolerance);
+    return this.originData.within(...coords, radius_).map((id) => this.features[id]);
   }
 }
 
