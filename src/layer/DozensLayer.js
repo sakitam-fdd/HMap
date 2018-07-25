@@ -119,9 +119,10 @@ class DozensLayer extends ol.layer.Image {
   /**
    * draw feature
    * @param extent
+   * @param pixelRatio
    * @private
    */
-  _drawFeature (extent) {
+  _drawFeature (extent, pixelRatio) {
     const that = this;
     if (!this.getMap()) return;
     if (!this._context) this._context = this.getContext();
@@ -130,10 +131,10 @@ class DozensLayer extends ol.layer.Image {
       const _image = new Image();
       _image.src = imageStyle.getSrc();
       if (_image.complete) {
-        this.render_(_image, extent);
+        this.render_(_image, extent, pixelRatio);
       } else {
         _image.onload = function () {
-          that.render_(_image, extent);
+          that.render_(_image, extent, pixelRatio);
         };
         _image.onerror = function () {
         };
@@ -145,9 +146,10 @@ class DozensLayer extends ol.layer.Image {
    * render
    * @param _image
    * @param extent
+   * @param pixelRatio
    * @private
    */
-  render_ (_image, extent) {
+  render_ (_image, extent, pixelRatio) {
     const viewFeature = this.originData.range(...extent).map((id) => this.features[id]);
     const _length = viewFeature.length;
     const _scale = this._style.getImage().getScale() || 1;
@@ -162,7 +164,7 @@ class DozensLayer extends ol.layer.Image {
           // imageStyle.load()
         }
         const size = imageStyle.getSize();
-        this._context.drawImage(_image, pixel[0] - _anchor[0], pixel[1] - _anchor[1], size[0] * _scale, size[1] * _scale);
+        this._context.drawImage(_image, (pixel[0] - _anchor[0]) * pixelRatio, (pixel[1] - _anchor[1]) * pixelRatio, size[0] * _scale * pixelRatio, size[1] * _scale * pixelRatio);
       }
     }
   }
@@ -222,7 +224,7 @@ class DozensLayer extends ol.layer.Image {
     }
     if (resolution <= this.get('maxResolution')) {
       const context = this.getContext();
-      this._drawFeature(extent);
+      this._drawFeature(extent, pixelRatio);
       this.get('render') &&
         this.get('render')({
           context: context,

@@ -128,7 +128,8 @@
       return;
     }
     var context = event.context;
-    draw(context, _type === '1' ? 'Polygon' : 'MultiPolygon', coordinates)
+    event.frameState.animate = true;
+    draw(context, _type === '1' ? 'Polygon' : 'MultiPolygon', coordinates, event.frameState.pixelRatio)
   });
 
   image.on('postcompose', function(event) {
@@ -144,18 +145,19 @@
    * @param context Canvas context
    * @param type [注意数据是单面还是多面]
    * @param coordinates [面状空间数据集合]
+   * @param pixelRatio
    */
-  function draw (context, type, coordinates) {
+  function draw (context, type, coordinates, pixelRatio) {
     context.save();
     context.beginPath();
     switch (type) {
       case 'Polygon':
-        drawPolygon(context, coordinates);
+        drawPolygon(context, coordinates, pixelRatio);
         break;
       case 'MultiPolygon':
         for (let i = 0; i < coordinates.length; i++) {
           let polygon = coordinates[i];
-          drawPolygon(context, polygon);
+          drawPolygon(context, polygon, pixelRatio);
         }
         context.closePath();
         break;
@@ -168,18 +170,19 @@
    * 构造面的形状便于裁剪
    * @param context
    * @param coordinates
+   * @param pixelRatio
    */
-  function drawPolygon (context, coordinates) {
+  function drawPolygon (context, coordinates, pixelRatio) {
     let [pixel, pixel_] = [];
     for (let i = 0; i < coordinates.length; i++) {
       let coordinate = coordinates[i];
       pixel = map.getPixelFromCoordinate(coordinate[0]);
-      context.moveTo(pixel[0], pixel[1]);
+      context.moveTo(pixel[0] * pixelRatio, pixel[1] * pixelRatio);
       for (let j = 1; j < coordinate.length; j++) {
         pixel_ = map.getPixelFromCoordinate(coordinate[j]);
-        context.lineTo(pixel_[0], pixel_[1]);
+        context.lineTo(pixel_[0] * pixelRatio, pixel_[1] * pixelRatio);
       }
-      context.lineTo(pixel[0], pixel[1]);
+      context.lineTo(pixel[0] * pixelRatio, pixel[1] * pixelRatio);
     }
   }
 </script>
