@@ -3,8 +3,6 @@
  * @desc 工具类
  */
 
-import ol from "openlayers";
-
 /** Used to infer the `Object` constructor. */
 const objectProto = Object.prototype;
 const toString = objectProto.toString;
@@ -231,10 +229,6 @@ const getDistance = (c1, c2, radius) => {
     Math.sin(deltaLonBy2) * Math.sin(deltaLonBy2) *
     Math.cos(lat1) * Math.cos(lat2);
   return 2 * radius * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-};
-
-const formDistance = (distance, radius) => {
-  const radians = distance / (2 * radius);
 };
 
 export {
