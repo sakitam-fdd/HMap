@@ -35,7 +35,7 @@
   });
   var myMarkers = [];
   var ext = map.getView().calculateExtent(map.getSize());
-  for (var i = 0; i < 5; i++) {
+  for (var i = 0; i < 5000; i++) {
     myMarkers.push(new ol.Feature({
       geometry: new ol.geom.Point([ext[0] + (ext[2] - ext[0]) * Math.random(), ext[1] + (ext[3] - ext[1]) * Math.random()]),
       population: 4000,
