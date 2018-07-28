@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>ARCGIS图层</title>
+  <link rel="stylesheet" href="../../dist/hmap.css">
+  <style type="text/css">
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+<div id="map"></div>
+<script src="../../dist/hmap.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dat.gui/build/dat.gui.js"></script>
+<script type="text/javascript">
+  var token = '4XqCF73pYq90koSeglV9P-czw2sfOyW6XZIfdlHcq8bBiXO16AmGr95f_LbSajVo';
+  var map, base, image;
+  /**
+   * 获取范围
+   * @param data
+   * @returns {*[]}
+   * @private
+   */
+  function getExtent_ (data) {
+    return [data['fullExtent'].xmin, data['fullExtent'].ymin, data['fullExtent'].xmax, data['fullExtent'].ymax]
+  }
+
+  /**
+   * 获取切片原点
+   * @param data
+   * @returns {*[]}
+   * @private
+   */
+  function getOrigin_ (data) {
+    return [data.tileInfo.origin.x, data.tileInfo.origin.y]
+  }
+
+  /**
+   * 获取分辨率
+   * @param data
+   * @returns {Array}
+   * @private
+   */
+  function getResolutions_ (data) {
+    const resolutions = []
+    for (let i = 0; i < data['tileInfo']['lods'].length; i++) {
+      resolutions.push(data['tileInfo']['lods'][i].resolution)
+    }
+    return resolutions
+  }
+
+  function init (params) {
+    map = new HMap({
+      target: 'map',
+      view: {
+        center: [12118909.300259633, 4086043.1061670054],
+        projection: 'EPSG:3857',
+        zoom: 5, // resolution
+      },
+      baseLayers: [
+        {
+          layerName: 'ArcGIS',
+          isDefault: true,
+          layerType: 'TileXYZ',
+          tileGrid: {
+            tileSize: 256,
+            extent: params['extent'],
+            origin: params['origin'],
+            resolutions: params['resolutions']
+          },
+          layerUrl: `http://42.236.7.25:6080/arcgis/rest/services/BaseMaps/World2ChinaMapBG/MapServer/tile/{z}/{y}/{x}?token=${token}`
+        }
+      ]
+    });
+    base = map.getLayerByLayerName('ArcGIS');
+    image = map.createGoogleLayer('image', {
+      layerName: 'image',
+      isDefault: false,
+      layerType: 'Google',
+      addLayer: false,
+      create: true,
+      layerUrl: 'http://www.google.cn/maps/vt?lyrs=s@802&gl=cn&x={x}&y={y}&z={z}'
+    });
+    // image = map.createWMTSLayer('image', {
+    //   layerName: 'tianditu',
+    //   isDefault: false,
+    //   addLayer: false,
+    //   create: true,
+    //   layerType: 'TileWMTS',
+    //   projection: 'EPSG:3857',
+    //   levels: 19,
+    //   layer: 'img',
+    //   format: 'tiles',
+    //   matrixSet: 'w',
+    //   layerUrl: 'http://t{0-6}.tianditu.com/img_w/wmts'
+    // });
+    map.addLayer(image);
+    initDataControl()
+  }
+
+  function initDataControl () {
+    var gui = new dat.GUI({
+      nameMap: {
+        radius: 'radius',
+        blur: 'blur',
+        shadow: 'shadow'
+      }
+    });
+    gui.add({
+      image: 0.5,
+      base: 1
+    }, 'base', 0, 1).onFinishChange(base.setOpacity.bind(base));
+    gui.add({
+      image: 0.5,
+      base: 1
+    }, 'image', 0, 1).onFinishChange(image.setOpacity.bind(image));
+  }
+
+  fetch(`http://42.236.7.25:6080/arcgis/rest/services/BaseMaps/World2ChinaMapBG/MapServer?f=pjson&token=${token}`, {
+    method: 'GET'
+  }).then(function(response) {
+    return response.json();
+  }).then(function(json) {
+    init({
+      extent: getExtent_(json),
+      origin: getOrigin_(json),
+      resolutions: getResolutions_(json)
+    })
+  }).catch(function (error) {
+    console.error(error);
+  });
+</script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-import ol from 'openlayers'
+import ol from 'openlayers';
 
 /**
  * 获取所有图层（内部处理）
@@ -6,35 +6,35 @@ import ol from 'openlayers'
  * @returns {Array}
  */
 const getAllLayersInternal = function (layers) {
-  let _target = []
+  let _target = [];
   if (layers.length > 0) {
     layers.forEach(layer => {
       if (layer instanceof ol.layer.Group) {
-        let layers = layer.getLayers().getArray()
-        let _layer = getAllLayersInternal(layers)
+        let layers = layer.getLayers().getArray();
+        let _layer = getAllLayersInternal(layers);
         if (_layer) {
-          _target = _target.concat(_layer)
+          _target = _target.concat(_layer);
         }
       } else {
-        _target.push(layer)
+        _target.push(layer);
       }
-    })
+    });
   }
-  return _target
-}
+  return _target;
+};
 
 /**
  * 获取所有图层（将图层组里面的图层解析出来）
  * @returns {Array}
  */
 const getAllLayers = function (map) {
-  let targetLayers = []
+  let targetLayers = [];
   if (map) {
-    const layers = map.getLayers().getArray()
-    targetLayers = getAllLayersInternal(layers)
+    const layers = map.getLayers().getArray();
+    targetLayers = getAllLayersInternal(layers);
   }
-  return targetLayers
-}
+  return targetLayers;
+};
 
 /**
  * 通过layerName获取图层
@@ -43,13 +43,13 @@ const getAllLayers = function (map) {
  * @returns {*}
  */
 const getLayerByLayerName = function (map, layerName) {
-  let targetLayer = null
+  let targetLayer = null;
   if (map) {
-    const layers = map.getLayers().getArray()
-    targetLayer = getLayerInternal(layers, 'layerName', layerName)
+    const layers = map.getLayers().getArray();
+    targetLayer = getLayerInternal(layers, 'layerName', layerName);
   }
-  return targetLayer
-}
+  return targetLayer;
+};
 
 /**
  * 内部处理获取图层方法
@@ -59,27 +59,27 @@ const getLayerByLayerName = function (map, layerName) {
  * @returns {*}
  */
 const getLayerInternal = function (layers, key, value) {
-  let _target = null
+  let _target = null;
   if (layers.length > 0) {
     layers.every(layer => {
       if (layer instanceof ol.layer.Group) {
-        let layers = layer.getLayers().getArray()
-        _target = getLayerInternal(layers, key, value)
+        let layers = layer.getLayers().getArray();
+        _target = getLayerInternal(layers, key, value);
         if (_target) {
-          return false
+          return false;
         } else {
-          return true
+          return true;
         }
       } else if (layer.get(key) === value) {
-        _target = layer
-        return false
+        _target = layer;
+        return false;
       } else {
-        return true
+        return true;
       }
-    })
+    });
   }
-  return _target
-}
+  return _target;
+};
 
 /**
  * 根据相关键值键名获取图层集合
@@ -89,22 +89,22 @@ const getLayerInternal = function (layers, key, value) {
  * @returns {Array}
  */
 const getLayersArrayInternal = function (layers, key, value) {
-  let _target = []
+  let _target = [];
   if (layers.length > 0) {
     layers.forEach(layer => {
       if (layer instanceof ol.layer.Group) {
-        let layers = layer.getLayers().getArray()
-        let _layer = getLayersArrayInternal(layers, key, value)
+        let layers = layer.getLayers().getArray();
+        let _layer = getLayersArrayInternal(layers, key, value);
         if (_layer) {
-          _target = _target.concat(_layer)
+          _target = _target.concat(_layer);
         }
       } else if (layer.get(key) === value) {
-        _target.push(layer)
+        _target.push(layer);
       }
-    })
+    });
   }
-  return _target
-}
+  return _target;
+};
 
 /**
  * 通过键名键值获取图层（注意键名键值必须是set(key, value)）
@@ -113,13 +113,13 @@ const getLayersArrayInternal = function (layers, key, value) {
  * @param value
  */
 const getLayerByKeyValue = function (map, key, value) {
-  let targetLayer = null
+  let targetLayer = null;
   if (map) {
-    const layers = map.getLayers().getArray()
-    targetLayer = getLayerInternal(layers, key, value)
+    const layers = map.getLayers().getArray();
+    targetLayer = getLayerInternal(layers, key, value);
   }
-  return targetLayer
-}
+  return targetLayer;
+};
 
 /**
  * 通过键名键值获取图层集合（注意键名键值必须是set(key, value)）
@@ -128,13 +128,13 @@ const getLayerByKeyValue = function (map, key, value) {
  * @param value
  */
 const getLayersArrayByKeyValue = function (map, key, value) {
-  let targetLayers = []
+  let targetLayers = [];
   if (map) {
-    let layers = map.getLayers().getArray()
-    targetLayers = getLayersArrayInternal(layers, key, value)
+    let layers = map.getLayers().getArray();
+    targetLayers = getLayersArrayInternal(layers, key, value);
   }
-  return targetLayers
-}
+  return targetLayers;
+};
 
 /**
  * 通过要素获取图层
@@ -143,13 +143,13 @@ const getLayersArrayByKeyValue = function (map, key, value) {
  * @returns {*}
  */
 const getLayerByFeature = function (map, feature) {
-  let targetLayer
+  let targetLayer;
   if (map && feature instanceof ol.Feature) {
-    const layers = map.getLayers().getArray()
-    targetLayer = _getLayerByFeatureInternal(layers, feature)
+    const layers = map.getLayers().getArray();
+    targetLayer = _getLayerByFeatureInternal(layers, feature);
   }
-  return targetLayer
-}
+  return targetLayer;
+};
 
 /**
  * 处理要素获取图层方法
@@ -159,36 +159,36 @@ const getLayerByFeature = function (map, feature) {
  * @private
  */
 const _getLayerByFeatureInternal = function (layers, feature) {
-  let _target
+  let _target;
   layers.every(layer => {
     if (layer && layer instanceof ol.layer.Vector && layer.getSource) {
-      let source = layer.getSource()
+      let source = layer.getSource();
       if (source.getFeatures) {
-        let features = source.getFeatures()
+        let features = source.getFeatures();
         features.every(feat => {
           if (feat === feature) {
-            _target = layer
-            return false
+            _target = layer;
+            return false;
           } else {
-            return true
+            return true;
           }
-        })
+        });
       }
-      return !_target
+      return !_target;
     } else if (layer instanceof ol.layer.Group) {
-      let layers = layer.getLayers().getArray()
-      _target = _getLayerByFeatureInternal(layers, feature)
+      let layers = layer.getLayers().getArray();
+      _target = _getLayerByFeatureInternal(layers, feature);
       if (_target) {
-        return false
+        return false;
       } else {
-        return true
+        return true;
       }
     } else {
-      return true
+      return true;
     }
-  })
-  return _target
-}
+  });
+  return _target;
+};
 
 /**
  * 创建临时图层
@@ -199,9 +199,9 @@ const _getLayerByFeatureInternal = function (layers, feature) {
  */
 const createVectorLayer = function (map, layerName, params) {
   if (map) {
-    let vectorLayer = getLayerByLayerName(map, layerName)
+    let vectorLayer = getLayerByLayerName(map, layerName);
     if (!(vectorLayer instanceof ol.layer.Vector)) {
-      vectorLayer = null
+      vectorLayer = null;
     }
     if (!vectorLayer) {
       if (params && params.create) {
@@ -234,22 +234,22 @@ const createVectorLayer = function (map, layerName, params) {
             })
           }),
           zIndex: params['zIndex']
-        })
+        });
       }
     }
     if (map && vectorLayer) {
       if (params && params.hasOwnProperty('selectable')) {
-        vectorLayer.set('selectable', params.selectable)
+        vectorLayer.set('selectable', params.selectable);
       }
       // 图层只添加一次
-      let _vectorLayer = getLayerByLayerName(map, layerName)
+      let _vectorLayer = getLayerByLayerName(map, layerName);
       if (!_vectorLayer || !(_vectorLayer instanceof ol.layer.Vector)) {
-        map.addLayer(vectorLayer)
+        map.addLayer(vectorLayer);
       }
     }
-    return vectorLayer
+    return vectorLayer;
   }
-}
+};
 
 export {
   getAllLayers,
@@ -260,4 +260,4 @@ export {
   getLayerByKeyValue,
   getLayersArrayByKeyValue,
   createVectorLayer
-}
+};

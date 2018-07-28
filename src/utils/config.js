@@ -17,6 +17,6 @@ const config = {
     pinchRotate: true,
     pinchZoom: true
   }
-}
+};
 
-export default config
+export default config;

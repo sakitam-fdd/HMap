@@ -2,7 +2,7 @@
  * Created by FDD on 2017/9/28.
  * @ 添加实例化后的方法
  */
-import ol from 'openlayers'
+import ol from 'openlayers';
 class Map {
   /**
    * 添加控件
@@ -10,9 +10,9 @@ class Map {
    */
   addControl (control) {
     if (this.map && control instanceof ol.control.Control) {
-      this.map.addControl(control)
+      this.map.addControl(control);
     } else {
-      throw new Error('不存在地图或者传入控件对象有误！')
+      throw new Error('不存在地图或者传入控件对象有误！');
     }
   }
 
@@ -22,9 +22,9 @@ class Map {
    */
   addInteraction (interaction) {
     if (this.map && interaction instanceof ol.interaction.Interaction) {
-      this.map.addInteraction(interaction)
+      this.map.addInteraction(interaction);
     } else {
-      throw new Error('不存在地图或者传入交互对象有误！')
+      throw new Error('不存在地图或者传入交互对象有误！');
     }
   }
 
@@ -33,7 +33,7 @@ class Map {
    * @param layer
    */
   addLayer (layer) {
-    this.map.addLayer(layer)
+    this.map.addLayer(layer);
   }
 
   /**
@@ -41,7 +41,8 @@ class Map {
    * @param layer
    */
   removeLayer (layer) {
-    this.map.removeLayer(layer)
+    this._removeSelectFeature(null, true);
+    this.map.removeLayer(layer);
   }
 
   /**
@@ -49,7 +50,7 @@ class Map {
    * @param overlay
    */
   addOverlay (overlay) {
-    this.map.addOverlay(overlay)
+    this.map.addOverlay(overlay);
   }
 
   /**
@@ -57,14 +58,14 @@ class Map {
    * @param overlay
    */
   removeOverlay (overlay) {
-    this.map.removeOverlay(overlay)
+    this.map.removeOverlay(overlay);
   }
 
   /**
    * 增加修订计数器并调用change事件
    */
   changed () {
-    this.map.changed()
+    this.map.changed();
   }
 
   /**
@@ -73,7 +74,7 @@ class Map {
    * @returns {boolean|undefined}
    */
   dispatchEvent (event) {
-    return this.map.dispatchEvent(event)
+    return this.map.dispatchEvent(event);
   }
 
   /**
@@ -84,7 +85,7 @@ class Map {
    * @returns {T|undefined}
    */
   forEachFeatureAtPixel (pixel, callback, options) {
-    return this.map.forEachFeatureAtPixel(pixel, callback, options)
+    return this.map.forEachFeatureAtPixel(pixel, callback, options);
   }
 
   /**
@@ -97,7 +98,13 @@ class Map {
    * @returns {T|undefined}
    */
   forEachLayerAtPixel (pixel, callback, optThis, optLayerFilter, optThis2) {
-    return this.map.forEachLayerAtPixel(pixel, callback, optThis, optLayerFilter, optThis2)
+    return this.map.forEachLayerAtPixel(
+      pixel,
+      callback,
+      optThis,
+      optLayerFilter,
+      optThis2
+    );
   }
 
   /**
@@ -105,7 +112,7 @@ class Map {
    * @param key
    */
   get (key) {
-    return this.map.get(key)
+    return this.map.get(key);
   }
 
   /**
@@ -113,7 +120,7 @@ class Map {
    * @returns {ol.Collection.<ol.control.Control>}
    */
   getControls () {
-    return this.map.getControls()
+    return this.map.getControls();
   }
 
   /**
@@ -121,7 +128,7 @@ class Map {
    * @returns {ol.Collection.<ol.interaction.Interaction>}
    */
   getInteractions () {
-    return this.map.getInteractions()
+    return this.map.getInteractions();
   }
 
   /**
@@ -130,7 +137,7 @@ class Map {
    * @returns {ol.Coordinate}
    */
   getCoordinateFromPixel (pixel) {
-    return this.map.getCoordinateFromPixel(pixel)
+    return this.map.getCoordinateFromPixel(pixel);
   }
 
   /**
@@ -139,7 +146,7 @@ class Map {
    * @returns {ol.Pixel}
    */
   getPixelFromCoordinate (coordinate) {
-    return this.map.getPixelFromCoordinate(coordinate)
+    return this.map.getPixelFromCoordinate(coordinate);
   }
 
   /**
@@ -148,7 +155,7 @@ class Map {
    * @returns {ol.Coordinate}
    */
   getEventCoordinate (event) {
-    return this.map.getEventCoordinate(event)
+    return this.map.getEventCoordinate(event);
   }
 
   /**
@@ -157,7 +164,7 @@ class Map {
    * @returns {ol.Pixel}
    */
   getEventPixel (event) {
-    return this.map.getEventPixel(event)
+    return this.map.getEventPixel(event);
   }
 
   /**
@@ -167,7 +174,7 @@ class Map {
    * @returns {Array.<ol.Feature|ol.render.Feature>}
    */
   getFeaturesAtPixel (pixel, options) {
-    return this.map.getFeaturesAtPixel(pixel, options)
+    return this.map.getFeaturesAtPixel(pixel, options);
   }
 
   /**
@@ -175,7 +182,7 @@ class Map {
    * @returns {ol.layer.Group}
    */
   getLayerGroup () {
-    return this.map.getLayerGroup()
+    return this.map.getLayerGroup();
   }
 
   /**
@@ -183,7 +190,7 @@ class Map {
    * @returns {!ol.Collection.<ol.layer.Base>}
    */
   getLayers () {
-    return this.map.getLayers()
+    return this.map.getLayers();
   }
 
   /**
@@ -192,7 +199,7 @@ class Map {
    * @returns {ol.Overlay}
    */
   getOverlayById (id) {
-    return this.map.getOverlayById(id)
+    return this.map.getOverlayById(id);
   }
 
   /**
@@ -200,7 +207,7 @@ class Map {
    * @returns {ol.Collection.<ol.Overlay>}
    */
   getOverlays () {
-    return this.map.getOverlays()
+    return this.map.getOverlays();
   }
 
   /**
@@ -208,7 +215,7 @@ class Map {
    * @returns {Object.<string, *>}
    */
   getProperties () {
-    return this.map.getProperties()
+    return this.map.getProperties();
   }
 
   /**
@@ -216,7 +223,7 @@ class Map {
    * @returns {number}
    */
   getRevision () {
-    return this.map.getRevision()
+    return this.map.getRevision();
   }
 
   /**
@@ -224,7 +231,7 @@ class Map {
    * @returns {ol.Size|undefined}
    */
   getSize () {
-    return this.map.getSize()
+    return this.map.getSize();
   }
 
   /**
@@ -232,7 +239,7 @@ class Map {
    * @returns {Element|string|undefined}
    */
   getTarget () {
-    return this.map.getTarget()
+    return this.map.getTarget();
   }
 
   /**
@@ -240,7 +247,7 @@ class Map {
    * @returns {Element}
    */
   getTargetElement () {
-    return this.map.getTargetElement()
+    return this.map.getTargetElement();
   }
 
   /**
@@ -248,7 +255,7 @@ class Map {
    * @returns {Array.<string>}
    */
   getKeys () {
-    return this.map.getKeys()
+    return this.map.getKeys();
   }
 
   /**
@@ -256,7 +263,7 @@ class Map {
    * @returns {ol.View}
    */
   getView () {
-    return this.map.getView()
+    return this.map.getView();
   }
 
   /**
@@ -264,7 +271,7 @@ class Map {
    * @returns {Element}
    */
   getViewport () {
-    return this.map.getViewport()
+    return this.map.getViewport();
   }
 
   /**
@@ -274,7 +281,7 @@ class Map {
    * @returns {boolean}
    */
   hasFeatureAtPixel (pixel, options) {
-    return this.map.hasFeatureAtPixel(pixel, options)
+    return this.map.hasFeatureAtPixel(pixel, options);
   }
 
   /**
@@ -283,7 +290,7 @@ class Map {
    * @returns {ol.control.Control|undefined}
    */
   removeControl (control) {
-    return this.map.removeControl(control)
+    return this.map.removeControl(control);
   }
 
   /**
@@ -292,14 +299,14 @@ class Map {
    * @returns {ol.interaction.Interaction|undefined}
    */
   removeInteraction (interaction) {
-    return this.map.removeInteraction(interaction)
+    return this.map.removeInteraction(interaction);
   }
 
   /**
    * 手动调用渲染器
    */
   render () {
-    this.map.render()
+    this.map.render();
   }
 
   /**
@@ -309,7 +316,7 @@ class Map {
    * @param silent
    */
   renderSync (key, value, silent) {
-    this.map.renderSync(key, value, silent)
+    this.map.renderSync(key, value, silent);
   }
 
   /**
@@ -317,7 +324,7 @@ class Map {
    * @param layerGroup
    */
   setLayerGroup (layerGroup) {
-    this.map.setLayerGroup(layerGroup)
+    this.map.setLayerGroup(layerGroup);
   }
 
   /**
@@ -326,7 +333,7 @@ class Map {
    * @param silent <更新而不触发事件>
    */
   setProperties (values, silent) {
-    this.map.setProperties(values, silent)
+    this.map.setProperties(values, silent);
   }
 
   /**
@@ -334,7 +341,7 @@ class Map {
    * @param size
    */
   setSize (size) {
-    this.map.setSize(size)
+    this.map.setSize(size);
   }
 
   /**
@@ -342,7 +349,7 @@ class Map {
    * @param target
    */
   setTarget (target) {
-    this.map.setTarget(target)
+    this.map.setTarget(target);
   }
 
   /**
@@ -350,7 +357,7 @@ class Map {
    * @returns {ol.Map|*}
    */
   getMap () {
-    return this.map
+    return this.map;
   }
 
   /**
@@ -359,7 +366,7 @@ class Map {
    */
   setMap (map) {
     if (map && map instanceof ol.Map) {
-      this.map = map
+      this.map = map;
     }
   }
 
@@ -369,9 +376,9 @@ class Map {
    */
   setView (view) {
     if (this.map && view instanceof ol.View) {
-      this.map.setView(view)
+      this.map.setView(view);
     } else {
-      throw new Error('不存在地图或者传入视图对象有误！')
+      throw new Error('不存在地图或者传入视图对象有误！');
     }
   }
 
@@ -381,7 +388,7 @@ class Map {
    * @param silent
    */
   unset (key, silent) {
-    this.map.unset(key, silent)
+    this.map.unset(key, silent);
   }
 
   /**
@@ -390,12 +397,12 @@ class Map {
    */
   updateSize () {
     if (this.map) {
-      this.map.updateSize()
-      return this.map
+      this.map.updateSize();
+      return this.map;
     } else {
-      throw new Error('未实例化地图对象！')
+      throw new Error('未实例化地图对象！');
     }
   }
 }
 
-export default Map
+export default Map;

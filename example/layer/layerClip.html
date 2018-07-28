@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>图层切割</title>
+  <link rel="stylesheet" href="../../dist/hmap.css">
+  <style type="text/css">
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .menu {
+      position: absolute;
+      width: 100%;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .base-button {
+      height: 30px;
+      line-height: 30px;
+      background: #1b9de8;
+      color: #ffffff;
+      border-radius: 6px;
+      border: 1px solid #bfcbd9;
+      padding: 0 10px;
+      box-shadow: 0 4px 10px rgba(73, 127, 255, .42);
+      transition: .3s;
+    }
+
+    .base-button:hover {
+      cursor: pointer;
+      border-color: #1b9de8;
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+<div id="map">
+  <div class="menu">
+    <button class="base-button" onclick="switchData('1')">景德镇市</button>
+    <button class="base-button" onclick="switchData('2')">九江市</button>
+  </div>
+</div>
+<script src="../../dist/hmap.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dat.gui/build/dat.gui.js"></script>
+<script type="text/javascript">
+  var map = new HMap({
+    target: 'map',
+    controls: {
+      scaleLine: true
+    },
+    view: {
+      center: [113.53450137499999, 34.44104525],
+      projection: 'EPSG:4326',
+      zoom: 5, // resolution
+    },
+    baseLayers: [
+      {
+        layerName: 'Google',
+        isDefault: true,
+        layerType: 'Google',
+        layerUrl: 'http://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}'
+      }
+    ]
+  });
+
+  var image = map.createWMTSLayer('tianditu', {
+    layerName: 'tianditu',
+    layerType: 'TileWMTS',
+    projection: 'EPSG:3857',
+    levels: 19,
+    layer: 'img',
+    format: 'tiles',
+    matrixSet: 'w',
+    create: true,
+    layerUrl: 'http://t{0-6}.tianditu.com/img_w/wmts'
+  });
+
+  var coordinates = [];
+  var _type = '1';
+
+  /**
+   * 数据的切换
+   * @param type Canvas context
+   */
+  function switchData (type) {
+    fetch('../assets/json/polygons.json', {
+      method: 'GET'
+    }).then(function(response) {
+      return response.json();
+    }).then(function(json) {
+      data = json.data.features;
+      _type = type;
+      var _data = map.getGeomFromGeomData(type === '1' ? data[0] : data[2]);
+      var extent = _data.getExtent();
+      coordinates = _data.getCoordinates();
+      map.getView().fit(extent);
+      map.render();
+    }).catch(function (error) {
+      console.error(error)
+    });
+  }
+
+  function initDataControl () {
+    var gui = new dat.GUI({
+      nameMap: {
+        radius: 'radius',
+        blur: 'blur',
+        shadow: 'shadow'
+      }
+    });
+    gui.add({
+      image: 0.5
+    }, 'image', 0, 1).onFinishChange(image.setOpacity.bind(image));
+  }
+
+  initDataControl();
+
+  image.on('precompose', function(event) {
+    if(coordinates.length <= 0){
+      return;
+    }
+    var context = event.context;
+    event.frameState.animate = true;
+    draw(context, _type === '1' ? 'Polygon' : 'MultiPolygon', coordinates, event.frameState.pixelRatio)
+  });
+
+  image.on('postcompose', function(event) {
+    if(coordinates.length <= 0){
+      return;
+    }
+    var ctx = event.context;
+    ctx.restore();
+  });
+
+  /**
+   * 绘制形状进行裁剪
+   * @param context Canvas context
+   * @param type [注意数据是单面还是多面]
+   * @param coordinates [面状空间数据集合]
+   * @param pixelRatio
+   */
+  function draw (context, type, coordinates, pixelRatio) {
+    context.save();
+    context.beginPath();
+    switch (type) {
+      case 'Polygon':
+        drawPolygon(context, coordinates, pixelRatio);
+        break;
+      case 'MultiPolygon':
+        for (let i = 0; i < coordinates.length; i++) {
+          let polygon = coordinates[i];
+          drawPolygon(context, polygon, pixelRatio);
+        }
+        context.closePath();
+        break;
+    }
+    context.closePath();//结束并封闭路径
+    context.clip();
+  }
+
+  /**
+   * 构造面的形状便于裁剪
+   * @param context
+   * @param coordinates
+   * @param pixelRatio
+   */
+  function drawPolygon (context, coordinates, pixelRatio) {
+    let [pixel, pixel_] = [];
+    for (let i = 0; i < coordinates.length; i++) {
+      let coordinate = coordinates[i];
+      pixel = map.getPixelFromCoordinate(coordinate[0]);
+      context.moveTo(pixel[0] * pixelRatio, pixel[1] * pixelRatio);
+      for (let j = 1; j < coordinate.length; j++) {
+        pixel_ = map.getPixelFromCoordinate(coordinate[j]);
+        context.lineTo(pixel_[0] * pixelRatio, pixel_[1] * pixelRatio);
+      }
+      context.lineTo(pixel[0] * pixelRatio, pixel[1] * pixelRatio);
+    }
+  }
+</script>
+</body>
+</html>

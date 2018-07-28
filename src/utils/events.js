@@ -1,10 +1,10 @@
-import {getuuid} from './utils'
+import { getuuid } from './utils';
 
 const stamp = function (obj) {
-  let key = '_event_id_'
-  obj[key] = obj[key] || (getuuid())
-  return obj[key]
-}
+  let key = '_event_id_';
+  obj[key] = obj[key] || getuuid();
+  return obj[key];
+};
 
 /**
  * Prevent default behavior of the browser.
@@ -13,12 +13,12 @@ const stamp = function (obj) {
  */
 const preventDefault = function (event) {
   if (event.preventDefault) {
-    event.preventDefault()
+    event.preventDefault();
   } else {
-    event.returnValue = false
+    event.returnValue = false;
   }
-  return this
-}
+  return this;
+};
 
 /**
  * Stop browser event propagation
@@ -27,12 +27,12 @@ const preventDefault = function (event) {
  */
 const stopPropagation = function (event) {
   if (event.stopPropagation) {
-    event.stopPropagation()
+    event.stopPropagation();
   } else {
-    event.cancelBubble = true
+    event.cancelBubble = true;
   }
-  return this
-}
+  return this;
+};
 
 /**
  * 绑定事件
@@ -42,16 +42,16 @@ const stopPropagation = function (event) {
  */
 const bindListener = function (listenerObj) {
   let boundListener = function (evt) {
-    let listener = listenerObj.listener
-    let bindTo = listenerObj.bindTo || listenerObj.target
+    let listener = listenerObj.listener;
+    let bindTo = listenerObj.bindTo || listenerObj.target;
     if (listenerObj.callOnce) {
-      unListenByKey(listenerObj)
+      unListenByKey(listenerObj);
     }
-    return listener.call(bindTo, evt)
-  }
-  listenerObj.boundListener = boundListener
-  return boundListener
-}
+    return listener.call(bindTo, evt);
+  };
+  listenerObj.boundListener = boundListener;
+  return boundListener;
+};
 
 /**
  * 查找监听器
@@ -62,18 +62,18 @@ const bindListener = function (listenerObj) {
  * @returns {*}
  */
 const findListener = function (listeners, listener, optThis, optSetDeleteIndex) {
-  let listenerObj = null
+  let listenerObj = null;
   for (let i = 0, ii = listeners.length; i < ii; ++i) {
-    listenerObj = listeners[i]
+    listenerObj = listeners[i];
     if (listenerObj.listener === listener && listenerObj.bindTo === optThis) {
       if (optSetDeleteIndex) {
-        listenerObj.deleteIndex = i
+        listenerObj.deleteIndex = i;
       }
-      return listenerObj
+      return listenerObj;
     }
   }
-  return undefined
-}
+  return undefined;
+};
 
 /**
  * get Listeners
@@ -82,9 +82,9 @@ const findListener = function (listeners, listener, optThis, optSetDeleteIndex) 
  * @returns {undefined}
  */
 const getListeners = function (target, type) {
-  let listenerMap = target.vlm
-  return listenerMap ? listenerMap[type] : undefined
-}
+  let listenerMap = target.vlm;
+  return listenerMap ? listenerMap[type] : undefined;
+};
 
 /**
  * Get the lookup of listeners.  If one does not exist on the target, it is
@@ -93,12 +93,12 @@ const getListeners = function (target, type) {
  * @private
  */
 const getListenerMap = function (target) {
-  let listenerMap = target.vlm
+  let listenerMap = target.vlm;
   if (!listenerMap) {
-    listenerMap = target.vlm = {}
+    listenerMap = target.vlm = {};
   }
-  return listenerMap
-}
+  return listenerMap;
+};
 
 /**
  * 清空事件
@@ -106,22 +106,22 @@ const getListenerMap = function (target) {
  * @param type
  */
 const removeListeners = function (target, type) {
-  let listeners = getListeners(target, type)
+  let listeners = getListeners(target, type);
   if (listeners) {
     for (let i = 0, ii = listeners.length; i < ii; ++i) {
-      target.removeEventListener(type, listeners[i].boundListener)
-      clear(listeners[i])
+      target.removeEventListener(type, listeners[i].boundListener);
+      clear(listeners[i]);
     }
-    listeners.length = 0
-    let listenerMap = target.vlm
+    listeners.length = 0;
+    let listenerMap = target.vlm;
     if (listenerMap) {
-      delete listenerMap[type]
+      delete listenerMap[type];
       if (Object.keys(listenerMap).length === 0) {
-        delete target.vlm
+        delete target.vlm;
       }
     }
   }
-}
+};
 
 /**
  * 注册事件处理
@@ -133,29 +133,29 @@ const removeListeners = function (target, type) {
  * @returns {*}
  */
 const listen = function (target, type, listener, optThis, optOnce) {
-  let listenerMap = getListenerMap(target)
-  let listeners = listenerMap[type]
+  let listenerMap = getListenerMap(target);
+  let listeners = listenerMap[type];
   if (!listeners) {
-    listeners = listenerMap[type] = []
+    listeners = listenerMap[type] = [];
   }
-  let listenerObj = findListener(listeners, listener, optThis, false)
+  let listenerObj = findListener(listeners, listener, optThis, false);
   if (listenerObj) {
     if (!optOnce) {
-      listenerObj.callOnce = false
+      listenerObj.callOnce = false;
     }
   } else {
-    listenerObj = ({
+    listenerObj = {
       bindTo: optThis,
       callOnce: !!optOnce,
       listener: listener,
       target: target,
       type: type
-    })
-    target.addEventListener(type, bindListener(listenerObj))
-    listeners.push(listenerObj)
+    };
+    target.addEventListener(type, bindListener(listenerObj));
+    listeners.push(listenerObj);
   }
-  return listenerObj
-}
+  return listenerObj;
+};
 
 /**
  * 注册事件，只触发一次
@@ -166,8 +166,8 @@ const listen = function (target, type, listener, optThis, optOnce) {
  * @returns {*}
  */
 const listenOnce = function (target, type, listener, optThis) {
-  return listen(target, type, listener, optThis, true)
-}
+  return listen(target, type, listener, optThis, true);
+};
 
 /**
  * 取消事件注册
@@ -177,14 +177,14 @@ const listenOnce = function (target, type, listener, optThis) {
  * @param optThis
  */
 const unListen = function (target, type, listener, optThis) {
-  let listeners = getListeners(target, type)
+  let listeners = getListeners(target, type);
   if (listeners) {
-    let listenerObj = findListener(listeners, listener, optThis, true)
+    let listenerObj = findListener(listeners, listener, optThis, true);
     if (listenerObj) {
-      unListenByKey(listenerObj)
+      unListenByKey(listenerObj);
     }
   }
-}
+};
 
 /**
  * 根据事件名移除事件对象
@@ -192,20 +192,20 @@ const unListen = function (target, type, listener, optThis) {
  */
 const unListenByKey = function (key) {
   if (key && key.target) {
-    key.target.removeEventListener(key.type, key.boundListener)
-    let listeners = getListeners(key.target, key.type)
+    key.target.removeEventListener(key.type, key.boundListener);
+    let listeners = getListeners(key.target, key.type);
     if (listeners) {
-      let i = 'deleteIndex' in key ? key.deleteIndex : listeners.indexOf(key)
+      let i = 'deleteIndex' in key ? key.deleteIndex : listeners.indexOf(key);
       if (i !== -1) {
-        listeners.splice(i, 1)
+        listeners.splice(i, 1);
       }
       if (listeners.length === 0) {
-        removeListeners(key.target, key.type)
+        removeListeners(key.target, key.type);
       }
     }
-    clear(key)
+    clear(key);
   }
-}
+};
 
 /**
  * 清空当前对象
@@ -213,20 +213,20 @@ const unListenByKey = function (key) {
  */
 const clear = function (object) {
   for (let property in object) {
-    delete object[property]
+    delete object[property];
   }
-}
+};
 
 /**
  * 移除所有事件监听
  * @param target
  */
 const unlistenAll = function (target) {
-  let listenerMap = getListenerMap(target)
+  let listenerMap = getListenerMap(target);
   for (let type in listenerMap) {
-    removeListeners(target, type)
+    removeListeners(target, type);
   }
-}
+};
 
 /**
  * 获取事件唯一标识
@@ -236,8 +236,14 @@ const unlistenAll = function (target) {
  * @returns {string}
  */
 const getDomEventKey = (type, fn, context) => {
-  return '_dom_event_' + type + '_' + stamp(fn) + (context ? '_' + stamp(context) : '')
-}
+  return (
+    '_dom_event_' +
+    type +
+    '_' +
+    stamp(fn) +
+    (context ? '_' + stamp(context) : '')
+  );
+};
 
 /**
  * 对DOM对象添加事件监听
@@ -248,22 +254,22 @@ const getDomEventKey = (type, fn, context) => {
  * @returns {*}
  */
 const addListener = function (element, type, fn, context) {
-  let eventKey = getDomEventKey(type, fn, context)
-  let handler = element[eventKey]
+  let eventKey = getDomEventKey(type, fn, context);
+  let handler = element[eventKey];
   if (handler) {
-    return this
+    return this;
   }
   handler = function (e) {
-    return fn.call(context || element, e)
-  }
+    return fn.call(context || element, e);
+  };
   if ('addEventListener' in element) {
-    element.addEventListener(type, handler, false)
+    element.addEventListener(type, handler, false);
   } else if ('attachEvent' in element) {
-    element.attachEvent('on' + type, handler)
+    element.attachEvent('on' + type, handler);
   }
-  element[eventKey] = handler
-  return this
-}
+  element[eventKey] = handler;
+  return this;
+};
 
 /**
  * 移除DOM对象监听事件
@@ -274,19 +280,19 @@ const addListener = function (element, type, fn, context) {
  * @returns {removeListener}
  */
 const removeListener = function (element, type, fn, context) {
-  let eventKey = getDomEventKey(type, fn, context)
-  let handler = element[eventKey]
+  let eventKey = getDomEventKey(type, fn, context);
+  let handler = element[eventKey];
   if (!handler) {
-    return this
+    return this;
   }
   if ('removeEventListener' in element) {
-    element.removeEventListener(type, handler, false)
+    element.removeEventListener(type, handler, false);
   } else if ('detachEvent' in element) {
-    element.detachEvent('on' + type, handler)
+    element.detachEvent('on' + type, handler);
   }
-  element[eventKey] = null
-  return this
-}
+  element[eventKey] = null;
+  return this;
+};
 
 export {
   unListen,
@@ -298,4 +304,4 @@ export {
   removeListener,
   preventDefault,
   stopPropagation
-}
+};
