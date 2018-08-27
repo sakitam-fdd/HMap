@@ -2,6 +2,7 @@
  * Created by FDD on 2017/9/18.
  * @desc 交互工具相关
  */
+import Snap from '../interaction/Snap';
 import ol from 'openlayers';
 import config from '../utils/config';
 import * as utils from '../utils/utils';
@@ -12,6 +13,7 @@ import '../interaction/measureTool';
 import '../interaction/SelectCluster';
 import '../interaction/RotateFeature';
 import PointerEvents from '../interaction/PointerEvents';
+ol.interaction.Snapor = Snap;
 class _Interactions {
   _addInteractions (params) {
     let options = Object.assign(config.INTERACTIONS, params || {});
