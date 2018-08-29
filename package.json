@@ -37,7 +37,11 @@
     "kdbush": "^2.0.1",
     "lodash": "^4.17.5",
     "proj4": "^2.4.4",
-    "screenfull": "^3.3.2"
+    "screenfull": "^3.3.2",
+    "deck.gl": "^5.3.4",
+    "luma.gl": "^5.3.0",
+    "@deck.gl/core": "^5.3.3",
+    "@deck.gl/layers": "^5.3.4"
   },
   "devDependencies": {
     "openlayers": "^4.6.4",

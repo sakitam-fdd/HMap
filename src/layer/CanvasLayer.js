@@ -1,24 +1,5 @@
 import ol from 'openlayers';
-
-/**
- * create canvas
- * @param width
- * @param height
- * @param Canvas
- * @returns {HTMLCanvasElement}
- */
-const createCanvas = (width, height, Canvas) => {
-  if (typeof document !== 'undefined') {
-    const canvas = document.createElement('canvas');
-    canvas.width = width;
-    canvas.height = height;
-    return canvas;
-  } else {
-    // create a new canvas instance in node.js
-    // the canvas class needs to have a default constructor without any parameter
-    return new Canvas(width, height);
-  }
-};
+import { createCanvas } from '../utils';
 
 class CanvasLayer extends ol.layer.Image {
   constructor (options = {}) {
@@ -102,7 +83,7 @@ class CanvasLayer extends ol.layer.Image {
    */
   canvasFunction (extent, resolution, pixelRatio, size, projection) {
     if (!this._canvas) {
-      this._canvas = createCanvas(size[0], size[1]);
+      this._canvas = createCanvas(size[0], size[1], pixelRatio);
     } else {
       this._canvas.width = size[0];
       this._canvas.height = size[1];

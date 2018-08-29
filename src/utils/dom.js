@@ -7,7 +7,7 @@ import { trim, camelCase, isString } from './utils';
  * @param scaleFactor
  * @returns {HTMLCanvasElement}
  */
-const createCanvas = function (width, height, scaleFactor) {
+const createCanvas = function (width, height, scaleFactor = 1, Canvas) {
   if (typeof document !== 'undefined') {
     const canvas = document.createElement('canvas');
     canvas.width = width * scaleFactor;
@@ -19,6 +19,9 @@ const createCanvas = function (width, height, scaleFactor) {
   } else {
     // create a new canvas instance in node.js
     // the canvas class needs to have a default constructor without any parameter
+    // create a new canvas instance in node.js
+    // the canvas class needs to have a default constructor without any parameter
+    return new Canvas(width, height);
   }
 };
 

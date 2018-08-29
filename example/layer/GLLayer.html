@@ -17,6 +17,7 @@
 <body>
 <div id="map"></div>
 <div id="info"></div>
+<script src="../../node_modules/deck.gl/deckgl.min.js"></script>
 <script src="../../dist/hmap.js"></script>
 <script type="text/javascript">
   var map = new ol.Map({
@@ -42,20 +43,11 @@
     }));
   };
 
-  var vectorLayer = new ol.layer.DozensLayer({
+  var vectorLayer = new ol.layer.GLLayer({
     id: 'name1',
     map: map,
     projection: 'EPSG:4326',
-    style: new ol.style.Style({
-      image: new ol.style.Icon(({
-        anchor: [0.5, 1],
-        anchorXUnits: 'fraction',
-        anchorYUnits: 'fraction',
-        src: '../assets/images/point1.png',
-        size: [32, 32],
-        scale: 1
-      }))
-    })
+    imageSrc: '../assets/images/point1.png'
   });
   map.addLayer(vectorLayer);
 
