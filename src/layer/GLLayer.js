@@ -14,7 +14,7 @@ const _options = {
 
 class GLLayer extends ol.layer.Image {
   constructor (options = {}) {
-    options = Object.assign(options, _options);
+    options = Object.assign(_options, options);
     super(options);
 
     /**
@@ -119,7 +119,7 @@ class GLLayer extends ol.layer.Image {
    * @returns {*|CanvasRenderingContext2D|WebGLRenderingContext|ol.webgl.Context}
    */
   getContext () {
-    return this._canvas.getContext('gl');
+    return this._canvas.getContext('webgl2');
   }
 
   /**
@@ -153,11 +153,13 @@ class GLLayer extends ol.layer.Image {
    * @returns {*}
    */
   canvasFunction (extent, resolution, pixelRatio, size, projection) {
+    const width = size[0];
+    const height = size[1];
     if (!this._canvas) {
-      this._canvas = createCanvas(size[0], size[1]);
+      this._canvas = createCanvas(width, height);
     } else {
-      this._canvas.width = size[0];
-      this._canvas.height = size[1];
+      this._canvas.width = width;
+      this._canvas.height = height;
     }
     if (resolution <= this.get('maxResolution')) {
       this.render(extent, resolution, pixelRatio, size, projection);
@@ -201,44 +203,8 @@ class GLLayer extends ol.layer.Image {
    * @param projection
    */
   render (extent, resolution, pixelRatio, size, projection) {
-    if (!this.glRender) {
-      this.glRender = new deck.IconLayer({ // eslint-disable-line
-        id: this.options.id || '',
-        data: this.features || [],
-        fp64: this.options.fp64,
-        pickable: this.options.pickable,
-        autoHighlight: this.options.autoHighlight,
-        iconAtlas: this.options.imageSrc,
-        iconMapping: {
-          marker: {
-            x: 0,
-            y: 0,
-            width: 128,
-            height: 128,
-            anchorY: 128,
-            mask: true
-          }
-        },
-        sizeScale: 15,
-        getPosition (point) {
-          if (!point) {
-            return [0, 0, 0];
-          }
-          let geometry = point && point.getGeometry();
-          let coordinates = geometry && geometry.getCoordinates();
-          return coordinates && [coordinates[0], coordinates[1], 0];
-        },
-        getIcon: d => 'marker',
-        getSize: d => 5,
-        getColor: d => [Math.sqrt(d.exits), 140, 0],
-        getAngle: d => 0,
-        onHover: ({object}) => {
-          console.log(object);
-        },
-        onClick: ({object}) => {
-          console.log(object);
-        }
-      });
+    if (!this.layers) {
+      this.layers = this.options.layers;
     } else {
       this.clearLayer();
     }
@@ -260,29 +226,28 @@ class GLLayer extends ol.layer.Image {
       const view = map.getView();
       const zoom = view.getZoom();
       const center = view.getCenter();
-      this.features = this.originData.range(...extent).map((id) => this.features[id]);
       const nCenter = ol.proj.transform(center, view.getProjection(), 'EPSG:4326');
       const _props = {
-        width: size[0], // Number, required
-        height: size[1],
-        layers: [
-          this.glRender
-        ],
-        canvas: this._canvas,
-        gl: this.getContext(),
-        layerFilter: ({layer, viewport, isPicking}) => true,
-        viewState: {
-          latitude: nCenter[0],
-          longitude: nCenter[1],
+        // width: size[0], // Number, required
+        // height: size[1],
+        layers: this.layers,
+        gl: this._canvas.getContext('webgl2'),
+        // layerFilter: ({layer, viewport, isPicking}) => true,
+        initialViewState: {
+          latitude: nCenter[1],
+          longitude: nCenter[0],
           zoom: zoom,
           bearing: 0,
-          pitch: 0
+          pitch: 0,
+          maxZoom: 16
         }
       };
       if (!this.glLayer) {
         this.glLayer = new deck.Deck(_props); // eslint-disable-line
       } else {
-        this.glLayer.setProps(_props);
+        this.glLayer.setProps(Object.assign({
+          viewState: _props.initialViewState
+        }, _props));
       }
     }
   }
