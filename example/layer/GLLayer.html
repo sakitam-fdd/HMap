@@ -21,10 +21,11 @@
 <script src="../../dist/hmap.js"></script>
 <script type="text/javascript">
   var map = new ol.Map({
+    renderer: 'webgl',
     view: new ol.View({
-      center: [113.53450137499999, 34.44104525],
+      center: [-74, 40.72],
       projection: 'EPSG:4326',
-      zoom: 6
+      zoom: 13
     }),
     layers: [
       new ol.layer.Tile({
@@ -33,32 +34,34 @@
     ],
     target: 'map'
   });
-  var myMarkers = [];
-  var ext = map.getView().calculateExtent(map.getSize());
-  for (var i = 0; i < 5000; i++) {
-    myMarkers.push(new ol.Feature({
-      geometry: new ol.geom.Point([ext[0] + (ext[2] - ext[0]) * Math.random(), ext[1] + (ext[3] - ext[1]) * Math.random()]),
-      population: 4000,
-      rainfall: 500
-    }));
-  };
 
   var vectorLayer = new ol.layer.GLLayer({
     id: 'name1',
     map: map,
     projection: 'EPSG:4326',
-    imageSrc: '../assets/images/point1.png'
+    layers: [
+      new deck.PolygonLayer({
+        id: 'buildings',
+        data: 'https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/trips/buildings.json',
+        extruded: true,
+        wireframe: false,
+        fp64: true,
+        opacity: 0.5,
+        getPolygon: f => f.polygon,
+        getElevation: f => f.height,
+        getFillColor: [74, 80, 87],
+        lightSettings: {
+          lightsPosition: [-74.05, 40.7, 8000, -73.5, 41, 5000],
+          ambientRatio: 0.05,
+          diffuseRatio: 0.6,
+          specularRatio: 0.8,
+          lightsStrength: [2.0, 0.0, 0.0, 0.0],
+          numberOfLights: 2
+        }
+      })
+    ]
   });
   map.addLayer(vectorLayer);
-
-  vectorLayer.addFeatures(myMarkers);
-
-  map.on("pointermove", function(event){
-    var point = vectorLayer.getClosestPoint(event.coordinate, 1000);
-    if (point.length > 0) {
-      console.log(point);
-    }
-  });
 </script>
 </body>
 </html>

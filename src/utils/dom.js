@@ -1,5 +1,28 @@
 import { trim, camelCase, isString } from './utils';
 
+const check2num = (num) => {
+  return (num > 0) && ((num & (num - 1)) === 0);
+};
+
+/**
+ * parse to num
+ * @param num
+ * @returns {number}
+ */
+const parse2num = num => {
+  if (num <= 0) {
+    return 1;
+  } else {
+    let i = 0;
+    let t = 1;
+    while (t <= num) {
+      t = Math.pow(2, i);
+      i++;
+    }
+    return t;
+  }
+};
+
 /**
  * core create canvas
  * @param width
@@ -14,7 +37,6 @@ const createCanvas = function (width, height, scaleFactor = 1, Canvas) {
     canvas.height = height * scaleFactor;
     canvas.style.width = width + 'px';
     canvas.style.height = height + 'px';
-    canvas.getContext('2d').scale(scaleFactor, scaleFactor);
     return canvas;
   } else {
     // create a new canvas instance in node.js
@@ -245,5 +267,7 @@ export {
   addClass,
   removeClass,
   getStyle,
-  setStyle
+  setStyle,
+  check2num,
+  parse2num
 };
