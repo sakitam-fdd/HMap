@@ -2,11 +2,11 @@
  * Created by FDD on 2017/9/18.
  * @desc 用于dom标绘（包含自定义dom或者iconfont）
  */
-import ol from 'openlayers'
-import * as htmlUtils from '../utils/dom'
-import { trim, isObject } from '../utils/utils'
-import { EVENT_TYPE } from '../constants'
-import Geometry from '../geom/Geometry'
+import ol from 'openlayers';
+import * as htmlUtils from '../utils/dom';
+import { trim, isObject } from '../utils/utils';
+import { EVENT_TYPE } from '../constants';
+import Geometry from '../geom/Geometry';
 class Overlay extends Geometry {
   /**
    * 添加字体图标要素
@@ -17,14 +17,20 @@ class Overlay extends Geometry {
   addOverlayPoint (point, params, index) {
     try {
       if (point && point['geometry']) {
-        let geom_ = this.getGeomFromGeomData(point, params)
+        let geom_ = this.getGeomFromGeomData(point, params);
         if (geom_ && geom_.getCoordinates) {
-          let coordinate = geom_.getCoordinates()
-          if (point['attributes'] && (point['attributes']['id'] || point['attributes']['ID'])) {
-            let id = (point['attributes']['id'] || point['attributes']['ID'] || params['id'])
-            let overlay = this.map.getOverlayById(id)
-            let creatEle = this.getElementForOverlay(point, params, index)
-            let [marker, ele] = [creatEle['marker'], creatEle['ele']]
+          let coordinate = geom_.getCoordinates();
+          if (
+            point['attributes'] &&
+            (point['attributes']['id'] || point['attributes']['ID'])
+          ) {
+            let id =
+              point['attributes']['id'] ||
+              point['attributes']['ID'] ||
+              params['id'];
+            let overlay = this.map.getOverlayById(id);
+            let creatEle = this.getElementForOverlay(point, params, index);
+            let [marker, ele] = [creatEle['marker'], creatEle['ele']];
             if (!overlay) {
               let iconOverlay = new ol.Overlay({
                 element: marker,
@@ -32,33 +38,33 @@ class Overlay extends Geometry {
                 id: id,
                 offset: [0, 0],
                 stopEvent: true
-              })
-              iconOverlay.setPosition(coordinate)
-              iconOverlay.setProperties(point['attributes'])
+              });
+              iconOverlay.setPosition(coordinate);
+              iconOverlay.setProperties(point['attributes']);
               if (params) {
-                iconOverlay.set('params', params)
+                iconOverlay.set('params', params);
                 if (params['layerName']) {
-                  iconOverlay.set('layerName', params.layerName)
+                  iconOverlay.set('layerName', params.layerName);
                 }
               }
-              this._addOverLayEvent(marker, ele, iconOverlay)
-              this.map.addOverlay(iconOverlay)
+              this._addOverLayEvent(marker, ele, iconOverlay);
+              this.map.addOverlay(iconOverlay);
             } else {
-              this._addOverLayEvent(marker, ele, overlay)
-              overlay.setElement(marker)
+              this._addOverLayEvent(marker, ele, overlay);
+              overlay.setElement(marker);
             }
           }
           if (params['zoomToExtent']) {
-            let extent = (new ol.geom.Point(coordinate)).getExtent()
+            let extent = new ol.geom.Point(coordinate).getExtent();
             if (params['view'] && params['view']['adjustExtent']) {
-              extent = this.adjustExtent(extent, params['view'])
+              extent = this.adjustExtent(extent, params['view']);
             }
-            this.zoomToExtent(extent, true)
+            this.zoomToExtent(extent, true);
           }
         }
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
@@ -70,43 +76,43 @@ class Overlay extends Geometry {
    * @private
    */
   _addOverLayEvent (marker, ele, OverLay) {
-    let that = this
+    let that = this;
     marker.onmousedown = function (event) {
       if (event.button === 2) {
         that.dispatch(EVENT_TYPE.OVERLAYONMOUSERIGHT, {
           type: EVENT_TYPE.OVERLAYONMOUSERIGHT,
           originEvent: event,
           value: OverLay
-        })
+        });
       } else if (event.button === 0) {
         that.dispatch(EVENT_TYPE.OVERLAYONMOUSELEFT, {
           type: EVENT_TYPE.OVERLAYONMOUSELEFT,
           originEvent: event,
           value: OverLay
-        })
+        });
       }
       that.dispatch(EVENT_TYPE.OVERLAYCLICK, {
         type: EVENT_TYPE.OVERLAYCLICK,
         originEvent: event,
         value: OverLay
-      })
-    }
+      });
+    };
     marker.onmouseover = function (event) {
-      ele.style.color = ele.selectColor
+      ele.style.color = ele.selectColor;
       that.dispatch(EVENT_TYPE.OVERLAYONMOUSEOVER, {
         type: EVENT_TYPE.OVERLAYONMOUSEOVER,
         originEvent: event,
         value: OverLay
-      })
-    }
+      });
+    };
     marker.onmouseout = function (event) {
-      ele.style.color = ele.normalColor
+      ele.style.color = ele.normalColor;
       that.dispatch(EVENT_TYPE.OVERLAYONMOUSEOUT, {
         type: EVENT_TYPE.OVERLAYONMOUSEOUT,
         originEvent: event,
         value: OverLay
-      })
-    }
+      });
+    };
   }
 
   /**
@@ -117,54 +123,96 @@ class Overlay extends Geometry {
    * @returns {Element}
    */
   getElementForOverlay (point, params, index) {
-    let marker = document.createElement('div')
-    marker.className = 'overlay-point-content'
-    let style = point['attributes']['style'] || params['style']
-    let [ele, spanEle] = ['', '']
+    let marker = document.createElement('div');
+    marker.className = 'overlay-point-content';
+    let style = point['attributes']['style'] || params['style'];
+    let [ele, spanEle] = ['', ''];
     if (style['element'] instanceof Element) {
-      ele = document.createElement('div')
-      ele.setAttribute('normalColor', (style['color'] ? style['color'] : '#1b9de8'))
-      ele.setAttribute('selectColor', (style['selectColor'] ? style['selectColor'] : '#F61717'))
-      ele.innerHTML = style['text'] ? style['text'] : ''
-      ele.appendChild(style['element'])
-      marker.appendChild(ele)
+      ele = document.createElement('div');
+      ele.setAttribute(
+        'normalColor',
+        style['color'] ? style['color'] : '#1b9de8'
+      );
+      ele.setAttribute(
+        'selectColor',
+        style['selectColor'] ? style['selectColor'] : '#F61717'
+      );
+      ele.innerHTML = style['text'] ? style['text'] : '';
+      ele.appendChild(style['element']);
+      marker.appendChild(ele);
     } else if (style['element'] && isObject(style['element'])) {
-      ele = document.createElement('div')
-      let eleClass = (style['element']['className'] ? style['element']['className'] : 'maker-point')
-      htmlUtils.addClass(ele, 'iconfont')
-      htmlUtils.addClass(ele, eleClass)
-      ele.style.top = style['element']['top'] ? style['element']['top'] : '-100%'
-      ele.style.left = style['element']['left'] ? style['element']['left'] : '100%'
-      ele.style.fontSize = style['element']['fontSize'] ? style['element']['fontSize'] : '16px'
-      ele.style.borderColor = style['element']['borderColor'] ? style['element']['borderColor'] : '#2A2A2A'
-      ele.style.borderWidth = style['element']['borderWidth'] ? style['element']['borderWidth'] : '1px'
-      ele.style.opacity = style['element']['opacity'] ? style['element']['opacity'] : 1
-      ele.style.width = style['element']['width'] ? style['element']['width'] : '100%'
-      ele.style.height = style['element']['height'] ? style['element']['height'] : '100%'
-      ele.style.borderRadius = style['element']['borderRadius'] ? style['element']['borderRadius'] : '0px'
-      ele.setAttribute('normalColor', (style['color'] ? style['color'] : '#1b9de8'))
-      ele.setAttribute('selectColor', (style['selectColor'] ? style['selectColor'] : '#F61717'))
-      ele.setAttribute('selectClass', (style['selectClass'] ? style['selectClass'] : 'overlay-point-marker-raise'))
-      ele.style.color = style['color'] ? style['color'] : '#1b9de8'
-      ele.innerHTML = style['element']['text'] ? style['element']['text'] : ''
+      ele = document.createElement('div');
+      let eleClass = style['element']['className']
+        ? style['element']['className']
+        : 'maker-point';
+      htmlUtils.addClass(ele, 'iconfont');
+      htmlUtils.addClass(ele, eleClass);
+      ele.style.top = style['element']['top']
+        ? style['element']['top']
+        : '-100%';
+      ele.style.left = style['element']['left']
+        ? style['element']['left']
+        : '100%';
+      ele.style.fontSize = style['element']['fontSize']
+        ? style['element']['fontSize']
+        : '16px';
+      ele.style.borderColor = style['element']['borderColor']
+        ? style['element']['borderColor']
+        : '#2A2A2A';
+      ele.style.borderWidth = style['element']['borderWidth']
+        ? style['element']['borderWidth']
+        : '1px';
+      ele.style.opacity = style['element']['opacity']
+        ? style['element']['opacity']
+        : 1;
+      ele.style.width = style['element']['width']
+        ? style['element']['width']
+        : '100%';
+      ele.style.height = style['element']['height']
+        ? style['element']['height']
+        : '100%';
+      ele.style.borderRadius = style['element']['borderRadius']
+        ? style['element']['borderRadius']
+        : '0px';
+      ele.setAttribute(
+        'normalColor',
+        style['color'] ? style['color'] : '#1b9de8'
+      );
+      ele.setAttribute(
+        'selectColor',
+        style['selectColor'] ? style['selectColor'] : '#F61717'
+      );
+      ele.setAttribute(
+        'selectClass',
+        style['selectClass']
+          ? style['selectClass']
+          : 'overlay-point-marker-raise'
+      );
+      ele.style.color = style['color'] ? style['color'] : '#1b9de8';
+      ele.innerHTML = style['element']['text'] ? style['element']['text'] : '';
       if (params['orderBy']) {
-        spanEle = document.createElement('span')
-        spanEle.innerHTML = Number(index) + 1
-      } else if (params['orderByNum'] && point['attributes']['number'] !== undefined && point['attributes']['number'] !== '' && point['attributes']['number'] !== null) {
-        spanEle = document.createElement('span')
-        spanEle.innerHTML = Number(point['attributes']['number']) + 1
+        spanEle = document.createElement('span');
+        spanEle.innerHTML = Number(index) + 1;
+      } else if (
+        params['orderByNum'] &&
+        point['attributes']['number'] !== undefined &&
+        point['attributes']['number'] !== '' &&
+        point['attributes']['number'] !== null
+      ) {
+        spanEle = document.createElement('span');
+        spanEle.innerHTML = Number(point['attributes']['number']) + 1;
       } else if (params['innerHtml']) {
-        spanEle.innerHTML = point['attributes']['innerHtml']
+        spanEle.innerHTML = point['attributes']['innerHtml'];
       }
       if (spanEle) {
-        ele.appendChild(spanEle)
+        ele.appendChild(spanEle);
       }
-      marker.appendChild(ele)
+      marker.appendChild(ele);
     }
-    return ({
+    return {
       marker: marker,
       ele: ele
-    })
+    };
   }
 
   /**
@@ -175,28 +223,28 @@ class Overlay extends Geometry {
   addOverlayPoints (points, params) {
     try {
       if (points && Array.isArray(points)) {
-        let multiPoint = new ol.geom.MultiPoint([])
-        let change = false
+        let multiPoint = new ol.geom.MultiPoint([]);
+        let change = false;
         if (params['zoomToExtent']) {
-          params['zoomToExtent'] = false
-          change = true
+          params['zoomToExtent'] = false;
+          change = true;
         }
         points.forEach((item, index) => {
           if (item && item['geometry']) {
-            let _geom = this.getGeomFromGeomData(item, params)
+            let _geom = this.getGeomFromGeomData(item, params);
             if (_geom) {
-              this.addOverlayPoint(item, params, index)
-              multiPoint.appendPoint(_geom)
+              this.addOverlayPoint(item, params, index);
+              multiPoint.appendPoint(_geom);
             }
           }
-        })
+        });
         if (change) {
-          params['zoomToExtent'] = true
-          this.fixView(multiPoint, params)
+          params['zoomToExtent'] = true;
+          this.fixView(multiPoint, params);
         }
       }
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
 
@@ -207,14 +255,17 @@ class Overlay extends Geometry {
   removeOverLay (overlay) {
     try {
       if (overlay && overlay instanceof ol.Overlay && this.map) {
-        if (overlay.get('markFeature') && overlay.get('markFeature') instanceof ol.Feature) {
-          this.removeFeature(overlay.get('markFeature'))
+        if (
+          overlay.get('markFeature') &&
+          overlay.get('markFeature') instanceof ol.Feature
+        ) {
+          this.removeFeature(overlay.get('markFeature'));
         }
-        this.map.removeOverlay(overlay)
-        return overlay
+        this.map.removeOverlay(overlay);
+        return overlay;
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
@@ -226,18 +277,21 @@ class Overlay extends Geometry {
   removeOverlayById (id) {
     try {
       if (this.map && id) {
-        let _id = trim(id)
-        let overLay = this.map.getOverlayById(_id)
+        let _id = trim(id);
+        let overLay = this.map.getOverlayById(_id);
         if (overLay && overLay instanceof ol.Overlay) {
-          if (overLay.get('markFeature') && overLay.get('markFeature') instanceof ol.Feature) {
-            this.removeFeature(overLay.get('markFeature'))
+          if (
+            overLay.get('markFeature') &&
+            overLay.get('markFeature') instanceof ol.Feature
+          ) {
+            this.removeFeature(overLay.get('markFeature'));
           }
-          this.removeOverlay(overLay)
+          this.removeOverlay(overLay);
         }
-        return overLay
+        return overLay;
       }
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
 
@@ -247,22 +301,25 @@ class Overlay extends Geometry {
    * @returns {Array}
    */
   removeOverlayByLayerName (layerName) {
-    let _overlays = []
+    let _overlays = [];
     if (this.map && layerName) {
-      let overlays = this.map.getOverlays().getArray()
-      let len = overlays.length
+      let overlays = this.map.getOverlays().getArray();
+      let len = overlays.length;
       for (let i = 0; i < len; i++) {
         if (overlays[i] && overlays[i].get('layerName') === layerName) {
-          _overlays.push(overlays[i])
-          if (overlays[i].get('markFeature') && overlays[i].get('markFeature') instanceof ol.Feature) {
-            this.removeFeature(overlays[i].get('markFeature'))
+          _overlays.push(overlays[i]);
+          if (
+            overlays[i].get('markFeature') &&
+            overlays[i].get('markFeature') instanceof ol.Feature
+          ) {
+            this.removeFeature(overlays[i].get('markFeature'));
           }
-          this.removeOverlay(overlays[i])
-          i--
+          this.removeOverlay(overlays[i]);
+          i--;
         }
       }
     }
-    return _overlays
+    return _overlays;
   }
 
   /**
@@ -272,18 +329,18 @@ class Overlay extends Geometry {
    */
   removeOverlayByIds (ids) {
     try {
-      let overlays = []
+      let overlays = [];
       if (ids && Array.isArray(ids) && ids.length > 0) {
         ids.forEach(id => {
           if (id) {
-            let overlay = this.removeOverlayById(id)
-            overlays.push(overlay)
+            let overlay = this.removeOverlayById(id);
+            overlays.push(overlay);
           }
-        })
+        });
       }
-      return overlays
+      return overlays;
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
@@ -294,20 +351,20 @@ class Overlay extends Geometry {
    */
   removeOverlayByLayerNames (layerNames) {
     try {
-      let overlays = []
+      let overlays = [];
       if (layerNames && Array.isArray(layerNames) && layerNames.length > 0) {
         layerNames.forEach(layerName => {
           if (layerName) {
-            let rOverlays = this.removeOverlayByLayerName(layerName)
+            let rOverlays = this.removeOverlayByLayerName(layerName);
             if (rOverlays && rOverlays.length > 0) {
-              overlays = overlays.concat(rOverlays)
+              overlays = overlays.concat(rOverlays);
             }
           }
-        })
+        });
       }
-      return overlays
+      return overlays;
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
 
@@ -319,25 +376,31 @@ class Overlay extends Geometry {
    */
   highLightOverLay (id, overlay) {
     try {
-      if (!this.map) return
+      if (!this.map) return;
       if (overlay && overlay instanceof ol.Overlay) {
-        let overlayElement = overlay.getElement()
-        let iconElement = overlayElement.getElementsByTagName('div')[0]
-        iconElement.style.color = iconElement.getAttribute('selectColor')
-        htmlUtils.addClass(overlayElement, iconElement.getAttribute('selectClass'))
-        return overlay
+        let overlayElement = overlay.getElement();
+        let iconElement = overlayElement.getElementsByTagName('div')[0];
+        iconElement.style.color = iconElement.getAttribute('selectColor');
+        htmlUtils.addClass(
+          overlayElement,
+          iconElement.getAttribute('selectClass')
+        );
+        return overlay;
       } else if (id && trim(id) !== "''") {
-        let _overlay = this.map.getOverlayById(id)
+        let _overlay = this.map.getOverlayById(id);
         if (_overlay && _overlay instanceof ol.Overlay) {
-          let _overlayElement = _overlay.getElement()
-          let _iconElement = _overlayElement.getElementsByTagName('div')[0]
-          _iconElement.style.color = _iconElement.getAttribute('selectColor')
-          htmlUtils.addClass(_overlayElement, _iconElement.getAttribute('selectClass'))
-          return _overlay
+          let _overlayElement = _overlay.getElement();
+          let _iconElement = _overlayElement.getElementsByTagName('div')[0];
+          _iconElement.style.color = _iconElement.getAttribute('selectColor');
+          htmlUtils.addClass(
+            _overlayElement,
+            _iconElement.getAttribute('selectClass')
+          );
+          return _overlay;
         }
       }
     } catch (error) {
-      console.info(error)
+      console.info(error);
     }
   }
 
@@ -348,21 +411,27 @@ class Overlay extends Geometry {
    * @returns {ol.Overlay}
    */
   unHighLightOverLay (id, overlay) {
-    if (!this.map) return
+    if (!this.map) return;
     if (overlay && overlay instanceof ol.Overlay) {
-      let overlayElement = overlay.getElement()
-      let iconElement = overlayElement.getElementsByTagName('div')[0]
-      iconElement.style.color = iconElement.getAttribute('normalColor')
-      htmlUtils.removeClass(overlayElement, iconElement.getAttribute('selectClass'))
-      return overlay
+      let overlayElement = overlay.getElement();
+      let iconElement = overlayElement.getElementsByTagName('div')[0];
+      iconElement.style.color = iconElement.getAttribute('normalColor');
+      htmlUtils.removeClass(
+        overlayElement,
+        iconElement.getAttribute('selectClass')
+      );
+      return overlay;
     } else if (id && trim(id) !== "''") {
-      let _overlay = this.map.getOverlayById(id)
+      let _overlay = this.map.getOverlayById(id);
       if (_overlay && _overlay instanceof ol.Overlay) {
-        let _overlayElement = _overlay.getElement()
-        let _iconElement = _overlayElement.getElementsByTagName('div')[0]
-        _iconElement.style.color = _iconElement.getAttribute('normalColor')
-        htmlUtils.removeClass(_overlayElement, _iconElement.getAttribute('selectClass'))
-        return _overlay
+        let _overlayElement = _overlay.getElement();
+        let _iconElement = _overlayElement.getElementsByTagName('div')[0];
+        _iconElement.style.color = _iconElement.getAttribute('normalColor');
+        htmlUtils.removeClass(
+          _overlayElement,
+          _iconElement.getAttribute('selectClass')
+        );
+        return _overlay;
       }
     }
   }
@@ -373,9 +442,9 @@ class Overlay extends Geometry {
    * @returns {ol.Overlay}
    */
   getOverLayById (id) {
-    let _id = trim(id)
-    let overLay = this.map.getOverlayById(_id)
-    return overLay
+    let _id = trim(id);
+    let overLay = this.map.getOverlayById(_id);
+    return overLay;
   }
 
   /**
@@ -385,20 +454,20 @@ class Overlay extends Geometry {
    */
   getOverLaysByLayerNames (layerNames) {
     try {
-      let overlays = []
+      let overlays = [];
       if (layerNames && Array.isArray(layerNames) && layerNames.length > 0) {
         layerNames.forEach(layerName => {
           if (layerName) {
-            let rOverlays = this.getOverlayByLayerName(layerName)
+            let rOverlays = this.getOverlayByLayerName(layerName);
             if (rOverlays && rOverlays.length > 0) {
-              overlays = overlays.concat(rOverlays)
+              overlays = overlays.concat(rOverlays);
             }
           }
-        })
+        });
       }
-      return overlays
+      return overlays;
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
 
@@ -408,16 +477,16 @@ class Overlay extends Geometry {
    * @returns {Array}
    */
   getOverlayByLayerName (layerName) {
-    let _overlays = []
+    let _overlays = [];
     if (this.map && layerName) {
-      let overlays = this.map.getOverlays().getArray()
+      let overlays = this.map.getOverlays().getArray();
       overlays.forEach(overlay => {
         if (overlay && overlay.get('layerName') === layerName) {
-          _overlays.push(overlay)
+          _overlays.push(overlay);
         }
-      })
+      });
     }
-    return _overlays
+    return _overlays;
   }
 
   /**
@@ -427,19 +496,19 @@ class Overlay extends Geometry {
    * @returns {Array}
    */
   getOverlayByPropertiesKey (key, value) {
-    let _overlays = []
+    let _overlays = [];
     if (this.map && key && value) {
-      let overlays = this.map.getOverlays().getArray()
+      let overlays = this.map.getOverlays().getArray();
       overlays.forEach(overlay => {
         if (overlay) {
-          let properties = overlay.getProperties()
+          let properties = overlay.getProperties();
           if (properties && properties[key] && properties[key] === value) {
-            _overlays.push(overlay)
+            _overlays.push(overlay);
           }
         }
-      })
+      });
     }
-    return _overlays
+    return _overlays;
   }
 
   /**
@@ -449,16 +518,23 @@ class Overlay extends Geometry {
    * @returns {Array}
    */
   getOverlayByPropertiesKeys (keys, values) {
-    let _overlays = []
-    if (this.map && keys && values && Array.isArray(keys) && Array.isArray(values) && keys.length === values.length) {
+    let _overlays = [];
+    if (
+      this.map &&
+      keys &&
+      values &&
+      Array.isArray(keys) &&
+      Array.isArray(values) &&
+      keys.length === values.length
+    ) {
       keys.forEach((key, index) => {
-        let overlays = this.getOverlayByPropertiesKey(key, values[index])
+        let overlays = this.getOverlayByPropertiesKey(key, values[index]);
         if (overlays && overlays.length > 0) {
-          _overlays = _overlays.concat(overlays)
+          _overlays = _overlays.concat(overlays);
         }
-      })
+      });
     }
-    return _overlays
+    return _overlays;
   }
 
   /**
@@ -468,25 +544,28 @@ class Overlay extends Geometry {
    * @returns {Array}
    */
   removeOverlayByPropertiesKey (key, value) {
-    let _overlays = []
+    let _overlays = [];
     if (this.map && key && value) {
-      let overlays = this.map.getOverlays().getArray()
-      let len = overlays.length
+      let overlays = this.map.getOverlays().getArray();
+      let len = overlays.length;
       for (let i = 0; i < len; i++) {
         if (overlays[i]) {
-          let properties = overlays[i].getProperties()
+          let properties = overlays[i].getProperties();
           if (properties && properties[key] && properties[key] === value) {
-            _overlays.push(overlays[i])
-            if (overlays[i].get('markFeature') && overlays[i].get('markFeature') instanceof ol.Feature) {
-              this.removeFeature(overlays[i].get('markFeature'))
+            _overlays.push(overlays[i]);
+            if (
+              overlays[i].get('markFeature') &&
+              overlays[i].get('markFeature') instanceof ol.Feature
+            ) {
+              this.removeFeature(overlays[i].get('markFeature'));
             }
-            this.map.removeOverlay(overlays[i])
-            i--
+            this.map.removeOverlay(overlays[i]);
+            i--;
           }
         }
       }
     }
-    return _overlays
+    return _overlays;
   }
 
   /**
@@ -496,16 +575,23 @@ class Overlay extends Geometry {
    * @returns {Array}
    */
   removeOverlayByPropertiesKeys (keys, values) {
-    let _overlays = []
-    if (this.map && keys && values && Array.isArray(keys) && Array.isArray(values) && keys.length === values.length) {
+    let _overlays = [];
+    if (
+      this.map &&
+      keys &&
+      values &&
+      Array.isArray(keys) &&
+      Array.isArray(values) &&
+      keys.length === values.length
+    ) {
       keys.forEach((key, index) => {
-        let overlays = this.removeOverlayByPropertiesKey(key, values[index])
+        let overlays = this.removeOverlayByPropertiesKey(key, values[index]);
         if (overlays && overlays.length > 0) {
-          _overlays = _overlays.concat(overlays)
+          _overlays = _overlays.concat(overlays);
         }
-      })
+      });
     }
-    return _overlays
+    return _overlays;
   }
 }
-export default Overlay
+export default Overlay;

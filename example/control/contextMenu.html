@@ -96,10 +96,13 @@
       }
     ]
   });
-  var olControlContextMenu = new ol.control.ContextMenu(contextMenu)
-  Map.addControl(olControlContextMenu)
-  olControlContextMenu.on('item-click', function (event, data) {
+  var menu = new ol.control.ContextMenu(contextMenu)
+  Map.addControl(menu);
+  menu.on('item-click', function (event, data) {
     console.log(event, data)
+  });
+  menu.on('before-show', function () {
+    menu.hide();
   })
 </script>
 </body>

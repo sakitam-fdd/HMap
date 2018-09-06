@@ -18,13 +18,12 @@
 <div id="map"></div>
 <div id="info"></div>
 <script src="../../dist/hmap.js"></script>
-<!--<script src="./priteData.js"></script>-->
 <script type="text/javascript">
   var map = new ol.Map({
     view: new ol.View({
       center: [113.53450137499999, 34.44104525],
       projection: 'EPSG:4326',
-      zoom: 8
+      zoom: 6
     }),
     layers: [
       new ol.layer.Tile({
@@ -34,9 +33,10 @@
     target: 'map'
   });
   var myMarkers = [];
-  for (var i = 0; i < 200000; i++) {
+  var ext = map.getView().calculateExtent(map.getSize());
+  for (var i = 0; i < 5000; i++) {
     myMarkers.push(new ol.Feature({
-      geometry: new ol.geom.Point([Math.random() + 113.53450137499999, Math.random()  + 34.44104525]),
+      geometry: new ol.geom.Point([ext[0] + (ext[2] - ext[0]) * Math.random(), ext[1] + (ext[3] - ext[1]) * Math.random()]),
       population: 4000,
       rainfall: 500
     }));
@@ -45,23 +45,28 @@
   var vectorLayer = new ol.layer.DozensLayer({
     id: 'name1',
     map: map,
+    projection: 'EPSG:4326',
     style: new ol.style.Style({
       image: new ol.style.Icon(({
         anchor: [0.5, 1],
         anchorXUnits: 'fraction',
         anchorYUnits: 'fraction',
         src: '../assets/images/point1.png',
-        size: [32, 32]
+        size: [32, 32],
+        scale: 1
       }))
     })
   });
   map.addLayer(vectorLayer);
 
-  var beauty = new Image()
-  beauty.src = '../assets/images/point1.png';
-  if (beauty.complete) {
-    vectorLayer.addFeatures(myMarkers);
-  }
+  vectorLayer.addFeatures(myMarkers);
+
+  map.on("pointermove", function(event){
+    var point = vectorLayer.getClosestPoint(event.coordinate, 1000);
+    if (point.length > 0) {
+      console.log(point);
+    }
+  });
 </script>
 </body>
 </html>

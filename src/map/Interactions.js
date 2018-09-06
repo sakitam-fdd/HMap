@@ -2,28 +2,30 @@
  * Created by FDD on 2017/9/18.
  * @desc 交互工具相关
  */
-import ol from 'openlayers'
-import config from '../utils/config'
-import * as utils from '../utils/utils'
-import '../interaction/freeHandCircle'
-import '../interaction/layerSpyglass'
-import '../interaction/layerMagnify'
-import '../interaction/measureTool'
-import '../interaction/SelectCluster'
-import '../interaction/RotateFeature'
-import PointerEvents from '../interaction/PointerEvents'
+import Snap from '../interaction/Snap';
+import ol from 'openlayers';
+import config from '../utils/config';
+import * as utils from '../utils/utils';
+import '../interaction/freeHandCircle';
+import '../interaction/layerSpyglass';
+import '../interaction/layerMagnify';
+import '../interaction/measureTool';
+import '../interaction/SelectCluster';
+import '../interaction/RotateFeature';
+import PointerEvents from '../interaction/PointerEvents';
+ol.interaction.Snapor = Snap;
 class _Interactions {
   _addInteractions (params) {
-    let options = Object.assign(config.INTERACTIONS, (params || {}))
-    let interactions = []
+    let options = Object.assign(config.INTERACTIONS, params || {});
+    let interactions = [];
     if (options) {
       for (let key in options) {
         if (key && options[key]) {
-          this['add' + (utils.upperFirstChart(key))](options[key], interactions)
+          this['add' + utils.upperFirstChart(key)](options[key], interactions);
         }
       }
     }
-    return interactions
+    return interactions;
   }
 
   /**
@@ -32,11 +34,13 @@ class _Interactions {
    * @param interactions
    */
   addDoubleClickZoom (options = {}, interactions) {
-    interactions = interactions || this.map.getInteractions()
-    interactions.push(new ol.interaction.DoubleClickZoom({
-      delta: options.zoomDelta,
-      duration: options.zoomDuration
-    }))
+    interactions = interactions || this.map.getInteractions();
+    interactions.push(
+      new ol.interaction.DoubleClickZoom({
+        delta: options.zoomDelta,
+        duration: options.zoomDuration
+      })
+    );
   }
 
   /**
@@ -45,11 +49,13 @@ class _Interactions {
    * @param interactions
    */
   addMouseWheelZoom (options = {}, interactions) {
-    interactions = interactions || this.map.getInteractions()
-    interactions.push(new ol.interaction.MouseWheelZoom({
-      constrainResolution: options.constrainResolution,
-      duration: options.zoomDuration
-    }))
+    interactions = interactions || this.map.getInteractions();
+    interactions.push(
+      new ol.interaction.MouseWheelZoom({
+        constrainResolution: options.constrainResolution,
+        duration: options.zoomDuration
+      })
+    );
   }
 
   /**
@@ -58,12 +64,14 @@ class _Interactions {
    * @param interactions
    */
   addKeyboard (options = {}, interactions) {
-    interactions = interactions || this.map.getInteractions()
-    interactions.push(new ol.interaction.KeyboardPan())
-    interactions.push(new ol.interaction.KeyboardZoom({
-      delta: options.zoomDelta,
-      duration: options.zoomDuration
-    }))
+    interactions = interactions || this.map.getInteractions();
+    interactions.push(new ol.interaction.KeyboardPan());
+    interactions.push(
+      new ol.interaction.KeyboardZoom({
+        delta: options.zoomDelta,
+        duration: options.zoomDuration
+      })
+    );
   }
 
   /**
@@ -72,8 +80,8 @@ class _Interactions {
    * @param interactions
    */
   addAltShiftDragRotate (options = {}, interactions) {
-    interactions = interactions || this.map.getInteractions()
-    interactions.push(new ol.interaction.DragRotate())
+    interactions = interactions || this.map.getInteractions();
+    interactions.push(new ol.interaction.DragRotate());
   }
 
   /**
@@ -82,10 +90,12 @@ class _Interactions {
    * @param interactions
    */
   addShiftDragZoom (options = {}, interactions) {
-    interactions = interactions || this.map.getInteractions()
-    interactions.push(new ol.interaction.DragZoom({
-      duration: options.zoomDuration
-    }))
+    interactions = interactions || this.map.getInteractions();
+    interactions.push(
+      new ol.interaction.DragZoom({
+        duration: options.zoomDuration
+      })
+    );
   }
 
   /**
@@ -94,10 +104,12 @@ class _Interactions {
    * @param interactions
    */
   addDragPan (options = {}, interactions) {
-    interactions = interactions || this.map.getInteractions()
-    interactions.push(new ol.interaction.DragPan({
-      kinetic: (new ol.Kinetic(-0.005, 0.05, 100))
-    }))
+    interactions = interactions || this.map.getInteractions();
+    interactions.push(
+      new ol.interaction.DragPan({
+        kinetic: new ol.Kinetic(-0.005, 0.05, 100)
+      })
+    );
   }
 
   /**
@@ -106,8 +118,8 @@ class _Interactions {
    * @param interactions
    */
   addPinchRotate (options = {}, interactions) {
-    interactions = interactions || this.map.getInteractions()
-    interactions.push(new ol.interaction.PinchRotate())
+    interactions = interactions || this.map.getInteractions();
+    interactions.push(new ol.interaction.PinchRotate());
   }
 
   /**
@@ -116,11 +128,13 @@ class _Interactions {
    * @param interactions
    */
   addPinchZoom (options = {}, interactions) {
-    interactions = interactions || this.map.getInteractions()
-    interactions.push(new ol.interaction.PinchZoom({
-      constrainResolution: options.constrainResolution,
-      duration: options.zoomDuration
-    }))
+    interactions = interactions || this.map.getInteractions();
+    interactions.push(
+      new ol.interaction.PinchZoom({
+        constrainResolution: options.constrainResolution,
+        duration: options.zoomDuration
+      })
+    );
   }
 
   /**
@@ -129,8 +143,8 @@ class _Interactions {
    * @param interactions
    */
   addDraw (options = {}, interactions) {
-    interactions = interactions || this.map.getInteractions()
-    interactions.push(new ol.interaction.Draw(options))
+    interactions = interactions || this.map.getInteractions();
+    interactions.push(new ol.interaction.Draw(options));
   }
 
   /**
@@ -139,8 +153,8 @@ class _Interactions {
    * @param interactions
    */
   addMeasureTool (options = {}, interactions) {
-    interactions = interactions || this.map.getInteractions()
-    interactions.push(new ol.interaction.MeasureTool(options))
+    interactions = interactions || this.map.getInteractions();
+    interactions.push(new ol.interaction.MeasureTool(options));
   }
 
   /**
@@ -149,8 +163,8 @@ class _Interactions {
    * @param interactions
    */
   addFreeHandCircle (options = {}, interactions) {
-    interactions = interactions || this.map.getInteractions()
-    interactions.push(new ol.interaction.FreeHandCircle(options))
+    interactions = interactions || this.map.getInteractions();
+    interactions.push(new ol.interaction.FreeHandCircle(options));
   }
 
   /**
@@ -159,8 +173,8 @@ class _Interactions {
    * @param interactions
    */
   addLayerMagnify (options = {}, interactions) {
-    interactions = interactions || this.map.getInteractions()
-    interactions.push(new ol.interaction.LayerMagnify(options))
+    interactions = interactions || this.map.getInteractions();
+    interactions.push(new ol.interaction.LayerMagnify(options));
   }
 
   /**
@@ -169,8 +183,8 @@ class _Interactions {
    * @param interactions
    */
   addLayerSpyglass (options = {}, interactions) {
-    interactions = interactions || this.map.getInteractions()
-    interactions.push(new ol.interaction.LayerSpyglass(options))
+    interactions = interactions || this.map.getInteractions();
+    interactions.push(new ol.interaction.LayerSpyglass(options));
   }
 
   /**
@@ -179,8 +193,8 @@ class _Interactions {
    * @private
    */
   addPointerEvents (interactions) {
-    interactions = interactions || this.map.getInteractions()
-    interactions.push(new PointerEvents())
+    interactions = interactions || this.map.getInteractions();
+    interactions.push(new PointerEvents());
   }
 }
-export default _Interactions
+export default _Interactions;

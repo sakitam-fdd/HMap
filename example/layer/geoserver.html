@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>geoserver矢量切片</title>
+  <link rel="stylesheet" href="../../dist/hmap.css">
+  <style type="text/css">
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+<div id="map"></div>
+<script src="../../node_modules/openlayers/dist/ol-debug.js"></script>
+<script>
+  var gridsetName = 'EPSG:4326';
+  var gridNames = ['EPSG:4326:0', 'EPSG:4326:1', 'EPSG:4326:2', 'EPSG:4326:3', 'EPSG:4326:4', 'EPSG:4326:5', 'EPSG:4326:6', 'EPSG:4326:7', 'EPSG:4326:8', 'EPSG:4326:9', 'EPSG:4326:10', 'EPSG:4326:11', 'EPSG:4326:12', 'EPSG:4326:13', 'EPSG:4326:14', 'EPSG:4326:15', 'EPSG:4326:16', 'EPSG:4326:17', 'EPSG:4326:18', 'EPSG:4326:19', 'EPSG:4326:20', 'EPSG:4326:21'];
+  var baseUrl = 'http://localhost:8080/geoserver/gwc/service/wmts';
+  var style = '';
+  var format = 'application/x-protobuf;type=mapbox-vector';
+  var layerName = 'vector:road_wgs84_m';
+  var projection = new ol.proj.Projection({
+    code: 'EPSG:4326',
+    units: 'degrees',
+    axisOrientation: 'neu'
+  });
+  var resolutions = [0.703125, 0.3515625, 0.17578125, 0.087890625, 0.0439453125, 0.02197265625, 0.010986328125, 0.0054931640625, 0.00274658203125, 0.001373291015625, 6.866455078125E-4, 3.4332275390625E-4, 1.71661376953125E-4, 8.58306884765625E-5, 4.291534423828125E-5, 2.1457672119140625E-5, 1.0728836059570312E-5, 5.364418029785156E-6, 2.682209014892578E-6, 1.341104507446289E-6, 6.705522537231445E-7, 3.3527612686157227E-7];
+  params = {
+    'REQUEST': 'GetTile',
+    'SERVICE': 'WMTS',
+    'VERSION': '1.0.0',
+    'LAYER': layerName,
+    'STYLE': style,
+    'TILEMATRIX': gridsetName + ':{z}',
+    'TILEMATRIXSET': gridsetName,
+    'FORMAT': format,
+    'TILECOL': '{x}',
+    'TILEROW': '{y}'
+  };
+
+  var url = baseUrl+'?'
+  for (var param in params) {
+    url = url + param + '=' + params[param] + '&';
+  }
+  url = url.slice(0, -1);
+
+  var layer = new ol.layer.VectorTile({
+    style: function (features, resolution) {
+      let attr = features.getProperties();
+      return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: '#39c',
+          width: 3
+        })
+      })
+    },
+    source: new ol.source.VectorTile({
+      url: 'http://localhost:8080/geoserver/gwc/service/wmts?REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&LAYER=vector:road_wgs84_m&STYLE=&TILEMATRIX=EPSG:4326:{z}&TILEMATRIXSET=EPSG:4326&FORMAT=application/x-protobuf;type=mapbox-vector&TILECOL={x}&TILEROW={y}',
+      format: new ol.format.MVT({}),
+      projection: projection,
+      tileGrid: new ol.tilegrid.WMTS({
+        tileSize: [256, 256],
+        origin: [-180.0, 90.0],
+        resolutions: resolutions,
+        matrixIds: gridNames
+      }),
+      wrapX: true
+    })
+  });
+
+  var map = new ol.Map({
+    layers: [
+      layer
+    ],
+    target: 'map',
+    view: new ol.View({
+      center: [113.1536865234375, 34.19288635253906],
+      zoom: 10,
+      projection: projection,
+      extent: [-180.0, -90.0, 180.0, 90.0]
+    }),
+  });
+</script>
+</body>
+</html>

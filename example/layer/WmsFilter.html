@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>WMS图层过滤</title>
+  <link rel="stylesheet" href="../../dist/hmap.css">
+  <style type="text/css">
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+<div id="map"></div>
+<script src="../../dist/hmap.js"></script>
+<script type="text/javascript">
+  var map = new HMap({
+    target: 'map',
+    controls: {
+      scaleLine: true
+    },
+    view: {
+      center: [113.53450137499999, 34.44104525],
+      projection: 'EPSG:4326',
+      zoom: 5, // resolution
+    },
+    baseLayers: [
+      {
+        layerName: 'Google',
+        isDefault: true,
+        layerType: 'Google',
+        layerUrl: 'http://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}'
+      }
+    ]
+  });
+
+  var layerConfig = {
+    qgsyd: {
+      layerName: 'qgsyd',
+      layerType: 'TileWMS',
+      // layerUrl: 'http://60.247.54.34:8862/hdmapserver/gwc/service/wms',
+      layerUrl: 'http://60.247.54.34:8862/hdmapserver/wms', // 注意地址必须是无缓存的
+      layers: 'QGSYDMAP',
+      styles: '',
+      srs: 'EPSG:4326',
+      version: '1.3.0',
+      tiled: true,
+      addLayer: true,
+      create: true,
+      opacity: 0.7,
+      cql_filter: "XZQHDM LIKE '11%' OR XZQHDM LIKE '21%'" // important: 多行政区划使用 or 连接，行政区划后面如果为0需要删除补 % 。
+    },
+    water: {
+      layerName: 'water',
+      isDefault: false,
+      layerType: 'TileWMS',
+      layerUrl: 'http://60.247.54.34:8862/hdmapserver/watersys/wms',
+      layers: 'watersys:tb_water_source_check',
+      styles: '',
+      projection: 'EPSG:4326',
+      srs: 'EPSG:4326',
+      bbox: '79.92441218557393,18.344250404232827,131.63323891374492,50.40780675038131',
+      tiled: true,
+      addLayer: true,
+      create: true,
+      viewparams: ''
+    },
+    nowater: {
+      layerName: 'nowater',
+      isDefault: false,
+      layerType: 'TileWMS',
+      layerUrl: 'http://60.247.54.34:8862/hdmapserver/watersys/wms',
+      layers: 'watersys:nowtaer_problem',
+      styles: '',
+      projection: 'EPSG:4326',
+      srs: 'EPSG:4326',
+      bbox: '79.92441218557393,18.344250404232827,131.63323891374492,50.40780675038131',
+      tiled: true,
+      addLayer: true,
+      create: true,
+      viewparams: ''
+    }
+  };
+
+  function createTileLayer (layerName, params) {
+    let layer = map.getLayerByLayerName(layerName);
+    if (!(layer instanceof ol.layer.Image)) {
+      layer = null
+    } else if ((layer instanceof ol.layer.Tile) && !(params['addLayer'] === false)) {
+      map.removeLayer(layer);
+      layer = null
+    }
+    if (!layer && params && params['layerUrl'] && params['create']) {
+      layer = new ol.layer.Tile({
+        layerName: layerName,
+        visible: (params['visible'] === false) ? params['visible'] : true,
+        opacity: (params['opacity'] && (typeof params['opacity'] === 'number')) ? params['opacity'] : 1,
+        zIndex: params['zIndex'],
+        source: new ol.source.TileWMS({
+          url: params['layerUrl'],
+          crossOrigin: (params['crossOrigin'] ? params['crossOrigin'] : undefined),
+          params: {
+            LAYERS: params['layers'], // require
+            STYLES: params['styles'] ? params['styles'] : '',
+            VERSION: params['version'] ? params['version'] : '1.3.0',
+            WIDTH: params['width'] ? params['width'] : 256,
+            HEIGHT: params['height'] ? params['height'] : 256,
+            CRS: 'EPSG:4326',
+            REQUEST: 'GetMap',
+            TRANSPARENT: true,
+            TILED: ((params['tiled'] === false) ? params['tiled'] : true),
+            TILESORIGIN: (params['tiledsorrigin'] ? params['tiledsorrigin'] : undefined),
+            SERVICE: 'WMS',
+            FORMAT: (params['format'] ? params['format'] : 'image/png'),
+            CQL_FILTER: (params['cql_filter'] ? params['cql_filter'] : '')
+          },
+          wrapX: false
+        })
+      })
+    }
+    if (map && layer && !(params['addLayer'] === false)) {
+      map.addLayer(layer)
+    }
+    return layer
+  }
+
+  var image = createTileLayer(layerConfig['qgsyd']['layerName'], layerConfig['qgsyd']);
+</script>
+</body>
+</html>

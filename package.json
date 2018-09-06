@@ -1,6 +1,6 @@
 {
   "name": "hmap-js",
-  "version": "1.5.7",
+  "version": "1.5.8",
   "private": false,
   "description": "a openlayers extent map library",
   "style": "dist/hmap.css",
@@ -11,7 +11,10 @@
   "namespace": "HMap",
   "scripts": {
     "dev": "rollup -wm -c build/rollup-dev-config.js",
-    "build": "node build/rollup-prod-config.js"
+    "build": "node build/rollup-prod-config.js",
+    "prettify": "prettier --write src/*.js src/**/*.js",
+    "lint": "eslint --ext .js src",
+    "lint:fix": "eslint --fix --ext .js src"
   },
   "keywords": [
     "webgis",
@@ -25,14 +28,23 @@
     "type": "git",
     "url": "https://github.com/sakitam-fdd/HMap.git"
   },
+  "peerDependencies": {
+    "openlayers": ">=4.6.4"
+  },
   "dependencies": {
     "core-js": "^2.5.3",
+    "flatbush": "^3.0.0",
+    "kdbush": "^2.0.1",
     "lodash": "^4.17.5",
-    "openlayers": "^4.6.4",
     "proj4": "^2.4.4",
-    "screenfull": "^3.3.2"
+    "screenfull": "^3.3.2",
+    "deck.gl": "^5.3.4",
+    "luma.gl": "^5.3.0",
+    "@deck.gl/core": "^5.3.3",
+    "@deck.gl/layers": "^5.3.4"
   },
   "devDependencies": {
+    "openlayers": "^4.6.4",
     "autoprefixer": "^7.2.6",
     "babel-core": "^6.26.0",
     "babel-eslint": "^7.2.3",
@@ -52,6 +64,7 @@
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
     "postcss": "^6.0.17",
+    "prettier": "^1.13.7",
     "rollup": "^0.55.1",
     "rollup-plugin-babel": "^3.0.3",
     "rollup-plugin-buble": "^0.18.0",
@@ -72,5 +85,10 @@
     "node": ">= 4.0.0",
     "npm": ">= 3.0.0"
   },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
   "license": "MIT"
 }

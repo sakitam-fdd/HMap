@@ -2,7 +2,7 @@
  * Created by FDD on 2017/10/11.
  * @view 视图工具
  */
-import ol from 'openlayers'
+import ol from 'openlayers';
 class ViewUtil {
   /**
    * 获取当前视图范围
@@ -11,9 +11,9 @@ class ViewUtil {
    */
   getExtent (size) {
     if (size) {
-      return (this.view.calculateExtent(size))
+      return this.view.calculateExtent(size);
     } else {
-      return (this.view.calculateExtent(this.map.getSize()))
+      return this.view.calculateExtent(this.map.getSize());
     }
   }
 
@@ -23,7 +23,7 @@ class ViewUtil {
    */
   getMapCurrentExtent () {
     if (this.map) {
-      return this.view.calculateExtent(this.map.getSize())
+      return this.view.calculateExtent(this.map.getSize());
     }
   }
 
@@ -31,13 +31,13 @@ class ViewUtil {
    * 缩放到全图
    */
   zoomMaxExtent (zoom) {
-    let view = this.map.getView()
-    zoom = (typeof zoom === 'number') ? zoom : 2
+    let view = this.map.getView();
+    zoom = typeof zoom === 'number' ? zoom : 2;
     if (this.map && view) {
-      let center = view.getCenter()
+      let center = view.getCenter();
       if (center) {
-        this.view.setCenter(center)
-        this.view.setZoom(zoom)
+        this.view.setCenter(center);
+        this.view.setZoom(zoom);
       }
     }
   }
@@ -51,7 +51,7 @@ class ViewUtil {
       this.map.getView().animate({
         center: coordinate,
         duration: 800
-      })
+      });
     }
   }
 
@@ -61,12 +61,12 @@ class ViewUtil {
    */
   movePointToView (coordinate) {
     if (this.map) {
-      let extent = this.getMapCurrentExtent()
-      if (!(ol.extent.containsXY(extent, coordinate[0], coordinate[1]))) {
+      let extent = this.getMapCurrentExtent();
+      if (!ol.extent.containsXY(extent, coordinate[0], coordinate[1])) {
         this.map.getView().animate({
           center: [coordinate[0], coordinate[1]],
           duration: 400
-        })
+        });
       }
     }
   }
@@ -79,21 +79,24 @@ class ViewUtil {
    */
   adjustExtent (extent, params) {
     if (this.map) {
-      params = params || {}
-      let size = ol.extent.getSize(extent)
-      let adjust = typeof params['adjust'] === 'number' ? params['adjust'] : 0.2
-      let minWidth = typeof params['minWidth'] === 'number' ? params['minWidth'] : 0.05
-      let minHeight = typeof params['minHeight'] === 'number' ? params['minHeight'] : 0.05
+      params = params || {};
+      let size = ol.extent.getSize(extent);
+      let adjust =
+        typeof params['adjust'] === 'number' ? params['adjust'] : 0.2;
+      let minWidth =
+        typeof params['minWidth'] === 'number' ? params['minWidth'] : 0.05;
+      let minHeight =
+        typeof params['minHeight'] === 'number' ? params['minHeight'] : 0.05;
       if (size[0] <= minWidth || size[1] <= minHeight) {
-        let bleft = ol.extent.getBottomLeft(extent) // 获取xmin,ymin
-        let tright = ol.extent.getTopRight(extent) // 获取xmax,ymax
-        let xmin = bleft[0] - adjust
-        let ymin = bleft[1] - adjust
-        let xmax = tright[0] + adjust
-        let ymax = tright[1] + adjust
-        extent = ol.extent.buffer([xmin, ymin, xmax, ymax], adjust)
+        let bleft = ol.extent.getBottomLeft(extent); // 获取xmin,ymin
+        let tright = ol.extent.getTopRight(extent); // 获取xmax,ymax
+        let xmin = bleft[0] - adjust;
+        let ymin = bleft[1] - adjust;
+        let xmax = tright[0] + adjust;
+        let ymax = tright[1] + adjust;
+        extent = ol.extent.buffer([xmin, ymin, xmax, ymax], adjust);
       }
-      return extent
+      return extent;
     }
   }
 
@@ -105,22 +108,22 @@ class ViewUtil {
    */
   zoomToExtent (extent, isanimation, duration) {
     if (this.map) {
-      let view = this.map.getView()
-      let size = this.map.getSize()
+      let view = this.map.getView();
+      let size = this.map.getSize();
       if (!isanimation) {
         view.fit(extent, {
           size: size,
           padding: [0, 0, 0, 0],
           duration: 0,
-          maxZoom: (view.getMaxZoom() || undefined)
-        })
+          maxZoom: view.getMaxZoom() || undefined
+        });
       } else {
         view.fit(extent, {
           size: size,
           padding: [0, 0, 0, 0],
           duration: duration || 800,
-          maxZoom: (view.getMaxZoom() || undefined)
-        })
+          maxZoom: view.getMaxZoom() || undefined
+        });
       }
     }
   }
@@ -130,37 +133,37 @@ class ViewUtil {
    * @constructor
    */
   orderLayerZindex () {
-    let layerindex = 10
+    let layerindex = 10;
     if (this.map) {
-      let pointLayers = this.pointLayers
-      let lineLayers = this.lineLayers
-      let polygonLayers = this.polygonLayers
+      let pointLayers = this.pointLayers;
+      let lineLayers = this.lineLayers;
+      let polygonLayers = this.polygonLayers;
       polygonLayers.forEach(layerName => {
         if (layerName) {
-          let layer = this.getLayerByLayerName(layerName)
+          let layer = this.getLayerByLayerName(layerName);
           if (layer) {
-            layer.setZIndex(layerindex++)
+            layer.setZIndex(layerindex++);
           }
         }
-      })
+      });
       lineLayers.forEach(layerName => {
         if (layerName) {
-          let layer = this.getLayerByLayerName(layerName)
+          let layer = this.getLayerByLayerName(layerName);
           if (layer) {
-            layer.setZIndex(layerindex++)
+            layer.setZIndex(layerindex++);
           }
         }
-      })
+      });
       pointLayers.forEach(layerName => {
         if (layerName) {
-          let layer = this.getLayerByLayerName(layerName)
+          let layer = this.getLayerByLayerName(layerName);
           if (layer) {
-            layer.setZIndex(layerindex++)
+            layer.setZIndex(layerindex++);
           }
         }
-      })
+      });
     }
   }
 }
 
-export default ViewUtil
+export default ViewUtil;

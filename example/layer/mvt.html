@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'/>
+  <title>加载第三方矢量切片</title>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.css' rel='stylesheet'/>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+<div id='map'></div>
+<script>
+  mapboxgl.accessToken = 'pk.eyJ1Ijoic21pbGVmZGQiLCJhIjoiY2owbDBkb2RwMDJyMTMycWRoeDE4d21sZSJ9.dWlPeAWsgnhUKdv1dCLTnw';
+  var simple = {
+    "version": 8,
+    "sources": {
+      "composite": {
+        "url": "mapbox://mapbox.mapbox-terrain-v2,mapbox.mapbox-streets-v7",
+        "type": "vector"
+      },
+      "geoserver": {
+        "type": "vector",
+        "scheme": "tms",
+        "tiles": [
+          // "http://localhost:8080/geoserver/gwc/service/tms/1.0.0/vector%3Aroad_wgs84_m@EPSG%3A900913@pbf/{z}/{x}/{y}.pbf"
+          // "http://localhost:8080/geoserver/gwc/service/tms/1.0.0/topp%3Astates@EPSG%3A900913@pbf/{z}/{x}/{y}.pbf"
+          "http://datahive.minedata.cn/data/Ptstop/{z}/{x}/{y}?token=25cc55a69ea7422182d00d6b7c0ffa93&solu=2365"
+        ]
+      }
+    },
+    "sprite": "mapbox://sprites/mapbox/streets-v9",
+    "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
+    "layers": [
+      {
+        "id": "background",
+        "type": "background",
+        "layout": {},
+        "paint": {
+          "background-color": {
+            "base": 1,
+            "stops": [
+              [
+                11,
+                "hsl(35, 32%, 91%)"
+              ],
+              [
+                13,
+                "hsl(35, 12%, 89%)"
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": "mountain",
+        "type": "line",
+        "source": "geoserver",
+        "source-layer": "m",
+        "layout": {
+          "line-join": "round",
+          "line-cap": "round"
+        },
+        "paint": {
+          "line-color": "#3031ff",
+          "line-width": {
+            "stops": [[6, 0.4], [8, 0.6], [13, 1]]
+          },
+          "line-dasharray": [1.5, 3]
+        }
+      },
+      {
+        "id": "province",
+        "type": "fill",
+        "source": "geoserver",
+        "source-layer": "province",
+        "paint": {
+          "fill-color": {
+            "base": 1,
+            "stops": [
+              [
+                15,
+                "hsl(230, 23%, 82%)"
+              ],
+              [
+                16,
+                "hsl(230, 37%, 84%)"
+              ]
+            ]
+          },
+        },
+        "interactive": true
+      }
+    ]
+  };
+
+  var map = new mapboxgl.Map({
+    container: 'map',
+    style: simple,
+    zoom: 8,
+    center: [113.53450137499999, 34.44104525]
+  });
+
+  map.addControl(new mapboxgl.NavigationControl());
+</script>
+
+</body>
+</html>

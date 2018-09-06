@@ -6,17 +6,21 @@
  * @param {olx.source.OSMOptions=} optOptions Open Street Map options.
  * @api
  */
-import ol from 'openlayers'
+import ol from 'openlayers';
 ol.source.GOOGLE = function (optOptions) {
-  let options = optOptions || {}
-  let attributions = ''
+  let options = optOptions || {};
+  let attributions = '';
   if (options.attributions !== undefined) {
-    attributions = options.attributions
+    attributions = options.attributions;
   } else {
-    attributions = [ol.source.GOOGLE.ATTRIBUTION]
+    attributions = [ol.source.GOOGLE.ATTRIBUTION];
   }
-  let crossOrigin = options.crossOrigin !== undefined ? options.crossOrigin : 'anonymous'
-  let url = options.url !== undefined ? options.url : 'http://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}'
+  let crossOrigin =
+    options.crossOrigin !== undefined ? options.crossOrigin : 'anonymous';
+  let url =
+    options.url !== undefined
+      ? options.url
+      : 'http://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}';
 
   ol.source.XYZ.call(this, {
     attributions: attributions,
@@ -28,9 +32,9 @@ ol.source.GOOGLE = function (optOptions) {
     tileLoadFunction: options.tileLoadFunction,
     url: url,
     wrapX: options.wrapX
-  })
-}
-ol.inherits(ol.source.GOOGLE, ol.source.XYZ)
+  });
+};
+ol.inherits(ol.source.GOOGLE, ol.source.XYZ);
 
 /**
  * The attribution containing a link to the OpenStreetMap Copyright and License
@@ -40,10 +44,11 @@ ol.inherits(ol.source.GOOGLE, ol.source.XYZ)
  * @api
  */
 ol.source.GOOGLE.ATTRIBUTION = new ol.Attribution({
-  html: '&copy; ' +
-  '<a href="http://www.google.cn/maps">谷歌地图</a> ' +
-  'contributors.'
-})
+  html:
+    '&copy; ' +
+    '<a href="http://www.google.cn/maps">谷歌地图</a> ' +
+    'contributors.'
+});
 
-let olSourceGoogle = ol.source.GOOGLE
-export default olSourceGoogle
+let olSourceGoogle = ol.source.GOOGLE;
+export default olSourceGoogle;
