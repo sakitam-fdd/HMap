@@ -269,9 +269,11 @@ class GLLayer extends ol.layer.Image {
           this.glRender
         ],
         canvas: this._canvas,
-        gl: this.getContext(),
-        layerFilter: ({layer, viewport, isPicking}) => true,
-        viewState: {
+        // gl: this._canvas.getContext('webgl'),
+        useDevicePixels: true,
+        controller: false,
+        _customRender: true,
+        initialViewState: {
           latitude: nCenter[0],
           longitude: nCenter[1],
           zoom: zoom,

@@ -95,8 +95,10 @@ ol.control.ContextMenu.prototype.mouseDownHandle_ = function (event) {
     that.pixel = this.getMap().getEventPixel(event);
     this.dispatch('before-show', event);
     window.setTimeout(() => {
-      that.show(that.pixel);
-      that.dispatch('show', event);
+      if (that.pixel && that.pixel.length > 0) {
+        that.show(that.pixel);
+        that.dispatch('show', event);
+      }
     }, 50);
   }
   Events.listen(

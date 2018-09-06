@@ -329,6 +329,7 @@ class Geometry extends ViewUtil {
         featureGeom = new ol.format.WMSGetFeatureInfo().readGeometry(geomData);
       } else {
         let wktFormat = new ol.format.WKT();
+        if (!geomData['geometry']) return false;
         featureGeom = wktFormat.readGeometry(geomData['geometry'], {
           dataProjection: options['dataProjection']
             ? options['dataProjection']
