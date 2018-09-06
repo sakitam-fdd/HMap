@@ -12,6 +12,7 @@ import { isFunction, merge } from '../utils/utils';
 import * as LayerUtils from './LayerUtils';
 import './CanvasLayer';
 import './DozensLayer';
+import './GLLayer';
 class Layer {
   /**
    * 通过layerName获取图层
@@ -379,6 +380,28 @@ class Layer {
    * @returns {string}
    */
   createTileWMSLayer (layerName, params) {
+    const _config = {
+      LAYERS: params['layers'], // require
+      STYLES: params['styles'] ? params['styles'] : '',
+      VERSION: params['version'] ? params['version'] : '1.3.0',
+      WIDTH: params['width'] ? params['width'] : 256,
+      HEIGHT: params['height'] ? params['height'] : 256,
+      BBOX: params['bbox'], // require
+      SRS: params['srs'] ? params['srs'] : 'EPSG:3857',
+      CRS: params['srs'] ? params['srs'] : 'EPSG:3857',
+      REQUEST: 'GetMap',
+      TRANSPARENT: true,
+      TILED: params['tiled'] === false ? params['tiled'] : true,
+      TILESORIGIN: params['tiledsorrigin']
+        ? params['tiledsorrigin']
+        : undefined,
+      SERVICE: 'WMS',
+      FORMAT: params['format'] ? params['format'] : 'image/png',
+      VIEWPARAMS: params['viewparams'] ? params['viewparams'] : ''
+    };
+    if (params['cql_filter']) {
+      _config.CQL_FILTER = params['cql_filter'];
+    }
     let layer = this.getLayerByLayerName(layerName);
     if (!(layer instanceof ol.layer.Image)) {
       layer = null;
@@ -403,26 +426,7 @@ class Layer {
           crossOrigin: params['crossOrigin']
             ? params['crossOrigin']
             : undefined,
-          params: {
-            LAYERS: params['layers'], // require
-            STYLES: params['styles'] ? params['styles'] : '',
-            VERSION: params['version'] ? params['version'] : '1.3.0',
-            WIDTH: params['width'] ? params['width'] : 256,
-            HEIGHT: params['height'] ? params['height'] : 256,
-            BBOX: params['bbox'], // require
-            SRS: params['srs'] ? params['srs'] : 'EPSG:3857',
-            CRS: params['srs'] ? params['srs'] : 'EPSG:3857',
-            REQUEST: 'GetMap',
-            TRANSPARENT: true,
-            TILED: params['tiled'] === false ? params['tiled'] : true,
-            TILESORIGIN: params['tiledsorrigin']
-              ? params['tiledsorrigin']
-              : undefined,
-            SERVICE: 'WMS',
-            FORMAT: params['format'] ? params['format'] : 'image/png',
-            CQL_FILTER: params['cql_filter'] ? params['cql_filter'] : '',
-            VIEWPARAMS: params['viewparams'] ? params['viewparams'] : ''
-          },
+          params: _config,
           wrapX: false
         })
       });

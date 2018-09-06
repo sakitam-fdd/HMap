@@ -231,10 +231,45 @@ const getDistance = (c1, c2, radius) => {
   return 2 * radius * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 };
 
+/**
+ * check object is empty
+ * @param _object
+ * @returns {boolean}
+ */
+const isEmpty = _object => {
+  try {
+    return Object.keys(_object).length === 0;
+  } catch (e) {
+    return JSON.stringify(_object) === '{}';
+  }
+};
+
+const arraySame = function (...args) {
+  let flag = true;
+  // const args = Array.prototype.slice.call(arguments);
+  args.reduce(function(before, after) {
+    if (before[0] !== after[0] || before[1] !== after[1] || before[2] !== after[2] || before[3] !== after[3]) {
+      flag = false;
+    }
+    return after;
+  });
+  return flag;
+};
+
+/**
+ * Gets a unique ID for an object
+ * @param _object
+ * @returns {*|string}
+ */
+const generateObjectInterFlag = function (_object) {
+  return _object[`object_inter_flag`] || (_object[`object_inter_flag`] = getuuid().replace(/-/g, '_'));
+};
+
 export {
   coalesce,
   camelCase,
   isObject,
+  isEmpty,
   isFunction,
   isDate,
   isString,
@@ -249,5 +284,7 @@ export {
   replaceNode,
   checkBrowser,
   getDistance,
-  toConsumableArray
+  toConsumableArray,
+  arraySame,
+  generateObjectInterFlag
 };

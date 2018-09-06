@@ -1,144 +1,171 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>添加点要素</title>
-  <link rel="stylesheet" href="../../dist/hmap.css">
-  <style type="text/css">
-    html, body, #map {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
-    .menu {
-      position: absolute;
-      width: 100%;
-      height: 40px;
-      line-height: 40px;
-      text-align: center;
-      z-index: 2;
-    }
-
-    .base-button {
-      height: 30px;
-      line-height: 30px;
-      background: #1b9de8;
-      color: #ffffff;
-      border-radius: 6px;
-      border: 1px solid #bfcbd9;
-      padding: 0 10px;
-      box-shadow: 0 4px 10px rgba(73, 127, 255, .42);
-      transition: .3s;
-    }
-
-    .base-button:hover {
-      cursor: pointer;
-      border-color: #1b9de8;
-      color: #ffffff;
-    }
-  </style>
+  <title>Snap Interaction</title>
+  <link rel="stylesheet" href="../../dist/hmap.css" type="text/css">
+  <script src="../../dist/hmap.js"></script>
 </head>
 <body>
-<div id="map">
-  <div class="menu">
-    <button class="base-button" id="addPoint">添加单点</button>
-    <button class="base-button" id="addPoints">添加多点</button>
-    <button class="base-button" id="removePointByLayerName">通过layerName移除点</button>
-    <button class="base-button" id="removePointById">通过id移除点</button>
-    <button class="base-button" id="highLightPointById">通过id高亮点</button>
-    <button class="base-button" id="unHighLightPointById">通过id取消高亮点</button>
+<div id="map" class="map"></div>
+<form id="options-form" automplete="off">
+  <div class="radio">
+    <label>
+      <input type="radio" name="interaction" value="draw" id="draw" checked>
+      Draw &nbsp;
+    </label>
   </div>
-</div>
-<script src="../../dist/hmap.js"></script>
-<script type="text/javascript">
-  var Map = new HMap({
+  <div class="radio">
+    <label>
+      <input type="radio" name="interaction" value="modify">
+      Modify &nbsp;
+    </label>
+  </div>
+  <div class="form-group">
+    <label>Draw type &nbsp;</label>
+    <select name="draw-type" id="draw-type">
+      <option value="Point">Point</option>
+      <option value="LineString">LineString</option>
+      <option value="Polygon">Polygon</option>
+      <option value="Circle">Circle</option>
+    </select>
+  </div>
+</form>
+<script>
+  var raster = new ol.layer.Tile({
+    source: new ol.source.OSM()
+  });
+
+  var vector = new ol.layer.Vector({
+    source: new ol.source.Vector(),
+    style: new ol.style.Style({
+      fill: new ol.style.Fill({
+        color: 'rgba(255, 255, 255, 0.2)'
+      }),
+      stroke: new ol.style.Stroke({
+        color: '#ffcc33',
+        width: 2
+      }),
+      image: new ol.style.Circle({
+        radius: 7,
+        fill: new ol.style.Fill({
+          color: '#ffcc33'
+        })
+      })
+    })
+  });
+
+  var map = new ol.Map({
+    layers: [raster, vector],
     target: 'map',
-    controls: {
-      scaleLine: true
-    },
-    view: {
-      center: [113.53450137499999, 34.44104525],
-      projection: 'EPSG:4326',
-      zoom: 5, // resolution
-      maxZoom: 17
-    },
-    baseLayers: [
-      {
-        layerName: 'Google',
-        isDefault: true,
-        layerType: 'Google',
-        layerUrl: 'http://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}'
-      }
-    ]
+    view: new ol.View({
+      center: [-11000000, 4600000],
+      zoom: 4
+    })
   });
-  var points_ = Map.addPoint({
-    "layerId": 0,
-    "layerName": "GISDB.GIS_QL",
-    "displayFieldName": "ID",
-    "value": "DC551BBC908046179DA85297D18ED49F",
-    "attributes": {
-      // "id": '111',
-      "OBJECTID": "6284",
-      "唯一标示": "DC551BBC908046179DA85297D18ED49F",
-      "桥梁代码": "S102610928L0430",
-      "桥梁名称": "磨房沟桥",
-      "路线编码": "S102",
-      "路线名称": "西旬线",
-      "桥梁中心桩号": "174.314",
-      "偏移桩号": "0",
-      "桥梁全长": "25",
-      "桥面全宽": "8.6",
-      "桥面净宽": "7",
-      "上下行方向": "1",
-      "桥梁跨径分类": "4",
-      "设计荷载等级": "4",
-      "技术状况评定等级": "1",
-      "按使用年限分类": "1",
-      "单位信息": "4ddec42f77da426fb4e80659c6af2e82",
-      "导入时间": "2015/3/3 16:03:55",
-      "导入人": "c48d391f-fc57-4f3c-824a-5b3b8d6cca58",
-      "行政区划编码": "610928",
-      "SHAPE": "Point",
-      "KYDWDM": "Null",
-      "KYDWLX": "Null",
-      "KYDWMC": "Null",
-      "THDJ": "Null",
-      "SFHTLJ": "Null",
-      "PDRQ": "Null",
-      "JTGZCSDM": "Null",
-      "JTGZCSMC": "Null",
-      "PATH": "Null"
+
+  var Modify = {
+    init: function() {
+      this.select = new ol.interaction.Select();
+      map.addInteraction(this.select);
+
+      this.modify = new ol.interaction.Modify({
+        features: this.select.getFeatures()
+      });
+      map.addInteraction(this.modify);
+
+      this.setEvents();
     },
-    "geometryType": "esriGeometryPoint",
-    "geometry": "POINT (109.16013576 32.996383980000019)"
-  }, {
-    layerName: 'point',
-    style: {
-      image: {
-        type: 'icon',
-        image: {
-          imageSrc: '../assets/images/point2.png',
-          imageAnchor: [0.5, 1]
-        }
+    setEvents: function() {
+      var selectedFeatures = this.select.getFeatures();
+
+      this.select.on('change:active', function() {
+        selectedFeatures.forEach(selectedFeatures.remove, selectedFeatures);
+      });
+    },
+    setActive: function(active) {
+      this.select.setActive(active);
+      this.modify.setActive(active);
+    }
+  };
+  Modify.init();
+
+  var optionsForm = document.getElementById('options-form');
+
+  var Draw = {
+    init: function() {
+      map.addInteraction(this.Point);
+      this.Point.setActive(false);
+      map.addInteraction(this.LineString);
+      this.LineString.setActive(false);
+      map.addInteraction(this.Polygon);
+      this.Polygon.setActive(false);
+      map.addInteraction(this.Circle);
+      this.Circle.setActive(false);
+    },
+    Point: new ol.interaction.Draw({
+      source: vector.getSource(),
+      type: 'Point'
+    }),
+    LineString: new ol.interaction.Draw({
+      source: vector.getSource(),
+      type: 'LineString'
+    }),
+    Polygon: new ol.interaction.Draw({
+      source: vector.getSource(),
+      type: 'Polygon'
+    }),
+    Circle: new ol.interaction.Draw({
+      source: vector.getSource(),
+      type: 'Circle'
+    }),
+    getActive: function() {
+      return this.activeType ? this[this.activeType].getActive() : false;
+    },
+    setActive: function(active) {
+      var type = optionsForm.elements['draw-type'].value;
+      if (active) {
+        this.activeType && this[this.activeType].setActive(false);
+        this[type].setActive(true);
+        this.activeType = type;
+      } else {
+        this.activeType && this[this.activeType].setActive(false);
+        this.activeType = null;
       }
-    },
-    selectStyle: {
-      image: {
-        type: 'icon',
-        image: {
-          imageSrc: '../assets/images/point2o.png',
-          imageAnchor: [0.5, 1]
-        }
+    }
+  };
+  Draw.init();
+
+
+  /**
+   * Let user change the geometry type.
+   * @param {Event} e Change event.
+   */
+  optionsForm.onchange = function(e) {
+    var type = e.target.getAttribute('name');
+    var value = e.target.value;
+    if (type == 'draw-type') {
+      Draw.getActive() && Draw.setActive(true);
+    } else if (type == 'interaction') {
+      if (value == 'modify') {
+        Draw.setActive(false);
+        Modify.setActive(true);
+      } else if (value == 'draw') {
+        Draw.setActive(true);
+        Modify.setActive(false);
       }
-    },
-    zoomToExtent: true,
-    selectable: false,
-    // moveable: true,
+    }
+  };
+
+  Draw.setActive(true);
+  Modify.setActive(false);
+
+  // The snap interaction must be added after the Modify and Draw interactions
+  // in order for its map browser event handlers to be fired first. Its handlers
+  // are responsible of doing the snapping.
+  var snap = new ol.interaction.Snapor({
+    source: vector.getSource()
   });
-  var layer = Map.getLayerByFeature(points_)
-  console.log(layer)
+  map.addInteraction(snap);
 </script>
 </body>
 </html>

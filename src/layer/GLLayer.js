@@ -1,9 +1,20 @@
 import kdbush from 'kdbush';
 import ol from 'openlayers';
-import { createCanvas } from '../utils';
+import {createCanvas} from '../utils';
 
-class DozensLayer extends ol.layer.Image {
+const _options = {
+  pickable: true,
+  id: '',
+  fp64: false,
+  sphere: 6378137,
+  projection: 'EPSG:3857',
+  ratio: 1,
+  autoHighlight: true
+};
+
+class GLLayer extends ol.layer.Image {
   constructor (options = {}) {
+    options = Object.assign(_options, options);
     super(options);
 
     /**
@@ -56,10 +67,8 @@ class DozensLayer extends ol.layer.Image {
         attributions: options.attributions,
         resolutions: options.resolutions,
         canvasFunction: this.canvasFunction.bind(this),
-        projection: options.hasOwnProperty('projection')
-          ? options.projection
-          : 'EPSG:3857',
-        ratio: options.hasOwnProperty('ratio') ? options.ratio : 1
+        projection: options.projection,
+        ratio: options.ratio
       })
     );
 
@@ -98,59 +107,6 @@ class DozensLayer extends ol.layer.Image {
   }
 
   /**
-   * draw feature
-   * @param extent
-   * @param pixelRatio
-   * @private
-   */
-  _drawFeature (extent, pixelRatio) {
-    const that = this;
-    if (!this.getMap()) return;
-    if (!this._context) this._context = this.getContext();
-    const imageStyle = that._style.getImage();
-    if (imageStyle) {
-      const _image = new Image();
-      _image.src = imageStyle.getSrc();
-      if (_image.complete) {
-        this.render_(_image, extent, pixelRatio);
-      } else {
-        _image.onload = function () {
-          that.render_(_image, extent, pixelRatio);
-        };
-        _image.onerror = function () {
-        };
-      }
-    }
-  }
-
-  /**
-   * render
-   * @param _image
-   * @param extent
-   * @param pixelRatio
-   * @private
-   */
-  render_ (_image, extent, pixelRatio) {
-    const viewFeature = this.originData.range(...extent).map((id) => this.features[id]);
-    const _length = viewFeature.length;
-    const _scale = this._style.getImage().getScale() || 1;
-    const _anchor = this._style.getImage().getAnchor() || [0.5, 0.5];
-    for (let i = 0; i < _length; i++) {
-      const geometry = viewFeature[i].getGeometry();
-      const coordinates = geometry && geometry.getCoordinates();
-      if (coordinates) {
-        const pixel = this.getMap().getPixelFromCoordinate(coordinates);
-        const imageStyle = this._style.getImage();
-        if (imageStyle) {
-          // imageStyle.load()
-        }
-        const size = imageStyle.getSize();
-        this._context.drawImage(_image, (pixel[0] - _anchor[0]) * pixelRatio, (pixel[1] - _anchor[1]) * pixelRatio, size[0] * _scale * pixelRatio, size[1] * _scale * pixelRatio);
-      }
-    }
-  }
-
-  /**
    * re-draw
    */
   redraw () {
@@ -163,7 +119,7 @@ class DozensLayer extends ol.layer.Image {
    * @returns {*|CanvasRenderingContext2D|WebGLRenderingContext|ol.webgl.Context}
    */
   getContext () {
-    return this._canvas.getContext(this.get('context') || '2d');
+    return this._canvas.getContext('webgl2');
   }
 
   /**
@@ -197,23 +153,16 @@ class DozensLayer extends ol.layer.Image {
    * @returns {*}
    */
   canvasFunction (extent, resolution, pixelRatio, size, projection) {
+    const width = size[0];
+    const height = size[1];
     if (!this._canvas) {
-      this._canvas = createCanvas(size[0], size[1], pixelRatio);
+      this._canvas = createCanvas(width, height);
     } else {
-      this._canvas.width = size[0];
-      this._canvas.height = size[1];
+      this._canvas.width = width;
+      this._canvas.height = height;
     }
     if (resolution <= this.get('maxResolution')) {
-      const context = this.getContext();
-      this._drawFeature(extent, pixelRatio);
-      this.get('render') &&
-        this.get('render')({
-          context: context,
-          extent: extent,
-          size: size,
-          pixelRatio: pixelRatio,
-          projection: projection
-        });
+      this.render(extent, resolution, pixelRatio, size, projection);
     } else {
       // console.warn('超出所设置最大分辨率！')
     }
@@ -234,6 +183,73 @@ class DozensLayer extends ol.layer.Image {
    */
   getMap () {
     return this.get('originMap');
+  }
+
+  clearLayer () {
+    if (!this.glLayer) {
+      return;
+    }
+    const layerManager = this.glLayer.layerManager;
+    layerManager && layerManager.context.gl.clear(layerManager.context.gl.COLOR_BUFFER_BIT);
+    return this;
+  }
+
+  /**
+   * render
+   * @param extent
+   * @param resolution
+   * @param pixelRatio
+   * @param size
+   * @param projection
+   */
+  render (extent, resolution, pixelRatio, size, projection) {
+    if (!this.layers) {
+      this.layers = this.options.layers;
+    } else {
+      this.clearLayer();
+    }
+    this._renderer(extent, resolution, pixelRatio, size, projection);
+  }
+
+  /**
+   * renderer
+   * @param extent
+   * @param resolution
+   * @param pixelRatio
+   * @param size
+   * @param projection
+   * @private
+   */
+  _renderer (extent, resolution, pixelRatio, size, projection) {
+    const map = this.getMap();
+    if (map) {
+      const view = map.getView();
+      const zoom = view.getZoom();
+      const center = view.getCenter();
+      const nCenter = ol.proj.transform(center, view.getProjection(), 'EPSG:4326');
+      const _props = {
+        // width: size[0], // Number, required
+        // height: size[1],
+        layers: this.layers,
+        gl: this._canvas.getContext('webgl2'),
+        // layerFilter: ({layer, viewport, isPicking}) => true,
+        initialViewState: {
+          latitude: nCenter[1],
+          longitude: nCenter[0],
+          zoom: zoom,
+          bearing: 0,
+          pitch: 0,
+          maxZoom: 16
+        }
+      };
+      if (!this.glLayer) {
+        this.glLayer = new deck.Deck(_props); // eslint-disable-line
+      } else {
+        this.glLayer.setProps(Object.assign({
+          viewState: _props.initialViewState
+        }, _props));
+      }
+    }
   }
 
   transformRadius (
@@ -265,5 +281,6 @@ class DozensLayer extends ol.layer.Image {
   }
 }
 
-ol.layer.DozensLayer = DozensLayer;
-export default DozensLayer;
+ol.layer.GLLayer = GLLayer;
+
+export default GLLayer;
