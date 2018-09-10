@@ -90,6 +90,13 @@ class CanvasLayer extends ol.layer.Image {
     }
     if (resolution <= this.get('maxResolution')) {
       const context = this.getContext();
+      this.render({
+        context: context,
+        extent: extent,
+        size: size,
+        pixelRatio: pixelRatio,
+        projection: projection
+      });
       this.get('render') &&
         this.get('render')({
           context: context,
@@ -103,6 +110,8 @@ class CanvasLayer extends ol.layer.Image {
     }
     return this._canvas;
   }
+
+  render () {}
 
   /**
    * set map
