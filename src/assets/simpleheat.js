@@ -1,5 +1,5 @@
 /* eslint-disable */
-
+// https://github.com/mourner/simpleheat
 if (typeof module !== 'undefined') module.exports = simpleheat;
 
 function simpleheat (canvas, context) {
