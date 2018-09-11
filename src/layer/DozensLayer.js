@@ -154,8 +154,8 @@ class DozensLayer extends ol.layer.Image {
    * re-draw
    */
   redraw () {
-    const _extent = this.options.extent || this._getMapExtent();
-    this.setExtent(_extent);
+    // const _extent = this.options.extent || this._getMapExtent();
+    // this.setExtent(_extent);
   }
 
   /**

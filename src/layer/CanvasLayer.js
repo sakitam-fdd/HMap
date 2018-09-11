@@ -32,15 +32,17 @@ class CanvasLayer extends ol.layer.Image {
       })
     );
 
-    this.on('precompose', this.redraw, this);
+    this.on('precompose', this.redraw.bind(this), this);
   }
 
   /**
    * re-draw
    */
-  redraw () {
-    const _extent = this.options.extent || this._getMapExtent();
-    this.setExtent(_extent);
+  redraw (event) {
+    // const _extent = this.options.extent || this._getMapExtent();
+    // this.setExtent(_extent);
+    this.draw(event);
+    // window.setTimeout(() => this.changed(), 0);
   }
 
   /**
@@ -112,6 +114,8 @@ class CanvasLayer extends ol.layer.Image {
   }
 
   render () {}
+
+  draw () {}
 
   /**
    * set map
