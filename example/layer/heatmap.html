@@ -24,7 +24,7 @@
       projection: 'EPSG:4326',
       zoom: 6
     }),
-    // renderer: /** @type {Array<ol.renderer.Type>} */ (['webgl', 'canvas']),
+    renderer: /** @type {Array<ol.renderer.Type>} */ (['webgl', 'canvas']),
     layers: [
       new ol.layer.Tile({
         source: new ol.source.OSM()
