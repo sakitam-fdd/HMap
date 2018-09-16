@@ -18,10 +18,7 @@
 <div id="map"></div>
 <script src="../../dist/hmap.js"></script>
 <script>
-  function main() {
-    const canvas = document.querySelector('#glcanvas');
-    const gl = canvas.getContext('webgl');
-
+  function main(gl) {
     // If we don't have a GL context, give up now
 
     if (!gl) {
@@ -95,12 +92,8 @@
     requestAnimationFrame(render);
   }
 
-  //
-  // initBuffers
-  //
   // Initialize the buffers we'll need. For this demo, we just
   // have one object -- a simple three-dimensional cube.
-  //
   function initBuffers(gl) {
 
     // Create a buffer for the cube's vertex positions.
@@ -230,10 +223,7 @@
     };
   }
 
-  //
-  // Initialize a texture and load an image.
-  // When the image finished loading copy it into the texture.
-  //
+  // 将图片加载到纹理中
   function loadTexture(gl, url) {
     const texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -280,13 +270,19 @@
     return texture;
   }
 
+  // 判断是否为2的n次方
   function isPowerOf2(value) {
-    return (value & (value - 1)) == 0;
+    return (value & (value - 1)) === 0;
   }
 
-  //
-  // Draw the scene.
-  //
+  /**
+   * 绘制场景
+   * @param gl
+   * @param programInfo
+   * @param buffers
+   * @param texture
+   * @param deltaTime
+   */
   function drawScene(gl, programInfo, buffers, texture, deltaTime) {
     gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
     gl.clearDepth(1.0);                 // Clear everything
@@ -451,9 +447,21 @@
       url: 'https://cartodb-basemaps-{a-d}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png'
     })
   });
-  var vector = new ol.layer.Vector({
-    source: new ol.source.Vector()
+
+  var vector = new ol.layer.Image({ // form: https://github.com/openlayers/openlayers/issues/7515
+    renderMode: 'image',
+    source: new ol.source.ImageVector({
+      // style: style,
+      source: new ol.source.Vector({
+        url: '../assets/json/countries.geojson',
+        format: new ol.format.GeoJSON()
+      })
+    })
   });
+
+  // var vector = new ol.layer.Layer({
+  //   source: new ol.source.Source()
+  // });
   var fragmentShaderSource = [
     'precision mediump float;',
     'void main() {',
@@ -527,6 +535,7 @@
   }
 
   var createFill = function (event) {
+    console.log('11')
     var context = event.glContext;
     var gl = context.getGL();
     // Set clear color to black, fully opaque
@@ -555,11 +564,16 @@
       zoom: 5, // resolution
     }),
     renderer: /** @type {Array<ol.renderer.Type>} */ (['webgl', 'canvas']),
-    target: 'map'
+    target: 'map',
+    layers: [
+      new ol.layer.Tile({
+        source: new ol.source.OSM()
+      })
+    ]
   });
-  vector.getSource().addFeature(new ol.Feature({
-    geometry: new ol.geom.Point([12118909.300259633, 4086043.1061670054])
-  }));
+  // vector.getSource().addFeature(new ol.Feature({
+  //   geometry: new ol.geom.Point([12118909.300259633, 4086043.1061670054])
+  // }));
 
   map.addLayer(vector);
 </script>
