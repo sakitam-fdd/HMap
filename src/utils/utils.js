@@ -265,6 +265,24 @@ const generateObjectInterFlag = function (_object) {
   return _object[`object_inter_flag`] || (_object[`object_inter_flag`] = getuuid().replace(/-/g, '_'));
 };
 
+const createContext = function (canvas, glOptions = {}) {
+  if (!canvas) return null;
+  function onContextCreationError(error) {
+    console.log(error.statusMessage);
+  }
+
+  canvas.addEventListener('webglcontextcreationerror', onContextCreationError, false);
+  let gl = canvas.getContext('webgl2', glOptions);
+  gl = gl || canvas.getContext('experimental-webgl2', glOptions);
+  if (!gl) {
+    gl = canvas.getContext('webgl', glOptions);
+    gl = gl || canvas.getContext('experimental-webgl', glOptions);
+  }
+
+  canvas.removeEventListener('webglcontextcreationerror', onContextCreationError, false);
+  return gl;
+};
+
 export {
   coalesce,
   camelCase,
@@ -286,5 +304,6 @@ export {
   getDistance,
   toConsumableArray,
   arraySame,
-  generateObjectInterFlag
+  generateObjectInterFlag,
+  createContext
 };

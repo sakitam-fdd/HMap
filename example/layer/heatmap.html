@@ -35,15 +35,15 @@
 
   var features = [];
   var ext = map.getView().calculateExtent(map.getSize());
-  for (var i = 0; i < 50; i++) {
-    features.push([ext[0] + (ext[2] - ext[0]) * Math.random(), ext[1] + (ext[3] - ext[1]) * Math.random(), 500]);
+  for (var i = 0; i < 5000; i++) {
+    features.push([ext[0] + (ext[2] - ext[0]) * Math.random(), ext[1] + (ext[3] - ext[1]) * Math.random(), 51]);
   }
 
   var layer = new ol.layer.HeatMap(features, {
     map: map,
     projection: 'EPSG:4326',
-    // renderType: 'webgl'
-    renderType: 'canvas'
+    renderType: 'webgl'
+    // renderType: 'canvas'
   });
   map.addLayer(layer);
 </script>

@@ -1,6 +1,6 @@
 import ol from 'openlayers';
 import simpleheat from '../assets/simpleheat';
-import {isFunction} from '../utils';
+import { createCanvas, isFunction } from '../utils';
 import CanvasLayer from './CanvasLayer';
 import {createWebGLHeatmap} from '../assets/webgl-heatmap';
 
@@ -48,41 +48,33 @@ class HeatMap extends CanvasLayer {
     return this.render();
   }
 
-  draw (event) {
-    console.log(event);
-    // const features = this.getFeatures();
-    // if (!features || features.length === 0) return;
-    // const data = this.renderData(features);
-    // if (this.options.renderType === 'canvas') {
-    //   if (!this._layer) {
-    //     this._layer = simpleheat(this._canvas);
-    //   }
-    //   this._layer.radius(this.options['radius'] || this._layer.defaultRadius, this.options['blur']);
-    //   if (this.options['gradient']) {
-    //     this._layer.gradient(this.options['gradient']);
-    //   }
-    //   this._layer.max(this.options['max']);
-    //   this._layer.data(data).draw(this.options['minOpacity']);
-    // } else if (this.options.renderType === 'webgl') {
-    //   if (!this._layer) {
-    //     this._layer = createWebGLHeatmap({
-    //       // canvas: this._canvas,
-    //       gradientTexture: this.options.gradientTexture,
-    //       alphaRange: [0, this.options.alphaRange],
-    //       gl: event.glContext.getGL()
-    //     });
-    //   }
-    //   this._layer.clear();
-    //   let [i, length] = [0, data.length];
-    //   for (; i < length; i++) {
-    //     this._layer.addPoint(
-    //       Math.floor(data[i][0]),
-    //       Math.floor(data[i][1]), data[i][2]
-    //     );
-    //   }
-    //   this._layer.update();
-    //   this._layer.display();
-    // }
+  /**
+   * canvas constructor
+   * @param extent
+   * @param resolution
+   * @param pixelRatio
+   * @param size
+   * @param projection
+   * @returns {*}
+   */
+  canvasFunction (extent, resolution, pixelRatio, size, projection) {
+    if (!this._canvas) {
+      this._canvas = createCanvas(size[0], size[1], pixelRatio);
+    } else {
+      this._canvas.width = size[0];
+      this._canvas.height = size[1];
+    }
+    if (resolution <= this.get('maxResolution')) {
+      this.render({
+        extent: extent,
+        size: size,
+        pixelRatio: pixelRatio,
+        projection: projection
+      });
+    } else {
+      // console.warn('超出所设置最大分辨率！')
+    }
+    return this._canvas;
   }
 
   render () {
@@ -112,8 +104,9 @@ class HeatMap extends CanvasLayer {
       let [i, length] = [0, data.length];
       for (; i < length; i++) {
         this._layer.addPoint(
-          Math.floor(data[length][0]),
-          Math.floor(data[length][1]), data[length][2]
+          Math.floor(data[i][0]),
+          Math.floor(data[i][1]),
+          data[i][2]
         );
       }
       this._layer.update();
