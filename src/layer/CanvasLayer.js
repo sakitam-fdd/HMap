@@ -32,15 +32,17 @@ class CanvasLayer extends ol.layer.Image {
       })
     );
 
-    this.on('precompose', this.redraw, this);
+    this.on('precompose', this.redraw.bind(this), this);
   }
 
   /**
    * re-draw
    */
-  redraw () {
-    const _extent = this.options.extent || this._getMapExtent();
-    this.setExtent(_extent);
+  redraw (event) {
+    // const _extent = this.options.extent || this._getMapExtent();
+    // this.setExtent(_extent);
+    this.draw(event);
+    // window.setTimeout(() => this.changed(), 0);
   }
 
   /**
@@ -90,6 +92,13 @@ class CanvasLayer extends ol.layer.Image {
     }
     if (resolution <= this.get('maxResolution')) {
       const context = this.getContext();
+      this.render({
+        context: context,
+        extent: extent,
+        size: size,
+        pixelRatio: pixelRatio,
+        projection: projection
+      });
       this.get('render') &&
         this.get('render')({
           context: context,
@@ -103,6 +112,10 @@ class CanvasLayer extends ol.layer.Image {
     }
     return this._canvas;
   }
+
+  render () {}
+
+  draw () {}
 
   /**
    * set map

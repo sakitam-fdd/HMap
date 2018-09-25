@@ -2025,6 +2025,10 @@ gl-mat4@^1.1.4:
   version "1.2.0"
   resolved "http://registry.npm.taobao.org/gl-mat4/download/gl-mat4-1.2.0.tgz#49d8a7636b70aa00819216635f4a3fd3f4669b26"
 
+gl-matrix@^2.8.1:
+  version "2.8.1"
+  resolved "http://registry.npm.taobao.org/gl-matrix/download/gl-matrix-2.8.1.tgz#1c7873448eac61d2cd25803a074e837bd42581a3"
+
 gl-quat@^1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/gl-quat/download/gl-quat-1.0.0.tgz#0945ec923386f45329be5dc357b1c8c2d47586c5"
