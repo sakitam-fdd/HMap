@@ -1,9 +1,26 @@
 ## 1.5.8
 
+* 底图支持 ImageLayer。
+* 新增多图层mask示例，GeoServer 矢量图层示例。
+* 新增要素 move events。
+* 新增Dozenslayer 大数据渲染图层。
+* 新增自定义热力图渲染，支持热力图 webgl 渲染模式。
+* 新增国内坐标转换算法。
+* 拆分了 deck.gl 数据可视化控件到单独项目 [ol-deckgl](https://github.com/sakitam-fdd/ol-deckgl)。
+
+* 修复要素选择后无法清除问题。
+* 修复周边搜索控件在拖动结束后无法选中问题。
+* 修复右键菜单控件无法在 before-show 事件钩子阻止显示问题。
+
+* 测试了 ol 底层对 webgl支持方式（后续部分渲染可能会向 webgl 迁移）。
+
+## 1.5.7
+
 * 修复要素TEXT样式配置。
 * 修复WMS图层样式配置。
 * 修复IE写兼容问题
 * 修复图层获取BUG。
+* 添加要素旋转交互。
 * 添加要素旋转交互。
 
 ## 1.5.6
