@@ -12,7 +12,6 @@ import { isFunction, merge } from '../utils/utils';
 import * as LayerUtils from './LayerUtils';
 import './CanvasLayer';
 import './DozensLayer';
-import './GLLayer';
 import './HeatMap';
 class Layer {
   /**

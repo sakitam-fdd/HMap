@@ -31,18 +31,14 @@ class CanvasLayer extends ol.layer.Image {
         ratio: options.hasOwnProperty('ratio') ? options.ratio : 1
       })
     );
-
-    this.on('precompose', this.redraw.bind(this), this);
   }
 
   /**
    * re-draw
    */
   redraw (event) {
-    // const _extent = this.options.extent || this._getMapExtent();
-    // this.setExtent(_extent);
+    this.getSource() && this.getSource().refresh();
     this.draw(event);
-    // window.setTimeout(() => this.changed(), 0);
   }
 
   /**
@@ -113,7 +109,11 @@ class CanvasLayer extends ol.layer.Image {
     return this._canvas;
   }
 
-  render () {}
+  render () {
+    if (this.options.animation) {
+      this.on('precompose', this.redraw.bind(this), this);
+    }
+  }
 
   draw () {}
 

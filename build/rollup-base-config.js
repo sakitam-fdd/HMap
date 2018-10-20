@@ -61,8 +61,7 @@ const genConfig = (opts) => {
       format: opts.format,
       banner,
       globals: {
-        openlayers: 'ol',
-        deckgl: 'DeckGL'
+        openlayers: 'ol'
       },
       name: _package.namespace
     }

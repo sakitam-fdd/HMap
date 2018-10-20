@@ -11,7 +11,7 @@ if (typeof Array.prototype.reduce !== 'function') {
     if (typeof callback !== 'function') {
       throw new TypeError(callback + ' is not a function');
     }
-    var index, value,
+    var index, value, // eslint-disable-line
       length = this.length >>> 0,
       isValueSet = false;
     if (arguments.length > 1) {
