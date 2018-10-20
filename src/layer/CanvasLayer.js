@@ -111,6 +111,7 @@ class CanvasLayer extends ol.layer.Image {
 
   render () {
     if (this.options.animation) {
+      this.un('precompose', this.redraw.bind(this), this);
       this.on('precompose', this.redraw.bind(this), this);
     }
   }

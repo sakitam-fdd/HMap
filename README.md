@@ -46,10 +46,10 @@ import HMap from 'hmap-js' // lib
 
 ```bash
 // jsdelivr (jsdelivr由于缓存原因最好锁定版本号，否则可能会出现意料之外的问题)
-https://cdn.jsdelivr.net/npm/hmap-js@1.5.7/dist/hmap.js
-https://cdn.jsdelivr.net/npm/hmap-js@1.5.7/dist/hmap.min.js
-https://cdn.jsdelivr.net/npm/hmap-js@1.5.7/dist/hmap.css
-https://cdn.jsdelivr.net/npm/hmap-js@1.5.7/dist/hmap.min.css
+https://cdn.jsdelivr.net/npm/hmap-js@1.5.8/dist/hmap.js
+https://cdn.jsdelivr.net/npm/hmap-js@1.5.8/dist/hmap.min.js
+https://cdn.jsdelivr.net/npm/hmap-js@1.5.8/dist/hmap.css
+https://cdn.jsdelivr.net/npm/hmap-js@1.5.8/dist/hmap.min.css
 // npm
 https://unpkg.com/hmap-js/dist/hmap.js
 https://unpkg.com/hmap-js/dist/hmap.min.js

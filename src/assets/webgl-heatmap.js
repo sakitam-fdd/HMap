@@ -910,7 +910,7 @@ WebGLHeatmap = (function () {
         antialias: false,
         alpha: true,
         preserveDrawingBuffer: true
-      });
+      }, 'webgl');
     }
     if (window.WebGLDebugUtils != null) {
       console.log('debugging mode');

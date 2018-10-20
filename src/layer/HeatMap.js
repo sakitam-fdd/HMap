@@ -248,19 +248,27 @@ class HeatMap extends CanvasLayer {
           // gl:this.getRenderer().gl
         });
       }
-      this._layer.clear();
-      let [i, length] = [0, data.length];
-      for (; i < length; i++) {
-        this._layer.addPoint(
-          Math.floor(data[i][0]),
-          Math.floor(data[i][1]),
-          data[i][2]
-        );
+      if (!this._isRendered) {
+        this.once('precompose', () => {
+          setTimeout(() => {
+            this.render();
+          }, 300);
+        }, this);
+        this._isRendered = true;
+      } else {
+        this._layer.clear();
+        let [i, length] = [0, data.length];
+        for (; i < length; i++) {
+          this._layer.addPoint(
+            Math.floor(data[i][0]),
+            Math.floor(data[i][1]),
+            data[i][2]
+          );
+        }
+        this._layer.update();
+        this._layer.display();
       }
-      this._layer.update();
-      this._layer.display();
     }
-    this.on('precompose', this.redraw.bind(this), this);
     return this;
   }
 

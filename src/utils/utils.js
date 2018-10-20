@@ -265,14 +265,14 @@ const generateObjectInterFlag = function (_object) {
   return _object[`object_inter_flag`] || (_object[`object_inter_flag`] = getuuid().replace(/-/g, '_'));
 };
 
-const createContext = function (canvas, glOptions = {}) {
+const createContext = function (canvas, glOptions = {}, type = 'webgl2') {
   if (!canvas) return null;
   function onContextCreationError(error) {
     console.log(error.statusMessage);
   }
 
   canvas.addEventListener('webglcontextcreationerror', onContextCreationError, false);
-  let gl = canvas.getContext('webgl2', glOptions);
+  let gl = canvas.getContext(type, glOptions);
   gl = gl || canvas.getContext('experimental-webgl2', glOptions);
   if (!gl) {
     gl = canvas.getContext('webgl', glOptions);

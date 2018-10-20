@@ -65,7 +65,7 @@
 
 * 在页面中引入hmap javascript API入口脚本和样式外链
 
-注意：如果需要指定版本需要在 `hmap-js` 后加入 `@版本号`，比如 `https://unpkg.com/hmap-js@1.5.7/dist/hmap.min.js`
+注意：如果需要指定版本需要在 `hmap-js` 后加入 `@版本号`，比如 `https://unpkg.com/hmap-js@1.5.8/dist/hmap.min.js`
 
 ```html
 <link rel="stylesheet" href="https://unpkg.com/hmap-js/dist/hmap.min.css">

@@ -27,7 +27,9 @@
     renderer: /** @type {Array<ol.renderer.Type>} */ (['webgl', 'canvas']),
     layers: [
       new ol.layer.Tile({
-        source: new ol.source.OSM()
+        source: new ol.source.OSM({
+          url: 'https://cartodb-basemaps-{a-d}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png'
+        })
       })
     ],
     target: 'map'
@@ -42,8 +44,8 @@
   var layer = new ol.layer.HeatMap(features, {
     map: map,
     projection: 'EPSG:4326',
-    // renderType: 'webgl'
-    renderType: 'canvas'
+    renderType: 'webgl'
+    // renderType: 'canvas'
   });
   map.addLayer(layer);
 </script>
