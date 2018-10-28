@@ -13,6 +13,8 @@ import * as LayerUtils from './LayerUtils';
 import './CanvasLayer';
 import './DozensLayer';
 import './HeatMap';
+import './ParticleLayer';
+import './ODLineLayer';
 class Layer {
   /**
    * 通过layerName获取图层

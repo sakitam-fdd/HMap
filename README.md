@@ -11,6 +11,7 @@
 - 采用mapbox配置式创建和管理地图
 - 开发者无需关心gis地图相关原理就可以轻松创建地图
 - 相比原生openlayers更易用，也更符合国内webgis应用场景
+- 部分动态渲染图层参考了 [maptalks](https://github.com/maptalks/maptalks.js) 的实现。
 
 ## 编译
 

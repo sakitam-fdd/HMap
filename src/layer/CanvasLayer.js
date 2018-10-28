@@ -38,7 +38,6 @@ class CanvasLayer extends ol.layer.Image {
    */
   redraw (event) {
     this.getSource() && this.getSource().refresh();
-    this.draw(event);
   }
 
   /**
