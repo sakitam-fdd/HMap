@@ -220,6 +220,8 @@ class HeatMap extends CanvasLayer {
   }
 
   render () {
+    // FIXME: 如何处理多状态
+    if (!this.getMap()) return;
     super.render();
     const features = this.getFeatures();
     if (!features || features.length === 0) return;
